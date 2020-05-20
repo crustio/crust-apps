@@ -47,9 +47,9 @@ try {
       "pub_key": "Vec<u8>",
       "block_height": "u64",
       "block_hash": "Vec<u8>",
-      "empty_root": "Vec<u8>",
-      "empty_workload": "u64",
-      "meaningful_workload": "u64",
+      "used": "u64",
+      "reserved": "u64",
+      "files": "Vec<(Vec<u8>, u64)>",
       "sig": "Vec<u8>"
     },
     StakingLedger: {
