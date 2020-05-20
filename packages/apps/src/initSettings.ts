@@ -75,7 +75,10 @@ try {
     MerkleRoot: "Vec<u8>",
     Provision: {
       address: "Vec<u8>",
-      file_map: "BTreeMap<Vec<u8>, Hash>"
+      file_map: "Vec<(Vec<u8>, Hash)>"
+    },
+    OrderStatus: {
+      '_enum': ['Success', 'Failed', 'Pending']
     },
     StorageOrder: {
       file_identifier: "Vec<u8>",
