@@ -13,5 +13,6 @@ export default {
   edgeware,
   'encointer-node': encointerNode,
   kulupu,
-  'node-template': nodeTemplate
+  'node-template': nodeTemplate,
+  'crust': nodeTemplate,
 };

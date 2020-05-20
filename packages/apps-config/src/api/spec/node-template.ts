@@ -7,5 +7,6 @@
 
 export default {
   Address: 'AccountId',
-  LookupSource: 'AccountId'
+  LookupSource: 'AccountId',
+  Weight: 'u32',
 };

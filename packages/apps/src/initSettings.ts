@@ -34,6 +34,59 @@ try {
   const types = store.get('types') || {};
   const names = Object.keys(types);
 
+  // register these anyway
+  registry.register({
+    Identity: {
+      "pub_key": "Vec<u8>",
+      "account_id": "AccountId",
+      "validator_pub_key": "Vec<u8>",
+      "validator_account_id": "AccountId",
+      "sig": "Vec<u8>"
+    },
+    WorkReport: {
+      "pub_key": "Vec<u8>",
+      "block_height": "u64",
+      "block_hash": "Vec<u8>",
+      "empty_root": "Vec<u8>",
+      "empty_workload": "u64",
+      "meaningful_workload": "u64",
+      "sig": "Vec<u8>"
+    },
+    StakingLedger: {
+      "stash": "AccountId",
+      "total": "Compact<Balance>",
+      "active": "Compact<Balance>",
+      "valid": "Compact<Balance>",
+      "unlocking": "Vec<UnlockChunk>",
+    },
+    Validations: {
+      "total": "Compact<Balance>",
+      "guarantee_fee": "Compact<Perbill>",
+      "guarantors": "Vec<AccountId>",
+    },
+    Nominations: {
+      "targets": "Vec<AccountId>",
+      "total": "Compact<Balance>",
+      "submitted_in": "u32",
+      "suppressed": "bool"
+    },
+    ReportSlot: "u64",
+    AddressInfo: "Vec<u8>",
+    MerkleRoot: "Vec<u8>",
+    Provision: {
+      address: "Vec<u8>",
+      file_map: "BTreeMap<Vec<u8>, Hash>"
+    },
+    StorageOrder: {
+      file_identifier: "Vec<u8>",
+      file_size: "u64",
+      created_on: "BlockNumber",
+      expired_on: "BlockNumber",
+      provider: "AccountId",
+      client: "AccountId",
+      order_status: "OrderStatus"
+    }
+  });
   if (names.length) {
     registry.register(types);
     console.log('Type registration:', names.join(', '));

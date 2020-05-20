@@ -37,6 +37,7 @@ const nodeLogos: Record<string, any> = [
   ['kulupu', nodeSubstrate],
   ['node-template', nodeSubstrate],
   ['Nodle Chain Node', nodeNodle],
+  ['crust', nodeSubstrate],
   ['parity-polkadot', nodePolkadot],
   ['polkadot-js', nodePolkadotJs],
   ['substrate-node', nodeSubstrate]
