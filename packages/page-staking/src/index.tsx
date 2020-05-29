@@ -31,6 +31,8 @@ interface Validators {
 }
 
 function reduceNominators (nominators: string[], additional: string[]): string[] {
+  console.log('nominators:::::::::::INDEX', nominators)
+  console.log('additional:::::::::::INDEX', additional)
   return nominators.concat(...additional.filter((nominator): boolean => !nominators.includes(nominator)));
 }
 
@@ -44,6 +46,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
   const ownStashes = useOwnStashInfos();
   const targets = useSortedTargets();
   const stakingOverview = useCall<DeriveStakingOverview>(api.derive.staking.overview, []);
+  console.log('index:::::::stakingOverview', JSON.stringify(stakingOverview))
   const isInElection = useCall<boolean>(api.query.staking?.eraElectionStatus, [], {
     transform: (status: ElectionStatus) => status.isOpen
   });
@@ -95,11 +98,14 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
   );
 
   useEffect((): void => {
-    allStashes && stakingOverview && setValidators({
-      next: allStashes.filter((address) => !stakingOverview.validators.includes(address as any)),
+    console.log('stakingOverview:::::::::INDEX', JSON.stringify(stakingOverview))
+    stakingOverview && setValidators({
+      next: stakingOverview.nextElected
+                .filter((address) => !stakingOverview.validators.includes(address as any))
+                .map(a => a.toString()),
       validators: stakingOverview.validators.map((a) => a.toString())
     });
-  }, [allStashes, stakingOverview]);
+  }, [stakingOverview]);
 
   return (
     <main className={`staking--App ${className}`}>

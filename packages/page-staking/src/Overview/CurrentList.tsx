@@ -49,11 +49,12 @@ function filterAccounts (accounts: string[] = [], elected: string[], favorites: 
     );
 }
 
+
 function accountsToString (accounts: AccountId[]): string[] {
   return accounts.map((accountId): string => accountId.toString());
 }
 
-function getFiltered (stakingOverview: DeriveStakingOverview, favorites: string[], next?: string[]): Filtered {
+function getFiltered (stakingOverview: DeriveStakingOverview, favorites: string[], next?: string[] ): Filtered {
   const allElected = accountsToString(stakingOverview.nextElected);
   const validatorIds = accountsToString(stakingOverview.validators);
   const validators = filterAccounts(validatorIds, allElected, favorites, []);
@@ -94,8 +95,10 @@ function CurrentList ({ hasQueries, isIntentions, next, setNominators, stakingOv
   const { byAuthor, eraPoints, lastBlockAuthors } = useContext(isIntentions ? EmptyAuthorsContext : BlockAuthorsContext);
   const recentlyOnline = useCall<DeriveHeartbeats>(!isIntentions && api.derive.imOnline?.receivedHeartbeats, []);
   const nominators = useCall<[StorageKey, Option<Nominations>][]>(isIntentions && api.query.staking.nominators.entries as any, []);
+
   const [favorites, toggleFavorite] = useFavorites(STORE_FAVS_BASE);
   const [{ elected, validators, waiting }, setFiltered] = useState<Filtered>({});
+
   const [nameFilter, setNameFilter] = useState<string>('');
   const [nominatedBy, setNominatedBy] = useState<Record<string, [string, number][]> | null>();
 

@@ -57,7 +57,7 @@ function NewNominator ({ isInElection, next, targets, validators }: Props): Reac
     <>
       <Button
         icon='add'
-        isDisabled={isDisabled}
+        isDisabled={false}
         key='new-nominator'
         label={t<string>('Nominator')}
         onClick={_toggle}

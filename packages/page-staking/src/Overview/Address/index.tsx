@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance } from '@polkadot/types/interfaces';
+import { Balance, Exposure } from '@polkadot/types/interfaces';
 import { DeriveAccountInfo, DeriveStakingQuery } from '@polkadot/api-derive/types';
 
 import BN from 'bn.js';
@@ -48,7 +48,7 @@ interface StakingState {
 const PERBILL_PERCENT = 10_000_000;
 /* stylelint-enable */
 
-function expandInfo ({ exposure, validatorPrefs }: DeriveStakingQuery): StakingState {
+function expandInfo (exposure: Exposure): StakingState {
   let nominators: [string, Balance][] = [];
   let stakeTotal: BN | undefined;
   let stakeOther: BN | undefined;
@@ -60,13 +60,14 @@ function expandInfo ({ exposure, validatorPrefs }: DeriveStakingQuery): StakingS
     stakeOwn = exposure.own.unwrap();
     stakeOther = stakeTotal.sub(stakeOwn);
   }
+  console.log('exposure::::::::::', stakeOwn)
 
-  const commission = validatorPrefs?.commission?.unwrap();
+  // const commission = validatorPrefs?.commission?.unwrap();
 
   return {
-    commission: commission
-      ? `${(commission.toNumber() / PERBILL_PERCENT).toFixed(2)}%`
-      : undefined,
+    // commission: commission
+    //   ? `${(commission.toNumber() / PERBILL_PERCENT).toFixed(2)}%`
+    //   : undefined,
     nominators,
     stakeOther,
     stakeOwn,
@@ -111,18 +112,23 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
   const { allAccounts } = useAccounts();
   const accountInfo = useCall<DeriveAccountInfo>(isMain && api.derive.accounts.info, [address]);
   const stakingInfo = useCall<DeriveStakingQuery>(api.derive.staking.query, [address]);
+  // console.log('stakingInfo', stakingInfo)
+  const guarantorInfo = useCall<Exposure>(api.query.staking.stakers, [address])
+  // console.log('guarantorInfo', JSON.stringify(guarantorInfo))
+
   const [{ commission, nominators, stakeOther, stakeOwn }, setStakingState] = useState<StakingState>({ nominators: [] });
   const [isVisible, setIsVisible] = useState(true);
   const [isNominating, setIsNominating] = useState(false);
 
   useEffect((): void => {
-    if (stakingInfo) {
-      const info = expandInfo(stakingInfo);
-
-      setNominators && setNominators(info.nominators.map(([who]): string => who.toString()));
+    // console.log('useEffect guarantorInfo::::::', JSON.stringify(guarantorInfo))
+    if (guarantorInfo) {
+      const info = expandInfo(guarantorInfo);
+      // console.log("info:::::::", JSON.stringify(info))
+      setNominators && setNominators(guarantorInfo.others.map((guarantor): string => guarantor.who.toString()));
       setStakingState(info);
     }
-  }, [setNominators, stakingInfo]);
+  }, [setNominators, guarantorInfo]);
 
   useEffect((): void => {
     setIsVisible(

@@ -55,7 +55,7 @@ function NewValidator ({ isInElection }: Props): React.ReactElement<Props> {
     <>
       <Button
         icon='add'
-        isDisabled={isDisabled}
+        isDisabled={false}
         key='new-validator'
         label={t<string>('Validator')}
         onClick={_toggle}

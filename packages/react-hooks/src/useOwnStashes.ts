@@ -14,16 +14,17 @@ import useIsMountedRef from './useIsMountedRef';
 
 type IsInKeyring = boolean;
 
-function getStashes (allAccounts: string[], ownBonded: Option<AccountId>[], ownLedger: Option<StakingLedger>[]): [string, IsInKeyring][] {
+function getStashes (allAccounts: string[], ownBonded: any[], ownLedger: any[]): [string, IsInKeyring][] {
   const result: [string, IsInKeyring][] = [];
 
+  console.log('getStashes::::::::::ownBonded', JSON.stringify(ownBonded))
   ownBonded.forEach((value, index): void => {
-    value.isSome && result.push([allAccounts[index], true]);
+    value && result.push([allAccounts[index], true]);
   });
 
   ownLedger.forEach((ledger): void => {
-    if (ledger.isSome) {
-      const stashId = ledger.unwrap().stash.toString();
+    if (ledger) {
+      const stashId = ledger.stash;
 
       !result.some(([accountId]) => accountId === stashId) && result.push([stashId, false]);
     }
@@ -34,12 +35,16 @@ function getStashes (allAccounts: string[], ownBonded: Option<AccountId>[], ownL
 
 export default function useOwnStashes (): [string, IsInKeyring][] | undefined {
   const { allAccounts, hasAccounts } = useAccounts();
+  console.log('useOwnStashes:::::::allAccounts', allAccounts)
   const mountedRef = useIsMountedRef();
+  console.log('useOwnStashes:::::::mountedRef', mountedRef)
   const { api } = useApi();
   const ownBonded = useCall<Option<AccountId>[]>(hasAccounts && api.query.staking?.bonded.multi, [allAccounts]);
   const ownLedger = useCall<Option<StakingLedger>[]>(hasAccounts && api.query.staking?.ledger.multi, [allAccounts]);
   const [state, setState] = useState<[string, IsInKeyring][] | undefined>();
 
+  console.log('useOwnStashes:::::::ownBonded', JSON.stringify(ownBonded))
+  console.log('useOwnStashes:::::::ownLedger', JSON.stringify(ownLedger))
   useEffect((): void => {
     mountedRef.current && ownBonded && ownLedger && setState(
       getStashes(allAccounts, ownBonded, ownLedger)
