@@ -37,9 +37,7 @@ interface State {
 function Actions ({ className = '', isInElection, next, ownStashes, targets, validators }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
-  const activeEra = useCall<EraIndex | undefined>(api.query.staking?.activeEra, [], {
-    transform: (activeEra: Option<ActiveEraInfo>) => activeEra.unwrapOr({ index: undefined }).index
-  });
+  const activeEra = useCall<EraIndex | undefined>(api.query.staking?.currentEra, []);
   const [{ bondedTotal, foundStashes }, setState] = useState<State>({});
 
   useEffect((): void => {

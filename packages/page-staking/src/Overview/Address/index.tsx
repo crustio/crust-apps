@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance, Exposure } from '@polkadot/types/interfaces';
-import { DeriveAccountInfo, DeriveStakingQuery } from '@polkadot/api-derive/types';
+import { Balance, Exposure, AccountId } from '@polkadot/types/interfaces';
+import { DeriveAccountInfo } from '@polkadot/api-derive/types';
 
 import BN from 'bn.js';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -17,6 +17,7 @@ import Favorite from './Favorite';
 import NominatedBy from './NominatedBy';
 import Status from './Status';
 import StakeOther from './StakeOther';
+import BondedDisplay from '@polkadot/react-components/Bonded'
 
 interface Props {
   address: string;
@@ -37,18 +38,19 @@ interface Props {
 }
 
 interface StakingState {
-  commission?: string;
+  guarantee_fee?: string;
   nominators: [string, Balance][];
   stakeTotal?: BN;
   stakeOther?: BN;
   stakeOwn?: BN;
+  stakeLimit?: BN;
 }
 
 /* stylelint-disable */
 const PERBILL_PERCENT = 10_000_000;
 /* stylelint-enable */
 
-function expandInfo (exposure: Exposure): StakingState {
+function expandInfo (exposure: Exposure, validatorsRel: any, stakeLimit: BN): StakingState {
   let nominators: [string, Balance][] = [];
   let stakeTotal: BN | undefined;
   let stakeOther: BN | undefined;
@@ -60,18 +62,18 @@ function expandInfo (exposure: Exposure): StakingState {
     stakeOwn = exposure.own.unwrap();
     stakeOther = stakeTotal.sub(stakeOwn);
   }
-  console.log('exposure::::::::::', stakeOwn)
 
-  // const commission = validatorPrefs?.commission?.unwrap();
+  const guarantee_fee = validatorsRel?.guarantee_fee?.unwrap();
 
   return {
-    // commission: commission
-    //   ? `${(commission.toNumber() / PERBILL_PERCENT).toFixed(2)}%`
-    //   : undefined,
+    guarantee_fee: guarantee_fee
+      ? `${(guarantee_fee.toNumber() / PERBILL_PERCENT).toFixed(2)}%`
+      : undefined,
     nominators,
     stakeOther,
     stakeOwn,
-    stakeTotal
+    stakeTotal,
+    stakeLimit
   };
 }
 
@@ -111,24 +113,24 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
   const { api } = useApi();
   const { allAccounts } = useAccounts();
   const accountInfo = useCall<DeriveAccountInfo>(isMain && api.derive.accounts.info, [address]);
-  const stakingInfo = useCall<DeriveStakingQuery>(api.derive.staking.query, [address]);
-  // console.log('stakingInfo', stakingInfo)
+  // const stakingInfo = useCall<DeriveStakingQuery>(api.derive.staking.query, [address]);
+  // console.log('accountInfo', JSON.stringify(accountInfo))
   const guarantorInfo = useCall<Exposure>(api.query.staking.stakers, [address])
-  // console.log('guarantorInfo', JSON.stringify(guarantorInfo))
+  const validatorsRel = useCall<any>(api.query.staking.validators, [address])
+  const controllerId = useCall<AccountId | null>(api.query.staking.bonded, [address]);
+  const _stakeLimit = useCall<any>(api.query.staking.stakeLimit, [address])
 
-  const [{ commission, nominators, stakeOther, stakeOwn }, setStakingState] = useState<StakingState>({ nominators: [] });
+  const [{ guarantee_fee, nominators, stakeOther, stakeOwn, stakeLimit }, setStakingState] = useState<StakingState>({ nominators: [] });
   const [isVisible, setIsVisible] = useState(true);
   const [isNominating, setIsNominating] = useState(false);
 
   useEffect((): void => {
-    // console.log('useEffect guarantorInfo::::::', JSON.stringify(guarantorInfo))
-    if (guarantorInfo) {
-      const info = expandInfo(guarantorInfo);
-      // console.log("info:::::::", JSON.stringify(info))
+    if (guarantorInfo && validatorsRel && _stakeLimit && controllerId) {
+      const info = expandInfo(guarantorInfo, validatorsRel, new BN(_stakeLimit.toString()));
       setNominators && setNominators(guarantorInfo.others.map((guarantor): string => guarantor.who.toString()));
       setStakingState(info);
     }
-  }, [setNominators, guarantorInfo]);
+  }, [setNominators, guarantorInfo, validatorsRel, _stakeLimit, controllerId]);
 
   useEffect((): void => {
     setIsVisible(
@@ -176,12 +178,26 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
         : <NominatedBy nominators={nominatedBy} />
       }
       <td className='number'>
+        {stakeLimit?.gtn(0) && (
+          <FormatBalance value={stakeLimit} />
+        )}
+      </td>
+      <td className='number'>
         {stakeOwn?.gtn(0) && (
           <FormatBalance value={stakeOwn} />
         )}
       </td>
       <td className='number'>
-        {commission}
+      {(
+          <BondedDisplay
+            label=''
+            params={address}
+          />
+      )}
+      </td>
+      
+      <td className='number'>
+        {guarantee_fee}
       </td>
       <td className='number'>
         {points}
@@ -190,7 +206,7 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
         {lastBlock}
       </td>
       <td>
-        {hasQueries && (
+        {true && (
           <Icon
             name='line graph'
             onClick={_onQueryStats}
