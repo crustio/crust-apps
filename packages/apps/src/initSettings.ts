@@ -33,62 +33,60 @@ console.log('WS endpoint=', apiUrl);
 try {
   const types = store.get('types') as Record<string, Record<string, string>> || {};
   const names = Object.keys(types);
-
   // register these anyway
   registry.register({
-    Identity: {
-      'account_id': 'AccountId',
-      'pub_key': 'Vec<u8>',
-      'validator_pub_key': 'Vec<u8>',
-      'validator_account_id': 'AccountId',
-      'sig': 'Vec<u8>'
-    },
-    WorkReport: {
-      'pub_key': 'Vec<u8>',
-      'block_height': 'u64',
-      'block_hash': 'Vec<u8>',
-      'used': 'u64',
-      'reserved': 'u64',
-      'files': 'Vec<(Vec<u8>, u64)>',
-      'sig': 'Vec<u8>'
-    },
-    StakingLedger: {
-      'stash': 'AccountId',
-      'total': 'Compact<Balance>',
-      'active': 'Compact<Balance>',
-      'valid': 'Compact<Balance>',
-      'unlocking': 'Vec<UnlockChunk>',
-    },
-    Validations: {
-      'total': 'Compact<Balance>',
-      'guarantee_fee': 'Compact<Perbill>',
-      'guarantors': 'Vec<AccountId>',
-    },
-    Nominations: {
-      'targets': 'Vec<AccountId>',
-      'total': 'Compact<Balance>',
-      'submitted_in': 'u32',
-      'suppressed': 'bool'
-    },
-    ReportSlot: 'u64',
     AddressInfo: 'Vec<u8>',
+    Identity: {
+      account_id: 'AccountId',
+      pub_key: 'Vec<u8>',
+      sig: 'Vec<u8>',
+      validator_account_id: 'AccountId',
+      validator_pub_key: 'Vec<u8>'
+    },
     MerkleRoot: 'Vec<u8>',
-    Provision: {
-      address: 'Vec<u8>',
-      file_map: 'Vec<(Vec<u8>, Hash)>'
+    Nominations: {
+      submitted_in: 'u32',
+      suppressed: 'bool',
+      targets: 'Vec<AccountId>',
+      total: 'Compact<Balance>',
     },
     OrderStatus: {
       '_enum': ['Success', 'Failed', 'Pending']
     },
+    Provision: {
+      address: 'Vec<u8>',
+      file_map: 'Vec<(Vec<u8>, Hash)>'
+    },
+    ReportSlot: 'u64',
+    StakingLedger: {
+      active: 'Compact<Balance>',
+      stash: 'AccountId',
+      total: 'Compact<Balance>',
+      unlocking: 'Vec<UnlockChunk>',
+      valid: 'Compact<Balance>',
+    },
     StorageOrder: {
-      file_identifier: 'Vec<u8>',
-      file_size: 'u64',
       created_on: 'BlockNumber',
       expired_on: 'BlockNumber',
+      file_identifier: 'Vec<u8>',
+      file_size: 'u64',
       provider: 'AccountId',
-      client: 'AccountId',
       order_status: 'OrderStatus'
-    }
+    },
+    Validations: {
+      guarantee_fee: 'Compact<Perbill>',
+      guarantors: 'Vec<AccountId>',
+      total: 'Compact<Balance>',
+    },
+    WorkReport: {
+      block_hash: 'Vec<u8>',
+      block_height: 'u64',
+      files: 'Vec<(Vec<u8>, u64)>',
+      pub_key: 'Vec<u8>',
+      reserved: 'u64',
+      sig: 'Vec<u8>',
+      used: 'u64',
+    },
   });
   if (names.length) {
     registry.register(types);
