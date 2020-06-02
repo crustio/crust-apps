@@ -24,6 +24,7 @@ function getStashes (allAccounts: string[], ownBonded: Option<AccountId>[], ownL
   ownLedger.forEach((ledger): void => {
     if (ledger) {
       const stashId = ledger.unwrap().stash.toString();
+
       !result.some(([accountId]) => accountId === stashId) && result.push([stashId, false]);
     }
   });
@@ -37,6 +38,7 @@ export default function useOwnStashes (): [string, IsInKeyring][] | undefined {
   const { api } = useApi();
   const ownBonded = useCall<Option<AccountId>[]>(hasAccounts && api.query.staking?.bonded.multi, [allAccounts]);
   const ownLedger = useCall<Option<StakingLedger>[]>(hasAccounts && api.query.staking?.ledger.multi, [allAccounts]);
+  
   const [state, setState] = useState<[string, IsInKeyring][] | undefined>();
   useEffect((): void => {
     mountedRef.current && ownBonded && ownLedger && setState(

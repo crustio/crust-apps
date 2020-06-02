@@ -6,7 +6,6 @@ import { Balance, Exposure, AccountId } from '@polkadot/types/interfaces';
 import { DeriveAccountInfo } from '@polkadot/api-derive/types';
 import { Compact } from '@polkadot/types/codec';
 
-
 import BN from 'bn.js';
 import React, { useCallback, useEffect, useState } from 'react';
 import ApiPromise from '@polkadot/api/promise';
@@ -50,7 +49,7 @@ interface StakingState {
 
 interface Validations {
   total: BN,
-  guarantee_fee: Compact<Balance>,
+  guaranteeFee: Compact<Balance>,
   guarantors: AccountId[]
 }
 
@@ -71,7 +70,7 @@ function expandInfo (exposure: Exposure, validatorsRel: Validations, stakeLimit:
     stakeOther = stakeTotal.sub(stakeOwn);
   }
 
-  const guaranteeFee = validatorsRel?.guarantee_fee?.unwrap();
+  const guaranteeFee = validatorsRel?.guaranteeFee?.unwrap();
 
   return {
     guaranteeFee: guaranteeFee
@@ -80,8 +79,8 @@ function expandInfo (exposure: Exposure, validatorsRel: Validations, stakeLimit:
     nominators,
     stakeOther,
     stakeOwn,
-    stakeTotal,
-    stakeLimit
+    stakeLimit,
+    stakeTotal
   };
 }
 
@@ -128,7 +127,7 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
   const controllerId = useCall<AccountId | null>(api.query.staking.bonded, [address]);
   const _stakeLimit = useCall<BN>(api.query.staking.stakeLimit, [address]);
 
-  const [{ guaranteeFee, nominators, stakeOther, stakeOwn, stakeLimit }, setStakingState] = useState<StakingState>({ nominators: [] });
+  const [{ guaranteeFee, nominators, stakeOther, stakeLimit, stakeOwn }, setStakingState] = useState<StakingState>({ nominators: [] });
   const [isVisible, setIsVisible] = useState(true);
   const [isNominating, setIsNominating] = useState(false);
 
@@ -196,14 +195,12 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
         )}
       </td>
       <td className='number'>
-      {(
-          <BondedDisplay
-            label=''
-            params={address}
-          />
-      )}
+        {(<BondedDisplay
+              label=''
+              params={address}
+            />
+        )}
       </td>
-      
       <td className='number'>
         {guaranteeFee}
       </td>
