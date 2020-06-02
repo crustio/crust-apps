@@ -47,9 +47,9 @@ try {
       pub_key: 'Vec<u8>',
       block_height: 'u64',
       block_hash: 'Vec<u8>',
-      used: 'u64',
-      reserved: 'u64',
-      files: 'Vec<(Vec<u8>, u64)>',
+      empty_root: 'MerkleRoot',
+      empty_workload: 'u64',
+      meaningful_workload: 'u64',
       sig: 'Vec<u8>'
     },
     StakingLedger: {
@@ -71,24 +71,7 @@ try {
       suppressed: 'bool'
     },
     ReportSlot: 'u64',
-    AddressInfo: 'Vec<u8>',
     MerkleRoot: 'Vec<u8>',
-    Provision: {
-      address: 'Vec<u8>',
-      file_map: 'Vec<(Vec<u8>, Hash)>'
-    },
-    OrderStatus: {
-      _enum: ['Success', 'Failed', 'Pending']
-    },
-    StorageOrder: {
-      file_identifier: 'Vec<u8>',
-      file_size: 'u64',
-      created_on: 'BlockNumber',
-      expired_on: 'BlockNumber',
-      provider: 'AccountId',
-      client: 'AccountId',
-      order_status: 'OrderStatus'
-    }
   });
   if (names.length) {
     registry.register(types);
