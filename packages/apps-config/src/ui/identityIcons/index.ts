@@ -8,7 +8,7 @@ const identityNodes: Record<string, string> = [
   ['edgeware-node', 'substrate'],
   ['joystream-node', 'beachball'],
   ['node-template', 'substrate'],
-  ['crust', 'substrate'],
+  ['crust', 'polkadot'],
   ['parity-polkadot', 'polkadot'],
   ['polkadot-js', 'polkadot'],
   ['substrate-node', 'substrate']
