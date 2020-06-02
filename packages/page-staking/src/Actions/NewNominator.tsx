@@ -31,7 +31,7 @@ function NewNominator ({ isInElection, next, targets, validators }: Props): Reac
   const [{ bondOwnTx, bondTx, controllerId, controllerTx, stashId }, setBondInfo] = useState<BondInfo>({});
   const [{ nominateTx }, setNominateInfo] = useState<NominateInfo>({});
   const [step, setStep] = useState(1);
-  const isDisabled = isInElection || !isFunction(api.tx.utility?.batch);
+  const isDisabled = isInElection || !isFunction(api.tx.utility?.batch) || false;
 
   const _nextStep = useCallback(
     () => setStep((step) => step + 1),
@@ -57,7 +57,7 @@ function NewNominator ({ isInElection, next, targets, validators }: Props): Reac
     <>
       <Button
         icon='add'
-        isDisabled={false}
+        isDisabled={isDisabled}
         key='new-nominator'
         label={t<string>('Nominator')}
         onClick={_toggle}

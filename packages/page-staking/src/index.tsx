@@ -12,7 +12,7 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { HelpOverlay } from '@polkadot/react-components';
 import Tabs from '@polkadot/react-components/Tabs';
-import { useAccounts, useApi, useCall, useOwnStashInfos, useStashIds } from '@polkadot/react-hooks';
+import { useAccounts, useApi, useCall, useOwnStashInfos } from '@polkadot/react-hooks';
 import { isFunction } from '@polkadot/util';
 
 import basicMd from './md/basic.md';
@@ -40,7 +40,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
   const { hasAccounts } = useAccounts();
   const { pathname } = useLocation();
   const [{ next, validators }, setValidators] = useState<Validators>({});
-  const allStashes = useStashIds();
+  // const allStashes = useStashIds();
   const ownStashes = useOwnStashInfos();
   const targets = useSortedTargets();
   const stakingOverview = useCall<DeriveStakingOverview>(api.derive.staking.overview, []);

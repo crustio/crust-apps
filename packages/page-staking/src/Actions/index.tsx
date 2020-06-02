@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ActiveEraInfo, EraIndex } from '@polkadot/types/interfaces';
+import { EraIndex } from '@polkadot/types/interfaces';
 import { StakerState } from '@polkadot/react-hooks/types';
 import { SortedTargets } from '../types';
 
@@ -11,7 +11,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Table } from '@polkadot/react-components';
 import { useCall, useApi } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
-import { Option } from '@polkadot/types';
+// import { Option } from '@polkadot/types';
 
 import ElectionBanner from '../ElectionBanner';
 import { useTranslation } from '../translate';
