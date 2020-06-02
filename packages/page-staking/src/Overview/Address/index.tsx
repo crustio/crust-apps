@@ -77,9 +77,9 @@ function expandInfo (exposure: Exposure, validatorsRel: Validations, stakeLimit:
       ? `${(guaranteeFee.toNumber() / PERBILL_PERCENT).toFixed(2)}%`
       : undefined,
     nominators,
+    stakeLimit,
     stakeOther,
     stakeOwn,
-    stakeLimit,
     stakeTotal
   };
 }
@@ -127,13 +127,14 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
   const controllerId = useCall<AccountId | null>(api.query.staking.bonded, [address]);
   const _stakeLimit = useCall<BN>(api.query.staking.stakeLimit, [address]);
 
-  const [{ guaranteeFee, nominators, stakeOther, stakeLimit, stakeOwn }, setStakingState] = useState<StakingState>({ nominators: [] });
+  const [{ guaranteeFee, nominators, stakeLimit, stakeOther, stakeOwn }, setStakingState] = useState<StakingState>({ nominators: [] });
   const [isVisible, setIsVisible] = useState(true);
   const [isNominating, setIsNominating] = useState(false);
 
   useEffect((): void => {
     if (guarantorInfo && validatorsRel && _stakeLimit && controllerId) {
       const info = expandInfo(guarantorInfo, validatorsRel, new BN(_stakeLimit.toString()));
+
       setNominators && setNominators(guarantorInfo.others.map((guarantor): string => guarantor.who.toString()));
       setStakingState(info);
     }
@@ -196,9 +197,9 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
       </td>
       <td className='number'>
         {(<BondedDisplay
-              label=''
-              params={address}
-            />
+            label=''
+            params={address}
+          />
         )}
       </td>
       <td className='number'>

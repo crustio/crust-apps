@@ -10,9 +10,9 @@ import nodeTemplate from './node-template';
 
 export default {
   'centrifuge-chain': centrifugeChain,
+  crust: nodeTemplate,
   edgeware,
   'encointer-node': encointerNode,
   kulupu,
-  'node-template': nodeTemplate,
-  'crust': nodeTemplate,
+  'node-template': nodeTemplate
 };

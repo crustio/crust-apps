@@ -35,6 +35,7 @@ try {
   const names = Object.keys(types);
   // register these anyway
   registry.register({
+
     AddressInfo: 'Vec<u8>',
     Identity: {
       account_id: 'AccountId',
@@ -48,10 +49,10 @@ try {
       submitted_in: 'u32',
       suppressed: 'bool',
       targets: 'Vec<AccountId>',
-      total: 'Compact<Balance>',
+      total: 'Compact<Balance>'
     },
     OrderStatus: {
-      '_enum': ['Success', 'Failed', 'Pending']
+      _enum: ['Success', 'Failed', 'Pending']
     },
     Provision: {
       address: 'Vec<u8>',
@@ -63,7 +64,7 @@ try {
       stash: 'AccountId',
       total: 'Compact<Balance>',
       unlocking: 'Vec<UnlockChunk>',
-      valid: 'Compact<Balance>',
+      valid: 'Compact<Balance>'
     },
     StorageOrder: {
       created_on: 'BlockNumber',
@@ -76,7 +77,7 @@ try {
     Validations: {
       guarantee_fee: 'Compact<Perbill>',
       guarantors: 'Vec<AccountId>',
-      total: 'Compact<Balance>',
+      total: 'Compact<Balance>'
     },
     WorkReport: {
       block_hash: 'Vec<u8>',
@@ -85,9 +86,10 @@ try {
       pub_key: 'Vec<u8>',
       reserved: 'u64',
       sig: 'Vec<u8>',
-      used: 'u64',
+      used: 'u64'
     },
   });
+  
   if (names.length) {
     registry.register(types);
     console.log('Type registration:', names.join(', '));
