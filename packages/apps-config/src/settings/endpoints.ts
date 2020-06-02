@@ -8,7 +8,7 @@ function createDev (t: <T= string> (key: string, text: string, options: { ns: st
   return [
     {
       info: 'local',
-      text: t<string>('rpc.local', 'Local Node (Own, 127.0.0.1:9944)', { ns: 'apps-config' }),
+      text: t<string>('rpc.crust', 'Local Node (Own, 127.0.0.1:9944)', { ns: 'apps-config' }),
       value: 'ws://127.0.0.1:9944/'
     }
   ];
@@ -16,66 +16,76 @@ function createDev (t: <T= string> (key: string, text: string, options: { ns: st
 
 function createLive (t: <T= string> (key: string, text: string, options: { ns: string }) => T): Option[] {
   return [
-    {
-      info: 'polkadot',
-      text: t<string>('rpc.polkadot.parity', 'Polkadot (Live, hosted by Parity)', { ns: 'apps-config' }),
-      value: 'wss://rpc.polkadot.io'
-    },
-    {
-      info: 'polkadot',
-      text: t<string>('rpc.polkadot.w3f', 'Polkadot (Live, hosted by Web3 Foundation)', { ns: 'apps-config' }),
-      value: 'wss://cc1-1.polkadot.network'
-    },
-    {
-      info: 'kusama',
-      text: t<string>('rpc.kusama.parity', 'Kusama (Polkadot Canary, hosted by Parity)', { ns: 'apps-config' }),
-      value: 'wss://kusama-rpc.polkadot.io/'
-    },
-    {
-      info: 'kusama',
-      text: t<string>('rpc.kusama.w3f', 'Kusama (Polkadot Canary, hosted by Web3 Foundation)', { ns: 'apps-config' }),
-      value: 'wss://cc3-5.kusama.network/'
-    },
-    {
-      info: 'kusama',
-      text: t<string>('rpc.kusama.ava', 'Kusama (Polkadot Canary, user-run public nodes; see https://status.cloud.ava.do/)', { ns: 'apps-config' }),
-      value: 'wss://kusama.polkadot.cloud.ava.do/'
-    },
-    {
-      info: 'edgeware',
-      text: t<string>('rpc.edgeware', 'Edgeware (Edgeware Mainnet, hosted by Commonwealth Labs)', { ns: 'apps-config' }),
-      value: 'wss://mainnet1.edgewa.re'
-    },
-    {
-      info: 'substrate',
-      text: t<string>('rpc.kulupu', 'Kulupu (Kulupu Mainnet, hosted by Kulupu)', { ns: 'apps-config' }),
-      value: 'wss://rpc.kulupu.network/ws'
-    }
+    // {
+    //   info: 'crust',
+    //   text: t<string>('rpc.crust', 'Crust (Own, fzk2.crust.run:7080)', { ns: 'apps-config' }),
+    //   value: 'ws://fzk2.crust.run:7080/'
+    // }
+    // {
+    //   info: 'polkadot',
+    //   text: t<string>('rpc.polkadot.parity', 'Polkadot (Live, hosted by Parity)', { ns: 'apps-config' }),
+    //   value: 'wss://rpc.polkadot.io'
+    // },
+    // {
+    //   info: 'polkadot',
+    //   text: t<string>('rpc.polkadot.w3f', 'Polkadot (Live, hosted by Web3 Foundation)', { ns: 'apps-config' }),
+    //   value: 'wss://cc1-1.polkadot.network'
+    // },
+    // {
+    //   info: 'kusama',
+    //   text: t<string>('rpc.kusama.parity', 'Kusama (Polkadot Canary, hosted by Parity)', { ns: 'apps-config' }),
+    //   value: 'wss://kusama-rpc.polkadot.io/'
+    // },
+    // {
+    //   info: 'kusama',
+    //   text: t<string>('rpc.kusama.w3f', 'Kusama (Polkadot Canary, hosted by Web3 Foundation)', { ns: 'apps-config' }),
+    //   value: 'wss://cc3-5.kusama.network/'
+    // },
+    // {
+    //   info: 'kusama',
+    //   text: t<string>('rpc.kusama.ava', 'Kusama (Polkadot Canary, user-run public nodes; see https://status.cloud.ava.do/)', { ns: 'apps-config' }),
+    //   value: 'wss://kusama.polkadot.cloud.ava.do/'
+    // },
+    // {
+    //   info: 'edgeware',
+    //   text: t<string>('rpc.edgeware', 'Edgeware (Edgeware Mainnet, hosted by Commonwealth Labs)', { ns: 'apps-config' }),
+    //   value: 'wss://mainnet1.edgewa.re'
+    // },
+    // {
+    //   info: 'substrate',
+    //   text: t<string>('rpc.kulupu', 'Kulupu (Kulupu Mainnet, hosted by Kulupu)', { ns: 'apps-config' }),
+    //   value: 'wss://rpc.kulupu.network/ws'
+    // }
   ];
 }
 
 function createTest (t: <T= string> (key: string, text: string, options: { ns: string }) => T): Option[] {
   return [
     {
-      info: 'westend',
-      text: t<string>('rpc.westend', 'Westend (Polkadot Testnet, hosted by Parity)', { ns: 'apps-config' }),
-      value: 'wss://westend-rpc.polkadot.io'
-    },
-    {
-      info: 'edgeware',
-      text: t<string>('rpc.berlin', 'Berlin (Edgeware Testnet, hosted by Commonwealth Labs)', { ns: 'apps-config' }),
-      value: 'wss://berlin1.edgewa.re'
-    },
-    {
-      info: 'substrate',
-      text: t<string>('rpc.flamingfir', 'Flaming Fir (Substrate Testnet, hosted by Parity)', { ns: 'apps-config' }),
-      value: 'wss://substrate-rpc.parity.io/'
-    },
-    {
-      info: 'nodle',
-      text: t<string>('rpc.arcadia', 'Arcadia (Nodle Testnet, hosted by Nodle)', { ns: 'apps-config' }),
-      value: 'wss://arcadia1.nodleprotocol.io/'
+      info: 'crust',
+      text: t<string>('rpc.crust.network', 'Rocky (Crust Alpha Testnet, hosted by Crustio)', { ns: 'apps-config' }),
+      value: 'ws://139.196.122.228:6008/'
     }
+    // {
+    //   info: 'westend',
+    //   text: t<string>('rpc.westend', 'Westend (Polkadot Testnet, hosted by Parity)', { ns: 'apps-config' }),
+    //   value: 'wss://westend-rpc.polkadot.io'
+    // },
+    // {
+    //   info: 'edgeware',
+    //   text: t<string>('rpc.berlin', 'Berlin (Edgeware Testnet, hosted by Commonwealth Labs)', { ns: 'apps-config' }),
+    //   value: 'wss://berlin1.edgewa.re'
+    // },
+    // {
+    //   info: 'substrate',
+    //   text: t<string>('rpc.flamingfir', 'Flaming Fir (Substrate Testnet, hosted by Parity)', { ns: 'apps-config' }),
+    //   value: 'wss://substrate-rpc.parity.io/'
+    // },
+    // {
+    //   info: 'nodle',
+    //   text: t<string>('rpc.arcadia', 'Arcadia (Nodle Testnet, hosted by Nodle)', { ns: 'apps-config' }),
+    //   value: 'wss://arcadia1.nodleprotocol.io/'
+    // }
   ];
 }
 
