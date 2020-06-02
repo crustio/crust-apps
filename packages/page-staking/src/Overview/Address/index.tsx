@@ -197,9 +197,9 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
       </td>
       <td className='number'>
         {(<BondedDisplay
-            label=''
-            params={address}
-          />
+          label=''
+          params={address}
+        />
         )}
       </td>
       <td className='number'>

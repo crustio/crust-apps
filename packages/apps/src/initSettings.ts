@@ -33,6 +33,7 @@ console.log('WS endpoint=', apiUrl);
 try {
   const types = store.get('types') as Record<string, Record<string, string>> || {};
   const names = Object.keys(types);
+  
   // register these anyway
   registry.register({
 
@@ -71,8 +72,8 @@ try {
       expired_on: 'BlockNumber',
       file_identifier: 'Vec<u8>',
       file_size: 'u64',
-      provider: 'AccountId',
-      order_status: 'OrderStatus'
+      order_status: 'OrderStatus',
+      provider: 'AccountId'
     },
     Validations: {
       guarantee_fee: 'Compact<Perbill>',
@@ -87,9 +88,9 @@ try {
       reserved: 'u64',
       sig: 'Vec<u8>',
       used: 'u64'
-    },
+    }
   });
-  
+
   if (names.length) {
     registry.register(types);
     console.log('Type registration:', names.join(', '));
