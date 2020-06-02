@@ -5,7 +5,6 @@
 import { AccountId, StakingLedger } from '@polkadot/types/interfaces';
 
 import { useEffect, useState } from 'react';
-import { Option } from '@polkadot/types';
 
 import useAccounts from './useAccounts';
 import useApi from './useApi';
@@ -14,16 +13,17 @@ import useIsMountedRef from './useIsMountedRef';
 
 type IsInKeyring = boolean;
 
-function getStashes (allAccounts: string[], ownBonded: Option<AccountId>[], ownLedger: Option<StakingLedger>[]): [string, IsInKeyring][] {
+// TODO: solve the problem of type registration temporarily so remove Option
+function getStashes (allAccounts: string[], ownBonded: AccountId[], ownLedger: StakingLedger[]): [string, IsInKeyring][] {
   const result: [string, IsInKeyring][] = [];
 
   ownBonded.forEach((value, index): void => {
-    value.isSome && result.push([allAccounts[index], true]);
+    value && result.push([allAccounts[index], true]);
   });
 
   ownLedger.forEach((ledger): void => {
-    if (ledger.isSome) {
-      const stashId = ledger.unwrap().stash.toString();
+    if (ledger) {
+      const stashId = ledger.stash?.toString();
 
       !result.some(([accountId]) => accountId === stashId) && result.push([stashId, false]);
     }
@@ -36,8 +36,8 @@ export default function useOwnStashes (): [string, IsInKeyring][] | undefined {
   const { allAccounts, hasAccounts } = useAccounts();
   const mountedRef = useIsMountedRef();
   const { api } = useApi();
-  const ownBonded = useCall<Option<AccountId>[]>(hasAccounts && api.query.staking?.bonded.multi, [allAccounts]);
-  const ownLedger = useCall<Option<StakingLedger>[]>(hasAccounts && api.query.staking?.ledger.multi, [allAccounts]);
+  const ownBonded = useCall<AccountId[]>(hasAccounts && api.query.staking?.bonded.multi, [allAccounts]);
+  const ownLedger = useCall<StakingLedger[]>(hasAccounts && api.query.staking?.ledger.multi, [allAccounts]);
   const [state, setState] = useState<[string, IsInKeyring][] | undefined>();
 
   useEffect((): void => {

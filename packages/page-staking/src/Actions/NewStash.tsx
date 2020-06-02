@@ -29,7 +29,7 @@ function NewStash (): React.ReactElement {
       <Button
         icon='add'
         key='new-stash'
-        label={t<string>('Stash')}
+        label={t<string>('Bond')}
         onClick={_toggle}
       />
       {isVisible && (

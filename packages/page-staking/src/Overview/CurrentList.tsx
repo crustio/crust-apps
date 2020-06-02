@@ -94,8 +94,10 @@ function CurrentList ({ hasQueries, isIntentions, next, setNominators, stakingOv
   const { byAuthor, eraPoints, lastBlockAuthors } = useContext(isIntentions ? EmptyAuthorsContext : BlockAuthorsContext);
   const recentlyOnline = useCall<DeriveHeartbeats>(!isIntentions && api.derive.imOnline?.receivedHeartbeats, []);
   const nominators = useCall<[StorageKey, Option<Nominations>][]>(isIntentions && api.query.staking.nominators.entries as any, []);
+
   const [favorites, toggleFavorite] = useFavorites(STORE_FAVS_BASE);
   const [{ elected, validators, waiting }, setFiltered] = useState<Filtered>({});
+
   const [nameFilter, setNameFilter] = useState<string>('');
   const [nominatedBy, setNominatedBy] = useState<Record<string, [string, number][]> | null>();
 
@@ -121,8 +123,10 @@ function CurrentList ({ hasQueries, isIntentions, next, setNominators, stakingOv
   const headerWaiting = useMemo(() => [
     [t('validators'), 'start', 3],
     [t('other stake')],
+    [t('stake limit')],
+    [t('effected stake')],
     [t('own stake')],
-    [t('commission')],
+    [t('guarantee fee')],
     [t('points')],
     [t('last #')],
     []

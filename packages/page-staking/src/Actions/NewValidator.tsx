@@ -28,7 +28,7 @@ function NewValidator ({ isInElection }: Props): React.ReactElement<Props> {
   const [{ sessionTx }, setSessionInfo] = useState<SessionInfo>({});
   const [{ validateTx }, setValidateInfo] = useState<ValidateInfo>({});
   const [step, setStep] = useState(1);
-  const isDisabled = isInElection || !isFunction(api.tx.utility?.batch);
+  const isDisabled = isInElection || !isFunction(api.tx.utility?.batch) || false;
 
   const _nextStep = useCallback(
     () => setStep((step) => step + 1),

@@ -37,57 +37,57 @@ try {
   // register these anyway
   registry.register({
     Identity: {
-      "pub_key": "Vec<u8>",
-      "account_id": "AccountId",
-      "validator_pub_key": "Vec<u8>",
-      "validator_account_id": "AccountId",
-      "sig": "Vec<u8>"
+      account_id: 'AccountId',
+      pub_key: 'Vec<u8>',
+      validator_pub_key: 'Vec<u8>',
+      validator_account_id: 'AccountId',
+      sig: 'Vec<u8>'
     },
     WorkReport: {
-      "pub_key": "Vec<u8>",
-      "block_height": "u64",
-      "block_hash": "Vec<u8>",
-      "used": "u64",
-      "reserved": "u64",
-      "files": "Vec<(Vec<u8>, u64)>",
-      "sig": "Vec<u8>"
+      pub_key: 'Vec<u8>',
+      block_height: 'u64',
+      block_hash: 'Vec<u8>',
+      used: 'u64',
+      reserved: 'u64',
+      files: 'Vec<(Vec<u8>, u64)>',
+      sig: 'Vec<u8>'
     },
     StakingLedger: {
-      "stash": "AccountId",
-      "total": "Compact<Balance>",
-      "active": "Compact<Balance>",
-      "valid": "Compact<Balance>",
-      "unlocking": "Vec<UnlockChunk>",
+      stash: 'AccountId',
+      active: 'Compact<Balance>',
+      total: 'Compact<Balance>',
+      valid: 'Compact<Balance>',
+      unlocking: 'Vec<UnlockChunk>',
     },
     Validations: {
-      "total": "Compact<Balance>",
-      "guarantee_fee": "Compact<Perbill>",
-      "guarantors": "Vec<AccountId>",
+      total: 'Compact<Balance>',
+      guarantee_fee: 'Compact<Perbill>',
+      guarantors: 'Vec<AccountId>',
     },
     Nominations: {
-      "targets": "Vec<AccountId>",
-      "total": "Compact<Balance>",
-      "submitted_in": "u32",
-      "suppressed": "bool"
+      targets: 'Vec<AccountId>',
+      total: 'Compact<Balance>',
+      submitted_in: 'u32',
+      suppressed: 'bool'
     },
-    ReportSlot: "u64",
-    AddressInfo: "Vec<u8>",
-    MerkleRoot: "Vec<u8>",
+    ReportSlot: 'u64',
+    AddressInfo: 'Vec<u8>',
+    MerkleRoot: 'Vec<u8>',
     Provision: {
-      address: "Vec<u8>",
-      file_map: "Vec<(Vec<u8>, Hash)>"
+      address: 'Vec<u8>',
+      file_map: 'Vec<(Vec<u8>, Hash)>'
     },
     OrderStatus: {
-      '_enum': ['Success', 'Failed', 'Pending']
+      _enum: ['Success', 'Failed', 'Pending']
     },
     StorageOrder: {
-      file_identifier: "Vec<u8>",
-      file_size: "u64",
-      created_on: "BlockNumber",
-      expired_on: "BlockNumber",
-      provider: "AccountId",
-      client: "AccountId",
-      order_status: "OrderStatus"
+      file_identifier: 'Vec<u8>',
+      file_size: 'u64',
+      created_on: 'BlockNumber',
+      expired_on: 'BlockNumber',
+      provider: 'AccountId',
+      client: 'AccountId',
+      order_status: 'OrderStatus'
     }
   });
   if (names.length) {

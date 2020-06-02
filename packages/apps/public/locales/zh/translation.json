@@ -237,6 +237,7 @@
   "code for this contract": "该合约的代码",
   "code hash": "代码哈希",
   "commission": "委员会",
+  "guarantee fee": "担保费",
   "compiled contract WASM": "编译过的合约 WASM",
   "connected peers": "连接的节点",
   "contract address": "合约地址",

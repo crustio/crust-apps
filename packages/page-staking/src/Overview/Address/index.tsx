@@ -2,8 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance } from '@polkadot/types/interfaces';
-import { DeriveAccountInfo, DeriveStakingQuery } from '@polkadot/api-derive/types';
+import { Balance, Exposure, AccountId } from '@polkadot/types/interfaces';
+import { DeriveAccountInfo } from '@polkadot/api-derive/types';
+import { Compact } from '@polkadot/types/codec';
 
 import BN from 'bn.js';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -17,6 +18,7 @@ import Favorite from './Favorite';
 import NominatedBy from './NominatedBy';
 import Status from './Status';
 import StakeOther from './StakeOther';
+import BondedDisplay from '@polkadot/react-components/Bonded';
 
 interface Props {
   address: string;
@@ -37,18 +39,25 @@ interface Props {
 }
 
 interface StakingState {
-  commission?: string;
+  guaranteeFee?: string;
   nominators: [string, Balance][];
   stakeTotal?: BN;
   stakeOther?: BN;
   stakeOwn?: BN;
+  stakeLimit?: BN;
+}
+
+interface Validations {
+  total: BN,
+  guarantee_fee: Compact<Balance>,
+  guarantors: AccountId[]
 }
 
 /* stylelint-disable */
 const PERBILL_PERCENT = 10_000_000;
 /* stylelint-enable */
 
-function expandInfo ({ exposure, validatorPrefs }: DeriveStakingQuery): StakingState {
+function expandInfo (exposure: Exposure, validatorsRel: Validations, stakeLimit: BN): StakingState {
   let nominators: [string, Balance][] = [];
   let stakeTotal: BN | undefined;
   let stakeOther: BN | undefined;
@@ -61,13 +70,14 @@ function expandInfo ({ exposure, validatorPrefs }: DeriveStakingQuery): StakingS
     stakeOther = stakeTotal.sub(stakeOwn);
   }
 
-  const commission = validatorPrefs?.commission?.unwrap();
+  const guaranteeFee = validatorsRel?.guarantee_fee?.unwrap();
 
   return {
-    commission: commission
-      ? `${(commission.toNumber() / PERBILL_PERCENT).toFixed(2)}%`
+    guaranteeFee: guaranteeFee
+      ? `${(guaranteeFee.toNumber() / PERBILL_PERCENT).toFixed(2)}%`
       : undefined,
     nominators,
+    stakeLimit,
     stakeOther,
     stakeOwn,
     stakeTotal
@@ -110,19 +120,23 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
   const { api } = useApi();
   const { allAccounts } = useAccounts();
   const accountInfo = useCall<DeriveAccountInfo>(isMain && api.derive.accounts.info, [address]);
-  const stakingInfo = useCall<DeriveStakingQuery>(api.derive.staking.query, [address]);
-  const [{ commission, nominators, stakeOther, stakeOwn }, setStakingState] = useState<StakingState>({ nominators: [] });
+  const guarantorInfo = useCall<Exposure>(api.query.staking.stakers, [address]);
+  const validatorsRel = useCall<Validations>(api.query.staking.validators, [address]);
+  const controllerId = useCall<AccountId | null>(api.query.staking.bonded, [address]);
+  const _stakeLimit = useCall<BN>(api.query.staking.stakeLimit, [address]);
+
+  const [{ guaranteeFee, nominators, stakeLimit, stakeOther, stakeOwn }, setStakingState] = useState<StakingState>({ nominators: [] });
   const [isVisible, setIsVisible] = useState(true);
   const [isNominating, setIsNominating] = useState(false);
 
   useEffect((): void => {
-    if (stakingInfo) {
-      const info = expandInfo(stakingInfo);
+    if (guarantorInfo && validatorsRel && _stakeLimit && controllerId) {
+      const info = expandInfo(guarantorInfo, validatorsRel, new BN(_stakeLimit.toString()));
 
-      setNominators && setNominators(info.nominators.map(([who]): string => who.toString()));
+      setNominators && setNominators(guarantorInfo.others.map((guarantor): string => guarantor.who.toString()));
       setStakingState(info);
     }
-  }, [setNominators, stakingInfo]);
+  }, [setNominators, guarantorInfo, validatorsRel, _stakeLimit, controllerId]);
 
   useEffect((): void => {
     setIsVisible(
@@ -170,12 +184,24 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
         : <NominatedBy nominators={nominatedBy} />
       }
       <td className='number'>
+        {stakeLimit?.gtn(0) && (
+          <FormatBalance value={stakeLimit} />
+        )}
+      </td>
+      <td className='number'>
         {stakeOwn?.gtn(0) && (
           <FormatBalance value={stakeOwn} />
         )}
       </td>
       <td className='number'>
-        {commission}
+        {(<BondedDisplay
+          label=''
+          params={address}
+          />
+        )}
+      </td>
+      <td className='number'>
+        {guaranteeFee}
       </td>
       <td className='number'>
         {points}
@@ -184,7 +210,7 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
         {lastBlock}
       </td>
       <td>
-        {hasQueries && (
+        {true && (
           <Icon
             name='line graph'
             onClick={_onQueryStats}

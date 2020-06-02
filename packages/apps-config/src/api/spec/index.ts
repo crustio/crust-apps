@@ -14,5 +14,5 @@ export default {
   'encointer-node': encointerNode,
   kulupu,
   'node-template': nodeTemplate,
-  'crust': nodeTemplate,
+  'crust': nodeTemplate
 };

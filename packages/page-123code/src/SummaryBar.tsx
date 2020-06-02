@@ -5,11 +5,11 @@
 // only here, needs to be available for the rest of the codebase
 /* eslint-disable react/jsx-max-props-per-line */
 
-import { DeriveStakingValidators } from '@polkadot/api-derive/types';
+// import { DeriveStakingValidators } from '@polkadot/api-derive/types';
 import { Balance, BlockNumber } from '@polkadot/types/interfaces';
 
 import React from 'react';
-import { Bubble, IdentityIcon } from '@polkadot/react-components';
+import { Bubble } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { formatBalance, formatNumber } from '@polkadot/util';
 
@@ -18,7 +18,7 @@ function SummaryBar (): React.ReactElement {
   const bestNumber = useCall<BlockNumber>(api.derive.chain.bestNumber, []);
   const bestNumberLag = useCall<BlockNumber>(api.derive.chain.bestNumberLag, []);
   const totalIssuance = useCall<Balance>(api.query.balances?.totalIssuance, []);
-  const validators = useCall<DeriveStakingValidators>(api.derive.staking.validators, []);
+  // const validators = useCall<DeriveStakingValidators>(api.derive.staking.validators, []);
 
   return (
     <summary>
@@ -35,13 +35,13 @@ function SummaryBar (): React.ReactElement {
         <Bubble icon='bullseye' label='best #'>
           {formatNumber(bestNumber)} ({formatNumber(bestNumberLag)} lag)
         </Bubble>
-        {validators && (
+        {/* {validators && (
           <Bubble icon='chess queen' label='validators'>{
             validators.validators.map((accountId, index): React.ReactNode => (
               <IdentityIcon key={index} size={20} value={accountId} />
             ))
           }</Bubble>
-        )}
+        )} */}
         {totalIssuance && (
           <Bubble
             icon='circle'

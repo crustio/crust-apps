@@ -8,5 +8,5 @@
 export default {
   Address: 'AccountId',
   LookupSource: 'AccountId',
-  Weight: 'u32',
+  Weight: 'u32'
 };
