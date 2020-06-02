@@ -49,7 +49,7 @@ interface StakingState {
 
 interface Validations {
   total: BN,
-  guaranteeFee: Compact<Balance>,
+  guarantee_fee: Compact<Balance>,
   guarantors: AccountId[]
 }
 
@@ -70,7 +70,7 @@ function expandInfo (exposure: Exposure, validatorsRel: Validations, stakeLimit:
     stakeOther = stakeTotal.sub(stakeOwn);
   }
 
-  const guaranteeFee = validatorsRel?.guaranteeFee?.unwrap();
+  const guaranteeFee = validatorsRel?.guarantee_fee?.unwrap();
 
   return {
     guaranteeFee: guaranteeFee
@@ -134,7 +134,7 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
   useEffect((): void => {
     if (guarantorInfo && validatorsRel && _stakeLimit && controllerId) {
       const info = expandInfo(guarantorInfo, validatorsRel, new BN(_stakeLimit.toString()));
-
+      
       setNominators && setNominators(guarantorInfo.others.map((guarantor): string => guarantor.who.toString()));
       setStakingState(info);
     }
@@ -199,7 +199,7 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
         {(<BondedDisplay
           label=''
           params={address}
-        />
+          />
         )}
       </td>
       <td className='number'>

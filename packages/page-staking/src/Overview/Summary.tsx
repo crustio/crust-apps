@@ -38,7 +38,7 @@ function Summary ({ className = '', isVisible, next, nominators, stakingOverview
           </CardSummary>
         )}
         {!!nominators.length && (
-          <CardSummary label={t<string>('nominators')}>
+          <CardSummary label={t<string>('guarantors')}>
             {nominators.length}
           </CardSummary>
         )}
