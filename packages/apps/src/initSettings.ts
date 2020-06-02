@@ -33,7 +33,7 @@ console.log('WS endpoint=', apiUrl);
 try {
   const types = store.get('types') as Record<string, Record<string, string>> || {};
   const names = Object.keys(types);
-  
+
   // register these anyway
   registry.register({
 
