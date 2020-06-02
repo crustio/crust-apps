@@ -14,15 +14,16 @@ import useIsMountedRef from './useIsMountedRef';
 
 type IsInKeyring = boolean;
 
-function getStashes (allAccounts: string[], ownBonded: any[], ownLedger: any[]): [string, IsInKeyring][] {
+function getStashes (allAccounts: string[], ownBonded: Option<AccountId>[], ownLedger: Option<StakingLedger>[]): [string, IsInKeyring][] {
   const result: [string, IsInKeyring][] = [];
+
   ownBonded.forEach((value, index): void => {
     value && result.push([allAccounts[index], true]);
   });
 
   ownLedger.forEach((ledger): void => {
     if (ledger) {
-      const stashId = ledger.stash;
+      const stashId = ledger.unwrap().stash.toString();
       !result.some(([accountId]) => accountId === stashId) && result.push([stashId, false]);
     }
   });

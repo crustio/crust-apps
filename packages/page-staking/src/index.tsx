@@ -96,9 +96,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
 
   useEffect((): void => {
     stakingOverview && setValidators({
-      next: stakingOverview.nextElected
-                .filter((address) => !stakingOverview.validators.includes(address as any))
-                .map(a => a.toString()),
+      next: stakingOverview.nextElected.filter((address) => !stakingOverview.validators.includes(address as any)).map(a => a.toString()),
       validators: stakingOverview.validators.map((a) => a.toString())
     });
   }, [stakingOverview]);
