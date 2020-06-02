@@ -4,6 +4,8 @@
 
 import { Balance, Exposure, AccountId } from '@polkadot/types/interfaces';
 import { DeriveAccountInfo } from '@polkadot/api-derive/types';
+import { Compact } from '@polkadot/types/codec';
+
 
 import BN from 'bn.js';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -17,7 +19,7 @@ import Favorite from './Favorite';
 import NominatedBy from './NominatedBy';
 import Status from './Status';
 import StakeOther from './StakeOther';
-import BondedDisplay from '@polkadot/react-components/Bonded'
+import BondedDisplay from '@polkadot/react-components/Bonded';
 
 interface Props {
   address: string;
@@ -38,7 +40,7 @@ interface Props {
 }
 
 interface StakingState {
-  guarantee_fee?: string;
+  guaranteeFee?: string;
   nominators: [string, Balance][];
   stakeTotal?: BN;
   stakeOther?: BN;
@@ -46,11 +48,17 @@ interface StakingState {
   stakeLimit?: BN;
 }
 
+interface Validations {
+  total: BN,
+  guarantee_fee: Compact<Balance>,
+  guarantors: AccountId[]
+}
+
 /* stylelint-disable */
 const PERBILL_PERCENT = 10_000_000;
 /* stylelint-enable */
 
-function expandInfo (exposure: Exposure, validatorsRel: any, stakeLimit: BN): StakingState {
+function expandInfo (exposure: Exposure, validatorsRel: Validations, stakeLimit: BN): StakingState {
   let nominators: [string, Balance][] = [];
   let stakeTotal: BN | undefined;
   let stakeOther: BN | undefined;
@@ -63,11 +71,11 @@ function expandInfo (exposure: Exposure, validatorsRel: any, stakeLimit: BN): St
     stakeOther = stakeTotal.sub(stakeOwn);
   }
 
-  const guarantee_fee = validatorsRel?.guarantee_fee?.unwrap();
+  const guaranteeFee = validatorsRel?.guarantee_fee?.unwrap();
 
   return {
-    guarantee_fee: guarantee_fee
-      ? `${(guarantee_fee.toNumber() / PERBILL_PERCENT).toFixed(2)}%`
+    guaranteeFee: guaranteeFee
+      ? `${(guaranteeFee.toNumber() / PERBILL_PERCENT).toFixed(2)}%`
       : undefined,
     nominators,
     stakeOther,
@@ -115,12 +123,12 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
   const accountInfo = useCall<DeriveAccountInfo>(isMain && api.derive.accounts.info, [address]);
   // const stakingInfo = useCall<DeriveStakingQuery>(api.derive.staking.query, [address]);
   // console.log('accountInfo', JSON.stringify(accountInfo))
-  const guarantorInfo = useCall<Exposure>(api.query.staking.stakers, [address])
-  const validatorsRel = useCall<any>(api.query.staking.validators, [address])
+  const guarantorInfo = useCall<Exposure>(api.query.staking.stakers, [address]);
+  const validatorsRel = useCall<Validations>(api.query.staking.validators, [address]);
   const controllerId = useCall<AccountId | null>(api.query.staking.bonded, [address]);
-  const _stakeLimit = useCall<any>(api.query.staking.stakeLimit, [address])
+  const _stakeLimit = useCall<BN>(api.query.staking.stakeLimit, [address]);
 
-  const [{ guarantee_fee, nominators, stakeOther, stakeOwn, stakeLimit }, setStakingState] = useState<StakingState>({ nominators: [] });
+  const [{ guaranteeFee, nominators, stakeOther, stakeOwn, stakeLimit }, setStakingState] = useState<StakingState>({ nominators: [] });
   const [isVisible, setIsVisible] = useState(true);
   const [isNominating, setIsNominating] = useState(false);
 
@@ -197,7 +205,7 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
       </td>
       
       <td className='number'>
-        {guarantee_fee}
+        {guaranteeFee}
       </td>
       <td className='number'>
         {points}
