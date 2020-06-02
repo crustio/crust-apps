@@ -13,6 +13,7 @@ import useIsMountedRef from './useIsMountedRef';
 
 type IsInKeyring = boolean;
 
+// TODO: solve the problem of type registration temporarily so remove Option
 function getStashes (allAccounts: string[], ownBonded: AccountId[], ownLedger: StakingLedger[]): [string, IsInKeyring][] {
   const result: [string, IsInKeyring][] = [];
 

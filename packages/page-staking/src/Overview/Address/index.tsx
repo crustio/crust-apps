@@ -120,8 +120,6 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
   const { api } = useApi();
   const { allAccounts } = useAccounts();
   const accountInfo = useCall<DeriveAccountInfo>(isMain && api.derive.accounts.info, [address]);
-  // const stakingInfo = useCall<DeriveStakingQuery>(api.derive.staking.query, [address]);
-  // console.log('accountInfo', JSON.stringify(accountInfo))
   const guarantorInfo = useCall<Exposure>(api.query.staking.stakers, [address]);
   const validatorsRel = useCall<Validations>(api.query.staking.validators, [address]);
   const controllerId = useCall<AccountId | null>(api.query.staking.bonded, [address]);
@@ -134,7 +132,7 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
   useEffect((): void => {
     if (guarantorInfo && validatorsRel && _stakeLimit && controllerId) {
       const info = expandInfo(guarantorInfo, validatorsRel, new BN(_stakeLimit.toString()));
-      
+
       setNominators && setNominators(guarantorInfo.others.map((guarantor): string => guarantor.who.toString()));
       setStakingState(info);
     }
