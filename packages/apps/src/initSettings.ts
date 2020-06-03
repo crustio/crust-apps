@@ -61,8 +61,8 @@ try {
   // register these anyway
   registry.register({
     Identity: {
-      account_id: 'AccountId',
       pub_key: 'Vec<u8>',
+      account_id: 'AccountId',
       validator_pub_key: 'Vec<u8>',
       validator_account_id: 'AccountId',
       sig: 'Vec<u8>'
