@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/app-council authors & contributors
+// Copyright 2017-2020 @polkadot/app-tech-comm authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
@@ -50,7 +50,7 @@ function Close ({ hasFailed, hash, idNumber, isDisabled, members, proposal }: Pr
                 />
               </Modal.Column>
               <Modal.Column>
-                <p>{t<string>('The proposal that will be affected. Once closed for the current voting round, it would need to be re-submitted to council for a subsequent voting round.')}</p>
+                <p>{t<string>('The proposal that will be affected. Once closed for the current voting round, it would need to be re-submitted for a subsequent voting round.')}</p>
               </Modal.Column>
             </Modal.Columns>
             <Modal.Columns>
@@ -64,7 +64,7 @@ function Close ({ hasFailed, hash, idNumber, isDisabled, members, proposal }: Pr
                 />
               </Modal.Column>
               <Modal.Column>
-                <p>{t<string>('The council account that will apply the close for the current round.')}</p>
+                <p>{t<string>('The committee account that will apply the close for the current round.')}</p>
               </Modal.Column>
             </Modal.Columns>
           </Modal.Content>
@@ -74,13 +74,13 @@ function Close ({ hasFailed, hash, idNumber, isDisabled, members, proposal }: Pr
               isDisabled={!proposalWeight}
               onStart={toggleOpen}
               params={
-                api.tx.council.close.meta.args.length === 4
+                api.tx.technicalCommittee.close.meta.args.length === 4
                   ? hasFailed
                     ? [hash, idNumber, 0, 0]
                     : [hash, idNumber, proposalWeight, proposalLength]
                   : [hash, idNumber]
               }
-              tx='council.close'
+              tx='technicalCommittee.close'
             />
           </Modal.Actions>
         </Modal>
