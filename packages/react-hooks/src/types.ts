@@ -120,17 +120,17 @@ export interface UseAccountInfo {
 export interface StakerState {
   controllerId: string | null;
   destination?: string;
-  destinationId: number;
+  // destinationId: number;
   exposure?: Exposure;
-  hexSessionIdNext: string | null;
-  hexSessionIdQueue: string | null;
-  isLoading: boolean;
+  // hexSessionIdNext: string | null;
+  // hexSessionIdQueue: string | null;
+  // isLoading: boolean;
   isOwnController: boolean;
   isOwnStash: boolean;
   isStashNominating: boolean;
   isStashValidating: boolean;
   nominating?: string[];
-  sessionIds: string[];
+  // sessionIds: string[];
   stakingLedger?: StakingLedger;
   stashId: string;
   validatorPrefs?: ValidatorPrefs;

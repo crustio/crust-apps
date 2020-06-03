@@ -53,6 +53,8 @@ function Actions ({ className = '', isInElection, next, ownStashes, targets, val
     });
   }, [ownStashes]);
 
+  console.log('foundStashes:::::', foundStashes);
+
   const header = useMemo(() => [
     [t('stashes'), 'start'],
     [t('controller'), 'address'],
