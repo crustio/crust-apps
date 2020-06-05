@@ -9,7 +9,7 @@ import { SortedTargets } from '../../types';
 
 import React from 'react';
 import styled from 'styled-components';
-import { AddressInfo, AddressMini, AddressSmall, Button, Menu, Popup, StakingBonded, StakingRedeemable, StakingUnbonding, TxButton } from '@polkadot/react-components';
+import { AddressInfo, AddressMini, AddressSmall, Button, Menu, Popup, StakingBonded, StakingEffected, StakingRedeemable, StakingUnbonding, TxButton } from '@polkadot/react-components';
 import { useApi, useCall, useToggle } from '@polkadot/react-hooks';
 
 import { useTranslation } from '../../translate';
@@ -44,7 +44,8 @@ function Account ({ className = '', info: { controllerId, destination, destinati
   // const stakingAccount = useCall<DeriveStakingAccount>(api.derive.staking.account, [stashId]);
   const stakingAccount = useCall<DeriveStakingAccount>(api.query.staking.ledger, [controllerId]);
   const rewarDestination = useCall<RewardDestination>(api.query.staking.payee, [stashId]);
-  destination = rewarDestination && rewarDestination.toString()
+  destination = rewarDestination && rewarDestination.toString();
+  const role = validators && (validators?.indexOf(stashId) == -1)?'Guarantor':'Validator';
   const [isBondExtraOpen, toggleBondExtra] = useToggle();
   const [isInjectOpen, toggleInject] = useToggle();
   const [isNominateOpen, toggleNominate] = useToggle();
@@ -138,6 +139,10 @@ function Account ({ className = '', info: { controllerId, destination, destinati
         <StakingUnbonding stakingInfo={stakingAccount} />
         <StakingRedeemable stakingInfo={stakingAccount} />
       </td>
+      <td className='number'>
+        <StakingEffected stakingInfo={stakingAccount} />
+      </td>
+      <td className='number ui--media-1200'>{role}</td>
       {isStashValidating
         ? (
           <td className='all'>
@@ -268,7 +273,7 @@ function Account ({ className = '', info: { controllerId, destination, destinati
                       {t<string>('Change session keys')}
                     </Menu.Item>
                   }
-                  {isStashNominating &&
+                  {isStashNominating && validators && validators?.indexOf(stashId) == -1 &&
                     <Menu.Item
                       disabled={!isOwnController}
                       onClick={toggleNominate}
@@ -276,7 +281,7 @@ function Account ({ className = '', info: { controllerId, destination, destinati
                       {t<string>('Set guarantee')}
                     </Menu.Item>
                   }
-                  {isStashNominating &&
+                  {isStashNominating && validators && validators?.indexOf(stashId) == -1 &&
                     <Menu.Item
                       disabled={!isOwnController}
                       onClick={toggleCutGuarantee}
