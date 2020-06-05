@@ -258,7 +258,7 @@
   "Nominate selected": "Номинировать выбранные",
   "Nominate validators": "Номинировать валидаторы",
   "Nominations ({{count}})": "Номинаторов ({{count}})",
-  "Nominators can be selected automatically based on the current on-chain conditions or supplied manually as selected from the list of all currently available validators. In both cases, your favorites appear for the selection.": "Валидаторов можно выбрать автоматически исходя из текущего состояния сети, либо вручную выбирая из списка текущих валидаторов. В любом случае учитываются ваши избранные валидаторы",
+  "Guarantors can be selected automatically based on the current on-chain conditions or supplied manually as selected from the list of all currently available validators. In both cases, your favorites appear for the selection.": "Валидаторов можно выбрать автоматически исходя из текущего состояния сети, либо вручную выбирая из списка текущих валидаторов. В любом случае учитываются ваши избранные валидаторы",
   "Nonce": "Nonce",
   "None": "Нет",
   "Nothing queued for execution": "Очередь пуста",

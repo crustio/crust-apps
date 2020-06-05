@@ -53,7 +53,7 @@ function initialPick (targets: SortedTargets): Selected {
   };
 }
 
-function CutNominate ({ className = '', controllerId, next, nominating, onChange, stashId, targets, validators, withSenders }: Props): React.ReactElement<Props> {
+function CutGuarantee ({ className = '', controllerId, next, nominating, onChange, stashId, targets, validators, withSenders }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [favorites] = useFavorites(STORE_FAVS_BASE);
@@ -175,8 +175,8 @@ function CutNominate ({ className = '', controllerId, next, nominating, onChange
         </Modal.Column>
         
         <Modal.Column>
-          <p>{t<string>('Nominators can be selected automatically based on the current on-chain conditions or supplied manually as selected from the list of all currently available validators. In both cases, your favorites appear for the selection.')}</p>
-          <p>{t<string>('Once transmitted the new selection will only take effect in 2 eras since the selection criteria for the next era was done at the end of the previous era. Until then, the nominations will show as inactive.')}</p>
+          <p>{t<string>('Guarantors can be selected automatically based on the current on-chain conditions or supplied manually as selected from the list of all currently available validators. In both cases, your favorites appear for the selection.')}</p>
+          <p>{t<string>('Once transmitted the new selection will only take effect in 2 eras since the selection criteria for the next era was done at the end of the previous era. Until then, the cutguarantee will show as inactive.')}</p>
         </Modal.Column>
       </Modal.Columns>
       <Modal.Column>
@@ -193,7 +193,7 @@ function CutNominate ({ className = '', controllerId, next, nominating, onChange
   );
 }
 
-export default React.memo(styled(CutNominate)`
+export default React.memo(styled(CutGuarantee)`
   article.warning {
     margin-top: 0;
   }
