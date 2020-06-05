@@ -52,13 +52,13 @@ function Nominate ({ className = '', ownNominators, targets }: Props): React.Rea
       <Button
         icon='hand paper outline'
         isDisabled={!filter.length || !targets.length}
-        label={t<string>('Nominate selected')}
+        label={t<string>('Guarantee selected')}
         onClick={toggleOpen}
       />
       {isOpen && (
         <Modal
           className={className}
-          header={t<string>('Nominate validators')}
+          header={t<string>('Guarantee validators')}
           size='large'
         >
           <Modal.Content>

@@ -27,7 +27,7 @@ function Nominate ({ controllerId, next, nominating, onClose, stashId, targets, 
 
   return (
     <Modal
-      header={t<string>('Nominate Validators')}
+      header={t<string>('Guarantee Validators')}
       size='large'
     >
       <Modal.Content>

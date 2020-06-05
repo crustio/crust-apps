@@ -27,7 +27,7 @@ function CutGuarantee ({ controllerId, next, nominating, onClose, stashId, targe
 
   return (
     <Modal
-      header={t<string>('Nominate Validators')}
+      header={t<string>('CutGuarantee Validators')}
       size='large'
     >
       <Modal.Content>
