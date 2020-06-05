@@ -210,7 +210,7 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
         {lastBlock}
       </td>
       <td>
-        {true && (
+        {hasQueries && (
           <Icon
             name='line graph'
             onClick={_onQueryStats}

@@ -16,9 +16,7 @@ import { FormatBalance } from '@polkadot/react-query';
 import ElectionBanner from '../ElectionBanner';
 import { useTranslation } from '../translate';
 import Account from './Account';
-import NewNominator from './NewNominator';
 import NewStash from './NewStash';
-import NewValidator from './NewValidator';
 
 interface Props {
   className?: string;
