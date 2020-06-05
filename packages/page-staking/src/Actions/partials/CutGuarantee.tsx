@@ -176,7 +176,7 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
         
         <Modal.Column>
           <p>{t<string>('Guarantors can be selected automatically based on the current on-chain conditions or supplied manually as selected from the list of all currently available validators. In both cases, your favorites appear for the selection.')}</p>
-          <p>{t<string>('Once transmitted the new selection will only take effect in 2 eras since the selection criteria for the next era was done at the end of the previous era. Until then, the nominations will show as inactive.')}</p>
+          <p>{t<string>('Once transmitted the new selection will only take effect in 2 eras since the selection criteria for the next era was done at the end of the previous era. Until then, the cutguarantee will show as inactive.')}</p>
         </Modal.Column>
       </Modal.Columns>
       <Modal.Column>
