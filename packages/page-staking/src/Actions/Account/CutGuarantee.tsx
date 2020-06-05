@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 import { Modal, TxButton } from '@polkadot/react-components';
 
 import { useTranslation } from '../../translate';
-import NominatePartial from '../partials/CutNominate';
+import NominatePartial from '../partials/CutGuarantee';
 
 interface Props {
   controllerId: string;
@@ -21,7 +21,7 @@ interface Props {
   validators?: string[];
 }
 
-function CutNominate ({ controllerId, next, nominating, onClose, stashId, targets, validators }: Props): React.ReactElement<Props> | null {
+function CutGuarantee ({ controllerId, next, nominating, onClose, stashId, targets, validators }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const [{ cutNominateTx }, setTx] = useState<CutNominateInfo>({});
 
@@ -57,4 +57,4 @@ function CutNominate ({ controllerId, next, nominating, onClose, stashId, target
   );
 }
 
-export default React.memo(CutNominate);
+export default React.memo(CutGuarantee);
