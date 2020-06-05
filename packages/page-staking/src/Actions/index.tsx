@@ -56,6 +56,8 @@ function Actions ({ className = '', isInElection, next, ownStashes, targets, val
     [t('controller'), 'address'],
     [t('rewards'), 'number ui--media-1200'],
     [t('bonded'), 'number'],
+    [t('effected'), 'number'],
+    [t('role'), 'number ui--media-1200'],
     [undefined, undefined, 2]
   ], [t]);
 
