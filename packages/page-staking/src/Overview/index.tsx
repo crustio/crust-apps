@@ -15,9 +15,10 @@ interface Props extends BareProps {
   next?: string[];
   setNominators?: (nominators: string[]) => void;
   stakingOverview?: DeriveStakingOverview;
+  nominators?: string[]
 }
 
-function Overview ({ className = '', hasQueries, isIntentions, next, setNominators, stakingOverview }: Props): React.ReactElement<Props> {
+function Overview ({ className = '', hasQueries, isIntentions, next, setNominators, stakingOverview, nominators }: Props): React.ReactElement<Props> {
   return (
     <div className={`staking--Overview ${className}`}>
       <CurrentList
@@ -26,6 +27,7 @@ function Overview ({ className = '', hasQueries, isIntentions, next, setNominato
         next={next}
         setNominators={setNominators}
         stakingOverview={stakingOverview}
+        nominators = {nominators}
       />
     </div>
   );

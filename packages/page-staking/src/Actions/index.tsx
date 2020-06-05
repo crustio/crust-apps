@@ -16,9 +16,7 @@ import { FormatBalance } from '@polkadot/react-query';
 import ElectionBanner from '../ElectionBanner';
 import { useTranslation } from '../translate';
 import Account from './Account';
-import NewNominator from './NewNominator';
 import NewStash from './NewStash';
-import NewValidator from './NewValidator';
 
 interface Props {
   className?: string;
@@ -43,8 +41,8 @@ function Actions ({ className = '', isInElection, next, ownStashes, targets, val
   useEffect((): void => {
     ownStashes && setState({
       bondedTotal: ownStashes.reduce((total: BN, { stakingLedger }) =>
-        stakingLedger
-          ? total.add(stakingLedger.total.unwrap())
+      JSON.parse(JSON.stringify(stakingLedger)) != null
+          ? total.add(new BN(Number(JSON.parse(JSON.stringify(stakingLedger)).total).toString()))
           : total,
       new BN(0)),
       foundStashes: ownStashes.sort((a, b) =>
@@ -74,13 +72,13 @@ function Actions ({ className = '', isInElection, next, ownStashes, targets, val
   return (
     <div className={className}>
       <Button.Group>
-        <NewNominator
+        {/* <NewNominator
           isInElection={isInElection}
           next={next}
           targets={targets}
           validators={validators}
         />
-        <NewValidator isInElection={isInElection} />
+        <NewValidator isInElection={isInElection} /> */}
         <NewStash />
       </Button.Group>
       <ElectionBanner isInElection={isInElection} />

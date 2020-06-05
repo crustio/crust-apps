@@ -2,14 +2,14 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { NominateInfo } from '../partials/types';
+import { CutNominateInfo } from '../partials/types';
 import { SortedTargets } from '../../types';
 
 import React, { useState } from 'react';
 import { Modal, TxButton } from '@polkadot/react-components';
 
 import { useTranslation } from '../../translate';
-import NominatePartial from '../partials/Nominate';
+import NominatePartial from '../partials/CutGuarantee';
 
 interface Props {
   controllerId: string;
@@ -21,9 +21,9 @@ interface Props {
   validators?: string[];
 }
 
-function Nominate ({ controllerId, next, nominating, onClose, stashId, targets, validators }: Props): React.ReactElement<Props> | null {
+function CutGuarantee ({ controllerId, next, nominating, onClose, stashId, targets, validators }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
-  const [{ nominateTx }, setTx] = useState<NominateInfo>({});
+  const [{ cutNominateTx }, setTx] = useState<CutNominateInfo>({});
 
   return (
     <Modal
@@ -45,11 +45,11 @@ function Nominate ({ controllerId, next, nominating, onClose, stashId, targets, 
       <Modal.Actions onCancel={onClose}>
         <TxButton
           accountId={controllerId}
-          extrinsic={nominateTx}
+          extrinsic={cutNominateTx}
           icon='hand paper outline'
-          isDisabled={!nominateTx}
+          isDisabled={!cutNominateTx}
           isPrimary
-          label={t<string>('Guarantee')}
+          label={t<string>('CutGuarantee')}
           onStart={onClose}
         />
       </Modal.Actions>
@@ -57,4 +57,4 @@ function Nominate ({ controllerId, next, nominating, onClose, stashId, targets, 
   );
 }
 
-export default React.memo(Nominate);
+export default React.memo(CutGuarantee);

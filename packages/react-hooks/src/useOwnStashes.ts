@@ -18,14 +18,14 @@ function getStashes (allAccounts: string[], ownBonded: AccountId[], ownLedger: S
   const result: [string, IsInKeyring][] = [];
 
   ownBonded.forEach((value, index): void => {
-    value && result.push([allAccounts[index], true]);
+    allAccounts[index] && value && result.push([allAccounts[index], true]);
   });
 
   ownLedger.forEach((ledger): void => {
     if (ledger) {
       const stashId = ledger.stash?.toString();
 
-      !result.some(([accountId]) => accountId === stashId) && result.push([stashId, false]);
+      stashId && !result.some(([accountId]) => accountId === stashId) && result.push([stashId, false]);
     }
   });
 
