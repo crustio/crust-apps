@@ -137,6 +137,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
             isIntentions
             next={next}
             stakingOverview={stakingOverview}
+            nominators={nominators}
           />
         </Route>
       </Switch>

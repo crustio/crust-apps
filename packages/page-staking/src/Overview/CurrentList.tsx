@@ -68,37 +68,35 @@ function getFiltered (stakingOverview: DeriveStakingOverview, favorites: string[
   };
 }
 
-// function extractNominators (nominations: [StorageKey, Option<Nominations>][]): Record<string, [string, number][]> {
-//   return nominations.reduce((mapped: Record<string, [string, number][]>, [key, optNoms]) => {
-//     if (optNoms.isSome) {
-//       const nominatorId = key.args[0].toString();
+function extractNominators (nominations: [StorageKey, Option<Nominations>][]): Record<string, [string, number][]> {
+  return nominations.reduce((mapped: Record<string, [string, number][]>, [key, optNoms]) => {
+    if (optNoms.isSome) {
+      const nominatorId = key.args[0].toString();
 
-//       optNoms.unwrap().targets.forEach((_validatorId, index): void => {
-//         const validatorId = _validatorId.toString();
-//         const info: [string, number] = [nominatorId, index + 1];
+      optNoms.unwrap().targets.forEach((_validatorId, index): void => {
+        const validatorId = _validatorId.toString();
+        const info: [string, number] = [nominatorId, index + 1];
 
-//         if (!mapped[validatorId]) {
-//           mapped[validatorId] = [info];
-//         } else {
-//           mapped[validatorId].push(info);
-//         }
-//       });
-//     }
+        if (!mapped[validatorId]) {
+          mapped[validatorId] = [info];
+        } else {
+          mapped[validatorId].push(info);
+        }
+      });
+    }
 
-//     return mapped;
-//   }, {});
-// }
+    return mapped;
+  }, {});
+}
 
 function CurrentList ({ hasQueries, isIntentions, next, setNominators, stakingOverview, nominators }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api } = useApi();
   const { byAuthor, eraPoints, lastBlockAuthors } = useContext(isIntentions ? EmptyAuthorsContext : BlockAuthorsContext);
   const recentlyOnline = useCall<DeriveHeartbeats>(!isIntentions && api.derive.imOnline?.receivedHeartbeats, []);
-  // const nominators = useCall<[StorageKey, Option<Nominations>][]>(isIntentions && api.query.staking.nominators.entries as any, []);
-  // nominators = useCall<[StorageKey, Option<Nominations>][]>(isIntentions && api.query.staking.nominators.entries as any, []);
+  const nominatorsInfo = useCall<[StorageKey, Option<Nominations>][]>(isIntentions && nominators && api.query.staking.guarantors.entries as any, [nominators]);
   const [favorites, toggleFavorite] = useFavorites(STORE_FAVS_BASE);
   const [{ elected, validators, waiting }, setFiltered] = useState<Filtered>({});
-
   const [nameFilter, setNameFilter] = useState<string>('');
   const [nominatedBy, setNominatedBy] = useState<Record<string, [string, number][]> | null>();
 
@@ -109,11 +107,10 @@ function CurrentList ({ hasQueries, isIntentions, next, setNominators, stakingOv
   }, [favorites, next, stakingOverview]);
 
   useEffect((): void => {
-    nominators && setNominatedBy(
-      // extractNominators(nominators)
-      {}
+    nominatorsInfo && setNominatedBy(
+      extractNominators(nominatorsInfo)
     );
-  }, [nominators]);
+  }, [nominatorsInfo]);
 
   const headerActive = useMemo(() => [
     [t('intentions'), 'start', 3],
