@@ -43,8 +43,8 @@ function Actions ({ className = '', isInElection, next, ownStashes, targets, val
   useEffect((): void => {
     ownStashes && setState({
       bondedTotal: ownStashes.reduce((total: BN, { stakingLedger }) =>
-        stakingLedger
-          ? total.add(stakingLedger.total.unwrap())
+      JSON.parse(JSON.stringify(stakingLedger)) != null
+          ? total.add(new BN(Number(JSON.parse(JSON.stringify(stakingLedger)).total).toString()))
           : total,
       new BN(0)),
       foundStashes: ownStashes.sort((a, b) =>
@@ -52,8 +52,6 @@ function Actions ({ className = '', isInElection, next, ownStashes, targets, val
       )
     });
   }, [ownStashes]);
-
-  console.log('foundStashes:::::', foundStashes);
 
   const header = useMemo(() => [
     [t('stashes'), 'start'],
@@ -76,13 +74,13 @@ function Actions ({ className = '', isInElection, next, ownStashes, targets, val
   return (
     <div className={className}>
       <Button.Group>
-        <NewNominator
+        {/* <NewNominator
           isInElection={isInElection}
           next={next}
           targets={targets}
           validators={validators}
         />
-        <NewValidator isInElection={isInElection} />
+        <NewValidator isInElection={isInElection} /> */}
         <NewStash />
       </Button.Group>
       <ElectionBanner isInElection={isInElection} />

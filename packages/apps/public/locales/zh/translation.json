@@ -109,6 +109,8 @@
   "No upgradable extensions found": "没有需要升级的浏览器插件",
   "Node info": "节点信息",
   "Nominate": "提名",
+  "Guarantee": "担保",
+  "CutGuarantee": "减投",
   "Override the default identity icon display with a specific theme": "用一个指定主题重来载默认的身份图标显示",
   "Override the default ss58 prefix for address generation": "生成地址时重载 ss58 前缀",
   "Parachains": "平行链",

@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { NominateInfo } from './types';
+import { CutNominateInfo } from './types';
 import { SortedTargets } from '../../types';
 
 import React, { useCallback, useEffect, useState } from 'react';
@@ -18,7 +18,7 @@ interface Props {
   controllerId: string;
   next?: string[];
   nominating?: string[];
-  onChange: (info: NominateInfo) => void;
+  onChange: (info: CutNominateInfo) => void;
   stashId: string;
   targets: SortedTargets;
   validators: string[];
@@ -53,7 +53,7 @@ function initialPick (targets: SortedTargets): Selected {
   };
 }
 
-function Nominate ({ className = '', controllerId, next, nominating, onChange, stashId, targets, validators, withSenders }: Props): React.ReactElement<Props> {
+function CutNominate ({ className = '', controllerId, next, nominating, onChange, stashId, targets, validators, withSenders }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [favorites] = useFavorites(STORE_FAVS_BASE);
@@ -101,8 +101,8 @@ function Nominate ({ className = '', controllerId, next, nominating, onChange, s
 
   useEffect((): void => {
     onChange({
-      nominateTx: selected && selected.length && amount
-        ? api.tx.staking.guarantee([selected[0], amount])
+      cutNominateTx: selected && selected.length && amount
+        ? api.tx.staking.cutGuarantee([selected[0], amount])
         : null
     });
   }, [api, onChange, selected, amount]);
@@ -193,7 +193,7 @@ function Nominate ({ className = '', controllerId, next, nominating, onChange, s
   );
 }
 
-export default React.memo(styled(Nominate)`
+export default React.memo(styled(CutNominate)`
   article.warning {
     margin-top: 0;
   }

@@ -24,18 +24,13 @@ function toIdString (id?: AccountId | null): string | null {
     : null;
 }
 
-function getStakerState (stashId: string, allAccounts: string[], allStashes: string[] | undefined, [isOwnStash, bondedInfo, validateInfo]: [boolean, StakingLedger, ValidatorInfo]): StakerState {
-  console.log('validateInfo:::::::', JSON.stringify(validateInfo))
-  console.log('bondedInfo:::::::', JSON.stringify(bondedInfo))
+function getStakerState (stashId: string, allAccounts: string[], allStashes: string[] | undefined, [isOwnStash, ledgerInfo, bondedInfo]: [boolean, StakingLedger, ValidatorInfo]): StakerState {  
+
   const isStashNominating = isOwnStash;
-  const isStashValidating = !(Array.isArray(validateInfo) ? validateInfo[1].isEmpty : validateInfo.isEmpty) || !!allStashes?.includes(stashId);
-  // const nextConcat = u8aConcat(...nextSessionIds.map((id): Uint8Array => id.toU8a()));
-  // const currConcat = u8aConcat(...sessionIds.map((id): Uint8Array => id.toU8a()));
-  console.log('controllerId:::::::::::', JSON.stringify(bondedInfo))
-  const _stashId =  toIdString(JSON.parse(JSON.stringify(bondedInfo))?.stash);
+  const isStashValidating = !(Array.isArray(bondedInfo) ? bondedInfo[1].isEmpty : bondedInfo.isEmpty) || !!allStashes?.includes(stashId);
 
   // const controllerId = toIdString(_controllerId);
-  const controllerId = _stashId?stashId:null;
+  const controllerId = bondedInfo?toIdString(JSON.parse(JSON.stringify(bondedInfo))):null;
 
   return {
     controllerId,
@@ -56,8 +51,8 @@ function getStakerState (stashId: string, allAccounts: string[], allStashes: str
     //     ? nextSessionIds
     //     : sessionIds
     // ).map(toIdString) as string[],
-    // stakingLedger: bondedInfo?bondedInfo:undefined,
-    stashId: _stashId?_stashId:stashId,
+    stakingLedger: ledgerInfo,
+    stashId: stashId,
     // validatorPrefs
   };
 }
@@ -77,10 +72,9 @@ export default function useOwnStashInfos (): StakerState[] | undefined {
     if (ownStashes) {
       if (ownStashes.length) {
         const stashIds = ownStashes.map(([stashId]) => stashId);
-        console.log('stashIds::::::', stashIds)
         const fns: any[] = [
           [api.query.staking.ledger.multi as any, stashIds],
-          [api.query.staking.guarantors.multi as any, stashIds]
+          [api.query.staking.bonded.multi as any, stashIds]
         ];
 
         api.combineLatest<[StakingLedger[], ValidatorInfo[]]>(fns, ([accounts, validators]): void => {
@@ -104,11 +98,9 @@ export default function useOwnStashInfos (): StakerState[] | undefined {
   }, [api, mountedRef, ownStashes]);
 
   useEffect((): void => {
-    console.log('queried:::::::', JSON.stringify(queried))
-
     allAccounts && allStashes && ownStashes && queried && ownStashes.length === Object.keys(queried).length && setState(
       ownStashes
-        .filter(([stashId]) => queried[stashId])
+        .filter(([stashId]) => queried[stashId] && JSON.parse(JSON.stringify(queried))[stashId] )
         .map(([stashId]) => getStakerState(stashId, allAccounts, allStashes, queried[stashId]))
     );
   }, [allAccounts, allStashes, ownStashes, queried]);

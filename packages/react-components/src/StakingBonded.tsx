@@ -6,6 +6,7 @@ import { DeriveStakingAccount } from '@polkadot/api-derive/types';
 
 import React from 'react';
 import { FormatBalance } from '@polkadot/react-query';
+import BN from 'bn.js';
 
 interface Props {
   className?: string;
@@ -13,7 +14,8 @@ interface Props {
 }
 
 function StakingBonded ({ className = '', stakingInfo }: Props): React.ReactElement<Props> | null {
-  const balance = stakingInfo?.stakingLedger?.active.unwrap();
+  // const balance = stakingInfo?.stakingLedger?.active.unwrap();
+  const balance = stakingInfo && new BN(Number(JSON.parse(JSON.stringify(stakingInfo)).active).toString());
 
   if (!balance?.gtn(0)) {
     return null;

@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Bonded, InputAddress, InputBalance, Modal, Static, TxButton } from '@polkadot/react-components';
 import { BlockToTime } from '@polkadot/react-query';
+import { useApi, useCall } from '@polkadot/react-hooks';
 
 import { useTranslation } from '../../translate';
 import useUnbondDuration from '../useUnbondDuration';
@@ -22,9 +23,12 @@ interface Props {
 }
 
 function Unbond ({ className = '', controllerId, onClose, stakingLedger, stashId }: Props): React.ReactElement<Props> {
+
+  const { api } = useApi();
   const { t } = useTranslation();
+  const stakingLedgerInfo = useCall<StakingLedger | null>(controllerId && api.query.staking.ledger, [controllerId]);
   const bondedBlocks = useUnbondDuration();
-  const [maxBalance] = useState<BN | null>(stakingLedger?.active.unwrap() || null);
+  const [maxBalance] = useState<BN | null>(stakingLedgerInfo && new BN(Number(JSON.parse(JSON.stringify(stakingLedgerInfo)).active).toString()) || null);
   const [maxUnbond, setMaxUnbond] = useState<BN | null>(null);
 
   return (

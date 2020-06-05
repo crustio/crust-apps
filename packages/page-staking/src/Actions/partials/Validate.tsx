@@ -32,12 +32,12 @@ function Validate ({ className = '', controllerId, onChange, stashId, withSender
       const commission = (value || ZERO).mul(COMM_MUL);
 
       onChange({
-        validateTx: api.tx.staking.validate({
-          commission: commission.isZero()
+        validateTx: api.tx.staking.validate(
+           commission.isZero()
             // small non-zero set to avoid isEmpty
-            ? 1
-            : commission
-        })
+            ? '1'
+            : commission.toString()
+        )
       });
     },
     [api, onChange]
@@ -69,13 +69,13 @@ function Validate ({ className = '', controllerId, onChange, stashId, withSender
           <InputNumber
             help={t<string>('The percentage reward (0-100) that should be applied for the validator')}
             isZeroable
-            label={t<string>('reward commission percentage')}
+            label={t<string>('reward guaranteefee percentage')}
             maxValue={MAX_COMM}
             onChange={_setCommission}
           />
         </Modal.Column>
         <Modal.Column>
-          <p>{t<string>('The commission is deducted from all rewards before the remainder is split with nominators.')}</p>
+          <p>{t<string>('The guaranteefee is deducted from all rewards before the remainder is split with guarantors.')}</p>
         </Modal.Column>
       </Modal.Columns>
     </div>

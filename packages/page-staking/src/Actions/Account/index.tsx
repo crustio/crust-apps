@@ -17,11 +17,14 @@ import BondExtra from './BondExtra';
 import InjectKeys from './InjectKeys';
 import ListNominees from './ListNominees';
 import Nominate from './Nominate';
+import CutNominate from './CutNominate';
 import SetControllerAccount from './SetControllerAccount';
 import SetRewardDestination from './SetRewardDestination';
 import SetSessionKey from './SetSessionKey';
 import Unbond from './Unbond';
 import Validate from './Validate';
+import { RewardDestination } from '@polkadot/types/interfaces/staking';
+
 
 interface Props {
   activeEra?: EraIndex;
@@ -38,10 +41,14 @@ function Account ({ className = '', info: { controllerId, destination, destinati
   const { t } = useTranslation();
   const { api } = useApi();
   const balancesAll = useCall<DeriveBalancesAll>(api.derive.balances.all, [stashId]);
-  const stakingAccount = useCall<DeriveStakingAccount>(api.derive.staking.account, [stashId]);
+  // const stakingAccount = useCall<DeriveStakingAccount>(api.derive.staking.account, [stashId]);
+  const stakingAccount = useCall<DeriveStakingAccount>(api.query.staking.ledger, [controllerId]);
+  const rewarDestination = useCall<RewardDestination>(api.query.staking.payee, [stashId]);
+  destination = rewarDestination && rewarDestination.toString();
   const [isBondExtraOpen, toggleBondExtra] = useToggle();
   const [isInjectOpen, toggleInject] = useToggle();
   const [isNominateOpen, toggleNominate] = useToggle();
+  const [isCutNominateOpen, toggleCutNominate] = useToggle();
   const [isRewardDestinationOpen, toggleRewardDestination] = useToggle();
   const [isSetControllerOpen, toggleSetController] = useToggle();
   const [isSetSessionOpen, toggleSetSession] = useToggle();
@@ -68,6 +75,17 @@ function Account ({ className = '', info: { controllerId, destination, destinati
             next={next}
             nominating={nominating}
             onClose={toggleNominate}
+            stashId={stashId}
+            targets={targets}
+            validators={validators}
+          />
+        )}
+        {isCutNominateOpen && controllerId && (
+          <CutNominate
+            controllerId={controllerId}
+            next={next}
+            nominating={nominating}
+            onClose={toggleCutNominate}
             stashId={stashId}
             targets={targets}
             validators={validators}
@@ -242,7 +260,7 @@ function Account ({ className = '', info: { controllerId, destination, destinati
                     </Menu.Item>
                   }
                   <Menu.Divider />
-                  {!isStashNominating &&
+                  {isStashNominating &&
                     <Menu.Item
                       disabled={!isOwnController}
                       onClick={toggleSetSession}
@@ -255,7 +273,15 @@ function Account ({ className = '', info: { controllerId, destination, destinati
                       disabled={!isOwnController}
                       onClick={toggleNominate}
                     >
-                      {t<string>('Set nominees')}
+                      {t<string>('Set guarantee')}
+                    </Menu.Item>
+                  }
+                  {isStashNominating &&
+                    <Menu.Item
+                      disabled={!isOwnController}
+                      onClick={toggleCutNominate}
+                    >
+                      {t<string>('Cut guarantee')}
                     </Menu.Item>
                   }
                   {!isStashNominating &&
