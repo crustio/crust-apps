@@ -69,11 +69,11 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
         text: 'Payouts'
       }
       : null,
-    {
-      alias: 'returns',
-      name: 'targets',
-      text: t<string>('Targets')
-    },
+    // {
+    //   alias: 'returns',
+    //   name: 'targets',
+    //   text: t<string>('Targets')
+    // },
     {
       name: 'waiting',
       text: t<string>('Waiting')

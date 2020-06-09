@@ -35,8 +35,8 @@ function Validate ({ className = '', controllerId, onChange, stashId, withSender
         validateTx: api.tx.staking.validate(
            commission.isZero()
             // small non-zero set to avoid isEmpty
-            ? '1'
-            : commission.toString()
+            ? '0'
+            : (commission.toNumber() > 1000000000) ? '1000000000' : commission.toNumber().toString()
         )
       });
     },
