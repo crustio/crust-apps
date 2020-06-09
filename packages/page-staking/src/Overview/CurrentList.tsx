@@ -114,9 +114,12 @@ function CurrentList ({ hasQueries, isIntentions, next, setNominators, stakingOv
 
   const headerActive = useMemo(() => [
     [t('intentions'), 'start', 3],
-    [t('guarantors'), 'start', 2],
-    [t('guarantee fee'), 'number', 1],
-    [undefined, undefined, 3]
+    [t('guarantors'), 'start', 1],
+    [t('stake limit')],
+    [t('effected stake')],
+    [t('own stake')],
+    [t('guarantee fee'), 'number', 1]
+    
   ], [t]);
 
   const headerWaiting = useMemo(() => [
