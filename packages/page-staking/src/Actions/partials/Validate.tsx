@@ -36,7 +36,7 @@ function Validate ({ className = '', controllerId, onChange, stashId, withSender
            commission.isZero()
             // small non-zero set to avoid isEmpty
             ? '0'
-            : (commission.toNumber().toString() > '1000000000') ? '1000000000' : commission.toNumber().toString()
+            : (commission.toNumber() > 1000000000) ? '1000000000' : commission.toNumber().toString()
         )
       });
     },

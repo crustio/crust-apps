@@ -46,8 +46,10 @@ function Account ({ className = '', info: { controllerId, destination, destinati
   const stakingAccount = useCall<DeriveStakingAccount>(api.query.staking.ledger, [controllerId]);
   const rewarDestination = useCall<RewardDestination>(api.query.staking.payee, [stashId]);
   destination = rewarDestination && rewarDestination.toString();
-  const guarantors = useCall<Option<Nominations>>(api.query.staking.guarantors, [stashId])
-  const role = validators && (validators?.indexOf(stashId) == -1)?(guarantors && JSON.parse(JSON.stringify(guarantors)) == null?'':'Guarantor') :'Validator';
+  const guarantors = useCall<Option<Nominations>>(api.query.staking.guarantors, [stashId]);
+  const isValidator = validators && (validators?.indexOf(stashId) != -1);
+  const isGuarantor = guarantors && JSON.parse(JSON.stringify(guarantors)) != null;
+  const role = isValidator?'Validator':(isGuarantor?'Guarantor':'');
   const [isBondExtraOpen, toggleBondExtra] = useToggle();
   const [isInjectOpen, toggleInject] = useToggle();
   const [isNominateOpen, toggleNominate] = useToggle();
