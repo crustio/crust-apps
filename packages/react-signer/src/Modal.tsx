@@ -9,19 +9,20 @@ import { I18nProps, BareProps } from '@polkadot/react-components/types';
 import { KeyringPair } from '@polkadot/keyring/types';
 import { SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 import { QueueTx, QueueTxMessageSetStatus, QueueTxResult, QueueTxStatus } from '@polkadot/react-components/Status/types';
-import { Timepoint } from '@polkadot/types/interfaces';
+import { Multisig, Timepoint } from '@polkadot/types/interfaces';
 import { DefinitionRpcExt, SignerPayloadJSON } from '@polkadot/types/types';
 
 import BN from 'bn.js';
 import React from 'react';
 import { SubmittableResult } from '@polkadot/api';
 import { web3FromSource } from '@polkadot/extension-dapp';
-import { createType } from '@polkadot/types';
+import { Option, createType } from '@polkadot/types';
 import { Button, InputBalance, Modal, Toggle, Output, ErrorBoundary, InputNumber, InputAddress } from '@polkadot/react-components';
 import { registry } from '@polkadot/react-api';
 import { withApi, withMulti, withObservable } from '@polkadot/react-api/hoc';
 import keyring from '@polkadot/ui-keyring';
 import { assert, isFunction } from '@polkadot/util';
+import { blake2AsU8a } from '@polkadot/util-crypto';
 import { format } from '@polkadot/util/logger';
 
 import ledgerSigner from './LedgerSigner';
@@ -52,6 +53,7 @@ interface State {
   nonce?: BN;
   password: string;
   qrAddress: string;
+  qrIsHashed: boolean;
   qrPayload: Uint8Array;
   qrResolve?: (result: SignerResult) => void;
   qrReject?: (error: Error) => void;
@@ -127,6 +129,7 @@ const initialState: State = {
   nonce: undefined,
   password: '',
   qrAddress: '',
+  qrIsHashed: false,
   qrPayload: new Uint8Array(),
   showTip: false,
   signedTx: '',
@@ -254,7 +257,7 @@ class Signer extends React.PureComponent<Props, State> {
 
   private renderContent (): React.ReactNode {
     const { api, t } = this.props;
-    const { currentItem, isQrScanning, isQrVisible, isSendable, isSubmit, qrAddress, qrPayload, tip } = this.state;
+    const { currentItem, isQrScanning, isQrVisible, isSendable, isSubmit, qrAddress, qrIsHashed, qrPayload, tip } = this.state;
 
     if (!currentItem) {
       return null;
@@ -275,6 +278,7 @@ class Signer extends React.PureComponent<Props, State> {
                 <Qr
                   address={qrAddress}
                   genesisHash={api.genesisHash}
+                  isHashed={qrIsHashed}
                   isScanning={isQrScanning}
                   onSignature={this.addQrSignature}
                   payload={qrPayload}
@@ -615,10 +619,18 @@ class Signer extends React.PureComponent<Props, State> {
 
   private signQrPayload = (payload: SignerPayloadJSON): Promise<SignerResult> => {
     return new Promise((resolve, reject): void => {
+      // limit size of the transaction
+      const qrIsHashed = (payload.method.length > 5000);
+      const wrapper = registry.createType('ExtrinsicPayload', payload, { version: payload.version });
+      const qrPayload = qrIsHashed
+        ? blake2AsU8a(wrapper.toU8a(true))
+        : wrapper.toU8a();
+
       this.setState({
         isQrVisible: true,
         qrAddress: payload.address,
-        qrPayload: registry.createType('ExtrinsicPayload', payload, { version: payload.version }).toU8a(),
+        qrIsHashed,
+        qrPayload,
         qrReject: reject,
         qrResolve: resolve
       });
@@ -704,8 +716,9 @@ class Signer extends React.PureComponent<Props, State> {
     let tx = submittable;
 
     if (basePair.meta.isMultisig) {
+      const multiModule = api.tx.multisig ? 'multisig' : 'utility';
       const others = (basePair.meta.who as string[]).filter((who: string) => who !== signatory);
-      const info = await api.query.utility.multisigs(accountId as string, submittable.method.hash);
+      const info = await api.query[multiModule].multisigs<Option<Multisig>>(accountId as string, submittable.method.hash);
       let timepoint: Timepoint | null = null;
 
       if (info.isSome) {
@@ -714,8 +727,8 @@ class Signer extends React.PureComponent<Props, State> {
 
       pair = keyring.getPair(signatory as string);
       tx = multiCall
-        ? api.tx.utility.asMulti(basePair.meta.threshold as number, others, timepoint, submittable.method)
-        : api.tx.utility.approveAsMulti(basePair.meta.threshold as number, others, timepoint, submittable.method.hash);
+        ? api.tx[multiModule].asMulti(basePair.meta.threshold as number, others, timepoint, submittable.method)
+        : api.tx[multiModule].approveAsMulti(basePair.meta.threshold as number, others, timepoint, submittable.method.hash);
     }
 
     console.log('sendExtrinsic::', JSON.stringify(tx.method.toHuman()));
