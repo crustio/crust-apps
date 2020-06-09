@@ -26,6 +26,12 @@ interface ErrorState {
 function ValidateController ({ accountId, controllerId, defaultController, onError }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api } = useApi();
+  const stashBondedId = useCall<string | null>(api.query.staking.bonded, [accountId], {
+    transform: (value: Option<AccountId>): string | null =>
+      value.isSome
+        ? value.unwrap().toString()
+        : null
+  });
   const bondedId = useCall<string | null>(api.query.staking.bonded, [controllerId], {
     transform: (value: Option<AccountId>): string | null =>
       value.isSome
@@ -46,12 +52,16 @@ function ValidateController ({ accountId, controllerId, defaultController, onErr
     if (defaultController !== controllerId) {
       let newError: string | null = null;
       let isFatal = false;
-
+ 
       // if (bondedId) {
       //   isFatal = true;
       //   newError = t<string>('A controller account should not map to another stash. This selected controller is a stash, controlled by {{bondedId}}', { replace: { bondedId } });
       // } else 
-      if (stashId) {
+      // in crust system, a stash can be a controller, but can not controlled by multiple controller account
+      if (stashBondedId) {
+        isFatal = true;
+        newError = t<string>('A controller account should not map to another stash. This selected stash already controlled by {{stashBondedId}}', { replace: { stashBondedId } });
+      } else if (stashId) {
         isFatal = true;
         newError = t<string>('A controller account should not be set to manages multiple stashes. The selected controller is already controlling {{stashId}}', { replace: { stashId } });
       } else if (controllerId === accountId) {
