@@ -71,7 +71,7 @@ function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
             value={stashId}
           />
           <InputAddress
-            help={t<string>('The controller is the account that will be used to control any nominating or validating actions. Should not match another stash or controller.')}
+            help={t<string>('The controller is the account that will be used to control any guaranting or validating actions. Should not match another stash or controller.')}
             label={t<string>('controller account')}
             onChange={setControllerId}
             type='account'
