@@ -99,7 +99,7 @@ try {
     MerkleRoot: 'Vec<u8>',
     Provision: {
       address: 'Vec<u8>',
-      file_map: 'Vec<(Vec<u8>, Hash)>'
+      file_map: 'Vec<(Vec<u8>, Vec<Hash>)>'
     },
     OrderStatus: {
       _enum: ['Success', 'Failed', 'Pending']
@@ -108,9 +108,11 @@ try {
       file_identifier: 'Vec<u8>',
       file_size: 'u64',
       created_on: 'BlockNumber',
+      completed_on: 'BlockNumber',
       expired_on: 'BlockNumber',
       provider: 'AccountId',
       client: 'AccountId',
+      amount: 'Balance',
       order_status: 'OrderStatus'
     }
   });
