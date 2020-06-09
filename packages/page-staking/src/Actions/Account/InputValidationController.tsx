@@ -60,7 +60,7 @@ function ValidateController ({ accountId, controllerId, defaultController, onErr
       // in crust system, a stash can be a controller, but can not controlled by multiple controller account
       if (stashBondedId) {
         isFatal = true;
-        newError = t<string>('A controller account should not map to another stash. This selected stash already controlled by {{stashBondedId}}', { replace: { stashBondedId } });
+        newError = t<string>('A stash account should not map to another controller. This selected stash already controlled by {{stashBondedId}}', { replace: { stashBondedId } });
       } else if (stashId) {
         isFatal = true;
         newError = t<string>('A controller account should not be set to manages multiple stashes. The selected controller is already controlling {{stashId}}', { replace: { stashId } });
