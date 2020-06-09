@@ -3,7 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DeriveBalancesAll, DeriveStakingAccount } from '@polkadot/api-derive/types';
-import { EraIndex } from '@polkadot/types/interfaces';
+import { EraIndex, Nominations } from '@polkadot/types/interfaces';
+import { Option } from '@polkadot/types';
 import { StakerState } from '@polkadot/react-hooks/types';
 import { SortedTargets } from '../../types';
 
@@ -17,7 +18,7 @@ import BondExtra from './BondExtra';
 import InjectKeys from './InjectKeys';
 import ListNominees from './ListNominees';
 import Nominate from './Nominate';
-import CutNominate from './CutGuarantee';
+import CutGuarantee from './CutGuarantee';
 import SetControllerAccount from './SetControllerAccount';
 import SetRewardDestination from './SetRewardDestination';
 import SetSessionKey from './SetSessionKey';
@@ -45,7 +46,8 @@ function Account ({ className = '', info: { controllerId, destination, destinati
   const stakingAccount = useCall<DeriveStakingAccount>(api.query.staking.ledger, [controllerId]);
   const rewarDestination = useCall<RewardDestination>(api.query.staking.payee, [stashId]);
   destination = rewarDestination && rewarDestination.toString();
-  const role = validators && (validators?.indexOf(stashId) == -1)?'Guarantor':'Validator';
+  const guarantors = useCall<Option<Nominations>>(api.query.staking.guarantors, [stashId])
+  const role = validators && (validators?.indexOf(stashId) == -1)?(guarantors && JSON.parse(JSON.stringify(guarantors)) == null?'':'Guarantor') :'Validator';
   const [isBondExtraOpen, toggleBondExtra] = useToggle();
   const [isInjectOpen, toggleInject] = useToggle();
   const [isNominateOpen, toggleNominate] = useToggle();
@@ -82,7 +84,7 @@ function Account ({ className = '', info: { controllerId, destination, destinati
           />
         )}
         {isCutGuaranteeOpen && controllerId && (
-          <CutNominate
+          <CutGuarantee
             controllerId={controllerId}
             next={next}
             nominating={nominating}

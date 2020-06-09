@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DeriveSessionIndexes, DeriveStakingElected } from '@polkadot/api-derive/types';
+import { DeriveStakingElected } from '@polkadot/api-derive/types';
 import { Balance, ValidatorPrefs, ValidatorPrefsTo196 } from '@polkadot/types/interfaces';
 import { SortedTargets, TargetSortBy, ValidatorInfo } from './types';
 
@@ -133,9 +133,7 @@ export default function useSortedTargets (): SortedTargets {
   const { allAccounts } = useAccounts();
   const [favorites, toggleFavorite] = useFavorites(STORE_FAVS_BASE);
   const electedInfo = useCall<DeriveStakingElected>(api.derive.staking.electedInfo, []);
-  const lastEra = useCall<BN>(api.derive.session.indexes, [], {
-    transform: ({ activeEra }: DeriveSessionIndexes) => activeEra.gtn(0) ? activeEra.subn(1) : new BN(0)
-  });
+  const lastEra = useCall<BN>(api.query.staking.currentEra, []);
   const lastReward = useCall<BN>(lastEra && api.query.staking.erasValidatorReward, [lastEra], {
     transform: (optBalance: Option<Balance>) => optBalance.unwrapOrDefault()
   });
