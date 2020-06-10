@@ -46,7 +46,7 @@ function Actions ({ className = '', isInElection, next, ownStashes, targets, val
           ? total.add(new BN(Number(JSON.parse(JSON.stringify(stakingLedger)).total).toString()))
           : total,
       BN_ZERO),
-      foundStashes: ownStashes.sort((a, b) =>
+      foundStashes: ownStashes.filter((e) => e.isOwnController).sort((a, b) =>
         (a.isStashValidating ? 1 : (a.isStashNominating ? 5 : 99)) - (b.isStashValidating ? 1 : (b.isStashNominating ? 5 : 99))
       )
     });
