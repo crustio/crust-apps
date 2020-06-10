@@ -39,7 +39,6 @@ function Actions ({ className = '', isInElection, next, ownStashes, targets, val
   const activeEra = useCall<EraIndex | undefined>(api.query.staking?.currentEra, []);
   const [{ bondedTotal, foundStashes }, setState] = useState<State>({});
 
-  console.log('ownStashes::::::', ownStashes)
   useEffect((): void => {
     ownStashes && setState({
       bondedTotal: ownStashes.reduce((total: BN, { stakingLedger }) =>
