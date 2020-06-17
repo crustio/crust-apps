@@ -28,7 +28,7 @@ interface CreateOptions {
 
 const MAX_SIGNATORIES = 16;
 
-function createAccount (signatories: string[], threshold: BN | number, { genesisHash, name, tags = [] }: CreateOptions, success: string): ActionStatus {
+function createMultisig (signatories: string[], threshold: BN | number, { genesisHash, name, tags = [] }: CreateOptions, success: string): ActionStatus {
   // we will fill in all the details below
   const status = { action: 'create' } as ActionStatus;
 
@@ -58,7 +58,7 @@ function Multisig ({ className = '', onClose, onStatusChange }: Props): React.Re
   const _createMultisig = useCallback(
     (): void => {
       const options = { genesisHash: isDevelopment ? undefined : api.genesisHash.toString(), name: name.trim() };
-      const status = createAccount(signatories, threshold, options, t<string>('created multisig'));
+      const status = createMultisig(signatories, threshold, options, t<string>('created multisig'));
 
       onStatusChange(status);
       onClose();
@@ -88,22 +88,6 @@ function Multisig ({ className = '', onClose, onStatusChange }: Props): React.Re
       <Modal.Content>
         <Modal.Columns>
           <Modal.Column>
-            <Input
-              autoFocus
-              className='full'
-              help={t<string>('Name given to this multisig. You can edit it at any later point in time.')}
-              isError={!isNameValid}
-              label={t<string>('name')}
-              onChange={_onChangeName}
-              placeholder={t<string>('multisig name')}
-            />
-          </Modal.Column>
-          <Modal.Column>
-            <p>{t<string>('The name is for unique identification of the account in your owner lists.')}</p>
-          </Modal.Column>
-        </Modal.Columns>
-        <Modal.Columns>
-          <Modal.Column>
             <InputAddressMulti
               available={availableSignatories}
               availableLabel={t<string>('available signatories')}
@@ -130,6 +114,22 @@ function Multisig ({ className = '', onClose, onStatusChange }: Props): React.Re
           </Modal.Column>
           <Modal.Column>
             <p>{t<string>('The threshold for approval should be less or equal to the number of signatories for this multisig.')}</p>
+          </Modal.Column>
+        </Modal.Columns>
+        <Modal.Columns>
+          <Modal.Column>
+            <Input
+              autoFocus
+              className='full'
+              help={t<string>('Name given to this multisig. You can edit it at any later point in time.')}
+              isError={!isNameValid}
+              label={t<string>('name')}
+              onChange={_onChangeName}
+              placeholder={t<string>('multisig name')}
+            />
+          </Modal.Column>
+          <Modal.Column>
+            <p>{t<string>('The name is for unique identification of the account in your owner lists.')}</p>
           </Modal.Column>
         </Modal.Columns>
       </Modal.Content>
