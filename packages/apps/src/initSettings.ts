@@ -114,6 +114,15 @@ try {
       client: 'AccountId',
       amount: 'Balance',
       order_status: 'OrderStatus'
+    },
+    Ledger: {
+      total: 'Compact<Balance>',
+      paid: 'Compact<Balance>',
+      unreserved: 'Compact<Balance>'
+    },
+    PledgeLedger: {
+       total: 'Balance',
+       used: 'Balance'
     }
   });
   if (names.length) {
