@@ -50,7 +50,6 @@ function Account ({ className = '', info: { controllerId, destination, destinati
   const effected = stakingAccount && JSON.parse(JSON.stringify(stakingAccount)).valid != 0;
   const isValidator = validators && (validators?.indexOf(stashId) != -1);
   const isGuarantor = guarantors && JSON.parse(JSON.stringify(guarantors)) != null;
-  // const role = isValidator ? 'Validator' : (isGuarantor ? 'Guarantor' : 'Bonded');
   const role = effected ? (isValidator ? 'Validator' : (isGuarantor ? 'Guarantor' : 'Bonded')) : 'Bonded';
   const [isBondExtraOpen, toggleBondExtra] = useToggle();
   const [isInjectOpen, toggleInject] = useToggle();
