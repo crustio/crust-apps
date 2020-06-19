@@ -45,7 +45,7 @@ function Actions ({ className = '', isInElection, next, ownStashes, targets, val
       bondedTotal: ownStashes.reduce((total: BN, { stakingLedger }) => {
         const stakingLedgerObj = JSON.parse(JSON.stringify(stakingLedger));
         return (stakingLedgerObj != null && ownStashIds?.indexOf(stakingLedgerObj.stash) != -1)
-          ? total.add(new BN(Number(JSON.parse(JSON.stringify(stakingLedger)).total).toString()))
+          ? total.add(new BN(Number(stakingLedgerObj.total).toString()))
           : total
       }, BN_ZERO),
       foundStashes: ownStashes.filter((e) => e.isOwnController).sort((a, b) =>
