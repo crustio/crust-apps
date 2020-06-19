@@ -68,6 +68,7 @@ function Account ({ className = '', info: { controllerId, destination, destinati
         {isBondExtraOpen && (
           <BondExtra
             onClose={toggleBondExtra}
+            stakingInfo={stakingAccount}
             stashId={stashId}
           />
         )}
