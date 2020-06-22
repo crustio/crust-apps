@@ -17,7 +17,7 @@ function StakingBonded ({ className = '', stakingInfo }: Props): React.ReactElem
 
   const stakingLedger = stakingInfo && JSON.parse(JSON.stringify(stakingInfo));
   let balance = new BN(0);
-  if (stakingInfo && stakingLedger != undefined ) {
+  if (stakingInfo && stakingLedger) {
     balance = new BN((Number(stakingLedger?.active)).toString());
   }
 
