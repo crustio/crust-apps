@@ -47,7 +47,7 @@ function Account ({ className = '', info: { controllerId, destination, destinati
   const rewardDestination = useCall<RewardDestination>(api.query.staking.payee, [stashId]);
   destination = rewardDestination && rewardDestination.toString();
   const guarantors = useCall<Option<Nominations>>(api.query.staking.guarantors, [stashId]);
-  const effected = stakingAccount && JSON.parse(JSON.stringify(stakingAccount)).valid != 0;
+  const effected = stakingAccount && JSON.parse(JSON.stringify(stakingAccount))?.valid != 0;
   const isValidator = validators && (validators?.indexOf(stashId) != -1);
   const isGuarantor = guarantors && JSON.parse(JSON.stringify(guarantors)) != null;
   const role = effected ? (isValidator ? 'Validator' : (isGuarantor ? 'Guarantor' : 'Bonded')) : 'Bonded';
