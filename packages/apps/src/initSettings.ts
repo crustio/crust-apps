@@ -68,6 +68,7 @@ try {
       pub_key: 'Vec<u8>',
       sig: 'Vec<u8>'
     },
+    TeeCode: 'Vec<u8>',
     WorkReport: {
       pub_key: 'Vec<u8>',
       block_height: 'u64',
