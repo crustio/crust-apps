@@ -61,10 +61,11 @@ try {
   // register these anyway
   registry.register({
     Identity: {
-      pub_key: 'Vec<u8>',
+      ias_sig: 'Vec<u8>',
+      ias_cert: 'Vec<u8>',
       account_id: 'AccountId',
-      validator_pub_key: 'Vec<u8>',
-      validator_account_id: 'AccountId',
+      isv_body: 'Vec<u8>',
+      pub_key: 'Vec<u8>',
       sig: 'Vec<u8>'
     },
     WorkReport: {
