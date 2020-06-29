@@ -14,8 +14,12 @@ interface Props {
 }
 
 function StakingEffected ({ className = '', stakingInfo }: Props): React.ReactElement<Props> | null {
-  // const balance = stakingInfo?.stakingLedger?.active.unwrap();
-  const balance = stakingInfo && new BN(Number(JSON.parse(JSON.stringify(stakingInfo)).valid).toString());
+
+  const stakingLedger = stakingInfo &&JSON.parse(JSON.stringify(stakingInfo));
+  let balance = new BN(0);
+  if (stakingInfo && stakingLedger) {
+    balance = new BN((Number(stakingLedger?.valid)).toString());
+  }
 
   if (!balance?.gtn(0)) {
     return null;
