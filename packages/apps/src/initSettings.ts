@@ -60,6 +60,7 @@ try {
 
   // register these anyway
   registry.register({
+    TeeCode: 'Vec<u8>',
     Identity: {
       ias_sig: 'Vec<u8>',
       ias_cert: 'Vec<u8>',
@@ -68,7 +69,6 @@ try {
       pub_key: 'Vec<u8>',
       sig: 'Vec<u8>'
     },
-    TeeCode: 'Vec<u8>',
     WorkReport: {
       pub_key: 'Vec<u8>',
       block_height: 'u64',
