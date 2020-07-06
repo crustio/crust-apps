@@ -69,7 +69,6 @@ try {
       pub_key: 'Vec<u8>',
       sig: 'Vec<u8>'
     },
-    TeeCode: 'Vec<u8>',
     WorkReport: {
       pub_key: 'Vec<u8>',
       block_height: 'u64',
@@ -102,6 +101,7 @@ try {
     MerkleRoot: 'Vec<u8>',
     Provision: {
       address: 'Vec<u8>',
+      storage_price: 'Balance',
       file_map: 'Vec<(Vec<u8>, Vec<Hash>)>'
     },
     OrderStatus: {
@@ -118,14 +118,15 @@ try {
       amount: 'Balance',
       order_status: 'OrderStatus'
     },
-    Ledger: {
-      total: 'Compact<Balance>',
-      paid: 'Compact<Balance>',
-      unreserved: 'Compact<Balance>'
+    Pledge: {
+      total: 'Balance',
+      used: 'Balance',
     },
-    PledgeLedger: {
-       total: 'Balance',
-       used: 'Balance'
+    // Payment ledger
+    Ledger: {
+        total: 'Balance',
+        paid: 'Balance',
+        unreserved: 'Balance',
     }
   });
   if (names.length) {
