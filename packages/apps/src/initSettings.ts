@@ -62,19 +62,14 @@ try {
   registry.register({
     Identity: {
       pub_key: 'Vec<u8>',
-      account_id: 'AccountId',
-      validator_pub_key: 'Vec<u8>',
-      validator_account_id: 'AccountId',
-      sig: 'Vec<u8>'
+      code: 'Vec<u8>',
     },
     WorkReport: {
-      pub_key: 'Vec<u8>',
-      block_height: 'u64',
-      block_hash: 'Vec<u8>',
+      block_number: 'u64',
       used: 'u64',
       reserved: 'u64',
+      cached_reserved: 'u64',
       files: 'Vec<(Vec<u8>, u64)>',
-      sig: 'Vec<u8>'
     },
     StakingLedger: {
       stash: 'AccountId',
@@ -115,14 +110,32 @@ try {
       amount: 'Balance',
       order_status: 'OrderStatus'
     },
-    Ledger: {
-      total: 'Compact<Balance>',
-      paid: 'Compact<Balance>',
-      unreserved: 'Compact<Balance>'
+    Pledge: {
+      total: 'Balance',
+      used: 'Balance',
     },
-    PledgeLedger: {
-       total: 'Balance',
-       used: 'Balance'
+    PaymentLedger: {
+      total: 'Balance',
+      paid: 'Balance',
+      unreserved: 'Balance',
+    },
+    ProviderPunishment: {
+      success: 'EraIndex',
+      failed: 'EraIndex',
+      value: 'Balance',
+    },
+    EraIndex: 'u32',
+    Cert: 'Vec<u8>',
+    IASSig: 'Vec<u8>',
+    ISVBody: 'Vec<u8>',
+    PubKey: 'Vec<u8>',
+    TeeSignature: 'Vec<u8>',
+    // TODO: remove util upgrade newest polkadot-js/api
+    Releases: {
+      _enum: ['V1_0_0', 'V2_0_0'],
+    },
+    Status: {
+      _enum: ['Free', 'Reserved']
     }
   });
   if (names.length) {
