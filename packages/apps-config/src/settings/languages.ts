@@ -15,17 +15,24 @@ export default function create (t: <T= string> (key: string, text: string, optio
       value: 'en'
     },
     {
-      text: '汉语',
-      value: 'zh'
+      text: 'Español',
+      value: 'es'
+    },
+    {
+      text: '日本語',
+      value: 'ja'
+    },
+    {
+      text: 'Português',
+      value: 'pt'
     },
     {
       text: 'русский',
       value: 'ru'
+    },
+    {
+      text: '汉语',
+      value: 'zh'
     }
-    // For ja, we only have the settings page, remove until comprehensive
-    // , {
-    //   text: '日本語',
-    //   value: 'ja'
-    // }
   ];
 }

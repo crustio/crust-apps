@@ -1,5 +1,42 @@
 # CHANGELOG
 
+## 0.46.0-beta.x
+
+- I18n for es (thanks to https://github.com/wimel)
+- Support for importing mini secrets via QR (Thanks to https://github.com/hanwencheng)
+- Support for multisig calls with new weight parameters
+- Split sign and send updates in the signer modal for better UI tracking
+- Hide zero nonce of accounts/contracts pages
+- Display API extrinsic construction errors in the extrinsics app
+- Do not display signer proxies when there are none matching against accounts
+- Adjust proxy checks for sudo calls to closer align with Polkadot
+- Apply i18n caching, with no reload on translation page
+- Add "Apply" i18n button to reflect editing changes in the UI
+- Sort recovery addresses to align with the Substrate implementation
+
+## 0.45.2 Jun 16, 2020
+
+- I18n for ja (Thanks to https://github.com/SotaWatanabe)
+- I18n for pt (thanks to https://github.com/laurogripa)
+- I18n for ru (Thanks to https://github.com/illlefr4u)
+- Update Encointer types (thanks to https://github.com/brenzi)
+- Improve Electron app security settings (Thanks to https://github.com/EthWorks)
+- Rework signer dialog to cater for proxies (and multisig/proxy combinations)
+- Construct payouts with oldest eras first (expire first)
+- Show outstanding multisig approvals on accounts page
+- Allow for addition of proxied accounts (access to proxy account only)
+- Change claims to handle no statements required (new module now on Kusama)
+- Publish docker image on release
+- update collective calls to handle weights enhancements for latest Substrate
+- Allow for tip endorsements with 0 value
+- add Centrifuge live as a connection option
+- Adjust Polkascan links with current active chains
+- When collective proposal is in close state, hide vote buttons
+- Cleanup technical committee display (header alignment)
+- Adjust IPFS/IPNS network extraction for local gateways
+- `@polkadot/api` 1.19.1
+- `@polkadot/util` 2.14.1
+
 ## 0.44.1 Jun 10, 2020
 
 - Publish electron images on release (Thanks to https://github.com/EthWorks)

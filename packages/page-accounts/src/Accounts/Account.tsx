@@ -5,7 +5,7 @@
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { DeriveBalancesAll, DeriveDemocracyLock } from '@polkadot/api-derive/types';
 import { ActionStatus } from '@polkadot/react-components/Status/types';
-import { H256, Multisig, RecoveryConfig } from '@polkadot/types/interfaces';
+import { RecoveryConfig } from '@polkadot/types/interfaces';
 import { SortedAccount } from './types';
 
 import BN from 'bn.js';
@@ -14,10 +14,10 @@ import styled from 'styled-components';
 import { ApiPromise } from '@polkadot/api';
 import { getLedger } from '@polkadot/react-api';
 import { AddressInfo, AddressMini, AddressSmall, Badge, Button, ChainLock, CryptoType, Forget, Icon, IdentityIcon, LinkExternal, Menu, Popup, StatusContext, Tags } from '@polkadot/react-components';
-import { useAccountInfo, useApi, useCall, useIncrement, useToggle } from '@polkadot/react-hooks';
-import { Option, StorageKey } from '@polkadot/types';
+import { useAccountInfo, useApi, useCall, useToggle } from '@polkadot/react-hooks';
+import { Option } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
-import { formatBalance, formatNumber } from '@polkadot/util';
+import { BN_ZERO, formatBalance, formatNumber } from '@polkadot/util';
 
 import { useTranslation } from '../translate';
 import Backup from './modals/Backup';
@@ -28,6 +28,8 @@ import MultisigApprove from './modals/MultisigApprove';
 import RecoverAccount from './modals/RecoverAccount';
 import RecoverSetup from './modals/RecoverSetup';
 import Transfer from './modals/Transfer';
+import useMultisigApprovals from './useMultisigApprovals';
+import useProxies from './useProxies';
 
 interface Props extends SortedAccount {
   className?: string;
@@ -65,20 +67,15 @@ function Account ({ account: { address, meta }, className = '', filter, isFavori
   const { t } = useTranslation();
   const { queueExtrinsic } = useContext(StatusContext);
   const api = useApi();
-  const [multiInc, refreshMulti] = useIncrement();
   const bestNumber = useCall<BN>(api.api.derive.chain.bestNumber, []);
   const balancesAll = useCall<DeriveBalancesAll>(api.api.derive.balances.all, [address]);
   const democracyLocks = useCall<DeriveDemocracyLock[]>(api.api.derive.democracy?.locks, [address]);
   const recoveryInfo = useCall<RecoveryConfig | null>(api.api.query.recovery?.recoverable, [address], {
     transform: (opt: Option<RecoveryConfig>) => opt.unwrapOr(null)
   });
-  const multiInfos = useCall<[H256, Multisig][]>(multiInc && (api.api.query.multisig || api.api.query.utility)?.multisigs.entries as any, [address], {
-    transform: (infos: [StorageKey, Option<Multisig>][]): [H256, Multisig][] =>
-      infos
-        .filter(([, opt]) => opt.isSome)
-        .map(([key, opt]) => [key.args[1] as H256, opt.unwrap()])
-  });
-  const { flags: { isDevelopment, isExternal, isHardware, isInjected, isMultisig }, genesisHash, name: accName, onSetGenesisHash, tags } = useAccountInfo(address);
+  const multiInfos = useMultisigApprovals(address);
+  const proxyInfo = useProxies(address);
+  const { flags: { isDevelopment, isExternal, isHardware, isInjected, isMultisig, isProxied }, genesisHash, name: accName, onSetGenesisHash, tags } = useAccountInfo(address);
   const [{ democracyUnlockTx }, setUnlockableIds] = useState<DemocracyUnlockable>({ democracyUnlockTx: null, ids: [] });
   const [isVisible, setIsVisible] = useState(true);
   const [isBackupOpen, toggleBackup] = useToggle();
@@ -147,14 +144,6 @@ function Account ({ account: { address, meta }, className = '', filter, isFavori
       }
     },
     [address, t]
-  );
-
-  const _closeMultisig = useCallback(
-    (): void => {
-      toggleMultisig();
-      refreshMulti();
-    },
-    [refreshMulti, toggleMultisig]
   );
 
   const _clearDemocracyLocks = useCallback(
@@ -231,6 +220,24 @@ function Account ({ account: { address, meta }, className = '', filter, isFavori
             type='online'
           />
         )}
+        {multiInfos && multiInfos.length !== 0 && (
+          <Badge
+            hover={t<string>('Multisig approvals pending')}
+            info={multiInfos.length}
+            isInline
+            isTooltip
+            type='brown'
+          />
+        )}
+        {isProxied && !proxyInfo.hasOwned && (
+          <Badge
+            hover={t<string>('Proxied account has no owned proxies')}
+            info='0'
+            isInline
+            isTooltip
+            type='brown'
+          />
+        )}
       </td>
       <td className='address'>
         <AddressSmall value={address} />
@@ -281,7 +288,7 @@ function Account ({ account: { address, meta }, className = '', filter, isFavori
           <MultisigApprove
             address={address}
             key='multisig-approve'
-            onClose={_closeMultisig}
+            onClose={toggleMultisig}
             ongoing={multiInfos}
             threshold={meta.threshold as number}
             who={meta.who as string[]}
@@ -316,7 +323,7 @@ function Account ({ account: { address, meta }, className = '', filter, isFavori
         </div>
       </td>
       <td className='number ui--media-1500'>
-        {balancesAll && formatNumber(balancesAll.accountNonce)}
+        {balancesAll?.accountNonce.gt(BN_ZERO) && formatNumber(balancesAll.accountNonce)}
       </td>
       <td className='number'>
         <AddressInfo

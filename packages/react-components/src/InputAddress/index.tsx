@@ -222,9 +222,9 @@ class InputAddress extends React.PureComponent<Props, State> {
   }
 
   private onChange = (address: string): void => {
-    const { onChange, type } = this.props;
+    const { filter, onChange, type } = this.props;
 
-    setLastValue(type, address);
+    !filter && setLastValue(type, address);
 
     onChange && onChange(transformToAccountId(address));
   }
@@ -251,7 +251,7 @@ class InputAddress extends React.PureComponent<Props, State> {
 
     const lastValue = getLastValue(type);
 
-    this.setState({ lastValue });
+    this.setState(() => ({ lastValue }));
 
     return lastValue;
   }

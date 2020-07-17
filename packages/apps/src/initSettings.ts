@@ -60,6 +60,7 @@ try {
 
   // register these anyway
   registry.register({
+    TeeCode: 'Vec<u8>',
     Identity: {
       pub_key: 'Vec<u8>',
       code: 'Vec<u8>',
@@ -94,6 +95,7 @@ try {
     MerkleRoot: 'Vec<u8>',
     Provision: {
       address: 'Vec<u8>',
+      storage_price: 'Balance',
       file_map: 'Vec<(Vec<u8>, Vec<Hash>)>'
     },
     OrderStatus: {

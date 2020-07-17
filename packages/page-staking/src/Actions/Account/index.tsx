@@ -44,12 +44,13 @@ function Account ({ className = '', info: { controllerId, destination, destinati
   const balancesAll = useCall<DeriveBalancesAll>(api.derive.balances.all, [stashId]);
   // const stakingAccount = useCall<DeriveStakingAccount>(api.derive.staking.account, [stashId]);
   const stakingAccount = useCall<DeriveStakingAccount>(api.query.staking.ledger, [controllerId]);
-  const rewarDestination = useCall<RewardDestination>(api.query.staking.payee, [stashId]);
-  destination = rewarDestination && rewarDestination.toString();
+  const rewardDestination = useCall<RewardDestination>(api.query.staking.payee, [stashId]);
+  destination = rewardDestination && rewardDestination.toString();
   const guarantors = useCall<Option<Nominations>>(api.query.staking.guarantors, [stashId]);
+  const effected = stakingAccount && JSON.parse(JSON.stringify(stakingAccount))?.valid != 0;
   const isValidator = validators && (validators?.indexOf(stashId) != -1);
   const isGuarantor = guarantors && JSON.parse(JSON.stringify(guarantors)) != null;
-  const role = isValidator ? 'Validator' : (isGuarantor ? 'Guarantor' : '');
+  const role = effected ? (isValidator ? 'Validator' : (isGuarantor ? 'Guarantor' : 'Bonded')) : 'Bonded';
   const [isBondExtraOpen, toggleBondExtra] = useToggle();
   const [isInjectOpen, toggleInject] = useToggle();
   const [isNominateOpen, toggleNominate] = useToggle();
@@ -68,6 +69,7 @@ function Account ({ className = '', info: { controllerId, destination, destinati
         {isBondExtraOpen && (
           <BondExtra
             onClose={toggleBondExtra}
+            stakingInfo={stakingAccount}
             stashId={stashId}
           />
         )}

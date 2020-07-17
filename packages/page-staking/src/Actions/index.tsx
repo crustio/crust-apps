@@ -40,12 +40,14 @@ function Actions ({ className = '', isInElection, next, ownStashes, targets, val
   const [{ bondedTotal, foundStashes }, setState] = useState<State>({});
 
   useEffect((): void => {
+    const ownStashIds = ownStashes?.map((e) => { return e.stashId} )
     ownStashes && setState({
-      bondedTotal: ownStashes.reduce((total: BN, { stakingLedger }) =>
-      JSON.parse(JSON.stringify(stakingLedger)) != null
-          ? total.add(new BN(Number(JSON.parse(JSON.stringify(stakingLedger)).total).toString()))
-          : total,
-      BN_ZERO),
+      bondedTotal: ownStashes.reduce((total: BN, { stakingLedger }) => {
+        const stakingLedgerObj = JSON.parse(JSON.stringify(stakingLedger));
+        return (stakingLedgerObj != null && ownStashIds?.indexOf(stakingLedgerObj.stash) != -1)
+          ? total.add(new BN(Number(stakingLedgerObj.total).toString()))
+          : total
+      }, BN_ZERO),
       foundStashes: ownStashes.filter((e) => e.isOwnController).sort((a, b) =>
         (a.isStashValidating ? 1 : (a.isStashNominating ? 5 : 99)) - (b.isStashValidating ? 1 : (b.isStashNominating ? 5 : 99))
       )
