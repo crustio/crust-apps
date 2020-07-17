@@ -62,21 +62,15 @@ try {
   registry.register({
     TeeCode: 'Vec<u8>',
     Identity: {
-      ias_sig: 'Vec<u8>',
-      ias_cert: 'Vec<u8>',
-      account_id: 'AccountId',
-      isv_body: 'Vec<u8>',
       pub_key: 'Vec<u8>',
-      sig: 'Vec<u8>'
+      code: 'Vec<u8>',
     },
     WorkReport: {
-      pub_key: 'Vec<u8>',
-      block_height: 'u64',
-      block_hash: 'Vec<u8>',
+      block_number: 'u64',
       used: 'u64',
       reserved: 'u64',
+      cached_reserved: 'u64',
       files: 'Vec<(Vec<u8>, u64)>',
-      sig: 'Vec<u8>'
     },
     StakingLedger: {
       stash: 'AccountId',
@@ -122,11 +116,28 @@ try {
       total: 'Balance',
       used: 'Balance',
     },
-    // Payment ledger
-    Ledger: {
-        total: 'Balance',
-        paid: 'Balance',
-        unreserved: 'Balance',
+    PaymentLedger: {
+      total: 'Balance',
+      paid: 'Balance',
+      unreserved: 'Balance',
+    },
+    ProviderPunishment: {
+      success: 'EraIndex',
+      failed: 'EraIndex',
+      value: 'Balance',
+    },
+    EraIndex: 'u32',
+    Cert: 'Vec<u8>',
+    IASSig: 'Vec<u8>',
+    ISVBody: 'Vec<u8>',
+    PubKey: 'Vec<u8>',
+    TeeSignature: 'Vec<u8>',
+    // TODO: remove util upgrade newest polkadot-js/api
+    Releases: {
+      _enum: ['V1_0_0', 'V2_0_0'],
+    },
+    Status: {
+      _enum: ['Free', 'Reserved']
     }
   });
   if (names.length) {
