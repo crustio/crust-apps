@@ -116,7 +116,7 @@ function CurrentList ({ hasQueries, isIntentions, next, setNominators, stakingOv
     [t('intentions'), 'start', 3],
     [t('guarantors'), 'start', 1],
     [t('stake limit')],
-    [t('effected stake')],
+    [t('total stake')],
     [t('own stake')],
     [t('guarantee fee'), 'number', 1]
     
@@ -126,7 +126,7 @@ function CurrentList ({ hasQueries, isIntentions, next, setNominators, stakingOv
     [t('validators'), 'start', 3],
     [t('other stake')],
     [t('stake limit')],
-    [t('effected stake')],
+    [t('total stake')],
     [t('own stake')],
     [t('guarantee fee')],
     [t('points')],
