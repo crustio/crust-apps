@@ -125,7 +125,7 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
   const controllerId = useCall<AccountId | null>(api.query.staking.bonded, [address]);
   const _stakeLimit = useCall<BN>(api.query.staking.stakeLimit, [address]);
 
-  const [{ guaranteeFee, nominators, stakeLimit, stakeOther, stakeOwn }, setStakingState] = useState<StakingState>({ nominators: [] });
+  const [{ guaranteeFee, nominators, stakeLimit, stakeOther, stakeTotal }, setStakingState] = useState<StakingState>({ nominators: [] });
   const [isVisible, setIsVisible] = useState(true);
   const [isNominating, setIsNominating] = useState(false);
 
@@ -189,8 +189,8 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
         )}
       </td>
       <td className='number'>
-        {stakeOwn?.gtn(0) && (
-          <FormatBalance value={stakeOwn} />
+        {stakeTotal?.gtn(0) && (
+          <FormatBalance value={stakeTotal} />
         )}
       </td>
       <td className='number'>
