@@ -50,9 +50,10 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
   const [nominators, dispatchNominators] = useReducer(reduceNominators, [] as string[]);
   const hasQueries = useMemo(
     (): boolean =>
-      hasAccounts && !!(api.query.imOnline?.authoredBlocks) && !!(api.query.staking.activeEra),
+      hasAccounts,
     [api, hasAccounts]
   );
+  console.log('hasQueries', hasQueries)
   const items = useMemo(() => [
     {
       isRoot: true,

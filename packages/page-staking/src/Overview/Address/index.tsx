@@ -68,6 +68,10 @@ function expandInfo (exposure: Exposure, validatorsRel: Validations, stakeLimit:
     stakeTotal = exposure.total.unwrap();
     stakeOwn = exposure.own.unwrap();
     stakeOther = stakeTotal.sub(stakeOwn);
+  } else {
+    stakeTotal = new BN('0');
+    stakeOwn = new BN('0');
+    stakeOther = new BN('0');
   }
 
   const guaranteeFee = validatorsRel?.guarantee_fee?.unwrap();
@@ -184,12 +188,12 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
         : <NominatedBy nominators={nominatedBy} />
       }
       <td className='number'>
-        {stakeLimit?.gtn(0) && (
+        {(
           <FormatBalance value={stakeLimit} />
         )}
       </td>
       <td className='number'>
-        {stakeTotal?.gtn(0) && (
+        {(
           <FormatBalance value={stakeTotal} />
         )}
       </td>
