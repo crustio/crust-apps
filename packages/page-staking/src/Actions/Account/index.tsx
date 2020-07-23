@@ -262,6 +262,14 @@ function Account ({ className = '', info: { controllerId, destination, destinati
                   >
                     {t<string>('Change reward destination')}
                   </Menu.Item>
+                  {isStashNominating &&
+                    <Menu.Item
+                      disabled={!isOwnController}
+                      onClick={toggleSetSession}
+                    >
+                      {t<string>('Change session keys')}
+                    </Menu.Item>
+                  }
                   {isStashValidating &&
                     <Menu.Item
                       disabled={!isOwnController}
@@ -271,14 +279,6 @@ function Account ({ className = '', info: { controllerId, destination, destinati
                     </Menu.Item>
                   }
                   <Menu.Divider />
-                  {isStashNominating &&
-                    <Menu.Item
-                      disabled={!isOwnController}
-                      onClick={toggleSetSession}
-                    >
-                      {t<string>('Change session keys')}
-                    </Menu.Item>
-                  }
                   {isStashNominating && validators && validators?.indexOf(stashId) == -1 &&
                     <Menu.Item
                       disabled={!isOwnController}
