@@ -75,7 +75,7 @@ function createTest (t: <T= string> (key: string, text: string, options: { ns: s
   return [
     {
       info: 'crust',
-      text: t<string>('rpc.crust.network', 'Rocky (Crust Alpha Testnet, hosted by Crustio)', { ns: 'apps-config' }),
+      text: t<string>('rpc.crust.network', 'Rocky (Crust AlphaNet, hosted by Crust Network)', { ns: 'apps-config' }),
       value: 'ws://139.196.122.228:6008/'
     }
     // {

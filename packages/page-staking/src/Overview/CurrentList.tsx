@@ -112,7 +112,7 @@ function CurrentList ({ hasQueries, isIntentions, next, setNominators, stakingOv
     );
   }, [nominatorsInfo]);
 
-  const headerActive = useMemo(() => [
+  const headerWaiting = useMemo(() => [
     [t('intentions'), 'start', 3],
     [t('guarantors'), 'start', 1],
     [t('stake limit')],
@@ -122,7 +122,7 @@ function CurrentList ({ hasQueries, isIntentions, next, setNominators, stakingOv
     
   ], [t]);
 
-  const headerWaiting = useMemo(() => [
+  const headerActive = useMemo(() => [
     [t('validators'), 'start', 3],
     [t('other stake')],
     [t('stake limit')],
@@ -172,7 +172,7 @@ function CurrentList ({ hasQueries, isIntentions, next, setNominators, stakingOv
     ? (
       <Table
         empty={waiting && t<string>('No waiting validators found')}
-        header={headerActive}
+        header={headerWaiting}
       >
         {_renderRows(elected, false).concat(..._renderRows(waiting, false))}
       </Table>
@@ -181,7 +181,7 @@ function CurrentList ({ hasQueries, isIntentions, next, setNominators, stakingOv
       <Table
         empty={validators && t<string>('No active validators found')}
         filter={filter}
-        header={headerWaiting}
+        header={headerActive}
       >
         {_renderRows(validators, true)}
       </Table>
