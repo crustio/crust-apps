@@ -18,7 +18,6 @@ import Favorite from './Favorite';
 import NominatedBy from './NominatedBy';
 import Status from './Status';
 import StakeOther from './StakeOther';
-import BondedDisplay from '@polkadot/react-components/Bonded';
 
 interface Props {
   address: string;
@@ -125,7 +124,7 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
   const controllerId = useCall<AccountId | null>(api.query.staking.bonded, [address]);
   const _stakeLimit = useCall<BN>(api.query.staking.stakeLimit, [address]);
 
-  const [{ guaranteeFee, nominators, stakeLimit, stakeOther, stakeTotal }, setStakingState] = useState<StakingState>({ nominators: [] });
+  const [{ guaranteeFee, nominators, stakeLimit, stakeOther, stakeTotal, stakeOwn }, setStakingState] = useState<StakingState>({ nominators: [] });
   const [isVisible, setIsVisible] = useState(true);
   const [isNominating, setIsNominating] = useState(false);
 
@@ -184,22 +183,27 @@ function Address ({ address, className = '', filterName, hasQueries, isAuthor, i
         : <NominatedBy nominators={nominatedBy} />
       }
       <td className='number'>
-        {stakeLimit?.gtn(0) && (
+        {(
           <FormatBalance value={stakeLimit} />
         )}
       </td>
       <td className='number'>
-        {stakeTotal?.gtn(0) && (
+        {(
           <FormatBalance value={stakeTotal} />
         )}
       </td>
       <td className='number'>
+        {(
+          <FormatBalance value={stakeOwn} />
+        )}
+      </td>
+      {/* <td className='number'>
         {(<BondedDisplay
           label=''
           params={address}
           />
         )}
-      </td>
+      </td> */}
       <td className='number'>
         {guaranteeFee}
       </td>

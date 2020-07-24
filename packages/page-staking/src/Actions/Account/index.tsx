@@ -237,6 +237,7 @@ function Account ({ className = '', info: { controllerId, destination, destinati
                   text
                   vertical
                 >
+                  Bond
                   <Menu.Item
                     disabled={!isOwnStash && !balancesAll?.freeBalance.gtn(0)}
                     onClick={toggleBondExtra}
@@ -250,6 +251,15 @@ function Account ({ className = '', info: { controllerId, destination, destinati
                     {t<string>('Unbond funds')}
                   </Menu.Item>
                   <Menu.Divider />
+                  Validate
+                  {isStashValidating &&
+                    <Menu.Item
+                      disabled={!isOwnController}
+                      onClick={toggleValidate}
+                    >
+                      {t<string>('Validator')}
+                    </Menu.Item>
+                  }
                   <Menu.Item
                     disabled={!isOwnStash}
                     onClick={toggleSetController}
@@ -262,15 +272,6 @@ function Account ({ className = '', info: { controllerId, destination, destinati
                   >
                     {t<string>('Change reward destination')}
                   </Menu.Item>
-                  {isStashValidating &&
-                    <Menu.Item
-                      disabled={!isOwnController}
-                      onClick={toggleValidate}
-                    >
-                      {t<string>('Change validator preferences')}
-                    </Menu.Item>
-                  }
-                  <Menu.Divider />
                   {isStashNominating &&
                     <Menu.Item
                       disabled={!isOwnController}
@@ -279,12 +280,15 @@ function Account ({ className = '', info: { controllerId, destination, destinati
                       {t<string>('Change session keys')}
                     </Menu.Item>
                   }
+                  
+                  <Menu.Divider />
+                  Guarantee
                   {isStashNominating && validators && validators?.indexOf(stashId) == -1 &&
                     <Menu.Item
                       disabled={!isOwnController}
                       onClick={toggleNominate}
                     >
-                      {t<string>('Set guarantee')}
+                      {t<string>('Guarantee')}
                     </Menu.Item>
                   }
                   {isStashNominating && validators && validators?.indexOf(stashId) == -1 &&
