@@ -257,7 +257,7 @@ function Account ({ className = '', info: { controllerId, destination, destinati
                       disabled={!isOwnController}
                       onClick={toggleValidate}
                     >
-                      {t<string>('Validator')}
+                      {t<string>('Be validator')}
                     </Menu.Item>
                   }
                   <Menu.Item
