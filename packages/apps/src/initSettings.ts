@@ -74,8 +74,8 @@ try {
     },
     StakingLedger: {
       stash: 'AccountId',
-      active: 'Compact<Balance>',
       total: 'Compact<Balance>',
+      active: 'Compact<Balance>',
       valid: 'Compact<Balance>',
       unlocking: 'Vec<UnlockChunk>',
     },
