@@ -27,9 +27,10 @@
   "Babe": "Babe",
   "Backup account": "备份账户",
   "Block details": "区块详情",
-  "Bond": "Bond",
+  "Bond": "绑定",
   "Bond more": "抵押更多",
   "Bond more funds": "抵押更多资金",
+  "Bonding Preferences": "绑定设置",
   "Call": "调用",
   "Call a contract": "调用一个合约",
   "Call a method on this contract": "在合约上调用一个方法",
@@ -354,6 +355,7 @@
   "session": "session",
   "session keys": "会话key",
   "stash account": "储值账户",
+  "controller account": "控制账户",
   "syncing": "同步中",
   "target": "目标",
   "term progress": "term progress",
@@ -376,5 +378,8 @@
   "voting round": "投票轮次",
   "yes": "是",
   "your current password": "你当前的密码",
-  "your new password": "你的新密码"
+  "your new password": "你的新密码",
+  "Staking overview": "质押总览",
+  "Account actions": "账户操作",
+  "Waiting": "等待列表"
 }
