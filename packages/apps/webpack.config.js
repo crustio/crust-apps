@@ -21,7 +21,7 @@ module.exports = merge(
     devtool: false,
     plugins: [
       new HtmlWebpackPlugin({
-        PAGE_TITLE: 'Crust Portal',
+        PAGE_TITLE: 'Crust Apps',
         inject: true,
         template: path.join(context, `${hasPublic ? 'public/' : ''}index.html`)
       })
