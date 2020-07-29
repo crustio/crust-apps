@@ -34,7 +34,7 @@
   "New stake": "New stake",
   "No active validators found": "No active validators found",
   "No active validators to check": "No active validators to check",
-  "No funds staked yet. Bond funds to validate or nominate a validator": "No funds staked yet. Bond funds to validate or nominate a validator",
+  "No funds staked yet. Bond funds to validate or guarantee a validator": "No funds staked yet. Bond funds to validate or guarantee a validator",
   "No pending era payouts from validators": "No pending era payouts from validators",
   "No pending payouts for your stashes": "No pending payouts for your stashes",
   "No waiting validators found": "No waiting validators found",
