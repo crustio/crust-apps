@@ -257,7 +257,7 @@ function Create ({ className = '', onClose, onStatusChange, seed: propsSeed, typ
             <Input
               autoFocus
               className='full'
-              help={t<string>('Name given to this account. You can edit it. To use the account to validate or nominate, it is a good practice to append the function of the account in the name, e.g "name_you_want - stash".')}
+              help={t<string>('Name given to this account. You can edit it. To use the account to validate or guarantee, it is a good practice to append the function of the account in the name, e.g "name_you_want - stash".')}
               isError={!isNameValid}
               label={t<string>('name')}
               onChange={_onChangeName}
