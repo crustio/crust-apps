@@ -76,12 +76,12 @@ function createTest (t: <T= string> (key: string, text: string, options: { ns: s
     {
       info: 'crust',
       text: t<string>('rpc.crust.network', 'Maxwell (Crust BetaNet, hosted by Crust Network)', { ns: 'apps-config' }),
-      value: 'ws://101.132.117.183:9944/'
+      value: 'wss://api.crust.network/'
     },
     {
       info: 'crust',
       text: t<string>('rpc.crust.network', 'Rocky (Crust AlphaNet, hosted by Crust Network)', { ns: 'apps-config' }),
-      value: 'ws://139.196.122.228:6008/'
+      value: 'wss://139.196.122.228:6008/'
     }
     // {
     //   info: 'westend',
