@@ -11,6 +11,22 @@ A Portal into the Crust network based on [@polkadot/apps](https://github.com/pol
 5. Ready! Now you can launch the UI (assuming you have a local Crust Node running), via `yarn run start`
 6. Access the UI via [http://localhost:3000](http://localhost:3000)
 
+## Docker
+
+To build a docker container containing local changes -
+
+```
+docker build -t crustio/crust-apps .
+```
+
+You can run a docker container via -
+
+```
+docker run --rm -it --name crust-apps -e WS_URL=ws://someip:9944 -p 80:80 crustio/crust-apps:latest
+```
+
+When using these Docker commands, you can access the UI via http://localhost:80 (or just http://localhost)
+
 ## License
 
 [GPL V3.0](https://github.com/crustio/crust/blob/master/LICENSE)
