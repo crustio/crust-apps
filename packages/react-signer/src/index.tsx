@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { QueueTx, QueueTxMessageSetStatus, QueueTxResult } from '@polkadot/react-components/Status/types';
-import { BareProps } from '@polkadot/react-components/types';
+import { BareProps as Props } from '@polkadot/react-components/types';
 import { DefinitionRpcExt } from '@polkadot/types/types';
 
 import React, { useContext, useEffect, useState } from 'react';
@@ -17,10 +17,6 @@ import { format } from '@polkadot/util/logger';
 import { useTranslation } from './translate';
 import TxSigned from './TxSigned';
 import TxUnsigned from './TxUnsigned';
-
-interface Props extends BareProps {
-  children: React.ReactNode;
-}
 
 interface ItemState {
   currentItem: QueueTx | null;
@@ -116,7 +112,8 @@ function Signer ({ children, className = '' }: Props): React.ReactElement<Props>
 
 export default React.memo(styled(Signer)`
   .signToggle {
-    position: absolute;
+    bottom: 1.5rem;
     left: 1.5rem;
+    position: absolute;
   }
 `);

@@ -1,18 +1,252 @@
 # CHANGELOG
 
-## 0.46.0-beta.x
+## 0.55.1 Aug 24, 2020
 
-- I18n for es (thanks to https://github.com/wimel)
+- Add Kilt network (Thanks to https://github.com/wischli)
+- Add Nodle mainnet (Thanks to https://github.com/ETeissonniere)
+- Add Darwinia Crap canary network (Thanks to https://github.com/WoeOm)
+- Add Laminar testnet (Thanks to https://github.com/aniiantt)
+- Add Acala Rococo parachain (Thanks to https://github.com/aniiantt)
+- Re-add Polkascan link for Kulupu (Thanks to https://github.com/sorpaas)
+- Update Kulupu RPC endpoint (Thanks to https://github.com/sorpaas)
+- Add Kulupu logo & adjust council config (Thanks to https://github.com/sorpaas)
+- Adjust convictions for Kulupu blocktime calcs (Thanks to https://github.com/sorpaas)
+- Nightly tests for functionality against Substrate (Thanks to https://github.com/EthWorks)
+- I18N Korean translation (Thanks to https://github.com/wooqii)
+- Move navbar to the top instead of a sidebar (horizontal space becomes available)
+- Add extra payout information on staking to reduce confusion (any account can claim)
+- Rework Aye/Nay votes display in council/democracy with single column
+- Ensure copy button does not appear non-clickable (e.g. in multisig menu)
+- Adjust council thresholds for cleaner future adjustments
+- Don't show loading spinner on accounts app when none available
+- Hide metadata updates on development networks (not available)
+- don't show send button for accounts/contacts with no balances module
+- Show names (as available) of scheduled tasks in democracy
+- Adjust app consistency (all apps now have a tabs/menubar)
+- Adjust network selector with split catagories and single-click selection
+- Default conviction dropdown to no lockup
+- Remove conviction override for Polkadot (upgrade has taken effect)
+- Use `proposeParachain` module to show list of proposed parachains (Rococo)
+- Adjust parachain display to remove non filled-in default information
+- Support for Polkadot redonomination banner (countdown & completion)
+- Add link from treasury page to ongoing proposal votes
+- Adjust media breakpoints on staking overview page
+- Split democracy dispatch/scheduled into own tab
+- Split treasury tips into own tab
+- Split addressbook into own app (with top nav)
+- Aplit RPC app into own app (top nav, toolbox remainder now named sign/verify)
+
+## 0.54.1 Aug 17, 2020
+
+- Remove Berlin testnet, replace with Beresheet (Thanks to https://github.com/drewstone)
+- Add links to Polkastats where available (Thanks to https://github.com/mariopino)
+- Allow for clearing of previously-made council votes (Thanks to https://github.com/Tbaut)
+- Allow for clearing of on-chain identities (Thanks to https://github.com/Tbaut)
+- Show deposit info for setting identities (Thanks to https://github.com/Tbaut)
+- show sub-accounts in sidebar when found (Thanks to https://github.com/Tbaut)
+- Don't allow `///password` in non-mnemonic seeds (Thanks to https://github.com/Tbaut)
+- Allow saving custom RPC endpoints (Thanks to https://github.com/Tbaut)
+- Add tooltip & help info on nominee statusses (Thanks to https://github.com/Tbaut)
+- Adjust threshold parameters via lookup for treasury proposals
+- Optimize API queries params & options for less re-renders
+- Consistently detect hex data in file uploads (e.g. on parachain data)
+- Rework table rendering to non-memo/non-state headers
+- Adjust Sudo app with/without unchecked weight selection
+- Link from account page to extension upgrades via expanded info
+- Adjust Polkadot tokenDecimals/tokenSymbol for transition periods
+- Rework Slashing displays to display cumulative totals
+- Add countdown to slashing enactment to Slashing overview
+- Display own slashes for all nominators (Actions & Slashes pages)
+- Display overall staked average and minimum on targets page
+- Adjust council display to show desired runnersup
+- Validator-only payout toggles (as detected)
+- Base support for time-delay proxies (API-level only, both old and new calls)
+- Adjust saving for address inputs via AccountIndex (incl. logo from AccountId)
+- Don't allow chain selection on IPNS-with-chain endpoints
+- Adjust alignment of units (time & symbol) in formatters
+- Do not fail on non-available RPCs for node info retrieval (& hide empty)
+
+## 0.53.1 Aug 10, 2020
+
+- ko i18n first-round support (Thanks to https://github.com/hskang9)
+- Update to latest Centrifuge types (Thanks to https://github.com/mikiquantum)
+- Add icon on Electron app under Linux (Thanks to https://github.com/EthWorks)
+- Re-bonding adjusts based on unbonding  redeemable (Thanks to https://github.com/Tbaut)
+- Adjust council voting balance to include reserved (Thanks to https://github.com/Tbaut)
+- Add tip link to Polkassembly (Thanks to https://github.com/Tbaut)
+- Show existing proxies across all accounts (Thanks to https://github.com/Tbaut)
+- Add slashes tab to display unapplied, also indicate status in lists
+- Unbonding allows for full-balance unbond (& pre-fills)
+- Rework parachains app initial displays with cross-app consistency
+- Allow for transfers between parachains & to/from relay (via tokenDealer)
+- Allow tipping to pre-populate and display median (& quick-tip with median)
+- Display auto-chilled nominations, allowing for re-nomination
+- Sanitize names on identity set dialog
+- Adjust vanity to wan about saving, be explicit in save button action
+- Add banner for DOT re-denomination on accounts page (Polkadot only)
+- Allow updating of extensions when chain-properties have been changed
+- Adjust InputAddressMulti lookups with and without names
+- Add warning for locally stored accounts in creation (to be deprecated)
+- Add basic password strength indicator for password creation
+- Add Rococo testnet chain support
+- Add IPNS support for Rococo
+- Adjust threshold calculations where members are not (yet) available
+
+## 0.52.1 Aug 3, 2020
+
+- ar i18n support (Thanks to https://github.com/nightwolf3)
+- zh i18n updated (Thanks to https://github.com/kaichaosun)
+- zh i18n updates (Thanks to https://github.com/x-i-ao-b-ai)
+- Allow management of proxies (Thanks to https://github.com/Tbaut)
+- Links for Polkassembly Polkadot support (Thanks to https://github.com/niklabh)
+- Clarify claiming template text (Thanks to https://github.com/Swader)
+- Remove auto-select defaults for nomination, adjust loading for all selector
+- Display Slashing tab on staking overview (as available)
+- Indicate per-validator slashes in accounts (chilled) & staking targets
+- Display scheduled tasks (ongoing) on democracy page
+- Adjust endpoint selector with slide-out as opposed to modal (all visible)
+- Cleanup democracy delegation to highlight invalid amounts
+- Adjust thresholds for council slash cancel on Polkadot
+- Dep-dupe account filtering in all lists (staking vs multi-select lists)
+- Adjust max column widths in modals, avoiding overflows
+- Adjust era filters on staking payouts, default to day intervals
+- Convert custom URL inputs to punycode (UTF8 detection)
+
+## 0.51.1 Jul 27, 2020
+
+- Support for Acala chain and types (Thanks to https://github.com/aniiantt)
+- First batch of i18n for Arabic (Thanks to https://github.com/nightwolf3)
+- Update for Polkadot council thresholds
+- Council motion adjustment to cater for current and previous generations
+- Adjust imminent proposals to not need own type adjustments
+- Cleanup voting totals to only take free into account
+- Support JSON v3 formats with kdf
+- Always display time left in countdowns, not blocks
+- Adjust progress component to be circular
+- Rename "Deposit" button to "Send" button (less confusion)
+- Ensure new generation tip cancel works for council & users
+- Split council votes in backing & number of votes
+- Adjust council motions to have the correct max display for nay votes
+- Adjust payout toggles with increasing day increments
+- Adjust button formats & layouts
+- Adjust council slashing params to cater for current generation
+- Fixed for keyboard locale detection
+- Don't allow display in an iframe
+
+## 0.50.1 Jul 20, 2020
+
+- Adjust CSPs for Electron (Thanks to https://github.com/EthWorks)
+- Move delegation column to badge (Thanks to https://github.com/Tbaut)
+- Display costs for preimage calls
+- Add buttons for bid/unbid on Society
+- Allow tip endorsements while in countdown
+- Flatten events to group by same-kind in the same block
+- Adjust identity validation to check for whitespacing
+- Allow the use of VecFixed params with type detection/inputs
+- Adjust controller changing to filter when stash === controller (no error, but warn)
+- Allow the poll module via Governance proxy
+- Expand proxy detection to deep-inspect batched calls
+- Ensure various APIs are available (filtering) before attempting to render
+- Ensure tooltips are correctly displayed on account hovers
+- Cleanup council display for candidates
+- Cleanup and simplify QR import logic (& always set genesisHash, even when not supplied)
+- Always set genesisHash when accounts are derived
+- Adjust breakpoints for `AccountName` via `AddressShort`
+- Cleanup SUI dependencies with unused components, Progress, Responsive, Toggle
+- Adjust module bundling splits, remove unused libraries & fonts
+- Remove unmaintained page-123code (& references)
+- Don't display finalized blocks when grandpa is not available
+
+## 0.49.1 Jul 13, 2020
+
+- Update Subscan links with supported chains (https://github.com/carumusan)
+- Enhance Electron desktop with CSP & best practices (Thanks to https://github.com/EthWorks)
+- Activate Electron update feature by default (Thanks to https://github.com/EthWorks)
+- Use external browser for embedded links in Electron (Thanks to https://github.com/EthWorks)
+- Add testing around Electron features (Thanks to https://github.com/EthWorks)
+- Support democracy account delegation (Thanks to https://github.com/Tbaut)
+- Don't filter selected on multi account selector (Thanks to https://github.com/Tbaut)
+- Add support for Polkadot denomination poll
+- Allow input & display of OpaqueCall type from multisig
+- Indicate own nominees on targets page (re-added with badges)
+- Re-add indicator for own nominators in staking targets
+- Add `?filter=<string>` query param support on staking URLs
+- Add generator for Kusama society designs
+- Handle OpaqueCall in inputs and well as displays (multisig)
+- Small layout adjustments for address display components
+- Performance improvements on wrapped styles, component libraries
+- Add support for display detected ASCII bytes as text
+- Adjust type injection to override on-connect API defaults
+- Adjust attestation display with no-balance filters
+
+## 0.48.1 Jul 6, 2020
+
+- Fix for electron package build (Thanks to https://github.com/EthWorks)
+- Allow for setting of sub identities via account action
+- Adjust known account icons (Society & Treasury)
+- Add Westend chain to Subscan link generator
+- Display a warning with extensions and no injected accounts
+- Retrieve all tips at once and sort by closing
+- Fix identity set dialogs to never pass empty fields
+- Optimize favorites retrieval & selection for staking (shared between)
+- Support new registrar ProxyType in the signer
+- Hide funds unbonding when non bonded
+- Add withdraw action to staking menu (as available)
+- Fix InputAddress component with state change warnings
+- Bump to latest API and utilities
+
+## 0.47.1 Jul 1, 2020
+
+- Update zh translation (Thanks to https://github.com/dushaobindoudou)
+- Add DataHighway Harbour testnet endpoint (Thanks to https://github.com/ltfschoen)
+- Small I18N key fix (Thanks to https://github.com/ltfschoen)
+- Allow for Electron auto-update on Mac (Thanks to https://github.com/EthWorks)
+- Swap to default conviction of 1x (Thanks to https://github.com/Tbaut)
+- Make preimage hash selectable on FF (Thanks to https://github.com/Tbaut)
+- show unbonding value in staking actions (Thanks to https://github.com/Tbaut)
+- Default (via toggle) to only last 25% of eras for payouts
+- Allow retracting of tips by proposer
+- Allow tipping with new Substrate types (dual old/new support)
+- Enable the full retrieval of all Map/Doublemap entries
+- Support correct display of vesting with locks (& unlock via account)
+- Adjust on-chain identity inputs with field validation
+- Enable grouping of democracy locks by type
+- Resolve identity links starting with https://twitter
+- Display voted & unvoted council motions, referendums & tips
+- Adjust toggles for file/bytes uploads
+- Correct handling of recursive param structures in extrinsics
+- Swap icons to use font-awesome directly, including official components
+- Additional small UI cleanups and fixes
+
+## 0.46.1 Jun 22, 2020
+
+- I18n for es (Thanks to https://github.com/wimel)
 - Support for importing mini secrets via QR (Thanks to https://github.com/hanwencheng)
+- Update SubstrateTEE types (Thanks to https://github.com/brenzi)
 - Support for multisig calls with new weight parameters
 - Split sign and send updates in the signer modal for better UI tracking
 - Hide zero nonce of accounts/contracts pages
 - Display API extrinsic construction errors in the extrinsics app
 - Do not display signer proxies when there are none matching against accounts
+- Sort recovery addresses to align with the Substrate implementation
+- Check for funded controller on bonding
+- Suggest max values for bonding (& bonding extra), adjusting checks
+- Handle isForceEra to adjust era displays
+- Display candidacy bond on council submission
+- Adjust AddressMni & AddressSmall components to take advantage of bigger screens
+- Display referendum & treasury tips voting status
+- Add tips close buttons & countdown timer
+- Disabled nominations via targets when in election
+- Expand targets page to include waiting validators (full overview of all)
+- Apply shared filters (name, toggles) on all validator lists
+- Display balances in account view sidebar
+- Adjust signer dialog ith split sign/send (better status displays)
 - Adjust proxy checks for sudo calls to closer align with Polkadot
 - Apply i18n caching, with no reload on translation page
 - Add "Apply" i18n button to reflect editing changes in the UI
-- Sort recovery addresses to align with the Substrate implementation
+- Support Tuple inputs (params/extrinsics) for custom names
+- `@polkadot/api` 1.20.1
+- `@polkadot/util` 2.15.1
 
 ## 0.45.2 Jun 16, 2020
 

@@ -57,11 +57,14 @@ export default function useAccountInfo (value: string | null, isContract = false
   }, [accountFlags]);
 
   useEffect((): void => {
-    const { accountIndex: anAccountIndex, identity, nickname } = accountInfo || {};
+    const { accountIndex, identity, nickname } = accountInfo || {};
+    const newIndex = accountIndex?.toString();
 
-    if (anAccountIndex && accountIndex !== anAccountIndex.toString()) {
-      setAccountIndex(anAccountIndex.toString());
-    }
+    setAccountIndex((oldIndex) =>
+      oldIndex !== newIndex
+        ? newIndex
+        : oldIndex
+    );
 
     let name;
 
@@ -97,7 +100,7 @@ export default function useAccountInfo (value: string | null, isContract = false
     } else {
       setIdentity(undefined);
     }
-  }, [accountIndex, accountInfo, api]);
+  }, [accountInfo, api]);
 
   useEffect((): void => {
     if (value) {
@@ -111,7 +114,9 @@ export default function useAccountInfo (value: string | null, isContract = false
         isDevelopment: accountOrAddress?.meta.isTesting || false,
         isEditable: !!(!identity?.display && (isInContacts || accountOrAddress?.meta.isMultisig || (accountOrAddress && !(accountOrAddress.meta.isInjected || accountOrAddress.meta.isHardware)))) || false,
         isExternal: !!accountOrAddress?.meta.isExternal || false,
+        isHardware: !!accountOrAddress?.meta.isHardware || false,
         isInContacts,
+        isInjected: !!accountOrAddress?.meta.isInjected || false,
         isMultisig: !!accountOrAddress?.meta.isMultisig || false,
         isOwned,
         isProxied: !!accountOrAddress?.meta.isProxied || false

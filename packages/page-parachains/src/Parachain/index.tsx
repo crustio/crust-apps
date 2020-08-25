@@ -3,9 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DeriveParachainInfo, DeriveParachainFull } from '@polkadot/api-derive/types';
-import { ComponentProps } from '../types';
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, CardSummary, Columar, Column, Icon, Menu, Popup, Spinner, SummaryBox } from '@polkadot/react-components';
@@ -19,9 +18,12 @@ import Details from './Details';
 
 import { useTranslation } from '../translate';
 
-interface Props extends ComponentProps {
+interface Props {
   basePath: string;
+  className?: string;
+  isMine?: boolean;
   paraInfoRef: React.MutableRefObject<DeriveParachainInfo | null>;
+  sudoKey?: string;
 }
 
 function Parachain ({ basePath, className = '', isMine, paraInfoRef, sudoKey }: Props): React.ReactElement<Props> {
@@ -32,6 +34,11 @@ function Parachain ({ basePath, className = '', isMine, paraInfoRef, sudoKey }: 
   const [isMenuOpen, toggleMenu] = useToggle();
   const { isOpen: isDeregisterOpen, onClose: onDeregisterClose, onOpen: onDeregisterOpen } = useModal();
   const parachain = useCall<DeriveParachainFull | null>(api.derive.parachains.info, [id || null]);
+
+  const onDeregister = useCallback(
+    () => history.push(basePath),
+    [basePath, history]
+  );
 
   if (isUndefined(parachain)) {
     return (
@@ -44,7 +51,7 @@ function Parachain ({ basePath, className = '', isMine, paraInfoRef, sudoKey }: 
       <>
         <article className='error padded'>
           <div>
-            <Icon name='ban' />
+            <Icon icon='ban' />
             {t(`No parachain with ${id ? `id ${id.toString()}` : 'this id'} exists`)}
           </div>
         </article>
@@ -55,10 +62,6 @@ function Parachain ({ basePath, className = '', isMine, paraInfoRef, sudoKey }: 
   if (!paraInfoRef.current) {
     paraInfoRef.current = parachain.info;
   }
-
-  const onDeregister = (): void => {
-    history.push(basePath);
-  };
 
   return (
     <div className={className}>
@@ -76,8 +79,7 @@ function Parachain ({ basePath, className = '', isMine, paraInfoRef, sudoKey }: 
                 trigger={
                   <Button
                     className='menu-button'
-                    icon='ellipsis vertical'
-                    isPrimary
+                    icon='ellipsis-v'
                     onClick={toggleMenu}
                   />
                 }

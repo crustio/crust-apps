@@ -11,7 +11,7 @@ import Spinner from '../Spinner';
 interface Props {
   children?: React.ReactNode;
   className?: string;
-  empty?: React.ReactNode;
+  empty?: React.ReactNode | false;
   emptySpinner?: React.ReactNode;
 }
 
@@ -30,10 +30,7 @@ function Body ({ children, className = '', empty, emptySpinner }: Props): React.
 }
 
 export default React.memo(styled(Body)`
-  background: white;
-
   td {
-    // border-top: 1px solid #e4e6e8;
     padding: 0.75rem 1rem;
     text-align: left;
     vertical-align: middle;
@@ -51,10 +48,6 @@ export default React.memo(styled(Body)`
       white-space: nowrap;
     }
 
-    i.icon {
-      cursor: pointer;
-    }
-
     div.empty {
       opacity: 0.6;
       padding: 0.25rem;
@@ -70,28 +63,33 @@ export default React.memo(styled(Body)`
 
     &.address {
       min-width: 11rem;
+      overflow-x: hidden;
     }
 
     &.badge {
-      padding: 0;
+      padding: 0.5rem;
     }
 
     &.button {
-      padding: 0.5rem 0.75rem;
+      padding: 0.5rem;
       text-align: right;
       white-space: nowrap;
 
       > * {
         vertical-align: middle;
       }
-
-      .ui.button {
-        margin-right: 0;
-      }
     }
 
     &.combined {
       border-top-width: 0;
+    }
+
+    &.expand {
+      text-align: left;
+
+      .ui--Expander+.ui--Expander {
+        margin-top: 0.5rem;
+      }
     }
 
     &.hash {
@@ -136,25 +134,23 @@ export default React.memo(styled(Body)`
       }
     }
 
-    &.favorite i.icon.isSelected {
+    &.favorite .ui--Icon.isSelected {
       color: darkorange;
+    }
+
+    .ui--Button-Group .ui--Button {
+      margin: 0;
     }
   }
 
   tr {
     &:nth-child(even) {
-      background: #f9f8f7;
+      background: #faf8f6;
     }
 
-    // &.isHighlight {
-    //   &:nth-child(even) td {
-    //     background: #fffff4;
-    //   }
-
-    //   &:nth-child(odd) td {
-    //     background: #f4ffff;
-    //   }
-    // }
+    &:nth-child(odd) {
+      background: white;
+    }
 
     &:first-child td {
       border-top: 1px solid #e4e6e8;
@@ -184,21 +180,13 @@ export default React.memo(styled(Body)`
       }
     }
 
-    .ui.button:not(.isIcon):not(:hover) {
-      color: #555 !important;
-
-      &:not(.basic) {
-        background: transparent !important;
-      }
-
-      &.basic {
-        background: transparent !important;
-        box-shadow: none !important;
-      }
+    &.transparent {
+      background: transparent;
     }
 
-    .ui.button+.ui.button {
-      margin-left: 0rem;
+    .ui--Button:not(.isIcon):not(:hover) {
+      background: transparent !important;
+      box-shadow: none !important;
     }
 
     .ui.toggle.checkbox input:checked~.box:before,

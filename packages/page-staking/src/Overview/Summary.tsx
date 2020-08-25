@@ -16,29 +16,36 @@ interface Props {
   className?: string;
   isVisible: boolean;
   next?: string[];
-  nominators: string[];
+  nominators?: string[];
   stakingOverview?: DeriveStakingOverview;
 }
 
 function Summary ({ className = '', isVisible, next, nominators, stakingOverview }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { lastBlockAuthors, lastBlockNumber } = useContext(BlockAuthorsContext);
+  console.log('stakingOverview', stakingOverview)
 
   return (
-    <SummaryBox className={`${className} ${!isVisible ? 'staking--hidden' : ''}`}>
+    <SummaryBox className={`${className}${!isVisible ? ' staking--hidden' : ''}`}>
       <section>
         {stakingOverview && (
           <CardSummary label={t<string>('validators')}>
-            {stakingOverview.validators.length}{`/${stakingOverview.validatorCount.toString()}`}
+            {stakingOverview.validators.length}&nbsp;/&nbsp;{stakingOverview.validatorCount.toString()}
           </CardSummary>
         )}
         {!!next?.length && (
-          <CardSummary label={t<string>('waiting')}>
+          <CardSummary
+            className='media--1000'
+            label={t<string>('waiting')}
+          >
             {next.length}
           </CardSummary>
         )}
-        {!!nominators.length && (
-          <CardSummary label={t<string>('guarantors')}>
+        {!!nominators?.length && (
+          <CardSummary
+            className='media--1100'
+            label={t<string>('nominators')}
+          >
             {nominators.length}
           </CardSummary>
         )}

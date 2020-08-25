@@ -2,20 +2,23 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { KUSAMA_GENESIS, POLKADOT_GENESIS } from '@polkadot/apps-config/api/constants';
 import { Ledger } from '@polkadot/ui-keyring';
 import uiSettings from '@polkadot/ui-settings';
-
-import chains from '@polkadot/ui-settings/defaults/chains';
+import { assert } from '@polkadot/util';
 
 import { api } from './Api';
 
-const ALLOWED_CHAINS = chains.kusama;
+const ALLOWED_CHAINS: [string, 'kusama' | 'polkadot'][] = [
+  [KUSAMA_GENESIS, 'kusama'],
+  [POLKADOT_GENESIS, 'polkadot']
+];
 
 let ledger: Ledger | null = null;
 
 export function isLedgerCapable (): boolean {
   try {
-    return !!api && ALLOWED_CHAINS.includes(api.genesisHash.toHex());
+    return !!api && ALLOWED_CHAINS.map(([g]) => g).includes(api.genesisHash.toHex());
   } catch (error) {
     return false;
   }
@@ -31,7 +34,11 @@ export function clearLedger (): void {
 
 export function getLedger (): Ledger {
   if (!ledger) {
-    ledger = new Ledger(uiSettings.ledgerConn as 'u2f');
+    const def = api && ALLOWED_CHAINS.find(([g]) => g === api.genesisHash.toHex());
+
+    assert(def, `Unable to find supported chain for ${api.genesisHash.toHex()}`);
+
+    ledger = new Ledger(uiSettings.ledgerConn as 'u2f', def[1]);
   }
 
   return ledger;

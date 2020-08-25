@@ -7,6 +7,7 @@ import { EraIndex } from '@polkadot/types/interfaces';
 import { PayoutValidator } from './types';
 
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import { ApiPromise } from '@polkadot/api';
 import { AddressMini, Button, Modal, InputAddress, Static, TxButton } from '@polkadot/react-components';
 import { useApi, useToggle } from '@polkadot/react-hooks';
@@ -16,6 +17,7 @@ import { useTranslation } from '../translate';
 const MAX_BATCH_SIZE = 40;
 
 interface Props {
+  className?: string;
   isAll?: boolean;
   isDisabled?: boolean;
   payout?: PayoutValidator | PayoutValidator[];
@@ -59,7 +61,7 @@ function createExtrinsic (api: ApiPromise, payout: PayoutValidator | PayoutValid
     );
 }
 
-function PayButton ({ isAll, isDisabled, payout }: Props): React.ReactElement<Props> {
+function PayButton ({ className, isAll, isDisabled, payout }: Props): React.ReactElement<Props> {
   const { api } = useApi();
   const { t } = useTranslation();
   const [isVisible, togglePayout] = useToggle();
@@ -78,6 +80,7 @@ function PayButton ({ isAll, isDisabled, payout }: Props): React.ReactElement<Pr
     <>
       {payout && isVisible && (
         <Modal
+          className={className}
           header={t<string>('Payout all stakers')}
           size='large'
         >
@@ -104,6 +107,7 @@ function PayButton ({ isAll, isDisabled, payout }: Props): React.ReactElement<Pr
                       value={
                         payout.map(({ validatorId }) => (
                           <AddressMini
+                            className='addressStatic'
                             key={validatorId}
                             value={validatorId}
                           />
@@ -130,7 +134,7 @@ function PayButton ({ isAll, isDisabled, payout }: Props): React.ReactElement<Pr
             <TxButton
               accountId={accountId}
               extrinsic={extrinsic}
-              icon='credit card outline'
+              icon='credit-card'
               isDisabled={!extrinsic || !accountId}
               label={t<string>('Payout')}
               onStart={togglePayout}
@@ -139,7 +143,7 @@ function PayButton ({ isAll, isDisabled, payout }: Props): React.ReactElement<Pr
         </Modal>
       )}
       <Button
-        icon='credit card outline'
+        icon='credit-card'
         isDisabled={isDisabled || isPayoutEmpty}
         label={
           (isAll || Array.isArray(payout))
@@ -152,4 +156,13 @@ function PayButton ({ isAll, isDisabled, payout }: Props): React.ReactElement<Pr
   );
 }
 
-export default React.memo(PayButton);
+export default React.memo(styled(PayButton)`
+  .ui--AddressMini.padded.addressStatic {
+    padding-top: 0.5rem;
+
+    .ui--AddressMini-info {
+      min-width: 10rem;
+      max-width: 10rem;
+    }
+  }
+`);

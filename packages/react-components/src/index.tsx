@@ -2,6 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+export * from '@polkadot/react-qr';
+
 export { default as AccountIndex } from './AccountIndex';
 export { default as AccountName } from './AccountName';
 export { default as ActionItem } from './ActionItem';
@@ -15,7 +17,6 @@ export { default as AvatarItem } from './AvatarItem';
 export { default as Badge } from './Badge';
 export { default as Balance } from './Balance';
 export { default as Bonded } from './Bonded';
-export { default as Bubble } from './Bubble';
 export { default as Button } from './Button';
 export { default as ButtonCancel } from './ButtonCancel';
 export { default as Call } from './Call';
@@ -26,8 +27,10 @@ export { default as CardSummary } from './CardSummary';
 export { default as ChainImg } from './ChainImg';
 export { default as ChainLock } from './ChainLock';
 export { default as Chart } from './Chart';
+export { default as Checkbox } from './Checkbox';
 export { default as Columar } from './Columar';
 export { default as Column } from './Column';
+export { default as ConvictionDropdown } from './ConvictionDropdown';
 export { default as CopyButton } from './CopyButton';
 export { default as CryptoType } from './CryptoType';
 export { default as Dropdown } from './Dropdown';
@@ -69,13 +72,14 @@ export { default as Modal } from './Modal';
 export { default as Nonce } from './Nonce';
 export { default as Output } from './Output';
 export { default as Password } from './Password';
+export { default as PasswordStrength } from './PasswordStrength';
 export { default as Popup } from './Popup';
 export { default as Progress } from './Progress';
 export { default as ProposedAction } from './ProposedAction';
 export { default as Row } from './Row';
+export { default as Sidebar } from './Sidebar';
 export { default as Spinner } from './Spinner';
 export { default as StakingBonded } from './StakingBonded';
-export { default as StakingEffected } from './StakingEffected';
 export { default as StakingRedeemable } from './StakingRedeemable';
 export { default as StakingUnbonding } from './StakingUnbonding';
 export { default as Static } from './Static';

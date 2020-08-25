@@ -67,7 +67,7 @@ function Add (): React.ReactElement {
   return (
     <>
       <Button
-        icon='add'
+        icon='plus'
         label={t('Add an existing contract')}
         onClick={toggleIsOpen}
       />
@@ -117,7 +117,6 @@ function Add (): React.ReactElement {
           <Button
             icon='save'
             isDisabled={!isValid}
-            isPrimary
             label={t<string>('Save')}
             onClick={_onAdd}
           />

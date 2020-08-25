@@ -2,8 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-
 import BN from 'bn.js';
 import { useMemo } from 'react';
 import { timeToString } from '@polkadot/react-components/util';
@@ -23,6 +21,7 @@ export default function useBlockTime (blocks = BN_ONE): Result {
     (): Result => {
       const blockTime = (
         api.consts.babe?.expectedBlockTime ||
+        api.consts.difficulty?.targetBlockTime ||
         api.consts.timestamp?.minimumPeriod.muln(2) ||
         DEFAULT_TIME
       );

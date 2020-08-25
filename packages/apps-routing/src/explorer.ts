@@ -4,14 +4,15 @@
 
 import { Route } from './types';
 
-import Explorer from '@polkadot/app-explorer';
+import Component from '@polkadot/app-explorer';
 
 export default function create (t: <T = string> (key: string, text: string, options: { ns: string }) => T): Route {
   return {
-    Component: Explorer,
+    Component,
     display: {
       needsApi: []
     },
+    group: 'network',
     icon: 'braille',
     name: 'explorer',
     text: t<string>('nav.explorer', 'Explorer', { ns: 'apps-routing' })

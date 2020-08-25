@@ -5,9 +5,9 @@
 import queryString from 'query-string';
 import store from 'store';
 import { createEndpoints } from '@polkadot/apps-config/settings';
-import { registry } from '@polkadot/react-api';
 import { extractIpfsDetails } from '@polkadot/react-hooks/useIpfs';
 import settings from '@polkadot/ui-settings';
+import { registry } from '@polkadot/react-api';
 
 function getApiUrl (): string {
   // we split here so that both these forms are allowed
@@ -52,8 +52,6 @@ const apiUrl = getApiUrl();
 // set the default as retrieved here
 settings.set({ apiUrl });
 
-console.log('WS endpoint=', apiUrl);
-
 try {
   const types = store.get('types') as Record<string, Record<string, string>> || {};
   const names = Object.keys(types);
@@ -76,8 +74,9 @@ try {
       stash: 'AccountId',
       total: 'Compact<Balance>',
       active: 'Compact<Balance>',
-      valid: 'Compact<Balance>',
+      // valid: 'Compact<Balance>',
       unlocking: 'Vec<UnlockChunk>',
+      claimed_rewards: 'Vec<EraIndex>'
     },
     Validations: {
       total: 'Compact<Balance>',
@@ -87,6 +86,12 @@ try {
     Nominations: {
       targets: 'Vec<AccountId>',
       total: 'Compact<Balance>',
+      submitted_in: 'u32',
+      suppressed: 'bool'
+    },
+    Guarantee: {
+      targets: 'Vec<IndividualExposure<AccountId, Balance>>',
+      total: 'Balance',
       submitted_in: 'u32',
       suppressed: 'bool'
     },
@@ -126,7 +131,7 @@ try {
       failed: 'EraIndex',
       value: 'Balance',
     },
-    EraIndex: 'u32',
+    // EraIndex: 'u32',
     Cert: 'Vec<u8>',
     IASSig: 'Vec<u8>',
     ISVBody: 'Vec<u8>',
@@ -147,3 +152,5 @@ try {
 } catch (error) {
   console.error('Type registration failed', error);
 }
+
+console.log('WS endpoint=', apiUrl);

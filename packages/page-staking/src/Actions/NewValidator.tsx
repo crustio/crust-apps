@@ -28,7 +28,7 @@ function NewValidator ({ isInElection }: Props): React.ReactElement<Props> {
   const [{ sessionTx }, setSessionInfo] = useState<SessionInfo>({});
   const [{ validateTx }, setValidateInfo] = useState<ValidateInfo>({});
   const [step, setStep] = useState(1);
-  const isDisabled = isInElection || !isFunction(api.tx.utility?.batch) || false;
+  const isDisabled = isInElection || !isFunction(api.tx.utility?.batch);
 
   const _nextStep = useCallback(
     () => setStep((step) => step + 1),
@@ -54,7 +54,7 @@ function NewValidator ({ isInElection }: Props): React.ReactElement<Props> {
   return (
     <>
       <Button
-        icon='add'
+        icon='plus'
         isDisabled={isDisabled}
         key='new-validator'
         label={t<string>('Validator')}
@@ -91,7 +91,7 @@ function NewValidator ({ isInElection }: Props): React.ReactElement<Props> {
           </Modal.Content>
           <Modal.Actions onCancel={_toggle}>
             <Button
-              icon='step backward'
+              icon='step-backward'
               isDisabled={step === 1}
               label={t<string>('prev')}
               onClick={_prevStep}
@@ -100,9 +100,8 @@ function NewValidator ({ isInElection }: Props): React.ReactElement<Props> {
               ? (
                 <TxButton
                   accountId={stashId}
-                  icon='sign-in'
+                  icon='sign-in-alt'
                   isDisabled={!bondTx || !sessionTx || !validateTx}
-                  isPrimary
                   label={t<string>('Bond & Validate')}
                   onStart={_toggle}
                   params={[
@@ -115,9 +114,8 @@ function NewValidator ({ isInElection }: Props): React.ReactElement<Props> {
               )
               : (
                 <Button
-                  icon='step forward'
+                  icon='step-forward'
                   isDisabled={!bondTx}
-                  isPrimary
                   label={t<string>('next')}
                   onClick={_nextStep}
                 />

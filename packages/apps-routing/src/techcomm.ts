@@ -4,17 +4,18 @@
 
 import { Route } from './types';
 
-import TechComm, { useCounter } from '@polkadot/app-tech-comm';
+import Component, { useCounter } from '@polkadot/app-tech-comm';
 
 export default function create (t: <T = string> (key: string, text: string, options: { ns: string }) => T): Route {
   return {
-    Component: TechComm,
+    Component,
     display: {
       needsAccounts: true,
       needsApi: [
         'query.technicalCommittee.members'
       ]
     },
+    group: 'governance',
     icon: 'microchip',
     name: 'techcomm',
     text: t<string>('nav.tech-comm', 'Tech. comm.', { ns: 'apps-routing' }),

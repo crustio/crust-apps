@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { SubmittableExtrinsic } from '@polkadot/api/types';
-import { ComponentProps as Props } from './types';
 
 import BN from 'bn.js';
 import React, { useCallback, useState } from 'react';
@@ -14,7 +13,13 @@ import { BN_ZERO } from '@polkadot/util';
 
 import { useTranslation } from './translate';
 
-function Propose ({ className = '', isMine, sudoKey }: Props): React.ReactElement<Props> {
+interface Props {
+  className?: string;
+  isMine: boolean;
+  sudoKey?: string;
+}
+
+function Sudo ({ className, isMine, sudoKey }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api, apiDefaultTxSudo } = useApi();
   const [withWeight, toggleWithWeight] = useToggle();
@@ -22,8 +27,7 @@ function Propose ({ className = '', isMine, sudoKey }: Props): React.ReactElemen
   const [weight, setWeight] = useState<BN>(BN_ZERO);
 
   const _onChangeExtrinsic = useCallback(
-    (method: SubmittableExtrinsic<'promise'> | null = null) =>
-      setMethod(() => method),
+    (method: SubmittableExtrinsic<'promise'> | null = null) => setMethod(() => method),
     []
   );
 
@@ -40,35 +44,35 @@ function Propose ({ className = '', isMine, sudoKey }: Props): React.ReactElemen
           label={t<string>('submit the following change')}
           onChange={_onChangeExtrinsic}
         />
-        <br />
-        {withWeight && (
+        {api.tx.sudo.sudoUncheckedWeight && (
           <InputNumber
             help={t<string>('The unchecked weight as specified for the sudoUncheckedWeight call.')}
+            isDisabled={!withWeight}
             isError={weight.eq(BN_ZERO)}
             isZeroable={false}
             label={t<string>('unchecked weight for this call')}
             onChange={_onChangeWeight}
             value={weight}
-          />
-        )}
-        {api.tx.sudo.sudoUncheckedWeight && (
-          <Toggle
-            className='sudoToggle'
-            label={
-              withWeight
-                ? t<string>('sudo with unchecked weight parameter')
-                : t<string>('sudo without unchecked weight parameter')
-            }
-            onChange={toggleWithWeight}
-            value={withWeight}
-          />
+          >
+            <Toggle
+              className='sudoToggle'
+              isOverlay
+              label={t<string>('with weight override')}
+              onChange={toggleWithWeight}
+              value={withWeight}
+            />
+          </InputNumber>
         )}
         <Button.Group>
           <TxButton
             accountId={sudoKey}
-            icon='sign-in'
+            icon='sign-in-alt'
             isDisabled={!method || (withWeight ? weight.eq(BN_ZERO) : false)}
-            label={t<string>('Submit Sudo')}
+            label={
+              withWeight
+                ? t<string>('Submit Sudo Unchecked')
+                : t<string>('Submit Sudo')
+            }
             params={
               withWeight
                 ? [method, weight]
@@ -86,14 +90,14 @@ function Propose ({ className = '', isMine, sudoKey }: Props): React.ReactElemen
     : (
       <article className='error padded'>
         <div>
-          <Icon name='ban' />
+          <Icon icon='ban' />
           {t<string>('You do not have access to the current sudo key')}
         </div>
       </article>
     );
 }
 
-export default React.memo(styled(Propose)`
+export default React.memo(styled(Sudo)`
   .sudoToggle {
     width: 100%;
     text-align: right;

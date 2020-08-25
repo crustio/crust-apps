@@ -5,8 +5,8 @@
 import { PayoutValidator } from './types';
 
 import BN from 'bn.js';
-import React, { useEffect, useState } from 'react';
-import { AddressMini, Expander } from '@polkadot/react-components';
+import React, { useMemo } from 'react';
+import { AddressMini, AddressSmall, Expander } from '@polkadot/react-components';
 import { BlockToTime, FormatBalance } from '@polkadot/react-query';
 
 import { useTranslation } from '../translate';
@@ -27,35 +27,41 @@ interface State {
   oldestEra?: BN;
 }
 
+function extractState (payout: PayoutValidator): State {
+  const eraStr = createErasString(payout.eras.map(({ era }) => era));
+  const nominators = payout.eras.reduce((nominators: Record<string, BN>, { stashes }): Record<string, BN> => {
+    Object.entries(stashes).forEach(([stashId, value]): void => {
+      if (nominators[stashId]) {
+        nominators[stashId] = nominators[stashId].add(value);
+      } else {
+        nominators[stashId] = value;
+      }
+    });
+
+    return nominators;
+  }, {});
+
+  return { eraStr, nominators, numNominators: Object.keys(nominators).length, oldestEra: payout.eras[0]?.era };
+}
+
 function Validator ({ className = '', isDisabled, payout }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const [{ eraStr, nominators, numNominators, oldestEra }, setState] = useState<State>({
-    eraStr: '',
-    nominators: {},
-    numNominators: 0
-  });
+
+  const { eraStr, nominators, numNominators, oldestEra } = useMemo(
+    () => extractState(payout),
+    [payout]
+  );
+
   const eraBlocks = useEraBlocks(oldestEra);
-
-  useEffect((): void => {
-    const eraStr = createErasString(payout.eras.map(({ era }) => era));
-    const nominators = payout.eras.reduce((nominators: Record<string, BN>, { stashes }): Record<string, BN> => {
-      Object.entries(stashes).forEach(([stashId, value]): void => {
-        if (nominators[stashId]) {
-          nominators[stashId] = nominators[stashId].add(value);
-        } else {
-          nominators[stashId] = value;
-        }
-      });
-
-      return nominators;
-    }, {});
-
-    setState({ eraStr, nominators, numNominators: Object.keys(nominators).length, oldestEra: payout.eras[0]?.era });
-  }, [payout]);
 
   return (
     <tr className={className}>
-      <td className='address'><AddressMini value={payout.validatorId} /></td>
+      <td
+        className='address'
+        colSpan={2}
+      >
+        <AddressSmall value={payout.validatorId} />
+      </td>
       <td className='start'>
         <span className='payout-eras'>{eraStr}</span>
       </td>

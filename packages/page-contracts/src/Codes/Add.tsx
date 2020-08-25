@@ -54,7 +54,7 @@ function Add (): React.ReactElement {
   return (
     <>
       <Button
-        icon='add'
+        icon='plus'
         label={t('Add an existing code hash')}
         onClick={toggleIsOpen}
       />
@@ -93,7 +93,6 @@ function Add (): React.ReactElement {
             <Button
               icon='save'
               isDisabled={!isValid}
-              isPrimary
               label={t('Save')}
               onClick={_onSave}
             />

@@ -2,51 +2,39 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ButtonProps as SUIButtonProps } from 'semantic-ui-react/dist/commonjs/elements/Button/Button';
+import { IconName } from '@fortawesome/fontawesome-svg-core';
 import { BareProps } from '../types';
 
 export type Button$Callback = () => void | Promise<void>;
 
-export interface ButtonProps extends BareProps {
-  floated?: 'left' | 'right';
-  icon?: string;
-  isAnimated?: SUIButtonProps['animated'];
+export interface ButtonProps {
+  children?: React.ReactNode;
+  className?: string;
+  icon: IconName;
   isBasic?: boolean;
+  isBusy?: boolean;
   isCircular?: boolean;
   isDisabled?: boolean;
-  isFluid?: boolean;
+  isFull?: boolean;
   isIcon?: boolean;
-  isLoading?: boolean;
-  isNegative?: boolean;
-  isPositive?: boolean;
-  isPrimary?: boolean;
+  isSelected?: boolean;
   label?: React.ReactNode;
-  labelPosition?: 'left' | 'right';
   onClick?: Button$Callback;
   onMouseEnter?: Button$Callback;
   onMouseLeave?: Button$Callback;
-  ref?: any;
-  size?: SUIButtonProps['size'];
   tabIndex?: number;
   tooltip?: React.ReactNode;
+  withoutLink?: boolean;
 }
 
 export type DividerProps = BareProps;
 
-export interface ContentProps extends BareProps {
+export interface GroupProps {
   children?: React.ReactNode;
-  hidden?: boolean;
-  visible?: boolean;
-}
-
-export interface GroupProps extends BareProps {
-  children?: React.ReactNode;
-  isBasic?: boolean;
+  className?: string;
   isCentered?: boolean;
 }
 
 export type ButtonType = React.ComponentType<ButtonProps> & {
-  Content: React.ComponentType<ContentProps>;
   Group: React.ComponentType<GroupProps>;
-  Or: React.ComponentType<BareProps>;
 };

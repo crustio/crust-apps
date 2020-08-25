@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ContractABIMessage } from '@polkadot/api-contract/types';
-import { BareProps } from '@polkadot/react-components/types';
 
 import React from 'react';
 import styled from 'styled-components';
@@ -14,8 +13,9 @@ import { useTranslation } from '../translate';
 
 const MAX_PARAM_LENGTH = 20;
 
-export interface Props extends BareProps {
+export interface Props {
   asConstructor?: boolean;
+  className?: string;
   message: ContractABIMessage;
   params?: any[];
   withTooltip?: boolean;
@@ -65,9 +65,8 @@ function MessageSignature ({ className, message: { args, mutates, name, returnTy
         <>
           <Icon
             className='ui--MessageSignature-mutates'
-            data-for={`mutates-${name}`}
-            data-tip
-            name='database'
+            icon='database'
+            tooltip={`mutates-${name}`}
           />
           {withTooltip && (
             <Tooltip
@@ -95,7 +94,7 @@ export default React.memo(
 
     .ui--MessageSignature-name {
       color: #2f8ddb;
-      font-weight: bold;  
+      font-weight: bold;
     }
 
     .ui--MessageSignature-type {

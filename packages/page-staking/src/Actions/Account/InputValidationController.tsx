@@ -2,10 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { DeriveBalancesAll } from '@polkadot/api-derive/types';
 import { AccountId, StakingLedger } from '@polkadot/types/interfaces';
 
 import React, { useEffect, useState } from 'react';
-import { Icon } from '@polkadot/react-components';
 import { Option } from '@polkadot/types';
 import { useApi, useCall } from '@polkadot/react-hooks';
 
@@ -23,27 +23,26 @@ interface ErrorState {
   isFatal: boolean;
 }
 
+const transformBonded = {
+  transform: (value: Option<AccountId>): string | null =>
+    value.isSome
+      ? value.unwrap().toString()
+      : null
+};
+
+const transformStash = {
+  transform: (value: Option<StakingLedger>): string | null =>
+    value.isSome
+      ? value.unwrap().stash.toString()
+      : null
+};
+
 function ValidateController ({ accountId, controllerId, defaultController, onError }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api } = useApi();
-  const stashBondedId = useCall<string | null>(api.query.staking.bonded, [accountId], {
-    transform: (value: Option<AccountId>): string | null =>
-      value.isSome
-        ? value.unwrap().toString()
-        : null
-  });
-  const bondedId = useCall<string | null>(api.query.staking.bonded, [controllerId], {
-    transform: (value: Option<AccountId>): string | null =>
-      value.isSome
-        ? value.unwrap().toString()
-        : null
-  });
-  const stashId = useCall<string | null>(controllerId ? api.query.staking.ledger : null, [controllerId], {
-    transform: (value: Option<StakingLedger>): string | null =>
-      value.isSome
-        ? value.unwrap().stash.toString()
-        : null
-  });
+  const bondedId = useCall<string | null>(controllerId ? api.query.staking.bonded : null, [controllerId], transformBonded);
+  const stashId = useCall<string | null>(controllerId ? api.query.staking.ledger : null, [controllerId], transformStash);
+  const allBalances = useCall<DeriveBalancesAll>(controllerId ? api.derive.balances.all : null, [controllerId]);
   const [{ error, isFatal }, setError] = useState<ErrorState>({ error: null, isFatal: false });
 
   useEffect((): void => {
@@ -52,26 +51,24 @@ function ValidateController ({ accountId, controllerId, defaultController, onErr
     if (defaultController !== controllerId) {
       let newError: string | null = null;
       let isFatal = false;
- 
-      // if (bondedId) {
-      //   isFatal = true;
-      //   newError = t<string>('A controller account should not map to another stash. This selected controller is a stash, controlled by {{bondedId}}', { replace: { bondedId } });
-      // } else 
-      // in crust system, a stash can be a controller, but can not controlled by multiple controller account
-      if (stashBondedId) {
+
+      if (bondedId && (controllerId !== accountId)) {
         isFatal = true;
-        newError = t<string>('A stash account should not map to another controller. This selected stash already controlled by {{stashBondedId}}', { replace: { stashBondedId } });
+        newError = t('A controller account should not map to another stash. This selected controller is a stash, controlled by {{bondedId}}', { replace: { bondedId } });
       } else if (stashId) {
         isFatal = true;
-        newError = t<string>('A controller account should not be set to manages multiple stashes. The selected controller is already controlling {{stashId}}', { replace: { stashId } });
+        newError = t('A controller account should not be set to manage multiple stashes. The selected controller is already controlling {{stashId}}', { replace: { stashId } });
+      } else if (allBalances?.freeBalance.isZero()) {
+        isFatal = true;
+        newError = t('The controller does no have sufficient funds available to cover transaction fees. Ensure that a funded controller is used.');
       } else if (controllerId === accountId) {
-        newError = t<string>('Distinct stash and controller accounts are recommended to ensure fund security. You will be allowed to make the transaction, but take care to not tie up all funds, only use a portion of the available funds during this period.');
+        newError = t('Distinct stash and controller accounts are recommended to ensure fund security. You will be allowed to make the transaction, but take care to not tie up all funds, only use a portion of the available funds during this period.');
       }
 
       onError(newError, isFatal);
       setError((state) => state.error !== newError ? { error: newError, isFatal } : state);
     }
-  }, [accountId, bondedId, controllerId, defaultController, onError, stashId, t]);
+  }, [accountId, allBalances, bondedId, controllerId, defaultController, onError, stashId, t]);
 
   if (!error || !accountId) {
     return null;
@@ -79,7 +76,7 @@ function ValidateController ({ accountId, controllerId, defaultController, onErr
 
   return (
     <article className={isFatal ? 'error' : 'warning'}>
-      <div><Icon name='warning sign' />{error}</div>
+      <div>{error}</div>
     </article>
   );
 }
