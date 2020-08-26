@@ -13,13 +13,14 @@ interface Props {
   stakingInfo?: DeriveStakingAccount;
 }
 
-function StakingBonded ({ className = '', stakingInfo }: Props): React.ReactElement<Props> | null {
-  console.log('stakingAccount', JSON.stringify(stakingInfo))
-  const stakingLedger = stakingInfo && JSON.parse(JSON.stringify(stakingInfo));
+function StakingEffected ({ className = '', stakingInfo }: Props): React.ReactElement<Props> | null {
+
+  const stakingLedger = stakingInfo;
   let balance = new BN(0);
   if (stakingInfo && stakingLedger) {
-    balance = new BN((Number(stakingLedger?.active)).toString());
+    balance = new BN((Number(stakingLedger?.valid)).toString());
   }
+
   if (!balance?.gtn(0)) {
     return null;
   }
@@ -32,4 +33,4 @@ function StakingBonded ({ className = '', stakingInfo }: Props): React.ReactElem
   );
 }
 
-export default React.memo(StakingBonded);
+export default React.memo(StakingEffected);

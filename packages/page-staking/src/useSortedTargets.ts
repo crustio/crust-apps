@@ -150,7 +150,7 @@ function extractInfo (allAccounts: string[], amount: BN = baseBalance(), elected
 }
 
 const transformEra = {
-  transform: ({ activeEra }: DeriveSessionIndexes) => activeEra.gtn(0) ? activeEra.subn(1) : BN_ZERO
+  transform: ({ currentEra }: DeriveSessionIndexes) => currentEra.gtn(0) ? currentEra.subn(1) : BN_ZERO
 };
 
 const transformReward = {
@@ -163,6 +163,8 @@ export default function useSortedTargets (favorites: string[]): SortedTargets {
   const electedInfo = useCall<DeriveStakingElected>(api.derive.staking.electedInfo);
   const waitingInfo = useCall<DeriveStakingWaiting>(api.derive.staking.waitingInfo);
   const lastEra = useCall<BN>(api.derive.session.indexes, undefined, transformEra);
+  console.log('electedInfo', electedInfo)
+  console.log('waitingInfo', waitingInfo)
   const lastReward = useCall<BN>(lastEra && api.query.staking.erasValidatorReward, [lastEra], transformReward);
   const [calcWith, setCalcWith] = useState<BN | undefined>(baseBalance());
   const calcWithDebounce = useDebounce(calcWith);

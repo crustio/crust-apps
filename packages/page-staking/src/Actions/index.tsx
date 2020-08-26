@@ -6,7 +6,7 @@ import { StakerState } from '@polkadot/react-hooks/types';
 import { SortedTargets } from '../types';
 
 import BN from 'bn.js';
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useEffect, useState } from 'react';
 import { Button, Table } from '@polkadot/react-components';
 import { useAvailableSlashes } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
@@ -33,29 +33,50 @@ interface State {
   foundStashes?: StakerState[];
 }
 
-function sortStashes (a: StakerState, b: StakerState): number {
-  return (a.isStashValidating ? 1 : (a.isStashNominating ? 5 : 99)) - (b.isStashValidating ? 1 : (b.isStashNominating ? 5 : 99));
-}
+// function sortStashes (a: StakerState, b: StakerState): number {
+//   return (a.isStashValidating ? 1 : (a.isStashNominating ? 5 : 99)) - (b.isStashValidating ? 1 : (b.isStashNominating ? 5 : 99));
+// }
 
-function extractState (ownStashes?: StakerState[]): State {
-  if (!ownStashes) {
-    return {};
-  }
+// function extractState (ownStashes?: StakerState[]): State {
+//   if (!ownStashes) {
+//     return {};
+//   }
+//   const ownStashIds = ownStashes?.map((e) => { return e.stashId} );
+//   return {
+//     bondedTotal: ownStashes.reduce((total: BN, { stakingLedger }) => {
+//       const stakingLedgerObj = JSON.parse(JSON.stringify(stakingLedger));
+//       console.log('stakingLedgerObj', stakingLedgerObj)
+//       return (stakingLedgerObj != null && ownStashIds?.indexOf(stakingLedgerObj.stash) != -1)
+//           ? total.add(new BN(Number(stakingLedgerObj.total).toString()))
+//           : total
+//     }, BN_ZERO),
+//     foundStashes: ownStashes.sort(sortStashes)
+//   };
+// }
 
-  return {
-    bondedTotal: ownStashes.reduce((total: BN, { stakingLedger }) =>
-      stakingLedger
-        ? total.add(stakingLedger.total.unwrap())
-        : total,
-    BN_ZERO),
-    foundStashes: ownStashes.sort(sortStashes)
-  };
-}
-
-function Actions ({ className = '', isInElection, ownStashes, targets }: Props): React.ReactElement<Props> {
+function Actions ({ className = '', isInElection, ownStashes, next, targets, validators }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const allSlashes = useAvailableSlashes();
 
+  const [{ bondedTotal, foundStashes }, setState] = useState<State>({});
+
+  useEffect((): void => {
+    const ownStashIds = ownStashes?.map((e) => { return e.stashId} )
+    console.log('ownStashIds', ownStashIds)
+    console.log('ownStashes', JSON.stringify(ownStashes))
+    ownStashes && setState({
+      bondedTotal: ownStashes.reduce((total: BN, { stakingLedger }) => {
+        const stakingLedgerObj = JSON.parse(JSON.stringify(stakingLedger));
+        console.log('stakingLedgerObj', stakingLedgerObj)
+        return (stakingLedgerObj != null && ownStashIds?.indexOf(stakingLedgerObj.stash) != -1)
+          ? total.add(new BN(Number(stakingLedgerObj.total).toString()))
+          : total
+      }, BN_ZERO),
+      foundStashes: ownStashes.filter((e) => e.isOwnController).sort((a, b) =>
+        (a.isStashValidating ? 1 : (a.isStashNominating ? 5 : 99)) - (b.isStashValidating ? 1 : (b.isStashNominating ? 5 : 99))
+      )
+    });
+  }, [ownStashes]);
   const headerRef = useRef([
     [t('stashes'), 'start', 2],
     [t('controller'), 'address'],
@@ -63,19 +84,19 @@ function Actions ({ className = '', isInElection, ownStashes, targets }: Props):
     [t('bonded'), 'number'],
     [undefined, undefined, 2]
   ]);
-
-  const { bondedTotal, foundStashes } = useMemo(
-    () => extractState(ownStashes),
-    [ownStashes]
-  );
+  
+  // const { bondedTotal, foundStashes } = useMemo(
+  //   () => extractState(ownStashes),
+  //   [ownStashes]
+  // );
 
   const footer = useMemo(() => (
     <tr>
-      <td colSpan={4} />
+      <td colSpan={3} />
       <td className='number'>
         {bondedTotal && <FormatBalance value={bondedTotal} />}
       </td>
-      <td colSpan={2} />
+      <td colSpan={1} />
     </tr>
   ), [bondedTotal]);
 
@@ -101,7 +122,9 @@ function Actions ({ className = '', isInElection, ownStashes, targets }: Props):
             info={info}
             isDisabled={isInElection}
             key={info.stashId}
+            next={next}
             targets={targets}
+            validators={validators}
           />
         ))}
       </Table>

@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 import { Modal, TxButton } from '@polkadot/react-components';
 
 import { useTranslation } from '../../translate';
-import NominatePartial from '../partials/Nominate';
+import CutGuaranteePartial from '../partials/CutGuarantee';
 
 interface Props {
   controllerId: string;
@@ -21,17 +21,17 @@ interface Props {
   validators?: string[];
 }
 
-function Nominate ({ controllerId, next, nominating, onClose, stashId, targets, validators }: Props): React.ReactElement<Props> | null {
+function CutGuarantee ({ controllerId, next, nominating, onClose, stashId, targets, validators }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const [{ nominateTx }, setTx] = useState<NominateInfo>({});
 
   return (
     <Modal
-      header={t<string>('Guarantee Validators')}
+      header={t<string>('CutGuarantee Validators')}
       size='large'
     >
       <Modal.Content>
-        <NominatePartial
+        <CutGuaranteePartial
           controllerId={controllerId}
           next={next}
           nominating={nominating}
@@ -48,7 +48,7 @@ function Nominate ({ controllerId, next, nominating, onClose, stashId, targets, 
           extrinsic={nominateTx}
           icon='hand-paper'
           isDisabled={!nominateTx}
-          label={t<string>('Guarantee')}
+          label={t<string>('CutGuarantee')}
           onStart={onClose}
         />
       </Modal.Actions>
@@ -56,4 +56,4 @@ function Nominate ({ controllerId, next, nominating, onClose, stashId, targets, 
   );
 }
 
-export default React.memo(Nominate);
+export default React.memo(CutGuarantee);

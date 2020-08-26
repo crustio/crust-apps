@@ -13,6 +13,7 @@ import { useApi, useFavorites } from '@polkadot/react-hooks';
 import { MAX_NOMINATIONS, MAX_PAYOUTS, STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
 import BN from 'bn.js';
+
 interface Props {
   className?: string;
   controllerId: string;
@@ -53,7 +54,7 @@ function initialPick (targets: SortedTargets): Selected {
   };
 }
 
-function Nominate ({ className = '', controllerId, next, nominating, onChange, stashId, targets, validators, withSenders }: Props): React.ReactElement<Props> {
+function CutGuarantee ({ className = '', controllerId, next, nominating, onChange, stashId, targets, validators, withSenders }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [favorites] = useFavorites(STORE_FAVS_BASE);
@@ -102,7 +103,7 @@ function Nominate ({ className = '', controllerId, next, nominating, onChange, s
   useEffect((): void => {
     onChange({
       nominateTx: selected && selected.length && amount
-        ? api.tx.staking.guarantee([selected[0], amount])
+        ? api.tx.staking.cutGuarantee([selected[0], amount])
         : null
     });
   }, [api, onChange, selected, amount]);
@@ -193,7 +194,7 @@ function Nominate ({ className = '', controllerId, next, nominating, onChange, s
   );
 }
 
-export default React.memo(styled(Nominate)`
+export default React.memo(styled(CutGuarantee)`
   article.warning {
     margin-top: 0;
   }

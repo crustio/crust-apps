@@ -6,7 +6,7 @@ import { DeriveStakingOverview } from '@polkadot/api-derive/types';
 import { AppProps as Props } from '@polkadot/react-components/types';
 import { ElectionStatus } from '@polkadot/types/interfaces';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useReducer } from 'react';
 import { Route, Switch } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
@@ -34,6 +34,10 @@ const transformElection = {
   transform: (status: ElectionStatus) => status.isOpen
 };
 
+function reduceNominators (nominators: string[], additional: string[]): string[] {
+  return nominators.concat(...additional.filter((nominator): boolean => !nominators.includes(nominator)));
+}
+
 function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
@@ -45,8 +49,8 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
   const slashes = useAvailableSlashes();
   const targets = useSortedTargets(favorites);
   const stakingOverview = useCall<DeriveStakingOverview>(api.derive.staking.overview);
-  console.log('stakingOverview::::: index', stakingOverview)
   const isInElection = useCall<boolean>(api.query.staking?.eraElectionStatus, undefined, transformElection);
+  const [nominators, dispatchNominators] = useReducer(reduceNominators, [] as string[]);
 
   const hasQueries = useMemo(
     () => hasAccounts && !!(api.query.imOnline?.authoredBlocks) && !!(api.query.staking.activeEra),
@@ -157,6 +161,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
             next={next}
             stakingOverview={stakingOverview}
             toggleFavorite={toggleFavorite}
+            nominators={nominators}
           />
         </Route>
       </Switch>
@@ -165,6 +170,8 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
         isInElection={isInElection}
         ownStashes={ownStashes}
         targets={targets}
+        next={next}
+        validators={stakingOverview && stakingOverview.validators.map(e => (e.toString()))}
       />
       <Overview
         className={basePath === pathname ? '' : 'staking--hidden'}
@@ -173,6 +180,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
         next={next}
         stakingOverview={stakingOverview}
         toggleFavorite={toggleFavorite}
+        setNominators={dispatchNominators}
       />
     </main>
   );

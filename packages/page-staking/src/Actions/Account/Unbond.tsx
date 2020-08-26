@@ -7,8 +7,9 @@ import { AccountId, StakingLedger } from '@polkadot/types/interfaces';
 import BN from 'bn.js';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { InputAddress, InputBalance, Modal, Static, Toggle, TxButton } from '@polkadot/react-components';
+import { Bonded, InputAddress, InputBalance, Modal, Static, TxButton } from '@polkadot/react-components';
 import { BlockToTime } from '@polkadot/react-query';
+import { useApi, useCall } from '@polkadot/react-hooks';
 
 import { useTranslation } from '../../translate';
 import useUnbondDuration from '../useUnbondDuration';
@@ -22,11 +23,12 @@ interface Props {
 }
 
 function Unbond ({ className = '', controllerId, onClose, stakingLedger, stashId }: Props): React.ReactElement<Props> {
+  const { api } = useApi();
   const { t } = useTranslation();
   const bondedBlocks = useUnbondDuration();
-  const [maxBalance] = useState<BN | null>(stakingLedger?.active.unwrap() || null);
+  const stakingLedgerInfo = useCall<StakingLedger | null>(controllerId && api.query.staking.ledger, [controllerId]);
+  const [maxBalance] = useState<BN | null>(stakingLedgerInfo && new BN(Number(JSON.parse(JSON.stringify(stakingLedgerInfo)).active).toString()) || null);
   const [maxUnbond, setMaxUnbond] = useState<BN | null>(null);
-  const [withMax, setWithMax] = useState(false);
 
   return (
     <Modal
@@ -56,22 +58,18 @@ function Unbond ({ className = '', controllerId, onClose, stakingLedger, stashId
           <Modal.Column>
             <InputBalance
               autoFocus
-              defaultValue={maxBalance}
               help={t<string>('The amount of funds to unbond, this is adjusted using the bonded funds on the stash account.')}
-              isDisabled={withMax}
-              key={`unbondAmount-${withMax.toString()}`}
               label={t<string>('unbond amount')}
+              labelExtra={
+                <Bonded
+                  label={<span className='label'>{t<string>('bonded')}</span>}
+                  params={stashId}
+                />
+              }
               maxValue={maxBalance}
               onChange={setMaxUnbond}
               withMax
-            >
-              <Toggle
-                isOverlay
-                label={t<string>('all bonded')}
-                onChange={setWithMax}
-                value={withMax}
-              />
-            </InputBalance>
+            />
             {bondedBlocks?.gtn(0) && (
               <Static
                 help={t<string>('The bonding duration for any staked funds. After this period needs to be withdrawn.')}
@@ -90,10 +88,10 @@ function Unbond ({ className = '', controllerId, onClose, stakingLedger, stashId
         <TxButton
           accountId={controllerId}
           icon='unlock'
-          isDisabled={!((withMax ? maxBalance : maxUnbond)?.gtn(0))}
+          isDisabled={!maxUnbond?.gtn(0)}
           label={t<string>('Unbond')}
           onStart={onClose}
-          params={[withMax ? maxBalance : maxUnbond]}
+          params={[maxUnbond]}
           tx='staking.unbond'
         />
       </Modal.Actions>

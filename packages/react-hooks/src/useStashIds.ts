@@ -7,13 +7,11 @@ import { AccountId } from '@polkadot/types/interfaces';
 import useApi from './useApi';
 import useCall from './useCall';
 
-const transformStashes = {
-  transform: (stashes: AccountId[]) => stashes.map((accountId) => accountId.toString())
-};
-
 export default function useStashIds (): string[] | undefined {
   const { api } = useApi();
-  const allStashes = useCall<string[]>(api.derive.staking.stashes, undefined, transformStashes);
+  const allStashes = useCall<string[]>(api.derive.staking.stashes, [], {
+    transform: (stashes: AccountId[]) => stashes.map((accountId) => accountId.toString())
+  });
 
   return allStashes;
 }

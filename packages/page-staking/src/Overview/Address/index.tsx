@@ -2,11 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance, EraIndex, SlashingSpans } from '@polkadot/types/interfaces';
+import { Balance, EraIndex, SlashingSpans, Exposure, AccountId } from '@polkadot/types/interfaces';
 import { DeriveAccountInfo, DeriveStakingQuery } from '@polkadot/api-derive/types';
+import { Compact } from '@polkadot/types/codec';
 
 import BN from 'bn.js';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useEffect } from 'react';
 import { ApiPromise } from '@polkadot/api';
 import { AddressSmall, Icon, LinkExternal } from '@polkadot/react-components';
 import { checkVisibility } from '@polkadot/react-components/util';
@@ -44,9 +45,13 @@ interface StakingState {
   stakeOwn?: BN;
 }
 
+interface ValidatorPrefs {
+  fee: Compact<Balance>
+}
+
 const PERBILL_PERCENT = 10_000_000;
 
-function expandInfo ({ exposure, validatorPrefs }: DeriveStakingQuery): StakingState {
+function expandInfo (exposure: Exposure, validatorPref: ValidatorPrefs): StakingState {
   let nominators: [string, Balance][] = [];
   let stakeTotal: BN | undefined;
   let stakeOther: BN | undefined;
@@ -56,10 +61,11 @@ function expandInfo ({ exposure, validatorPrefs }: DeriveStakingQuery): StakingS
     nominators = exposure.others.map(({ value, who }): [string, Balance] => [who.toString(), value.unwrap()]);
     stakeTotal = exposure.total.unwrap();
     stakeOwn = exposure.own.unwrap();
+    console.log('stakeOwn', stakeOwn)
     stakeOther = stakeTotal.sub(stakeOwn);
   }
 
-  const commission = validatorPrefs?.commission?.unwrap();
+  const commission = validatorPref?.fee?.unwrap();
 
   return {
     commission: commission
@@ -78,21 +84,32 @@ const transformSlashes = {
 
 function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
   const params = useMemo(() => [address], [address]);
+  console.log('params', params)
   const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, params);
   const slashingSpans = useCall<SlashingSpans | null>(!isMain && api.query.staking.slashingSpans, params, transformSlashes);
-  const stakingInfo = useCall<DeriveStakingQuery>(api.derive.staking.query, params);
+  const validatorsRel = useCall<ValidatorPrefs>(api.query.staking.validators, [address]);
+  const controllerId = useCall<Option<AccountId> | null>(api.query.staking.bonded, [address]);
+  // const stakingInfo = useCall<DeriveStakingQuery>(api.derive.staking.query, params);
+  const currentEra =  useCall<EraIndex>(api.query.staking.currentEra);
+  console.log('controllerId', controllerId)
+  const stakingInfo = useCall<Exposure>(api.query.staking.erasStakers, [currentEra?.toHuman(), params]);
+  console.log('stakingInfo', stakingInfo)
 
-  return { accountInfo, slashingSpans, stakingInfo };
+  return { accountInfo, slashingSpans, stakingInfo, validatorsRel };
 }
 
-function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, nominatedBy, onlineCount, onlineMessage, points, toggleFavorite, withIdentity }: Props): React.ReactElement<Props> | null {
+function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, nominatedBy, onlineCount, onlineMessage, points, toggleFavorite, withIdentity, setNominators }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  const { accountInfo, slashingSpans, stakingInfo } = useAddressCalls(api, address, isMain);
+  const { accountInfo, slashingSpans, stakingInfo, validatorsRel } = useAddressCalls(api, address, isMain);
 
   const { commission, nominators, stakeOther, stakeOwn } = useMemo(
-    () => stakingInfo ? expandInfo(stakingInfo) : { nominators: [] },
+    () => stakingInfo && validatorsRel ? expandInfo(stakingInfo, validatorsRel) : { nominators: [] },
     [stakingInfo]
   );
+
+  useEffect((): void => {
+    stakingInfo && setNominators && setNominators(stakingInfo.others.map((guarantor): string => guarantor.who.toString()));
+  }, [setNominators, stakingInfo, validatorsRel]);
 
   const isVisible = useMemo(
     () => accountInfo ? checkVisibility(api, address, accountInfo, filterName, withIdentity) : true,
@@ -143,7 +160,7 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
         )
       }
       <td className='number media--1100'>
-        {stakeOwn?.gtn(0) && (
+        {(
           <FormatBalance value={stakeOwn} />
         )}
       </td>
