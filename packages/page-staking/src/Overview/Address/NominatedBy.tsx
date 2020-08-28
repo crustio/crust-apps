@@ -2,72 +2,32 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { EraIndex, SlashingSpans } from '@polkadot/types/interfaces';
-
-import React, { useMemo } from 'react';
+import React from 'react';
 import { AddressMini, Expander, Spinner } from '@polkadot/react-components';
 import { formatNumber } from '@polkadot/util';
 
 import { useTranslation } from '../../translate';
 
 interface Props {
-  nominators?: [string, EraIndex, number][];
-  slashingSpans?: SlashingSpans | null;
+  nominators?: [string, number][];
 }
 
-interface Chilled {
-  active: string[];
-  chilled: string[];
-}
-
-function extractChilled (nominators: [string, EraIndex, number][] = [], slashingSpans?: SlashingSpans | null): Chilled {
-  const chilled = slashingSpans
-    ? nominators
-      .filter(([, submittedIn]) => !slashingSpans.lastNonzeroSlash.isZero() && slashingSpans.lastNonzeroSlash.gte(submittedIn))
-      .map(([who]) => who)
-    : [];
-  const active = nominators
-    .filter(([who]) => !chilled.includes(who))
-    .map(([who]) => who);
-
-  return { active, chilled };
-}
-
-function NominatedBy ({ nominators, slashingSpans }: Props): React.ReactElement<Props> {
+function NominatedBy ({ nominators }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-
-  const { active, chilled } = useMemo(
-    () => extractChilled(nominators, slashingSpans),
-    [nominators, slashingSpans]
-  );
-
   return (
     <td className='start all'>
       {nominators
-        ? (
-          <>
-            {active.length !== 0 && (
-              <Expander summary={t<string>('Nominations ({{count}})', { replace: { count: formatNumber(active.length) } })}>
-                {active.map((who): React.ReactNode =>
-                  <AddressMini
-                    key={who}
-                    value={who}
-                  />
-                )}
-              </Expander>
+        ? (nominators.length !== 0 && (
+          <Expander summary={t<string>('Guarantors ({{count}})', { replace: { count: formatNumber(nominators.length) } })}>
+            {nominators.map(([who, index]): React.ReactNode =>
+              <AddressMini
+                key={who}
+                summary={t<string>('priority {{index}}', { replace: { index } })}
+                value={who}
+              />
             )}
-            {chilled.length !== 0 && (
-              <Expander summary={t<string>('Renomination required ({{count}})', { replace: { count: formatNumber(chilled.length) } })}>
-                {chilled.map((who): React.ReactNode =>
-                  <AddressMini
-                    key={who}
-                    value={who}
-                  />
-                )}
-              </Expander>
-            )}
-          </>
-        )
+          </Expander>
+        ))
         : <Spinner variant='mini' />
       }
     </td>

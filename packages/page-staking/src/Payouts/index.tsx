@@ -102,6 +102,7 @@ function extractStashes (allRewards: Record<string, DeriveStakerReward[]>): Payo
 }
 
 function getAvailable (allRewards: Record<string, DeriveStakerReward[]> | null | undefined, stakerPayoutsAfter: BN): Available {
+  console.log('allRewards', allRewards)
   if (allRewards) {
     const stashes = extractStashes(allRewards);
     const stashTotal = stashes.length
@@ -155,6 +156,7 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
   const { t } = useTranslation();
   const { api } = useApi();
   const [hasOwnValidators] = useState(ownValidators.length !== 0);
+  console.log('ownValidators', ownValidators)
   const [myStashesIndex, setMyStashesIndex] = useState((api.tx.staking.payoutStakers && hasOwnValidators) ? 0 : 1);
   const [eraSelectionIndex, setEraSelectionIndex] = useState(0);
   const eraLength = useCall<BN>(api.derive.session.eraLength);
@@ -169,6 +171,7 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
 
   const { allRewards, isLoadingRewards } = useOwnEraRewards(eraSelection[eraSelectionIndex].value, myStashesIndex ? undefined : ownValidators);
 
+  console.log('allRewards', allRewards)
   const { stashTotal, stashes, validators } = useMemo(
     () => getAvailable(allRewards, stakerPayoutsAfter),
     [allRewards, stakerPayoutsAfter]
@@ -214,7 +217,7 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
           <p>{t('If you have not claimed rewards straight after the end of the era, the validator is in the active set and you are seeing no rewards, this would mean that the reward payout transaction was made by another account on your behalf. Always check your favorite explorer to see any historic payouts made to your accounts.')}</p>
         </article>
       )}
-      {api.tx.staking.payoutStakers && (
+      {(
         <Button.Group>
           <PayToggle
             onChange={setMyStashesIndex}

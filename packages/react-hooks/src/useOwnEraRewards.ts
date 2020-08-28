@@ -99,6 +99,9 @@ export default function useOwnEraRewards (maxEras?: number, ownValidators?: Stak
   const erasPoints = useCall<DeriveEraPoints[]>(!!validatorEras.length && !!filteredEras.length && api.derive.staking._erasPoints, [filteredEras, false]);
   const erasRewards = useCall<DeriveEraRewards[]>(!!validatorEras.length && !!filteredEras.length && api.derive.staking._erasRewards, [filteredEras, false]);
 
+  console.log('stakerRewards', stakerRewards)
+  console.log('erasPoints', erasPoints)
+  console.log('erasRewards', erasRewards)
   useEffect((): void => {
     setState({ allRewards: null, isLoadingRewards: true, rewardCount: 0 });
   }, [maxEras, ownValidators]);

@@ -3,11 +3,12 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DeriveBalancesAll, DeriveStakingAccount } from '@polkadot/api-derive/types';
-import { UnappliedSlash, Nominations, Balance, IndividualExposure } from '@polkadot/types/interfaces';
+import { UnappliedSlash, Nominations, Balance, IndividualExposure, EraIndex, Exposure } from '@polkadot/types/interfaces';
 import { StakerState } from '@polkadot/react-hooks/types';
 import { SortedTargets } from '../../types';
 import { Slash } from '../types';
 import { Compact } from '@polkadot/types/codec';
+import { Codec } from '@polkadot/types/types';
 
 import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
@@ -30,6 +31,7 @@ import { RewardDestination } from '@polkadot/types/interfaces/staking';
 import CutGuarantee from './CutGuarantee';
 import EffectedStake from './EffectedStake';
 import { BN_ZERO } from '@polkadot/util';
+import useOwnEffectedStake from '@polkadot/react-hooks/useOwnEffectedStake';
 
 interface Props {
   allSlashes?: [BN, UnappliedSlash[]][];
@@ -42,7 +44,7 @@ interface Props {
   validators?: string[];
 }
 
-interface Guarantee {
+export interface Guarantee extends Codec {
   targets: IndividualExposure[];
   total: Compact<Balance>;
   submitted_in: number;
@@ -69,11 +71,14 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const isValidator = validators && (validators?.indexOf(stashId) != -1);
   const isGuarantor = guarantors && JSON.parse(JSON.stringify(guarantors)) != null;
   const role = effected ? (isValidator ? 'Validator' : (isGuarantor ? 'Guarantor' : 'Bonded')) : 'Bonded';
-  let guaranteeTargets: IndividualExposure[] = [];
-  let stakeValue = new BN(0);
-  if (guarantors && JSON.parse(JSON.stringify(guarantors)) != null) {
-    guaranteeTargets = JSON.parse(JSON.stringify(guarantors)).targets;
-    stakeValue = guaranteeTargets.reduce((total: BN, { value }) => { return total.add(new BN(Number(value).toString()))}, BN_ZERO)
+  let guaranteeTargets: [string, BN][] = [];
+  let stakeValue: BN = new BN(0);
+  const currentEra = useCall<EraIndex>(api.query.staking.currentEra);
+  const effectedStake = currentEra && guarantors && useOwnEffectedStake(currentEra, guarantors, stashId);
+  if (effectedStake) {
+    console.log('effectedStake', JSON.stringify(effectedStake))
+    guaranteeTargets = effectedStake.targets;
+    stakeValue = effectedStake.stakeValue;
   }
   const [isBondExtraOpen, toggleBondExtra] = useToggle();
   const [isInjectOpen, toggleInject] = useToggle();

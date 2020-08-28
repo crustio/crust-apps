@@ -53,7 +53,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
   const [nominators, dispatchNominators] = useReducer(reduceNominators, [] as string[]);
 
   const hasQueries = useMemo(
-    () => hasAccounts && !!(api.query.imOnline?.authoredBlocks) && !!(api.query.staking.activeEra),
+    () => hasAccounts && !!(api.query.imOnline?.authoredBlocks) && !!(api.query.staking.currentEra),
     [api, hasAccounts]
   );
 
@@ -79,7 +79,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
       name: 'actions',
       text: t<string>('Account actions')
     },
-    isFunction(api.query.staking.activeEra)
+    isFunction(api.query.staking.currentEra)
       ? {
         name: 'payout',
         text: t<string>('Payouts')

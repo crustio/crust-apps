@@ -15,9 +15,7 @@ import { BN_ZERO } from '@polkadot/util';
 import ElectionBanner from '../ElectionBanner';
 import { useTranslation } from '../translate';
 import Account from './Account';
-import NewNominator from './NewNominator';
 import NewStash from './NewStash';
-import NewValidator from './NewValidator';
 
 interface Props {
   className?: string;
@@ -103,11 +101,11 @@ function Actions ({ className = '', isInElection, ownStashes, next, targets, val
     <div className={className}>
       <ElectionBanner isInElection={isInElection} />
       <Button.Group>
-        <NewNominator
+        {/* <NewNominator
           isInElection={isInElection}
           targets={targets}
         />
-        <NewValidator isInElection={isInElection} />
+        <NewValidator isInElection={isInElection} /> */}
         <NewStash />
       </Button.Group>
       <Table

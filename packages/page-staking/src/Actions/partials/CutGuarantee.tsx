@@ -13,6 +13,7 @@ import { useApi, useFavorites } from '@polkadot/react-hooks';
 import { MAX_NOMINATIONS, MAX_PAYOUTS, STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
 import BN from 'bn.js';
+import { CutGuaranteeable } from '@polkadot/react-query';
 
 interface Props {
   className?: string;
@@ -59,6 +60,7 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
   const { api } = useApi();
   const [favorites] = useFavorites(STORE_FAVS_BASE);
   const [{ isAutoSelect, selected }, setSelected] = useState<Selected>(initialPick(targets));
+  const cutGuaranteeable = <span className='label'>{t<string>('cutGuaranteeable')}</span>;
   const [amount, setAmount] = useState<BN | undefined>(new BN(0));
   const [available] = useState<string[]>((): string[] => {
     const shortlist = [
@@ -188,6 +190,14 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
           label={t<string>('amount')}
           withMax
           onChange={setAmount}
+          labelExtra={
+            selected[0] &&
+            <CutGuaranteeable
+              label={cutGuaranteeable}
+              target={selected[0]}
+              guarantor={stashId}
+            />
+          }
         />
       </Modal.Column>
     </div>

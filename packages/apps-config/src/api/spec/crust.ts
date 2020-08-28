@@ -92,6 +92,5 @@ export default {
     total: 'Compact<Balance>',
     submitted_in: 'EraIndex',
     suppressed: 'bool'
-  },
-  EraIndex: 'u32'
+  }
 };

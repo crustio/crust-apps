@@ -150,7 +150,10 @@ function extractInfo (allAccounts: string[], amount: BN = baseBalance(), elected
 }
 
 const transformEra = {
-  transform: ({ currentEra }: DeriveSessionIndexes) => currentEra.gtn(0) ? currentEra.subn(1) : BN_ZERO
+  transform: ({ currentEra }: DeriveSessionIndexes) => {
+    let ce = new BN(currentEra.toString());
+    return ce.gtn(0) ? ce.subn(1) : BN_ZERO
+  }
 };
 
 const transformReward = {

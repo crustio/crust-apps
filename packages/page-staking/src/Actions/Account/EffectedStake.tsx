@@ -1,9 +1,6 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-
-import { IndividualExposure } from '@polkadot/types/interfaces';
-
 import BN from 'bn.js';
 import React from 'react';
 import { AddressMini, Expander } from '@polkadot/react-components';
@@ -11,10 +8,11 @@ import { FormatBalance } from '@polkadot/react-query';
 
 interface Props {
   stakeValue?: BN;
-  validators: IndividualExposure[];
+  validators: [string, BN][];
 }
 
 function EffectedStake ({ validators, stakeValue }: Props): React.ReactElement<Props> {
+  console.log('validators', JSON.stringify(validators))
 
   return (
     <td className='number all'>
@@ -26,7 +24,7 @@ function EffectedStake ({ validators, stakeValue }: Props): React.ReactElement<P
               value={stakeValue}
             />
           }>
-            {validators.map(({who, value}): React.ReactNode =>
+            {validators.map(([who, value]): React.ReactNode =>
               <AddressMini
                 bonded={value}
                 key={who.toString()}

@@ -29,7 +29,7 @@ interface Props {
   isFavorite: boolean;
   isMain?: boolean;
   lastBlock?: string;
-  nominatedBy?: [string, EraIndex, number][];
+  nominatedBy?: [string, number][];
   onlineCount?: false | number;
   onlineMessage?: boolean;
   points?: string;
@@ -153,7 +153,7 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
         : (
           <NominatedBy
             nominators={nominatedBy}
-            slashingSpans={slashingSpans}
+            // slashingSpans={slashingSpans}
           />
         )
       }
