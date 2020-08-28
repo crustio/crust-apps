@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance, EraIndex, SlashingSpans, Exposure, AccountId } from '@polkadot/types/interfaces';
-import { DeriveAccountInfo, DeriveStakingQuery } from '@polkadot/api-derive/types';
+import { Balance, EraIndex, SlashingSpans, Exposure } from '@polkadot/types/interfaces';
+import { DeriveAccountInfo } from '@polkadot/api-derive/types';
 import { Compact } from '@polkadot/types/codec';
 
 import BN from 'bn.js';
@@ -35,6 +35,7 @@ interface Props {
   points?: string;
   toggleFavorite: (accountId: string) => void;
   withIdentity: boolean;
+  setNominators?: false | ((nominators: string[]) => void);
 }
 
 interface StakingState {
@@ -43,6 +44,7 @@ interface StakingState {
   stakeTotal?: BN;
   stakeOther?: BN;
   stakeOwn?: BN;
+  stakeLimit?: BN;
 }
 
 interface ValidatorPrefs {
@@ -51,7 +53,7 @@ interface ValidatorPrefs {
 
 const PERBILL_PERCENT = 10_000_000;
 
-function expandInfo (exposure: Exposure, validatorPref: ValidatorPrefs): StakingState {
+function expandInfo (exposure: Exposure, validatorPref: ValidatorPrefs, stakeLimit: BN): StakingState {
   let nominators: [string, Balance][] = [];
   let stakeTotal: BN | undefined;
   let stakeOther: BN | undefined;
@@ -61,12 +63,10 @@ function expandInfo (exposure: Exposure, validatorPref: ValidatorPrefs): Staking
     nominators = exposure.others.map(({ value, who }): [string, Balance] => [who.toString(), value.unwrap()]);
     stakeTotal = exposure.total.unwrap();
     stakeOwn = exposure.own.unwrap();
-    console.log('stakeOwn', stakeOwn)
     stakeOther = stakeTotal.sub(stakeOwn);
   }
 
   const commission = validatorPref?.fee?.unwrap();
-
   return {
     commission: commission
       ? `${(commission.toNumber() / PERBILL_PERCENT).toFixed(2)}%`
@@ -74,7 +74,8 @@ function expandInfo (exposure: Exposure, validatorPref: ValidatorPrefs): Staking
     nominators,
     stakeOther,
     stakeOwn,
-    stakeTotal
+    stakeTotal,
+    stakeLimit: new BN(stakeLimit.toString())
   };
 }
 
@@ -84,27 +85,24 @@ const transformSlashes = {
 
 function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
   const params = useMemo(() => [address], [address]);
-  console.log('params', params)
   const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, params);
   const slashingSpans = useCall<SlashingSpans | null>(!isMain && api.query.staking.slashingSpans, params, transformSlashes);
   const validatorsRel = useCall<ValidatorPrefs>(api.query.staking.validators, [address]);
-  const controllerId = useCall<Option<AccountId> | null>(api.query.staking.bonded, [address]);
   // const stakingInfo = useCall<DeriveStakingQuery>(api.derive.staking.query, params);
   const currentEra =  useCall<EraIndex>(api.query.staking.currentEra);
-  console.log('controllerId', controllerId)
-  const stakingInfo = useCall<Exposure>(api.query.staking.erasStakers, [currentEra?.toHuman(), params]);
-  console.log('stakingInfo', stakingInfo)
+  const stakingInfo = useCall<Exposure>(api.query.staking.erasStakers, [currentEra?.toHuman(), address]);
+  const _stakeLimit = useCall<BN>(api.query.staking.stakeLimit, params);
 
-  return { accountInfo, slashingSpans, stakingInfo, validatorsRel };
+  return { accountInfo, slashingSpans, stakingInfo, validatorsRel, _stakeLimit };
 }
 
 function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, nominatedBy, onlineCount, onlineMessage, points, toggleFavorite, withIdentity, setNominators }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  const { accountInfo, slashingSpans, stakingInfo, validatorsRel } = useAddressCalls(api, address, isMain);
+  const { accountInfo, slashingSpans, stakingInfo, validatorsRel, _stakeLimit } = useAddressCalls(api, address, isMain);
 
-  const { commission, nominators, stakeOther, stakeOwn } = useMemo(
-    () => stakingInfo && validatorsRel ? expandInfo(stakingInfo, validatorsRel) : { nominators: [] },
-    [stakingInfo]
+  const { commission, nominators, stakeOther, stakeOwn, stakeLimit } = useMemo(
+    () => stakingInfo && _stakeLimit && validatorsRel ? expandInfo(stakingInfo, validatorsRel, _stakeLimit) : { nominators: [] },
+    [stakingInfo, _stakeLimit]
   );
 
   useEffect((): void => {
@@ -162,6 +160,11 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
       <td className='number media--1100'>
         {(
           <FormatBalance value={stakeOwn} />
+        )}
+      </td>
+      <td className='number media--1100'>
+        {(
+          <FormatBalance value={stakeLimit} />
         )}
       </td>
       <td className='number'>

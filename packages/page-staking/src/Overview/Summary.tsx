@@ -23,7 +23,6 @@ interface Props {
 function Summary ({ className = '', isVisible, next, nominators, stakingOverview }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { lastBlockAuthors, lastBlockNumber } = useContext(BlockAuthorsContext);
-  console.log('stakingOverview', stakingOverview)
 
   return (
     <SummaryBox className={`${className}${!isVisible ? ' staking--hidden' : ''}`}>

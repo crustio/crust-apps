@@ -3,17 +3,17 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DeriveBalancesAll, DeriveStakingAccount } from '@polkadot/api-derive/types';
-import { UnappliedSlash, Nominations } from '@polkadot/types/interfaces';
+import { UnappliedSlash, Nominations, Balance, IndividualExposure } from '@polkadot/types/interfaces';
 import { StakerState } from '@polkadot/react-hooks/types';
 import { SortedTargets } from '../../types';
 import { Slash } from '../types';
+import { Compact } from '@polkadot/types/codec';
 
 import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AddressInfo, AddressMini, AddressSmall, Button, Menu, Popup, StakingBonded, StakingRedeemable, StakingUnbonding, TxButton } from '@polkadot/react-components';
 import { useApi, useCall, useToggle } from '@polkadot/react-hooks';
-import { Option } from '@polkadot/types';
 
 import { useTranslation } from '../../translate';
 import BondExtra from './BondExtra';
@@ -28,6 +28,8 @@ import Validate from './Validate';
 // import StakingEffected from '@polkadot/react-components/StakingEffected';
 import { RewardDestination } from '@polkadot/types/interfaces/staking';
 import CutGuarantee from './CutGuarantee';
+import EffectedStake from './EffectedStake';
+import { BN_ZERO } from '@polkadot/util';
 
 interface Props {
   allSlashes?: [BN, UnappliedSlash[]][];
@@ -38,6 +40,13 @@ interface Props {
   stashId: string;
   targets: SortedTargets;
   validators?: string[];
+}
+
+interface Guarantee {
+  targets: IndividualExposure[];
+  total: Compact<Balance>;
+  submitted_in: number;
+  suppressed: boolean;
 }
 
 function Account ({ allSlashes, className = '', info: { controllerId, destination, destinationId, hexSessionIdNext, hexSessionIdQueue, isLoading, isOwnController, isOwnStash, isStashNominating, isStashValidating, nominating, sessionIds, stakingLedger, stashId }, isDisabled, next, targets, validators }: Props): React.ReactElement<Props> {
@@ -54,12 +63,16 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   // });
   const rewardDestination = useCall<RewardDestination>(api.query.staking.payee, [stashId]);
   destination = rewardDestination && rewardDestination.toString();
-  const guarantors = useCall<Option<Nominations>>(api.query.staking.guarantors, [stashId]);
+  const guarantors = useCall<Guarantee>(api.query.staking.guarantors, [stashId]);
+  console.log('guarantors',JSON.stringify(guarantors))
   const effected = stakingAccount && JSON.parse(JSON.stringify(stakingAccount))?.valid != 0;
   const isValidator = validators && (validators?.indexOf(stashId) != -1);
   const isGuarantor = guarantors && JSON.parse(JSON.stringify(guarantors)) != null;
   const role = effected ? (isValidator ? 'Validator' : (isGuarantor ? 'Guarantor' : 'Bonded')) : 'Bonded';
-
+  let guaranteeTargets: IndividualExposure[] = [];
+  if (guarantors && JSON.parse(JSON.stringify(guarantors)) != null) {
+    guaranteeTargets = JSON.parse(JSON.stringify(guarantors)).targets;
+  }
   const [isBondExtraOpen, toggleBondExtra] = useToggle();
   const [isInjectOpen, toggleInject] = useToggle();
   const [isNominateOpen, toggleNominate] = useToggle();
@@ -210,6 +223,11 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
         <StakingUnbonding stakingInfo={stakingAccount} />
         <StakingRedeemable stakingInfo={stakingAccount} />
       </td>
+      <EffectedStake
+        validators = {guaranteeTargets}
+        // stakeValue = { new BN(100) }
+        // stakeValue = { guaranteeTargets.length > 0 ? guaranteeTargets.reduce((total: BN, { value }) => { return JSON.parse(JSON.stringify(value)) ? total.add(value?.unwrap()) : total}, BN_ZERO) : BN_ZERO }
+      />
       {/* <td className='number'>
         <StakingEffected stakingInfo={stakingAccount} />
       </td> */}
@@ -322,7 +340,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                     {t<string>('Withdraw unbonded funds')}
                   </Menu.Item> */}
                   <Menu.Divider />
-                  Validate
+                  {isStashValidating && 'Validate'} 
                   {isStashValidating &&
                     <Menu.Item
                       disabled={!isOwnController}
@@ -352,7 +370,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                     </Menu.Item>
                   }
                   <Menu.Divider />
-                  Guarantee
+                  { isStashNominating && validators && validators?.indexOf(stashId) == -1 && 'Guarantee' }
                   {isStashNominating && validators && validators?.indexOf(stashId) == -1 &&
                     <Menu.Item
                       disabled={!isOwnController}

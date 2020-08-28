@@ -14,7 +14,6 @@ interface Props {
 }
 
 function StakingBonded ({ className = '', stakingInfo }: Props): React.ReactElement<Props> | null {
-  console.log('stakingAccount', JSON.stringify(stakingInfo))
   const stakingLedger = stakingInfo && JSON.parse(JSON.stringify(stakingInfo));
   let balance = new BN(0);
   if (stakingInfo && stakingLedger) {

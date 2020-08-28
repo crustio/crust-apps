@@ -62,14 +62,11 @@ function Actions ({ className = '', isInElection, ownStashes, next, targets, val
 
   useEffect((): void => {
     const ownStashIds = ownStashes?.map((e) => { return e.stashId} )
-    console.log('ownStashIds', ownStashIds)
-    console.log('ownStashes', JSON.stringify(ownStashes))
     ownStashes && setState({
       bondedTotal: ownStashes.reduce((total: BN, { stakingLedger }) => {
         const stakingLedgerObj = JSON.parse(JSON.stringify(stakingLedger));
-        console.log('stakingLedgerObj', stakingLedgerObj)
         return (stakingLedgerObj != null && ownStashIds?.indexOf(stakingLedgerObj.stash) != -1)
-          ? total.add(new BN(Number(stakingLedgerObj.total).toString()))
+          ? total.add(new BN(Number(stakingLedgerObj.active).toString()))
           : total
       }, BN_ZERO),
       foundStashes: ownStashes.filter((e) => e.isOwnController).sort((a, b) =>
@@ -78,10 +75,12 @@ function Actions ({ className = '', isInElection, ownStashes, next, targets, val
     });
   }, [ownStashes]);
   const headerRef = useRef([
-    [t('stashes'), 'start', 2],
+    [t('stashes'), 'start'],
     [t('controller'), 'address'],
     [t('rewards'), 'number media--1200'],
     [t('bonded'), 'number'],
+    [t('effected stake')],
+    [t('role'), 'number ui--media-1200'],
     [undefined, undefined, 2]
   ]);
   
