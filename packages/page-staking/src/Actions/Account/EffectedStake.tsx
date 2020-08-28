@@ -18,7 +18,7 @@ function EffectedStake ({ validators, stakeValue }: Props): React.ReactElement<P
 
   return (
     <td className='number all'>
-      {(
+      {stakeValue?.gtn(0) && (
         <>
           <Expander summary={
             <FormatBalance

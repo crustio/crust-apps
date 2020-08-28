@@ -70,8 +70,10 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const isGuarantor = guarantors && JSON.parse(JSON.stringify(guarantors)) != null;
   const role = effected ? (isValidator ? 'Validator' : (isGuarantor ? 'Guarantor' : 'Bonded')) : 'Bonded';
   let guaranteeTargets: IndividualExposure[] = [];
+  let stakeValue = new BN(0);
   if (guarantors && JSON.parse(JSON.stringify(guarantors)) != null) {
     guaranteeTargets = JSON.parse(JSON.stringify(guarantors)).targets;
+    stakeValue = guaranteeTargets.reduce((total: BN, { value }) => { return total.add(new BN(Number(value).toString()))}, BN_ZERO)
   }
   const [isBondExtraOpen, toggleBondExtra] = useToggle();
   const [isInjectOpen, toggleInject] = useToggle();
@@ -225,7 +227,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
       </td>
       <EffectedStake
         validators = {guaranteeTargets}
-        // stakeValue = { new BN(100) }
+        stakeValue = {stakeValue}
         // stakeValue = { guaranteeTargets.length > 0 ? guaranteeTargets.reduce((total: BN, { value }) => { return JSON.parse(JSON.stringify(value)) ? total.add(value?.unwrap()) : total}, BN_ZERO) : BN_ZERO }
       />
       {/* <td className='number'>
