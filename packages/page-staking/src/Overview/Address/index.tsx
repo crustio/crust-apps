@@ -2,9 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance, EraIndex, SlashingSpans, Exposure } from '@polkadot/types/interfaces';
+import { Balance, EraIndex, SlashingSpans, Exposure, ValidatorPrefs } from '@polkadot/types/interfaces';
 import { DeriveAccountInfo } from '@polkadot/api-derive/types';
-import { Compact } from '@polkadot/types/codec';
 
 import BN from 'bn.js';
 import React, { useCallback, useMemo, useEffect } from 'react';
@@ -47,10 +46,6 @@ interface StakingState {
   stakeLimit?: BN;
 }
 
-interface ValidatorPrefs {
-  fee: Compact<Balance>
-}
-
 const PERBILL_PERCENT = 10_000_000;
 
 function expandInfo (exposure: Exposure, validatorPref: ValidatorPrefs, stakeLimit: BN): StakingState {
@@ -66,7 +61,7 @@ function expandInfo (exposure: Exposure, validatorPref: ValidatorPrefs, stakeLim
     stakeOther = stakeTotal.sub(stakeOwn);
   }
 
-  const commission = validatorPref?.fee?.unwrap();
+  const commission = validatorPref?.commission?.unwrap();
   return {
     commission: commission
       ? `${(commission.toNumber() / PERBILL_PERCENT).toFixed(2)}%`

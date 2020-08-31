@@ -6,9 +6,10 @@ export default {
     code: 'Vec<u8>',
   },
   SworkerCode: 'Vec<u8>',
-  ValidatorPrefs: {
-    fee: 'Compact<Perbill>'
-  },
+  // ValidatorPrefs: {
+  //   fee: 'Compact<Perbill>'
+  // },
+  // fee: 'commission',
   WorkReport: {
     block_number: 'u64',
     used: 'u64',

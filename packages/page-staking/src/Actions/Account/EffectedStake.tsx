@@ -8,7 +8,7 @@ import BN from 'bn.js';
 import React from 'react';
 import { AddressMini, Expander } from '@polkadot/react-components';
 import { FormatBalance } from '@polkadot/react-query';
-import { useApi, useCall, useIsMountedRef } from '@polkadot/react-hooks';
+import { useApi, useCall } from '@polkadot/react-hooks';
 import { EraIndex, Exposure } from '@polkadot/types/interfaces';
 import { BN_ZERO } from '@polkadot/util';
 
@@ -21,7 +21,7 @@ interface Props {
 
 function EffectedStake ({ validators, stakeValue, currentEra, stashId }: Props): React.ReactElement<Props> {
   const { api } = useApi();
-  let guaranteeTargets: [string, BN][] = [];
+  let guaranteeTargets: [string, BN, BN][] = [];
   
   if (validators && JSON.parse(JSON.stringify(validators)) !== null && currentEra && JSON.parse(JSON.stringify(currentEra)) !== null) {
     let tmpTargets = JSON.parse(JSON.stringify(validators));
@@ -30,7 +30,7 @@ function EffectedStake ({ validators, stakeValue, currentEra, stashId }: Props):
       if (exposure) {
         for (const other of exposure.others) {
           if (other.who.toString() === stashId) {
-            guaranteeTargets.push([tmp.who, other.value.unwrap() ])
+            guaranteeTargets.push([tmp.who, other.value.unwrap(), tmp.value ])
           }
         }
       }
@@ -45,16 +45,18 @@ function EffectedStake ({ validators, stakeValue, currentEra, stashId }: Props):
         <>
           <Expander summary={
             <FormatBalance
-              labelPost={` (${validators.length})`}
+              labelPost={` (${guaranteeTargets.length})`}
               value={stakeValue}
             />
           }>
-            {guaranteeTargets.map(([who, value]): React.ReactNode =>
+            {guaranteeTargets.map(([who, value, stake]): React.ReactNode =>
               <AddressMini
                 bonded={value}
                 key={who.toString()}
                 value={who}
+                balance={stake}
                 withBonded
+                withBalance
               />
             )}
           </Expander>

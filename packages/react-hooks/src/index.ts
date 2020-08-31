@@ -33,4 +33,3 @@ export { default as useSudo } from './useSudo';
 export { default as useToggle } from './useToggle';
 export { default as useVotingStatus } from './useVotingStatus';
 export { default as useWeight } from './useWeight';
-export { default as useOwnEffectedStake } from './useOwnEffectedStake';

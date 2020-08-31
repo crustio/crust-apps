@@ -965,7 +965,7 @@
   "remote node/endpoint to connect to": "удаленная нода/эндпоинт к которой нужно подсоединиться",
   "request payout from": "запросить выплату от",
   "reserved": "резервировано",
-  "reward commission percentage": "процент комиссионного вознаграждения",
+  "reward guarantee fee percentage": "процент комиссионного вознаграждения",
   "rewards": "вознаграждения",
   "rewards & slashes": "вознаграждения и слэши",
   "riot": "riot",
