@@ -92,5 +92,6 @@ export default {
     total: 'Compact<Balance>',
     submitted_in: 'EraIndex',
     suppressed: 'bool'
-  }
+  },
+  FileAlias: 'Vec<u8>'
 };

@@ -3,8 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DeriveBalancesAll, DeriveStakingAccount } from '@polkadot/api-derive/types';
-import { UnappliedSlash, Nominations, Balance, IndividualExposure } from '@polkadot/types/interfaces';
+import { UnappliedSlash, Nominations, Balance, IndividualExposure, EraIndex } from '@polkadot/types/interfaces';
 import { StakerState } from '@polkadot/react-hooks/types';
+import { Codec } from '@polkadot/types/types';
 import { SortedTargets } from '../../types';
 import { Slash } from '../types';
 import { Compact } from '@polkadot/types/codec';
@@ -42,7 +43,7 @@ interface Props {
   validators?: string[];
 }
 
-interface Guarantee {
+export interface Guarantee extends Codec {
   targets: IndividualExposure[];
   total: Compact<Balance>;
   submitted_in: number;

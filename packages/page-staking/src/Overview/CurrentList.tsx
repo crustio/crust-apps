@@ -72,12 +72,11 @@ function getFiltered (stakingOverview: DeriveStakingOverview, favorites: string[
 }
 
 function extractNominators (nominations: [StorageKey, Option<Guarantee>][]): Record<string, [string, number][]> {
-  console.log('nominations', JSON.stringify(nominations))
   return nominations.reduce((mapped: Record<string, [string, number][]>, [key, optNoms]) => {
     if (optNoms.isSome) {
       const nominatorId = key.args[0].toString();
 
-      optNoms.unwrap().targets.forEach((_validatorId, index): void => {
+      optNoms.unwrap().targets.forEach((_validatorId: { who: { toString: () => any; }; }, index: number): void => {
         const validatorId = _validatorId.who.toString();
         const info: [string, number] = [nominatorId, index + 1];
 
@@ -120,7 +119,7 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
     [t('intentions'), 'start', 2],
     [t('nominators'), 'start', 2],
     [t('stake limit')],
-    [t('commission'), 'number', 1],
+    [t('guarantee fee'), 'number', 1],
     [],
     []
   ]);
@@ -130,7 +129,7 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
     [t('other stake')],
     [t('own stake'), 'media--1100'],
     [t('stake limit')],
-    [t('commission')],
+    [t('guarantee fee')],
     [t('points')],
     [t('last #')],
     [],

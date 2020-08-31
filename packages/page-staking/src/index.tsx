@@ -53,7 +53,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
   const [nominators, dispatchNominators] = useReducer(reduceNominators, [] as string[]);
 
   const hasQueries = useMemo(
-    () => hasAccounts && !!(api.query.imOnline?.authoredBlocks) && !!(api.query.staking.currentEra),
+    () => hasAccounts && !!(api.query.imOnline?.authoredBlocks) && !!(api.query.staking.activeEra),
     [api, hasAccounts]
   );
 
@@ -79,26 +79,26 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
       name: 'actions',
       text: t<string>('Account actions')
     },
-    isFunction(api.query.staking.currentEra)
+    isFunction(api.query.staking.activeEra)
       ? {
         name: 'payout',
         text: t<string>('Payouts')
       }
       : null,
-    {
-      alias: 'returns',
-      name: 'targets',
-      text: t<string>('Targets')
-    },
+    // {
+    //   alias: 'returns',
+    //   name: 'targets',
+    //   text: t<string>('Targets')
+    // },
     {
       name: 'waiting',
       text: t<string>('Waiting')
     },
-    {
-      count: slashes.reduce((count, [, unapplied]) => count + unapplied.length, 0),
-      name: 'slashes',
-      text: t<string>('Slashes')
-    },
+    // {
+    //   count: slashes.reduce((count, [, unapplied]) => count + unapplied.length, 0),
+    //   name: 'slashes',
+    //   text: t<string>('Slashes')
+    // },
     {
       hasParams: true,
       name: 'query',
