@@ -7,9 +7,11 @@ import { ChainProperties, ChainType } from '@polkadot/types/interfaces';
 import { ApiProps, ApiState } from './types';
 
 import React, { useContext, useEffect, useMemo, useState } from 'react';
+import store from 'store';
 import ApiPromise from '@polkadot/api/promise';
 import { setDeriveCache, deriveMapCache } from '@polkadot/api-derive/util';
 import { typesChain, typesSpec } from '@polkadot/apps-config/api';
+import { POLKADOT_DENOM_BLOCK, POLKADOT_GENESIS } from '@polkadot/apps-config/api/constants';
 import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { WsProvider } from '@polkadot/rpc-provider';
 import { StatusContext } from '@polkadot/react-components/Status';
@@ -50,21 +52,25 @@ interface ChainData {
   systemVersion: string;
 }
 
-// const injectedPromise = new Promise<InjectedExtension[]>((resolve): void => {
-//   window.addEventListener('load', (): void => {
-//     resolve(web3Enable('polkadot-js/apps'));
-//   });
-// });
-
-const DEFAULT_DECIMALS = registry.createType('u32', 12);
+const DEFAULT_DECIMALS = registry.createType('u32', 15);
 const DEFAULT_SS58 = registry.createType('u32', addressDefaults.prefix);
 const injectedPromise = web3Enable('polkadot-js/apps');
 let api: ApiPromise;
 
 export { api };
 
+function getDevTypes (): Record<string, Record<string, string>> {
+  const types = store.get('types', {}) as Record<string, Record<string, string>>;
+  const names = Object.keys(types);
+
+  names.length && console.log('Injected types:', names.join(', '));
+
+  return types;
+}
+
 async function retrieve (api: ApiPromise): Promise<ChainData> {
-  const [properties, systemChain, systemChainType, systemName, systemVersion, injectedAccounts] = await Promise.all([
+  const [bestHeader, chainProperties, systemChain, systemChainType, systemName, systemVersion, injectedAccounts] = await Promise.all([
+    api.rpc.chain.getHeader(),
     api.rpc.system.properties(),
     api.rpc.system.chain(),
     api.rpc.system.chainType
@@ -89,6 +95,13 @@ async function retrieve (api: ApiPromise): Promise<ChainData> {
       })
   ]);
 
+  // HACK Horrible hack to try and give some window to the DOT denomination
+  const properties = api.genesisHash.eq(POLKADOT_GENESIS)
+    ? bestHeader.number.toBn().gte(POLKADOT_DENOM_BLOCK)
+      ? registry.createType('ChainProperties', { ...chainProperties, tokenDecimals: 10, tokenSymbol: 'New DOT' })
+      : registry.createType('ChainProperties', { ...chainProperties, tokenDecimals: 12, tokenSymbol: 'DOT (old)' })
+    : chainProperties;
+
   return {
     injectedAccounts,
     properties,
@@ -99,7 +112,9 @@ async function retrieve (api: ApiPromise): Promise<ChainData> {
   };
 }
 
-async function loadOnReady (api: ApiPromise, store?: KeyringStore): Promise<ApiState> {
+async function loadOnReady (api: ApiPromise, store: KeyringStore | undefined, types: Record<string, Record<string, string>>): Promise<ApiState> {
+  registry.register(types);
+
   const { injectedAccounts, properties, systemChain, systemChainType, systemName, systemVersion } = await retrieve(api);
   const ss58Format = uiSettings.prefix === -1
     ? properties.ss58Format.unwrapOr(DEFAULT_SS58).toNumber()
@@ -143,6 +158,7 @@ async function loadOnReady (api: ApiPromise, store?: KeyringStore): Promise<ApiS
   return {
     apiDefaultTx,
     apiDefaultTxSudo,
+    hasInjectedAccounts: injectedAccounts.length !== 0,
     isApiReady: true,
     isDevelopment,
     isSubstrateV2,
@@ -154,11 +170,11 @@ async function loadOnReady (api: ApiPromise, store?: KeyringStore): Promise<ApiS
 
 function Api ({ children, store, url }: Props): React.ReactElement<Props> | null {
   const { queuePayload, queueSetTxStatus } = useContext(StatusContext);
-  const [state, setState] = useState<ApiState>({ isApiReady: false } as unknown as ApiState);
+  const [state, setState] = useState<ApiState>({ hasInjectedAccounts: false, isApiReady: false } as unknown as ApiState);
   const [isApiConnected, setIsApiConnected] = useState(false);
   const [isApiInitialized, setIsApiInitialized] = useState(false);
   const [extensions, setExtensions] = useState<InjectedExtension[] | undefined>();
-  const props = useMemo<ApiProps>(
+  const value = useMemo<ApiProps>(
     () => ({ ...state, api, extensions, isApiConnected, isApiInitialized, isWaitingInjected: !extensions }),
     [extensions, isApiConnected, isApiInitialized, state]
   );
@@ -167,14 +183,15 @@ function Api ({ children, store, url }: Props): React.ReactElement<Props> | null
   useEffect((): void => {
     const provider = new WsProvider(url);
     const signer = new ApiSigner(queuePayload, queueSetTxStatus);
+    const types = getDevTypes();
 
-    api = new ApiPromise({ provider, registry, signer, typesChain, typesSpec });
+    api = new ApiPromise({ provider, registry, signer, types, typesChain, typesSpec });
 
     api.on('connected', () => setIsApiConnected(true));
     api.on('disconnected', () => setIsApiConnected(false));
     api.on('ready', async (): Promise<void> => {
       try {
-        setState(await loadOnReady(api, store));
+        setState(await loadOnReady(api, store, types));
       } catch (error) {
         console.error('Unable to load chain', error);
       }
@@ -182,18 +199,18 @@ function Api ({ children, store, url }: Props): React.ReactElement<Props> | null
 
     injectedPromise
       .then(setExtensions)
-      .catch((error) => console.error(error));
+      .catch((error: Error) => console.error(error));
 
     setIsApiInitialized(true);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!props.isApiInitialized) {
+  if (!value.isApiInitialized) {
     return null;
   }
 
   return (
-    <ApiContext.Provider value={props}>
+    <ApiContext.Provider value={value}>
       {children}
     </ApiContext.Provider>
   );

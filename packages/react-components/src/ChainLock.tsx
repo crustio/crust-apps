@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { useApi } from '@polkadot/react-hooks';
 import chains from '@polkadot/ui-settings/defaults/chains';
@@ -32,11 +32,11 @@ function calcLock (apiGenesis: string, genesisHash: string | null): boolean {
 function ChainLock ({ className = '', genesisHash, isDisabled, onChange }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api, isDevelopment } = useApi();
-  const [isTiedToChain, setTied] = useState(calcLock(api.genesisHash.toHex(), genesisHash));
 
-  useEffect((): void => {
-    setTied(calcLock(api.genesisHash.toHex(), genesisHash));
-  }, [api, genesisHash]);
+  const isTiedToChain = useMemo(
+    () => calcLock(api.genesisHash.toHex(), genesisHash),
+    [api, genesisHash]
+  );
 
   const _onChange = useCallback(
     (isTiedToChain: boolean) =>
@@ -56,11 +56,7 @@ function ChainLock ({ className = '', genesisHash, isDisabled, onChange }: Props
     <Toggle
       className={className}
       isDisabled={isDisabled}
-      label={
-        isTiedToChain
-          ? t<string>('only this network')
-          : t<string>('use on any network')
-      }
+      label={t<string>('only this network')}
       onChange={_onChange}
       preventDefault
       value={isTiedToChain}

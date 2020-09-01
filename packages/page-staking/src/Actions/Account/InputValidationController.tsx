@@ -2,6 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { DeriveBalancesAll } from '@polkadot/api-derive/types';
 import { AccountId, StakingLedger } from '@polkadot/types/interfaces';
 
 import React, { useEffect, useState } from 'react';
@@ -32,7 +33,7 @@ function ValidateController ({ accountId, controllerId, defaultController, onErr
         ? value.unwrap().toString()
         : null
   });
-  const bondedId = useCall<string | null>(api.query.staking.bonded, [controllerId], {
+  const bondedId = useCall<string | null>(controllerId ? api.query.staking.bonded : null, [controllerId], {
     transform: (value: Option<AccountId>): string | null =>
       value.isSome
         ? value.unwrap().toString()
@@ -44,6 +45,7 @@ function ValidateController ({ accountId, controllerId, defaultController, onErr
         ? value.unwrap().stash.toString()
         : null
   });
+  const allBalances = useCall<DeriveBalancesAll>(controllerId ? api.derive.balances.all : null, [controllerId]);
   const [{ error, isFatal }, setError] = useState<ErrorState>({ error: null, isFatal: false });
 
   useEffect((): void => {
@@ -52,12 +54,7 @@ function ValidateController ({ accountId, controllerId, defaultController, onErr
     if (defaultController !== controllerId) {
       let newError: string | null = null;
       let isFatal = false;
- 
-      // if (bondedId) {
-      //   isFatal = true;
-      //   newError = t<string>('A controller account should not map to another stash. This selected controller is a stash, controlled by {{bondedId}}', { replace: { bondedId } });
-      // } else 
-      // in crust system, a stash can be a controller, but can not controlled by multiple controller account
+
       if (stashBondedId) {
         isFatal = true;
         newError = t<string>('A stash account should not map to another controller. This selected stash already controlled by {{stashBondedId}}', { replace: { stashBondedId } });
@@ -71,7 +68,7 @@ function ValidateController ({ accountId, controllerId, defaultController, onErr
       onError(newError, isFatal);
       setError((state) => state.error !== newError ? { error: newError, isFatal } : state);
     }
-  }, [accountId, bondedId, controllerId, defaultController, onError, stashId, t]);
+  }, [accountId, allBalances, bondedId, controllerId, defaultController, onError, stashId, t]);
 
   if (!error || !accountId) {
     return null;
@@ -79,7 +76,7 @@ function ValidateController ({ accountId, controllerId, defaultController, onErr
 
   return (
     <article className={isFatal ? 'error' : 'warning'}>
-      <div><Icon name='warning sign' />{error}</div>
+      <div><Icon icon='exclamation-triangle' />{error}</div>
     </article>
   );
 }

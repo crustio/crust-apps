@@ -4,7 +4,6 @@
 
 import { Option } from '@polkadot/types';
 import { AccountId, Hash } from '@polkadot/types/interfaces';
-import { AppProps, BareProps } from '@polkadot/react-components/types';
 
 import React, { useMemo } from 'react';
 import { Route, Switch } from 'react-router';
@@ -17,16 +16,22 @@ import { useTranslation } from './translate';
 
 export { default as useCounter } from './useCounter';
 
-interface Props extends AppProps, BareProps {}
+interface Props {
+  basePath: string;
+  className?: string;
+}
+
+const transformPrime = {
+  transform: (result: Option<AccountId>): AccountId | null => result.unwrapOr(null)
+};
 
 function TechCommApp ({ basePath, className }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const { isMember, members } = useMembers('technicalCommittee');
-  const prime = useCall<AccountId | null>(api.query.technicalCommittee.prime, [], {
-    transform: (result: Option<AccountId>): AccountId | null => result.unwrapOr(null)
-  }) || null;
+  const prime = useCall<AccountId | null>(api.query.technicalCommittee.prime, undefined, transformPrime) || null;
   const proposals = useCall<Hash[]>(api.query.technicalCommittee.proposals);
+
   const items = useMemo(() => [
     {
       isRoot: true,

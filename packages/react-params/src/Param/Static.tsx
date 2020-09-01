@@ -1,9 +1,9 @@
-// Copyright 2017-2020 @polkadot/react-components authors & contributors
+// Copyright 2017-2020 @polkadot/react-params authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Codec } from '@polkadot/types/types';
-import { Props as BareProps, RawParam } from '../types';
+import { RawParam } from '../types';
 
 import React from 'react';
 import styled from 'styled-components';
@@ -12,10 +12,12 @@ import { Static } from '@polkadot/react-components';
 import { useTranslation } from '../translate';
 import Bare from './Bare';
 
-interface Props extends BareProps {
+interface Props {
   asHex?: boolean;
   children?: React.ReactNode;
+  className?: string;
   defaultValue: RawParam;
+  label?: React.ReactNode;
   withLabel?: boolean;
 }
 
@@ -49,5 +51,9 @@ export default React.memo(styled(StaticParam)`
     margin: 0;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .ui--Static {
+    margin-bottom: 0 !important;
   }
 `);

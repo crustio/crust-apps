@@ -62,9 +62,8 @@ function SetRewardDestination ({ controllerId, defaultDestination, onClose, stas
       <Modal.Actions onCancel={onClose}>
         <TxButton
           accountId={controllerId}
-          icon='sign-in'
+          icon='sign-in-alt'
           isDisabled={!controllerId}
-          isPrimary
           label={t<string>('Set reward destination')}
           onStart={onClose}
           params={[destination]}

@@ -7,7 +7,6 @@ import { Codec, ITuple } from '@polkadot/types/types';
 import { StakerState } from './types';
 
 import { useEffect, useState } from 'react';
-// import { u8aConcat, u8aToHex } from '@polkadot/util';
 
 import useAccounts from './useAccounts';
 import useApi from './useApi';
@@ -24,8 +23,7 @@ function toIdString (id?: AccountId | null): string | null {
     : null;
 }
 
-function getStakerState (stashId: string, allAccounts: string[], allStashes: string[] | undefined, [isOwnStash, ledgerInfo, bondedInfo]: [boolean, StakingLedger, ValidatorInfo]): StakerState {  
-
+function getStakerState (stashId: string, allAccounts: string[], allStashes: string[] | undefined, [isOwnStash, ledgerInfo, bondedInfo]: [boolean, StakingLedger, ValidatorInfo]): StakerState {
   const isStashNominating = isOwnStash;
   const isStashValidating = !(Array.isArray(bondedInfo) ? bondedInfo[1].isEmpty : bondedInfo.isEmpty) || !!allStashes?.includes(stashId);
 

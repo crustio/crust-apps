@@ -6,16 +6,25 @@
 
 // anything for a specific chain, most would probably fit into the node category (but allow for chain-specific)
 import chainKusama from './chains/kusama-128.gif';
+import chainRococo from './chains/rococo.svg';
+import chainRococoTick from './chains/rococo-tick.svg';
+import chainRococoTrack from './chains/rococo-track.svg';
+import chainRococoTrick from './chains/rococo-trick.svg';
 
 // defaults for the node type, assuming we don't have a specific chain, but rather match on the implementation
+import nodeAcala from './nodes/acala-circle.svg';
 import nodeCentrifuge from './nodes/centrifuge.png';
+import nodeCrab from './nodes/crab.svg';
 import nodeEdgeware from './nodes/edgeware-circle.svg';
-import nodeEncointer from './nodes/encointer.svg';
+import nodeEncointerNotee from './nodes/encointer-notee.svg';
+import nodeEncointerTeeproxy from './nodes/encointer-teeproxy.svg';
 import nodeNodle from './nodes/nodle.svg';
+import nodeKilt from './nodes/kilt.svg';
 import nodePolkadot from './nodes/polkadot-circle.svg';
 import nodePolkadotJs from './nodes/polkadot-js.svg';
 import nodeSubstrate from './nodes/substrate-hexagon.svg';
-import crust from './nodes/crust.svg';
+import nodeKulupu from './nodes/kulupu.svg';
+import nodeLaminar from './nodes/laminar-circle.svg';
 
 // extensions
 import extensionPolkadotJs from './extensions/polkadot-js.svg';
@@ -28,7 +37,11 @@ const chainLogos: Record<string, any> = [
   ['Kusama', chainKusama], // new name after CC3
   ['Kusama CC1', chainKusama],
   ['Kusama CC2', chainKusama],
-  ['Kusama CC3', chainKusama]
+  ['Kusama CC3', chainKusama],
+  ['Rococo', chainRococo],
+  ['Tick', chainRococoTick],
+  ['Track', chainRococoTrack],
+  ['Trick', chainRococoTrick]
 ].reduce((logos, [chain, logo]): Record<string, any> => ({
   ...logos,
   [(chain as string).toLowerCase()]: logo
@@ -38,16 +51,18 @@ const chainLogos: Record<string, any> = [
 const nodeLogos: Record<string, any> = [
   ['centrifuge chain', nodeCentrifuge],
   ['Centrifuge Chain Node', nodeCentrifuge],
+  ['crab', nodeCrab],
   ['Edgeware Node', nodeEdgeware],
-  ['Encointer Node', nodeEncointer],
-  ['kulupu', nodeSubstrate],
+  ['Encointer Node', nodeEncointerNotee],
+  ['Encointer Node noTEE', nodeEncointerNotee],
+  ['Encointer Node TEE proxy', nodeEncointerTeeproxy],
+  ['KILT Node', nodeKilt],
+  ['kulupu', nodeKulupu],
   ['node-template', nodeSubstrate],
   ['Nodle Chain Node', nodeNodle],
-  ['crust', nodeSubstrate],
   ['parity-polkadot', nodePolkadot],
   ['polkadot-js', nodePolkadotJs],
-  ['substrate-node', nodeSubstrate],
-  ['crust node', crust]
+  ['substrate-node', nodeSubstrate]
 ].reduce((logos, [node, logo]): Record<string, any> => ({
   ...logos,
   [(node as string).toLowerCase().replace(/-/g, ' ')]: logo
@@ -55,16 +70,25 @@ const nodeLogos: Record<string, any> = [
 
 // overrides when we pass an explicit logo name
 const namedLogos: Record<string, any> = {
+  acala: nodeAcala,
   alexander: nodePolkadot,
   centrifuge: nodeCentrifuge,
+  crab: nodeCrab,
   edgeware: nodeEdgeware,
   empty: emptyLogo,
+  kilt: nodeKilt,
+  kulupu: nodeKulupu,
   kusama: chainKusama,
+  laminar: nodeLaminar,
   nodle: nodeNodle,
   polkadot: nodePolkadot,
+  rococo: chainRococo,
+  rococoAcala: nodeAcala,
+  rococoTick: chainRococoTick,
+  rococoTrack: chainRococoTrack,
+  rococoTrick: chainRococoTrick,
   substrate: nodeSubstrate,
-  westend: nodePolkadot,
-  'crust node': crust
+  westend: nodePolkadot
 };
 
 // extension logos

@@ -4,9 +4,9 @@
 
 import { DeriveSociety, DeriveSocietyMember } from '@polkadot/api-derive/types';
 import { SocietyVote } from '@polkadot/types/interfaces';
-import { OwnMembers, VoteType } from '../types';
+import { VoteType } from '../types';
 
-import React, { useMemo } from 'react';
+import React, { useRef } from 'react';
 import { AddressSmall, Table } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
 
@@ -14,26 +14,31 @@ import { useTranslation } from '../translate';
 import DefenderVoting from './DefenderVoting';
 import Votes from './Votes';
 
-interface Props extends OwnMembers {
+interface Props {
   className?: string;
   info?: DeriveSociety;
+  isMember: boolean;
+  ownMembers: string[];
 }
+
+const transformVotes = {
+  transform: (members: DeriveSocietyMember[]): VoteType[] => {
+    return members
+      .filter(({ vote }): boolean => !!vote)
+      .map(({ accountId, vote }): VoteType => [accountId.toString(), vote as SocietyVote]);
+  }
+};
 
 function Defender ({ className = '', info, isMember, ownMembers }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api } = useApi();
-  const votes = useCall<VoteType[]>(api.derive.society.members, [], {
-    transform: (members: DeriveSocietyMember[]): VoteType[] =>
-      members
-        .filter(({ vote }): boolean => !!vote)
-        .map(({ accountId, vote }): VoteType => [accountId.toString(), vote as SocietyVote])
-  });
+  const votes = useCall<VoteType[]>(api.derive.society.members, undefined, transformVotes);
 
-  const header = useMemo(() => [
+  const headerRef = useRef([
     [t('defender'), 'start'],
     [t('votes'), 'start'],
     []
-  ], [t]);
+  ]);
 
   if (!info || !info.hasDefender || !info.defender) {
     return null;
@@ -42,7 +47,7 @@ function Defender ({ className = '', info, isMember, ownMembers }: Props): React
   return (
     <Table
       className={className}
-      header={header}
+      header={headerRef.current}
     >
       <tr>
         <td className='address all'>

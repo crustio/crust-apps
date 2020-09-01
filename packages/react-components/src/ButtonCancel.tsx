@@ -21,9 +21,8 @@ function ButtonCancel ({ className = '', isDisabled, label, onClick, tabIndex }:
   return (
     <Button
       className={className}
-      icon='cancel'
+      icon='times'
       isDisabled={isDisabled}
-      isNegative
       label={label || t<string>('Cancel')}
       onClick={onClick}
       tabIndex={tabIndex}

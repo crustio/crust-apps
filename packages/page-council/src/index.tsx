@@ -5,7 +5,6 @@
 import { Option } from '@polkadot/types';
 import { AccountId } from '@polkadot/types/interfaces';
 import { DeriveCollectiveProposals } from '@polkadot/api-derive/types';
-import { AppProps, BareProps } from '@polkadot/react-components/types';
 
 import React, { useMemo } from 'react';
 import { Route, Switch } from 'react-router';
@@ -21,16 +20,21 @@ import { useTranslation } from './translate';
 
 export { useCounter };
 
-interface Props extends AppProps, BareProps {}
+interface Props {
+  basePath: string;
+  className?: string;
+}
+
+const transformPrime = {
+  transform: (result: Option<AccountId>): AccountId | null => result.unwrapOr(null)
+};
 
 function CouncilApp ({ basePath, className }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const { pathname } = useLocation();
   const numMotions = useCounter();
-  const prime = useCall<AccountId | null>(api.query.council.prime, [], {
-    transform: (result: Option<AccountId>): AccountId | null => result.unwrapOr(null)
-  }) || null;
+  const prime = useCall<AccountId | null>(api.query.council.prime, undefined, transformPrime) || null;
   const motions = useCall<DeriveCollectiveProposals>(api.derive.council.proposals);
 
   const items = useMemo(() => [
@@ -40,8 +44,9 @@ function CouncilApp ({ basePath, className }: Props): React.ReactElement<Props> 
       text: t<string>('Council overview')
     },
     {
+      count: numMotions,
       name: 'motions',
-      text: t<string>('Motions ({{count}})', { replace: { count: numMotions } })
+      text: t<string>('Motions')
     }
   ], [numMotions, t]);
 

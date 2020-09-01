@@ -2,8 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { BareProps } from './types';
-
 import React from 'react';
 import ReactMd from 'react-markdown';
 import styled from 'styled-components';
@@ -11,7 +9,8 @@ import { useToggle } from '@polkadot/react-hooks';
 
 import Icon from './Icon';
 
-interface Props extends BareProps {
+interface Props {
+  className?: string;
   md: string;
 }
 
@@ -22,14 +21,14 @@ function HelpOverlay ({ className = '', md }: Props): React.ReactElement<Props> 
     <div className={className}>
       <div className='help-button'>
         <Icon
-          name='help circle'
+          icon='question-circle'
           onClick={toggleVisible}
         />
       </div>
       <div className={`help-slideout ${isVisible ? 'open' : 'closed'}`}>
         <div className='help-button'>
           <Icon
-            name='close'
+            icon='times'
             onClick={toggleVisible}
           />
         </div>
@@ -47,13 +46,13 @@ export default React.memo(styled(HelpOverlay)`
   .help-button {
     cursor: pointer;
     font-size: 2rem;
-    padding: 1.25rem 1.5rem 0 0;
+    padding: 1rem 2.5rem 0 0;
   }
 
   > .help-button {
     position: absolute;
     right: 0rem;
-    top: 0rem;
+    top: 0.125rem;
   }
 
   .help-slideout {

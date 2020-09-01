@@ -15,9 +15,6 @@ export interface BondInfo {
 export interface NominateInfo {
   nominateTx?: SubmittableExtrinsic<'promise'> | null;
 }
-export interface CutNominateInfo {
-  cutNominateTx?: SubmittableExtrinsic<'promise'> | null;
-}
 
 export interface SessionInfo {
   sessionTx?: SubmittableExtrinsic<'promise'> | null;

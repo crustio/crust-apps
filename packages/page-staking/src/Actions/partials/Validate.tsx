@@ -31,12 +31,12 @@ function Validate ({ className = '', controllerId, onChange, stashId, withSender
       const commission = (value || BN_ZERO).mul(COMM_MUL);
 
       onChange({
-        validateTx: api.tx.staking.validate(
-           commission.isZero()
-            // small non-zero set to avoid isEmpty
-            ? '0'
-            : (commission.toNumber() > 1000000000) ? '1000000000' : commission.toNumber().toString()
-        )
+        validateTx: api.tx.staking.validate({
+          commission: commission.isZero()
+          // small non-zero set to avoid isEmpty
+          ? '0'
+          : (commission.toNumber() > 1000000000) ? '1000000000' : commission.toNumber().toString()
+        })
       });
     },
     [api, onChange]
@@ -74,7 +74,7 @@ function Validate ({ className = '', controllerId, onChange, stashId, withSender
           />
         </Modal.Column>
         <Modal.Column>
-          <p>{t<string>('The guarantee fee is deducted from all rewards before the remainder is split with guarantors.')}</p>
+          <p>{t<string>('The commission is deducted from all rewards before the remainder is split with nominators.')}</p>
         </Modal.Column>
       </Modal.Columns>
     </div>

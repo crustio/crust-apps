@@ -3,36 +3,24 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DeriveTreasuryProposals } from '@polkadot/api-derive/types';
-import { BareProps as Props } from '@polkadot/react-components/types';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Button } from '@polkadot/react-components';
-import { useApi, useCall, useIncrement, useMembers, useIsMountedRef } from '@polkadot/react-hooks';
+import { useApi, useCall } from '@polkadot/react-hooks';
 
 import ProposalCreate from './ProposalCreate';
 import Proposals from './Proposals';
 import Summary from './Summary';
-import TipCreate from './TipCreate';
-import Tips from './Tips';
 
-function Overview ({ className }: Props): React.ReactElement<Props> {
+interface Props {
+  className?: string;
+  isMember: boolean;
+  members: string[];
+}
+
+function Overview ({ className, isMember, members }: Props): React.ReactElement<Props> {
   const { api } = useApi();
-  const info = useCall<DeriveTreasuryProposals>(api.derive.treasury.proposals, []);
-  const { isMember, members } = useMembers();
-
-  const mountedRef = useIsMountedRef();
-  const [hashTrigger, triggerHashes] = useIncrement();
-  const [hashes, setHashes] = useState<string[] | null>(null);
-
-  useEffect((): void => {
-    if (hashTrigger && mountedRef.current) {
-      api.query.treasury.tips.keys().then((keys) =>
-        mountedRef.current && setHashes(
-          keys.map((key) => key.args[0].toHex())
-        )
-      ).catch(console.error);
-    }
-  }, [api, hashTrigger, mountedRef]);
+  const info = useCall<DeriveTreasuryProposals>(api.derive.treasury.proposals);
 
   return (
     <div className={className}>
@@ -42,10 +30,6 @@ function Overview ({ className }: Props): React.ReactElement<Props> {
       />
       <Button.Group>
         <ProposalCreate />
-        <TipCreate
-          members={members}
-          refresh={triggerHashes}
-        />
       </Button.Group>
       <Proposals
         isMember={isMember}
@@ -57,11 +41,6 @@ function Overview ({ className }: Props): React.ReactElement<Props> {
         isMember={isMember}
         members={members}
         proposals={info?.approvals}
-      />
-      <Tips
-        hashes={hashes}
-        isMember={isMember}
-        members={members}
       />
     </div>
   );

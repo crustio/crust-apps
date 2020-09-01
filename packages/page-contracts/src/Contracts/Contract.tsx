@@ -2,7 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { BareProps } from '@polkadot/react-components/types';
 import { ActionStatus } from '@polkadot/react-components/Status/types';
 
 import React, { useCallback } from 'react';
@@ -15,7 +14,8 @@ import { useToggle } from '@polkadot/react-hooks';
 import Messages from '../shared/Messages';
 import { useTranslation } from '../translate';
 
-interface Props extends BareProps {
+interface Props {
+  className?: string;
   contract: ApiContract;
   onCall: (_?: number) => () => void;
 }
@@ -69,13 +69,11 @@ function Contract ({ className, contract: { abi, address }, onCall }: Props): Re
           <div className='contracts--Contract-buttons'>
             <Button
               icon='trash'
-              isNegative
               onClick={toggleIsForgetOpen}
               tooltip={t<string>('Forget this contract')}
             />
             <Button
               icon='play'
-              isPrimary
               label={t<string>('execute')}
               onClick={onCall()}
               tooltip={t<string>('Call a method on this contract')}

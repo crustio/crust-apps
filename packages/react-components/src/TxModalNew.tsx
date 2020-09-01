@@ -28,7 +28,7 @@ function TxModal<P extends Props> ({
   inputAddressLabel = t<string>('using my account'),
   inputAddressHelp = t<string>('Select the account to use for this action.'),
   inputAddressProps = {},
-  submitButtonIcon = 'sign-in',
+  submitButtonIcon = 'sign-in-alt',
   submitButtonLabel = t<string>('Submit'),
   submitButtonProps = {},
   ...props
@@ -116,7 +116,6 @@ function TxModal<P extends Props> ({
           <Button
             icon={submitButtonIcon}
             isDisabled={isDisabled || isSending || !accountId || !isSubmittable}
-            isPrimary
             label={submitButtonLabel}
             onClick={onSend}
             {...submitButtonProps}

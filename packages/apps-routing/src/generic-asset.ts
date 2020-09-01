@@ -4,11 +4,11 @@
 
 import { Route } from './types';
 
-import GenericAsset from '@polkadot/app-generic-asset';
+import Component from '@polkadot/app-generic-asset';
 
 export default function create (t: <T = string> (key: string, text: string, options: { ns: string }) => T): Route {
   return {
-    Component: GenericAsset,
+    Component,
     display: {
       isHidden: false,
       needsAccounts: true,
@@ -16,6 +16,7 @@ export default function create (t: <T = string> (key: string, text: string, opti
         'tx.genericAsset.transfer'
       ]
     },
+    group: 'network',
     icon: 'cubes',
     name: 'generic-asset',
     text: t<string>('nav.generic-asset', 'Generic asset', { ns: 'apps-routing' })

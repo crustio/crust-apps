@@ -99,9 +99,8 @@ function Propose ({ className = '', onClose }: Props): React.ReactElement<Props>
       <Modal.Actions onCancel={onClose}>
         <TxButton
           accountId={accountId}
-          icon='add'
+          icon='plus'
           isDisabled={!balance || !hasMinLocked || !isHashValid || !accountId}
-          isPrimary
           label={t<string>('Submit proposal')}
           onStart={onClose}
           params={[hash, balance]}

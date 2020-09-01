@@ -2,8 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { IconProps } from 'semantic-ui-react/dist/commonjs/elements/Icon/Icon';
-import { BareProps } from './types';
+import { IconName } from '@fortawesome/fontawesome-svg-core';
 
 import React, { useCallback, useContext } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
@@ -13,16 +12,17 @@ import Button from './Button';
 import { useTranslation } from './translate';
 import styled from 'styled-components';
 
-interface Props extends BareProps {
+interface Props {
   children?: React.ReactNode;
   className?: string;
-  icon?: string;
+  icon?: IconName;
   isAddress?: boolean;
-  size?: IconProps['size'];
   value: string;
 }
 
-function CopyButton ({ children, className, icon = 'copy', isAddress = false, size = 'small', value }: Props): React.ReactElement<Props> {
+const NOOP = () => undefined;
+
+function CopyButton ({ children, className, icon = 'copy', isAddress = false, value }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { queueAction } = useContext(StatusContext);
 
@@ -50,8 +50,7 @@ function CopyButton ({ children, className, icon = 'copy', isAddress = false, si
             <Button
               className='icon-button show-on-hover'
               icon={icon}
-              isPrimary
-              size={size}
+              onClick={NOOP}
             />
           </span>
         </div>
@@ -61,12 +60,6 @@ function CopyButton ({ children, className, icon = 'copy', isAddress = false, si
 }
 
 export default React.memo(styled(CopyButton)`
-  cursor: copy;
-
-  button.ui.icon.primary.button.icon-button {
-    cursor: copy;
-  }
-
   .copySpan {
     white-space: nowrap;
   }

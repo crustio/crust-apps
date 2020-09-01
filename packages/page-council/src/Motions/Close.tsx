@@ -26,6 +26,11 @@ function Close ({ hasFailed, hash, idNumber, isDisabled, members, proposal }: Pr
   const [accountId, setAccountId] = useState<string | null>(null);
   const [proposalWeight, proposalLength] = useWeight(proposal);
 
+  // protect against older versions
+  if (!api.tx.council.close) {
+    return null;
+  }
+
   return (
     <>
       {isOpen && (
@@ -77,7 +82,7 @@ function Close ({ hasFailed, hash, idNumber, isDisabled, members, proposal }: Pr
         </Modal>
       )}
       <Button
-        icon='cancel'
+        icon='times'
         isDisabled={isDisabled}
         label={t<string>('Close')}
         onClick={toggleOpen}

@@ -4,7 +4,8 @@
 
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { QueueTx } from '@polkadot/react-components/Status/types';
-import { Call, Multisig, ProxyType } from '@polkadot/types/interfaces';
+import { AccountId, BalanceOf, Call, Multisig, ProxyDefinition, ProxyType } from '@polkadot/types/interfaces';
+import { ITuple } from '@polkadot/types/types';
 import { AddressProxy } from './types';
 
 import React, { useEffect, useState } from 'react';
@@ -12,7 +13,7 @@ import { ApiPromise } from '@polkadot/api';
 import { registry } from '@polkadot/react-api';
 import { InputAddress, Modal, Toggle } from '@polkadot/react-components';
 import { useAccounts, useApi, useIsMountedRef } from '@polkadot/react-hooks';
-import { GenericCall, Option } from '@polkadot/types';
+import { Option, Vec } from '@polkadot/types';
 import { isFunction } from '@polkadot/util';
 
 import { useTranslation } from './translate';
@@ -51,7 +52,12 @@ function findCall (tx: Call | SubmittableExtrinsic<'promise'>): { method: string
   }
 }
 
-function filterProxies (allAccounts: string[], tx: SubmittableExtrinsic<'promise'>, proxies: [string, ProxyType][]): string[] {
+function filterProxies (allAccounts: string[], tx: Call | SubmittableExtrinsic<'promise'>, proxies: [string, ProxyType][]): string[] {
+  // check an array of calls to all have proxies as the address
+  const checkCalls = (address: string, txs: Call[]): boolean =>
+    !txs.some((tx) => !filterProxies(allAccounts, tx, proxies).includes(address));
+
+  // get the call info
   const { method, section } = findCall(tx);
 
   return proxies
@@ -64,14 +70,20 @@ function filterProxies (allAccounts: string[], tx: SubmittableExtrinsic<'promise
         case 'Any':
           return true;
         case 'Governance':
-          return ['council', 'democracy', 'elections', 'electionsPhragmen', 'society', 'technicalCommittee', 'treasury'].includes(section);
+          return ['council', 'democracy', 'elections', 'electionsPhragmen', 'poll', 'society', 'technicalCommittee', 'treasury'].includes(section);
+        case 'IdentityJudgement':
+          return section === 'identity' && method === 'provideJudgement';
         case 'NonTransfer':
           return !(section === 'balances' || (section === 'indices' && method === 'transfer') || (section === 'vesting' && method === 'vestedTransfer'));
         case 'Staking':
-          return section === 'staking' || (section === 'utility' && ['batch', 'asLimitedSub'].includes(method));
+          return section === 'staking' ||
+            (section === 'utility' && (
+              (method === 'batch' && checkCalls(address, tx.args[0] as Vec<Call>)) ||
+              (method === 'asLimitedSub' && checkCalls(address, [tx.args[0] as Call]))
+            ));
         case 'SudoBalances':
-          return (section === 'sudo' && method === 'sudo' && findCall(tx.args[0] as GenericCall).section === 'balances') ||
-            (section === 'utility' && method === 'batch');
+          return (section === 'sudo' && (method === 'sudo' && findCall(tx.args[0] as Call).section === 'balances')) ||
+            (section === 'utility' && (method === 'batch' && checkCalls(address, tx.args[0] as Vec<Call>)));
         default:
           return false;
       }
@@ -110,8 +122,10 @@ async function queryForMultisig (api: ApiPromise, requestAddress: string, proxyA
 async function queryForProxy (api: ApiPromise, allAccounts: string[], address: string, tx: SubmittableExtrinsic<'promise'>): Promise<ProxyState | null> {
   if (isFunction(api.query.proxy?.proxies)) {
     const { isProxied } = extractExternal(address);
-    const [_proxies] = await api.query.proxy.proxies(address);
-    const proxies = _proxies.map(([accountId, type]): [string, ProxyType] => [accountId.toString(), type]);
+    const [_proxies] = await api.query.proxy.proxies<ITuple<[Vec<ITuple<[AccountId, ProxyType]> | ProxyDefinition>, BalanceOf]>>(address);
+    const proxies = api.tx.proxy.addProxy.meta.args.length === 4
+      ? (_proxies as ProxyDefinition[]).map(({ delegate, proxyType }): [string, ProxyType] => [delegate.toString(), proxyType])
+      : (_proxies as [AccountId, ProxyType][]).map(([delegate, proxyType]): [string, ProxyType] => [delegate.toString(), proxyType]);
     const proxiesFilter = filterProxies(allAccounts, tx, proxies);
 
     if (proxiesFilter.length) {
