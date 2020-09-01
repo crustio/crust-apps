@@ -22,7 +22,6 @@ function GuaranteeableDisplay ({ children, className = '', label, params }: Prop
   const currentEra =  useCall<EraIndex>(api.query.staking.currentEra);
   const stakingInfo = useCall<Exposure>(api.query.staking.erasStakers, [currentEra?.toHuman(), params]);
   const stakeLimit = useCall<Option<Balance>>(api.query.staking.stakeLimit, [params]);
-  console.log('stakeLimit', stakeLimit)
   let guaranteeable = new BN(0)
   if (stakingInfo && stakeLimit?.isSome) {
     guaranteeable = stakingInfo && stakeLimit && stakeLimit.unwrap().sub(stakingInfo.total.unwrap())

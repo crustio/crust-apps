@@ -34,7 +34,6 @@ function CutGuaranteeableDisplay ({ children, className = '', label, target, gua
   let cutGuaranteeable = new BN(0);
   if (guaranteeRel) {
     const tmpRes: IndividualExposure[] = JSON.parse(JSON.stringify(guaranteeRel)).targets;
-    console.log('tmpRes', tmpRes)
     cutGuaranteeable = tmpRes.filter(e => e.who === target).reduce((total: BN, { value }) => { return total.add(new BN(Number(value).toString()))}, BN_ZERO)
   }
   

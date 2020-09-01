@@ -77,7 +77,7 @@ function Actions ({ className = '', isInElection, ownStashes, next, targets, val
     [t('controller'), 'address'],
     [t('rewards'), 'number media--1200'],
     [t('bonded'), 'number'],
-    [t('effected stake')],
+    [t('effective stake')],
     [t('role'), 'number ui--media-1200'],
     [undefined, undefined, 2]
   ]);
@@ -109,7 +109,7 @@ function Actions ({ className = '', isInElection, ownStashes, next, targets, val
         <NewStash />
       </Button.Group>
       <Table
-        empty={foundStashes && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
+        empty={foundStashes && t<string>('No funds staked yet. Bond funds to validate or guarantee a validator')}
         footer={footer}
         header={headerRef.current}
       >
