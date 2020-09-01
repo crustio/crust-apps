@@ -41,7 +41,8 @@ const chainLogos: Record<string, any> = [
   ['Rococo', chainRococo],
   ['Tick', chainRococoTick],
   ['Track', chainRococoTrack],
-  ['Trick', chainRococoTrick]
+  ['Trick', chainRococoTrick],
+  ['Crust node', chainRococoTrick]
 ].reduce((logos, [chain, logo]): Record<string, any> => ({
   ...logos,
   [(chain as string).toLowerCase()]: logo
@@ -62,7 +63,8 @@ const nodeLogos: Record<string, any> = [
   ['Nodle Chain Node', nodeNodle],
   ['parity-polkadot', nodePolkadot],
   ['polkadot-js', nodePolkadotJs],
-  ['substrate-node', nodeSubstrate]
+  ['substrate-node', nodeSubstrate],
+  ['Crust', nodeSubstrate]
 ].reduce((logos, [node, logo]): Record<string, any> => ({
   ...logos,
   [(node as string).toLowerCase().replace(/-/g, ' ')]: logo
@@ -88,7 +90,8 @@ const namedLogos: Record<string, any> = {
   rococoTrack: chainRococoTrack,
   rococoTrick: chainRococoTrick,
   substrate: nodeSubstrate,
-  westend: nodePolkadot
+  westend: nodePolkadot,
+  crust: nodeAcala
 };
 
 // extension logos
