@@ -31,6 +31,7 @@ import { RewardDestination } from '@polkadot/types/interfaces/staking';
 import CutGuarantee from './CutGuarantee';
 import EffectedStake from './EffectedStake';
 import { BN_ZERO } from '@polkadot/util';
+import EffectiveGuaranteed from './EffectiveGuaranteed';
 
 interface Props {
   allSlashes?: [BN, UnappliedSlash[]][];
@@ -226,13 +227,18 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
         <StakingUnbonding stakingInfo={stakingAccount} />
         <StakingRedeemable stakingInfo={stakingAccount} />
       </td>
-      {currentEra && (<EffectedStake
+      {currentEra && role !== `Validator` ? <EffectedStake
         validators = {guaranteeTargets}
         stakeValue = {stakeValue}
         stashId= {stashId}
         currentEra = {currentEra}
         // stakeValue = { guaranteeTargets.length > 0 ? guaranteeTargets.reduce((total: BN, { value }) => { return JSON.parse(JSON.stringify(value)) ? total.add(value?.unwrap()) : total}, BN_ZERO) : BN_ZERO }
-      />)}
+      /> : currentEra && (
+          <EffectiveGuaranteed currentEra={currentEra} 
+            stashId={stashId}
+          />
+        )
+      }
       {/* <td className='number'>
         <StakingEffected stakingInfo={stakingAccount} />
       </td> */}

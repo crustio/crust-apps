@@ -22,7 +22,6 @@ interface Props {
 function EffectedStake ({ validators, stakeValue, currentEra, stashId }: Props): React.ReactElement<Props> {
   const { api } = useApi();
   let guaranteeTargets: [string, BN, BN][] = [];
-  
   if (validators && JSON.parse(JSON.stringify(validators)) !== null && currentEra && JSON.parse(JSON.stringify(currentEra)) !== null) {
     let tmpTargets = JSON.parse(JSON.stringify(validators));
     for (const tmp of tmpTargets) {
