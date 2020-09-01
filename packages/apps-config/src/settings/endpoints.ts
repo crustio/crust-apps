@@ -52,67 +52,72 @@ function createDev (t: TFunction): LinkOption[] {
 }
 
 function createLive (t: TFunction): LinkOption[] {
-  // return [
-  //   // fixed, polkadot
-  //   {
-  //     dnslink: 'polkadot',
-  //     info: 'polkadot',
-  //     text: t<string>('rpc.polkadot.parity', 'Polkadot (Live, hosted by Parity)', { ns: 'apps-config' }),
-  //     value: 'wss://rpc.polkadot.io'
-  //   },
-  //   {
-  //     info: 'polkadot',
-  //     text: t<string>('rpc.polkadot.w3f', 'Polkadot (Live, hosted by Web3 Foundation)', { ns: 'apps-config' }),
-  //     value: 'wss://cc1-1.polkadot.network'
-  //   },
-  //   {
-  //     dnslink: 'kusama',
-  //     info: 'kusama',
-  //     text: t<string>('rpc.kusama.parity', 'Kusama (Polkadot Canary, hosted by Parity)', { ns: 'apps-config' }),
-  //     value: 'wss://kusama-rpc.polkadot.io'
-  //   },
-  //   {
-  //     info: 'kusama',
-  //     text: t<string>('rpc.kusama.w3f', 'Kusama (Polkadot Canary, hosted by Web3 Foundation)', { ns: 'apps-config' }),
-  //     value: 'wss://cc3-5.kusama.network'
-  //   },
-  //   {
-  //     info: 'kusama',
-  //     isDisabled: true,
-  //     text: t<string>('rpc.kusama.ava', 'Kusama (Polkadot Canary, user-run public nodes; see https://status.cloud.ava.do/)', { ns: 'apps-config' }),
-  //     value: 'wss://kusama.polkadot.cloud.ava.do'
-  //   },
-  //   // alphabetical based on chain name
-  //   {
-  //     dnslink: 'centrifuge',
-  //     info: 'centrifuge',
-  //     text: t<string>('rpc.centrifuge', 'Centrifuge (Mainnet, hosted by Centrifuge)', { ns: 'apps-config' }),
-  //     value: 'wss://fullnode.centrifuge.io'
-  //   },
-  //   {
-  //     info: 'crab',
-  //     text: t<string>('rpc.crab', 'Crab (Darwinia Canary, hosted by Darwinia Network)', { ns: 'apps-config' }),
-  //     value: 'wss://crab.darwinia.network'
-  //   },
-  //   {
-  //     dnslink: 'edgeware',
-  //     info: 'edgeware',
-  //     text: t<string>('rpc.edgeware', 'Edgeware (Mainnet, hosted by Commonwealth Labs)', { ns: 'apps-config' }),
-  //     value: 'wss://mainnet1.edgewa.re'
-  //   },
-  //   {
-  //     dnslink: 'kulupu',
-  //     info: 'kulupu',
-  //     text: t<string>('rpc.kulupu', 'Kulupu (Kulupu Mainnet, hosted by Kulupu)', { ns: 'apps-config' }),
-  //     value: 'wss://rpc.kulupu.corepaper.org/ws'
-  //   },
-  //   {
-  //     info: 'nodle',
-  //     text: t<string>('rpc.nodle-main', 'Nodle Main (Nodle Mainnet, hosted by Nodle)', { ns: 'apps-config' }),
-  //     value: 'wss://main1.nodleprotocol.io'
-  //   }
-  // ];
-  return [];
+  return [
+    // fixed, polkadot
+    {
+      info: 'crust',
+      text: t<string>('rpc.crust.network', 'Maxwell CC2 (Crust BetaNet, hosted by Crust Network)', { ns: 'apps-config' }),
+      value: 'wss://api.crust.network/'
+    },
+    {
+      dnslink: 'polkadot',
+      info: 'polkadot',
+      text: t<string>('rpc.polkadot.parity', 'Polkadot (Live, hosted by Parity)', { ns: 'apps-config' }),
+      value: 'wss://rpc.polkadot.io'
+    },
+    {
+      info: 'polkadot',
+      text: t<string>('rpc.polkadot.w3f', 'Polkadot (Live, hosted by Web3 Foundation)', { ns: 'apps-config' }),
+      value: 'wss://cc1-1.polkadot.network'
+    },
+    {
+      dnslink: 'kusama',
+      info: 'kusama',
+      text: t<string>('rpc.kusama.parity', 'Kusama (Polkadot Canary, hosted by Parity)', { ns: 'apps-config' }),
+      value: 'wss://kusama-rpc.polkadot.io'
+    },
+    {
+      info: 'kusama',
+      text: t<string>('rpc.kusama.w3f', 'Kusama (Polkadot Canary, hosted by Web3 Foundation)', { ns: 'apps-config' }),
+      value: 'wss://cc3-5.kusama.network'
+    },
+    {
+      info: 'kusama',
+      isDisabled: true,
+      text: t<string>('rpc.kusama.ava', 'Kusama (Polkadot Canary, user-run public nodes; see https://status.cloud.ava.do/)', { ns: 'apps-config' }),
+      value: 'wss://kusama.polkadot.cloud.ava.do'
+    },
+    // alphabetical based on chain name
+    {
+      dnslink: 'centrifuge',
+      info: 'centrifuge',
+      text: t<string>('rpc.centrifuge', 'Centrifuge (Mainnet, hosted by Centrifuge)', { ns: 'apps-config' }),
+      value: 'wss://fullnode.centrifuge.io'
+    },
+    {
+      info: 'crab',
+      text: t<string>('rpc.crab', 'Crab (Darwinia Canary, hosted by Darwinia Network)', { ns: 'apps-config' }),
+      value: 'wss://crab.darwinia.network'
+    },
+    {
+      dnslink: 'edgeware',
+      info: 'edgeware',
+      text: t<string>('rpc.edgeware', 'Edgeware (Mainnet, hosted by Commonwealth Labs)', { ns: 'apps-config' }),
+      value: 'wss://mainnet1.edgewa.re'
+    },
+    {
+      dnslink: 'kulupu',
+      info: 'kulupu',
+      text: t<string>('rpc.kulupu', 'Kulupu (Kulupu Mainnet, hosted by Kulupu)', { ns: 'apps-config' }),
+      value: 'wss://rpc.kulupu.corepaper.org/ws'
+    },
+    {
+      info: 'nodle',
+      text: t<string>('rpc.nodle-main', 'Nodle Main (Nodle Mainnet, hosted by Nodle)', { ns: 'apps-config' }),
+      value: 'wss://main1.nodleprotocol.io'
+    }
+  ];
+
 }
 
 function createTest (t: TFunction): LinkOption[] {
