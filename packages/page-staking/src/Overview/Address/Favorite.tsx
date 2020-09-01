@@ -22,7 +22,7 @@ function Favorite ({ address, className, isFavorite, toggleFavorite }: Props): R
   return (
     <Icon
       className={className}
-      color={isFavorite ? 'orange' : 'gray'}
+      color={isFavorite ? 'orange' : 'grey'}
       icon='star'
       onClick={_onFavorite}
     />
