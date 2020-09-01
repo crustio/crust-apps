@@ -93,7 +93,7 @@ function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
 
 function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, nominatedBy, onlineCount, onlineMessage, points, toggleFavorite, withIdentity, setNominators }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  const { accountInfo, slashingSpans, stakingInfo, validatorsRel, _stakeLimit } = useAddressCalls(api, address, isMain);
+  const { accountInfo, stakingInfo, validatorsRel, _stakeLimit } = useAddressCalls(api, address, isMain);
 
   const { commission, nominators, stakeOther, stakeOwn, stakeLimit } = useMemo(
     () => stakingInfo && _stakeLimit && validatorsRel ? expandInfo(stakingInfo, validatorsRel, _stakeLimit) : { nominators: [] },

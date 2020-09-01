@@ -3,11 +3,11 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DeriveBalancesAll, DeriveStakingAccount } from '@polkadot/api-derive/types';
-import { UnappliedSlash, Nominations, Balance, IndividualExposure, EraIndex } from '@polkadot/types/interfaces';
+import { UnappliedSlash, Balance, IndividualExposure, EraIndex } from '@polkadot/types/interfaces';
 import { StakerState } from '@polkadot/react-hooks/types';
 import { Codec } from '@polkadot/types/types';
 import { SortedTargets } from '../../types';
-import { Slash } from '../types';
+// import { Slash } from '../types';
 import { Compact } from '@polkadot/types/codec';
 
 import BN from 'bn.js';
@@ -87,7 +87,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const [isUnbondOpen, toggleUnbond] = useToggle();
   const [isValidateOpen, toggleValidate] = useToggle();
   const [hasBonded, setHasBonded] = useState(false);
-  const [slashes, setSlashes] = useState<Slash[]>([]);
+  // const [slashes, setSlashes] = useState<Slash[]>([]);
 
   useEffect((): void => {
     stakingAccount?.stakingLedger && setHasBonded(
@@ -95,25 +95,25 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
     );
   }, [stakingAccount]);
 
-  useEffect((): void => {
-    allSlashes && setSlashes(
-      allSlashes
-        .map(([era, all]) => {
-          const slashes = all
-            .filter(({ others, validator }) => validator.eq(stashId) || others.some(([nominatorId]) => nominatorId.eq(stashId)))
-            .map(({ others, own, payout, reporters, validator }) => ({
-              isValidator: validator.eq(stashId), others, own, payout, reporters, validator
-            }));
+  // useEffect((): void => {
+  //   allSlashes && setSlashes(
+  //     allSlashes
+  //       .map(([era, all]) => {
+  //         const slashes = all
+  //           .filter(({ others, validator }) => validator.eq(stashId) || others.some(([nominatorId]) => nominatorId.eq(stashId)))
+  //           .map(({ others, own, payout, reporters, validator }) => ({
+  //             isValidator: validator.eq(stashId), others, own, payout, reporters, validator
+  //           }));
 
-          return {
-            era,
-            isValidator: slashes.some(({ isValidator }) => isValidator),
-            slashes
-          };
-        })
-        .filter(({ slashes }) => slashes.length)
-    );
-  }, [allSlashes, stashId]);
+  //         return {
+  //           era,
+  //           isValidator: slashes.some(({ isValidator }) => isValidator),
+  //           slashes
+  //         };
+  //       })
+  //       .filter(({ slashes }) => slashes.length)
+  //   );
+  // }, [allSlashes, stashId]);
 
   // const withdrawFunds = useCallback(
   //   () => {
@@ -226,13 +226,13 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
         <StakingUnbonding stakingInfo={stakingAccount} />
         <StakingRedeemable stakingInfo={stakingAccount} />
       </td>
-      <EffectedStake
+      {currentEra && (<EffectedStake
         validators = {guaranteeTargets}
         stakeValue = {stakeValue}
         stashId= {stashId}
         currentEra = {currentEra}
         // stakeValue = { guaranteeTargets.length > 0 ? guaranteeTargets.reduce((total: BN, { value }) => { return JSON.parse(JSON.stringify(value)) ? total.add(value?.unwrap()) : total}, BN_ZERO) : BN_ZERO }
-      />
+      />)}
       {/* <td className='number'>
         <StakingEffected stakingInfo={stakingAccount} />
       </td> */}
@@ -253,7 +253,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
             {isStashNominating && (
               <ListNominees
                 nominating={nominating}
-                slashes={slashes}
+                // slashes={slashes}
                 stashId={stashId}
               />
             )}
