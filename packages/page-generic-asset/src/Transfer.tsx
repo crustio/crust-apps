@@ -115,8 +115,7 @@ function Transfer ({ assets, className = '', onClose, recipientId: propRecipient
         <TxButton
           accountId={senderId}
           extrinsic={extrinsic}
-          icon='send'
-          isPrimary
+          icon='paper-plane'
           label={t<string>('Make Transfer')}
           onStart={onClose}
         />

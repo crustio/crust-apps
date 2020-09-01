@@ -2,34 +2,36 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { DeriveElectionsInfo } from '@polkadot/api-derive/types';
 import { AccountId } from '@polkadot/types/interfaces';
-import { ComponentProps } from './types';
 
-import React, { useMemo } from 'react';
+import React, { useRef } from 'react';
 import { Table } from '@polkadot/react-components';
 
 import { useTranslation } from '../translate';
 import Candidate from './Candidate';
 
-interface Props extends ComponentProps {
+interface Props {
   allVotes?: Record<string, AccountId[]>;
   className?: string;
+  electionsInfo?: DeriveElectionsInfo;
   prime?: AccountId | null;
 }
 
 function Members ({ allVotes = {}, className = '', electionsInfo, prime }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
 
-  const header = useMemo(() => [
+  const headerRef = useRef([
     [t('members'), 'start', 2],
-    [t('backing')]
-  ], [t]);
+    [t('backing')],
+    [t('votes')]
+  ]);
 
   return (
     <Table
       className={className}
       empty={electionsInfo && t<string>('No members found')}
-      header={header}
+      header={headerRef.current}
     >
       {electionsInfo?.members.map(([accountId, balance]): React.ReactNode => (
         <Candidate

@@ -11,7 +11,6 @@ import linked from '@polkadot/apps-config/links';
 import { useApi } from '@polkadot/react-hooks';
 
 import { useTranslation } from './translate';
-import Tooltip from './Tooltip';
 
 interface Props {
   className?: string;
@@ -36,27 +35,18 @@ function genLinks (systemChain: string, { data, hash, type, withShort }: Props):
         return null;
       }
 
-      const trigger = `${name}-${type}-${data.toString()}`;
-      const link = create(extChain, extPath, data, hash);
-
       return (
         <a
-          data-for={trigger}
-          data-tip={true}
-          href={link}
+          href={create(extChain, extPath, data, hash)}
           key={name}
           rel='noopener noreferrer'
           target='_blank'
+          title={`${name}, ${url}`}
         >
           {withShort
             ? shortName(name)
             : name
           }
-          <Tooltip
-            place='top'
-            text={<>{name}<br />{url}</>}
-            trigger={trigger}
-          />
         </a>
       );
     })
@@ -76,7 +66,7 @@ function LinkExternal ({ className = '', data, hash, type, withShort }: Props): 
   }
 
   return (
-    <div className={`${className} ${withShort ? 'withShort' : ''}`}>
+    <div className={`${className}${withShort ? ' withShort' : ''}`}>
       {!withShort && <div>{t<string>('View this externally')}</div>}
       <div className='links'>{links.map((link, index) => <span key={index}>{link}</span>)}</div>
     </div>

@@ -22,27 +22,29 @@ function Summary (): React.ReactElement {
           <TimeNow />
         </CardSummary>
         <CardSummary
-          className='ui--media-small'
+          className='media--800'
           label={t<string>('target')}
         >
           <BlockToTime blocks={BN_ONE} />
         </CardSummary>
         {api.query.balances && (
           <CardSummary
-            className='ui--media-small'
+            className='media--800'
             label={t<string>('total issuance')}
           >
             <TotalIssuance />
           </CardSummary>
         )}
       </section>
-      <section className='ui--media-large'>
+      <section className='media--1200'>
         <SummarySession withEra={false} />
       </section>
       <section>
-        <CardSummary label={t<string>('finalized')}>
-          <BestFinalized />
-        </CardSummary>
+        {api.query.grandpa && (
+          <CardSummary label={t<string>('finalized')}>
+            <BestFinalized />
+          </CardSummary>
+        )}
         <CardSummary label={t<string>('best')}>
           <BestNumber />
         </CardSummary>

@@ -23,11 +23,10 @@ interface Props {
 }
 
 function Unbond ({ className = '', controllerId, onClose, stakingLedger, stashId }: Props): React.ReactElement<Props> {
-
   const { api } = useApi();
   const { t } = useTranslation();
-  const stakingLedgerInfo = useCall<StakingLedger | null>(controllerId && api.query.staking.ledger, [controllerId]);
   const bondedBlocks = useUnbondDuration();
+  const stakingLedgerInfo = useCall<StakingLedger | null>(controllerId && api.query.staking.ledger, [controllerId]);
   const [maxBalance] = useState<BN | null>(stakingLedgerInfo && new BN(Number(JSON.parse(JSON.stringify(stakingLedgerInfo)).active).toString()) || null);
   const [maxUnbond, setMaxUnbond] = useState<BN | null>(null);
 
@@ -37,7 +36,7 @@ function Unbond ({ className = '', controllerId, onClose, stakingLedger, stashId
       header={t<string>('Unbond funds')}
       size='large'
     >
-      <Modal.Content className='ui--signer-Signer-Content'>
+      <Modal.Content>
         <Modal.Columns>
           <Modal.Column>
             <InputAddress
@@ -88,9 +87,8 @@ function Unbond ({ className = '', controllerId, onClose, stakingLedger, stashId
       <Modal.Actions onCancel={onClose}>
         <TxButton
           accountId={controllerId}
-          icon='sign-out'
+          icon='unlock'
           isDisabled={!maxUnbond?.gtn(0)}
-          isPrimary
           label={t<string>('Unbond')}
           onStart={onClose}
           params={[maxUnbond]}

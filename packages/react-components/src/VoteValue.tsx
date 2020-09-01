@@ -5,7 +5,7 @@
 import { DeriveBalancesAll } from '@polkadot/api-derive/types';
 
 import BN from 'bn.js';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { BalanceVoting } from '@polkadot/react-query';
 import { isBn } from '@polkadot/util';
@@ -16,6 +16,7 @@ import { useTranslation } from './translate';
 interface Props {
   accountId?: string | null;
   autoFocus?: boolean;
+  isCouncil?: boolean;
   onChange: (value: BN) => void;
 }
 
@@ -24,11 +25,16 @@ interface ValueState {
   value?: BN;
 }
 
-function VoteValue ({ accountId, autoFocus, onChange }: Props): React.ReactElement<Props> | null {
+function VoteValue ({ accountId, autoFocus, isCouncil, onChange }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api } = useApi();
   const allBalances = useCall<DeriveBalancesAll>(api.derive.balances.all, [accountId]);
   const [{ selectedId, value }, setValue] = useState<ValueState>({});
+  const maxVotingBalance = useMemo(() =>
+    isCouncil
+      ? allBalances?.votingBalance.add(allBalances?.reservedBalance)
+      : allBalances?.votingBalance
+  , [allBalances?.reservedBalance, allBalances?.votingBalance, isCouncil]);
 
   useEffect((): void => {
     // if the set accountId changes and the new balances is for that id, set it
@@ -36,7 +42,7 @@ function VoteValue ({ accountId, autoFocus, onChange }: Props): React.ReactEleme
       selectedId: accountId,
       value: allBalances.lockedBalance
     });
-  }, [accountId, selectedId, allBalances]);
+  }, [allBalances, accountId, maxVotingBalance, selectedId]);
 
   // only do onChange to parent when the BN value comes in, not our formatted version
   useEffect((): void => {
@@ -53,18 +59,22 @@ function VoteValue ({ accountId, autoFocus, onChange }: Props): React.ReactEleme
   return (
     <InputBalance
       autoFocus={autoFocus}
-      defaultValue={accountId !== selectedId ? undefined : allBalances?.lockedBalance}
+      defaultValue={accountId !== selectedId
+        ? undefined
+        : allBalances?.lockedBalance
+      }
       help={t<string>('The amount that is associated with this vote. This value is is locked for the duration of the vote.')}
       isDisabled={isDisabled}
       isZeroable
       label={t<string>('vote value')}
       labelExtra={
         <BalanceVoting
+          isCouncil={isCouncil}
           label={<label>{t<string>('voting balance')}</label>}
           params={accountId}
         />
       }
-      maxValue={allBalances?.votingBalance}
+      maxValue={maxVotingBalance}
       onChange={_setValue}
     />
   );

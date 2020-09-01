@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ContractCallOutcome } from '@polkadot/api-contract/types';
-import { BareProps, StringOrNull } from '@polkadot/react-components/types';
+import { StringOrNull } from '@polkadot/react-components/types';
 
 import BN from 'bn.js';
 import React, { useCallback, useState, useEffect, useMemo } from 'react';
@@ -20,9 +20,10 @@ import { useTranslation } from '../translate';
 import { getCallMessageOptions } from './util';
 import useWeight from '../useWeight';
 
-interface Props extends BareProps {
+interface Props {
   callContract: ApiContract | null;
   callMessageIndex: number | null;
+  className?: string;
   isOpen: boolean;
   onChangeCallContractAddress: (callContractAddress: StringOrNull) => void;
   onChangeCallMessageIndex: (callMessageIndex: number) => void;
@@ -74,7 +75,7 @@ function Call (props: Props): React.ReactElement<Props> | null {
   );
 
   const _constructTx = useCallback(
-    (): any[] => {
+    (): unknown[] => {
       if (!accountId || !callMessage || !callMessage.fn || !callContract || !callContract.address) {
         return [];
       }
@@ -101,14 +102,12 @@ function Call (props: Props): React.ReactElement<Props> | null {
   );
 
   const _onClearOutcomes = useCallback(
-    (): void => setOutcomes([]),
+    () => setOutcomes([]),
     []
   );
 
   const _onClearOutcome = useCallback(
-    (outcomeIndex: number) => (): void => {
-      setOutcomes(outcomes.slice(0, outcomeIndex).concat(outcomes.slice(outcomeIndex + 1)));
-    },
+    (outcomeIndex: number) => () => setOutcomes(outcomes.slice(0, outcomeIndex).concat(outcomes.slice(outcomeIndex + 1))),
     [outcomes]
   );
 
@@ -204,9 +203,8 @@ function Call (props: Props): React.ReactElement<Props> | null {
           {useRpc
             ? (
               <Button
-                icon='sign-in'
+                icon='sign-in-alt'
                 isDisabled={!isValid}
-                isPrimary
                 label={t<string>('Call')}
                 onClick={_onSubmitRpc}
               />
@@ -214,9 +212,8 @@ function Call (props: Props): React.ReactElement<Props> | null {
             : (
               <TxButton
                 accountId={accountId}
-                icon='sign-in'
+                icon='sign-in-alt'
                 isDisabled={!isValid}
-                isPrimary
                 label={t('Call')}
                 onClick={(): void => setIsBusy(true)}
                 onFailed={(): void => setIsBusy(false)}
@@ -234,7 +231,7 @@ function Call (props: Props): React.ReactElement<Props> | null {
               {t<string>('Call results')}
               <IconLink
                 className='clear-all'
-                icon='close'
+                icon='times'
                 label={t<string>('Clear all')}
                 onClick={_onClearOutcomes}
               />

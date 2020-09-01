@@ -4,13 +4,14 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { Icon } from '@polkadot/react-components';
+import { IconName } from '@fortawesome/fontawesome-svg-core';
+import { Button, Icon } from '@polkadot/react-components';
 import { useToggle } from '@polkadot/react-hooks';
 
 interface Props {
   children: React.ReactNode;
   className?: string;
-  icon: string;
+  icon: IconName;
   type: 'error' | 'info';
 }
 
@@ -26,15 +27,17 @@ function BaseOverlay ({ children, className = '', icon, type }: Props): React.Re
       <div className='content'>
         <Icon
           className='contentIcon'
-          name={icon as 'send'}
-          size='big'
+          icon={icon}
+          size='2x'
         />
         <div className='contentItem'>
           {children}
         </div>
-        <Icon
+        <Button
           className='closeIcon'
-          name='close'
+          icon='times'
+          isBasic
+          isCircular
           onClick={toggleHidden}
         />
       </div>
@@ -43,32 +46,51 @@ function BaseOverlay ({ children, className = '', icon, type }: Props): React.Re
 }
 
 export default React.memo(styled(BaseOverlay)`
-  border-bottom: 1px solid transparent;
-  left: 0;
+  background: white;
+  border: 0 solid transparent;
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-width: 1px;
+  border-left-width: 0.25rem;
   line-height: 1.5em;
-  padding: 0 2rem;
+  padding: 0 1rem;
   position: fixed;
   right: 0;
   top: 0;
+  max-width: 55rem;
   z-index: 500;
 
+  &:before {
+    border-radius: 0.25rem;
+    bottom: 0;
+    content: ' ';
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
+  }
+
   &.isError {
-    background: #ffe6e6;
-    border-color: #c00;
-    color: #4d0000;
+    &:before {
+      background: rgba(255, 12, 12, 0.05);
+    }
+
+    border-color: rgba(255, 12, 12, 1);
   }
 
   &.isInfo {
-    background: #fff6cb;
-    border-color: #e7c000;
-    color: #6b5900;
+    &:before {
+      background: rgba(255, 196, 12, 0.05);
+    }
+
+    border-color: rgba(255, 196, 12, 1);
   }
 
   .content {
     display: flex;
     margin: 0 auto;
     max-width: 50rem;
-    padding: 1em 2rem;
+    padding: 1em;
     position: relative;
 
     .contentIcon {
@@ -88,7 +110,7 @@ export default React.memo(styled(BaseOverlay)`
   .closeIcon {
     cursor: pointer;
     position: absolute;
-    right: 0.75em;
-    top: 0.75em;
+    right: 0em;
+    top: 0.75rem;
   }
 `);

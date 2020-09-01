@@ -22,7 +22,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const MAX_HEADERS = 50;
+const MAX_HEADERS = 75;
 
 const byAuthor: Record<string, string> = {};
 const eraPoints: Record<string, string> = {};
@@ -31,7 +31,7 @@ const ValidatorsContext: React.Context<string[]> = React.createContext<string[]>
 
 function BlockAuthorsBase ({ children }: Props): React.ReactElement<Props> {
   const { api, isApiReady } = useApi();
-  const queryPoints = useCall<EraRewardPoints>(isApiReady && api.derive.staking?.currentPoints, []);
+  const queryPoints = useCall<EraRewardPoints>(isApiReady && api.derive.staking?.currentPoints);
   const [state, setState] = useState<Authors>({ byAuthor, eraPoints, lastBlockAuthors: [], lastHeaders: [] });
   const [validators, setValidators] = useState<string[]>([]);
 
@@ -66,7 +66,7 @@ function BlockAuthorsBase ({ children }: Props): React.ReactElement<Props> {
           }
 
           lastHeaders = lastHeaders
-            .filter((old, index): boolean => index < MAX_HEADERS && old.number.unwrap().lt(blockNumber))
+            .filter((old, index) => index < MAX_HEADERS && old.number.unwrap().lt(blockNumber))
             .reduce((next, header): HeaderExtended[] => {
               next.push(header);
 

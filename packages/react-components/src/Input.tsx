@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { BareProps, VoidFn } from './types';
+import { VoidFn } from './types';
 
 import React, { useCallback, useState } from 'react';
 import SUIInput from 'semantic-ui-react/dist/commonjs/elements/Input/Input';
@@ -12,9 +12,10 @@ import Labelled from './Labelled';
 
 type Input$Type = 'number' | 'password' | 'text';
 
-interface Props extends BareProps {
+interface Props {
   autoFocus?: boolean;
   children?: React.ReactNode;
+  className?: string;
   defaultValue?: string | null;
   help?: React.ReactNode;
   icon?: React.ReactNode;
@@ -28,6 +29,7 @@ interface Props extends BareProps {
   isHidden?: boolean;
   isInPlaceEditor?: boolean;
   isReadOnly?: boolean;
+  isSmall?: boolean;
   isWarning?: boolean;
   label?: React.ReactNode;
   labelExtra?: React.ReactNode;
@@ -51,10 +53,10 @@ interface Props extends BareProps {
   withEllipsis?: boolean;
 }
 
-// Find decimal separator used in current locale
-const getDecimalSeparator = (): string => 1.1
-  .toLocaleString()
-  .replace(/\d/g, '');
+// // Find decimal separator used in current locale
+// const getDecimalSeparator = (): string => 1.1
+//   .toLocaleString()
+//   .replace(/\d/g, '');
 
 // note: KeyboardEvent.keyCode and KeyboardEvent.which are deprecated
 const KEYS = {
@@ -66,7 +68,7 @@ const KEYS = {
   C: 'c',
   CMD: 'Meta',
   CTRL: 'Control',
-  DECIMAL: getDecimalSeparator(),
+  // DECIMAL: getDecimalSeparator(),
   ENTER: 'Enter',
   ESCAPE: 'Escape',
   TAB: 'Tab',
@@ -196,6 +198,7 @@ function Input ({ autoFocus = false, children, className, defaultValue, help, ic
               : 'off'
           }
           autoCorrect='off'
+          data-testid={label}
           onPaste={_onPaste}
           spellCheck={false}
         />

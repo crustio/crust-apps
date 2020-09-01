@@ -11,7 +11,9 @@ export default css`
     border: 1px dashed #eee;
     box-sizing: border-box;
     line-height: 1rem;
-    padding: .75rem 1rem;
+    max-height: 25rem;
+    overflow-y: auto;
+    padding: 0.75rem 1rem;
     position: relative;
     word-break: break-all;
 
@@ -31,10 +33,6 @@ export default css`
     }
   }
 
-  .ui--Button-Group .button {
-    border-radius: .28571429rem !important;
-  }
-
   header .ui--Button-Group {
     text-align: center;
   }
@@ -43,7 +41,7 @@ export default css`
     margin: 0;
   }
 
-  button.ui.icon.icon-button {
+  button.u.ui--Icon.icon-button {
     padding-top: 0;
     padding-right: 0;
     padding-bottom: 0.3em;

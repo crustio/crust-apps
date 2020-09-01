@@ -4,10 +4,13 @@
 
 import { detect } from 'detect-browser';
 import React from 'react';
+import { Trans } from 'react-i18next';
+import useExtensionCounter from '@polkadot/app-settings/useCounter';
 import { availableExtensions } from '@polkadot/apps-config/extensions';
 import { isWeb3Injected } from '@polkadot/extension-dapp';
 import { stringUpperFirst } from '@polkadot/util';
 import { onlyOnWeb } from '@polkadot/react-api/hoc';
+import { useApi } from '@polkadot/react-hooks';
 
 import { useTranslation } from '../translate';
 import Banner from './Banner';
@@ -21,9 +24,33 @@ const isSupported = browserName && Object.keys(availableExtensions).includes(bro
 
 function BannerExtension (): React.ReactElement | null {
   const { t } = useTranslation();
+  const { hasInjectedAccounts } = useApi();
+  const upgradableCount = useExtensionCounter();
 
-  if (isWeb3Injected || !isSupported || !browserName) {
+  if (!isSupported || !browserName) {
     return null;
+  }
+
+  if (isWeb3Injected) {
+    if (hasInjectedAccounts) {
+      if (!upgradableCount) {
+        return null;
+      }
+
+      return (
+        <Banner type='warning'>
+          <p>{t<string>('You have {{upgradableCount}} extensions that need to be updated with the latest chain properties in order to display the correct information for the chain you are connected to. This update includes chain metadata and chain properties.', { replace: { upgradableCount } })}</p>
+          <p><Trans key='extensionUpgrade'>Visit your <a href='#/settings/metadata'>settings page</a> to apply the updates to the injected extensions.</Trans></p>
+        </Banner>
+      );
+    }
+
+    return (
+      <Banner type='warning'>
+        <p>{t<string>('One of more extensions has been detected in your browser, however no accounts has been injected.')}</p>
+        <p>{t<string>('Ensure that the extension has accounts, some accounts are visible globally and available for this chain and that you gave the application permission to access accounts from the extension to use them.')}</p>
+      </Banner>
+    );
   }
 
   return (

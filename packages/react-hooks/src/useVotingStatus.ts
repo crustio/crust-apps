@@ -37,9 +37,9 @@ function getStatus (api: ApiPromise, bestNumber: BlockNumber, votes: Votes, numM
   return {
     hasFailed,
     hasPassed,
-    isCloseable: api.tx[section].close.meta.args.length === 2
-      ? isEnd
-      : isEnd || hasPassed || hasFailed,
+    isCloseable: api.tx[section].close?.meta.args.length === 4 // current-generation
+      ? isEnd || hasPassed || hasFailed
+      : isEnd,
     isVoteable: !isEnd,
     remainingBlocks: isEnd
       ? null
@@ -49,7 +49,7 @@ function getStatus (api: ApiPromise, bestNumber: BlockNumber, votes: Votes, numM
 
 export default function useVotingStatus (votes: Votes | null | undefined, numMembers: number, section: 'council' | 'technicalCommittee'): State {
   const { api } = useApi();
-  const bestNumber = useCall<BlockNumber>(api.derive.chain.bestNumber, []);
+  const bestNumber = useCall<BlockNumber>(api.derive.chain.bestNumber);
   const [state, setState] = useState<State>({ hasFailed: false, hasPassed: false, isCloseable: false, isVoteable: false, remainingBlocks: null });
 
   useEffect((): void => {

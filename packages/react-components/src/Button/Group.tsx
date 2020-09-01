@@ -5,18 +5,12 @@
 import { GroupProps } from './types';
 
 import React from 'react';
-import SUIButton from 'semantic-ui-react/dist/commonjs/elements/Button/Button';
 import styled from 'styled-components';
 
-function ButtonGroup ({ children, className = '', isBasic, isCentered }: GroupProps): React.ReactElement<GroupProps> {
+function ButtonGroup ({ children, className = '', isCentered }: GroupProps): React.ReactElement<GroupProps> {
   return (
-    <div className={`${className} ui--Button-Group ${isCentered ? 'centered' : ''}`}>
-      <SUIButton.Group
-        basic={isBasic}
-        size='small'
-      >
-        {children}
-      </SUIButton.Group>
+    <div className={`ui--Button-Group${isCentered ? ' isCentered' : ''} ${className}`}>
+      {children}
     </div>
   );
 }
@@ -28,16 +22,16 @@ export default React.memo(styled(ButtonGroup)`
     margin-top: 0.75rem;
   }
 
-  > .ui.buttons {
-    vertical-align: middle;
-  }
-
-  &.centered {
+  &.isCentered {
     margin-bottom: 0.5rem;
     text-align: center;
   }
 
   &+.ui--Table {
     margin-top: 1.5rem;
+  }
+
+  .ui--Button {
+    margin: 0 0.25rem;
   }
 `);

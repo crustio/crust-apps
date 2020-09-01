@@ -1,8 +1,8 @@
-// Copyright 2019-2020 @crustio/app-staking authors & contributors
+// Copyright 2017-2020 @polkadot/app-staking authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { CutNominateInfo } from './types';
+import { NominateInfo } from './types';
 import { SortedTargets } from '../../types';
 
 import React, { useCallback, useEffect, useState } from 'react';
@@ -13,12 +13,14 @@ import { useApi, useFavorites } from '@polkadot/react-hooks';
 import { MAX_NOMINATIONS, MAX_PAYOUTS, STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
 import BN from 'bn.js';
+import { CutGuaranteeable } from '@polkadot/react-query';
+
 interface Props {
   className?: string;
   controllerId: string;
   next?: string[];
   nominating?: string[];
-  onChange: (info: CutNominateInfo) => void;
+  onChange: (info: NominateInfo) => void;
   stashId: string;
   targets: SortedTargets;
   validators: string[];
@@ -58,6 +60,7 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
   const { api } = useApi();
   const [favorites] = useFavorites(STORE_FAVS_BASE);
   const [{ isAutoSelect, selected }, setSelected] = useState<Selected>(initialPick(targets));
+  const cutGuaranteeable = <span className='label'>{t<string>('cutGuaranteeable')}</span>;
   const [amount, setAmount] = useState<BN | undefined>(new BN(0));
   const [available] = useState<string[]>((): string[] => {
     const shortlist = [
@@ -101,7 +104,7 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
 
   useEffect((): void => {
     onChange({
-      cutNominateTx: selected && selected.length && amount
+      nominateTx: selected && selected.length && amount
         ? api.tx.staking.cutGuarantee([selected[0], amount])
         : null
     });
@@ -176,7 +179,7 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
         
         <Modal.Column>
           <p>{t<string>('Guarantors can be selected automatically based on the current on-chain conditions or supplied manually as selected from the list of all currently available validators. In both cases, your favorites appear for the selection.')}</p>
-          <p>{t<string>('Once transmitted the new selection will only take effect in 2 eras since the selection criteria for the next era was done at the end of the previous era. Until then, the cutguarantee will show as inactive.')}</p>
+          <p>{t<string>('Once transmitted the new selection will only take effect in 2 eras since the selection criteria for the next era was done at the end of the previous era. Until then, the guarantee will show as inactive.')}</p>
         </Modal.Column>
       </Modal.Columns>
       <Modal.Column>
@@ -187,6 +190,14 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
           label={t<string>('amount')}
           withMax
           onChange={setAmount}
+          labelExtra={
+            selected[0] &&
+            <CutGuaranteeable
+              label={cutGuaranteeable}
+              target={selected[0]}
+              guarantor={stashId}
+            />
+          }
         />
       </Modal.Column>
     </div>

@@ -5,7 +5,7 @@
 import { ComponentProps as Props } from './types';
 
 import React, { useState } from 'react';
-import { Button, InputAddress, Modal, TxButton } from '@polkadot/react-components';
+import { Button, InputAddress, InputBalance, Modal, TxButton } from '@polkadot/react-components';
 import { useApi, useModal } from '@polkadot/react-hooks';
 
 import { useTranslation } from '../translate';
@@ -39,6 +39,19 @@ function SubmitCandidacy ({ electionsInfo }: Props): React.ReactElement<Props> {
                 <p>{t<string>('This account will appear in the list of candidates. With enough votes in an election, it will become either a runner-up or a council member.')}</p>
               </Modal.Column>
             </Modal.Columns>
+            <Modal.Columns>
+              <Modal.Column>
+                <InputBalance
+                  defaultValue={api.consts[modLocation].candidacyBond}
+                  help={t<string>('The bond that is reserved')}
+                  isDisabled
+                  label={t<string>('candidacy bond')}
+                />
+              </Modal.Column>
+              <Modal.Column>
+                <p>{t('The bond will be reserved for the duration of your candidacy and membership.')}</p>
+              </Modal.Column>
+            </Modal.Columns>
           </Modal.Content>
           <Modal.Actions onCancel={onClose}>
             <TxButton
@@ -56,7 +69,7 @@ function SubmitCandidacy ({ electionsInfo }: Props): React.ReactElement<Props> {
         </Modal>
       )}
       <Button
-        icon='add'
+        icon='plus'
         isDisabled={!electionsInfo}
         label={t<string>('Submit candidacy')}
         onClick={onOpen}

@@ -85,7 +85,7 @@ export default css`
     }
   }
 
-  .ui.label:not(.ui--Bubble) {
+  .ui.label {
     background: transparent;
     font-weight: normal;
     position: relative;
@@ -136,16 +136,6 @@ export default css`
     display: flex !important;
   }
 
-  .ui.progress {
-    &.tiny {
-      font-size: .5rem;
-    }
-
-    .bar {
-      min-width: 0 !important;
-    }
-  }
-
   .ui.secondary.vertical.menu > .item {
     margin: 0;
   }
@@ -154,52 +144,15 @@ export default css`
     padding-left: 4rem !important;
   }
 
-  .ui[class*="left icon"].input.left.icon > i.icon.big {
+  .ui[class*="left icon"].input.left.icon > .ui--Icon.big {
     left: -7px;
     opacity: 1;
-  }
-
-  .ui.button:disabled,
-  .ui.buttons .disabled.button,
-  .ui.disabled.active.button,
-  .ui.disabled.button,
-  .ui.disabled.button:hover {
-    opacity: 0.2 !important;
-  }
-
-  .ui.button+.ui.button {
-    margin-left: 0.5rem;
   }
 
   /* modals aligned to top, not center */
   .ui.dimmer {
     background-color: rgba(0,0,0,0.5);
     justify-content: flex-start;
-  }
-
-  .ui.menu.tabular {
-    border-color: #e6e6e6;
-    /* break out of the wrapping main padding */
-    margin: -1em -2em 0;
-    overflow-x: scroll;
-    padding: 2em 2em 0 2em;
-    transition: padding-left 0.2s linear 0.4s;
-
-    &::-webkit-scrollbar {
-      display: none;
-      width: 0px;
-    }
-
-    .item {
-      border-bottom: 2px solid rgba(0, 0, 0, 0);
-      border: none;
-      top: -1px;
-
-      &.active {
-        background: none;;
-        border-bottom: 2px solid #db2828;
-      }
-    }
   }
 
   /* remove the default white background, settings app has it as part of Tab */

@@ -4,7 +4,6 @@
 
 import { DeriveBalancesAll, DeriveDemocracyLock, DeriveStakingAccount } from '@polkadot/api-derive/types';
 import { LockIdentifier, ValidatorPrefsTo145 } from '@polkadot/types/interfaces';
-import { BareProps } from './types';
 
 import BN from 'bn.js';
 import React from 'react';
@@ -45,10 +44,11 @@ export interface ValidatorPrefsType {
   validatorPayment?: boolean;
 }
 
-interface Props extends BareProps {
+interface Props {
   address: string;
   balancesAll?: DeriveBalancesAll;
   children?: React.ReactNode;
+  className?: string;
   democracyLocks?: DeriveDemocracyLock[];
   extraInfo?: [string, string][];
   stakingInfo?: DeriveStakingAccount;
@@ -241,7 +241,7 @@ function renderBalances (props: Props, allAccounts: string[], t: <T = string> (k
           <Label label={t<string>('total')} />
           <FormatBalance
             className='result'
-            value={balancesAll.votingBalance}
+            value={balancesAll.freeBalance.add(balancesAll.reservedBalance)}
           />
         </>
       )}
@@ -259,8 +259,21 @@ function renderBalances (props: Props, allAccounts: string[], t: <T = string> (k
           <Label label={t<string>('vested')} />
           <FormatBalance
             className='result'
+            label={
+              <Icon
+                icon='info-circle'
+                tooltip={`${address}-vested-trigger`}
+              />
+            }
             value={balancesAll.vestedBalance}
-          />
+          >
+            <Tooltip
+              text={
+                <div>{formatBalance(balancesAll.vestedClaimable, { forceUnit: '-' })}<div className='faded'>{t('available to be unlocked')}</div></div>
+              }
+              trigger={`${address}-vested-trigger`}
+            />
+          </FormatBalance>
         </>
       )}
       {balanceDisplay.locked && balancesAll && (isAllLocked || balancesAll.lockedBalance.gtn(0)) && (
@@ -270,9 +283,8 @@ function renderBalances (props: Props, allAccounts: string[], t: <T = string> (k
             className='result'
             label={
               <Icon
-                data-for={`${address}-locks-trigger`}
-                data-tip
-                name='info circle'
+                icon='info-circle'
+                tooltip={`${address}-locks-trigger`}
               />
             }
             value={isAllLocked ? 'all' : balancesAll.lockedBalance}
@@ -331,7 +343,7 @@ function renderBalances (props: Props, allAccounts: string[], t: <T = string> (k
         <>
           <Label label={t<string>('unbonding')} />
           <div className='result'>
-            <StakingUnbonding value={stakingInfo} />
+            <StakingUnbonding stakingInfo={stakingInfo} />
           </div>
         </>
       )}
@@ -349,7 +361,7 @@ function renderBalances (props: Props, allAccounts: string[], t: <T = string> (k
   if (withBalanceToggle) {
     return (
       <>
-        <Expander summary={<FormatBalance value={balancesAll?.votingBalance} />}>
+        <Expander summary={<FormatBalance value={balancesAll && balancesAll.freeBalance.add(balancesAll.reservedBalance)} />}>
           <div className='body column'>
             {allItems}
           </div>
@@ -371,8 +383,8 @@ function AddressInfo (props: Props): React.ReactElement<Props> {
   const { children, className = '', extraInfo, withBalanceToggle, withHexSessionId } = props;
 
   return (
-    <div className={`ui--AddressInfo ${className} ${withBalanceToggle ? 'ui--AddressInfo-expander' : ''}`}>
-      <div className={`column ${withBalanceToggle ? 'column--expander' : ''}`}>
+    <div className={`ui--AddressInfo${className}${withBalanceToggle ? ' ui--AddressInfo-expander' : ''}`}>
+      <div className={`column${withBalanceToggle ? ' column--expander' : ''}`}>
         {renderBalances(props, allAccounts, t)}
         {withHexSessionId && withHexSessionId[0] && (
           <>
@@ -426,7 +438,7 @@ export default withMulti(
       justify-content: start;
 
       &.column--expander {
-        width: 16.5rem;
+        width: 17.5rem;
 
         .ui--Expander {
           width: 100%;

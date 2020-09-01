@@ -3,23 +3,25 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DeriveParachainInfo } from '@polkadot/api-derive/types';
-import { AppProps, BareProps } from '@polkadot/react-components/types';
 
 import React, { useMemo, useRef } from 'react';
 import { matchPath, Route, Switch } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import { Tabs } from '@polkadot/react-components';
-import { useSudo } from '@polkadot/react-hooks';
+import { useApi, useSudo } from '@polkadot/react-hooks';
 
 import Overview from './Overview';
 import Parachain from './Parachain';
 import { useTranslation } from './translate';
 import { parachainName } from './util';
 
-interface Props extends AppProps, BareProps {}
+interface Props {
+  basePath: string;
+}
 
 function ParachainsApp ({ basePath }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
+  const { api } = useApi();
   const sudoState = useSudo();
   const paraInfoRef = useRef<DeriveParachainInfo | null>(null);
 
@@ -51,13 +53,15 @@ function ParachainsApp ({ basePath }: Props): React.ReactElement<Props> {
         />
       </header>
       <Switch>
-        <Route path={`${basePath}/:id`}>
-          <Parachain
-            basePath={basePath}
-            paraInfoRef={paraInfoRef}
-            {...sudoState}
-          />
-        </Route>
+        {api.query.parachains && (
+          <Route path={`${basePath}/:id`}>
+            <Parachain
+              basePath={basePath}
+              paraInfoRef={paraInfoRef}
+              {...sudoState}
+            />
+          </Route>
+        )}
         <Route>
           <Overview {...sudoState} />
         </Route>

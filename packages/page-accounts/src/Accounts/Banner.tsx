@@ -22,12 +22,7 @@ function Banner ({ children, className = '', type }: Props): React.ReactElement<
 }
 
 export default React.memo(styled(Banner)`
-  &+& {
-    margin-top: 0.5rem;
-  }
-
   .box {
-    max-width: 50rem;
     padding: 0 0.5rem;
   }
 `);

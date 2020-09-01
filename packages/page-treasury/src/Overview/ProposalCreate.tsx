@@ -21,6 +21,7 @@ function Propose ({ className }: Props): React.ReactElement<Props> | null {
   const [isOpen, toggleOpen] = useToggle();
   const [value, setValue] = useState<BN | undefined>();
   const hasValue = value?.gtn(0);
+
   const bondPercentage = useMemo(
     () => `${api.consts.treasury.proposalBond.muln(100).divn(1_000_000).toNumber().toFixed(2)}%`,
     [api]
@@ -92,9 +93,8 @@ function Propose ({ className }: Props): React.ReactElement<Props> | null {
           <Modal.Actions onCancel={toggleOpen}>
             <TxButton
               accountId={accountId}
-              icon='add'
+              icon='plus'
               isDisabled={!accountId || !hasValue}
-              isPrimary
               label={t<string>('Submit proposal')}
               onStart={toggleOpen}
               params={[value, beneficiary]}

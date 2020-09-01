@@ -3,7 +3,6 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { CodeStored } from '@polkadot/app-contracts/types';
-import { BareProps } from '@polkadot/react-components/types';
 
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -15,8 +14,10 @@ import { CopyButton, Icon } from '@polkadot/react-components';
 
 import contracts from '../store';
 
-interface Props extends BareProps {
+interface Props {
   buttons?: React.ReactNode;
+  children?: React.ReactNode;
+  className?: string;
   code: CodeStored;
   isInline?: boolean;
   withTags?: boolean;
@@ -50,10 +51,9 @@ function CodeRow ({ buttons, children, className, code: { json }, isInline, with
 
   const _onSaveTags = useCallback(
     (): void => {
-      if (codeHash) {
-        contracts.saveCode(createType(registry, 'Hash', codeHash), { tags })
-          .catch((e): void => console.error(e));
-      }
+      codeHash && contracts
+        .saveCode(createType(registry, 'Hash', codeHash), { tags })
+        .catch((e): void => console.error(e));
     },
     [codeHash, tags]
   );
@@ -73,7 +73,7 @@ function CodeRow ({ buttons, children, className, code: { json }, isInline, with
       icon={
         <div className='ui--CodeRow-icon'>
           <Icon
-            name='code'
+            icon='code'
             size='large'
           />
         </div>
@@ -104,7 +104,7 @@ export default React.memo(
       padding: 0.5rem;
       display: flex;
       justify-content: flex-end;
-      align-items: flex-end;  
+      align-items: flex-end;
     }
   `
 );

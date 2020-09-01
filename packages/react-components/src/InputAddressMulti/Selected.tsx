@@ -8,7 +8,7 @@ import AddressToggle from '../AddressToggle';
 
 interface Props {
   address: string;
-  filter: string;
+  filter?: string;
   isHidden?: boolean;
   onDeselect: (address: string) => void;
 }
@@ -27,7 +27,6 @@ function Selected ({ address, filter, isHidden, onDeselect }: Props): React.Reac
     <AddressToggle
       address={address}
       filter={filter}
-      noLookup
       noToggle
       onChange={_onDeselect}
     />
