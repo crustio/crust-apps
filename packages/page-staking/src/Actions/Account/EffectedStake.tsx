@@ -26,14 +26,16 @@ function EffectedStake ({ validators, stakeValue, currentEra, stashId }: Props):
   if (validators && JSON.parse(JSON.stringify(validators)) !== null && currentEra && JSON.parse(JSON.stringify(currentEra)) !== null) {
     let tmpTargets = JSON.parse(JSON.stringify(validators));
     for (const tmp of tmpTargets) {
+      let guaranteeTarget:[string, BN, BN] = [tmp.who, new BN(0), tmp.value]
       const exposure = useCall<Exposure>(api.query.staking.erasStakers, [currentEra.toHuman(), tmp.who])
       if (exposure) {
         for (const other of exposure.others) {
           if (other.who.toString() === stashId) {
-            guaranteeTargets.push([tmp.who, other.value.unwrap(), tmp.value ])
+            guaranteeTarget[1] = tmp.value
           }
         }
       }
+      guaranteeTargets.push(guaranteeTarget)
     }
     stakeValue = guaranteeTargets.reduce((total: BN, [who, value]) => { return total.add(new BN(Number(value).toString()))}, BN_ZERO);
   }
@@ -41,11 +43,11 @@ function EffectedStake ({ validators, stakeValue, currentEra, stashId }: Props):
 
   return (
     <td className='number all'>
-      {stakeValue?.gtn(0) && (
+      {(
         <>
           <Expander summary={
             <FormatBalance
-              labelPost={` (${guaranteeTargets.length})`}
+              labelPost={` (${validators.length})`}
               value={stakeValue}
             />
           }>
