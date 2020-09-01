@@ -199,7 +199,7 @@ function createTest (t: TFunction): LinkOption[] {
     {
       info: 'crust',
       text: t<string>('rpc.crust.network', 'Maxwell CC2 (Crust BetaNet, hosted by Crust Network)', { ns: 'apps-config' }),
-      value: 'ws://47.100.33.107:9944/'
+      value: 'wss://api.crust.network/'
     }
   ];
 }
