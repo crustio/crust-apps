@@ -52,7 +52,6 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
   const isInElection = useCall<boolean>(api.query.staking?.eraElectionStatus, undefined, transformElection);
   const [nominators, dispatchNominators] = useReducer(reduceNominators, [] as string[]);
 
-  console.log("nominators", nominators)
   const hasQueries = useMemo(
     () => hasAccounts && !!(api.query.imOnline?.authoredBlocks) && !!(api.query.staking.activeEra),
     [api, hasAccounts]
