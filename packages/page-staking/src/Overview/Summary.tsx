@@ -43,7 +43,7 @@ function Summary ({ className = '', isVisible, next, nominators, stakingOverview
         {!!nominators?.length && (
           <CardSummary
             className='media--1100'
-            label={t<string>('nominators')}
+            label={t<string>('guarantors')}
           >
             {nominators.length}
           </CardSummary>

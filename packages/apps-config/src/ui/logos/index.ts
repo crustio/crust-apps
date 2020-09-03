@@ -25,6 +25,7 @@ import nodePolkadotJs from './nodes/polkadot-js.svg';
 import nodeSubstrate from './nodes/substrate-hexagon.svg';
 import nodeKulupu from './nodes/kulupu.svg';
 import nodeLaminar from './nodes/laminar-circle.svg';
+import crust from './nodes/chainCrust.svg';
 
 // extensions
 import extensionPolkadotJs from './extensions/polkadot-js.svg';
@@ -41,7 +42,8 @@ const chainLogos: Record<string, any> = [
   ['Rococo', chainRococo],
   ['Tick', chainRococoTick],
   ['Track', chainRococoTrack],
-  ['Trick', chainRococoTrick]
+  ['Trick', chainRococoTrick],
+  ['Crust Maxwell CC2', crust]
 ].reduce((logos, [chain, logo]): Record<string, any> => ({
   ...logos,
   [(chain as string).toLowerCase()]: logo
@@ -62,7 +64,8 @@ const nodeLogos: Record<string, any> = [
   ['Nodle Chain Node', nodeNodle],
   ['parity-polkadot', nodePolkadot],
   ['polkadot-js', nodePolkadotJs],
-  ['substrate-node', nodeSubstrate]
+  ['substrate-node', nodeSubstrate],
+  ['crust', crust]
 ].reduce((logos, [node, logo]): Record<string, any> => ({
   ...logos,
   [(node as string).toLowerCase().replace(/-/g, ' ')]: logo
@@ -88,7 +91,8 @@ const namedLogos: Record<string, any> = {
   rococoTrack: chainRococoTrack,
   rococoTrick: chainRococoTrick,
   substrate: nodeSubstrate,
-  westend: nodePolkadot
+  westend: nodePolkadot,
+  crust: crust
 };
 
 // extension logos
