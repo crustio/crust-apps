@@ -56,7 +56,7 @@ function createLive (t: TFunction): LinkOption[] {
     // fixed, polkadot
     {
       info: 'crust',
-      text: t<string>('rpc.crust.network', 'Maxwell CC2 (Crust BetaNet, hosted by Crust Network)', { ns: 'apps-config' }),
+      text: t<string>('rpc.crust.network', 'Maxwell CC2 (Crust Testnet, hosted by Crust Network)', { ns: 'apps-config' }),
       value: 'wss://api.crust.network/'
     },
     {
@@ -198,7 +198,7 @@ function createTest (t: TFunction): LinkOption[] {
     // },
     {
       info: 'crust',
-      text: t<string>('rpc.crust.network', 'Maxwell CC2 (Crust BetaNet, hosted by Crust Network)', { ns: 'apps-config' }),
+      text: t<string>('rpc.crust.network', 'Maxwell CC2 (Crust Testnet, hosted by Crust Network)', { ns: 'apps-config' }),
       value: 'wss://api.crust.network/'
     }
   ];

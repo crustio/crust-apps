@@ -52,6 +52,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
   const isInElection = useCall<boolean>(api.query.staking?.eraElectionStatus, undefined, transformElection);
   const [nominators, dispatchNominators] = useReducer(reduceNominators, [] as string[]);
 
+  console.log("nominators", nominators)
   const hasQueries = useMemo(
     () => hasAccounts && !!(api.query.imOnline?.authoredBlocks) && !!(api.query.staking.activeEra),
     [api, hasAccounts]
@@ -125,7 +126,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
       <Summary
         isVisible={pathname === basePath}
         next={next}
-        nominators={targets.nominators}
+        nominators={nominators}
         stakingOverview={stakingOverview}
       />
       <Switch>
@@ -181,6 +182,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
         stakingOverview={stakingOverview}
         toggleFavorite={toggleFavorite}
         setNominators={dispatchNominators}
+        nominators={nominators}
       />
     </main>
   );

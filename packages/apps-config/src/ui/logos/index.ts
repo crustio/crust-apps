@@ -25,7 +25,7 @@ import nodePolkadotJs from './nodes/polkadot-js.svg';
 import nodeSubstrate from './nodes/substrate-hexagon.svg';
 import nodeKulupu from './nodes/kulupu.svg';
 import nodeLaminar from './nodes/laminar-circle.svg';
-import crust from './nodes/crust.svg';
+import crust from './nodes/chainCrust.svg';
 
 // extensions
 import extensionPolkadotJs from './extensions/polkadot-js.svg';

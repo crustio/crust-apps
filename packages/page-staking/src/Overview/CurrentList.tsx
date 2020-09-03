@@ -75,7 +75,6 @@ function extractNominators (nominations: [StorageKey, Option<Guarantee>][]): Rec
   return nominations.reduce((mapped: Record<string, [string, number][]>, [key, optNoms]) => {
     if (optNoms.isSome) {
       const nominatorId = key.args[0].toString();
-
       optNoms.unwrap().targets.forEach((_validatorId: { who: { toString: () => any; }; }, index: number): void => {
         const validatorId = _validatorId.who.toString();
         const info: [string, number] = [nominatorId, index + 1];
@@ -154,6 +153,7 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
           points={eraPoints[address]}
           toggleFavorite={toggleFavorite}
           withIdentity={withIdentity}
+          setNominators={setNominators}
         />
       )),
     [byAuthor, eraPoints, hasQueries, nameFilter, nominatedBy, recentlyOnline, toggleFavorite, withIdentity]

@@ -20,6 +20,7 @@ const nodeCentrifuge = '#fcc367';
 const nodeEdgeware = '#0a95df';
 const nodeNodle = '#1ab394';
 const nodeKilt = '#eb5b2a';
+const chainCrust = '#ff8812';
 
 // overrides based on the actual matched chain name
 const chainColors: Record<string, any> = [
@@ -36,7 +37,8 @@ const chainColors: Record<string, any> = [
   ['Track', chainRoccoTrack],
   ['Trick', chainRoccoTrick],
   ['acala mandala pc1', chainRoccoAcala],
-  ['Westend', chainWestend]
+  ['Westend', chainWestend],
+  ['crust maxwell cc2', chainCrust]
 ].reduce((colors, [chain, color]): Record<string, any> => ({
   ...colors,
   [chain.toLowerCase()]: color
