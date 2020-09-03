@@ -125,7 +125,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
       <Summary
         isVisible={pathname === basePath}
         next={next}
-        nominators={targets.nominators}
+        nominators={nominators}
         stakingOverview={stakingOverview}
       />
       <Switch>
@@ -181,6 +181,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
         stakingOverview={stakingOverview}
         toggleFavorite={toggleFavorite}
         setNominators={dispatchNominators}
+        nominators={nominators}
       />
     </main>
   );
