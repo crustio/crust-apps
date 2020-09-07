@@ -8,9 +8,9 @@ import BN from 'bn.js';
 import React from 'react';
 import { AddressMini, Expander } from '@polkadot/react-components';
 import { FormatBalance } from '@polkadot/react-query';
-import { useApi, useCall } from '@polkadot/react-hooks';
 import { EraIndex, Exposure } from '@polkadot/types/interfaces';
 import { BN_ZERO } from '@polkadot/util';
+import { useCall, useApi } from '@polkadot/react-hooks';
 
 interface Props {
   stakeValue?: BN;
@@ -24,17 +24,26 @@ function EffectedStake ({ validators, stakeValue, currentEra, stashId }: Props):
   let guaranteeTargets: [string, BN, BN][] = [];
   if (validators && JSON.parse(JSON.stringify(validators)) !== null && currentEra && JSON.parse(JSON.stringify(currentEra)) !== null) {
     let tmpTargets = JSON.parse(JSON.stringify(validators));
-    for (const tmp of tmpTargets) {
-      let guaranteeTarget:[string, BN, BN] = [tmp.who, new BN(0), tmp.value]
-      const exposure = useCall<Exposure>(api.query.staking.erasStakers, [currentEra.toHuman(), tmp.who])
-      if (exposure) {
-        for (const other of exposure.others) {
-          if (other.who.toString() === stashId) {
-            guaranteeTarget[1] = tmp.value
+    let params = tmpTargets.map((e: { who: any; }) => e.who);
+    let query = []
+    for (const param of params) {
+      query.push([currentEra.toHuman(), param]);
+    }
+    const multiQuery = useCall<Exposure[]>(api.query.staking.erasStakers.multi, [query]);
+    
+    if (multiQuery) {
+      for (let index = 0; index < tmpTargets?.length; index++) {
+        let guaranteeTarget:[string, BN, BN] = [tmpTargets[index].who, new BN(0), tmpTargets[index].value];
+        const exposure = multiQuery[index];
+        if (exposure) {
+          for (const other of exposure.others) {
+            if (other.who.toString() === stashId) {
+              guaranteeTarget[1] = other.value.unwrap();
+            }
           }
         }
+        guaranteeTargets.push(guaranteeTarget);
       }
-      guaranteeTargets.push(guaranteeTarget)
     }
     stakeValue = guaranteeTargets.reduce((total: BN, [who, value]) => { return total.add(new BN(Number(value).toString()))}, BN_ZERO);
   }
