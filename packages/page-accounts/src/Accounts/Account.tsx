@@ -108,6 +108,7 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
   useEffect((): void => {
     if (balancesAll) {
       setBalance(address, balancesAll.freeBalance.add(balancesAll.reservedBalance));
+
       api.api.tx.vesting?.vest && setVestingTx(() =>
         balancesAll.vestingLocked.isZero()
           ? null
@@ -576,12 +577,12 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
           </Menu>
         </Popup>
       </td>
-      <td className='mini media--1400'>
+      <td className='links media--1400'>
         <LinkExternal
           className='ui--AddressCard-exporer-link'
           data={address}
+          isLogo
           type='address'
-          withShort
         />
       </td>
     </tr>

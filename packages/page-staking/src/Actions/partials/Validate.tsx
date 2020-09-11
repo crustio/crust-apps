@@ -33,9 +33,9 @@ function Validate ({ className = '', controllerId, onChange, stashId, withSender
       onChange({
         validateTx: api.tx.staking.validate({
           commission: commission.isZero()
-          // small non-zero set to avoid isEmpty
-          ? '0'
-          : (commission.toNumber() > 1000000000) ? '1000000000' : commission.toNumber().toString()
+            // small non-zero set to avoid isEmpty
+            ? 1
+            : commission
         })
       });
     },
@@ -68,7 +68,7 @@ function Validate ({ className = '', controllerId, onChange, stashId, withSender
           <InputNumber
             help={t<string>('The percentage reward (0-100) that should be applied for the validator')}
             isZeroable
-            label={t<string>('reward guarantee fee percentage')}
+            label={t<string>('reward commission percentage')}
             maxValue={MAX_COMM}
             onChange={_setCommission}
           />

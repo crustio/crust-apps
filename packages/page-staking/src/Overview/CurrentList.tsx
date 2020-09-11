@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DeriveHeartbeats, DeriveStakingOverview } from '@polkadot/api-derive/types';
-import { AccountId } from '@polkadot/types/interfaces';
+import { AccountId, EraIndex, Nominations } from '@polkadot/types/interfaces';
 import { Authors } from '@polkadot/react-query/BlockAuthors';
 
 import React, { useCallback, useContext, useMemo, useRef, useState } from 'react';
@@ -15,7 +15,6 @@ import { Option, StorageKey } from '@polkadot/types';
 import Filtering from '../Filtering';
 import { useTranslation } from '../translate';
 import Address from './Address';
-import { Guarantee } from '../Actions/Account';
 
 interface Props {
   favorites: string[];
@@ -25,7 +24,6 @@ interface Props {
   setNominators?: (nominators: string[]) => void;
   stakingOverview?: DeriveStakingOverview;
   toggleFavorite: (address: string) => void;
-  nominators?: string[]
 }
 
 type AccountExtend = [string, boolean, boolean];
@@ -71,13 +69,15 @@ function getFiltered (stakingOverview: DeriveStakingOverview, favorites: string[
   };
 }
 
-function extractNominators (nominations: [StorageKey, Option<Guarantee>][]): Record<string, [string, number][]> {
-  return nominations.reduce((mapped: Record<string, [string, number][]>, [key, optNoms]) => {
+function extractNominators (nominations: [StorageKey, Option<Nominations>][]): Record<string, [string, EraIndex, number][]> {
+  return nominations.reduce((mapped: Record<string, [string, EraIndex, number][]>, [key, optNoms]) => {
     if (optNoms.isSome) {
       const nominatorId = key.args[0].toString();
-      optNoms.unwrap().targets.forEach((_validatorId: { who: { toString: () => any; }; }, index: number): void => {
-        const validatorId = _validatorId.who.toString();
-        const info: [string, number] = [nominatorId, index + 1];
+      const { submittedIn, targets } = optNoms.unwrap();
+
+      targets.forEach((_validatorId, index): void => {
+        const validatorId = _validatorId.toString();
+        const info: [string, EraIndex, number] = [nominatorId, submittedIn, index + 1];
 
         if (!mapped[validatorId]) {
           mapped[validatorId] = [info];
@@ -91,13 +91,12 @@ function extractNominators (nominations: [StorageKey, Option<Guarantee>][]): Rec
   }, {});
 }
 
-function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOverview, nominators, toggleFavorite, setNominators }: Props): React.ReactElement<Props> | null {
+function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOverview, toggleFavorite }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api } = useApi();
   const { byAuthor, eraPoints } = useContext(isIntentions ? EmptyAuthorsContext : BlockAuthorsContext);
   const recentlyOnline = useCall<DeriveHeartbeats>(!isIntentions && api.derive.imOnline?.receivedHeartbeats);
-  const nominatorsInfo = useCall<[StorageKey, Option<Guarantee>][]>(isIntentions && nominators && api.query.staking.guarantors.entries as any, [nominators]);
-  // const nominators = useCall<[StorageKey, Option<Nominations>][]>(isIntentions && api.query.staking.guarantors.entries as any);
+  const nominators = useCall<[StorageKey, Option<Nominations>][]>(isIntentions && api.query.staking.nominators.entries as any);
   const [nameFilter, setNameFilter] = useState<string>('');
   const [withIdentity, setWithIdentity] = useState(false);
 
@@ -110,25 +109,23 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
   );
 
   const nominatedBy = useMemo(
-    () => nominatorsInfo ? extractNominators(nominatorsInfo) : null,
-    [nominatorsInfo]
+    () => nominators ? extractNominators(nominators) : null,
+    [nominators]
   );
 
   const headerWaitingRef = useRef([
     [t('intentions'), 'start', 2],
-    [t('guarantors'), 'start', 2],
-    [t('stake limit')],
-    [t('guarantee fee'), 'number', 1],
+    [t('nominators'), 'start', 2],
+    [t('commission'), 'number', 1],
     [],
     []
   ]);
 
   const headerActiveRef = useRef([
     [t('validators'), 'start', 2],
-    [t('other effective stake')],
-    [t('own effective stake'), 'media--1100'],
-    [t('stake limit')],
-    [t('guarantee fee')],
+    [t('other stake')],
+    [t('own stake'), 'media--1100'],
+    [t('commission')],
     [t('points')],
     [t('last #')],
     [],
@@ -153,7 +150,6 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
           points={eraPoints[address]}
           toggleFavorite={toggleFavorite}
           withIdentity={withIdentity}
-          setNominators={setNominators}
         />
       )),
     [byAuthor, eraPoints, hasQueries, nameFilter, nominatedBy, recentlyOnline, toggleFavorite, withIdentity]

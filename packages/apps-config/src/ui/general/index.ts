@@ -6,6 +6,7 @@ const defaultColor = undefined; // '#f19135'
 const emptyColor = '#999';
 
 const chainCrab = '#7C30DD';
+const chainCrust = '#ff8812';
 const chainKulupu = '#003366';
 const chainPolkadot = '#e6007a';
 const chainKusama = '#000'; // '#d32e79';
@@ -14,13 +15,16 @@ const chainRoccoTick = '#22bb22';
 const chainRoccoTrack = '#bb2222';
 const chainRoccoTrick = '#2222bb';
 const chainRoccoAcala = '#173DC9';
+const chainRoccoDarwinia = '#7C30DD';
+const laminarRoccoAcala = '#004FFF';
 const chainWestend = '#da68a7';
+const chainPhala = '#4dc56a';
 
 const nodeCentrifuge = '#fcc367';
 const nodeEdgeware = '#0a95df';
 const nodeNodle = '#1ab394';
 const nodeKilt = '#eb5b2a';
-const chainCrust = '#ff8812';
+const nodeSubsocial = '#b9018c';
 
 // overrides based on the actual matched chain name
 const chainColors: Record<string, any> = [
@@ -37,8 +41,11 @@ const chainColors: Record<string, any> = [
   ['Track', chainRoccoTrack],
   ['Trick', chainRoccoTrick],
   ['acala mandala pc1', chainRoccoAcala],
+  ['crust maxwell cc2', chainCrust],
+  ['darwinia parachain', chainRoccoDarwinia],
+  ['laminar turbulence pc1', laminarRoccoAcala],
   ['Westend', chainWestend],
-  ['crust maxwell cc2', chainCrust]
+  ['phala poc 2', chainPhala]
 ].reduce((colors, [chain, color]): Record<string, any> => ({
   ...colors,
   [chain.toLowerCase()]: color
@@ -49,7 +56,8 @@ const nodeColors: Record<string, any> = [
   ['centrifuge chain', nodeCentrifuge],
   ['edgeware node', nodeEdgeware],
   ['kilt node', nodeKilt],
-  ['nodle chain node', nodeNodle]
+  ['nodle chain node', nodeNodle],
+  ['subsocial node', nodeSubsocial]
   // ['node template', emptyColor],
   // ['parity polkadot', emptyColor],
   // ['substrate node', emptyColor]

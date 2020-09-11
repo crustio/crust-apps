@@ -214,7 +214,7 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
           <p>{t('If you have not claimed rewards straight after the end of the era, the validator is in the active set and you are seeing no rewards, this would mean that the reward payout transaction was made by another account on your behalf. Always check your favorite explorer to see any historic payouts made to your accounts.')}</p>
         </article>
       )}
-      {(
+      {api.tx.staking.payoutStakers && (
         <Button.Group>
           <PayToggle
             onChange={setMyStashesIndex}

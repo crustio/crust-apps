@@ -21,5 +21,3 @@ export { default as NodeVersion } from './NodeVersion';
 export { default as Nonce } from './Nonce';
 export { default as TimeNow } from './TimeNow';
 export { default as TotalIssuance } from './TotalIssuance';
-export { default as Guaranteeable } from './Guaranteeable';
-export { default as CutGuaranteeable } from './CutGuaranteeable';

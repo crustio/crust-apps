@@ -4,6 +4,7 @@
 
 import { BlockNumber, OpenTip, OpenTipTo225 } from '@polkadot/types/interfaces';
 
+import BN from 'bn.js';
 import React, { useMemo, useRef } from 'react';
 import { Table } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
@@ -14,9 +15,11 @@ import Tip from './Tip';
 
 interface Props {
   className?: string;
+  defaultId: string | null;
   hashes?: string[] | null;
   isMember: boolean;
   members: string[];
+  onSelectTip: (hash: string, isSelected: boolean, value: BN) => void,
 }
 
 type Tip = [string, OpenTip | OpenTipTo225];
@@ -40,7 +43,7 @@ function extractTips (optTips?: Option<OpenTip>[], hashes?: string[] | null): Ti
     );
 }
 
-function Tips ({ className = '', hashes, isMember, members }: Props): React.ReactElement<Props> {
+function Tips ({ className = '', defaultId, hashes, isMember, members, onSelectTip }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const bestNumber = useCall<BlockNumber>(api.derive.chain.bestNumber);
@@ -53,12 +56,13 @@ function Tips ({ className = '', hashes, isMember, members }: Props): React.Reac
 
   const headerRef = useRef([
     [t('tips'), 'start'],
-    [t('finder'), 'address'],
+    [t('finder'), 'address media--1400'],
     [t('reason'), 'start'],
     [],
     [],
     [undefined, 'badge media--1700'],
-    [undefined, 'mini media--1700']
+    [],
+    [undefined, 'media--1700']
   ]);
 
   return (
@@ -70,10 +74,12 @@ function Tips ({ className = '', hashes, isMember, members }: Props): React.Reac
       {tips?.map(([hash, tip]): React.ReactNode => (
         <Tip
           bestNumber={bestNumber}
+          defaultId={defaultId}
           hash={hash}
           isMember={isMember}
           key={hash}
           members={members}
+          onSelect={onSelectTip}
           tip={tip}
         />
       ))}

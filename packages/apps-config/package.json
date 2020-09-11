@@ -1,7 +1,7 @@
 {
   "name": "@polkadot/apps-config",
   "private": true,
-  "version": "0.56.0-beta.0",
+  "version": "0.57.0-beta.6",
   "main": "index.js",
   "repository": "https://github.com/polkadot-js/apps.git",
   "author": "Jaco Greeff <jacogr@gmail.com>",
@@ -14,6 +14,7 @@
     "@acala-network/type-definitions": "^0.4.0-beta.1",
     "@babel/runtime": "^7.11.2",
     "@edgeware/node-types": "^2.4.1",
-    "@laminar/type-definitions": "^0.2.0-beta.134"
+    "@laminar/type-definitions": "^0.2.0-beta.134",
+    "@subsocial/types": "^0.4.3"
   }
 }

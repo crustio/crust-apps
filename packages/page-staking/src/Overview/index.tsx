@@ -16,11 +16,9 @@ interface Props {
   next?: string[];
   stakingOverview?: DeriveStakingOverview;
   toggleFavorite: (address: string) => void;
-  setNominators?: (nominators: string[]) => void;
-  nominators?: string[]
 }
 
-function Overview ({ className = '', favorites, hasQueries, isIntentions, next, stakingOverview, toggleFavorite, setNominators, nominators }: Props): React.ReactElement<Props> {
+function Overview ({ className = '', favorites, hasQueries, isIntentions, next, stakingOverview, toggleFavorite }: Props): React.ReactElement<Props> {
   return (
     <div className={`staking--Overview ${className}`}>
       <CurrentList
@@ -30,8 +28,6 @@ function Overview ({ className = '', favorites, hasQueries, isIntentions, next, 
         next={next}
         stakingOverview={stakingOverview}
         toggleFavorite={toggleFavorite}
-        nominators = {nominators}
-        setNominators={setNominators}
       />
     </div>
   );
