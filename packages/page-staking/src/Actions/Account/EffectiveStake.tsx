@@ -19,18 +19,18 @@ interface Props {
   currentEra: EraIndex;
 }
 
-function EffectedStake ({ validators, stakeValue, currentEra, stashId }: Props): React.ReactElement<Props> {
+function EffectiveStake ({ validators, stakeValue, currentEra, stashId }: Props): React.ReactElement<Props> {
   const { api } = useApi();
   let guaranteeTargets: [string, BN, BN][] = [];
   if (validators && JSON.parse(JSON.stringify(validators)) !== null && currentEra && JSON.parse(JSON.stringify(currentEra)) !== null) {
     let tmpTargets = JSON.parse(JSON.stringify(validators));
     let params = tmpTargets.map((e: { who: any; }) => e.who);
-    let query = []
+    let query = [];
     for (const param of params) {
       query.push([currentEra.toHuman(), param]);
     }
     const multiQuery = useCall<Exposure[]>(api.query.staking.erasStakers.multi, [query]);
-    
+
     if (multiQuery) {
       for (let index = 0; index < tmpTargets?.length; index++) {
         let guaranteeTarget:[string, BN, BN] = [tmpTargets[index].who, new BN(0), tmpTargets[index].value];
@@ -76,4 +76,4 @@ function EffectedStake ({ validators, stakeValue, currentEra, stashId }: Props):
   );
 }
 
-export default React.memo(EffectedStake);
+export default React.memo(EffectiveStake);
