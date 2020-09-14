@@ -78,18 +78,20 @@ function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
   const params = useMemo(() => [address], [address]);
   const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, params);
   const slashingSpans = useCall<SlashingSpans | null>(!isMain && api.query.staking.slashingSpans, params, transformSlashes);
+  const stakeLimit = useCall<BN>(api.query.staking.stakeLimit, params);
 
-  return { accountInfo, slashingSpans };
+  return { accountInfo, slashingSpans, stakeLimit };
 }
 
 function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, nominatedBy, onlineCount, onlineMessage, points, toggleFavorite, validatorInfo, withIdentity }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  const { accountInfo, slashingSpans } = useAddressCalls(api, address, isMain);
+  const { accountInfo, slashingSpans, stakeLimit } = useAddressCalls(api, address, isMain);
 
   const { commission, nominators, stakeOther, stakeOwn } = useMemo(
     () => validatorInfo ? expandInfo(validatorInfo) : { nominators: [] },
     [validatorInfo]
   );
+
 
   const isVisible = useMemo(
     () => accountInfo ? checkVisibility(api, address, accountInfo, filterName, withIdentity) : true,
@@ -143,6 +145,11 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
       <td className='number media--1100'>
         {stakeOwn?.gtn(0) && (
           <FormatBalance value={stakeOwn} />
+        )}
+      </td>
+      <td className='number media--1100'>
+        {stakeLimit && (
+          <FormatBalance value={new BN(stakeLimit?.toString())} />
         )}
       </td>
       <td className='number'>

@@ -127,8 +127,8 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
     rankBondOther: t<string>('other stake'),
     rankBondOwn: t<string>('own stake'),
     rankBondTotal: t<string>('total stake'),
-    rankComm: t<string>('comm.'),
-    rankNumNominators: t<string>('nominators'),
+    rankComm: t<string>('guarantee fee'),
+    rankNumNominators: t<string>('guarantors'),
     rankOverall: t<string>('profit/era')
   });
 

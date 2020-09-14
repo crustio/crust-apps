@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DeriveBalancesAll, DeriveStakingAccount } from '@polkadot/api-derive/types';
-import { SlashingSpans, UnappliedSlash } from '@polkadot/types/interfaces';
+import { SlashingSpans, UnappliedSlash, IndividualExposure, Balance, EraIndex } from '@polkadot/types/interfaces';
 import { StakerState } from '@polkadot/react-hooks/types';
 import { SortedTargets } from '../../types';
 import { Slash } from '../types';
@@ -16,6 +16,8 @@ import { AddressInfo, AddressMini, AddressSmall, Badge, Button, Menu, Popup, Sta
 import { useApi, useCall, useToggle } from '@polkadot/react-hooks';
 import { Option } from '@polkadot/types';
 import { formatNumber } from '@polkadot/util';
+import { Codec } from '@polkadot/types/types';
+import { Compact } from '@polkadot/types/codec';
 
 import { useTranslation } from '../../translate';
 import BondExtra from './BondExtra';
@@ -27,6 +29,10 @@ import SetRewardDestination from './SetRewardDestination';
 import SetSessionKey from './SetSessionKey';
 import Unbond from './Unbond';
 import Validate from './Validate';
+import EffectiveStake from './EffectiveStake';
+import EffectiveGuaranteed from './EffectiveGuaranteed';
+import { BN_ZERO } from '@polkadot/util';
+import CutGuarantee from './CutGuarantee';
 
 interface Props {
   allSlashes?: [BN, UnappliedSlash[]][];
@@ -37,6 +43,13 @@ interface Props {
   stashId: string;
   targets: SortedTargets;
   validators?: string[];
+}
+
+export interface Guarantee extends Codec {
+  targets: IndividualExposure[];
+  total: Compact<Balance>;
+  submitted_in: number;
+  suppressed: boolean;
 }
 
 function extractSlashes (stashId: string, allSlashes: [BN, UnappliedSlash[]][] = []): Slash[] {
@@ -66,7 +79,7 @@ function useStashCalls (api: ApiPromise, stashId: string) {
   return { balancesAll, spanCount, stakingAccount };
 }
 
-function Account ({ allSlashes, className = '', info: { controllerId, destination, hexSessionIdNext, hexSessionIdQueue, isLoading, isOwnController, isOwnStash, isStashNominating, isStashValidating, nominating, sessionIds, stakingLedger, stashId }, isDisabled, targets }: Props): React.ReactElement<Props> {
+function Account ({ allSlashes, className = '', info: { controllerId, destination, hexSessionIdNext, hexSessionIdQueue, isLoading, isOwnController, isOwnStash, isStashNominating, isStashValidating, nominating, sessionIds, stakingLedger, stashId }, isDisabled, targets, validators }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const { queueExtrinsic } = useContext(StatusContext);
@@ -80,6 +93,19 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const [isUnbondOpen, toggleUnbond] = useToggle();
   const [isValidateOpen, toggleValidate] = useToggle();
   const { balancesAll, spanCount, stakingAccount } = useStashCalls(api, stashId);
+  const guarantors = useCall<Guarantee>(api.query.staking.guarantors, [stashId]);
+  const effected = stakingAccount && JSON.parse(JSON.stringify(stakingAccount))?.valid != 0;
+  const isValidator = targets && (targets.validatorIds?.indexOf(stashId) != -1);
+  const isGuarantor = guarantors && JSON.parse(JSON.stringify(guarantors)) != null;
+  const role = effected ? (isValidator ? 'Validator' : (isGuarantor ? 'Guarantor' : 'Bonded')) : 'Bonded';
+  const currentEra = useCall<EraIndex>(api.query.staking.currentEra);
+  let guaranteeTargets: IndividualExposure[] = [];
+  let stakeValue = new BN(0);
+  if (guarantors && JSON.parse(JSON.stringify(guarantors)) != null) {
+    guaranteeTargets = JSON.parse(JSON.stringify(guarantors)).targets;
+    stakeValue = guaranteeTargets.reduce((total: BN, { value }) => { return total.add(new BN(Number(value).toString()))}, BN_ZERO)
+  }
+  const [isCutGuaranteeOpen, toggleCutGuarantee] = useToggle();
 
   const slashes = useMemo(
     () => extractSlashes(stashId, allSlashes),
@@ -104,7 +130,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
 
   return (
     <tr className={className}>
-      <td className='badge together'>
+      {/* <td className='badge together'>
         {slashes.length !== 0 && (
           <Badge
             color='red'
@@ -116,7 +142,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
             icon='skull-crossbones'
           />
         )}
-      </td>
+      </td> */}
       <td className='address'>
         <AddressSmall value={stashId} />
         {isBondExtraOpen && (
@@ -176,6 +202,16 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
             stashId={stashId}
           />
         )}
+        {isCutGuaranteeOpen && controllerId && (
+          <CutGuarantee
+            controllerId={controllerId}
+            nominating={nominating}
+            onClose={toggleCutGuarantee}
+            stashId={stashId}
+            targets={targets}
+            validators={targets.validatorIds}
+          />
+        )}
       </td>
       <td className='address'>
         <AddressMini value={controllerId} />
@@ -191,7 +227,21 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
         <StakingUnbonding stakingInfo={stakingAccount} />
         <StakingRedeemable stakingInfo={stakingAccount} />
       </td>
-      {isStashValidating
+      {currentEra && role !== `Validator` ? <EffectiveStake
+        validators = {guaranteeTargets}
+        stakeValue = {stakeValue}
+        stashId= {stashId}
+        currentEra = {currentEra}
+        // stakeValue = { guaranteeTargets.length > 0 ? guaranteeTargets.reduce((total: BN, { value }) => { return JSON.parse(JSON.stringify(value)) ? total.add(value?.unwrap()) : total}, BN_ZERO) : BN_ZERO }
+      /> : currentEra && (
+          <EffectiveGuaranteed currentEra={currentEra}
+            stashId={stashId}
+          />
+        )
+      }
+      <td className='number ui--media-1200'>{role}</td>
+
+      {/* {isStashValidating
         ? (
           <td className='all'>
             <AddressInfo
@@ -212,7 +262,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
             )}
           </td>
         )
-      }
+      } */}
       <td className='button'>
         {!isLoading && (
           <>
@@ -276,6 +326,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                 text
                 vertical
               >
+                Bond
                 <Menu.Item
                   disabled={!isOwnStash && !balancesAll?.freeBalance.gtn(0)}
                   onClick={toggleBondExtra}
@@ -295,6 +346,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                   {t<string>('Withdraw unbonded funds')}
                 </Menu.Item>
                 <Menu.Divider />
+                Validate
                 <Menu.Item
                   disabled={!isOwnStash}
                   onClick={toggleSetController}
@@ -315,7 +367,6 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                     {t<string>('Change validator preferences')}
                   </Menu.Item>
                 }
-                <Menu.Divider />
                 {!isStashNominating &&
                   <Menu.Item
                     disabled={!isOwnController}
@@ -324,17 +375,29 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                     {t<string>('Change session keys')}
                   </Menu.Item>
                 }
-                {isStashNominating &&
-                  <Menu.Item
-                    disabled={!isOwnController || !targets.validators?.length}
-                    onClick={toggleNominate}
-                  >
-                    {t<string>('Set nominees')}
-                  </Menu.Item>
-                }
                 {!isStashNominating &&
                   <Menu.Item onClick={toggleInject}>
                     {t<string>('Inject session keys (advanced)')}
+                  </Menu.Item>
+                }
+                <Menu.Divider />
+                
+               
+                { role !== 'Validator' && 'Guarantee' }
+                { role !== 'Validator' &&
+                  <Menu.Item
+                    disabled={!isOwnController}
+                    onClick={toggleNominate}
+                  >
+                    {t<string>('Guarantee')}
+                  </Menu.Item>
+                }
+                { role !== 'Validator' &&
+                  <Menu.Item
+                    disabled={!isOwnController}
+                    onClick={toggleCutGuarantee}
+                  >
+                    {t<string>('Cut guarantee')}
                   </Menu.Item>
                 }
               </Menu>

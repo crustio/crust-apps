@@ -7,11 +7,13 @@ import { SortedTargets } from '../../types';
 
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { InputAddress, InputAddressMulti, Modal } from '@polkadot/react-components';
+import { InputAddress, InputAddressMulti, Modal, InputBalance } from '@polkadot/react-components';
 import { useApi, useFavorites } from '@polkadot/react-hooks';
 
 import { MAX_NOMINATIONS, STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
+import BN from 'bn.js';
+import { Guaranteeable } from '@polkadot/react-query';
 
 interface Props {
   className?: string;
@@ -28,6 +30,7 @@ function Nominate ({ className = '', controllerId, nominating, onChange, stashId
   const { api } = useApi();
   const [favorites] = useFavorites(STORE_FAVS_BASE);
   const [selected, setSelected] = useState<string[]>(nominating || []);
+  const [amount, setAmount] = useState<BN | undefined>(new BN(0));
   const [available] = useState<string[]>((): string[] => {
     const shortlist = [
       // ensure that the favorite is included in the list of stashes
@@ -40,13 +43,15 @@ function Nominate ({ className = '', controllerId, nominating, onChange, stashId
       .concat(...(validatorIds.filter((acc) => !shortlist.includes(acc))));
   });
 
+  const guaranteeable = <span className='label'>{t<string>('guaranteeable')}</span>;
+
   useEffect((): void => {
     onChange({
-      nominateTx: selected && selected.length
-        ? api.tx.staking.nominate(selected)
+      nominateTx: selected && selected.length && amount
+        ? api.tx.staking.guarantee([selected[0], amount])
         : null
     });
-  }, [api, onChange, selected]);
+  }, [api, onChange, selected, amount]);
 
   return (
     <div className={className}>
@@ -80,13 +85,30 @@ function Nominate ({ className = '', controllerId, nominating, onChange, stashId
             onChange={setSelected}
             valueLabel={t<string>('nominated accounts')}
           />
-          <article className='warning'>{t<string>('You should trust your nominations to act competently and honest; basing your decision purely on their current profitability could lead to reduced profits or even loss of funds.')}</article>
+          {/* <article className='warning'>{t<string>('You should trust your nominations to act competently and honest; basing your decision purely on their current profitability could lead to reduced profits or even loss of funds.')}</article> */}
         </Modal.Column>
         <Modal.Column>
           <p>{t<string>('Nominators can be selected manually from the list of all currently available validators.')}</p>
           <p>{t<string>('Once transmitted the new selection will only take effect in 2 eras taking the new validator election cycle into account. Until then, the nominations will show as inactive.')}</p>
         </Modal.Column>
       </Modal.Columns>
+      <Modal.Column>
+        <InputBalance
+          autoFocus
+          help={t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}
+          isZeroable
+          label={t<string>('amount')}
+          withMax
+          onChange={setAmount}
+          labelExtra={
+            selected[0] &&
+            <Guaranteeable
+              label={guaranteeable}
+              params={selected[0]}
+            />
+          }
+        />
+      </Modal.Column>
     </div>
   );
 }

@@ -45,7 +45,7 @@ function Ledgend ({ className }: Props): React.ReactElement<Props> {
           color='green'
           icon='hand-paper'
         />
-        {t('Nominating')}
+        {t('Guaranteeing')}
       </span>
       <span>
         <Badge

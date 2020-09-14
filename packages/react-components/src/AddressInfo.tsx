@@ -198,7 +198,7 @@ function renderValidatorPrefs ({ stakingInfo, withValidatorPrefs = false }: Prop
         (stakingInfo.validatorPrefs as any as ValidatorPrefsTo145).validatorPayment
           ? (
             <>
-              <Label label={t<string>('commission')} />
+              <Label label={t<string>('guarantee fee')} />
               <FormatBalance
                 className='result'
                 value={(stakingInfo.validatorPrefs as any as ValidatorPrefsTo145).validatorPayment}
@@ -207,7 +207,7 @@ function renderValidatorPrefs ({ stakingInfo, withValidatorPrefs = false }: Prop
           )
           : (
             <>
-              <Label label={t<string>('commission')} />
+              <Label label={t<string>('guarantee fee')} />
               <span>{(stakingInfo.validatorPrefs.commission.unwrap().toNumber() / 10_000_000).toFixed(2)}%</span>
             </>
           )

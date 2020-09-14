@@ -57,10 +57,12 @@ function Actions ({ className = '', isInElection, ownStashes, targets }: Props):
   const allSlashes = useAvailableSlashes();
 
   const headerRef = useRef([
-    [t('stashes'), 'start', 2],
+    [t('stashes'), 'start'],
     [t('controller'), 'address'],
-    [t('rewards'), 'start media--1200'],
+    [t('rewards'), 'number media--1200'],
     [t('bonded'), 'number'],
+    [t('effective stake')],
+    [t('role'), 'number ui--media-1200'],
     [undefined, undefined, 2]
   ]);
 
@@ -71,11 +73,11 @@ function Actions ({ className = '', isInElection, ownStashes, targets }: Props):
 
   const footer = useMemo(() => (
     <tr>
-      <td colSpan={4} />
+      <td colSpan={3} />
       <td className='number'>
         {bondedTotal && <FormatBalance value={bondedTotal} />}
       </td>
-      <td colSpan={2} />
+      <td colSpan={4} />
     </tr>
   ), [bondedTotal]);
 

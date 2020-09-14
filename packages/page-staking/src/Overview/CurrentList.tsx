@@ -98,7 +98,7 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
   const { api } = useApi();
   const { byAuthor, eraPoints } = useContext(isIntentions ? EmptyAuthorsContext : BlockAuthorsContext);
   const recentlyOnline = useCall<DeriveHeartbeats>(!isIntentions && api.derive.imOnline?.receivedHeartbeats);
-  const nominators = useCall<[StorageKey, Option<Nominations>][]>(isIntentions && api.query.staking.nominators.entries as any);
+  const nominators = useCall<[StorageKey, Option<Nominations>][]>(isIntentions && api.query.staking.guarantors.entries as any);
   const [nameFilter, setNameFilter] = useState<string>('');
   const [withIdentity, setWithIdentity] = useState(false);
 
@@ -126,17 +126,20 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
 
   const headerWaitingRef = useRef([
     [t('intentions'), 'start', 2],
-    [t('nominators'), 'start', 2],
-    [t('commission'), 'number', 1],
+    [t('nominators'), 'start', 1],
+    [t('own effective stake')],
+    [t('stake limit')],
+    [t('guarantee fee')],
     [],
     []
   ]);
 
   const headerActiveRef = useRef([
     [t('validators'), 'start', 2],
-    [t('other stake')],
-    [t('own stake'), 'media--1100'],
-    [t('commission')],
+    [t('other effective stake')],
+    [t('own effective stake'), 'media--1100'],
+    [t('stake limit')],
+    [t('guarantee fee')],
     [t('points')],
     [t('last #')],
     [],
