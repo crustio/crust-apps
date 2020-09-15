@@ -48,19 +48,19 @@ function createExtrinsic (api: ApiPromise, payout: PayoutValidator | PayoutValid
         }, [])
         .sort((a, b) => a.era.cmp(b.era))
         .filter((_, index) => index < batchSize)
-        .map(({ era, validatorId }) => api.tx.staking.payoutStakers(validatorId, era))
+        .map(({ era, validatorId }) => api.tx.staking.rewardStakers(validatorId, era))
     );
   }
 
   const { eras, validatorId } = payout;
 
   return eras.length === 1
-    ? api.tx.staking.payoutStakers(validatorId, eras[0].era)
+    ? api.tx.staking.rewardStakers(validatorId, eras[0].era)
     : api.tx.utility.batch(
       eras
         .sort((a, b) => a.era.cmp(b.era))
         .filter((_, index) => index < batchSize)
-        .map(({ era }) => api.tx.staking.payoutStakers(validatorId, era))
+        .map(({ era }) => api.tx.staking.rewardStakers(validatorId, era))
     );
 }
 
@@ -73,7 +73,7 @@ function PayButton ({ className, isAll, isDisabled, payout }: Props): React.Reac
 
   useEffect((): void => {
     api.tx.utility && payout && setExtrinsic(
-      () => createExtrinsic(api, payout, api.consts.staking.maxNominatorRewardedPerValidator?.toNumber() || DEFAULT_PAYOUTS)
+      () => createExtrinsic(api, payout, DEFAULT_PAYOUTS)
     );
   }, [api, isDisabled, payout]);
 
@@ -147,7 +147,7 @@ function PayButton ({ className, isAll, isDisabled, payout }: Props): React.Reac
       )}
       <Button
         icon='credit-card'
-        isDisabled={isDisabled || isPayoutEmpty}
+        // isDisabled={isDisabled || isPayoutEmpty}
         label={
           (isAll || Array.isArray(payout))
             ? t<string>('Payout all')

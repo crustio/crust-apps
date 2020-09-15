@@ -124,8 +124,6 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
     [nominators]
   );
 
-  console.log('nominatedBy', nominatedBy)
-
   const headerWaitingRef = useRef([
     [t('intentions'), 'start', 2],
     [t('guarantors'), 'start', 1],
