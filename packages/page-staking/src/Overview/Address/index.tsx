@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance, EraIndex, SlashingSpans, ValidatorPrefs } from '@polkadot/types/interfaces';
+import { Balance, SlashingSpans, ValidatorPrefs } from '@polkadot/types/interfaces';
 import { DeriveAccountInfo } from '@polkadot/api-derive/types';
 import { ValidatorInfo } from '../../types';
 
@@ -29,7 +29,7 @@ interface Props {
   isFavorite: boolean;
   isMain?: boolean;
   lastBlock?: string;
-  nominatedBy?: [string, EraIndex, number][];
+  nominatedBy?: [string, number][];
   onlineCount?: false | BN;
   onlineMessage?: boolean;
   points?: string;
@@ -120,7 +120,7 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
         <Status
           isElected={isElected}
           isMain={isMain}
-          nominators={nominatedBy || nominators}
+          nominators={nominators}
           onlineCount={onlineCount}
           onlineMessage={onlineMessage}
         />

@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DeriveHeartbeats, DeriveStakingOverview } from '@polkadot/api-derive/types';
-import { AccountId, EraIndex, Nominations } from '@polkadot/types/interfaces';
+import { AccountId } from '@polkadot/types/interfaces';
 import { Authors } from '@polkadot/react-query/BlockAuthors';
 import { SortedTargets, ValidatorInfo } from '../types';
 
@@ -16,6 +16,7 @@ import { Option, StorageKey } from '@polkadot/types';
 import Filtering from '../Filtering';
 import { useTranslation } from '../translate';
 import Address from './Address';
+import { Guarantee } from "@polkadot/app-staking/Actions/Account";
 
 interface Props {
   favorites: string[];
@@ -71,15 +72,14 @@ function getFiltered (stakingOverview: DeriveStakingOverview, favorites: string[
   };
 }
 
-function extractNominators (nominations: [StorageKey, Option<Nominations>][]): Record<string, [string, EraIndex, number][]> {
-  return nominations.reduce((mapped: Record<string, [string, EraIndex, number][]>, [key, optNoms]) => {
+function extractNominators (nominations: [StorageKey, Option<Guarantee>][]): Record<string, [string, number][]> {
+  return nominations.reduce((mapped: Record<string, [string, number][]>, [key, optNoms]) => {
     if (optNoms.isSome) {
       const nominatorId = key.args[0].toString();
-      const { submittedIn, targets } = optNoms.unwrap();
 
-      targets.forEach((_validatorId, index): void => {
-        const validatorId = _validatorId.toString();
-        const info: [string, EraIndex, number] = [nominatorId, submittedIn, index + 1];
+      optNoms.unwrap().targets.forEach((_validatorId: { who: { toString: () => any; }; }, index: number): void => {
+        const validatorId = _validatorId.who.toString();
+        const info: [string, number] = [nominatorId, index + 1];
 
         if (!mapped[validatorId]) {
           mapped[validatorId] = [info];
@@ -98,7 +98,7 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
   const { api } = useApi();
   const { byAuthor, eraPoints } = useContext(isIntentions ? EmptyAuthorsContext : BlockAuthorsContext);
   const recentlyOnline = useCall<DeriveHeartbeats>(!isIntentions && api.derive.imOnline?.receivedHeartbeats);
-  const nominators = useCall<[StorageKey, Option<Nominations>][]>(isIntentions && api.query.staking.guarantors.entries as any);
+  const nominators = useCall<[StorageKey, Option<Guarantee>][]>(isIntentions && api.query.staking.guarantors.entries as any);
   const [nameFilter, setNameFilter] = useState<string>('');
   const [withIdentity, setWithIdentity] = useState(false);
 
@@ -123,6 +123,8 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
     () => nominators ? extractNominators(nominators) : null,
     [nominators]
   );
+
+  console.log('nominatedBy', nominatedBy)
 
   const headerWaitingRef = useRef([
     [t('intentions'), 'start', 2],
