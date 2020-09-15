@@ -118,6 +118,7 @@ function getAvailable (allRewards: Record<string, DeriveStakerReward[]> | null |
 }
 
 function getOptions (api: ApiPromise, eraLength: BN | undefined, historyDepth: BN | undefined, t: TFunction): EraSelection[] {
+
   if (eraLength && historyDepth) {
     const blocksPerDay = DAY_SECS.div(api.consts.babe?.expectedBlockTime || api.consts.timestamp?.minimumPeriod.muln(2) || new BN(6000));
     const maxBlocks = eraLength.mul(historyDepth);
@@ -206,7 +207,7 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
 
   return (
     <div className={className}>
-      {api.tx.staking.payoutStakers && (
+      {(
         <Button.Group>
           <ToggleGroup
             onChange={setMyStashesIndex}
@@ -226,7 +227,7 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
         </Button.Group>
       )}
       <ElectionBanner isInElection={isInElection} />
-      {api.tx.staking.payoutStakers && !isLoadingRewards && !stashes?.length && (
+      {!isLoadingRewards && !stashes?.length && (
         <article className='warning centered'>
           <p>{t('Payouts of rewards for a validator can be initiated by any account. This means that as soon as a validator or nominator requests a payout for an era, all the nominators for that validator will be rewarded. Each user does not need to claim individually and the suggestion is that validators should claim rewards for everybody as soon as an era ends.')}</p>
           <p>{t('If you have not claimed rewards straight after the end of the era, the validator is in the active set and you are seeing no rewards, this would mean that the reward payout transaction was made by another account on your behalf. Always check your favorite explorer to see any historic payouts made to your accounts.')}</p>
@@ -248,7 +249,7 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
           />
         ))}
       </Table>
-      {api.tx.staking.payoutStakers && (myStashesIndex === 1) && !isLoadingRewards && validators && (validators.length !== 0) && (
+      {(myStashesIndex === 1) && !isLoadingRewards && validators && (validators.length !== 0) && (
         <Table
           header={headerValidatorsRef.current}
           isFixed
