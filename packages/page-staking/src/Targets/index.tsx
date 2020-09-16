@@ -55,7 +55,7 @@ function sort (sortBy: TargetSortBy, sortFromMax: boolean, validators: Validator
 
 function extractNominees (ownNominators: StakerState[] = []): string[] {
   const myNominees: string[] = [];
-
+  console.log('ownNominators', ownNominators)
   ownNominators.forEach(({ nominating = [] }: StakerState): void => {
     nominating.forEach((nominee: string): void => {
       !myNominees.includes(nominee) && myNominees.push(nominee);

@@ -4,12 +4,15 @@
 
 import { StakerState } from '@polkadot/react-hooks/types';
 
-import React, { useCallback, useMemo, useState } from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import styled from 'styled-components';
-import { AddressMini, Button, InputAddress, Modal, Static, TxButton } from '@polkadot/react-components';
-import { useToggle } from '@polkadot/react-hooks';
+import {AddressMini, Button, InputAddress, InputBalance, Modal, Static, TxButton} from '@polkadot/react-components';
+import {useApi, useToggle} from '@polkadot/react-hooks';
 
 import { useTranslation } from '../translate';
+import {SubmittableExtrinsic} from "@polkadot/api/types";
+import { ApiPromise } from '@polkadot/api';
+import BN from "bn.js";
 
 interface Props {
   className?: string;
@@ -23,15 +26,30 @@ interface IdState {
   stashId: string;
 }
 
+function createExtrinsic(api: ApiPromise, targets: string[], amount: BN) {
+  return targets.length === 1
+    ? api.tx.staking.guarantee([targets[0], amount])
+    : api.tx.staking.guarantee([targets[0], amount]);
+}
+
 function Nominate ({ className = '', isDisabled, ownNominators, targets }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
+  const { api } = useApi();
   const [ids, setIds] = useState<IdState | null>(null);
   const [isOpen, toggleOpen] = useToggle();
+  const [extrinsic, setExtrinsic] = useState<SubmittableExtrinsic<'promise'> | null>(null);
+  const [amount, setAmount] = useState<BN | undefined>(new BN(0));
 
   const filter = useMemo(
     () => (ownNominators || []).map(({ stashId }) => stashId),
     [ownNominators]
   );
+
+  useEffect((): void => {
+    targets && amount && setExtrinsic(
+      () => createExtrinsic(api, targets, amount)
+    );
+  }, [api, targets, amount]);
 
   const _onChangeStash = useCallback(
     (accountId?: string | null): void => {
@@ -50,7 +68,7 @@ function Nominate ({ className = '', isDisabled, ownNominators, targets }: Props
     <>
       <Button
         icon='hand-paper'
-        // isDisabled={isDisabled || !filter.length || !targets.length}
+        isDisabled={isDisabled || !filter.length || !targets.length}
         label={t<string>('Nominate selected')}
         onClick={toggleOpen}
       />
@@ -66,7 +84,7 @@ function Nominate ({ className = '', isDisabled, ownNominators, targets }: Props
                 <InputAddress
                   filter={filter}
                   help={t<string>('Your stash account. The transaction will be sent from the associated controller.')}
-                  label={t<string>('the stash account to nominate with')}
+                  label={t<string>('the stash account to guarantee with')}
                   onChange={_onChangeStash}
                   value={ids?.stashId}
                 />
@@ -85,15 +103,35 @@ function Nominate ({ className = '', isDisabled, ownNominators, targets }: Props
                 <Static
                   label={t<string>('selected validators')}
                   value={
-                    targets.map((validatorId) => (
-                      <AddressMini
+                    targets.map((validatorId) => {
+                      return <AddressMini
                         className='addressStatic'
                         key={validatorId}
                         value={validatorId}
                       />
-                    ))
+                    })
                   }
                 />
+                {/*{targets.map((validatorId): React.ReactNode =>*/}
+                {/*  <InputBalance*/}
+                {/*    key={validatorId}*/}
+                {/*    autoFocus*/}
+                {/*    help={t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}*/}
+                {/*    isZeroable*/}
+                {/*    label={t<string>('amount')}*/}
+                {/*    onChange={setAmount}*/}
+                {/*    withMax*/}
+                {/*  />*/}
+                {/*)}*/}
+                <InputBalance
+                  autoFocus
+                  help={t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}
+                  isZeroable
+                  label={t<string>('amount')}
+                  onChange={setAmount}
+                  withMax
+                />
+
               </Modal.Column>
               <Modal.Column>
                 <p>{t<string>('The selected validators to nominate, either via the "currently best algorithm" or via a manual selection.')}</p>
@@ -104,10 +142,9 @@ function Nominate ({ className = '', isDisabled, ownNominators, targets }: Props
           <Modal.Actions onCancel={toggleOpen}>
             <TxButton
               accountId={ids?.controllerId}
+              extrinsic={extrinsic}
               label={t<string>('Nominate')}
               onStart={toggleOpen}
-              params={[targets]}
-              tx='staking.nominate'
             />
           </Modal.Actions>
         </Modal>
