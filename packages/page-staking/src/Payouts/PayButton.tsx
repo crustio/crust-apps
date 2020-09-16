@@ -32,6 +32,7 @@ interface SinglePayout {
 function createExtrinsic (api: ApiPromise, payout: PayoutValidator | PayoutValidator[], maxPayouts: number): SubmittableExtrinsic<'promise'> | null {
   const batchSize = DEFAULT_BATCH * (DEFAULT_PAYOUTS / maxPayouts);
 
+  console.log('payout', payout)
   if (Array.isArray(payout)) {
     if (payout.length === 1) {
       return createExtrinsic(api, payout[0], maxPayouts);
@@ -70,7 +71,8 @@ function PayButton ({ className, isAll, isDisabled, payout }: Props): React.Reac
   const [isVisible, togglePayout] = useToggle();
   const [accountId, setAccount] = useState<string | null>(null);
   const [extrinsic, setExtrinsic] = useState<SubmittableExtrinsic<'promise'> | null>(null);
-
+  
+  console.log('payout', JSON.stringify(payout))
   useEffect((): void => {
     api.tx.utility && payout && setExtrinsic(
       () => createExtrinsic(api, payout, DEFAULT_PAYOUTS)

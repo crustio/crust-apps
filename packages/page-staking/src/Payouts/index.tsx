@@ -47,7 +47,7 @@ function groupByValidator (allRewards: Record<string, DeriveStakerReward[]>, sta
     .entries(allRewards)
     .reduce((grouped: PayoutValidator[], [stashId, rewards]): PayoutValidator[] => {
       rewards
-        .filter(({ era }) => era.gte(stakerPayoutsAfter))
+        // .filter(({ era }) => era.gte(stakerPayoutsAfter))
         .forEach((reward): void => {
           Object
             .entries(reward.validators)
@@ -103,6 +103,7 @@ function extractStashes (allRewards: Record<string, DeriveStakerReward[]>): Payo
 function getAvailable (allRewards: Record<string, DeriveStakerReward[]> | null | undefined, stakerPayoutsAfter: BN): Available {
   if (allRewards) {
     const stashes = extractStashes(allRewards);
+    console.log('stashes', stashes)
     const stashTotal = stashes.length
       ? stashes.reduce((total: BN, { available }) => total.add(available), BN_ZERO)
       : null;
@@ -169,6 +170,8 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
 
   const { allRewards, isLoadingRewards } = useOwnEraRewards(eraSelection[eraSelectionIndex].value, myStashesIndex ? undefined : ownValidators);
 
+  console.log('allRewards', allRewards)
+  console.log('stakerPayoutsAfter', JSON.stringify(stakerPayoutsAfter))
   const { stashTotal, stashes, validators } = useMemo(
     () => getAvailable(allRewards, stakerPayoutsAfter),
     [allRewards, stakerPayoutsAfter]
