@@ -147,7 +147,7 @@ function PayButton ({ className, isAll, isDisabled, payout }: Props): React.Reac
       )}
       <Button
         icon='credit-card'
-        // isDisabled={isDisabled || isPayoutEmpty}
+        isDisabled={isDisabled || isPayoutEmpty}
         label={
           (isAll || Array.isArray(payout))
             ? t<string>('Payout all')

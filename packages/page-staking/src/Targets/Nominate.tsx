@@ -27,9 +27,7 @@ interface IdState {
 }
 
 function createExtrinsic(api: ApiPromise, targets: string[], amount: BN) {
-  return targets.length === 1
-    ? api.tx.staking.guarantee([targets[0], amount])
-    : api.tx.staking.guarantee([targets[0], amount]);
+  return api.tx.utility.batch( targets.map(e => api.tx.staking.guarantee([e, amount])));
 }
 
 function Nominate ({ className = '', isDisabled, ownNominators, targets }: Props): React.ReactElement<Props> {
@@ -46,7 +44,7 @@ function Nominate ({ className = '', isDisabled, ownNominators, targets }: Props
   );
 
   useEffect((): void => {
-    targets && amount && setExtrinsic(
+    api.tx.utility && targets && amount && setExtrinsic(
       () => createExtrinsic(api, targets, amount)
     );
   }, [api, targets, amount]);

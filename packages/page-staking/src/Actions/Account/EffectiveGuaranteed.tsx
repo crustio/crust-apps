@@ -22,7 +22,7 @@ function EffectiveGuaranteed ({ currentEra, stashId }: Props): React.ReactElemen
   }
 
   return (
-    <td className='number media--1100'>
+    <td className='number all'>
       {(
         <FormatBalance value={stakeValue} />
       )}
