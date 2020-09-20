@@ -24,7 +24,7 @@ function NominatedBy ({ nominators }: Props): React.ReactElement<Props> {
             {nominators.map(([who, index]): React.ReactNode =>
               <AddressMini
                 key={who}
-                summary={t<string>('priority {{index}}', { replace: { index } })}
+                // summary={t<string>('priority {{index}}', { replace: { index } })}
                 value={who}
               />
             )}

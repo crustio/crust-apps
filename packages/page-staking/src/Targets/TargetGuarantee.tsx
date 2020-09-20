@@ -20,11 +20,6 @@ function TargetGuarantee ({ validatorId, targetAmount, setTargetAmount}: Props):
   const guaranteeable = <span className='label'>{t<string>('guaranteeable')}</span>;
 
   useEffect( () => {
-    // const tmp:[string, BN][] = []; 
-    // amount && (tmp[0] = [validatorId, amount]);
-    // amount && targetAmount.push([validatorId, amount])
-    // tmp.push(...targetAmount);
-    // amount && tmp.push([validatorId, amount])
     const tmp = new Map<string, BN>();
     for (const entry of targetAmount.entries()) {
       tmp.set(entry[0], entry[1]);
@@ -43,7 +38,7 @@ function TargetGuarantee ({ validatorId, targetAmount, setTargetAmount}: Props):
           <InputBalance
             className='addressStatic'
             autoFocus
-            help={t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}
+            help={t<string>('Type the amount you want to guarantee. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}
             isZeroable
             label={t<string>('amount')}
             onChange={setAmount}

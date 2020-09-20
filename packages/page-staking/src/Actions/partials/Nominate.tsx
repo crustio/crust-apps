@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { InputAddress, InputAddressMulti, Modal, InputBalance } from '@polkadot/react-components';
 import { useApi, useFavorites } from '@polkadot/react-hooks';
 
-import { MAX_NOMINATIONS, STORE_FAVS_BASE } from '../../constants';
+import { STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
 import BN from 'bn.js';
 import { Guaranteeable } from '@polkadot/react-query';
@@ -81,7 +81,7 @@ function Nominate ({ className = '', controllerId, nominating, onChange, stashId
             availableLabel={t<string>('candidate accounts')}
             defaultValue={nominating}
             help={t<string>('Filter available candidates based on name, address or short account index.')}
-            maxCount={MAX_NOMINATIONS}
+            maxCount={1}
             onChange={setSelected}
             valueLabel={t<string>('nominated accounts')}
           />

@@ -12,17 +12,15 @@ import BN from 'bn.js';
 import React, { useCallback, useContext, useMemo } from 'react';
 import styled from 'styled-components';
 import { ApiPromise } from '@polkadot/api';
-import { AddressInfo, AddressMini, AddressSmall, Badge, Button, Menu, Popup, StakingBonded, StakingRedeemable, StakingUnbonding, StatusContext, TxButton } from '@polkadot/react-components';
+import { AddressMini, AddressSmall, Button, Menu, Popup, StakingBonded, StakingRedeemable, StakingUnbonding, StatusContext, TxButton } from '@polkadot/react-components';
 import { useApi, useCall, useToggle } from '@polkadot/react-hooks';
 import { Option } from '@polkadot/types';
-import { formatNumber } from '@polkadot/util';
 import { Codec } from '@polkadot/types/types';
 import { Compact } from '@polkadot/types/codec';
 
 import { useTranslation } from '../../translate';
 import BondExtra from './BondExtra';
 import InjectKeys from './InjectKeys';
-import ListNominees from './ListNominees';
 import Nominate from './Nominate';
 import SetControllerAccount from './SetControllerAccount';
 import SetRewardDestination from './SetRewardDestination';
@@ -303,7 +301,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                     icon='hand-paper'
                     isDisabled={!isOwnController || isDisabled || !hasBonded}
                     key='nominate'
-                    label={t<string>('Nominate')}
+                    label={t<string>('Guarantee')}
                     onClick={toggleNominate}
                   />
                 </Button.Group>

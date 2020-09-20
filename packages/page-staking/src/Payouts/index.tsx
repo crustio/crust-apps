@@ -103,7 +103,7 @@ function extractStashes (allRewards: Record<string, DeriveStakerReward[]>): Payo
 function getAvailable (allRewards: Record<string, DeriveStakerReward[]> | null | undefined, stakerPayoutsAfter: BN): Available {
   if (allRewards) {
     const stashes = extractStashes(allRewards);
-    console.log('stashes', stashes)
+
     const stashTotal = stashes.length
       ? stashes.reduce((total: BN, { available }) => total.add(available), BN_ZERO)
       : null;
