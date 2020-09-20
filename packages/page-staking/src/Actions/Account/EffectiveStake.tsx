@@ -27,7 +27,7 @@ function EffectiveStake ({ validators, stakeValue, currentEra, stashId }: Props)
     let params = tmpTargets.map((e: { who: any; }) => e.who);
     let query = [];
     for (const param of params) {
-      query.push([currentEra.toHuman(), param]);
+      query.push([JSON.stringify(currentEra), param]);
     }
     const multiQuery = useCall<Exposure[]>(api.query.staking.erasStakers.multi, [query]);
 

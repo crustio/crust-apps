@@ -85,7 +85,7 @@ function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
   const validatorsRel = useCall<ValidatorPrefs>(api.query.staking.validators, [address]);
   // const stakingInfo = useCall<DeriveStakingQuery>(api.derive.staking.query, params);
   const currentEra =  useCall<EraIndex>(api.query.staking.currentEra);
-  const stakingInfo = useCall<Exposure>(api.query.staking.erasStakers, [currentEra?.toHuman(), address]);
+  const stakingInfo = useCall<Exposure>(api.query.staking.erasStakers, [JSON.stringify(currentEra), address]);
   const _stakeLimit = useCall<BN>(api.query.staking.stakeLimit, params);
 
   return { accountInfo, slashingSpans, stakingInfo, validatorsRel, _stakeLimit };
