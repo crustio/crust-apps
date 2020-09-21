@@ -52,7 +52,6 @@ function Validator ({ className = '', isDisabled, payout }: Props): React.ReactE
     [payout]
   );
 
-  console.log('payout', JSON.stringify(payout))
   const eraBlocks = useEraBlocks(oldestEra);
 
   return (

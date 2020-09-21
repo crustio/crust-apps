@@ -168,7 +168,7 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
     [api, eraLength, historyDepth, t]
   );
 
-  const { allRewards, isLoadingRewards } = useOwnEraRewards(eraSelection[eraSelectionIndex].value, ownValidators);
+  const { allRewards, isLoadingRewards } = useOwnEraRewards(eraSelection[eraSelectionIndex].value, myStashesIndex ? ( hasOwnValidators ? ownValidators : undefined) : ownValidators);
 
   const { stashTotal, stashes, validators } = useMemo(
     () => getAvailable(allRewards, stakerPayoutsAfter),
