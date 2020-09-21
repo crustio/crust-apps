@@ -28,7 +28,6 @@ interface IdState {
 }
 
 function createExtrinsic(api: ApiPromise, targets: string[], amount: Map<string, BN>) {
-  console.log('amount', amount)
   let tmp = [];
   for (const entry of amount.entries()) {
     tmp.push([entry[0], entry[1]])

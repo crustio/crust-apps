@@ -98,8 +98,10 @@ export default function useOwnEraRewards (maxEras?: number, ownValidators?: Stak
   const stakerRewards = useCall<[[string[]], DeriveStakerReward[][]]>(!ownValidators?.length && !!filteredEras.length && stashIds && api.derive.staking?.stakerRewardsMultiEras, [stashIds, filteredEras], { withParams: true });
   const erasPoints = useCall<DeriveEraPoints[]>(!!validatorEras.length && !!filteredEras.length && api.derive.staking._erasPoints, [filteredEras, false]);
   const erasRewards = useCall<DeriveEraRewards[]>(!!validatorEras.length && !!filteredEras.length && api.derive.staking._erasRewards, [filteredEras, false]);
-
-  console.log('filteredEras', filteredEras)
+  console.log('stashIds', JSON.stringify(stashIds))
+  console.log('filteredEras', JSON.stringify(filteredEras))
+  console.log('ownValidators', JSON.stringify(ownValidators))
+  // console.log('stakerRewards', JSON.stringify(stakerRewards))
   useEffect((): void => {
     setState({ allRewards: null, isLoadingRewards: true, rewardCount: 0 });
   }, [maxEras, ownValidators]);

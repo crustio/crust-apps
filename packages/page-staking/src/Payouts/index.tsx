@@ -168,7 +168,7 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
     [api, eraLength, historyDepth, t]
   );
 
-  const { allRewards, isLoadingRewards } = useOwnEraRewards(eraSelection[eraSelectionIndex].value, myStashesIndex ? undefined : ownValidators);
+  const { allRewards, isLoadingRewards } = useOwnEraRewards(eraSelection[eraSelectionIndex].value, ownValidators);
 
   const { stashTotal, stashes, validators } = useMemo(
     () => getAvailable(allRewards, stakerPayoutsAfter),
@@ -241,7 +241,7 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
         header={headerStashes}
         isFixed
       >
-        {!!isLoadingRewards && stashes?.map((payout): React.ReactNode => (
+        {!isLoadingRewards && stashes?.map((payout): React.ReactNode => (
           <Stash
             isDisabled={isDisabled}
             key={payout.stashId}
