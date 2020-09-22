@@ -15,7 +15,7 @@ interface Props {
 
 function EffectiveGuaranteed ({ currentEra, stashId }: Props): React.ReactElement<Props> {
   const { api } = useApi();
-  const exposure = useCall<Exposure>(api.query.staking.erasStakers, [currentEra.toHuman(), stashId])
+  const exposure = useCall<Exposure>(api.query.staking.erasStakers, [currentEra, stashId])
   let stakeValue = new BN(0);
   if (exposure && JSON.parse(JSON.stringify(exposure)) !== null && currentEra && JSON.parse(JSON.stringify(currentEra)) !== null) {
     stakeValue = exposure.own.unwrap();
