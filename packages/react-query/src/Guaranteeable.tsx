@@ -20,7 +20,7 @@ interface Props {
 function GuaranteeableDisplay ({ children, className = '', label, params }: Props): React.ReactElement<Props> {
   const { api } = useApi();
   const currentEra =  useCall<EraIndex>(api.query.staking.currentEra);
-  const stakingInfo = useCall<Exposure>(api.query.staking.erasStakers, [currentEra, params]);
+  const stakingInfo = useCall<Exposure>(api.query.staking.erasStakers, [JSON.stringify(currentEra), params]);
   const stakeLimit = useCall<Option<Balance>>(api.query.staking.stakeLimit, [params]);
   let guaranteeable = new BN(0)
   if (stakingInfo && stakeLimit?.isSome) {
