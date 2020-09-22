@@ -1384,5 +1384,7 @@
   "own effective stake": "自身有效质押量",
   "stake limit": "质押上限",
   "guarantee fee": "担保费",
-  "guarantor": "担保人"
+  "guarantor": "担保人",
+  "Guarantor": "担保人",
+  "guaranteeing": "担保"
 }

@@ -21,13 +21,14 @@ interface Props {
 
 function EffectiveStake ({ validators, stakeValue, currentEra, stashId }: Props): React.ReactElement<Props> {
   const { api } = useApi();
+  const era = useCall<EraIndex>(api.query.staking.currentEra);
   let guaranteeTargets: [string, BN, BN][] = [];
   if (validators && JSON.parse(JSON.stringify(validators)) !== null && currentEra && JSON.parse(JSON.stringify(currentEra)) !== null) {
     let tmpTargets = JSON.parse(JSON.stringify(validators));
     let params = tmpTargets.map((e: { who: any; }) => e.who);
     let query = [];
     for (const param of params) {
-      query.push([currentEra, param]);
+      query.push([era, param]);
     }
     const multiQuery = useCall<Exposure[]>(api.query.staking.erasStakers.multi, [query]);
 
