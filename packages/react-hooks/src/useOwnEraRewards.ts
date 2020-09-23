@@ -37,7 +37,7 @@ function getRewards ([[stashIds], available]: [[string[]], DeriveStakerReward[][
     for (const eraReward of a) {
       for (const e in eraReward.nominating) {
         const sa = stakingAccounts.find(({ accountId }) => accountId.eq(eraReward.nominating[e].validatorId))
-        if (!sa?.stakingLedger.claimedRewards.includes(eraReward.era)) {
+        if (sa?.stakingLedger.claimedRewards.includes(eraReward.era)) {
           eraReward.nominating.splice(Number(e), 1);
         }
       }
@@ -118,7 +118,6 @@ export default function useOwnEraRewards (maxEras?: number, ownValidators?: Stak
   useEffect((): void => {
     if (allEras && maxEras) {
       const filteredEras = allEras.slice(-1 * maxEras);
-      console.log('filteredEras', JSON.stringify(filteredEras))
       const validatorEras: ValidatorWithEras[] = [];
 
       if (ownValidators?.length) {
@@ -147,7 +146,7 @@ export default function useOwnEraRewards (maxEras?: number, ownValidators?: Stak
     mountedRef && erasPoints && erasRewards && ownValidators && setState(
       getValRewards(validatorEras, erasPoints, erasRewards)
     );
-  }, [erasPoints, erasRewards, mountedRef, ownValidators, validatorEras]);
+  }, [erasPoints, erasRewards, mountedRef, ownValidators, validatorEras, stakingAccounts]);
 
   return state;
 }
