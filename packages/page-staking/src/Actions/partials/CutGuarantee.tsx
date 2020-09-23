@@ -133,7 +133,7 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
       )}
       <Modal.Columns>
         <Modal.Column>
-          {isAutoSelect
+          {/* {isAutoSelect
             ? (
               <>
                 <Static
@@ -161,8 +161,17 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
                 valueLabel={t<string>('guaranteed accounts')}
               />
             )
-          }
-          {autoSelected.length !== 0 && (
+          } */}
+          <InputAddressMulti
+              available={available}
+              availableLabel={t<string>('candidate accounts')}
+              defaultValue={nominating}
+              help={t<string>('Filter available candidates based on name, address or short account index.')}
+              maxCount={1}
+              onChange={_setSelected}
+              valueLabel={t<string>('guaranteed accounts')}
+            />
+          {/* {autoSelected.length !== 0 && (
             <Toggle
               className='auto--toggle'
               isDisabled={!targets.validators?.length}
@@ -174,7 +183,7 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
               onChange={_toggleAutoSelect}
               value={isAutoSelect}
             />
-          )}
+          )} */}
         </Modal.Column>
         
         <Modal.Column>

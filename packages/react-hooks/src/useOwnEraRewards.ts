@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DeriveEraPoints, DeriveEraRewards, DeriveStakerReward } from '@polkadot/api-derive/types';
+import { DeriveEraPoints, DeriveEraRewards, DeriveStakerReward, DeriveStakingOverview, DeriveStakingAccount } from '@polkadot/api-derive/types';
 import { EraIndex } from '@polkadot/types/interfaces';
 import { StakerState } from './types';
 
@@ -31,13 +31,22 @@ interface Filtered {
   validatorEras: ValidatorWithEras[];
 }
 
-function getRewards ([[stashIds], available]: [[string[]], DeriveStakerReward[][]]): OwnRewards {
+function getRewards ([[stashIds], available]: [[string[]], DeriveStakerReward[][]], stakingAccounts:DeriveStakingAccount[]): OwnRewards {
   const allRewards: Record<string, DeriveStakerReward[]> = {};
-
+  for (const a of available) {
+    for (const eraReward of a) {
+      for (const e in eraReward.nominating) {
+        const sa = stakingAccounts.find(({ accountId }) => accountId.eq(eraReward.nominating[e].validatorId))
+        if (!sa?.stakingLedger.claimedRewards.includes(eraReward.era)) {
+          eraReward.nominating.splice(Number(e), 1);
+        }
+      }
+    }
+  }
   stashIds.forEach((stashId, index): void => {
     allRewards[stashId] = available[index].filter(({ eraReward }) => !eraReward.isZero());
   });
-
+  
   return {
     allRewards,
     isLoadingRewards: false,
@@ -98,8 +107,10 @@ export default function useOwnEraRewards (maxEras?: number, ownValidators?: Stak
   const stakerRewards = useCall<[[string[]], DeriveStakerReward[][]]>(!ownValidators?.length && !!filteredEras.length && stashIds && api.derive.staking?.stakerRewardsMultiEras, [stashIds, filteredEras], { withParams: true });
   const erasPoints = useCall<DeriveEraPoints[]>(!!validatorEras.length && !!filteredEras.length && api.derive.staking._erasPoints, [filteredEras, false]);
   const erasRewards = useCall<DeriveEraRewards[]>(!!validatorEras.length && !!filteredEras.length && api.derive.staking._erasRewards, [filteredEras, false]);
+  const stakingOverview = useCall<DeriveStakingOverview>(api.derive.staking.overview);
+  const allValidators = stakingOverview && [ ...stakingOverview.validators, ...stakingOverview.nextElected ];
+  const stakingAccounts = useCall<DeriveStakingAccount[]>(allValidators && api.derive.staking.accounts, [allValidators]);
 
-  // console.log('stakerRewards', JSON.stringify(stakerRewards))
   useEffect((): void => {
     setState({ allRewards: null, isLoadingRewards: true, rewardCount: 0 });
   }, [maxEras, ownValidators]);
@@ -107,6 +118,7 @@ export default function useOwnEraRewards (maxEras?: number, ownValidators?: Stak
   useEffect((): void => {
     if (allEras && maxEras) {
       const filteredEras = allEras.slice(-1 * maxEras);
+      console.log('filteredEras', JSON.stringify(filteredEras))
       const validatorEras: ValidatorWithEras[] = [];
 
       if (ownValidators?.length) {
@@ -126,10 +138,10 @@ export default function useOwnEraRewards (maxEras?: number, ownValidators?: Stak
   }, [allEras, maxEras, ownValidators]);
 
   useEffect((): void => {
-    mountedRef.current && stakerRewards && !ownValidators && setState(
-      getRewards(stakerRewards)
+    mountedRef.current && stakerRewards && !ownValidators && stakingAccounts && setState(
+      getRewards(stakerRewards, stakingAccounts)
     );
-  }, [mountedRef, ownValidators, stakerRewards]);
+  }, [mountedRef, ownValidators, stakerRewards, stakingAccounts]);
 
   useEffect((): void => {
     mountedRef && erasPoints && erasRewards && ownValidators && setState(

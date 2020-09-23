@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import { ApiPromise } from '@polkadot/api';
 import { Button, Table, ToggleGroup } from '@polkadot/react-components';
 import { useApi, useCall, useOwnEraRewards } from '@polkadot/react-hooks';
-import { FormatBalance } from '@polkadot/react-query';
+// import { FormatBalance } from '@polkadot/react-query';
 import { BN_ZERO, isFunction } from '@polkadot/util';
 
 import ElectionBanner from '../ElectionBanner';
@@ -115,6 +115,7 @@ function getAvailable (allRewards: Record<string, DeriveStakerReward[]> | null |
     };
   }
 
+
   return {};
 }
 
@@ -162,13 +163,13 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
   const historyDepth = useCall<BN>(api.query.staking.historyDepth);
   const stakerPayoutsAfter = useStakerPayouts();
   const isDisabled = isInElection || !isFunction(api.tx.utility?.batch);
-
+  
   const eraSelection = useMemo(
     () => getOptions(api, eraLength, historyDepth, t),
     [api, eraLength, historyDepth, t]
   );
-
-  const { allRewards, isLoadingRewards } = useOwnEraRewards(eraSelection[eraSelectionIndex].value, myStashesIndex ? ( hasOwnValidators ? ownValidators : undefined) : ownValidators);
+  
+  const { allRewards, isLoadingRewards } = useOwnEraRewards(eraSelection[eraSelectionIndex].value, myStashesIndex ? undefined : ownValidators);
 
   const { stashTotal, stashes, validators } = useMemo(
     () => getAvailable(allRewards, stakerPayoutsAfter),
@@ -178,15 +179,15 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
   const headerStashes = useMemo(() => [
     [myStashesIndex ? t('payout/stash') : t('overall/validator'), 'start', 2],
     [t('eras'), 'start'],
-    [t('available')],
+    // [t('available')],
     [('remaining')],
-    [undefined, undefined, 3]
+    [undefined, undefined, 4]
   ], [myStashesIndex, t]);
 
   const headerValidatorsRef = useRef([
     [t('payout/validator'), 'start', 2],
     [t('eras'), 'start'],
-    [t('available')],
+    // [t('available')],
     [('remaining')],
     [undefined, undefined, 3]
   ]);
@@ -200,7 +201,7 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
     <tr>
       <td colSpan={3} />
       <td className='number'>
-        {stashTotal && <FormatBalance value={stashTotal} />}
+        {/* {stashTotal && <FormatBalance value={stashTotal} />} */}
       </td>
       <td colSpan={4} />
     </tr>
