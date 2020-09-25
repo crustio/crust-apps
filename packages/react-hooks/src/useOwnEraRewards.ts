@@ -58,8 +58,7 @@ function getRewards ([[stashIds], available]: [[string[]], DeriveStakerReward[][
         tmpEra.push(eraReward.era.toString());
       }
     }
-    const filterA = a.filter(e => !tmpEra.includes(e.era.toString()));
-    available[index] = filterA
+    available[index] = a.filter(e => !tmpEra.includes(e.era.toString()));
   }
 
   stashIds.forEach((stashId, index): void => {
@@ -81,7 +80,6 @@ function getValRewards (validatorEras: ValidatorWithEras[], erasPoints: DeriveEr
       const eraPoints = erasPoints.find((p) => p.era.eq(era));
       const eraRewards = erasRewards.find((r) => r.era.eq(era));
       const eraExposure = eraStashExposure.find((e) => e.era.eq(era) && e.stashId === stashId.toString())
-
 
       if (eraPoints?.eraPoints.gt(BN_ZERO) && eraPoints?.validators[stashId] && eraRewards) {
         const reward = eraPoints.validators[stashId].mul(eraRewards.eraReward).div(eraPoints.eraPoints);
