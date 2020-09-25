@@ -47,7 +47,7 @@ function createExtrinsic (api: ApiPromise, payout: PayoutValidator | PayoutValid
           return payouts;
         }, [])
         .sort((a, b) => a.era.cmp(b.era))
-        .filter((_, index) => index < batchSize)
+        // .filter((_, index) => index < batchSize)
         .map(({ era, validatorId }) => api.tx.staking.rewardStakers(validatorId, era))
     );
   }
@@ -59,7 +59,7 @@ function createExtrinsic (api: ApiPromise, payout: PayoutValidator | PayoutValid
     : api.tx.utility.batch(
       eras
         .sort((a, b) => a.era.cmp(b.era))
-        .filter((_, index) => index < batchSize)
+        // .filter((_, index) => index < batchSize)
         .map(({ era }) => api.tx.staking.rewardStakers(validatorId, era))
     );
 }
