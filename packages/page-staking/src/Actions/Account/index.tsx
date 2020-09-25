@@ -304,6 +304,14 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                     label={t<string>('Guarantee')}
                     onClick={toggleNominate}
                   />
+                  <TxButton
+                    accountId={controllerId}
+                    icon='stop'
+                    isDisabled={!isOwnController || isDisabled}
+                    key='stop'
+                    label={t<string>('Stop')}
+                    tx='staking.chill'
+                  />
                 </Button.Group>
               )
             }
