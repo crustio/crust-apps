@@ -74,7 +74,7 @@ function getRewards ([[stashIds], available]: [[string[]], DeriveStakerReward[][
 
 function getValRewards (validatorEras: ValidatorWithEras[], erasPoints: DeriveEraPoints[], erasRewards: DeriveEraRewards[], eraStashExposure: EraStashExposure[]): OwnRewards {
   const allRewards: Record<string, DeriveStakerReward[]> = {};
-
+  console.log('eraStashExposure', JSON.stringify(eraStashExposure))
   validatorEras.forEach(({ eras, stashId }): void => {
     eras.forEach((era): void => {
       const eraPoints = erasPoints.find((p) => p.era.eq(era));
@@ -106,6 +106,9 @@ function getValRewards (validatorEras: ValidatorWithEras[], erasPoints: DeriveEr
           });
         }
       } else if (eraExposure?.exposure.own) {
+        if (!allRewards[stashId]) {
+          allRewards[stashId] = [];
+        }
         allRewards[stashId].push({
           era,
           eraReward: registry.createType('Balance', 1),
@@ -144,11 +147,12 @@ export default function useOwnEraRewards (maxEras?: number, ownValidators?: Stak
   const allValidators = stakingOverview && [ ...stakingOverview.validators, ...stakingOverview.nextElected ];
   const stakingAccounts = useCall<DeriveStakingAccount[]>(allValidators && api.derive.staking.accounts, [allValidators]);
   const vcs = useCall<AccountId[]>(api.query.staking.bonded.multi, [allValidators]);
-  const [eraStashExposure, setEraStashExposure] = useState<EraStashExposure[]>([])
+  const [eraStashExposure, setEraStashExposure] = useState<EraStashExposure[]>([]);
+
   useEffect(() => {
-    if (vcs && filteredEras) {
+    if (allValidators && filteredEras && vcs) {
       const query: [EraIndex, string][] = [];
-      for (const v of vcs) {
+      for (const v of allValidators) {
         filteredEras.forEach( era => query.push([era, v.toString()]))
       }
       const fns: any[] = [
@@ -169,7 +173,7 @@ export default function useOwnEraRewards (maxEras?: number, ownValidators?: Stak
 
       }).catch(console.error);
     }
-  }, [vcs, filteredEras])
+  }, [allValidators, filteredEras, vcs])
 
   useEffect((): void => {
     setState({ allRewards: null, isLoadingRewards: true, rewardCount: 0 });

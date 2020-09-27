@@ -165,6 +165,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
         isInElection={isInElection}
         ownStashes={ownStashes}
         targets={targets}
+        next={next}
       />
       <Overview
         className={basePath === pathname ? '' : 'staking--hidden'}

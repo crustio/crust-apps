@@ -9,7 +9,7 @@ import { SortedTargets } from '../../types';
 import { Slash } from '../types';
 
 import BN from 'bn.js';
-import React, { useCallback, useContext, useMemo } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { ApiPromise } from '@polkadot/api';
 import { AddressMini, AddressSmall, Button, Menu, Popup, StakingBonded, StakingRedeemable, StakingUnbonding, StatusContext, TxButton } from '@polkadot/react-components';
@@ -77,7 +77,7 @@ function useStashCalls (api: ApiPromise, stashId: string) {
   return { balancesAll, spanCount, stakingAccount };
 }
 
-function Account ({ allSlashes, className = '', info: { controllerId, destination, hexSessionIdNext, hexSessionIdQueue, isLoading, isOwnController, isOwnStash, isStashNominating, isStashValidating, nominating, sessionIds, stakingLedger, stashId }, isDisabled, targets, validators }: Props): React.ReactElement<Props> {
+function Account ({ allSlashes, className = '', info: { controllerId, destination, hexSessionIdNext, hexSessionIdQueue, isLoading, isOwnController, isOwnStash, isStashNominating, isStashValidating, nominating, sessionIds, stakingLedger, stashId }, isDisabled, targets, validators, next }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const { queueExtrinsic } = useContext(StatusContext);
@@ -92,10 +92,10 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const [isValidateOpen, toggleValidate] = useToggle();
   const { balancesAll, spanCount, stakingAccount } = useStashCalls(api, stashId);
   const guarantors = useCall<Guarantee>(api.query.staking.guarantors, [stashId]);
-  const effected = stakingAccount && JSON.parse(JSON.stringify(stakingAccount))?.valid != 0;
   const isValidator = targets && (targets.validatorIds?.indexOf(stashId) != -1);
   const isGuarantor = guarantors && JSON.parse(JSON.stringify(guarantors)) != null;
-  const role = effected ? (isValidator ? 'Validator' : (isGuarantor ? 'Guarantor' : 'Bonded')) : 'Bonded';
+  const isCandidate = next && (next?.indexOf(stashId) != -1);
+  const [role, setRole ] = useState<string>('Bonded');
   const currentEra = useCall<EraIndex>(api.query.staking.currentEra);
   let guaranteeTargets: IndividualExposure[] = [];
   let stakeValue = new BN(0);
@@ -109,6 +109,17 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
     () => extractSlashes(stashId, allSlashes),
     [allSlashes, stashId]
   );
+
+  useEffect(() => {
+    console.log('Guarantor, Validator, Candidate', isGuarantor, isValidator, isCandidate)
+    if (isGuarantor) {
+      setRole('Guarantor');
+    } else if (isCandidate) {
+      setRole('Candidate');
+    } else if (isValidator) {
+      setRole('Validator')
+    }
+  }, [isValidator, isGuarantor, isCandidate])
 
   const withdrawFunds = useCallback(
     () => {
@@ -225,7 +236,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
         <StakingUnbonding stakingInfo={stakingAccount} />
         <StakingRedeemable stakingInfo={stakingAccount} />
       </td>
-      {currentEra && role !== `Validator` ? <EffectiveStake
+      {currentEra && (role !== `Validator` && role !== `Candidate`) ? <EffectiveStake
         validators = {guaranteeTargets}
         stakeValue = {stakeValue}
         stashId= {stashId}

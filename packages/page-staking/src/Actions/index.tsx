@@ -52,7 +52,7 @@ function extractState (ownStashes?: StakerState[]): State {
   };
 }
 
-function Actions ({ className = '', isInElection, ownStashes, targets }: Props): React.ReactElement<Props> {
+function Actions ({ className = '', isInElection, ownStashes, targets, next }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const allSlashes = useAvailableSlashes();
 
@@ -104,6 +104,7 @@ function Actions ({ className = '', isInElection, ownStashes, targets }: Props):
             isDisabled={isInElection}
             key={info.stashId}
             targets={targets}
+            next={next}
           />
         ))}
       </Table>
