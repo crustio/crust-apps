@@ -3,9 +3,9 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DeriveEraPoints, DeriveEraRewards, DeriveStakerReward, DeriveStakingOverview, DeriveStakingAccount, DeriveStakerRewardValidator } from '@polkadot/api-derive/types';
-import { AccountId } from '@polkadot/types/interfaces/runtime';
+// import { AccountId } from '@polkadot/types/interfaces/runtime';
 
-import { EraIndex, Exposure, StakingLedger } from '@polkadot/types/interfaces';
+import { EraIndex, Exposure } from '@polkadot/types/interfaces';
 import { StakerState } from './types';
 
 import { useEffect, useState } from 'react';
@@ -210,7 +210,6 @@ export default function useOwnEraRewards (maxEras?: number, ownValidators?: Stak
               exposure: exposures[index],
             })
           }
-          console.log('tmp', JSON.stringify(tmp))
           setEraStashExposure(tmp);
         }
       }).then((_unsub): void => {

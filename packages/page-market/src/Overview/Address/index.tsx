@@ -12,7 +12,7 @@ import { ApiPromise } from '@polkadot/api';
 import { AddressSmall, Icon, LinkExternal } from '@polkadot/react-components';
 import { checkVisibility } from '@polkadot/react-components/util';
 import { useApi, useCall } from '@polkadot/react-hooks';
-import { FormatBalance } from '@polkadot/react-query';
+import { FormatBalance, FormatCapacity } from '@polkadot/react-query';
 import { Option } from '@polkadot/types';
 import { Codec } from '@polkadot/types/types';
 
@@ -89,21 +89,32 @@ function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
   const slashingSpans = useCall<SlashingSpans | null>(!isMain && api.query.staking.slashingSpans, params, transformSlashes);
   const stakeLimit = useCall<BN>(api.query.staking.stakeLimit, params);
   const work_report = useCall<Option<WorkReport>>(api.query.swork.workReports, params);
-  const workReport = JSON.parse(JSON.stringify(work_report))
+  // let workReport: WorkReport;
+  // if (JSON.stringify(work_report)) {
+  //   workReport = JSON.parse(JSON.stringify(work_report));
+  // } else {
+  //   workReport = {
+  //     block_number: api.registry.createType('u64', 0),
+  //     used: 0,
+  //     reserved: 0,
+  //     cached_reserved: 0,
+  //     files: null
+  //   }
+  // }
 
-  return { accountInfo, slashingSpans, stakeLimit, workReport };
+  return { accountInfo, slashingSpans, stakeLimit, work_report };
 }
 
 function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, nominatedBy, onlineCount, onlineMessage, points, toggleFavorite, validatorInfo, withIdentity }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  const { accountInfo, slashingSpans, stakeLimit, workReport } = useAddressCalls(api, address, isMain);
+  const { accountInfo, slashingSpans, stakeLimit, work_report } = useAddressCalls(api, address, isMain);
 
   const { commission, nominators, stakeOther, stakeOwn } = useMemo(
     () => validatorInfo ? expandInfo(validatorInfo) : { nominators: [] },
     [validatorInfo]
   );
 
-  console.log('workReport', JSON.stringify(workReport))
+  console.log('workReport', JSON.stringify(work_report), JSON.stringify(work_report) === 'null')
   const isVisible = useMemo(
     () => accountInfo ? checkVisibility(api, address, accountInfo, filterName, withIdentity) : true,
     [api, accountInfo, address, filterName, withIdentity]
@@ -117,6 +128,10 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
   );
 
   if (!isVisible) {
+    return null;
+  }
+
+  if (work_report && JSON.stringify(work_report) === 'null') {
     return null;
   }
 
@@ -154,8 +169,8 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
         )
       }
       <td className='number media--1100'>
-        {(
-          <FormatBalance value={stakeOwn} />
+        {work_report && JSON.stringify(work_report) !== 'null' && (
+          <FormatCapacity value={work_report.unwrap().reserved} />
         )}
       </td>
       <td className='number media--1100'>
