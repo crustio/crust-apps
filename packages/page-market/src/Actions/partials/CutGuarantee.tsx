@@ -7,7 +7,7 @@ import { SortedTargets } from '../../types';
 
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { AddressMini, InputAddress, InputAddressMulti, Modal, Static, Toggle, InputBalance } from '@polkadot/react-components';
+import { InputAddress, InputAddressMulti, Modal, InputBalance } from '@polkadot/react-components';
 import { useApi, useFavorites } from '@polkadot/react-hooks';
 
 import { MAX_NOMINATIONS, MAX_PAYOUTS, STORE_FAVS_BASE } from '../../constants';
@@ -82,16 +82,6 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
       selected
     })),
     []
-  );
-
-  const _toggleAutoSelect = useCallback(
-    (isAutoSelect: boolean) => setSelected(() => ({
-      isAutoSelect,
-      selected: isAutoSelect
-        ? autoSelected
-        : []
-    })),
-    [autoSelected]
   );
 
   useEffect((): void => {

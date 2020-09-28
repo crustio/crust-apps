@@ -4,10 +4,10 @@
 
 import { DeriveStakingOverview } from '@polkadot/api-derive/types';
 
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import SummarySession from '@polkadot/app-explorer/SummarySession';
-import { CardSummary, IdentityIcon, SummaryBox } from '@polkadot/react-components';
+import { CardSummary, SummaryBox } from '@polkadot/react-components';
 
 import { useTranslation } from '../translate';
 import { FormatCapacity } from '@polkadot/react-query';

@@ -156,7 +156,7 @@ function getOptions (api: ApiPromise, eraLength: BN | undefined, historyDepth: B
 function Payouts ({ className = '', isInElection, ownValidators }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
-  const [hasOwnValidators] = useState(ownValidators.length !== 0);
+  const [hasOwnValidators] = useState(true);
   const [myStashesIndex, setMyStashesIndex] = useState((api.tx.staking.rewardStakers && hasOwnValidators) ? 0 : 1);
   const [eraSelectionIndex, setEraSelectionIndex] = useState(0);
   const eraLength = useCall<BN>(api.derive.session.eraLength);
