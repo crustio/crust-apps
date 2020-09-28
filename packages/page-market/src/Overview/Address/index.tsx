@@ -14,6 +14,7 @@ import { checkVisibility } from '@polkadot/react-components/util';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
 import { Option } from '@polkadot/types';
+import { Codec } from '@polkadot/types/types';
 
 import Favorite from './Favorite';
 import NominatedBy from './NominatedBy';
@@ -44,6 +45,14 @@ interface StakingState {
   stakeTotal?: BN;
   stakeOther?: BN;
   stakeOwn?: BN;
+}
+
+interface WorkReport extends Codec {
+  block_number: 'u64',
+  used: 'u64',
+  reserved: 'u64',
+  cached_reserved: 'u64',
+  files: 'Vec<(Vec<u8>, u64)>'
 }
 
 function expandInfo ({ exposure, validatorPrefs }: ValidatorInfo): StakingState {
@@ -79,20 +88,22 @@ function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
   const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, params);
   const slashingSpans = useCall<SlashingSpans | null>(!isMain && api.query.staking.slashingSpans, params, transformSlashes);
   const stakeLimit = useCall<BN>(api.query.staking.stakeLimit, params);
+  const work_report = useCall<Option<WorkReport>>(api.query.swork.workReports, params);
+  const workReport = JSON.parse(JSON.stringify(work_report))
 
-  return { accountInfo, slashingSpans, stakeLimit };
+  return { accountInfo, slashingSpans, stakeLimit, workReport };
 }
 
 function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, nominatedBy, onlineCount, onlineMessage, points, toggleFavorite, validatorInfo, withIdentity }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  const { accountInfo, slashingSpans, stakeLimit } = useAddressCalls(api, address, isMain);
+  const { accountInfo, slashingSpans, stakeLimit, workReport } = useAddressCalls(api, address, isMain);
 
   const { commission, nominators, stakeOther, stakeOwn } = useMemo(
     () => validatorInfo ? expandInfo(validatorInfo) : { nominators: [] },
     [validatorInfo]
   );
 
-
+  console.log('workReport', JSON.stringify(workReport))
   const isVisible = useMemo(
     () => accountInfo ? checkVisibility(api, address, accountInfo, filterName, withIdentity) : true,
     [api, accountInfo, address, filterName, withIdentity]

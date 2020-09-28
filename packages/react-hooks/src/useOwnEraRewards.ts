@@ -117,7 +117,7 @@ function getValRewards (validatorEras: ValidatorWithEras[], erasPoints: DeriveEr
             }
           });
         }
-      } else if (eraExposure?.exposure.own) {
+      } else if (eraExposure?.exposure.own.unwrap().gtn(0)) {
         if (!allRewards[stashId]) {
           allRewards[stashId] = [];
         }
@@ -210,6 +210,7 @@ export default function useOwnEraRewards (maxEras?: number, ownValidators?: Stak
               exposure: exposures[index],
             })
           }
+          console.log('tmp', JSON.stringify(tmp))
           setEraStashExposure(tmp);
         }
       }).then((_unsub): void => {

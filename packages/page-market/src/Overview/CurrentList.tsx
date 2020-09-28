@@ -141,7 +141,7 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
   const headerActiveRef = useRef([
     [t('merchants'), 'start', 2],
     [t('other effective stake')],
-    [t('own effective stake'), 'media--1100'],
+    [t('total capacity'), 'media--1100'],
     [t('stake limit')],
     [t('guarantee fee')],
     [t('points')],

@@ -8,13 +8,13 @@ import { ElectionStatus } from '@polkadot/types/interfaces';
 import ApiPromise from '@polkadot/api/promise';
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { Route, Switch } from 'react-router';
+// import { Route, Switch } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { HelpOverlay } from '@polkadot/react-components';
 import Tabs from '@polkadot/react-components/Tabs';
 import { useAccounts, useApi, useAvailableSlashes, useCall, useFavorites, useOwnStashInfos, useStashIds } from '@polkadot/react-hooks';
-import { isFunction } from '@polkadot/util';
+// import { isFunction } from '@polkadot/util';
 import basicMd from './md/basic.md';
 import Actions from './Actions';
 import Overview from './Overview';
@@ -76,10 +76,10 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
     [allStashes, stakingOverview]
   );
 
-  const ownValidators = useMemo(
-    () => (ownStashes || []).filter(({ isStashValidating }) => isStashValidating),
-    [ownStashes]
-  );
+  // const ownValidators = useMemo(
+  //   () => (ownStashes || []).filter(({ isStashValidating }) => isStashValidating),
+  //   [ownStashes]
+  // );
 
   const items = useMemo(() => [
     {
@@ -112,8 +112,8 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
       <Summary
         isVisible={pathname === basePath}
         next={next}
-        // used={used}
-        // reserved={reserved}
+        used={used}
+        reserved={reserved}
         nominators={targets.nominators}
         stakingOverview={stakingOverview}
       />

@@ -10,6 +10,7 @@ import SummarySession from '@polkadot/app-explorer/SummarySession';
 import { CardSummary, IdentityIcon, SummaryBox } from '@polkadot/react-components';
 
 import { useTranslation } from '../translate';
+import { FormatCapacity } from '@polkadot/react-query';
 
 interface Props {
   className?: string;
@@ -29,7 +30,7 @@ function Summary ({ className = '', isVisible, used, reserved, nominators, staki
       <section>
         {stakingOverview && (
           <CardSummary label={t<string>('meaningful capacity')}>
-            {'26GB'}
+            <FormatCapacity value={used} />
           </CardSummary>
         )}
 
@@ -38,7 +39,7 @@ function Summary ({ className = '', isVisible, used, reserved, nominators, staki
             className='media--1100'
             label={t<string>('total capacity')}
           >
-            {'134PB'}
+            <FormatCapacity value={reserved} />
           </CardSummary>
         )}
       </section>
