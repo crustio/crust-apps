@@ -70,7 +70,7 @@ function Stash ({ className = '', isDisabled, payout: { available, rewards, stas
   if (available.isZero()) {
     return null;
   }
-
+  
   return (
     <tr className={className}>
       <td
