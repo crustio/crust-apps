@@ -1,0 +1,41 @@
+// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// This software may be modified and distributed under the terms
+// of the Apache-2.0 license. See the LICENSE file for details.
+
+import { DeriveStakingOverview } from '@polkadot/api-derive/types';
+import { SortedTargets } from '../types';
+
+import React from 'react';
+
+import CurrentList from './CurrentList';
+
+interface Props {
+  className?: string;
+  favorites: string[];
+  hasQueries: boolean;
+  isIntentions?: boolean;
+  next?: string[];
+  stakingOverview?: DeriveStakingOverview;
+  targets: SortedTargets;
+  toggleFavorite: (address: string) => void;
+  merchants: string[];
+}
+
+function Overview ({ className = '', favorites, hasQueries, isIntentions, next, stakingOverview, targets, toggleFavorite, merchants }: Props): React.ReactElement<Props> {
+  return (
+    <div className={`staking--Overview ${className}`}>
+      <CurrentList
+        favorites={favorites}
+        hasQueries={hasQueries}
+        isIntentions={isIntentions}
+        next={next}
+        stakingOverview={stakingOverview}
+        targets={targets}
+        toggleFavorite={toggleFavorite}
+        merchants={merchants}
+      />
+    </div>
+  );
+}
+
+export default React.memo(Overview);

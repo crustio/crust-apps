@@ -61,6 +61,8 @@
       "@polkadot/app-tech-comm/*": [ "packages/page-tech-comm/src/*" ],
       "@polkadot/app-treasury": [ "packages/page-treasury/src" ],
       "@polkadot/app-treasury/*": [ "packages/page-treasury/src/*" ],
+      "@polkadot/app-market": [ "packages/page-market/src" ],
+      "@polkadot/app-market/*": [ "packages/page-market/src/*" ],
       "@polkadot/react-api": [ "packages/react-api/src" ],
       "@polkadot/react-api/*": [ "packages/react-api/src/*" ],
       "@polkadot/react-components": [ "packages/react-components/src" ],
