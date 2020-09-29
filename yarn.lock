@@ -3298,17 +3298,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@polkadot/app-market@workspace:packages/page-market":
-  version: 0.0.0-use.local
-  resolution: "@polkadot/app-market@workspace:packages/page-market"
-  dependencies:
-    "@babel/runtime": ^7.11.2
-    "@polkadot/app-explorer": 0.58.0-beta.18
-    "@polkadot/react-components": 0.58.0-beta.18
-    "@polkadot/react-query": 0.58.0-beta.18
-  languageName: unknown
-  linkType: soft
-
 "@polkadot/app-parachains@workspace:packages/page-parachains":
   version: 0.0.0-use.local
   resolution: "@polkadot/app-parachains@workspace:packages/page-parachains"
