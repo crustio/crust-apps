@@ -6,7 +6,6 @@ import { DeriveBalancesAll, DeriveStakingAccount } from '@polkadot/api-derive/ty
 import { SlashingSpans, UnappliedSlash, IndividualExposure, Balance, EraIndex } from '@polkadot/types/interfaces';
 import { StakerState } from '@polkadot/react-hooks/types';
 import { SortedTargets } from '../../types';
-import { Slash } from '../types';
 
 import BN from 'bn.js';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
@@ -48,17 +47,6 @@ export interface Guarantee extends Codec {
   total: Compact<Balance>;
   submitted_in: number;
   suppressed: boolean;
-}
-
-function extractSlashes (stashId: string, allSlashes: [BN, UnappliedSlash[]][] = []): Slash[] {
-  return allSlashes
-    .map(([era, all]) => ({
-      era,
-      slashes: all.filter(({ others, validator }) =>
-        validator.eq(stashId) || others.some(([nominatorId]) => nominatorId.eq(stashId))
-      )
-    }))
-    .filter(({ slashes }) => slashes.length);
 }
 
 const transformSpan = {
@@ -104,11 +92,6 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
     stakeValue = guaranteeTargets.reduce((total: BN, { value }) => { return total.add(new BN(Number(value).toString()))}, BN_ZERO)
   }
   const [isCutGuaranteeOpen, toggleCutGuarantee] = useToggle();
-
-  const slashes = useMemo(
-    () => extractSlashes(stashId, allSlashes),
-    [allSlashes, stashId]
-  );
 
   useEffect(() => {
     if (isGuarantor) {
