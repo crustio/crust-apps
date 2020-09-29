@@ -15,14 +15,14 @@ interface Props {
 
 function EffectiveGuaranteed ({ currentEra, stashId }: Props): React.ReactElement<Props> {
   const { api } = useApi();
-  const exposure = useCall<Exposure>(api.query.staking.erasStakers, [currentEra.toHuman(), stashId])
+  const exposure = useCall<Exposure>(api.query.staking.erasStakers, [JSON.stringify(currentEra), stashId])
   let stakeValue = new BN(0);
-  if (exposure && JSON.parse(JSON.stringify(exposure)) !== null && currentEra && JSON.parse(JSON.stringify(currentEra)) !== null) {
+  if (exposure && JSON.parse(JSON.stringify(exposure)) !== null) {
     stakeValue = exposure.own.unwrap();
   }
 
   return (
-    <td className='number media--1100'>
+    <td className='number all'>
       {(
         <FormatBalance value={stakeValue} />
       )}

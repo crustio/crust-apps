@@ -5,9 +5,9 @@
 import { AccountId, Balance, BlockNumber, OpenTip, OpenTipTo225 } from '@polkadot/types/interfaces';
 
 import BN from 'bn.js';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { AddressSmall, AddressMini, Expander, Icon, LinkExternal, TxButton } from '@polkadot/react-components';
+import { AddressSmall, AddressMini, Checkbox, Expander, Icon, LinkExternal, TxButton } from '@polkadot/react-components';
 import { useAccounts } from '@polkadot/react-hooks';
 import { BlockToTime, FormatBalance } from '@polkadot/react-query';
 import { BN_ZERO, formatNumber } from '@polkadot/util';
@@ -20,9 +20,12 @@ import TipReason from './TipReason';
 interface Props {
   bestNumber?: BlockNumber;
   className?: string;
+  defaultId: string | null;
   hash: string;
   isMember: boolean;
   members: string[];
+  onSelect: (hash: string, isSelected: boolean, value: BN) => void;
+  onlyUntipped: boolean;
   tip: OpenTip | OpenTipTo225;
 }
 
@@ -74,7 +77,7 @@ function extractTipState (tip: OpenTip | OpenTipTo225, hash: string, allAccounts
   };
 }
 
-function Tip ({ bestNumber, className = '', hash, isMember, members, tip }: Props): React.ReactElement<Props> | null {
+function Tip ({ bestNumber, className = '', defaultId, hash, isMember, members, onSelect, onlyUntipped, tip }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { allAccounts } = useAccounts();
 
@@ -83,6 +86,20 @@ function Tip ({ bestNumber, className = '', hash, isMember, members, tip }: Prop
     [allAccounts, hash, tip]
   );
 
+  const [isMedianSelected, setMedianTip] = useState(false);
+
+  useEffect((): void => {
+    onSelect(hash, isMedianSelected, median);
+  }, [hash, isMedianSelected, median, onSelect]);
+
+  useEffect((): void => {
+    setMedianTip(isMember && !isTipper);
+  }, [isMember, isTipper]);
+
+  if (onlyUntipped && !closesAt && isTipper) {
+    return null;
+  }
+
   const { reason, tips, who } = tip;
 
   return (
@@ -90,13 +107,13 @@ function Tip ({ bestNumber, className = '', hash, isMember, members, tip }: Prop
       <td className='address'>
         <AddressSmall value={who} />
       </td>
-      <td className='address'>
+      <td className='address media--1400'>
         {finder && (
           <AddressMini value={finder} />
         )}
       </td>
       <TipReason hash={reason} />
-      <td className='start all'>
+      <td className='start'>
         {tips.length !== 0 && (
           <>
             <Expander summary={t<string>('Tippers ({{count}})', { replace: { count: tips.length } })}>
@@ -124,6 +141,7 @@ function Tip ({ bestNumber, className = '', hash, isMember, members, tip }: Prop
           : finder && (
             <TxButton
               accountId={finder}
+              className='media--1400'
               icon='times'
               isDisabled={!isFinder}
               label={t('Cancel')}
@@ -135,6 +153,7 @@ function Tip ({ bestNumber, className = '', hash, isMember, members, tip }: Prop
         {(!closesAt || !bestNumber || closesAt.gt(bestNumber))
           ? (
             <TipEndorse
+              defaultId={defaultId}
               hash={hash}
               isMember={isMember}
               isTipped={isTipped}
@@ -159,11 +178,18 @@ function Tip ({ bestNumber, className = '', hash, isMember, members, tip }: Prop
           />
         )}
       </td>
-      <td className='mini media--1700'>
+      <td>
+        <Checkbox
+          isDisabled={!isMember}
+          onChange={setMedianTip}
+          value={isMedianSelected}
+        />
+      </td>
+      <td className='links media--1700'>
         <LinkExternal
           data={hash}
+          isLogo
           type='tip'
-          withShort
         />
       </td>
     </tr>

@@ -5,6 +5,7 @@
 import { DeriveHeartbeats, DeriveStakingOverview } from '@polkadot/api-derive/types';
 import { AccountId } from '@polkadot/types/interfaces';
 import { Authors } from '@polkadot/react-query/BlockAuthors';
+import { SortedTargets, ValidatorInfo } from '../types';
 
 import React, { useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { Table } from '@polkadot/react-components';
@@ -15,7 +16,7 @@ import { Option, StorageKey } from '@polkadot/types';
 import Filtering from '../Filtering';
 import { useTranslation } from '../translate';
 import Address from './Address';
-import { Guarantee } from '../Actions/Account';
+import { Guarantee } from "@polkadot/app-staking/Actions/Account";
 
 interface Props {
   favorites: string[];
@@ -24,8 +25,8 @@ interface Props {
   next?: string[];
   setNominators?: (nominators: string[]) => void;
   stakingOverview?: DeriveStakingOverview;
+  targets: SortedTargets;
   toggleFavorite: (address: string) => void;
-  nominators?: string[]
 }
 
 type AccountExtend = [string, boolean, boolean];
@@ -75,6 +76,7 @@ function extractNominators (nominations: [StorageKey, Option<Guarantee>][]): Rec
   return nominations.reduce((mapped: Record<string, [string, number][]>, [key, optNoms]) => {
     if (optNoms.isSome) {
       const nominatorId = key.args[0].toString();
+
       optNoms.unwrap().targets.forEach((_validatorId: { who: { toString: () => any; }; }, index: number): void => {
         const validatorId = _validatorId.who.toString();
         const info: [string, number] = [nominatorId, index + 1];
@@ -91,13 +93,12 @@ function extractNominators (nominations: [StorageKey, Option<Guarantee>][]): Rec
   }, {});
 }
 
-function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOverview, nominators, toggleFavorite, setNominators }: Props): React.ReactElement<Props> | null {
+function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOverview, targets, toggleFavorite }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api } = useApi();
   const { byAuthor, eraPoints } = useContext(isIntentions ? EmptyAuthorsContext : BlockAuthorsContext);
   const recentlyOnline = useCall<DeriveHeartbeats>(!isIntentions && api.derive.imOnline?.receivedHeartbeats);
-  const nominatorsInfo = useCall<[StorageKey, Option<Guarantee>][]>(isIntentions && nominators && api.query.staking.guarantors.entries as any, [nominators]);
-  // const nominators = useCall<[StorageKey, Option<Nominations>][]>(isIntentions && api.query.staking.guarantors.entries as any);
+  const nominators = useCall<[StorageKey, Option<Guarantee>][]>(isIntentions && api.query.staking.guarantors.entries as any);
   const [nameFilter, setNameFilter] = useState<string>('');
   const [withIdentity, setWithIdentity] = useState(false);
 
@@ -109,9 +110,18 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
     [favorites, next, stakingOverview]
   );
 
+  const infoMap = useMemo(
+    () => (targets?.validators || []).reduce((result: Record<string, ValidatorInfo>, info): Record<string, ValidatorInfo> => {
+      result[info.accountId.toString()] = info;
+
+      return result;
+    }, {}),
+    [targets]
+  );
+
   const nominatedBy = useMemo(
-    () => nominatorsInfo ? extractNominators(nominatorsInfo) : null,
-    [nominatorsInfo]
+    () => nominators ? extractNominators(nominators) : null,
+    [nominators]
   );
 
   const headerWaitingRef = useRef([
@@ -120,6 +130,7 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
     [t('own effective stake')],
     [t('stake limit')],
     [t('guarantee fee')],
+    [],
     []
   ]);
 
@@ -148,15 +159,15 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
           key={address}
           lastBlock={byAuthor[address]}
           nominatedBy={nominatedBy ? (nominatedBy[address] || []) : undefined}
-          onlineCount={recentlyOnline?.[address]?.blockCount.toNumber()}
+          onlineCount={recentlyOnline?.[address]?.blockCount}
           onlineMessage={recentlyOnline?.[address]?.hasMessage}
           points={eraPoints[address]}
           toggleFavorite={toggleFavorite}
+          validatorInfo={infoMap[address]}
           withIdentity={withIdentity}
-          setNominators={setNominators}
         />
       )),
-    [byAuthor, eraPoints, hasQueries, nameFilter, nominatedBy, recentlyOnline, toggleFavorite, withIdentity]
+    [byAuthor, eraPoints, hasQueries, infoMap, nameFilter, nominatedBy, recentlyOnline, toggleFavorite, withIdentity]
   );
 
   return isIntentions

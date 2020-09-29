@@ -6,7 +6,7 @@ import { StakerState } from '@polkadot/react-hooks/types';
 import { SortedTargets } from '../types';
 
 import BN from 'bn.js';
-import React, { useMemo, useRef, useEffect, useState } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { Button, Table } from '@polkadot/react-components';
 import { useAvailableSlashes } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
@@ -15,7 +15,9 @@ import { BN_ZERO } from '@polkadot/util';
 import ElectionBanner from '../ElectionBanner';
 import { useTranslation } from '../translate';
 import Account from './Account';
+import NewNominator from './NewNominator';
 import NewStash from './NewStash';
+import NewValidator from './NewValidator';
 
 interface Props {
   className?: string;
@@ -31,47 +33,29 @@ interface State {
   foundStashes?: StakerState[];
 }
 
-// function sortStashes (a: StakerState, b: StakerState): number {
-//   return (a.isStashValidating ? 1 : (a.isStashNominating ? 5 : 99)) - (b.isStashValidating ? 1 : (b.isStashNominating ? 5 : 99));
-// }
+function sortStashes (a: StakerState, b: StakerState): number {
+  return (a.isStashValidating ? 1 : (a.isStashNominating ? 5 : 99)) - (b.isStashValidating ? 1 : (b.isStashNominating ? 5 : 99));
+}
 
-// function extractState (ownStashes?: StakerState[]): State {
-//   if (!ownStashes) {
-//     return {};
-//   }
-//   const ownStashIds = ownStashes?.map((e) => { return e.stashId} );
-//   return {
-//     bondedTotal: ownStashes.reduce((total: BN, { stakingLedger }) => {
-//       const stakingLedgerObj = JSON.parse(JSON.stringify(stakingLedger));
-//       console.log('stakingLedgerObj', stakingLedgerObj)
-//       return (stakingLedgerObj != null && ownStashIds?.indexOf(stakingLedgerObj.stash) != -1)
-//           ? total.add(new BN(Number(stakingLedgerObj.total).toString()))
-//           : total
-//     }, BN_ZERO),
-//     foundStashes: ownStashes.sort(sortStashes)
-//   };
-// }
+function extractState (ownStashes?: StakerState[]): State {
+  if (!ownStashes) {
+    return {};
+  }
 
-function Actions ({ className = '', isInElection, ownStashes, next, targets, validators }: Props): React.ReactElement<Props> {
+  return {
+    bondedTotal: ownStashes.reduce((total: BN, { stakingLedger }) =>
+      stakingLedger
+        ? total.add(stakingLedger.total.unwrap())
+        : total,
+    BN_ZERO),
+    foundStashes: ownStashes.filter((e) => e.isOwnController && e.isOwnStash).sort(sortStashes)
+  };
+}
+
+function Actions ({ className = '', isInElection, ownStashes, targets, next }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const allSlashes = useAvailableSlashes();
 
-  const [{ bondedTotal, foundStashes }, setState] = useState<State>({});
-
-  useEffect((): void => {
-    const ownStashIds = ownStashes?.map((e) => { return e.stashId} )
-    ownStashes && setState({
-      bondedTotal: ownStashes.reduce((total: BN, { stakingLedger }) => {
-        const stakingLedgerObj = JSON.parse(JSON.stringify(stakingLedger));
-        return (stakingLedgerObj != null && ownStashIds?.indexOf(stakingLedgerObj.stash) != -1)
-          ? total.add(new BN(Number(stakingLedgerObj.active).toString()))
-          : total
-      }, BN_ZERO),
-      foundStashes: ownStashes.filter((e) => e.isOwnController).sort((a, b) =>
-        (a.isStashValidating ? 1 : (a.isStashNominating ? 5 : 99)) - (b.isStashValidating ? 1 : (b.isStashNominating ? 5 : 99))
-      )
-    });
-  }, [ownStashes]);
   const headerRef = useRef([
     [t('stashes'), 'start'],
     [t('controller'), 'address'],
@@ -81,11 +65,11 @@ function Actions ({ className = '', isInElection, ownStashes, next, targets, val
     [t('role'), 'number ui--media-1200'],
     [undefined, undefined, 2]
   ]);
-  
-  // const { bondedTotal, foundStashes } = useMemo(
-  //   () => extractState(ownStashes),
-  //   [ownStashes]
-  // );
+
+  const { bondedTotal, foundStashes } = useMemo(
+    () => extractState(ownStashes),
+    [ownStashes]
+  );
 
   const footer = useMemo(() => (
     <tr>
@@ -93,23 +77,23 @@ function Actions ({ className = '', isInElection, ownStashes, next, targets, val
       <td className='number'>
         {bondedTotal && <FormatBalance value={bondedTotal} />}
       </td>
-      <td colSpan={1} />
+      <td colSpan={4} />
     </tr>
   ), [bondedTotal]);
 
   return (
     <div className={className}>
-      <ElectionBanner isInElection={isInElection} />
       <Button.Group>
-        {/* <NewNominator
+        <NewNominator
           isInElection={isInElection}
           targets={targets}
         />
-        <NewValidator isInElection={isInElection} /> */}
+        <NewValidator isInElection={isInElection} />
         <NewStash />
       </Button.Group>
+      <ElectionBanner isInElection={isInElection} />
       <Table
-        empty={foundStashes && t<string>('No funds staked yet. Bond funds to validate or guarantee a validator')}
+        empty={foundStashes && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
         footer={footer}
         header={headerRef.current}
       >
@@ -119,9 +103,8 @@ function Actions ({ className = '', isInElection, ownStashes, next, targets, val
             info={info}
             isDisabled={isInElection}
             key={info.stashId}
-            next={next}
             targets={targets}
-            validators={validators}
+            next={next}
           />
         ))}
       </Table>

@@ -24,7 +24,7 @@ interface Props {
   toggleFavorite: (address: string) => void;
 }
 
-const WITH_BALANCE = { available: true, bonded: true, free: true, locked: true, reserved: true, total: true };
+const WITH_BALANCE = { available: true, bonded: true, free: true, locked: true, reserved: true, total: true, unlocking: true };
 
 const isEditable = true;
 
@@ -235,12 +235,12 @@ function Address ({ address, className = '', filter, isFavorite, toggleFavorite 
           </Menu>
         </Popup>
       </td>
-      <td className='mini media--1400'>
+      <td className='links media--1400'>
         <LinkExternal
           className='ui--AddressCard-exporer-link'
           data={address}
+          isLogo
           type='address'
-          withShort
         />
       </td>
     </tr>

@@ -7,7 +7,7 @@ import { SortedTargets } from '../../types';
 
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { AddressMini, InputAddress, InputAddressMulti, Modal, Static, Toggle, InputBalance } from '@polkadot/react-components';
+import { InputAddress, InputAddressMulti, Modal, InputBalance } from '@polkadot/react-components';
 import { useApi, useFavorites } from '@polkadot/react-hooks';
 
 import { MAX_NOMINATIONS, MAX_PAYOUTS, STORE_FAVS_BASE } from '../../constants';
@@ -59,7 +59,7 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
   const { t } = useTranslation();
   const { api } = useApi();
   const [favorites] = useFavorites(STORE_FAVS_BASE);
-  const [{ isAutoSelect, selected }, setSelected] = useState<Selected>(initialPick(targets));
+  const [{ selected }, setSelected] = useState<Selected>(initialPick(targets));
   const cutGuaranteeable = <span className='label'>{t<string>('cutGuaranteeable')}</span>;
   const [amount, setAmount] = useState<BN | undefined>(new BN(0));
   const [available] = useState<string[]>((): string[] => {
@@ -74,7 +74,7 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
       .concat(...(validators || []).filter((acc) => !shortlist.includes(acc)))
       .concat(...(next || []).filter((acc) => !shortlist.includes(acc)));
   });
-  const [autoSelected, setAutoSelected] = useState<string[]>([]);
+  const [, setAutoSelected] = useState<string[]>([]);
 
   const _setSelected = useCallback(
     (selected: string[]) => setSelected(({ isAutoSelect }: Selected) => ({
@@ -82,16 +82,6 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
       selected
     })),
     []
-  );
-
-  const _toggleAutoSelect = useCallback(
-    (isAutoSelect: boolean) => setSelected(() => ({
-      isAutoSelect,
-      selected: isAutoSelect
-        ? autoSelected
-        : []
-    })),
-    [autoSelected]
   );
 
   useEffect((): void => {
@@ -133,7 +123,7 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
       )}
       <Modal.Columns>
         <Modal.Column>
-          {isAutoSelect
+          {/* {isAutoSelect
             ? (
               <>
                 <Static
@@ -161,8 +151,17 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
                 valueLabel={t<string>('guaranteed accounts')}
               />
             )
-          }
-          {autoSelected.length !== 0 && (
+          } */}
+          <InputAddressMulti
+              available={available}
+              availableLabel={t<string>('candidate accounts')}
+              defaultValue={nominating}
+              help={t<string>('Filter available candidates based on name, address or short account index.')}
+              maxCount={1}
+              onChange={_setSelected}
+              valueLabel={t<string>('guaranteed accounts')}
+            />
+          {/* {autoSelected.length !== 0 && (
             <Toggle
               className='auto--toggle'
               isDisabled={!targets.validators?.length}
@@ -174,7 +173,7 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
               onChange={_toggleAutoSelect}
               value={isAutoSelect}
             />
-          )}
+          )} */}
         </Modal.Column>
         
         <Modal.Column>

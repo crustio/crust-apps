@@ -27,47 +27,39 @@ function Header ({ slash: { era, nominators, reporters, total, validators } }: P
     () => sessionInfo
       ? [
         sessionInfo.activeEra.sub(era).subn(1).mul(sessionInfo.eraLength).add(sessionInfo.eraProgress),
-        api.consts.staking.slashDeferDuration.mul(sessionInfo.eraLength)
+        api.consts.staking.bondingDuration.mul(sessionInfo.eraLength)
       ]
       : [new BN(0), new BN(0)],
     [api, era, sessionInfo]
   );
 
   return (
-    <tr>
-      <td colSpan={8}>
-        <SummaryBox isSmall>
-          <section>
-            <CardSummary label={t<string>('validators')}>
-              {formatNumber(validators.length)}
-            </CardSummary>
-            <CardSummary label={t<string>('nominators')}>
-              {formatNumber(nominators.length)}
-            </CardSummary>
-            <CardSummary label={t<string>('reporters')}>
-              {formatNumber(reporters.length)}
-            </CardSummary>
-          </section>
-          {blockProgress.gtn(0) && (
-            <section>
-              <CardSummary
-                label={t<string>('defer')}
-                progress={{
-                  total: blockEnd,
-                  value: blockProgress,
-                  withTime: true
-                }}
-              />
-            </section>
-          )}
-          <section>
-            <CardSummary label={t<string>('total')}>
-              <FormatBalance value={total} />
-            </CardSummary>
-          </section>
-        </SummaryBox>
-      </td>
-    </tr>
+    <SummaryBox>
+      <section>
+        <CardSummary label={t<string>('validators')}>
+          {formatNumber(validators.length)}
+        </CardSummary>
+        <CardSummary label={t<string>('nominators')}>
+          {formatNumber(nominators.length)}
+        </CardSummary>
+        <CardSummary label={t<string>('reporters')}>
+          {formatNumber(reporters.length)}
+        </CardSummary>
+      </section>
+      {blockProgress.gtn(0) && (
+        <CardSummary
+          label={t<string>('defer')}
+          progress={{
+            total: blockEnd,
+            value: blockProgress,
+            withTime: true
+          }}
+        />
+      )}
+      <CardSummary label={t<string>('total')}>
+        <FormatBalance value={total} />
+      </CardSummary>
+    </SummaryBox>
   );
 }
 

@@ -7,7 +7,7 @@ import { PayoutValidator } from './types';
 import BN from 'bn.js';
 import React, { useMemo } from 'react';
 import { AddressMini, AddressSmall, Expander } from '@polkadot/react-components';
-import { BlockToTime, FormatBalance } from '@polkadot/react-query';
+import { BlockToTime } from '@polkadot/react-query';
 
 import { useTranslation } from '../translate';
 import PayButton from './PayButton';
@@ -65,7 +65,7 @@ function Validator ({ className = '', isDisabled, payout }: Props): React.ReactE
       <td className='start'>
         <span className='payout-eras'>{eraStr}</span>
       </td>
-      <td className='number'><FormatBalance value={payout.available} /></td>
+      {/* <td className='number'><FormatBalance value={payout.available} /></td> */}
       <td className='number'>{eraBlocks && <BlockToTime blocks={eraBlocks} />}</td>
       <td
         className='start'
@@ -74,10 +74,10 @@ function Validator ({ className = '', isDisabled, payout }: Props): React.ReactE
         <Expander summary={t<string>('{{count}} own stashes', { replace: { count: numNominators } })}>
           {Object.entries(nominators).map(([stashId, balance]) =>
             <AddressMini
-              balance={balance}
+              // balance={balance}
               key={stashId}
               value={stashId}
-              withBalance
+              // withBalance
             />
           )}
         </Expander>

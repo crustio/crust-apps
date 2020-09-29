@@ -2,11 +2,12 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Balance, EraIndex, SlashingSpans, Exposure, ValidatorPrefs } from '@polkadot/types/interfaces';
+import { Balance, SlashingSpans, ValidatorPrefs } from '@polkadot/types/interfaces';
 import { DeriveAccountInfo } from '@polkadot/api-derive/types';
+import { ValidatorInfo } from '../../types';
 
 import BN from 'bn.js';
-import React, { useCallback, useMemo, useEffect } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { ApiPromise } from '@polkadot/api';
 import { AddressSmall, Icon, LinkExternal } from '@polkadot/react-components';
 import { checkVisibility } from '@polkadot/react-components/util';
@@ -29,12 +30,12 @@ interface Props {
   isMain?: boolean;
   lastBlock?: string;
   nominatedBy?: [string, number][];
-  onlineCount?: false | number;
+  onlineCount?: false | BN;
   onlineMessage?: boolean;
   points?: string;
   toggleFavorite: (accountId: string) => void;
+  validatorInfo?: ValidatorInfo;
   withIdentity: boolean;
-  setNominators?: false | ((nominators: string[]) => void);
 }
 
 interface StakingState {
@@ -43,12 +44,9 @@ interface StakingState {
   stakeTotal?: BN;
   stakeOther?: BN;
   stakeOwn?: BN;
-  stakeLimit?: BN;
 }
 
-const PERBILL_PERCENT = 10_000_000;
-
-function expandInfo (exposure: Exposure, validatorPref: ValidatorPrefs, stakeLimit: BN): StakingState {
+function expandInfo ({ exposure, validatorPrefs }: ValidatorInfo): StakingState {
   let nominators: [string, Balance][] = [];
   let stakeTotal: BN | undefined;
   let stakeOther: BN | undefined;
@@ -61,16 +59,14 @@ function expandInfo (exposure: Exposure, validatorPref: ValidatorPrefs, stakeLim
     stakeOther = stakeTotal.sub(stakeOwn);
   }
 
-  const commission = validatorPref?.commission?.unwrap();
+  const commission = (validatorPrefs as ValidatorPrefs)?.commission?.unwrap();
+
   return {
-    commission: commission
-      ? `${(commission.toNumber() / PERBILL_PERCENT).toFixed(2)}%`
-      : undefined,
+    commission: commission?.toHuman(),
     nominators,
     stakeOther,
     stakeOwn,
-    stakeTotal,
-    stakeLimit: new BN(stakeLimit.toString())
+    stakeTotal
   };
 }
 
@@ -82,27 +78,20 @@ function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
   const params = useMemo(() => [address], [address]);
   const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, params);
   const slashingSpans = useCall<SlashingSpans | null>(!isMain && api.query.staking.slashingSpans, params, transformSlashes);
-  const validatorsRel = useCall<ValidatorPrefs>(api.query.staking.validators, [address]);
-  // const stakingInfo = useCall<DeriveStakingQuery>(api.derive.staking.query, params);
-  const currentEra =  useCall<EraIndex>(api.query.staking.currentEra);
-  const stakingInfo = useCall<Exposure>(api.query.staking.erasStakers, [JSON.stringify(currentEra), address]);
-  const _stakeLimit = useCall<BN>(api.query.staking.stakeLimit, params);
+  const stakeLimit = useCall<BN>(api.query.staking.stakeLimit, params);
 
-  return { accountInfo, slashingSpans, stakingInfo, validatorsRel, _stakeLimit };
+  return { accountInfo, slashingSpans, stakeLimit };
 }
 
-function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, nominatedBy, onlineCount, onlineMessage, points, toggleFavorite, withIdentity, setNominators }: Props): React.ReactElement<Props> | null {
+function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, nominatedBy, onlineCount, onlineMessage, points, toggleFavorite, validatorInfo, withIdentity }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  const { accountInfo, stakingInfo, validatorsRel, _stakeLimit } = useAddressCalls(api, address, isMain);
+  const { accountInfo, slashingSpans, stakeLimit } = useAddressCalls(api, address, isMain);
 
-  const { commission, nominators, stakeOther, stakeOwn, stakeLimit } = useMemo(
-    () => stakingInfo && _stakeLimit && validatorsRel ? expandInfo(stakingInfo, validatorsRel, _stakeLimit) : { nominators: [] },
-    [stakingInfo, _stakeLimit]
+  const { commission, nominators, stakeOther, stakeOwn } = useMemo(
+    () => validatorInfo ? expandInfo(validatorInfo) : { nominators: [] },
+    [validatorInfo]
   );
 
-  useEffect((): void => {
-    stakingInfo && setNominators && setNominators(stakingInfo.others.map((guarantor): string => guarantor.who.toString()));
-  }, [setNominators, stakingInfo, validatorsRel]);
 
   const isVisible = useMemo(
     () => accountInfo ? checkVisibility(api, address, accountInfo, filterName, withIdentity) : true,
@@ -130,7 +119,8 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
         />
         <Status
           isElected={isElected}
-          numNominators={nominatedBy?.length}
+          isMain={isMain}
+          nominators={nominators}
           onlineCount={onlineCount}
           onlineMessage={onlineMessage}
         />
@@ -148,7 +138,7 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
         : (
           <NominatedBy
             nominators={nominatedBy}
-            // slashingSpans={slashingSpans}
+            slashingSpans={slashingSpans}
           />
         )
       }
@@ -158,8 +148,8 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
         )}
       </td>
       <td className='number media--1100'>
-        {(
-          <FormatBalance value={stakeLimit} />
+        {stakeLimit && (
+          <FormatBalance value={new BN(stakeLimit?.toString())} />
         )}
       </td>
       <td className='number'>
@@ -183,11 +173,11 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
           />
         )}
       </td>
-      <td className='mini media--1200'>
+      <td className='links media--1200'>
         <LinkExternal
           data={address}
+          isLogo
           type={isMain ? 'validator' : 'intention'}
-          withShort
         />
       </td>
     </tr>
