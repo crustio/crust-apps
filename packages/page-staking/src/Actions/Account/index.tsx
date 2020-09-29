@@ -29,7 +29,7 @@ import Validate from './Validate';
 // import StakingEffected from '@polkadot/react-components/StakingEffected';
 import { RewardDestination } from '@polkadot/types/interfaces/staking';
 import CutGuarantee from './CutGuarantee';
-import EffectedStake from './EffectedStake';
+import EffectiveStake from './EffectiveStake';
 import { BN_ZERO } from '@polkadot/util';
 import EffectiveGuaranteed from './EffectiveGuaranteed';
 
@@ -227,14 +227,14 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
         <StakingUnbonding stakingInfo={stakingAccount} />
         <StakingRedeemable stakingInfo={stakingAccount} />
       </td>
-      {currentEra && role !== `Validator` ? <EffectedStake
+      {currentEra && role !== `Validator` ? <EffectiveStake
         validators = {guaranteeTargets}
         stakeValue = {stakeValue}
         stashId= {stashId}
         currentEra = {currentEra}
         // stakeValue = { guaranteeTargets.length > 0 ? guaranteeTargets.reduce((total: BN, { value }) => { return JSON.parse(JSON.stringify(value)) ? total.add(value?.unwrap()) : total}, BN_ZERO) : BN_ZERO }
       /> : currentEra && (
-          <EffectiveGuaranteed currentEra={currentEra} 
+          <EffectiveGuaranteed currentEra={currentEra}
             stashId={stashId}
           />
         )
@@ -351,7 +351,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                     {t<string>('Withdraw unbonded funds')}
                   </Menu.Item> */}
                   <Menu.Divider />
-                  {isStashValidating && 'Validate'} 
+                  {isStashValidating && 'Validate'}
                   {isStashValidating &&
                     <Menu.Item
                       disabled={!isOwnController}
