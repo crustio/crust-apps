@@ -28,7 +28,6 @@ import sudo from './sudo';
 import techcomm from './techcomm';
 import transfer from './transfer';
 import treasury from './treasury';
-import market from './market';
 
 export default function create (t: <T = string> (key: string, text: string, options: { ns: string }) => T): Routes {
   return [
@@ -41,7 +40,6 @@ export default function create (t: <T = string> (key: string, text: string, opti
     transfer(t),
     genericAsset(t),
     staking(t),
-    market(t),
     democracy(t),
     council(t),
     treasury(t),

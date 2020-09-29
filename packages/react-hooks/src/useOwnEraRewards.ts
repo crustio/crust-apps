@@ -159,34 +159,6 @@ export default function useOwnEraRewards (maxEras?: number, ownValidators?: Stak
   const allValidators = stakingOverview && [ ...stakingOverview.validators, ...stakingOverview.nextElected ];
   const stakingAccounts = useCall<DeriveStakingAccount[]>(allValidators && api.derive.staking.accounts, [allValidators]);
   const [eraStashExposure, setEraStashExposure] = useState<EraStashExposure[]>([]);
-  // const [queries, setQueries] = useState<[EraIndex, string][]>([]);
-  // const erasExposures = useCall<Exposure[]>(queries && api.query.staking.erasStakers.multi, [queries]);
-  
-  // useEffect(() => {
-  //   const query: [EraIndex, string][] = [];
-  //   if (allValidators && filteredEras) {
-  //     for (const v of allValidators) {
-  //       filteredEras.forEach( era => query.push([era, v.toString()]))
-  //     }
-  //     setQueries(query);
-  //   }
-  // }, [allValidators, filteredEras])
-
-  // useEffect(() => {
-
-  //   if (erasExposures?.length && queries.length && erasExposures?.length === queries.length) {
-  //     const tmp: EraStashExposure[] = []
-  //     for (const [index, a] of queries.entries()) {
-  //       tmp.push({
-  //         era: a[0],
-  //         stashId: a[1],
-  //         exposure: erasExposures[index],
-  //       })
-  //     }
-  //     setEraStashExposure(tmp);
-  //   }
-
-  // }, [queries, erasExposures])
 
   useEffect(() => {
     let unsub: (() => void) | undefined;
