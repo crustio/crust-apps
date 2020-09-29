@@ -4,8 +4,10 @@
 
 import { BlockNumber, OpenTip, OpenTipTo225 } from '@polkadot/types/interfaces';
 
-import React, { useMemo, useRef } from 'react';
-import { Table } from '@polkadot/react-components';
+import BN from 'bn.js';
+import React, { useMemo, useRef, useState } from 'react';
+import styled from 'styled-components';
+import { Table, Toggle } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { Option } from '@polkadot/types';
 
@@ -14,9 +16,11 @@ import Tip from './Tip';
 
 interface Props {
   className?: string;
+  defaultId: string | null;
   hashes?: string[] | null;
   isMember: boolean;
   members: string[];
+  onSelectTip: (hash: string, isSelected: boolean, value: BN) => void,
 }
 
 type Tip = [string, OpenTip | OpenTipTo225];
@@ -40,9 +44,10 @@ function extractTips (optTips?: Option<OpenTip>[], hashes?: string[] | null): Ti
     );
 }
 
-function Tips ({ className = '', hashes, isMember, members }: Props): React.ReactElement<Props> {
+function Tips ({ className = '', defaultId, hashes, isMember, members, onSelectTip }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
+  const [onlyUntipped, setOnlyUntipped] = useState(false);
   const bestNumber = useCall<BlockNumber>(api.derive.chain.bestNumber);
   const optTips = useCall<Option<OpenTip>[]>(hashes && api.query.treasury.tips.multi, [hashes]);
 
@@ -53,27 +58,40 @@ function Tips ({ className = '', hashes, isMember, members }: Props): React.Reac
 
   const headerRef = useRef([
     [t('tips'), 'start'],
-    [t('finder'), 'address'],
+    [t('finder'), 'address media--1400'],
     [t('reason'), 'start'],
     [],
     [],
     [undefined, 'badge media--1700'],
-    [undefined, 'mini media--1700']
+    [],
+    [undefined, 'media--1700']
   ]);
 
   return (
     <Table
       className={className}
       empty={tips && t<string>('No open tips')}
+      filter={isMember && (
+        <div className='tipsFilter'>
+          <Toggle
+            label={t<string>('show only untipped/closing')}
+            onChange={setOnlyUntipped}
+            value={onlyUntipped}
+          />
+        </div>
+      )}
       header={headerRef.current}
     >
       {tips?.map(([hash, tip]): React.ReactNode => (
         <Tip
           bestNumber={bestNumber}
+          defaultId={defaultId}
           hash={hash}
           isMember={isMember}
           key={hash}
           members={members}
+          onSelect={onSelectTip}
+          onlyUntipped={onlyUntipped}
           tip={tip}
         />
       ))}
@@ -81,4 +99,13 @@ function Tips ({ className = '', hashes, isMember, members }: Props): React.Reac
   );
 }
 
-export default React.memo(Tips);
+export default React.memo(styled(Tips)`
+  .tipsFilter {
+    text-align: right;
+
+    .ui--Toggle {
+      margin-right: 1rem;
+      margin-top: 0.75rem;
+    }
+  }
+`);

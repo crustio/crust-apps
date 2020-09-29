@@ -90,14 +90,13 @@ export { default as Tabs } from './Tabs';
 export { default as Tag } from './Tag';
 export { default as Tags } from './Tags';
 export { default as Toggle } from './Toggle';
+export { default as ToggleGroup } from './ToggleGroup';
 export { default as Tooltip } from './Tooltip';
 export { default as TxButton } from './TxButton';
 export { default as TxComponent } from './TxComponent';
 export { default as TxModal } from './TxModal';
 export { default as TxModalNew } from './TxModalNew';
 export { default as VoteAccount } from './VoteAccount';
-export { default as VoteActions } from './VoteActions';
-export { default as VoteToggle } from './VoteToggle';
 export { default as VoteValue } from './VoteValue';
 
 export { default as media } from './media';

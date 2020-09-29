@@ -6,7 +6,7 @@ import { DeriveStakingOverview } from '@polkadot/api-derive/types';
 import { AppProps as Props } from '@polkadot/react-components/types';
 import { ElectionStatus } from '@polkadot/types/interfaces';
 
-import React, { useMemo, useReducer } from 'react';
+import React, { useMemo } from 'react';
 import { Route, Switch } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
@@ -34,10 +34,6 @@ const transformElection = {
   transform: (status: ElectionStatus) => status.isOpen
 };
 
-function reduceNominators (nominators: string[], additional: string[]): string[] {
-  return nominators.concat(...additional.filter((nominator): boolean => !nominators.includes(nominator)));
-}
-
 function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
@@ -50,7 +46,6 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
   const targets = useSortedTargets(favorites);
   const stakingOverview = useCall<DeriveStakingOverview>(api.derive.staking.overview);
   const isInElection = useCall<boolean>(api.query.staking?.eraElectionStatus, undefined, transformElection);
-  const [nominators, dispatchNominators] = useReducer(reduceNominators, [] as string[]);
 
   const hasQueries = useMemo(
     () => hasAccounts && !!(api.query.imOnline?.authoredBlocks) && !!(api.query.staking.activeEra),
@@ -85,20 +80,20 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
         text: t<string>('Payouts')
       }
       : null,
-    // {
-    //   alias: 'returns',
-    //   name: 'targets',
-    //   text: t<string>('Targets')
-    // },
+    {
+      alias: 'returns',
+      name: 'targets',
+      text: t<string>('Targets')
+    },
     {
       name: 'waiting',
       text: t<string>('Waiting')
     },
-    // {
-    //   count: slashes.reduce((count, [, unapplied]) => count + unapplied.length, 0),
-    //   name: 'slashes',
-    //   text: t<string>('Slashes')
-    // },
+    {
+      count: slashes.reduce((count, [, unapplied]) => count + unapplied.length, 0),
+      name: 'slashes',
+      text: t<string>('Slashes')
+    },
     {
       hasParams: true,
       name: 'query',
@@ -125,7 +120,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
       <Summary
         isVisible={pathname === basePath}
         next={next}
-        nominators={nominators}
+        nominators={targets.nominators}
         stakingOverview={stakingOverview}
       />
       <Switch>
@@ -160,8 +155,8 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
             isIntentions
             next={next}
             stakingOverview={stakingOverview}
+            targets={targets}
             toggleFavorite={toggleFavorite}
-            nominators={nominators}
           />
         </Route>
       </Switch>
@@ -171,7 +166,6 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
         ownStashes={ownStashes}
         targets={targets}
         next={next}
-        validators={stakingOverview && stakingOverview.validators.map(e => (e.toString()))}
       />
       <Overview
         className={basePath === pathname ? '' : 'staking--hidden'}
@@ -179,9 +173,8 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
         hasQueries={hasQueries}
         next={next}
         stakingOverview={stakingOverview}
+        targets={targets}
         toggleFavorite={toggleFavorite}
-        setNominators={dispatchNominators}
-        nominators={nominators}
       />
     </main>
   );
@@ -211,6 +204,12 @@ export default React.memo(styled(StakingApp)`
       display: inline-block;
       margin-right: 1rem;
       margin-top: 0.5rem;
+    }
+  }
+
+  .ui--Expander.stakeOver {
+    .ui--Expander-summary {
+      color: darkred;
     }
   }
 `);

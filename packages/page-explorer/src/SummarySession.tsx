@@ -64,7 +64,7 @@ function SummarySession ({ withEra = true, withSession = true }: Props): React.R
               )
               : (
                 <CardSummary label={eraLabel}>
-                  #{formatNumber(sessionInfo?.activeEra)}
+                  #{formatNumber(sessionInfo.activeEra)}
                 </CardSummary>
               )
           )}

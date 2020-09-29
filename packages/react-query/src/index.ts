@@ -23,3 +23,4 @@ export { default as TimeNow } from './TimeNow';
 export { default as TotalIssuance } from './TotalIssuance';
 export { default as Guaranteeable } from './Guaranteeable';
 export { default as CutGuaranteeable } from './CutGuaranteeable';
+export { default as FormatCapacity } from './FormatCapacity';

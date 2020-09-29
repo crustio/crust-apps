@@ -39,6 +39,7 @@ export default createGlobalStyle<Props>`
     background: ${getHighlight} !important;
   }
 
+  .highlight--bg-faint,
   .highlight--bg-light {
     background: white;
     position: relative;
@@ -48,12 +49,19 @@ export default createGlobalStyle<Props>`
       bottom: 0;
       content: ' ';
       left: 0;
-      opacity: 0.09;
       position: absolute;
       right: 0;
       top: 0;
       z-index: -1;
     }
+  }
+
+  .highlight--bg-faint:before {
+    opacity: 0.025;
+  }
+
+  .highlight--bg-light:before {
+    opacity: 0.09;
   }
 
   .highlight--border {
@@ -70,6 +78,10 @@ export default createGlobalStyle<Props>`
 
   .highlight--gradient {
     background: ${(props: Props) => `linear-gradient(90deg, ${props.uiHighlight || defaultHighlight}, transparent)`};
+  }
+
+  .highlight--hover-bg:hover {
+    background: ${getHighlight} !important;
   }
 
   .highlight--hover-color:hover {
@@ -129,8 +141,14 @@ export default createGlobalStyle<Props>`
   }
 
   .ui--Table td .ui--Button {
-    &:not(.isDisabled):not(.isIcon),
+    &:not(.isDisabled):not(.isIcon):not(.isToplevel),
     &.withoutLink:not(.isDisabled) {
+      &:hover {
+        .ui--Icon {
+          color: #f5f5f4;
+        }
+      }
+
       .ui--Icon {
         background: transparent;
         color: ${getHighlight};
@@ -219,8 +237,12 @@ export default createGlobalStyle<Props>`
       }
     }
 
-    &.nomargin {
-      margin: 0.5rem auto;
+    &.extraMargin {
+      margin: 2rem auto;
+    }
+
+    &.centered {
+      margin: 1.5rem auto;
       max-width: 75rem;
 
       &+.ui--Button-Group {
