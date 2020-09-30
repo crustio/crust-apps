@@ -1,110 +1,164 @@
-// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// Copyright 2017-2020 @polkadot/app-accounts authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { StakerState } from '@polkadot/react-hooks/types';
-import { SortedTargets } from '../types';
+import { ActionStatus } from '@polkadot/react-components/Status/types';
+import { AccountId, ProxyDefinition, ProxyType, Voting } from '@polkadot/types/interfaces';
 
 import BN from 'bn.js';
-import React, { useMemo, useRef } from 'react';
-import { Button, Table } from '@polkadot/react-components';
-import { useAvailableSlashes } from '@polkadot/react-hooks';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import styled from 'styled-components';
+import { useApi, useAccounts, useCall, useFavorites, useLoadingDelay } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
+import { Input, Table } from '@polkadot/react-components';
 import { BN_ZERO } from '@polkadot/util';
 
-import ElectionBanner from '../ElectionBanner';
 import { useTranslation } from '../translate';
 import Account from './Account';
-import NewNominator from './NewNominator';
-import NewStash from './NewStash';
-import NewValidator from './NewValidator';
+import { Delegation, SortedAccount } from '@polkadot/app-accounts/types';
+import { sortAccounts } from '@polkadot/app-accounts/util';
+
+interface Balances {
+  accounts: Record<string, BN>;
+  balanceTotal?: BN;
+}
+
+interface Sorted {
+  sortedAccounts: SortedAccount[];
+  sortedAddresses: string[];
+}
 
 interface Props {
   className?: string;
-  isInElection?: boolean;
-  ownStashes?: StakerState[];
-  next?: string[];
-  validators?: string[];
-  targets: SortedTargets;
+  onStatusChange: (status: ActionStatus) => void;
 }
 
-interface State {
-  bondedTotal?: BN;
-  foundStashes?: StakerState[];
-}
+const STORE_FAVS = 'accounts:favorites';
 
-function sortStashes (a: StakerState, b: StakerState): number {
-  return (a.isStashValidating ? 1 : (a.isStashNominating ? 5 : 99)) - (b.isStashValidating ? 1 : (b.isStashNominating ? 5 : 99));
-}
+// query the ledger for the address, adding it to the keyring
 
-function extractState (ownStashes?: StakerState[]): State {
-  if (!ownStashes) {
-    return {};
-  }
-
-  return {
-    bondedTotal: ownStashes.reduce((total: BN, { stakingLedger }) =>
-      stakingLedger
-        ? total.add(stakingLedger.total.unwrap())
-        : total,
-    BN_ZERO),
-    foundStashes: ownStashes.filter((e) => e.isOwnController && e.isOwnStash).sort(sortStashes)
-  };
-}
-
-function Actions ({ className = '', isInElection, ownStashes, targets, next }: Props): React.ReactElement<Props> {
+function Overview ({ className = '' }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const allSlashes = useAvailableSlashes();
+  const { api } = useApi();
+  const { allAccounts, hasAccounts } = useAccounts();
+  const [favorites, toggleFavorite] = useFavorites(STORE_FAVS);
+  const [{ balanceTotal }, setBalances] = useState<Balances>({ accounts: {} });
+  const [filterOn, setFilter] = useState<string>('');
+  const [sortedAccountsWithDelegation, setSortedAccountsWithDelegation] = useState<SortedAccount[] | undefined>();
+  const [{ sortedAccounts, sortedAddresses }, setSorted] = useState<Sorted>({ sortedAccounts: [], sortedAddresses: [] });
+  const delegations = useCall<Voting[]>(api.query.democracy?.votingOf?.multi, [sortedAddresses]);
+  const proxies = useCall<[ProxyDefinition[], BN][]>(api.query.proxy?.proxies.multi, [sortedAddresses], {
+    transform: (result: [([AccountId, ProxyType] | ProxyDefinition)[], BN][]): [ProxyDefinition[], BN][] =>
+      api.tx.proxy.addProxy.meta.args.length === 3
+        ? result as [ProxyDefinition[], BN][]
+        : (result as [[AccountId, ProxyType][], BN][]).map(([arr, bn]): [ProxyDefinition[], BN] =>
+          [arr.map(([delegate, proxyType]): ProxyDefinition => api.createType('ProxyDefinition', { delegate, proxyType })), bn]
+        )
+  });
+  const isLoading = useLoadingDelay();
 
   const headerRef = useRef([
-    [t('stashes'), 'start'],
-    [t('controller'), 'address'],
-    [t('rewards'), 'number media--1200'],
-    [t('bonded'), 'number'],
-    [t('effective stake')],
-    [t('role'), 'number ui--media-1200'],
-    [undefined, undefined, 2]
+    [t('accounts'), 'start', 3],
+    [t('parent'), 'address media--1400'],
+    [t('type')],
+    [t('tags'), 'start'],
+    [t('transactions'), 'media--1500'],
+    [t('balances')],
+    [],
+    [undefined, 'media--1400']
   ]);
 
-  const { bondedTotal, foundStashes } = useMemo(
-    () => extractState(ownStashes),
-    [ownStashes]
+  useEffect((): void => {
+    const sortedAccounts = sortAccounts(allAccounts, favorites);
+    const sortedAddresses = sortedAccounts.map((a) => a.account.address);
+
+    setSorted({ sortedAccounts, sortedAddresses });
+  }, [allAccounts, favorites]);
+
+  useEffect(() => {
+    if (api.query.democracy?.votingOf && !delegations?.length) {
+      return;
+    }
+
+    setSortedAccountsWithDelegation(
+      sortedAccounts?.map((account, index) => {
+        let delegation: Delegation | undefined;
+
+        if (delegations && delegations[index]?.isDelegating) {
+          const { balance: amount, conviction, target } = delegations[index].asDelegating;
+
+          delegation = {
+            accountDelegated: target.toString(),
+            amount,
+            conviction
+          };
+        }
+
+        return ({
+          ...account,
+          delegation
+        });
+      })
+    );
+  }, [api, delegations, sortedAccounts]);
+
+  const _setBalance = useCallback(
+    (account: string, balance: BN) =>
+      setBalances(({ accounts }: Balances): Balances => {
+        accounts[account] = balance;
+
+        return {
+          accounts,
+          balanceTotal: Object.values(accounts).reduce((total: BN, value: BN) => total.add(value), BN_ZERO)
+        };
+      }),
+    []
   );
 
   const footer = useMemo(() => (
     <tr>
       <td colSpan={3} />
+      <td className='media--1400' />
+      <td colSpan={2} />
+      <td className='media--1500' />
       <td className='number'>
-        {bondedTotal && <FormatBalance value={bondedTotal} />}
+        {balanceTotal && <FormatBalance value={balanceTotal} />}
       </td>
-      <td colSpan={4} />
+      <td />
+      <td className='media--1400' />
     </tr>
-  ), [bondedTotal]);
+  ), [balanceTotal]);
+
+  const filter = useMemo(() => (
+    <div className='filter--tags'>
+      <Input
+        autoFocus
+        isFull
+        label={t<string>('filter by name or tags')}
+        onChange={setFilter}
+        value={filterOn}
+      />
+    </div>
+  ), [filterOn, t]);
 
   return (
     <div className={className}>
-      <Button.Group>
-        <NewNominator
-          isInElection={isInElection}
-          targets={targets}
-        />
-        <NewValidator isInElection={isInElection} />
-        <NewStash />
-      </Button.Group>
-      <ElectionBanner isInElection={isInElection} />
       <Table
-        empty={foundStashes && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
+        empty={(!hasAccounts || (!isLoading && sortedAccountsWithDelegation)) && t<string>("You don't have any accounts. Some features are currently hidden and will only become available once you have accounts.")}
+        filter={filter}
         footer={footer}
         header={headerRef.current}
       >
-        {foundStashes?.map((info): React.ReactNode => (
+        {isLoading ? undefined : sortedAccountsWithDelegation?.map(({ account, delegation, isFavorite }, index): React.ReactNode => (
           <Account
-            allSlashes={allSlashes}
-            info={info}
-            isDisabled={isInElection}
-            key={info.stashId}
-            targets={targets}
-            next={next}
+            account={account}
+            delegation={delegation}
+            filter={filterOn}
+            isFavorite={isFavorite}
+            key={account.address}
+            proxy={proxies?.[index]}
+            setBalance={_setBalance}
+            toggleFavorite={toggleFavorite}
           />
         ))}
       </Table>
@@ -112,4 +166,14 @@ function Actions ({ className = '', isInElection, ownStashes, targets, next }: P
   );
 }
 
-export default React.memo(Actions);
+export default React.memo(styled(Overview)`
+  .filter--tags {
+    .ui--Dropdown {
+      padding-left: 0;
+
+      label {
+        left: 1.55rem;
+      }
+    }
+  }
+`);
