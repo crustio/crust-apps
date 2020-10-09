@@ -47,7 +47,7 @@ interface MerchantInfoRank {
 
 export interface MerchantSortInfo extends MerchantInfoRank {
   accountId: string;
-  // isFavorite: boolean;
+  isFavorite: boolean;
 }
 
 export interface ValidatorInfo extends ValidatorInfoRank {

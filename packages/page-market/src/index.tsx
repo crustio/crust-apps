@@ -23,6 +23,7 @@ import { STORE_FAVS_BASE } from './constants';
 import { useTranslation } from './translate';
 import useSortedTargets from './useSortedTargets';
 import { MerchantSortInfo } from './types';
+import { Codec } from '@polkadot/types/types';
 
 const HIDDEN_ACC = ['actions', 'payouts', 'query'];
 const HIDDEN_QUE = ['returns', 'query'];
@@ -37,14 +38,15 @@ interface AccountMerchantInfo {
   workReport: WorkReport
 }
 
-interface MerchantInfo {
+interface MerchantInfo extends Codec {
   [x: string]: any;
   address: 'Vec<u8>',
   storage_price: 'Balance',
   file_map: 'Vec<(Vec<u8>, Vec<Hash>)>'
 }
 
-interface WorkReport {
+interface WorkReport extends Codec {
+  [x: string]: any;
   block_number: 'u64',
   used: 'u64',
   reserved: 'u64',
@@ -130,16 +132,17 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
         if (merchant.workReport) {
           tmpMerchantInfo.push({
             accountId: merchant.accountId, 
-            rankCapacity: 0, 
-            rankPrice: 0, 
-            rankOrderCount: tmpCount
+            rankCapacity: merchant.workReport.unwrap().reserved, 
+            rankPrice: merchant.merchantInfo.unwrap().storage_price, 
+            rankOrderCount: tmpCount,
+            isFavorite: favorites.includes(merchant.accountId)
           })
         }
       }
       setMerchantSortInfo(tmpMerchantInfo)
       setTotalOrderCount(total);
     }
-  }, [accountMerchants]);
+  }, [accountMerchants, favorites]);
 
   useEffect(() => {
     loadMerchantsInfo(api).then(setAccountMerchants);
