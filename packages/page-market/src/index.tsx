@@ -22,6 +22,7 @@ import Summary from './Overview/Summary';
 import { STORE_FAVS_BASE } from './constants';
 import { useTranslation } from './translate';
 import useSortedTargets from './useSortedTargets';
+import { MerchantSortInfo } from './types';
 
 const HIDDEN_ACC = ['actions', 'payouts', 'query'];
 const HIDDEN_QUE = ['returns', 'query'];
@@ -32,7 +33,8 @@ const transformElection = {
 
 interface AccountMerchantInfo {
   accountId: string
-  merchantInfo: MerchantInfo
+  merchantInfo: MerchantInfo,
+  workReport: WorkReport
 }
 
 interface MerchantInfo {
@@ -40,6 +42,14 @@ interface MerchantInfo {
   address: 'Vec<u8>',
   storage_price: 'Balance',
   file_map: 'Vec<(Vec<u8>, Vec<Hash>)>'
+}
+
+interface WorkReport {
+  block_number: 'u64',
+  used: 'u64',
+  reserved: 'u64',
+  cached_reserved: 'u64',
+  files: 'Vec<(Vec<u8>, u64)>'
 }
 
 // async function loadMerchants(api: ApiPromise) {
@@ -59,14 +69,19 @@ interface MerchantInfo {
 async function loadMerchantsInfo(api: ApiPromise) {
   const result: any[] = [];
   const entries = await api.query.market.merchants.entries();
+  const workReports = await api.query.swork.workReports.entries();
   entries.forEach(([account, info]) => {
     let accountId = account.toHuman();
+
     if (Array.isArray(accountId)) {
       accountId = accountId[0];
     }
+    const workReport = workReports.find(([reporter]) => { 
+      return reporter.toHuman()?.toString() === account.toHuman()?.toString() });
     result.push({
       accountId,
-      merchantInfo: info
+      merchantInfo: info,
+      workReport: workReport?.[1]
     })
   })
 
@@ -90,6 +105,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
   const used = useCall<any>(api.query.swork.used);
   const [ accountMerchants, setAccountMerchants ] = useState<AccountMerchantInfo[]>([]);
   const [totalOrderCount, setTotalOrderCount ] = useState<Number>(0);
+  const [ merchantSortInfo, setMerchantSortInfo ] = useState<MerchantSortInfo[]>([]);
 
   const hasQueries = useMemo(
     () => hasAccounts && !!(api.query.imOnline?.authoredBlocks) && !!(api.query.staking.activeEra),
@@ -98,17 +114,29 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
 
   useEffect(() => {
     if (accountMerchants.length) {
+      const tmpMerchantInfo: MerchantSortInfo[] = [];
       setMerchants(accountMerchants.map(e => e.accountId));
       let total = 0;
       for (const merchant of accountMerchants) {
         let m = JSON.parse(JSON.stringify(merchant.merchantInfo));
+        let tmpCount = 0;
         if (m.file_map.length) {
           let m_file_map = m.file_map;
           for (const file of m_file_map) {
             total += file[1].length;
+            tmpCount += file[1].length;
           }
         }
+        if (merchant.workReport) {
+          tmpMerchantInfo.push({
+            accountId: merchant.accountId, 
+            rankCapacity: 0, 
+            rankPrice: 0, 
+            rankOrderCount: tmpCount
+          })
+        }
       }
+      setMerchantSortInfo(tmpMerchantInfo)
       setTotalOrderCount(total);
     }
   }, [accountMerchants]);
@@ -182,6 +210,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
         targets={targets}
         toggleFavorite={toggleFavorite}
         merchants={merchants}
+        merchantSortInfo={merchantSortInfo}
       />
     </main>
   );

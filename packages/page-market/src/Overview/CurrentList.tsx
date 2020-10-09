@@ -5,18 +5,16 @@
 import { DeriveHeartbeats, DeriveStakingOverview } from '@polkadot/api-derive/types';
 import { AccountId } from '@polkadot/types/interfaces';
 import { Authors } from '@polkadot/react-query/BlockAuthors';
-import { SortedTargets, ValidatorInfo } from '../types';
+import { MerchantSortBy, MerchantSortInfo, SortedTargets, ValidatorInfo } from '../types';
 
-import React, { useCallback, useContext, useMemo, useRef, useState } from 'react';
-import { Table } from '@polkadot/react-components';
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { Icon, Table } from '@polkadot/react-components';
 import { useApi, useCall, useLoadingDelay } from '@polkadot/react-hooks';
 import { BlockAuthorsContext } from '@polkadot/react-query';
-import { Option, StorageKey } from '@polkadot/types';
 
 import Filtering from '../Filtering';
 import { useTranslation } from '../translate';
 import Address from './Address';
-import { Guarantee } from "@polkadot/app-staking/Actions/Account";
 
 interface Props {
   favorites: string[];
@@ -28,6 +26,7 @@ interface Props {
   targets: SortedTargets;
   toggleFavorite: (address: string) => void;
   merchants: string[];
+  merchantSortInfo: MerchantSortInfo[];
 }
 
 type AccountExtend = [string, boolean, boolean];
@@ -37,7 +36,18 @@ interface Filtered {
   validators?: AccountExtend[];
   waiting?: AccountExtend[];
   filterMerchants?: AccountExtend[];
+  filterMerchantInfos?: AccountExtend[];
 }
+
+interface SortState {
+  sortBy: MerchantSortBy;
+  sortFromMax: boolean;
+}
+
+const CLASSES: Record<string, string> = {
+  rankBondOther: 'media--1600',
+  rankNumNominators: 'media--1200'
+};
 
 const EmptyAuthorsContext: React.Context<Authors> = React.createContext<Authors>({ byAuthor: {}, eraPoints: {}, lastBlockAuthors: [], lastHeaders: [] });
 
@@ -56,61 +66,56 @@ function filterAccounts (accounts: string[] = [], elected: string[], favorites: 
     );
 }
 
+function sort (sortBy: MerchantSortBy, sortFromMax: boolean, merchants: MerchantSortInfo[]): number[] {
+  return [...Array(merchants.length).keys()]
+    .sort((a, b) =>
+      sortFromMax
+        ? merchants[a][sortBy] - merchants[b][sortBy]
+        : merchants[b][sortBy] - merchants[a][sortBy]
+    )
+}
+
 function accountsToString (accounts: AccountId[]): string[] {
   return accounts.map((accountId): string => accountId.toString());
 }
 
-function getFiltered (stakingOverview: DeriveStakingOverview, favorites: string[], next?: string[], merchants?: string[]): Filtered {
+function getFiltered (stakingOverview: DeriveStakingOverview, favorites: string[], next?: string[], merchants?: string[], merchantSortInfo?: MerchantSortInfo[]): Filtered {
   const allElected = accountsToString(stakingOverview.nextElected);
   const validatorIds = accountsToString(stakingOverview.validators);
   const validators = filterAccounts(validatorIds, allElected, favorites, []);
   const elected = filterAccounts(allElected, allElected, favorites, validatorIds);
   const waiting = filterAccounts(next, [], favorites, allElected);
   const filterMerchants = filterAccounts(merchants, allElected, favorites, []);
+  const filterMerchantInfos = filterAccounts(merchantSortInfo && merchantSortInfo.map(e => e.accountId), allElected, favorites, []);
 
   return {
     elected,
     validators,
     waiting,
-    filterMerchants
+    filterMerchants,
+    filterMerchantInfos
   };
 }
 
-function extractNominators (nominations: [StorageKey, Option<Guarantee>][]): Record<string, [string, number][]> {
-  return nominations.reduce((mapped: Record<string, [string, number][]>, [key, optNoms]) => {
-    if (optNoms.isSome) {
-      const nominatorId = key.args[0].toString();
-
-      optNoms.unwrap().targets.forEach((_validatorId: { who: { toString: () => any; }; }, index: number): void => {
-        const validatorId = _validatorId.who.toString();
-        const info: [string, number] = [nominatorId, index + 1];
-
-        if (!mapped[validatorId]) {
-          mapped[validatorId] = [info];
-        } else {
-          mapped[validatorId].push(info);
-        }
-      });
-    }
-
-    return mapped;
-  }, {});
-}
-
-function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOverview, targets, toggleFavorite, merchants }: Props): React.ReactElement<Props> | null {
+function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOverview, targets, toggleFavorite, merchants, merchantSortInfo }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api } = useApi();
   const { byAuthor, eraPoints } = useContext(isIntentions ? EmptyAuthorsContext : BlockAuthorsContext);
   const recentlyOnline = useCall<DeriveHeartbeats>(!isIntentions && api.derive.imOnline?.receivedHeartbeats);
-  const nominators = useCall<[StorageKey, Option<Guarantee>][]>(isIntentions && api.query.staking.guarantors.entries as any);
   const [nameFilter, setNameFilter] = useState<string>('');
   const [withIdentity, setWithIdentity] = useState(false);
+  const [{ sortBy, sortFromMax }, setSortBy] = useState<SortState>({ sortBy: 'rankCapacity', sortFromMax: true });
+  const [sorted, setSorted] = useState<number[] | undefined>();
 
   // we have a very large list, so we use a loading delay
   const isLoading = useLoadingDelay();
 
-  const { elected, validators, waiting, filterMerchants } = useMemo(
-    () => stakingOverview ? getFiltered(stakingOverview, favorites, next, merchants) : {},
+  useEffect((): void => {
+    merchantSortInfo && setSorted(sort(sortBy, sortFromMax, merchantSortInfo));
+  }, [sortBy, sortFromMax, merchantSortInfo]);
+
+  const { validators, filterMerchantInfos } = useMemo(
+    () => stakingOverview ? getFiltered(stakingOverview, favorites, next, merchants, merchantSortInfo) : {},
     [favorites, next, stakingOverview, merchants]
   );
 
@@ -123,86 +128,73 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
     [targets]
   );
 
-  const nominatedBy = useMemo(
-    () => nominators ? extractNominators(nominators) : null,
-    [nominators]
+  const _sort = useCallback(
+    (newSortBy: MerchantSortBy) => setSortBy(({ sortBy, sortFromMax }) => ({
+      sortBy: newSortBy,
+      sortFromMax: newSortBy === sortBy
+        ? !sortFromMax
+        : true
+    })),
+    []
   );
 
-  const headerWaitingRef = useRef([
-    [t('intentions'), 'start', 2],
-    [t('guarantors'), 'start', 1],
-    [t('own effective stake')],
-    [t('stake limit')],
-    [t('guarantee fee')],
-    [],
-    []
-  ]);
+  const labelsRef = useRef({
+    rankCapacity: t<string>('total capacity'),
+    rankPrice: t<string>('storage price'),
+    rankOrderCount: t<string>('current order count')
+  });
 
-  const headerActiveRef = useRef([
+  // const headerActiveRef = useRef([
+  //   [t('merchants'), 'start', 2],
+  //   [t('total capacity'), 'media--1100'],
+  //   [t('storage price')],
+  //   [t('current order count')],
+  //   [undefined, 'media--1200']
+  // ]);
+
+  const header = useMemo(() => [
     [t('merchants'), 'start', 2],
-    [t('total capacity'), 'media--1100'],
-    [t('storage price')],
-    [t('current order count')],
+    ...(['rankCapacity', 'rankPrice', 'rankOrderCount'] as (keyof typeof labelsRef.current)[])
+      .map((header) => [
+        <>{labelsRef.current[header]}<Icon icon={sortBy === header ? (sortFromMax ? 'chevron-down' : 'chevron-up') : 'minus'} /></>,
+        `${sorted ? `isClickable ${sortBy === header ? 'highlight--border' : ''} number` : 'number'} ${CLASSES[header] || ''}`,
+        1,
+        () => _sort(header as 'rankCapacity')
+      ]),
     [undefined, 'media--1200']
-  ]);
+  ], [_sort, labelsRef, sortBy, sorted, sortFromMax, t]);
 
   const _renderRows = useCallback(
-    (addresses?: AccountExtend[], isMain?: boolean): React.ReactNode[] =>
-      (addresses || []).map(([address, isElected, isFavorite]): React.ReactNode => (
+    (addresses?: AccountExtend[]): React.ReactNode[] =>
+      (addresses || []).map(([address,, isFavorite]): React.ReactNode => (
         <Address
           address={address}
           filterName={nameFilter}
-          hasQueries={hasQueries}
-          isElected={isElected}
           isFavorite={isFavorite}
-          isMain={isMain}
           key={address}
-          lastBlock={byAuthor[address]}
-          nominatedBy={nominatedBy ? (nominatedBy[address] || []) : undefined}
-          onlineCount={recentlyOnline?.[address]?.blockCount}
-          onlineMessage={recentlyOnline?.[address]?.hasMessage}
-          points={eraPoints[address]}
           toggleFavorite={toggleFavorite}
           validatorInfo={infoMap[address]}
           withIdentity={withIdentity}
         />
       )),
-    [byAuthor, eraPoints, hasQueries, infoMap, nameFilter, nominatedBy, recentlyOnline, toggleFavorite, withIdentity]
+    [byAuthor, eraPoints, hasQueries, infoMap, nameFilter, recentlyOnline, toggleFavorite, withIdentity]
   );
 
-  return isIntentions
-    ? (
-      <Table
-        empty={!isLoading && waiting && t<string>('No waiting validators found')}
-        filter={
-          <Filtering
-            nameFilter={nameFilter}
-            setNameFilter={setNameFilter}
-            setWithIdentity={setWithIdentity}
-            withIdentity={withIdentity}
-          />
-        }
-        header={headerWaitingRef.current}
-      >
-        {isLoading ? undefined : _renderRows(elected, false).concat(_renderRows(waiting, false))}
-      </Table>
-    )
-    : (
-      <Table
-        empty={!isLoading && validators && t<string>('No active validators found')}
-        filter={
-          <Filtering
-            nameFilter={nameFilter}
-            setNameFilter={setNameFilter}
-            setWithIdentity={setWithIdentity}
-            withIdentity={withIdentity}
-          />
-        }
-        header={headerActiveRef.current}
-      >
-        {isLoading ? undefined : _renderRows(filterMerchants, true)}
-      </Table>
-    );
+  return <Table
+          empty={!isLoading && validators && t<string>('No active validators found')}
+          filter={
+            <Filtering
+              nameFilter={nameFilter}
+              setNameFilter={setNameFilter}
+              setWithIdentity={setWithIdentity}
+              withIdentity={withIdentity}
+            />
+          }
+          header={header}
+        >
+          {isLoading ? undefined : _renderRows(filterMerchantInfos)}
+        </Table>
+
 }
 
 export default React.memo(CurrentList);

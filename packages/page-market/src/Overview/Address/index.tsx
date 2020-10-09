@@ -5,10 +5,9 @@
 import { DeriveAccountInfo } from '@polkadot/api-derive/types';
 import { ValidatorInfo } from '../../types';
 
-import BN from 'bn.js';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ApiPromise } from '@polkadot/api';
-import { AddressSmall, LinkExternal } from '@polkadot/react-components';
+import { AddressSmall } from '@polkadot/react-components';
 import { checkVisibility } from '@polkadot/react-components/util';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { FormatCapacity } from '@polkadot/react-query';
@@ -22,15 +21,7 @@ interface Props {
   address: string;
   className?: string;
   filterName: string;
-  hasQueries: boolean;
-  isElected: boolean;
   isFavorite: boolean;
-  isMain?: boolean;
-  lastBlock?: string;
-  nominatedBy?: [string, number][];
-  onlineCount?: false | BN;
-  onlineMessage?: boolean;
-  points?: string;
   toggleFavorite: (accountId: string) => void;
   validatorInfo?: ValidatorInfo;
   withIdentity: boolean;
@@ -50,7 +41,7 @@ interface MerchantInfo extends Codec {
   file_map: 'Vec<(Vec<u8>, Vec<Hash>)>'
 }
 
-function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
+function useAddressCalls (api: ApiPromise, address: string) {
   const params = useMemo(() => [address], [address]);
   const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, params);
 
@@ -60,9 +51,9 @@ function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
   return { accountInfo, workReport, merchantInfo };
 }
 
-function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, nominatedBy, onlineCount, onlineMessage, points, toggleFavorite, validatorInfo, withIdentity }: Props): React.ReactElement<Props> | null {
+function Address ({ address, className = '', filterName, isFavorite, toggleFavorite, withIdentity }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  const { accountInfo, workReport, merchantInfo } = useAddressCalls(api, address, isMain);
+  const { accountInfo, workReport, merchantInfo } = useAddressCalls(api, address);
   const [ orderCount, setOrderCount ] = useState<Number>(0);
 
   useEffect(() => {
@@ -116,11 +107,7 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
         {orderCount}
       </td>
       <td className='links media--1200'>
-        <LinkExternal
-          data={address}
-          isLogo
-          type={isMain ? 'validator' : 'intention'}
-        />
+
       </td>
     </tr>
   );

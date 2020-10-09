@@ -39,6 +39,17 @@ interface ValidatorInfoRank {
   rankReward: number;
 }
 
+interface MerchantInfoRank {
+  rankCapacity: number;
+  rankPrice: number;
+  rankOrderCount: number;
+}
+
+export interface MerchantSortInfo extends MerchantInfoRank {
+  accountId: string;
+  // isFavorite: boolean;
+}
+
 export interface ValidatorInfo extends ValidatorInfoRank {
   accountId: AccountId;
   bondOther: BN;
@@ -62,6 +73,8 @@ export interface ValidatorInfo extends ValidatorInfoRank {
 }
 
 export type TargetSortBy = keyof ValidatorInfoRank;
+
+export type MerchantSortBy = keyof MerchantInfoRank;
 
 export interface SortedTargets {
   avgStaked?: BN;
