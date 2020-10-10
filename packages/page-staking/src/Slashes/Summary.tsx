@@ -27,7 +27,7 @@ function Header ({ slash: { era, nominators, reporters, total, validators } }: P
     () => sessionInfo
       ? [
         sessionInfo.activeEra.sub(era).subn(1).mul(sessionInfo.eraLength).add(sessionInfo.eraProgress),
-        api.consts.staking.bondingDuration.mul(sessionInfo.eraLength)
+        api.consts.staking.slashDeferDuration.mul(sessionInfo.eraLength)
       ]
       : [new BN(0), new BN(0)],
     [api, era, sessionInfo]
@@ -39,7 +39,7 @@ function Header ({ slash: { era, nominators, reporters, total, validators } }: P
         <CardSummary label={t<string>('validators')}>
           {formatNumber(validators.length)}
         </CardSummary>
-        <CardSummary label={t<string>('nominators')}>
+        <CardSummary label={t<string>('guarantors')}>
           {formatNumber(nominators.length)}
         </CardSummary>
         <CardSummary label={t<string>('reporters')}>
