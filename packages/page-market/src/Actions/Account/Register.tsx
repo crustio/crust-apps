@@ -43,11 +43,11 @@ function Register ({ onClose, stashId }: Props): React.ReactElement<Props> {
             <InputAddress
               defaultValue={stashId}
               isDisabled
-              label={t<string>('stash account')}
+              label={t<string>('using account')}
             />
           </Modal.Column>
           <Modal.Column>
-            <p>{t<string>('Since this transaction deals with funding, the stash account will be used.')}</p>
+            <p>{t<string>('Since this transaction deals with funding, the account will be used.')}</p>
           </Modal.Column>
         </Modal.Columns>
         {(
@@ -55,9 +55,9 @@ function Register ({ onClose, stashId }: Props): React.ReactElement<Props> {
             <Modal.Column>
               <Input
                 autoFocus
-                help={t<string>('Name given to this account. You can edit it. To use the account to validate or nominate, it is a good practice to append the function of the account in the name, e.g "name_you_want - stash".')}
+                // help={t<string>('Name given to this account. You can edit it. To use the account to validate or nominate, it is a good practice to append the function of the account in the name, e.g "name_you_want - stash".')}
                 isError={!isAddressValid}
-                label={t<string>('address_info')}
+                label={t<string>('Please enter your ip address and port (such as ws://132.167.68.54:3000)')}
                 onChange={_onChangeAddress}
                 // onEnter={setAddress}
                 placeholder={t<string>('ws://')}
@@ -66,14 +66,14 @@ function Register ({ onClose, stashId }: Props): React.ReactElement<Props> {
               <InputBalance
                 autoFocus
                 defaultValue={0}
-                help={t<string>('Amount to add to the currently bonded funds. This is adjusted using the available funds on the account.')}
+                // help={t<string>('Amount to add to the currently bonded funds. This is adjusted using the available funds on the account.')}
                 isError={!!amountError?.error || !maxAdditional || maxAdditional.eqn(0)}
-                label={t<string>('additional bonded funds')}
+                label={t<string>('Please enter the storage unit price')}
                 onChange={setMaxAdditional}
               />
             </Modal.Column>
             <Modal.Column>
-              <p>{t<string>('The amount placed at-stake should allow some free funds for future transactions.')}</p>
+              <p>{t<string>('The default unit price of the system is 40 pico/mb * min (priced at 1 CRU = 1 USD, this price is one-tenth of the monthly fee of icloud users).')}</p>
             </Modal.Column>
           </Modal.Columns>
         )}
@@ -82,7 +82,7 @@ function Register ({ onClose, stashId }: Props): React.ReactElement<Props> {
         <TxButton
           accountId={stashId}
           icon='sign-in-alt'
-          isDisabled={!maxAdditional?.gt(BN_ZERO) || !!amountError?.error}
+          isDisabled={!maxAdditional?.gt(BN_ZERO) || !!amountError?.error || !isAddressValid}
           label={t<string>('Register')}
           onStart={onClose}
           params={[address, maxAdditional]}

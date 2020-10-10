@@ -8,7 +8,7 @@ import { AmountValidateState } from '../types';
 import BN from 'bn.js';
 import React, { useState } from 'react';
 import { InputAddress, InputBalance, Modal, TxButton } from '@polkadot/react-components';
-import { Available } from '@polkadot/react-query';
+import { Pledged } from '@polkadot/react-query';
 import { BN_ZERO } from '@polkadot/util';
 
 import { useTranslation } from '../../translate';
@@ -38,11 +38,11 @@ function PledgeExtra ({ onClose, stashId }: Props): React.ReactElement<Props> {
             <InputAddress
               defaultValue={stashId}
               isDisabled
-              label={t<string>('stash account')}
+              label={t<string>('using account')}
             />
           </Modal.Column>
           <Modal.Column>
-            <p>{t<string>('Since this transaction deals with funding, the stash account will be used.')}</p>
+            <p>{t<string>('The storage account needs to provide a certain amount of margin to the system before providing resource services, otherwise the storage order cannot be received.')}</p>
           </Modal.Column>
         </Modal.Columns>
         {(
@@ -51,11 +51,11 @@ function PledgeExtra ({ onClose, stashId }: Props): React.ReactElement<Props> {
               <InputBalance
                 autoFocus
                 defaultValue={0}
-                help={t<string>('Amount to add to the currently bonded funds. This is adjusted using the available funds on the account.')}
+                // help={t<string>('Amount to add to the currently bonded funds. This is adjusted using the available funds on the account.')}
                 isError={!!amountError?.error || !maxAdditional || maxAdditional.eqn(0)}
-                label={t<string>('additional bonded funds')}
+                label={t<string>('Your current guarantee amount is')}
                 labelExtra={
-                  <Available
+                  <Pledged
                     label={<span className='label'>{t<string>('balance')}</span>}
                     params={stashId}
                   />
@@ -64,7 +64,7 @@ function PledgeExtra ({ onClose, stashId }: Props): React.ReactElement<Props> {
               />
             </Modal.Column>
             <Modal.Column>
-              <p>{t<string>('The amount placed at-stake should allow some free funds for future transactions.')}</p>
+              <p>{t<string>('The amount of margin set by the storage merchant determines the upper limit of the storage order capacity it can accept. The more set, the higher the upper limit. The specific acceptable storage order capacity is negatively related to the storage unit price set by the storage merchant.')}</p>
             </Modal.Column>
           </Modal.Columns>
         )}

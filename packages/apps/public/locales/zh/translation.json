@@ -1389,5 +1389,12 @@
   "guaranteeing": "担保",
   "guarantors": "担保人",
   "effective stake": "有效质押量",
-  "nav.market": "存储市场"
+  "nav.market": "存储市场",
+  "The amount of margin set by the storage merchant determines the upper limit of the storage order capacity it can accept. The more set, the higher the upper limit. The specific acceptable storage order capacity is negatively related to the storage unit price set by the storage merchant": "存储商户设置保证金的数量决定了它可以接受存储订单容量的上限,设置的越多,上限越高,具体可接受的存储订单容量和存储商户设置的存储单价负相关",
+  "The storage account needs to provide a certain amount of margin to the system before providing resource services, otherwise the storage order cannot be received": "存储账户在提供资源服务之前,需要先向系统提供一定量的保证金,否则无法接收存储订单",
+  "Please enter the amount of margin you want to set": "请输入你要设置的保证金数量",
+  "Your current guarantee amount is": "你当前设置的保证金额为",
+  "Please enter your ip address and port (such as ws://132.167.68.54:3000)": "请输入你的ip地址和端口(如ws://132.167.68.54:3000)",
+  "Please enter the storage unit price": "请输入存储单价",
+  "The default unit price of the system is 40 pico/mb * min (priced at 1 CRU = 1 USD, this price is one-tenth of the monthly fee of icloud users).": "系统默认的单价为40 pico/mb * min (按1 CRU = 1 美元来计价, 此价格为icloud月费用户的十分之一)"
 }
