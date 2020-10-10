@@ -27,7 +27,7 @@ function Header ({ slash: { era, nominators, reporters, total, validators } }: P
     () => sessionInfo
       ? [
         sessionInfo.activeEra.sub(era).subn(1).mul(sessionInfo.eraLength).add(sessionInfo.eraProgress),
-        api.consts.staking.bondingDuration.mul(sessionInfo.eraLength)
+        api.consts.staking.slashDeferDuration.mul(sessionInfo.eraLength)
       ]
       : [new BN(0), new BN(0)],
     [api, era, sessionInfo]
