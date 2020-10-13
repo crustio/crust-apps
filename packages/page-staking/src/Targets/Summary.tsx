@@ -96,7 +96,7 @@ function Summary ({ avgStaked, lastReward, lowStaked, numNominators, numValidato
       {numValidators && numNominators && (
         <CardSummary
           className='media--1600'
-          label={`${t<string>('nominators')} / ${t<string>('validators')}`}
+          label={`${t<string>('guarantors')} / ${t<string>('validators')}`}
         >
           {numNominators}&nbsp;/&nbsp;{numValidators}
         </CardSummary>
