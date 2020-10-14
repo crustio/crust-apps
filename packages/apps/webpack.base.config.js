@@ -46,9 +46,9 @@ function createWebpack (ENV, context) {
     alias[name] = path.resolve(context, `../${dir}/src`);
 
     return alias;
-  }, {'./erasExposure': path.resolve('./src/patch/erasExposure'), 
-  './erasRewards': path.resolve('./src/patch/erasRewards'),
-  './ownExposure': path.resolve('./src/patch/ownExposure')
+  }, {'./erasExposure': path.resolve(__dirname, 'src/patch/erasExposure'), 
+  './erasRewards': path.resolve(__dirname, 'src/patch/erasRewards'),
+  './ownExposure': path.resolve(__dirname, 'src/patch/ownExposure')
 });
 
   return {
