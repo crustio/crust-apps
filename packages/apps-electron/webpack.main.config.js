@@ -48,11 +48,6 @@ function createWebpack () {
       plugins: [
         new CopyWebpackPlugin({ patterns: [{ from: 'assets' }] })
       ],
-      alias: {
-        './erasExposure': path.resolve('./src/patch/erasExposure'), 
-        './erasRewards': path.resolve('./src/patch/erasRewards'),
-        './ownExposure': path.resolve('./src/patch/ownExposure')
-      },
       resolve: {
         extensions: ['.js', '.jsx', '.json', '.ts', '.tsx']
       },
