@@ -1,7 +1,7 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
+import { ThemeProps } from '../types';
 import { ButtonProps } from './types';
 
 import React, { useCallback } from 'react';
@@ -37,7 +37,7 @@ function Button ({ children, className = '', icon, isBasic, isBusy, isCircular, 
 
 const ICON_PADDING = 0.5;
 
-export default React.memo(styled(Button)`
+export default React.memo(styled(Button)(({ theme }: ThemeProps) => `
   background: transparent;
   border: none;
   color: inherit;
@@ -74,7 +74,7 @@ export default React.memo(styled(Button)`
   }
 
   &.isBasic {
-    background: #fff;
+    background: ${theme.bgTable};
   }
 
   &.isCircular {
@@ -132,4 +132,4 @@ export default React.memo(styled(Button)`
   &.isDisabled {
     color: #bcbbba;
   }
-`);
+`));

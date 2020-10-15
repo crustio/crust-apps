@@ -1,5 +1,143 @@
 # CHANGELOG
 
+## 0.62.1 Oct 13, 202
+
+Contributed:
+
+- Add Dock network (Thanks to https://github.com/lovesh)
+- Bump Edgeware types for network updates (Thanks to https://github.com/jnaviask)
+- Add French i18n (Thanks to https://github.com/Tbaut & https://github.com/chevdor)
+- Update Italian i18n (Thanks to https://github.com/fomod-in)
+- Update Indonesian i18n (Thanks to https://github.com/nzjourney)
+
+Changes:
+
+- Update the contracts UI to support ink! 3.0-rc1 (via API)
+- Align contracts UI with the L&F/layout of the rest of the UI
+- Add contracts on-chain overview
+- Show code & contract availability statuses
+- Auto-query non-param messages from the contract overview
+- Expand info on logos (documentation, better/easier additions)
+- Update i18n to remove left navbar references
+- Support seconding multiple times from a single account
+
+
+## 0.61.1 Oct 5, 2020
+
+Contributed:
+
+- Update Arabic i18n for calendar (Thanks to https://github.com/YessineAmor)
+- Additional Korean i18n (Thanks to https://github.com/hskang9)
+- Italian i18n typo fix (Thanks to https://github.com/roccomuso)
+- Add Equilibrium testnet endpoint (Thanks to https://github.com/mikolajsobolewski)
+- Update types for stable-poc (Thanks to https://github.com/riusricardo)
+
+Changes:
+
+- Add experimental dark UI theme
+- Adjust i18n strings for network endpoint (explicit as per display)
+- Adjust vesting display with no countdown when fully vested
+- Adjust validator rewards, fixing issues with "keeps loading" when retrieved in the current era
+- Adjust updates on per-era change, protecting against non-existent (not yet retrieved) exposures
+- Add RoboHash icon theme
+- Adjust logging in InputAddress transforms (don't log already-handled errors)
+- Remove unmaintained packages (e.g. page-dashboard)
+
+
+## 0.60.1 Sep 28, 2020
+
+Contributed:
+
+- Update Italian i18n (Thanks to https://github.com/fomod-in)
+- Show JSON import warning for different genesis (Thanks to https://github.com/Tbaut)
+- Adjust Expander component overflows (Thanks to https://github.com/Tbaut)
+
+Changes:
+
+- Adjust payout calculations based on new weights (auto-detect batch size)
+- Allow for multiple extrinsic submissions when payouts span multiple batches
+- Show warning on JSON import to store accounts externally (same as create)
+- Combine events displays in status overlays
+- Swap treasury proposal defaults to accept
+- Adjust multiple input address stretch (use full width for names)
+- Filter event/extrinsic metadata with additional readability formatting
+- Ensure that tech. comm. voting is filtered by members
+- Adjust proposal close to allow account selection when multiple accounts found
+- add warning around "this is a dev tool" to the JS playground
+- Add toggle to control unlock duration
+- URI-encode RPC param (allowing for WS url params)
+- Bump Edgeware types (after 2.0-rc upgrade)
+- Adjust warning icon for oversubscribed validators
+- Simplify JSON import via new keyring functionality
+- Adjust button hover highlights for consistency
+- `@polkadot/api` 2.0.1
+- `@polkadot/util` 3.5.1
+
+
+## 0.59.1 Sep 21, 2020
+
+Contributed:
+
+- Add Stafi network and endpoints (Thanks to https://github.com/Tore19)
+- Update Commonwealth links to support Kulupu (Thanks to https://github.com/carumusan)
+- Update Kulupu treasury thresholds (Thanks to https://github.com/sorpaas)
+- Update Darwinia Crab types (Thanks to https://github.com/WoeOm)
+- display per-validator breakdown values to nominators (Thanks to https://github.com/Tbaut)
+- Update Italian i18n (Thanks to https://github.com/fomod-in)
+- Update Indonesian i18n (Thanks to https://github.com/nzjourney)
+
+Changes:
+
+- Support Account as payment destination (as per Polkadot & Kusama)
+- Single-click close for tips and council motions (no extra selection)
+- Add ability to transfer full amount (fees deducted), reaping the sender
+- Allow Ledger to use Account & Address indexes (multiple accounts)
+- Adjust formatting for metadata with delimiter info from text
+- Use InputNumber for param Amount input type
+- Update Darwinia Crab types (no errors on staking pages)
+- Move colors config to explicit configuration file
+- Adjust margins for button groups (extra spacing)
+- Always add the `?rpc=...` query param when changing networks
+- Determine nonce via `system.accountNextIndex` via the signer modal
+- Add contrasting text colors for top menu (light vs dark primaries)
+- Check query param URL for wss/ws before saving (protection against bad inputs)
+- Adjust staking pages to correctly link to passed-in paths
+- Only hide settings extension update (not QR) when in dev mode
+- Adjust expander tables with caret at end (including Table reworks)
+
+
+## 0.58.1 Sep 14, 2020
+
+Contributed:
+
+- Completion of i18n Italian (Thanks to https://github.com/fomod-in)
+- Completion of i18n Indonesian (Thanks to https://github.com/nzjourney)
+- Add Robonomics Rococo endpoints (Thanks to https://github.com/akru)
+- Show warning where derived password contains `/` (Thanks to https://github.com/Tbaut)
+- i18n capability for derive error messages (Thanks to https://github.com/Tbaut)
+- Adjust menubar for solid primary color background (As per designs from https://github.com/EthWorks)
+
+Changes:
+
+- Block explorer will display error message where block cannot be retrieved
+- Allow for display of Reward destination as Account on account actions
+- Display commission graphs in validator chart breakdown
+- Optimize rendering of staking charts
+- Show own nomination (badge) in all validator lists
+- QR codes are checked for hex validity before sending
+- Optimization of re-renders in signer
+- Ensure signer does not confuse Ledger with QR (button text)
+- Detect WebUSB, if not active don't support Ledger integration
+- Small cleanups & bugfixes on global table layouts
+- Extract i18n reward destination options
+- Update Centrifuge types for non-cyclic dependencies
+- Adjust table alternate row colors to alow with primary
+- Adjust calendar layout to conform to new-generation Tables
+- Fix display of Plasm logos (for different node types)
+- Allow IPFS to add QR addresses to storage (no accounts allowed)
+- Adjust Expander rendering with consistent up/down right caret
+
+
 ## 0.57.1 Sep 7, 2020
 
 Contributed:

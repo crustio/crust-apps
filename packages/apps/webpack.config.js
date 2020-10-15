@@ -1,6 +1,5 @@
 // Copyright 2017-2020 @polkadot/apps authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -19,7 +18,7 @@ module.exports = merge(
     devtool: process.env.BUILD_ANALYZE ? 'source-map' : false,
     plugins: [
       new HtmlWebpackPlugin({
-        PAGE_TITLE: 'Crust Apps',
+        PAGE_TITLE: 'Polkadot/Substrate Portal',
         inject: true,
         template: path.join(context, `${hasPublic ? 'public/' : ''}index.html`)
       })

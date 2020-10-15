@@ -1,6 +1,5 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import { BitLength } from './types';
 
@@ -8,7 +7,7 @@ import BN from 'bn.js';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { BitLengthOption } from '@polkadot/react-components/constants';
-import { BN_TEN, BN_THOUSAND, formatBalance, isBn } from '@polkadot/util';
+import { BN_TEN, formatBalance, isBn } from '@polkadot/util';
 
 import InputNumber from './InputNumber';
 
@@ -36,12 +35,22 @@ interface Props {
   withMax?: boolean;
 }
 
+const BN_TEN_THOUSAND = new BN(10_000);
 const DEFAULT_BITLENGTH = BitLengthOption.CHAIN_SPEC as BitLength;
 
 function reformat (value: string | BN, isDisabled?: boolean): string {
   if (isBn(value)) {
-    let fmt = (value.mul(BN_THOUSAND).div(BN_TEN.pow(new BN(formatBalance.getDefaults().decimals))).toNumber() / 1000).toFixed(3);
+    // format for 4 decimals (align with util)
+    const valStr = value
+      .mul(BN_TEN_THOUSAND)
+      .div(BN_TEN.pow(new BN(formatBalance.getDefaults().decimals)))
+      .toString()
+      .padStart(5, '0'); // 4 after decimal, 1 before, min 5
 
+    // dive using string format (the value may be too large for 2^53-1)
+    let fmt = `${valStr.substr(0, valStr.length - 4)}.${valStr.slice(-4)}`;
+
+    // remove all trailing 0's until the decimal
     while (fmt.length !== 1 && ['.', '0'].includes(fmt[fmt.length - 1])) {
       const isLast = fmt.endsWith('.');
 

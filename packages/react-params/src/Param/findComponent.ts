@@ -1,12 +1,11 @@
 // Copyright 2017-2020 @polkadot/react-params authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import { TypeDef, TypeDefInfo } from '@polkadot/types/types';
 import { Props, ComponentMap } from '../types';
 
 import { registry } from '@polkadot/react-api';
-import { getTypeDef, SPECIAL_TYPES } from '@polkadot/types';
+import { getTypeDef } from '@polkadot/types';
 import { isBn } from '@polkadot/util';
 
 import Account from './Account';
@@ -40,6 +39,8 @@ interface TypeToComponent {
   c: React.ComponentType<any>;
   t: string[];
 }
+
+const SPECIAL_TYPES = ['AccountId', 'AccountIndex', 'Address', 'Balance'];
 
 const componentDef: TypeToComponent[] = [
   { c: Account, t: ['AccountId', 'AccountIdOf', 'Address', 'AuthorityId', 'LookupSource', 'LookupTarget', 'SessionKey', 'ValidatorId'] },
