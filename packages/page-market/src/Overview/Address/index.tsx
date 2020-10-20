@@ -16,6 +16,7 @@ import { Codec } from '@polkadot/types/types';
 
 import Favorite from './Favorite';
 import { formatBalance } from '@polkadot/util';
+import BN from 'bn.js';
 
 interface Props {
   address: string;
@@ -41,6 +42,11 @@ interface MerchantInfo extends Codec {
   file_map: 'Vec<(Vec<u8>, Vec<Hash>)>'
 }
 
+interface CapacityInfo {
+  free: BN,
+  used: BN
+}
+
 function useAddressCalls (api: ApiPromise, address: string) {
   const params = useMemo(() => [address], [address]);
   const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, params);
@@ -51,10 +57,27 @@ function useAddressCalls (api: ApiPromise, address: string) {
   return { accountInfo, workReport, merchantInfo };
 }
 
+async function loadMerchantInfo(api: ApiPromise, accountId: string) {
+
+  let free = new BN(0);
+  let used = new BN(0);
+  const idBonds = (await (await api.query.swork.idBonds(accountId)).toHuman());
+  if (Array.isArray(idBonds)) {
+    for (const pk of idBonds) {
+      const workReports = JSON.parse(JSON.stringify(await api.query.swork.workReports(pk?.toString())));
+      free = free.add(new BN(workReports?.free));
+      used = used.add(new BN(workReports?.used));
+    }
+  }
+
+  return { free, used };
+}
+
 function Address ({ address, className = '', filterName, isFavorite, toggleFavorite, withIdentity }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  const { accountInfo, workReport, merchantInfo } = useAddressCalls(api, address);
+  const { accountInfo, merchantInfo } = useAddressCalls(api, address);
   const [ orderCount, setOrderCount ] = useState<Number>(0);
+  const [ info, setInfo ] = useState<CapacityInfo>();
 
   useEffect(() => {
     let count = 0;
@@ -68,16 +91,16 @@ function Address ({ address, className = '', filterName, isFavorite, toggleFavor
 
   }, [merchantInfo])
 
+  useEffect(() => {
+    loadMerchantInfo(api, address).then(setInfo);
+  }, [api])
+
   const isVisible = useMemo(
     () => accountInfo ? checkVisibility(api, address, accountInfo, filterName, withIdentity) : true,
     [api, accountInfo, address, filterName, withIdentity]
   );
 
   if (!isVisible) {
-    return null;
-  }
-
-  if (workReport && JSON.stringify(workReport) === 'null') {
     return null;
   }
 
@@ -94,8 +117,8 @@ function Address ({ address, className = '', filterName, isFavorite, toggleFavor
         <AddressSmall value={address} />
       </td>
       <td className='number media--1100'>
-        {workReport && JSON.stringify(workReport) !== 'null' && (
-          <FormatCapacity value={workReport.unwrap().reserved} />
+        {info && (
+          <FormatCapacity value={info.free.add(info.used)} />
         )}
       </td>
       <td className='number media--1100'>

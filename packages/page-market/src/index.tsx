@@ -24,6 +24,7 @@ import { useTranslation } from './translate';
 import useSortedTargets from './useSortedTargets';
 import { MerchantSortInfo } from './types';
 import { Codec } from '@polkadot/types/types';
+import BN from 'bn.js';
 
 const HIDDEN_ACC = ['actions', 'payouts', 'query'];
 const HIDDEN_QUE = ['returns', 'query'];
@@ -32,10 +33,10 @@ const transformElection = {
   transform: (status: ElectionStatus) => status.isOpen
 };
 
-interface AccountMerchantInfo {
+export interface AccountMerchantInfo {
   accountId: string
   merchantInfo: MerchantInfo,
-  workReport: WorkReport
+  free: BN
 }
 
 interface MerchantInfo extends Codec {
@@ -45,14 +46,14 @@ interface MerchantInfo extends Codec {
   file_map: 'Vec<(Vec<u8>, Vec<Hash>)>'
 }
 
-interface WorkReport extends Codec {
-  [x: string]: any;
-  block_number: 'u64',
-  used: 'u64',
-  reserved: 'u64',
-  cached_reserved: 'u64',
-  files: 'Vec<(Vec<u8>, u64)>'
-}
+// interface WorkReport extends Codec {
+//   [x: string]: any;
+//   block_number: 'u64',
+//   used: 'u64',
+//   reserved: 'u64',
+//   cached_reserved: 'u64',
+//   files: 'Vec<(Vec<u8>, u64)>'
+// }
 
 // async function loadMerchants(api: ApiPromise) {
 //   const result: any[] = [];
@@ -71,21 +72,40 @@ interface WorkReport extends Codec {
 async function loadMerchantsInfo(api: ApiPromise) {
   const result: any[] = [];
   const entries = await api.query.market.merchants.entries();
-  const workReports = await api.query.swork.workReports.entries();
-  entries.forEach(([account, info]) => {
-    let accountId = account.toHuman();
+  // const workReports = await api.query.swork.workReports.entries();
+  // entries.forEach(([account, info]) => {
+  //   let accountId = account.toHuman();
+  //   if (Array.isArray(accountId)) {
+  //     accountId = accountId[0];
+  //   }
+  //   const workReport = workReports.find(([reporter]) => { 
+  //     return reporter.toHuman()?.toString() === account.toHuman()?.toString() });
+  //   result.push({
+  //     accountId,
+  //     merchantInfo: info,
+  //     workReport: workReport?.[1]
+  //   })
+  // })
 
+  for (const [account, info] of entries) {
+    let free = new BN(0);
+    let accountId = account.toHuman();
     if (Array.isArray(accountId)) {
       accountId = accountId[0];
     }
-    const workReport = workReports.find(([reporter]) => { 
-      return reporter.toHuman()?.toString() === account.toHuman()?.toString() });
+    const idBonds = (await api.query.swork.idBonds(accountId?.toString())).toHuman();
+    if (Array.isArray(idBonds)) {
+      for (const pk of idBonds) {
+        const workReports = JSON.parse(JSON.stringify(await api.query.swork.workReports(pk?.toString())));
+        free = free.add(new BN(workReports?.free));
+      }
+    }
     result.push({
       accountId,
       merchantInfo: info,
-      workReport: workReport?.[1]
+      free
     })
-  })
+  }
 
   return result;
 }
@@ -103,10 +123,10 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
   const stakingOverview = useCall<DeriveStakingOverview>(api.derive.staking.overview);
   const isInElection = useCall<boolean>(api.query.staking?.eraElectionStatus, undefined, transformElection);
   const [ merchants, setMerchants ] = useState<string[]>([]);
-  const reserved = useCall<any>(api.query.swork.reserved);
+  const reserved = useCall<any>(api.query.swork.free);
   const used = useCall<any>(api.query.swork.used);
   const [ accountMerchants, setAccountMerchants ] = useState<AccountMerchantInfo[]>([]);
-  const [totalOrderCount, setTotalOrderCount ] = useState<Number>(0);
+  const [ totalOrderCount, setTotalOrderCount ] = useState<Number>(0);
   const [ merchantSortInfo, setMerchantSortInfo ] = useState<MerchantSortInfo[]>([]);
 
   const hasQueries = useMemo(
@@ -129,15 +149,15 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
             tmpCount += file[1].length;
           }
         }
-        if (merchant.workReport) {
-          tmpMerchantInfo.push({
-            accountId: merchant.accountId, 
-            rankCapacity: merchant.workReport.unwrap().reserved, 
-            rankPrice: merchant.merchantInfo.unwrap().storage_price, 
-            rankOrderCount: tmpCount,
-            isFavorite: favorites.includes(merchant.accountId)
-          })
-        }
+
+        tmpMerchantInfo.push({
+          accountId: merchant.accountId, 
+          rankCapacity: merchant.free.toNumber(), 
+          rankPrice: merchant.merchantInfo.unwrap().storage_price, 
+          rankOrderCount: tmpCount,
+          isFavorite: favorites.includes(merchant.accountId)
+        })
+
       }
       setMerchantSortInfo(tmpMerchantInfo)
       setTotalOrderCount(total);
@@ -193,8 +213,6 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
         next={next}
         used={used}
         reserved={reserved}
-        nominators={targets.nominators}
-        stakingOverview={stakingOverview}
         totalOrderCount={totalOrderCount}
       />
       <Actions

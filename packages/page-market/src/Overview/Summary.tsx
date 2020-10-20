@@ -2,8 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DeriveStakingOverview } from '@polkadot/api-derive/types';
-
 import React from 'react';
 import styled from 'styled-components';
 import SummarySession from '@polkadot/app-explorer/SummarySession';
@@ -15,23 +13,20 @@ import { FormatCapacity } from '@polkadot/react-query';
 interface Props {
   className?: string;
   isVisible: boolean;
-  next?: string[];
-  nominators?: string[];
-  stakingOverview?: DeriveStakingOverview;
   used: string;
   reserved: string;
   totalOrderCount: Number
 }
 
-function Summary ({ className = '', isVisible, used, reserved, nominators, stakingOverview, totalOrderCount }: Props): React.ReactElement<Props> {
+function Summary ({ className = '', isVisible, used, reserved, totalOrderCount }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
 
   return (
     <SummaryBox className={`${className}${!isVisible ? ' staking--hidden' : ''}`}>
       <section>
-        {stakingOverview && (
+        { used && (
           <CardSummary label={t<string>('meaningful capacity')}>
-            <FormatCapacity value={used} />
+            <FormatCapacity value={Number(used)} />
           </CardSummary>
         )}
 
@@ -40,7 +35,7 @@ function Summary ({ className = '', isVisible, used, reserved, nominators, staki
             className='media--1100'
             label={t<string>('total capacity')}
           >
-            <FormatCapacity value={reserved} />
+            <FormatCapacity value={Number(reserved) + Number(used)} />
           </CardSummary>
         )}
       </section>

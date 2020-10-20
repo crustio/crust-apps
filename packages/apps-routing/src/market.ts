@@ -17,6 +17,6 @@ export default function create (t: TFunction): Route {
     group: 'network',
     icon: 'users',
     name: 'market',
-    text: t<string>('nav.market', 'StorageMarket', { ns: 'apps-routing' })
+    text: t<string>('nav.market', 'Storage Market', { ns: 'apps-routing' })
   };
 }
