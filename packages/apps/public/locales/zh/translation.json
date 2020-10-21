@@ -1117,6 +1117,7 @@
   "nav.toolbox": "工具箱",
   "nav.transfer": "转账",
   "nav.treasury": "财政",
+  "nav.market": "存储市场",
   "nay": "不",
   "new account": "新建账户",
   "new address": "新建地址",
@@ -1390,5 +1391,6 @@
   "Guarantee selected": "担保选中的",
   "candies": "糖果",
   "Guarantor": "担保",
-  "Storage Market": "存储市场"
+  "Storage Market": "存储市场",
+  "Market overview": "存储市场概览"
 }

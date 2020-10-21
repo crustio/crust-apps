@@ -2,8 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DeriveStakingOverview } from '@polkadot/api-derive/types';
-import { MerchantSortInfo, SortedTargets } from '../types';
+import { MerchantSortInfo } from '../types';
 
 import React from 'react';
 
@@ -14,24 +13,18 @@ interface Props {
   favorites: string[];
   hasQueries: boolean;
   isIntentions?: boolean;
-  next?: string[];
-  stakingOverview?: DeriveStakingOverview;
-  targets: SortedTargets;
   toggleFavorite: (address: string) => void;
   merchants: string[];
   merchantSortInfo: MerchantSortInfo[];
 }
 
-function Overview ({ className = '', favorites, hasQueries, isIntentions, next, stakingOverview, targets, toggleFavorite, merchants, merchantSortInfo }: Props): React.ReactElement<Props> {
+function Overview ({ className = '', favorites, hasQueries, isIntentions, toggleFavorite, merchants, merchantSortInfo }: Props): React.ReactElement<Props> {
   return (
     <div className={`staking--Overview ${className}`}>
       <CurrentList
         favorites={favorites}
         hasQueries={hasQueries}
         isIntentions={isIntentions}
-        next={next}
-        stakingOverview={stakingOverview}
-        targets={targets}
         toggleFavorite={toggleFavorite}
         merchants={merchants}
         merchantSortInfo={merchantSortInfo}

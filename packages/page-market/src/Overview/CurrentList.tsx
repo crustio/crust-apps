@@ -2,8 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DeriveStakingOverview } from '@polkadot/api-derive/types';
-import { MerchantSortBy, MerchantSortInfo, SortedTargets } from '../types';
+import { MerchantSortBy, MerchantSortInfo } from '../types';
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Icon, Table } from '@polkadot/react-components';
@@ -17,10 +16,6 @@ interface Props {
   favorites: string[];
   hasQueries: boolean;
   isIntentions?: boolean;
-  next?: string[];
-  setNominators?: (nominators: string[]) => void;
-  stakingOverview?: DeriveStakingOverview;
-  targets: SortedTargets;
   toggleFavorite: (address: string) => void;
   merchants: string[];
   merchantSortInfo: MerchantSortInfo[];
@@ -79,14 +74,6 @@ function CurrentList ({ favorites, toggleFavorite, merchantSortInfo }: Props): R
     rankPrice: t<string>('storage price'),
     rankOrderCount: t<string>('current order count')
   });
-
-  // const headerActiveRef = useRef([
-  //   [t('merchants'), 'start', 2],
-  //   [t('total capacity'), 'media--1100'],
-  //   [t('storage price')],
-  //   [t('current order count')],
-  //   [undefined, 'media--1200']
-  // ]);
 
   const header = useMemo(() => [
     [t('merchants'), 'start', 2],
