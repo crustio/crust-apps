@@ -48,7 +48,8 @@ function createWebpack (ENV, context) {
   }, {
     './erasExposure': path.resolve(__dirname, 'src/patch/erasExposure'), 
   './erasRewards': path.resolve(__dirname, 'src/patch/erasRewards'),
-  './ownExposure': path.resolve(__dirname, 'src/patch/ownExposure')
+  './ownExposure': path.resolve(__dirname, 'src/patch/ownExposure'),
+  './ownSlashes': path.resolve(__dirname, 'src/patch/ownSlashes')
   });
 
   return {
