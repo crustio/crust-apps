@@ -107,7 +107,7 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
   const [isTransferOpen, toggleTransfer] = useToggle();
   const [isDelegateOpen, toggleDelegate] = useToggle();
   const [isUndelegateOpen, toggleUndelegate] = useToggle();
-  const candyAmount = useCall<Balance>(api.api.query?.candy?.balances, [address]);
+  const candyAmount = useCall<Balance>(api.api.query.candy?.balances, [address]);
   const [isTransferCandyOpen, toggleTransferCandy] = useToggle();
 
   useEffect((): void => {
