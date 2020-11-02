@@ -53,8 +53,6 @@
       "@polkadot/app-staking/*": [ "packages/page-staking/src/*" ],
       "@polkadot/app-storage": [ "packages/page-storage/src" ],
       "@polkadot/app-storage/*": [ "packages/page-storage/src/*" ],
-      "@polkadot/app-market": [ "packages/page-market/src" ],
-      "@polkadot/app-market/*": [ "packages/page-market/src/*" ],
       "@polkadot/app-sudo": [ "packages/page-sudo/src" ],
       "@polkadot/app-sudo/*": [ "packages/page-sudo/src/*" ],
       "@polkadot/app-tech-comm": [ "packages/page-tech-comm/src" ],
