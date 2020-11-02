@@ -1,6 +1,5 @@
 // Copyright 2017-2020 @polkadot/apps authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 /* eslint-disable camelcase */
 
@@ -46,10 +45,12 @@ function createWebpack (ENV, context) {
     alias[name] = path.resolve(context, `../${dir}/src`);
 
     return alias;
-  }, {'./erasExposure': path.resolve(__dirname, 'src/patch/erasExposure'), 
+  }, {
+    './erasExposure': path.resolve(__dirname, 'src/patch/erasExposure'), 
   './erasRewards': path.resolve(__dirname, 'src/patch/erasRewards'),
-  './ownExposure': path.resolve(__dirname, 'src/patch/ownExposure')
-});
+  './ownExposure': path.resolve(__dirname, 'src/patch/ownExposure'),
+  './ownSlashes': path.resolve(__dirname, 'src/patch/ownSlashes')
+  });
 
   return {
     context,

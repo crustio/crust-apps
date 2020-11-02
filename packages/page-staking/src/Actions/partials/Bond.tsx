@@ -121,7 +121,7 @@ function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
               label={t<string>('value bonded')}
               labelExtra={
                 <BalanceFree
-                  label={<span className='label'>{t<string>('balance')}</span>}
+                  label={<span className='label'>{t<string>('stash balance')}</span>}
                   params={stashId}
                 />
               }

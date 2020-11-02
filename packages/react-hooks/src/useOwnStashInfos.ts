@@ -1,6 +1,5 @@
 // Copyright 2017-2020 @polkadot/react-hooks authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import { DeriveStakingAccount } from '@polkadot/api-derive/types';
 import { AccountId, ValidatorPrefs } from '@polkadot/types/interfaces';
@@ -27,7 +26,7 @@ function toIdString (id?: AccountId | null): string | null {
 
 function getStakerState (stashId: string, allAccounts: string[], allStashes: string[] | undefined, [isOwnStash, { controllerId: _controllerId, exposure, nextSessionIds, nominators, rewardDestination, sessionIds, stakingLedger, validatorPrefs }, validateInfo]: [boolean, DeriveStakingAccount, ValidatorInfo]): StakerState {
   const isStashNominating = !!(nominators?.length);
-  const isStashValidating = !!allStashes?.includes(stashId);
+  const isStashValidating = !(Array.isArray(validateInfo) ? validateInfo[1].isEmpty : validateInfo.isEmpty) || !!allStashes?.includes(stashId);
   const nextConcat = u8aConcat(...nextSessionIds.map((id): Uint8Array => id.toU8a()));
   const currConcat = u8aConcat(...sessionIds.map((id): Uint8Array => id.toU8a()));
   const controllerId = toIdString(_controllerId);

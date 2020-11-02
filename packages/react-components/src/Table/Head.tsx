@@ -1,6 +1,7 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+
+import { ThemeProps } from '../types';
 
 import React from 'react';
 import styled from 'styled-components';
@@ -47,7 +48,7 @@ function Head ({ className = '', filter, header, isEmpty }: Props): React.ReactE
   );
 }
 
-export default React.memo(styled(Head)`
+export default React.memo(styled(Head)(({ theme }: ThemeProps) => `
   position: relative;
   z-index: 1;
 
@@ -64,11 +65,11 @@ export default React.memo(styled(Head)`
     }
 
     &:first-child {
-      border-left: 1px solid #eeecea;
+      border-left: 1px solid ${theme.borderTable};
     }
 
     &:last-child {
-      border-right: 1px solid #eeecea;
+      border-right: 1px solid ${theme.borderTable};
     }
 
     &.address {
@@ -78,6 +79,10 @@ export default React.memo(styled(Head)`
 
     &.badge {
       padding: 0;
+    }
+
+    &.expand {
+      text-align: right;
     }
 
     &.isClickable {
@@ -95,18 +100,12 @@ export default React.memo(styled(Head)`
   }
 
   tr {
-    background: white;
+    background: ${theme.bgTable};
     text-transform: lowercase;
 
     &:first-child {
       th {
-        border-top: 1px solid #eeecea;
-      }
-    }
-
-    &:not(.filter) {
-      th {
-        color: rgba(78, 78, 78, 0.66);
+        border-top: 1px solid ${theme.borderTable};
       }
     }
 
@@ -123,5 +122,11 @@ export default React.memo(styled(Head)`
         padding: 0;
       }
     }
+
+    &:not(.filter) {
+      th {
+        color: rgba(${theme.theme === 'dark' ? '254, 240, 240' : '78, 78, 78'}, 0.66);
+      }
+    }
   }
-`);
+`));

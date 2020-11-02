@@ -28,7 +28,6 @@ function format (value: number): React.ReactNode {
 }
 
 function FormatCapacity ({ children, className = '', label, labelPost, value }: Props): React.ReactElement<Props> {
-
   // labelPost here looks messy, however we ensure we have one less text node
   return (
     <div className={`ui--FormatBalance ${className}`}>

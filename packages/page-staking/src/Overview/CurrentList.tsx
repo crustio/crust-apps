@@ -141,7 +141,7 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
     [t('stake limit')],
     [t('guarantee fee')],
     [t('points')],
-    [t('last #')],
+    [t('last verified block #')],
     [],
     [undefined, 'media--1200']
   ]);
