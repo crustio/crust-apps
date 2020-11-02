@@ -116,5 +116,12 @@
     "webpack-cli": "^3.3.12",
     "webpack-merge": "^5.1.4",
     "webpack-plugin-serve": "^1.1.0"
+  },
+  "dependencies": {
+    "@types/react-redux": "^7.1.9",
+    "i18next-chained-backend": "^2.0.1",
+    "money-clip": "^3.0.2",
+    "react-redux": "^7.2.2",
+    "redux-bundler": "^28.0.0"
   }
 }

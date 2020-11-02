@@ -35,7 +35,7 @@ function createWebpack (ENV, context) {
     new WebpackPluginServe({
       hmr: false, // switch off, Chrome WASM memory leak
       liveReload: false, // explict off, overrides hmr
-      port: 3000,
+      port: 3001,
       progress: false, // since we have hmr off, disable
       static: path.join(process.cwd(), '/build')
     })
@@ -46,7 +46,7 @@ function createWebpack (ENV, context) {
 
     return alias;
   }, {
-    './erasExposure': path.resolve(__dirname, 'src/patch/erasExposure'), 
+    './erasExposure': path.resolve(__dirname, 'src/patch/erasExposure'),
   './erasRewards': path.resolve(__dirname, 'src/patch/erasRewards'),
   './ownExposure': path.resolve(__dirname, 'src/patch/ownExposure'),
   './ownSlashes': path.resolve(__dirname, 'src/patch/ownSlashes')
