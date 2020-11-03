@@ -1,0 +1,92 @@
+{
+  "title": "檔案",
+  "home": "首頁",
+  "breadcrumbs": "導覽列",
+  "finished": "已完成!",
+  "totalSize": "總大小: {size}",
+  "filesSelected": "{count, plural, other {已選擇檔案}}",
+  "menuOptions": "Options for selected item",
+  "selectedAllEntries": "Select all table entries",
+  "individualFilesOnly": "僅適用於單一檔案",
+  "noPDFSupport": "您的瀏覽器不支援 PDF 檔案格式。請下載此 PDF 檔案後閱讀。",
+  "downloadPDF": "下載 PDF",
+  "downloadInstead": "請嘗試<1>下載</1>它。",
+  "cantBePreviewed": "抱歉，本文件不支持預覽。",
+  "addByPath": "來自 IPFS",
+  "newFolder": "新增資料夾",
+  "generating": "生成…",
+  "actions": {
+    "copyHash": "複製 CID",
+    "share": "分享鏈接"
+  },
+  "shareModal": {
+    "title": "分享文件",
+    "description": "複製以下連結並與您的朋友分享。"
+  },
+  "renameModal": {
+    "titleFile": "重命名文件",
+    "titleFolder": "重命名文件夾",
+    "descriptionFile": "重命名此文件",
+    "descriptionFolder": "重命名此文件夾"
+  },
+  "deleteModal": {
+    "titleItem": "{count, plural, other {刪除{count} 個項目}}",
+    "titleFolder": "{count, plural, other {刪除{count}個文件夾}}",
+    "titleFile": "{count, plural, other {刪除{count}個文件}}",
+    "descriptionItem": "{count, plural, other {您確定要刪除{count}個項目嗎？本操作不可撤銷。}}",
+    "descriptionFolder": "{count, plural, other {您確定要刪除{count}個文件夾嗎？本操作不可撤銷。}}",
+    "descriptionFile": "{count, plural, other {您確定要刪除{count}個文件嗎？本操作不可撤銷。}}"
+  },
+  "addByPathModal": {
+    "title": "Import from IPFS",
+    "description": "Insert an IPFS path (CID) to import.",
+    "examples": "範例:"
+  },
+  "newFolderModal": {
+    "title": "新增資料夾",
+    "description": "輸入您想要創建的資料夾名稱"
+  },
+  "filesListLabel": "檔案清單",
+  "filesList": {
+    "noFiles": "<0>No files in this directory. Click the “Import” button to add some.</0>"
+  },
+  "filesImportStatus": {
+    "imported": "{count, plural, one {Imported 1 item} other {Imported {count} items}}",
+    "importing": "{count, plural, one {Importing 1 item} other {Importing {count} items}}",
+    "toggleDropdown": "Toggle dropdown",
+    "closeDropdown": "Close dropdown",
+    "count": "{count} of {count}"
+  },
+  "addFilesInfo": "<0>No files here yet! Add files to your local IPFS node by clicking the <1>Import</1> button above.</0>",
+  "companionInfo": "<0>如果你正在使用<1> IPFS 伴侶</1>，文件視圖僅限於使用擴展程序時添加的文件。</0>",
+  "tour": {
+    "step1": {
+      "title": "檔案頁面",
+      "paragraph1": "<0>這是 <1>Mutable File System（MFS）</1> 上的文件所在的位置。您可以添加文件或文件夾，並從此頁面進行管理</0>",
+      "paragraph2": "Click \"Next\" to learn more."
+    },
+    "step2": {
+      "title": "導覽列",
+      "paragraph1": "在當前工作目錄中，您可以通過單擊它們來瀏覽文件夾層次結構。"
+    },
+    "step3": {
+      "title": "新增檔案",
+      "paragraph1": "在這裡，您可以看到已固定的區塊數和文件數。",
+      "paragraph2": "您可以通過右側的下拉列表將文件或文件夾添加到您的倉庫。",
+      "paragraph3": "<0>如果想要添加 IPFS 上已有的內容，可以通過傳遞其 <1>Content Identifier（CID）</1> 將其導入 MFS</0>"
+    },
+    "step5": {
+      "title": "檔案清單",
+      "paragraph1": "最後，您可以在列表中找到您的文件和文件夾， 通過拖放文件或文件夾來添加它們",
+      "paragraph2": "您可以分享或下載文件，在 IPLD 資源管理器中查看、重命名或刪除它們",
+      "paragraph3": "專家提示：可以從 Web UI 的任何其他頁面拖放文件，把它們添加到 MFS 的根目錄。"
+    }
+  },
+  "previousFolder": "Go back to previous folder",
+  "fileLabel": "Select {type} {name} with size: {size}",
+  "hashUnavailable": "hash 不可用",
+  "checkboxLabel": "View more options for {name}",
+  "pinned": "已固定",
+  "cidNotFileNorDir": "當前的連接不是一個文件或目錄，請檢查 <0>並替換</0> 。",
+  "sortBy": "Sort items by {name}"
+}

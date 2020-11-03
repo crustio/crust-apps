@@ -1,0 +1,47 @@
+{
+  "title": "状態",
+  "nodeInfo": "ノード情報",
+  "spaceUsed": "使用容量",
+  "networkTraffic": "ネットワーク通信量",
+  "bandwidthOverTime": "時間あたりの帯域",
+  "bandwidthByPeer": "ピアあたりの帯域",
+  "distributionOfPeers": "ピアによる分散",
+  "pieChartLabel": "{count, plural, other {{percent}%({count} ピア)}}",
+  "countMore": "ほか{count}項目",
+  "StatusConnected": {
+    "paragraph1": "<0>{repoSize}個のファイル</0>をホスティング中",
+    "paragraph2": "{count, plural, other {<0>{peersCount}個のピア</0>と通信中}}"
+  },
+  "customApiConfig": "Custom JSON configuration",
+  "AskToEnable": {
+    "label": "匿名の利用状況データを送信することで、このアプリケーションの改善に協力する"
+  },
+  "tour": {
+    "step1": {
+      "title": "ステータスページ",
+      "paragraph1": "ここはあなたのIPFSノードとその基本情報を確認するページです。",
+      "paragraph2": "説明を読むためには「次へ」をクリック"
+    },
+    "step2": {
+      "title": "接続状況",
+      "paragraph1": "Click this icon from anywhere in the app to return to the Status page. If you lose your connection to the IPFS API, the icon will turn red.",
+      "paragraph2": "If you need to configure a custom API address for your node, just click the \"Edit\" link next to where the API address is listed on this page."
+    },
+    "step3": {
+      "title": "ノード情報",
+      "paragraph1": "ここにはあなたのリポジトリのサイズといくつのピアが接続しているか、またあなたのピアIDと現在利用しているIPFS設定が表示されています。",
+      "paragraph2": "<0>Expand the <1>Advanced</1> link to see more info, such as the gateway URL and addresses. There's also a link inside the Advanced section to change your API address.</0>"
+    },
+    "step4": {
+      "title": "ネットワーク帯域/通信量",
+      "paragraph1": "このグラフは時間ごとのネットワーク帯域を示しています。",
+      "paragraph2": "このスピードメーターは現在のトラフィックの流出量と流入量を示しています。"
+    },
+    "stepExplore": {
+      "title": "探索",
+      "paragraph": "CIDを貼り付けることでCIDを紐付けられたコンテンツを探索したり、それがどのように構成されているか、プロトコル上で繋がっているかを調べることができます。"
+    }
+  },
+  "bandwidthStats": "帯域状況",
+  "bandwidthStatsDisabled": "帯域の状況の測定が無効化されています。これを有効にするためには次のようなコマンドを実行するか、<5>設定</5>の中のキー<1>Swarm.DisableBandwidthMetrics</1>の値を<3>false</3>に変更してください。その後、設定を反映させるためにIPFSデーモンを再起動してください。"
+}

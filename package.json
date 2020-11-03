@@ -120,8 +120,8 @@
   "dependencies": {
     "@types/react-redux": "^7.1.9",
     "i18next-chained-backend": "^2.0.1",
+    "ipfs": "^0.51.0",
     "money-clip": "^3.0.2",
-    "react-redux": "^7.2.2",
-    "redux-bundler": "^28.0.0"
+    "react-redux": "^7.2.2"
   }
 }

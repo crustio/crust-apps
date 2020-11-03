@@ -14,6 +14,7 @@ module.exports = {
     // needs to be switched on at some point
     '@typescript-eslint/no-explicit-any': 'off',
     // this seems very broken atm, false positives
-    '@typescript-eslint/unbound-method': 'off'
+    '@typescript-eslint/unbound-method': 'off',
+    'sort-keys': 'off'
   }
 };

@@ -18,6 +18,7 @@
   "nav.society": "Society",
   "nav.staking": "Staking",
   "nav.storage": "Chain state",
+  "nav.ipfs": "Storage",
   "nav.sudo": "Sudo",
   "nav.tech-comm": "Tech. comm.",
   "nav.transfer": "Transfer",

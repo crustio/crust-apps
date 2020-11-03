@@ -1,0 +1,47 @@
+{
+  "title": "狀態",
+  "nodeInfo": "節點信息",
+  "spaceUsed": "使用空間",
+  "networkTraffic": "網絡流量",
+  "bandwidthOverTime": "即時頻寬",
+  "bandwidthByPeer": "節點頻寬",
+  "distributionOfPeers": "節點分佈",
+  "pieChartLabel": "{count, plural, other {{percent}% ({count} 節點)}}",
+  "countMore": "...{count} 更多",
+  "StatusConnected": {
+    "paragraph1": "託管 <0>{repoSize} 文件</0>",
+    "paragraph2": "{count, plural, other {發現 <0>{peersCount} 節點</0>}}"
+  },
+  "customApiConfig": "Custom JSON configuration",
+  "AskToEnable": {
+    "label": "向我們發送匿名輸入來幫助我們改進。"
+  },
+  "tour": {
+    "step1": {
+      "title": "狀態頁面",
+      "paragraph1": "這是 IPFS 節點的起始頁面，您可以在這裡查看其基本信息。",
+      "paragraph2": "Click \"Next\" to learn more."
+    },
+    "step2": {
+      "title": "連接狀態",
+      "paragraph1": "Click this icon from anywhere in the app to return to the Status page. If you lose your connection to the IPFS API, the icon will turn red.",
+      "paragraph2": "If you need to configure a custom API address for your node, just click the \"Edit\" link next to where the API address is listed on this page."
+    },
+    "step3": {
+      "title": "節點信息",
+      "paragraph1": "在這裡您可以看到 repo 的大小、已經連接節點數量、你的節點 ID 和正在使用的 IPFS 版本信息。",
+      "paragraph2": "<0>Expand the <1>Advanced</1> link to see more info, such as the gateway URL and addresses. There's also a link inside the Advanced section to change your API address.</0>"
+    },
+    "step4": {
+      "title": "Network bandwidth/traffic",
+      "paragraph1": "This chart shows the network bandwidth usage over time.",
+      "paragraph2": "速度表顯示當前的輸出和輸入流量。"
+    },
+    "stepExplore": {
+      "title": "瀏覽",
+      "paragraph": "粘貼一個CID並查看該CID包含的文件，檢查數據是如何組織的以及協議的鏈接"
+    }
+  },
+  "bandwidthStats": "頻寬狀態",
+  "bandwidthStatsDisabled": "頻寬度量已經禁用了。可以在<5>配置</5> 中修改<1>Swarm.DisableBandwidthMetrics</1> 為<3>false</3> 來重新激活。 修改完成後，需要重新啟動IPFS 守護進程才能生效。"
+}
