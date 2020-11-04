@@ -1,10 +1,11 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import { createRouteBundle } from 'redux-bundler';
-// import StatusPage from '../status/LoadableStatusPage'
+import StatusPage from '../status/LoadableStatusPage';
 import FilesPage from '../files/LoadableFilesPage';
-// import StartExploringPage from '../explore/LoadableStartExploringPage'
-// import ExplorePage from '../explore/LoadableExplorePage'
+import StartExploringPage from '../explore/LoadableStartExploringPage';
+import ExplorePage from '../explore/LoadableExplorePage';
+import Hello from '../components/Hello';
 // import PeersPage from '../peers/LoadablePeersPage'
 // import SettingsPage from '../settings/LoadableSettingsPage'
 // import AnalyticsPage from '../settings/AnalyticsPage'
@@ -12,18 +13,17 @@ import FilesPage from '../files/LoadableFilesPage';
 // import BlankPage from '../blank/BlankPage'
 
 export default createRouteBundle({
-  // '/explore': StartExploringPage,
-  // '/explore*': ExplorePage,
-  '/files*': FilesPage
-  // '/ipfs*': FilesPage,
-  // '/ipns*': FilesPage,
-  // '/pins*': FilesPage,
+  '/storage/explore*': ExplorePage,
+  '/storage/files*': FilesPage,
+  '/storage/ipfs*': FilesPage,
+  '/storage/ipns*': FilesPage,
+  '/storage/pins*': FilesPage,
   // '/peers': PeersPage,
   // '/settings/analytics': AnalyticsPage,
   // '/settings*': SettingsPage,
   // '/welcome': WelcomePage,
   // '/blank': BlankPage,
   // '/status*': StatusPage,
-  // '/': StatusPage,
-  // '': StatusPage
+  '/storage*': StatusPage,
+  '/storage': StatusPage
 }, { routeInfoSelector: 'selectHash' });

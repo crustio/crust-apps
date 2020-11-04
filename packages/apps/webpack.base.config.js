@@ -117,7 +117,7 @@ function createWebpack (ENV, context) {
         },
         {
           exclude: [/semantic-ui-css/],
-          test: [/\.eot$/, /\.ttf$/, /\.svg$/, /\.woff$/, /\.woff2$/],
+          test: [/\.eot$/, /\.ttf$/, /\.svg$/, /\.otf$/, /\.woff$/, /\.woff2$/],
           use: [
             {
               loader: require.resolve('file-loader'),

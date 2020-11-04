@@ -1,97 +1,134 @@
-import React from 'react'
-import { connect } from 'redux-bundler-react'
-import { withTranslation } from 'react-i18next'
-import classnames from 'classnames'
-import ipfsLogoTextVert from './ipfs-logo-text-vert.svg'
-import ipfsLogoTextHoriz from './ipfs-logo-text-horiz.svg'
-import StrokeMarketing from '../icons/StrokeMarketing'
-import StrokeWeb from '../icons/StrokeWeb'
-import StrokeCube from '../icons/StrokeCube'
-import StrokeSettings from '../icons/StrokeSettings'
-import StrokeIpld from '../icons/StrokeIpld'
+// [object Object]
+// SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+import { connect } from 'redux-bundler-react';
+import { withTranslation } from 'react-i18next';
+import classnames from 'classnames';
+import ipfsLogoTextVert from './ipfs-logo-text-vert.svg';
+import ipfsLogoTextHoriz from './ipfs-logo-text-horiz.svg';
+import StrokeMarketing from '../icons/StrokeMarketing';
+import StrokeWeb from '../icons/StrokeWeb';
+import StrokeCube from '../icons/StrokeCube';
+import StrokeSettings from '../icons/StrokeSettings';
+import StrokeIpld from '../icons/StrokeIpld';
 
 // Styles
-import './NavBar.css'
+import './NavBar.css';
 
 const NavLink = ({
-  to,
-  icon,
   alternative,
+  children,
   disabled,
-  children
+  icon,
+  to
 }) => {
-  const Svg = icon
-  const { hash } = window.location
-  const href = `#${to}`
+  const Svg = icon;
+  const { hash } = window.location;
+  const href = `#${to}`;
   const active = alternative
     ? hash === href || hash.startsWith(`${href}${alternative}`)
-    : hash && hash.startsWith(href)
+    : hash && hash.startsWith(href);
   const anchorClass = classnames({
     'bg-white-10 navbar-item-active': active,
     'o-50 no-pointer-events': disabled
-  }, ['navbar-item dib db-l pt2 pb3 pv1-l white no-underline f5 hover-bg-white-10 tc bb bw2 bw0-l b--navy'])
+  }, ['navbar-item dib db-l pt2 pb3 pv1-l white no-underline f5 hover-bg-white-10 tc bb bw2 bw0-l b--navy']);
   const svgClass = classnames({
     'o-100': active,
     'o-50': !active
-  }, ['fill-current-color'])
+  }, ['fill-current-color']);
 
   return (
     // eslint-disable-next-line jsx-a11y/anchor-is-valid
-    <a href={disabled ? null : href} className={anchorClass} role='menuitem' title={children}>
+    <a className={anchorClass}
+      href={disabled ? null : href}
+      role='menuitem'
+      title={children}>
       <div className='db ph2 pv1'>
         <div className='db'>
-          <Svg width='46' role='presentation' className={svgClass} />
+          <Svg className={svgClass}
+            role='presentation'
+            width='46' />
         </div>
-        <div className={`${active ? 'o-100' : 'o-50'} db f6 tc montserrat ttu fw1 `} style={{ whiteSpace: 'pre-wrap' }}>
+        <div className={`${active ? 'o-100' : 'o-50'} db f6 tc montserrat ttu fw1 `}
+          style={{ whiteSpace: 'pre-wrap' }}>
           {children}
         </div>
       </div>
     </a>
-  )
-}
+  );
+};
 
 export const NavBar = ({ t }) => {
-  const codeUrl = 'https://github.com/ipfs-shipyard/ipfs-webui'
-  const bugsUrl = `${codeUrl}/issues`
-  const gitRevision = process.env.REACT_APP_GIT_REV
-  const revisionUrl = `${codeUrl}/commit/${gitRevision}`
-  const webUiVersion = process.env.REACT_APP_VERSION
-  const webUiVersionUrl = `${codeUrl}/releases/tag/v${webUiVersion}`
+  const codeUrl = 'https://github.com/ipfs-shipyard/ipfs-webui';
+  const bugsUrl = `${codeUrl}/issues`;
+  const gitRevision = process.env.REACT_APP_GIT_REV;
+  const revisionUrl = `${codeUrl}/commit/${gitRevision}`;
+  const webUiVersion = process.env.REACT_APP_VERSION;
+  const webUiVersionUrl = `${codeUrl}/releases/tag/v${webUiVersion}`;
+
   return (
-    <div className='h-100 fixed-l flex flex-column justify-between' style={{ overflowY: 'auto', width: 'inherit' }}>
+    <div className='h-100 fixed-l flex flex-column justify-between'
+      style={{ overflowY: 'auto', width: 'inherit' }}>
       <div className='flex flex-column'>
-        <a href="#/welcome" role='menuitem' title={t('welcome:description')}>
+        <a href='#/welcome'
+          role='menuitem'
+          title={t('welcome:description')}>
           <div className='pt3 pb1 pb2-l'>
-            <img className='navbar-logo-vert center db-l dn pt3 pb1' style={{ height: 94 }} src={ipfsLogoTextVert} alt='' />
-            <img className='navbar-logo-horiz center db dn-l' style={{ height: 70 }} src={ipfsLogoTextHoriz} alt='' />
+            <img alt=''
+              className='navbar-logo-vert center db-l dn pt3 pb1'
+              src={ipfsLogoTextVert}
+              style={{ height: 94 }} />
+            <img alt=''
+              className='navbar-logo-horiz center db dn-l'
+              src={ipfsLogoTextHoriz}
+              style={{ height: 70 }} />
           </div>
         </a>
-        <div className='db overflow-x-scroll overflow-x-hidden-l nowrap tc' role='menubar'>
-          <NavLink to='/' alternative="status" icon={StrokeMarketing}>{t('status:title')}</NavLink>
-          <NavLink to='/files' icon={StrokeWeb}>{t('files:title')}</NavLink>
-          <NavLink to='/explore' icon={StrokeIpld}>{t('explore:tabName')}</NavLink>
-          <NavLink to='/peers' icon={StrokeCube}>{t('peers:title')}</NavLink>
-          <NavLink to='/settings' icon={StrokeSettings}>{t('settings:title')}</NavLink>
+        <div className='db overflow-x-scroll overflow-x-hidden-l nowrap tc'
+          role='menubar'>
+          <NavLink alternative='status'
+            icon={StrokeMarketing}
+            to='/storage'>{t('status:title')}</NavLink>
+          <NavLink icon={StrokeWeb}
+            to='/storage/files'>{t('files:title')}</NavLink>
+          <NavLink icon={StrokeIpld}
+            to='/storage/explore'>{t('explore:tabName')}</NavLink>
+          <NavLink icon={StrokeCube}
+            to='/storage/peers'>{t('peers:title')}</NavLink>
+          <NavLink icon={StrokeSettings}
+            to='/storage/settings'>{t('settings:title')}</NavLink>
         </div>
       </div>
       <div className='dn db-l navbar-footer mb2 tc center f7 o-80 glow'>
         { webUiVersion && <div className='mb1'>
-          <a className='link white' href={webUiVersionUrl} target='_blank' rel='noopener noreferrer'>{t('app:terms.ui')} v{webUiVersion}</a>
+          <a className='link white'
+            href={webUiVersionUrl}
+            rel='noopener noreferrer'
+            target='_blank'>{t('app:terms.ui')} v{webUiVersion}</a>
         </div> }
         { gitRevision && <div className='mb1'>
-          <a className='link white' href={revisionUrl} target='_blank' rel='noopener noreferrer'>{t('app:nav.revision')} {gitRevision}</a>
+          <a className='link white'
+            href={revisionUrl}
+            rel='noopener noreferrr'
+            target='_blank'>{t('app:nav.revision')} {gitRevision}</a>
         </div> }
         <div className='mb1'>
-          <a className='link white' href={codeUrl} target='_blank' rel='noopener noreferrer'>{t('app:nav.codeLink')}</a>
+          <a className='link white'
+            href={codeUrl}
+            rel='noopener noreferrer'
+            target='_blank'>{t('app:nav.codeLink')}</a>
         </div>
         <div>
-          <a className='link white' href={bugsUrl} target='_blank' rel='noopener noreferrer'>{t('app:nav.bugsLink')}</a>
+          <a className='link white'
+            href={bugsUrl}
+            rel='noopener noreferrer'
+            target='_blank'>{t('app:nav.bugsLink')}</a>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default connect(
   withTranslation()(NavBar)
-)
+);

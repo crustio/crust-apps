@@ -36,10 +36,12 @@ export class App extends Component {
     isOver: PropTypes.bool.isRequired
   }
 
+  //
   componentDidMount () {
     this.props.doTryInitIpfs();
   }
 
+  //
   addFiles = async (filesPromise) => {
     const { doFilesWrite, doUpdateHash, routeInfo } = this.props;
     const isFilesPage = routeInfo.pattern === '/files*';
@@ -60,8 +62,11 @@ export class App extends Component {
     }
   }
 
+  //
   render () {
     const { canDrop, connectDropTarget, doExploreUserProvidedPath, doFilesNavigateTo, ipfsReady, isOver, route: Page, routeInfo: { url }, showTooltip, t } = this.props;
+
+    console.log(ipfsReady, 'ipfsReady');
 
     return connectDropTarget(
       // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions

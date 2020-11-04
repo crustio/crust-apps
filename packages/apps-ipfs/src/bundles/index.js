@@ -27,9 +27,9 @@ import cliTutorModeBundle from './cli-tutor-mode';
 import gatewayBundle from './gateway';
 
 export default composeBundles(
-  createCacheBundle({
-    cacheFn: bundleCache.set
-  }),
+  // createCacheBundle({
+  //   cacheFn: bundleCache.set
+  // }),
   appIdle({ idleTimeout: 5000 }),
   ipfsProvider,
   identityBundle,

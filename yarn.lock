@@ -2723,6 +2723,7 @@ __metadata:
     classnames: ^2.2.6
     countly-sdk-web: ^20.4.0
     datatransfer-files-promise: ^1.3.1
+    details-polyfill: ^1.1.0
     file-extension: ^4.0.5
     filesize: ^6.1.0
     i18next-browser-languagedetector: ^6.0.1
@@ -2731,6 +2732,7 @@ __metadata:
     i18next-localstorage-backend: ^3.1.2
     internal-nav-helper: ^3.1.0
     ipfs: 0.50.2
+    ipfs-css: ^1.2.0
     ipfs-geoip: ^6.0.0
     ipfs-http-client: ^48.0.0
     ipfs-provider: ^1.1.0
@@ -2756,6 +2758,7 @@ __metadata:
     redux-bundler: ^26.1.0
     redux-bundler-react: ^1.2.0
     simplify-number: ^1.0.0
+    tachyons: ^4.12.0
     uint8arrays: ^1.1.0
     window-or-global: ^1.0.1
   languageName: unknown
@@ -8458,6 +8461,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"details-polyfill@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "details-polyfill@npm:1.1.0"
+  checksum: c13f200a5a026a19f3d5c5e7014b691b3a1e5659c187db396db668236c5297e8718063d4f6c00c4f2c12730116674f6f0d6f7169e89b29126364298e484e0b2f
+  languageName: node
+  linkType: hard
+
 "detect-browser@npm:^5.1.1":
   version: 5.1.1
   resolution: "detect-browser@npm:5.1.1"
@@ -12810,6 +12820,13 @@ fsevents@^1.2.7:
     prometheus-gc-stats:
       optional: true
   checksum: 69a80b0b72de89b3dfe9898eb45ba7075fee91da885e4d0301539ff01525999f1fe65b72a9ac398f635056ddf9fc5eb5c46cfca95a96b4b051e1f9c8e9272779
+  languageName: node
+  linkType: hard
+
+"ipfs-css@npm:^1.2.0":
+  version: 1.3.0
+  resolution: "ipfs-css@npm:1.3.0"
+  checksum: e00016d5e17f6fdf7bbfbef6bace6c7aed9355bbe9252d5c1e5fe371f1d76555b9503351fb42f8b7257dc3a7fdfb19bb7b76482e4d90be781ca89af6788dd041
   languageName: node
   linkType: hard
 
@@ -23734,6 +23751,13 @@ fsevents@^1.2.7:
     slice-ansi: ^4.0.0
     string-width: ^4.2.0
   checksum: 7fa8079f9666d71936a6189e475730fb7cb7db2c4df85755b91a0bad8a650f2abfe93236a1dde2a77f6b56e37786f1f287880a194a76e4c8a80a2752ea74bea3
+  languageName: node
+  linkType: hard
+
+"tachyons@npm:^4.12.0":
+  version: 4.12.0
+  resolution: "tachyons@npm:4.12.0"
+  checksum: 3445cdaa2a6d1bb98e5d3377ef925b16551dca3fee209f579201c51edb325a06ecff44d7db5a5a2b19da3949ff3ff2ef016ec6c7639468549b763a250bb8362f
   languageName: node
   linkType: hard
 

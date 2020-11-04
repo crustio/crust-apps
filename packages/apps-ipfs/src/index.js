@@ -3,11 +3,11 @@
 import * as React from 'react';
 import App from './App';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'redux-bundler-react';
-// import './index.css';
-// import 'react-virtualized/styles.css';
+import './index.css';
+import 'react-virtualized/styles.css';
 
 import getStore from './bundles';
 import bundleCache from './lib/bundle-cache';
@@ -16,10 +16,10 @@ import i18n from './i18n';
 import { DndProvider } from 'react-dnd';
 import DndBackend from './lib/dnd-backend';
 
-// const appVersion = process.env.REACT_APP_VERSION;
-// const gitRevision = process.env.REACT_APP_GIT_REV;
-//
-// console.log(`IPFS Web UI - v${appVersion} - https://github.com/ipfs-shipyard/ipfs-webui/commit/${gitRevision}`);
+const appVersion = process.env.REACT_APP_VERSION;
+const gitRevision = process.env.REACT_APP_GIT_REV;
+
+console.log(`IPFS Web UI - v${appVersion} - https://github.com/ipfs-shipyard/ipfs-webui/commit/${gitRevision}`);
 
 function IpfsApp () {
   const [store, setStore] = useState(null);
@@ -35,7 +35,7 @@ function IpfsApp () {
         console.log(initialData, 'initialData');
         const s = getStore(initialData);
 
-        console.log(s);
+        console.log(s, 'getStore');
         setStore(s);
       }).catch((e) => {
         console.log(e);
