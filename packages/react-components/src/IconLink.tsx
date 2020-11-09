@@ -1,6 +1,5 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
 import styled from 'styled-components';
@@ -26,20 +25,14 @@ function IconLink ({ className = '', href, icon, label, onClick, rel, target }: 
       rel={rel}
       target={target}
     >
-      {icon && <Icon className={icon} />}
+      {icon && <Icon icon={icon} />}
       {label}
     </a>
   );
 }
 
 export default React.memo(styled(IconLink)`
-  font-size: 0.9rem !important;
-
-  &:hover {
-    text-decoration: underline;
-
-    i {
-      text-decoration: none;
-    }
+  .ui--Icon {
+    margin-right: 0.5em;
   }
 `);

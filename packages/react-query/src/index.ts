@@ -1,6 +1,5 @@
 // Copyright 2017-2020 @polkadot/react-query authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 export { default as Available } from './Available';
 export { default as Balance } from './Balance';
@@ -21,6 +20,7 @@ export { default as NodeVersion } from './NodeVersion';
 export { default as Nonce } from './Nonce';
 export { default as TimeNow } from './TimeNow';
 export { default as TotalIssuance } from './TotalIssuance';
-export { default as Guaranteeable } from './Guaranteeable';
 export { default as CutGuaranteeable } from './CutGuaranteeable';
+export { default as Guaranteeable } from './Guaranteeable';
 export { default as FormatCapacity } from './FormatCapacity';
+export { default as Pledged } from './Pledged';

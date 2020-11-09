@@ -1,6 +1,5 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import { WithTranslation } from 'react-i18next';
 import { IconName } from '@fortawesome/fontawesome-svg-core';
@@ -40,7 +39,7 @@ export interface TxTriggerProps {
 export type TxTrigger = React.ComponentType<TxTriggerProps>;
 
 export interface TxProps {
-  extrinsic?: SubmittableExtrinsic | null;
+  extrinsic?: SubmittableExtrinsic | SubmittableExtrinsic[] | null;
   tx?: string;
   params?: any[] | ConstructTxFn;
 }
@@ -124,4 +123,27 @@ export type CallContract = ContractDeployed;
 export interface NullContract {
   abi: null;
   address: null;
+}
+
+export interface ThemeDef {
+  bgInput: string;
+  bgInputError: string;
+  bgInverse: string;
+  bgMenu: string;
+  bgMenuHover: string;
+  bgPage: string;
+  bgTable: string;
+  bgTabs: string;
+  bgToggle: string;
+  borderTable: string;
+  borderTabs: string;
+  color: string;
+  colorError: string;
+  colorLabel: string;
+  colorSummary: string;
+  theme: 'dark' | 'light';
+}
+
+export interface ThemeProps {
+  theme: ThemeDef;
 }
