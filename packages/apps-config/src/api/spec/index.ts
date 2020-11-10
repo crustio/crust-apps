@@ -12,9 +12,9 @@ import edgeware from './edgeware';
 import encointerNodeNotee from './encointer-node-notee';
 import encointerNodeTeeproxy from './encointer-node-teeproxy';
 import equilibrium from './equilibrium';
+import hanonycash from './hanonycash';
 import kilt from './kilt';
 import kulupu from './kulupu';
-import laminar from './laminar';
 import nodeTemplate from './node-template';
 import nodle from './nodle';
 import plasm from './plasm';
@@ -39,8 +39,8 @@ export default {
   'encointer-node': encointerNodeNotee,
   'encointer-node-notee': encointerNodeNotee,
   'encointer-node-teeproxy': encointerNodeTeeproxy,
+  hanonycash,
   kulupu,
-  laminar,
   'mashnet-node': kilt,
   'node-template': nodeTemplate,
   'nodle-chain': nodle,

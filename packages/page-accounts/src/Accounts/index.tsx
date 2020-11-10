@@ -77,7 +77,6 @@ function Overview ({ className = '', onStatusChange }: Props): React.ReactElemen
     [t('tags'), 'start'],
     [t('transactions'), 'media--1500'],
     [t('balances'), 'expand'],
-    [t('candies')],
     [],
     [undefined, 'media--1400']
   ]);
@@ -238,7 +237,7 @@ function Overview ({ className = '', onStatusChange }: Props): React.ReactElemen
         footer={footer}
         header={headerRef.current}
       >
-        {isLoading ? undefined : sortedAccountsWithDelegation?.map(({ account, delegation, isFavorite }, index): React.ReactNode => (
+        {!isLoading && sortedAccountsWithDelegation?.map(({ account, delegation, isFavorite }, index): React.ReactNode => (
           <Account
             account={account}
             delegation={delegation}
