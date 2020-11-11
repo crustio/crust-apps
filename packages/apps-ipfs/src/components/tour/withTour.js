@@ -13,7 +13,7 @@ const withTour = (WrappedComponent) => {
       if (action === 'close' || [STATUS.FINISHED].includes(status)) {
         doDisableTours();
       }
-    }
+    };
 
     render () {
       return <WrappedComponent handleJoyrideCallback={this.handleJoyrideCallback}

@@ -216,22 +216,22 @@ export const infoFromPath = (path, uriDecode = true) => {
    * @param {string} prefix
    */
   const check = (prefix) => {
-    info.realPath = info.path.substr(prefix.length).trim() || '/';
-    info.isRoot = info.realPath === '/';
+    info.realPath = info.path.substr(prefix.length).trim() || '/storage';
+    info.isRoot = info.realPath === '/storage';
   };
 
-  if (info.path.startsWith('/ipns') || info.path.startsWith('/ipfs')) {
+  if (info.path.startsWith('/storage/ipns') || info.path.startsWith('/storage/ipfs')) {
     info.realPath = info.path;
-    info.isRoot = info.path === '/ipns' || info.path === '/ipfs';
-  } else if (info.path.startsWith('/files')) {
-    check('/files');
+    info.isRoot = info.path === '/storage/ipns' || info.path === '/storage/ipfs';
+  } else if (info.path.startsWith('/storage/files')) {
+    check('/storage/files');
     info.isMfs = true;
-  } else if (info.path.startsWith('/pins')) {
-    check('/pins');
+  } else if (info.path.startsWith('/storage/pins')) {
+    check('/storage/pins');
     info.isPins = true;
 
-    if (info.realPath !== '/') {
-      info.realPath = `/ipfs${info.realPath}`;
+    if (info.realPath !== '/storage/') {
+      info.realPath = `/storage/ipfs${info.realPath}`;
     }
   } else {
     return;

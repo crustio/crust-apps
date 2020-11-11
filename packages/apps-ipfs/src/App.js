@@ -43,16 +43,16 @@ export class App extends Component {
 
   //
   addFiles = async (filesPromise) => {
-    const { doFilesWrite, doUpdateHash, routeInfo } = this.props;
-    const isFilesPage = routeInfo.pattern === '/files*';
-    const addAtPath = isFilesPage ? routeInfo.params.path : '/';
+    const { doFilesWrite, doUpdateHash, routeIfo } = this.props;
+    const isFilesPage = routeInfo.pattern === '/storage/files*';
+    const addAtPath = isFilesPage ? routeInfo.params.path : '/storage/';
     const files = await filesPromise;
 
     doFilesWrite(normalizeFiles(files), addAtPath);
 
     // Change to the files pages if the user is not there
     if (!isFilesPage) {
-      doUpdateHash('/files');
+      doUpdateHash('/storage/files');
     }
   }
 
@@ -66,6 +66,7 @@ export class App extends Component {
   render () {
     const { canDrop, connectDropTarget, doExploreUserProvidedPath, doFilesNavigateTo, ipfsReady, isOver, route: Page, routeInfo: { url }, showTooltip, t } = this.props;
 
+    console.log(t);
     console.log(ipfsReady, 'ipfsReady');
 
     return connectDropTarget(

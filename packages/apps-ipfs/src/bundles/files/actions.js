@@ -75,7 +75,12 @@ export const realMfsPath = (path) => {
  * @returns {Promise<Stat>}
  */
 const stat = async (ipfs, cidOrPath) => {
-  const hashOrPath = cidOrPath.toString();
+  let hashOrPath = cidOrPath.toString();
+
+  if (hashOrPath.startsWith('/storage')) {
+    hashOrPath = hashOrPath.slice(8, hashOrPath.length) || '/';
+  }
+
   const path = hashOrPath.startsWith('/')
     ? hashOrPath
     : `/ipfs/${hashOrPath}`;
@@ -85,11 +90,16 @@ const stat = async (ipfs, cidOrPath) => {
 
     return { path, ...stats };
   } catch (e) {
+    console.log(e);
     // Discard error and mark DAG as 'unknown' to unblock listing other pins.
     // Clicking on 'unknown' entry will open it in Inspector.
     // No information is lost: if there is an error related
     // to specified hashOrPath user will read it in Inspector.
+    console.log(path);
+
     const [, , cid] = path.split('/');
+
+    console.log(cid);
 
     return {
       path: hashOrPath,
@@ -173,6 +183,8 @@ const actions = () => ({
     const isFetching = store.selectFilesIsFetching();
     const info = store.selectFilesPathInfo();
 
+    ;
+
     if (isReady && isConnected && !isFetching && info) {
       await store.doFetch(info);
     }
@@ -185,6 +197,8 @@ const actions = () => ({
    * @returns {function(Context): *}
    */
   doFetch: ({ isMfs, isPins, isRoot, path, realPath }) => perform(ACTIONS.FETCH, async (ipfs, { store }) => {
+    console.log({ path, realPath, isMfs, isPins, isRoot });
+
     if (isRoot && !isMfs && !isPins) {
       throw new Error('not supposed to be here');
     }
@@ -204,7 +218,10 @@ const actions = () => ({
       ? await last(ipfs.name.resolve(realPath))
       : realPath;
 
+    console.log(ipfs, resolvedPath);
     const stats = await stat(ipfs, resolvedPath);
+
+    console.log(stats);
     const time = Date.now();
 
     switch (stats.type) {
@@ -267,17 +284,24 @@ const actions = () => ({
 
     const { progress, result } = importFiles(ipfs, files);
 
+    ;
+
     for await (const update of progress) {
       loaded += update.loaded;
       yield { entries, progress: loaded / totalSize * 100 };
     }
 
+    ;
+
     try {
       const added = await result;
 
+      ;
       const numberOfFiles = files.length;
       const numberOfDirs = countDirs(files);
       const expectedResponseCount = numberOfFiles + numberOfDirs;
+
+      ;
 
       if (added.length !== expectedResponseCount) {
         // See https://github.com/ipfs/js-ipfs-api/issues/797
@@ -286,11 +310,20 @@ const actions = () => ({
         });
       }
 
+      ;
+
       for (const { cid, path } of added) {
         // Only go for direct children
         if (path.indexOf('/') === -1 && path !== '') {
           const src = `/ipfs/${cid}`;
+
+          if (root.startsWith('/storage')) {
+            root = root.slice(8, root.length);
+          }
+
           const dst = join(realMfsPath(root || '/files'), path);
+
+          ;
 
           try {
             await ipfs.files.cp(src, dst);
@@ -303,10 +336,12 @@ const actions = () => ({
       }
 
       yield { entries, progress: 100 };
+      ;
 
       return entries;
     } finally {
       await store.doFilesFetch();
+      ;
     }
   }),
 
@@ -412,9 +447,9 @@ const actions = () => ({
   /**
    * Copies file from `src` MFS path to a `dst` MFS path. On completion (success
    * or fail) triggers `doFilesFetch` to update the state.
-  * @param {string} src
-  * @param {string} dst
-  */
+   * @param {string} src
+   * @param {string} dst
+   */
   doFilesCopy: (src, dst) => perform(ACTIONS.COPY, async (ipfs, { store }) => {
     ensureMFS(store);
 
@@ -548,6 +583,7 @@ const importFiles = (ipfs, files) => {
  * @param {import('./utils').Sorting} options.sorting
  */
 const dirStats = async (ipfs, cid, { isRoot, path, sorting }) => {
+  console.log('dirStats');
   const res = await all(ipfs.ls(cid)) || [];
   const files = [];
   const showStats = res.length < 100;
@@ -574,7 +610,7 @@ const dirStats = async (ipfs, cid, { isRoot, path, sorting }) => {
     if (parentInfo && (parentInfo.isMfs || !parentInfo.isRoot)) {
       const realPath = parentInfo.realPath;
 
-      if (realPath && realPath.startsWith('/ipns')) {
+      if (realPath && realPath.startsWith('/storage/ipns')) {
         parentInfo.realPath = await last(ipfs.name.resolve(parentInfo.realPath));
       }
 
@@ -586,6 +622,8 @@ const dirStats = async (ipfs, cid, { isRoot, path, sorting }) => {
       });
     }
   }
+
+  console.log(parent);
 
   return {
     path: path,

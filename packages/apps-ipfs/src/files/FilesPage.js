@@ -48,6 +48,7 @@ class FilesPage extends React.Component {
 
   componentDidMount () {
     this.props.doFilesFetch();
+
     this.props.doPinsFetch();
     this.props.doFilesSizeGet();
   }
@@ -82,6 +83,8 @@ class FilesPage extends React.Component {
       root = this.props.files.path;
     }
 
+    ;
+
     this.props.doFilesWrite(raw, root);
   }
 
@@ -90,7 +93,7 @@ class FilesPage extends React.Component {
   }
 
   onInspect = (cid) => {
-    // this.props.doUpdateHash(`/explore/ipfs/${cid}`);
+    this.props.doUpdateHash(`/explore/ipfs/${cid}`);
   }
 
   showModal = (modal, files = null) => {
@@ -222,6 +225,8 @@ class FilesPage extends React.Component {
       cliOptions, doSetCliOptions, files, filesPathInfo, handleJoyrideCallback, isCliTutorModeEnabled,
       t, toursEnabled
     } = this.props;
+
+    console.log(filesPathInfo, 'filesPathInfo');
     const { contextMenu } = this.state;
 
     return (
@@ -268,7 +273,7 @@ class FilesPage extends React.Component {
 
         <InfoBoxes filesExist={!!(files && files.content && files.content.length)}
           isCompanion={this.props.ipfsProvider === 'window.ipfs'}
-          isRoot={filesPathInfo.isMfs && filesPathInfo.isRoot} />
+          isRoot={filesPathInfo && filesPathInfo.isMfs && filesPathInfo.isRoot} />
 
         <Modals
           cliOptions={cliOptions}

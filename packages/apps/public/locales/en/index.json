@@ -21,11 +21,19 @@
   "app-sudo.json",
   "app-tech-comm.json",
   "app-treasury.json",
+  "app.json",
   "apps-config.json",
   "apps-routing.json",
   "apps.json",
+  "explore.json",
+  "files.json",
+  "notify.json",
+  "peers.json",
   "react-components.json",
   "react-params.json",
   "react-query.json",
-  "react-signer.json"
+  "react-signer.json",
+  "settings.json",
+  "status.json",
+  "welcome.json"
 ]

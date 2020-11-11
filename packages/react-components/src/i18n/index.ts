@@ -5,7 +5,6 @@ import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 import uiSettings, { LANGUAGE_DEFAULT } from '@polkadot/ui-settings';
-
 import Backend from './Backend';
 
 const languageDetector = new LanguageDetector();
@@ -14,9 +13,7 @@ languageDetector.addDetector({
   lookup: () => {
     const i18nLang = uiSettings.i18nLang;
 
-    return i18nLang === LANGUAGE_DEFAULT
-      ? undefined
-      : i18nLang;
+    return i18nLang === LANGUAGE_DEFAULT ? undefined : i18nLang;
   },
   name: 'i18nLangDetector'
 });
@@ -38,6 +35,14 @@ i18next
     keySeparator: false,
     load: 'languageOnly',
     ns: [
+      'app',
+      'welcome',
+      'status',
+      'files',
+      'explore',
+      'peers',
+      'settings',
+      'notify',
       'apps',
       'apps-config',
       'apps-electron',

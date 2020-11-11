@@ -97,8 +97,8 @@
 export const perform = (type, task, ...[init]) =>
   // eslint-disable-next-line require-yield
   spawn(type, async function * (context) {
-    return await task(context)
-  }, init)
+    return await task(context);
+  }, init);
 
 /**
  * @template Message
@@ -188,17 +188,20 @@ export const perform = (type, task, ...[init]) =>
  * @returns {(context:Context) => Promise<Success>}
  */export const spawn = (type, task, ...[init]) => async (context) => {
   // Generate unique id for this task
-  const id = Symbol(type)
-  const start = performance.now()
+  const id = Symbol(type);
+  const start = performance.now();
 
   try {
-    context.dispatch({ type, task: { id, status: 'Init', init } })
+    context.dispatch({ type, task: { id, status: 'Init', init } });
 
-    const process = task(context)
+    const process = task(context);
+
     while (true) {
-      const next = await process.next()
+      const next = await process.next();
+
       if (next.done) {
-        const { value } = next
+        const { value } = next;
+
         context.dispatch({
           type,
           task: {
@@ -209,10 +212,12 @@ export const perform = (type, task, ...[init]) =>
               ok: true, value
             }
           }
-        })
-        return value
+        });
+
+        return value;
       } else {
-        const { value } = next
+        const { value } = next;
+
         context.dispatch({
           type,
           task: {
@@ -220,7 +225,7 @@ export const perform = (type, task, ...[init]) =>
             status: 'Send',
             message: value
           }
-        })
+        });
       }
     }
   } catch (error) {
@@ -232,8 +237,8 @@ export const perform = (type, task, ...[init]) =>
         duration: performance.now() - start,
         result: { ok: false, error }
       }
-    })
+    });
     // Propagate error to a caller.
-    throw error
+    throw error;
   }
-}
+};

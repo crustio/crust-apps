@@ -13,7 +13,17 @@ import { normalizeFiles } from '../../lib/files';
 
 import './Breadcrumbs.css';
 
-const DropableBreadcrumb = ({ checkIfPinned, getPathInfo, immutable, index, link, onAddFiles, onClick, onContextMenuHandle, onMove }) => {
+const DropableBreadcrumb = ({
+  checkIfPinned,
+  getPathInfo,
+  immutable,
+  index,
+  link,
+  onAddFiles,
+  onClick,
+  onContextMenuHandle,
+  onMove
+}) => {
   const [{ isOver }, drop] = useDrop({
     accept: [NativeTypes.FILE, 'FILE'],
     drop: async ({ files, filesPromise, path: filePath }) => {
@@ -27,7 +37,11 @@ const DropableBreadcrumb = ({ checkIfPinned, getPathInfo, immutable, index, link
         const src = filePath;
         const dst = join(link.path, basename(filePath));
 
-        try { await onMove(src, dst); } catch (e) { console.error(e); }
+        try {
+          await onMove(src, dst);
+        } catch (e) {
+          console.error(e);
+        }
       }
     },
     collect: (monitor) => ({
@@ -56,23 +70,40 @@ const DropableBreadcrumb = ({ checkIfPinned, getPathInfo, immutable, index, link
   return (
     <span className='dib pv1 pr1'
       ref={drop}>
-      <button className={classNames('BreadcrumbsButton relative',
-        index !== 0 && 'navy',
-        index === 0 && 'f7 pa1 br2 mr2',
-        index === 0 && (immutable ? 'bg-charcoal-muted white' : 'bg-navy white'),
-        immutable && (link.last || index === 0) && 'no-events',
-        link.last && 'b', isOver && 'dragging')}
-      onClick={() => onClick(link.path)}
-      onContextMenu={(ev) => index !== 0 && handleOnContextMenuHandle(ev)}
-      ref={buttonRef}
-      title={link.realName}>
+      <button
+        className={classNames(
+          'BreadcrumbsButton relative',
+          index !== 0 && 'navy',
+          index === 0 && 'f7 pa1 br2 mr2',
+          index === 0 && (immutable ? 'bg-charcoal-muted white' : 'bg-navy white'),
+          immutable && (link.last || index === 0) && 'no-events',
+          link.last && 'b',
+          isOver && 'dragging'
+        )}
+        onClick={() => onClick('/storage' + link.path)}
+        onContextMenu={(ev) => index !== 0 && handleOnContextMenuHandle(ev)}
+        ref={buttonRef}
+        title={link.realName}
+      >
         {link.name}
       </button>
     </span>
   );
 };
 
-const Breadcrumbs = ({ className, doCheckIfPinned, doGetPathInfo, onAddFiles, onClick, onContextMenuHandle, onMove, path, t, tReady, ...props }) => {
+const Breadcrumbs = ({
+  className,
+  doCheckIfPinned,
+  doGetPathInfo,
+  onAddFiles,
+  onClick,
+  onContextMenuHandle,
+  onMove,
+  path,
+  t,
+  tReady,
+  ...props
+}) => {
   const [overflows, setOverflows] = useState(false);
   const [isImmutable, setImmutable] = useState(false);
   const anchors = useRef();
@@ -80,29 +111,32 @@ const Breadcrumbs = ({ className, doCheckIfPinned, doGetPathInfo, onAddFiles, on
   useEffect(() => {
     const a = anchors.current;
 
-    const newOverflows = a ? (a.offsetHeight < a.scrollHeight || a.offsetWidth < a.scrollWidth) : false;
+    const newOverflows = a ? a.offsetHeight < a.scrollHeight || a.offsetWidth < a.scrollWidth : false;
 
     if (newOverflows !== overflows) {
       setOverflows(newOverflows);
     }
   }, [overflows]);
 
-  const bread = useMemo(() =>
-    makeBread(path, t, isImmutable, setImmutable)
-  , [isImmutable, path, t]);
+  const bread = useMemo(() => makeBread(path, t, isImmutable, setImmutable), [isImmutable, path, t]);
 
   return (
-    <nav aria-label={t('breadcrumbs')}
+    <nav
+      aria-label={t('breadcrumbs')}
       className={classNames('Breadcrumbs flex items-center sans-serif overflow-hidden sticky top-0', className)}
-      {...props}>
+      {...props}
+    >
       <div className='nowrap overflow-hidden relative flex flex-wrap'
-        ref={ anchors }>
-        <div className={`absolute left-0 top-0 h-100 w1 ${overflows ? '' : 'dn'}`}
-          style={{ background: 'linear-gradient(to right, #ffffff 0%, transparent 100%)' }} />
+        ref={anchors}>
+        <div
+          className={`absolute left-0 top-0 h-100 w1 ${overflows ? '' : 'dn'}`}
+          style={{ background: 'linear-gradient(to right, #ffffff 0%, transparent 100%)' }}
+        />
 
-        { bread.map((link, index) => (
+        {bread.map((link, index) => (
           <div key={`${index}link`}>
-            <DropableBreadcrumb checkIfPinned={doCheckIfPinned}
+            <DropableBreadcrumb
+              checkIfPinned={doCheckIfPinned}
               getPathInfo={doGetPathInfo}
               immutable={isImmutable}
               index={index}
@@ -110,11 +144,11 @@ const Breadcrumbs = ({ className, doCheckIfPinned, doGetPathInfo, onAddFiles, on
               onAddFiles={onAddFiles}
               onClick={onClick}
               onContextMenuHandle={onContextMenuHandle}
-              onMove={onMove} />
-            { index !== bread.length - 1 && <span className='dib pr1 pv1 mid-gray v-top'>/</span>}
+              onMove={onMove}
+            />
+            {index !== bread.length - 1 && <span className='dib pr1 pv1 mid-gray v-top'>/</span>}
           </div>
         ))}
-
       </div>
     </nav>
   );
@@ -128,6 +162,10 @@ Breadcrumbs.propTypes = {
 };
 
 function makeBread (root, t, isImmutable, setImmutable) {
+  if (root.startsWith('/storage')) {
+    root = root.substring(8, root.length);
+  }
+
   if (root.endsWith('/')) {
     root = root.substring(0, root.length - 1);
   }
@@ -164,8 +202,4 @@ function makeBread (root, t, isImmutable, setImmutable) {
   return parts;
 }
 
-export default connect(
-  'doGetPathInfo',
-  'doCheckIfPinned',
-  withTranslation('files')(Breadcrumbs)
-);
+export default connect('doGetPathInfo', 'doCheckIfPinned', withTranslation('files')(Breadcrumbs));
