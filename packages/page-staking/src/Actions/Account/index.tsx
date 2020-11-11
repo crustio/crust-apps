@@ -363,7 +363,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                     disabled={!isOwnController}
                     onClick={toggleValidate}
                   >
-                    {t<string>('Change validator preferences')}
+                    {t<string>('Be validator/Change validator preferences')}
                   </Menu.Item>
                 }
                 {!isStashNominating &&
