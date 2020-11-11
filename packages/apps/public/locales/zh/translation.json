@@ -116,7 +116,7 @@
   "Change reward destination": "更改收益地址",
   "Change session keys": "更改 session 密钥",
   "Change this account's password": "更改这个账户的密码",
-  "Change validator preferences": "更改验证人偏好",
+  "Be validator/Change validator preferences": "成为验证人/更改验证人偏好",
   "Changing the key only takes effect at the start of the next session. The input here is generates from the author_rotateKeys command": "更改密钥只能在下一个 session 开始时生效。这里的输入是从 author_rotateKeys 命令生成的",
   "Chilled ({{count}})": "冻结 ({{count}})",
   "Chilled nominations ({{count}})": "冻结提名 ({{count}})",
@@ -1137,7 +1137,7 @@
   "ongoing referendum": "正在进行的公民投票",
   "only query most recent {{partialEras}} of {{historyDepth}} eras": "仅查询{{historyDepth}} eras的最新{{partialEras}} ",
   "only this network": "仅在这个网络",
-  "only with an identity": "只有一个身份",
+  "only with an identity": "只显示有链上身份",
   "or": "或",
   "origin": "起源",
   "other": "其他",
@@ -1379,5 +1379,14 @@
   "{{step}}. Sign with your ETH address": "{{step}}. 用你的以太坊地址签名",
   "{{threshold}}, not passing": "{{threshold}},没有通过",
   "{{threshold}}, passing": "{{threshold}}, 通过",
-  "{{value}}x voting balance, locked for {{lock}}x enactment ({{period}} days)": "{{value}}x投票余额，锁定 {{lock}}x 执行 ({{period}} days)"
+  "{{value}}x voting balance, locked for {{lock}}x enactment ({{period}} days)": "{{value}}x投票余额，锁定 {{lock}}x 执行 ({{period}} days)",
+  "other effective stake": "他人有效质押量",
+  "own effective stake": "自身有效质押量",
+  "stake limit": "质押上限",
+  "guarantee fee"	: "担保费率",	
+  "last verified block #": "最后验证区块",
+  "Guaranteeing": "担保",
+  "Guarantee selected": "担保选中的",
+  "guarantors": "担保人",
+  "effective stake": "有效票"
 }

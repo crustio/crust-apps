@@ -19,6 +19,7 @@ import { useAccountInfo, useApi, useCall, useToggle } from '@polkadot/react-hook
 import { Option } from '@polkadot/types';
 import keyring from '@polkadot/ui-keyring';
 import { BN_ZERO, formatBalance, formatNumber } from '@polkadot/util';
+import { Balance } from '@polkadot/types/interfaces';
 
 import { useTranslation } from '../translate';
 import { createMenuGroup } from '../util';
@@ -36,6 +37,7 @@ import Transfer from '../modals/Transfer';
 import UndelegateModal from '../modals/Undelegate';
 import useMultisigApprovals from './useMultisigApprovals';
 import useProxies from './useProxies';
+import TransferCandy from '../modals/TransferCandy';
 
 interface Props {
   account: KeyringAddress;
@@ -105,6 +107,9 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
   const [isTransferOpen, toggleTransfer] = useToggle();
   const [isDelegateOpen, toggleDelegate] = useToggle();
   const [isUndelegateOpen, toggleUndelegate] = useToggle();
+  const candyAmount = useCall<Balance>(api.api.query.candy?.balances, [address]);
+  const [isTransferCandyOpen, toggleTransferCandy] = useToggle();
+
 
   useEffect((): void => {
     if (balancesAll) {
@@ -345,6 +350,13 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
             senderId={address}
           />
         )}
+        {isTransferCandyOpen && (
+          <TransferCandy
+            key='modal-transfer'
+            onClose={toggleTransferCandy}
+            senderId={address}
+          />
+        )}
         {isProxyOverviewOpen && (
           <ProxyOverview
             key='modal-proxy-overview'
@@ -409,12 +421,22 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
           withExtended={false}
         />
       </td>
+      <td className='number'>
+        {formatBalance(candyAmount, { withUnit: false})} Candy
+      </td>
       <td className='button'>
         {api.api.tx.balances?.transfer && (
           <Button
             icon='paper-plane'
             label={t<string>('send')}
             onClick={toggleTransfer}
+          />
+        )}
+        {api.api.tx.candy?.transfer && (
+          <Button
+            icon='paper-plane'
+            label={t<string>('send candy')}
+            onClick={toggleTransferCandy}
           />
         )}
         <Popup
