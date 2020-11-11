@@ -82,7 +82,7 @@ const nodeLogos: Record<string, any> = [
   ['centrifuge chain', nodeCentrifuge],
   ['Centrifuge Chain Node', nodeCentrifuge],
   ['crab', nodeCrab],
-  ['crust', nodeCrust],
+  ['crust node', nodeCrust],
   ['darwinia parachain', nodeDarwinia],
   ['Dock Full Node', nodeDockMainnet],
   ['Edgeware Node', nodeEdgeware],
