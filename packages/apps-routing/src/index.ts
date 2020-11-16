@@ -27,7 +27,10 @@ import sudo from './sudo';
 import techcomm from './techcomm';
 import transfer from './transfer';
 import treasury from './treasury';
-import ipfs from '@polkadot/apps-routing/ipfs';
+import ipfsFiles from './ipfsFiles';
+import ipfsExplore from './ipfsExplore';
+import ipfsStatus from './ipfsStatus';
+import ipfsPeers from './ipfsPeers';
 
 export default function create (t: TFunction): Routes {
   return [
@@ -48,12 +51,15 @@ export default function create (t: TFunction): Routes {
     calendar(t),
     contracts(t),
     storage(t),
+    ipfsStatus(t),
+    ipfsFiles(t),
+    ipfsExplore(t),
+    ipfsPeers(t),
     extrinsics(t),
     rpc(t),
     signing(t),
     sudo(t),
     js(t),
-    ipfs(t),
     settings(t)
   ];
 }

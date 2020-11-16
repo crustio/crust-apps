@@ -83,8 +83,6 @@ class FilesPage extends React.Component {
       root = this.props.files.path;
     }
 
-    ;
-
     this.props.doFilesWrite(raw, root);
   }
 
@@ -230,7 +228,7 @@ class FilesPage extends React.Component {
     const { contextMenu } = this.state;
 
     return (
-      <div className='mw9 center'
+      <div className='center'
         data-id='FilesPage'>
         <Helmet>
           <title>{this.title}</title>

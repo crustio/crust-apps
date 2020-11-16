@@ -29,7 +29,7 @@ const StatusPage = ({
   toursEnabled
 }) => {
   return (
-    <div className='mw9 center'
+    <div className='center'
       data-id='StatusPage'>
       <Helmet>
         <title>{t('title')} | IPFS</title>

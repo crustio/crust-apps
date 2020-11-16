@@ -22,5 +22,9 @@
   "nav.tech-comm": "Tech. comm.",
   "nav.transfer": "Transfer",
   "nav.treasury": "Treasury",
-  "nav.wiki": "Wiki"
+  "nav.wiki": "Wiki",
+  "nav.files": "Files",
+  "nav.peers": "Peers",
+  "nav.status": "Status",
+  "nav.explore": "explore"
 }

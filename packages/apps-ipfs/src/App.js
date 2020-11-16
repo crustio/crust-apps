@@ -91,16 +91,14 @@ export class App extends Component {
                 <Connected className='joyride-app-status' />
               </div>
             </div>
-            <main className='bg-white pv3 pa3 pa4-l'>
+            <main className='bg-white pv3 pa3'>
               { (ipfsReady || url === '/welcome' || url.startsWith('/settings'))
                 ? <Page />
                 : <ComponentLoader pastDelay />
               }
             </main>
           </div>
-          <div className='navbar-container flex-none-l bg-navy'>
-            <NavBar />
-          </div>
+
         </div>
 
         <ReactJoyride

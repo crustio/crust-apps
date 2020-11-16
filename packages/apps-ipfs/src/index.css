@@ -1,22 +1,26 @@
-@import './reset.css';
+@import "./reset.css";
 @import "~tachyons";
 /* They forgot to include word break: https://github.com/tachyons-css/tachyons/issues/563 */
 @import "~tachyons/src/_word-break.css";
 @import "~ipfs-css";
+@import "theme.css";
+
 
 body {
   overflow-y: scroll;
 }
 
-.placeholder-light::placeholder{
-  color: #CAD3D8;
+.placeholder-light::placeholder {
+  color: #cad3d8;
 }
 
 .bg-near-white {
   background-color: #fbfbfb;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
@@ -26,23 +30,24 @@ html, body, #root {
 
 .react-joyride__tooltip button {
   font-size: 14px !important;
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
 }
-
 
 body {
   overflow-y: scroll;
 }
 
-.placeholder-light::placeholder{
-  color: #CAD3D8;
+.placeholder-light::placeholder {
+  color: #cad3d8;
 }
 
 .bg-near-white {
   background-color: #fbfbfb;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
@@ -52,5 +57,5 @@ html, body, #root {
 
 .react-joyride__tooltip button {
   font-size: 14px !important;
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
 }
