@@ -83,7 +83,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const isValidator = targets && (targets.validatorIds?.indexOf(stashId) != -1);
   const isGuarantor = guarantors && JSON.parse(JSON.stringify(guarantors)) != null;
   const isCandidate = next && (next?.indexOf(stashId) != -1);
-  const [role, setRole ] = useState<string>('Bonded');
+  const [role, setRole] = useState<string>('Bonded');
   const currentEra = useCall<EraIndex>(api.query.staking.currentEra);
   let guaranteeTargets: IndividualExposure[] = [];
   let stakeValue = new BN(0);
@@ -94,14 +94,20 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const [isCutGuaranteeOpen, toggleCutGuarantee] = useToggle();
 
   useEffect(() => {
+
+  }, [api])
+
+  useEffect(() => {
     if (isGuarantor) {
       setRole('Guarantor');
     } else if (isCandidate) {
       setRole('Candidate');
     } else if (isValidator) {
       setRole('Validator')
+    } else {
+      setRole('Bonded')
     }
-  }, [isValidator, isGuarantor, isCandidate])
+  }, [targets, guarantors, next])
 
   const withdrawFunds = useCallback(
     () => {
@@ -363,7 +369,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                     disabled={!isOwnController}
                     onClick={toggleValidate}
                   >
-                    {t<string>('Be validator/Change validator preferences')}
+                    {t<string>('Change validator preferences')}
                   </Menu.Item>
                 }
                 {!isStashNominating &&

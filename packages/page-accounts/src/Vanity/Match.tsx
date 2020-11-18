@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback, useMemo } from 'react';
-import { ThemeProps } from '@polkadot/react-components/types';
 import styled from 'styled-components';
 import { Button, IdentityIcon } from '@polkadot/react-components';
 import { u8aToHex } from '@polkadot/util';
@@ -97,7 +96,7 @@ export default React.memo(styled(Match)`
 
   .vanity--Match-item {
     display: inline-block;
-    font-family: ${({ theme }: ThemeProps) => theme.fontMono};
+    font-family: monospace;
     margin: 0 auto;
     padding: 0.5em;
     position: relative;

@@ -45,7 +45,7 @@ function createWebpack (ENV, context) {
     alias[name] = path.resolve(context, `../${dir}/src`);
 
     return alias;
-  }, {
+  },  {
     './erasExposure': path.resolve(__dirname, 'src/patch/erasExposure'), 
   './erasRewards': path.resolve(__dirname, 'src/patch/erasRewards'),
   './ownExposure': path.resolve(__dirname, 'src/patch/ownExposure'),
@@ -58,6 +58,11 @@ function createWebpack (ENV, context) {
     mode: ENV,
     module: {
       rules: [
+        {
+          include: /node_modules/,
+          test: /\.mjs$/,
+          type: 'javascript/auto'
+        },
         {
           exclude: /(node_modules)/,
           test: /\.css$/,
@@ -85,12 +90,12 @@ function createWebpack (ENV, context) {
         },
         {
           exclude: /(node_modules)/,
-          test: /\.(js|ts|tsx)$/,
+          test: /\.(js|mjs|ts|tsx)$/,
           use: [
             require.resolve('thread-loader'),
             {
               loader: require.resolve('babel-loader'),
-              options: require('@polkadot/dev/config/babel')
+              options: require('@polkadot/dev/config/babel-config-cjs.cjs')
             }
           ]
         },
@@ -198,7 +203,7 @@ function createWebpack (ENV, context) {
     ]).filter((plugin) => plugin),
     resolve: {
       alias,
-      extensions: ['.js', '.jsx', '.ts', '.tsx']
+      extensions: ['.js', '.jsx', '.mjs', '.ts', '.tsx']
     },
     watch: !isProd,
     watchOptions: {

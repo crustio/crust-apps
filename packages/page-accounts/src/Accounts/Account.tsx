@@ -110,7 +110,6 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
   const candyAmount = useCall<Balance>(api.api.query.candy?.balances, [address]);
   const [isTransferCandyOpen, toggleTransferCandy] = useToggle();
 
-
   useEffect((): void => {
     if (balancesAll) {
       setBalance(address, balancesAll.freeBalance.add(balancesAll.reservedBalance));
@@ -275,7 +274,7 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
             onClick={toggleDelegate}
           />
         )}
-        {!!proxy?.[0].length && (
+        { !!proxy?.[0].length && (
           <Badge
             color='blue'
             hover={t<string>('This account has {{proxyNumber}} proxy set.', {

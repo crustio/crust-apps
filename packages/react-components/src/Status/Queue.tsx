@@ -9,8 +9,8 @@ import { ActionStatus, ActionStatusPartial, PartialQueueTxExtrinsic, PartialQueu
 import React, { useCallback, useRef, useState } from 'react';
 import { SubmittableResult } from '@polkadot/api';
 import { registry } from '@polkadot/react-api';
+import { Bytes } from '@polkadot/types';
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc';
-import { createType } from '@polkadot/types';
 
 import { getContractAbi } from '../util';
 import { QueueProvider } from './Context';
@@ -113,7 +113,7 @@ function extractEvents (result?: SubmittableResult): ActionStatus[] {
               const abi = getContractAbi(accountId.toString());
 
               if (abi) {
-                const decoded = abi.decodeEvent(encoded.toU8a(true));
+                const decoded = abi.decodeEvent(encoded as Bytes);
 
                 return {
                   action: decoded.event.identifier,
@@ -217,8 +217,8 @@ function Queue ({ children }: Props): React.ReactElement<Props> {
       addToTxQueue({
         accountId: payload.address,
         // this is not great, but the Extrinsic we don't need a submittable
-        extrinsic: createType(registry, 'Extrinsic',
-          { method: createType(registry, 'Call', payload.method) },
+        extrinsic: registry.createType('Extrinsic',
+          { method: registry.createType('Call', payload.method) },
           { version: payload.version }
         ) as unknown as SubmittableExtrinsic,
         payload,
