@@ -5,13 +5,18 @@ import StatusPage from '../status/LoadableStatusPage';
 import FilesPage from '../files/LoadableFilesPage';
 import StartExploringPage from '../explore/LoadableStartExploringPage';
 import ExplorePage from '../explore/LoadableExplorePage';
-// import PeersPage from '../peers/LoadablePeersPage'
-// import SettingsPage from '../settings/LoadableSettingsPage'
-// import AnalyticsPage from '../settings/AnalyticsPage'
+// import PeersPage from '../peers/LoadablePeersPage';
+// import SettingsPage from '../settings/LoadableSettingsPage';
+// import AnalyticsPage from '../settings/AnalyticsPage';
 import WelcomePage from '../welcome/LoadableWelcomePage';
 // import BlankPage from '../blank/BlankPage'
 
 export default createRouteBundle({
+  '': StatusPage,
+  '/': StatusPage,
+  '/*': StatusPage,
+  '/storage*': StatusPage,
+  '/storage': StatusPage,
   '/storage/explore*': ExplorePage,
   '/storage/files*': FilesPage,
   '/storage/ipfs*': FilesPage,
@@ -20,9 +25,7 @@ export default createRouteBundle({
   // '/peers': PeersPage,
   // '/settings/analytics': AnalyticsPage,
   // '/settings*': SettingsPage,
-  '/welcome': WelcomePage,
+  '/welcome': WelcomePage
   // '/blank': BlankPage,
   // '/status*': StatusPage,
-  '/storage*': StatusPage,
-  '/storage': StatusPage
 }, { routeInfoSelector: 'selectHash' });

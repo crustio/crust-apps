@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 import React, { useRef } from 'react';
-
+import { Redirect } from 'react-router-dom';
 import { Tabs } from '@polkadot/react-components';
 import IpfsApp from '@polkadot/apps-ipfs/';
 import { KeyedEvent } from '@polkadot/react-query/src/types';
@@ -55,4 +55,4 @@ const IpfsPage: React.FC<Props> = (props) => {
   );
 };
 
-export default React.memo(IpfsPage);
+export default IpfsPage;

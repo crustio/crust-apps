@@ -16,6 +16,8 @@ function NotFound ({ basePath, missingApis = [] }: Props): React.ReactElement {
   return (
     <Redirect to='/explorer' />
   );
+
+  // return <Redirect to='/storage/explorer' />;
 }
 
 export default React.memo(NotFound);

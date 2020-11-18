@@ -9,10 +9,10 @@ export default function create (t: <T = string>(key: string, text: string, optio
   return {
     Component,
     display: {},
-    group: 'storage',
     icon: 'cogs',
-    name: 'storage/files',
-    text: t<string>('nav.ipfs', 'Files', { ns: 'apps-routing' })
+    name: 'storage',
+    group: 'storage',
+    text: t<string>('nav.ipfs', 'Storage', { ns: 'apps-routing' })
   };
 }
 // Copyright 2017-2020 @polkadot/apps-routing authors & contributors
