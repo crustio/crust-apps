@@ -75,13 +75,13 @@ class Header extends React.Component {
 
         <div className='mb3 flex justify-between items-center bg-snow-muted joyride-files-add'>
           <BarOption isLink
-            onClick={() => { onNavigate('/files'); }}
+            onClick={() => { onNavigate('/storage/files'); }}
             title={t('app:terms.files')}>
             { humanSize(filesSize) }
           </BarOption>
 
           <BarOption isLink
-            onClick={() => { onNavigate('/pins'); }}
+            onClick={() => { onNavigate('/storage/pins'); }}
             title={t('app:terms.pins')}>
             { pins ? SimplifyNumber(pins.length) : '-' }
           </BarOption>

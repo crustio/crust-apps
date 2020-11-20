@@ -13,8 +13,6 @@ import WelcomePage from '../welcome/LoadableWelcomePage';
 import Hello from './Hello';
 
 export default createRouteBundle({
-  '': Hello,
-  '/': Hello,
   '/storage/explore*': ExplorePage,
   '/storage/files*': FilesPage,
   '/storage/ipfs*': FilesPage,
@@ -27,5 +25,7 @@ export default createRouteBundle({
   // '/blank': BlankPage,
   // '/status*': StatusPage,
   '/storage*': StatusPage,
-  '/storage': StatusPage
+  '/storage': StatusPage,
+  '': StatusPage,
+  '/': StatusPage
 }, { routeInfoSelector: 'selectHash' });
