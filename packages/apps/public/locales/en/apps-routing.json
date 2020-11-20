@@ -23,8 +23,8 @@
   "nav.transfer": "Transfer",
   "nav.treasury": "Treasury",
   "nav.wiki": "Wiki",
-  "nav.files": "Files",
-  "nav.peers": "Peers",
-  "nav.status": "Status",
-  "nav.explore": "explore"
+  "files": "Files",
+  "peers": "Peers",
+  "status": "Status",
+  "explore": "Explore"
 }

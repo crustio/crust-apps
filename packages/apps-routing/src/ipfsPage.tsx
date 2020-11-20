@@ -2,11 +2,10 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 import React, { useRef } from 'react';
-import { Redirect } from 'react-router-dom';
 import { Tabs } from '@polkadot/react-components';
 import IpfsApp from '@polkadot/apps-ipfs/';
 import { KeyedEvent } from '@polkadot/react-query/src/types';
-import { useTranslation as useTranslationBase, UseTranslationResponse } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { useApi } from '@polkadot/react-hooks';
 interface Props {
   basePath: string;
@@ -14,31 +13,27 @@ interface Props {
   newEvents?: KeyedEvent[];
 }
 
-function useTranslation (): UseTranslationResponse {
-  return useTranslationBase(['apps-routing']);
-}
-
 const IpfsPage: React.FC<Props> = (props) => {
   const { api } = useApi();
-  const { t } = useTranslation();
+  const { t } = useTranslation('apps-routing');
   const itemsRef = useRef([
     {
       isRoot: true,
       name: 'status',
-      text: t<string>('nav.status')
+      text: t('status')
     },
     {
       hasParams: true,
       name: 'files',
-      text: t<string>('nav.files')
+      text: t('files')
     },
     {
       name: 'explorer',
-      text: t<string>('nav.explore')
+      text: t('explore')
     },
     {
       name: 'peers',
-      text: t<string>('nav.peers')
+      text: t('peers')
     }
   ]);
 

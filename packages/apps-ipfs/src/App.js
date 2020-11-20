@@ -66,9 +66,6 @@ export class App extends Component {
   render () {
     const { canDrop, connectDropTarget, doExploreUserProvidedPath, doFilesNavigateTo, ipfsReady, isOver, route: Page, routeInfo: { url }, showTooltip, t } = this.props;
 
-    console.log(t);
-    console.log(ipfsReady, 'ipfsReady');
-
     return connectDropTarget(
       // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
       <div className='sans-serif h-100'

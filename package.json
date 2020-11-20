@@ -119,9 +119,14 @@
   },
   "dependencies": {
     "@types/react-redux": "^7.1.9",
+    "d3": "^6.2.0",
     "i18next-chained-backend": "^2.0.1",
     "ipfs": "^0.51.0",
     "money-clip": "^3.0.2",
-    "react-redux": "^7.2.2"
+    "react-country-flag": "^2.3.0",
+    "react-faux-dom": "^4.5.0",
+    "react-identicons": "^1.2.4",
+    "react-redux": "^7.2.2",
+    "topojson": "^3.0.2"
   }
 }
