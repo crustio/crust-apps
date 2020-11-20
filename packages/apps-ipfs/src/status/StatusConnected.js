@@ -10,17 +10,18 @@ export const StatusConnected = ({ peersCount, repoSize, t }) => {
 
   return (
     <header>
-      <h1 className='montserrat fw2 f3 charcoal ma0 pt0 pb2'>
+      <h1 className='montserrat fw2 f3 charcoal ma0 pt0 pb2 left'>
         <Trans i18nKey='app:status.connectedToIpfs'
-          t={t}>Connected to IPFS</Trans>
+          t={t}>
+          Connected to IPFS
+        </Trans>
       </h1>
-      <p className='montserrat fw4 f5 ma0 pb3 lh-copy'>
+      <p className='montserrat fw4 f5 ma0 pb3 lh-copy left'>
         <span className='db dib-ns'>
           <Trans
             components={[<a className='link blue'
-              href='#/files'>?</a>]}
-            defaults='Hosting <0>{repoSize} of files</0>'
-            i18nKey='StatusConnected.paragraph1'
+              href='#/storage/files'>?</a>]}
+            defaults='Hosting <0>{{repoSize}} of files</0>'
             t={t}
             values={{ repoSize: humanRepoSize }}
           />
@@ -28,10 +29,13 @@ export const StatusConnected = ({ peersCount, repoSize, t }) => {
         <span className='dn di-ns gray'> — </span>
         <span className='db mt1 mt0-ns dib-ns'>
           <Trans
-            components={[<a className='link blue'
-              href='#/peers'>?</a>]}
-            defaults='Discovered <0>{peersCount} peers</0>'
-            i18nKey='StatusConnected.paragraph2'
+            components={[
+              <a className='link blue'
+                href='#/storage/peers'>
+                ?
+              </a>
+            ]}
+            defaults='Discovered <0>{{peersCount}} peers</0>'
             t={t}
             values={{ peersCount: peersCount.toString() }}
           />
@@ -43,8 +47,4 @@ export const StatusConnected = ({ peersCount, repoSize, t }) => {
 
 export const TranslatedStatusConnected = withTranslation('status')(StatusConnected);
 
-export default connect(
-  'selectPeersCount',
-  'selectRepoSize',
-  TranslatedStatusConnected
-);
+export default connect('selectPeersCount', 'selectRepoSize', TranslatedStatusConnected);
