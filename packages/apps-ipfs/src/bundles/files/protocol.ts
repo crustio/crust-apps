@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Pin } from 'ipfs';
 import CID from 'cids';
-import { Perform, Spawn } from '../task';
+// ts-ignore
+import { Perform, Spawn } from '../task.js';
 
 export type { Perform, Spawn };
 

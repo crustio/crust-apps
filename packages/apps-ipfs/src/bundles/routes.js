@@ -10,7 +10,6 @@ import PeersPage from '../peers/LoadablePeersPage';
 // import AnalyticsPage from '../settings/AnalyticsPage';
 import WelcomePage from '../welcome/LoadableWelcomePage';
 // import BlankPage from '../blank/BlankPage'
-import Hello from './Hello';
 
 export default createRouteBundle({
   '/storage/explore': ExplorePage,

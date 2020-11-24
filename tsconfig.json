@@ -7,6 +7,8 @@
   "compilerOptions": {
     "jsx": "react",
     "baseUrl": ".",
+    "declaration": true,
+    "allowJs": true,
     "paths": {
       "@polkadot/apps/*": ["packages/apps/src/*"],
       "@polkadot/apps": ["packages/apps/src"],

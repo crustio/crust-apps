@@ -186,7 +186,8 @@ export const perform = (type, task, ...[init]) =>
  * @param {(context:Context) => AsyncGenerator<Message, Success, void>} task - Task
  * @param {Init[]} rest - Optinal initialization parameter.
  * @returns {(context:Context) => Promise<Success>}
- */export const spawn = (type, task, ...[init]) => async (context) => {
+ */
+export const spawn = (type, task, ...[init]) => async (context) => {
   // Generate unique id for this task
   const id = Symbol(type);
   const start = performance.now();

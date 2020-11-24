@@ -106,6 +106,7 @@ const bundle = {
    * @param {Message} action
    * @returns {Model}
    */
+  // @ts-ignore
   reducer: (state = { isSaving: false }, action) => {
     switch (action.type) {
       case ACTIONS.CONFIG_SAVE: {

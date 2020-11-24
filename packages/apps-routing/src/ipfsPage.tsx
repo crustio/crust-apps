@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 import React, { useRef } from 'react';
 import { Tabs } from '@polkadot/react-components';
+// @ts-ignore
 import IpfsApp from '@polkadot/apps-ipfs/';
 import { KeyedEvent } from '@polkadot/react-query/src/types';
 import { useTranslation } from 'react-i18next';
