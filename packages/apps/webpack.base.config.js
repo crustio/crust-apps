@@ -45,11 +45,11 @@ function createWebpack (ENV, context) {
     alias[name] = path.resolve(context, `../${dir}/src`);
 
     return alias;
-  }, {
+  },  {
     './erasExposure': path.resolve(__dirname, 'src/patch/erasExposure'),
-    './erasRewards': path.resolve(__dirname, 'src/patch/erasRewards'),
-    './ownExposure': path.resolve(__dirname, 'src/patch/ownExposure'),
-    './ownSlashes': path.resolve(__dirname, 'src/patch/ownSlashes')
+  './erasRewards': path.resolve(__dirname, 'src/patch/erasRewards'),
+  './ownExposure': path.resolve(__dirname, 'src/patch/ownExposure'),
+  './ownSlashes': path.resolve(__dirname, 'src/patch/ownSlashes')
   });
 
   return {
@@ -58,6 +58,11 @@ function createWebpack (ENV, context) {
     mode: ENV,
     module: {
       rules: [
+        {
+          include: /node_modules/,
+          test: /\.mjs$/,
+          type: 'javascript/auto'
+        },
         {
           exclude: /(node_modules)/,
           test: /\.css$/,
@@ -85,12 +90,12 @@ function createWebpack (ENV, context) {
         },
         {
           exclude: /(node_modules)/,
-          test: /\.(js|ts|tsx)$/,
+          test: /\.(js|mjs|ts|tsx)$/,
           use: [
             require.resolve('thread-loader'),
             {
               loader: require.resolve('babel-loader'),
-              options: require('@polkadot/dev/config/babel')
+              options: require('@polkadot/dev/config/babel-config-cjs.cjs')
             }
           ]
         },
@@ -150,10 +155,15 @@ function createWebpack (ENV, context) {
       runtimeChunk: 'single',
       splitChunks: {
         cacheGroups: {
+          ...mapChunks('robohash', [
+            /* 00 */ /RoboHash\/(backgrounds|sets\/set1)/,
+            /* 01 */ /RoboHash\/sets\/set(2|3)/,
+            /* 02 */ /RoboHash\/sets\/set(4|5)/
+          ]),
           ...mapChunks('polkadot', [
             /* 00 */ /node_modules\/@polkadot\/(wasm)/,
             /* 01 */ /node_modules\/(@polkadot\/(api|metadata|rpc|types))/,
-            /* 02 */ /node_modules\/(@polkadot\/(extension|keyring|react|ui|util|vanitygen)|@acala-network|@edgeware|@laminar|@ledgerhq|@open-web3|@subsocial|@zondax|edgeware)/
+            /* 02 */ /node_modules\/(@polkadot\/(extension|keyring|networks|react|ui|util|vanitygen)|@acala-network|@edgeware|@laminar|@ledgerhq|@open-web3|@subsocial|@zondax|edgeware)/
           ]),
           ...mapChunks('react', [
             /* 00 */ /node_modules\/(@fortawesome)/,
@@ -193,7 +203,7 @@ function createWebpack (ENV, context) {
     ]).filter((plugin) => plugin),
     resolve: {
       alias,
-      extensions: ['.js', '.jsx', '.ts', '.tsx']
+      extensions: ['.js', '.jsx', '.mjs', '.ts', '.tsx']
     },
     watch: !isProd,
     watchOptions: {

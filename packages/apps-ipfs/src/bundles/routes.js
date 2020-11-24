@@ -13,6 +13,7 @@ import WelcomePage from '../welcome/LoadableWelcomePage';
 import Hello from './Hello';
 
 export default createRouteBundle({
+  '/storage/explore': ExplorePage,
   '/storage/explore*': ExplorePage,
   '/storage/files*': FilesPage,
   '/storage/ipfs*': FilesPage,

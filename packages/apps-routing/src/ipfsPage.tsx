@@ -28,7 +28,7 @@ const IpfsPage: React.FC<Props> = (props) => {
       text: t('files')
     },
     {
-      name: 'explorer',
+      name: 'explore',
       text: t('explore')
     },
     {
