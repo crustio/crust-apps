@@ -21,8 +21,7 @@ interface Props {
 
 function EffectiveStake ({ validators, stakeValue, activeEra, stashId }: Props): React.ReactElement<Props> {
   const { api } = useApi();
-  console.log('456 gnm')
-  console.log('activeEra', activeEra)
+
   let guaranteeTargets: [string, BN, BN][] = [];
   if (validators && JSON.parse(JSON.stringify(validators)) !== null && activeEra && JSON.parse(JSON.stringify(activeEra)) !== null) {
     let tmpTargets = JSON.parse(JSON.stringify(validators));
