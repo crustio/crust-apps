@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { DeriveBalancesAll, DeriveStakingAccount } from '@polkadot/api-derive/types';
-import { SlashingSpans, UnappliedSlash, IndividualExposure, Balance, EraIndex } from '@polkadot/types/interfaces';
+import { SlashingSpans, UnappliedSlash, IndividualExposure, Balance, ActiveEraInfo } from '@polkadot/types/interfaces';
 import { StakerState } from '@polkadot/react-hooks/types';
 import { SortedTargets } from '../../types';
 
@@ -84,7 +84,8 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const isGuarantor = guarantors && JSON.parse(JSON.stringify(guarantors)) != null;
   const isCandidate = next && (next?.indexOf(stashId) != -1);
   const [role, setRole] = useState<string>('Bonded');
-  const currentEra = useCall<EraIndex>(api.query.staking.currentEra);
+  const activeEraInfo = useCall<ActiveEraInfo>(api.query.staking.activeEra);
+  const activeEra = activeEraInfo && (JSON.parse(JSON.stringify(activeEraInfo)).index);
   let guaranteeTargets: IndividualExposure[] = [];
   let stakeValue = new BN(0);
   if (guarantors && JSON.parse(JSON.stringify(guarantors)) != null) {
@@ -224,14 +225,13 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
         <StakingUnbonding stakingInfo={stakingAccount} />
         <StakingRedeemable stakingInfo={stakingAccount} />
       </td>
-      {currentEra && (role !== `Validator` && role !== `Candidate`) ? <EffectiveStake
+      {activeEra && (role !== `Validator` && role !== `Candidate`) ? <EffectiveStake
         validators = {guaranteeTargets}
         stakeValue = {stakeValue}
         stashId= {stashId}
-        currentEra = {currentEra}
-        // stakeValue = { guaranteeTargets.length > 0 ? guaranteeTargets.reduce((total: BN, { value }) => { return JSON.parse(JSON.stringify(value)) ? total.add(value?.unwrap()) : total}, BN_ZERO) : BN_ZERO }
-      /> : currentEra && (
-          <EffectiveGuaranteed currentEra={currentEra}
+        activeEra = {activeEra}
+      /> : activeEra && (
+          <EffectiveGuaranteed activeEra={activeEra}
             stashId={stashId}
           />
         )
