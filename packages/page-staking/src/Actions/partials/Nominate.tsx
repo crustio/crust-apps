@@ -13,7 +13,6 @@ import { useApi, useFavorites } from '@polkadot/react-hooks';
 import { STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
 import BN from 'bn.js';
-import { Guaranteeable } from '@polkadot/react-query';
 
 interface Props {
   className?: string;
@@ -42,8 +41,6 @@ function Nominate ({ className = '', controllerId, nominating, onChange, stashId
     return shortlist
       .concat(...(validatorIds.filter((acc) => !shortlist.includes(acc))));
   });
-
-  const guaranteeable = <span className='label'>{t<string>('guaranteeable')}</span>;
 
   useEffect((): void => {
     onChange({
@@ -100,13 +97,6 @@ function Nominate ({ className = '', controllerId, nominating, onChange, stashId
           label={t<string>('amount')}
           withMax
           onChange={setAmount}
-          labelExtra={
-            selected[0] &&
-            <Guaranteeable
-              label={guaranteeable}
-              params={selected[0]}
-            />
-          }
         />
       </Modal.Column>
     </div>
