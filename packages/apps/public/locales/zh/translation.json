@@ -158,6 +158,7 @@
   "Current prime member, default voting": "现任主要成员，默认投票",
   "Current society head, exempt": "现任社团负责人，豁免",
   "Custom url": "自定义 url",
+  "Cut guarantee": "减投",
   "Decimals": "小数",
   "Decimals decides the smallest unit of the token, which is 1/10^decimals": "小数代表每一单位token最小可以精确到多少位小数",
   "Delegate": "代表",
@@ -224,6 +225,7 @@
   "Genesis Hash refers to initial state of the chain, it cannot be changed once the chain is launched": "创世区块哈希代表网络的初始状态，在网络启动后不可改变",
   "Governance": "治理",
   "Grandpa": "Grandpa",
+  "Guarantee": "担保",
   "Guaranteeing": "担保",
   "Guarantor": "担保",
   "Hash data": "哈希数据",
@@ -1389,7 +1391,5 @@
   "{{step}}. Sign with your ETH address": "{{step}}. 用你的以太坊地址签名",
   "{{threshold}}, not passing": "{{threshold}},没有通过",
   "{{threshold}}, passing": "{{threshold}}, 通过",
-  "{{value}}x voting balance, locked for {{lock}}x enactment ({{period}} days)": "{{value}}x投票余额，锁定 {{lock}}x 执行 ({{period}} days)",
-  "Guarantee": "担保",
-  "Cut guarantee": "减投"
+  "{{value}}x voting balance, locked for {{lock}}x enactment ({{period}} days)": "{{value}}x投票余额，锁定 {{lock}}x 执行 ({{period}} days)"
 }
