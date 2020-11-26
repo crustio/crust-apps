@@ -10,12 +10,13 @@ import { EraIndex, Exposure } from '@polkadot/types/interfaces';
 
 interface Props {
   stashId: string;
-  currentEra: EraIndex;
+  activeEra: EraIndex;
 }
 
-function EffectiveGuaranteed ({ currentEra, stashId }: Props): React.ReactElement<Props> {
+function EffectiveGuaranteed ({ activeEra, stashId }: Props): React.ReactElement<Props> {
   const { api } = useApi();
-  const exposure = useCall<Exposure>(api.query.staking.erasStakers, [JSON.stringify(currentEra), stashId])
+  console.log('123 cnm')
+  const exposure = useCall<Exposure>(api.query.staking.erasStakers, [JSON.stringify(activeEra), stashId])
   let stakeValue = new BN(0);
   if (exposure && JSON.parse(JSON.stringify(exposure)) !== null) {
     stakeValue = exposure.own.unwrap();
