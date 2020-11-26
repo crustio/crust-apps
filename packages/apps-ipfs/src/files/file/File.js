@@ -17,10 +17,10 @@ import Checkbox from '../../components/checkbox/Checkbox';
 import FileIcon from '../file-icon/FileIcon';
 import CID from 'cids';
 import { NativeTypes } from 'react-dnd-html5-backend';
+import StrokeContract from '../../icons/StrokeContract';
 
 const File = ({
-  cantDrag, cantSelect, cid, coloured, focused, handleContextMenuClick, isMfs, name, onAddFiles, onMove, onNavigate, onSelect, path, pinned,
-  selected, size, t, translucent, type
+  cantDrag, cantSelect, cid, coloured, focused, handleContextMenuClick, contracted, isMfs, name, onAddFiles, onMove, onNavigate, onSelect, path, pinned, selected, size, t, translucent, type
 }) => {
   const dotsWrapper = useRef();
 
@@ -35,7 +35,7 @@ const File = ({
   };
 
   const [, drag, preview] = useDrag({
-    item: { name, size, cid, path, pinned, type: 'FILE' },
+    item: { name, size, cid, path, pinned, contracted, type: 'FILE' },
     canDrag: !cantDrag && isMfs
   });
 
@@ -140,10 +140,17 @@ const File = ({
             </Tooltip>
           </div>
         </button>
+        <div className='ph2 pv1 flex-none dn db-l tr mw3'>
+          {<div className='bg-snow br-100 o-70'
+            style={{ width: '1.5rem', height: '1.5rem', visibility: contracted ? 'visible' : "hidden" }}
+            title={t('pinned')}>
+            <StrokeContract className='fill-teal-muted' />
+          </div>}
+        </div>
 
         <div className='ph2 pv1 flex-none dn db-l tr mw3'>
-          { pinned && <div className='bg-snow br-100 o-70'
-            style={{ width: '1.5rem', height: '1.5rem' }}
+          { <div className='bg-snow br-100 o-70'
+            style={{ width: '1.5rem', height: '1.5rem', visibility: pinned ? 'visible' : "hidden" }}
             title={t('pinned')}>
             <GlyphPin className='fill-teal-muted' />
           </div> }
