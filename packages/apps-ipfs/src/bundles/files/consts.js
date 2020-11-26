@@ -61,6 +61,7 @@ export const DEFAULT_STATE = {
   pageContent: null,
   mfsSize: -1,
   pins: [],
+  contracts: [],
   sorting: { // TODO: cache this
     by: SORTING.BY_NAME,
     asc: true

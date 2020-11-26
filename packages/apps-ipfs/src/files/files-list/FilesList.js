@@ -288,10 +288,11 @@ export class FilesList extends React.Component {
   }
 
   rowRenderer = ({ index, key, style }) => {
-    const { canDrop, files, filesPathInfo, isOver, onAddFiles, onInspect, onNavigate, pins } = this.props;
+    const { canDrop, files, filesPathInfo, isOver, onAddFiles, onInspect, onNavigate, pins, contracts } = this.props;
     const { focused, isDragging, selected } = this.state;
 
     const pinsString = pins.map((p) => p.toString());
+    const contractString = contracts.map((p) => p.toString());
 
     return (
       <div key={key}
@@ -314,6 +315,7 @@ export class FilesList extends React.Component {
           }}
           onSelect={this.toggleOne}
           pinned={pinsString.includes(files[index].cid.toString())}
+          contracted={contractString.includes(files[index].cid.toString())}
           selected={selected.indexOf(files[index].name) !== -1}
           setIsDragging={this.isDragging}
           translucent={isDragging || (isOver && canDrop)} />
@@ -428,6 +430,7 @@ export const FilesListWithDropTarget = DropTarget(NativeTypes.FILE, dropTarget, 
 
 export default connect(
   'selectPins',
+  'selectContracts',
   'selectFilesIsFetching',
   'selectFilesSorting',
   'selectFilesPathInfo',

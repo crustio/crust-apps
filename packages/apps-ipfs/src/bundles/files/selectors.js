@@ -24,7 +24,10 @@ const selectors = () => ({
    * @param {Model} state
    */
   selectPins: (state) => state.files.pins,
-
+  /**
+   * @param {Model} state
+   */
+  selectContracts: (state) => state.files.contracts,
   /**
    * @param {Model} state
    */

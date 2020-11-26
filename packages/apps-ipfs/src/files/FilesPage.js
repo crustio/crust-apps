@@ -54,7 +54,7 @@ class FilesPage extends React.Component {
   }
 
   componentDidUpdate (prev) {
-    const { filesPathInfo } = this.props;
+    const { filesPathInfo } = this.props
 
     if (prev.files === null || !prev.ipfsConnected || filesPathInfo.path !== prev.filesPathInfo.path) {
       this.props.doFilesFetch();

@@ -10,6 +10,7 @@ export type { Perform, Spawn };
 export type Model = {
   pageContent: null | PageContent
   pins: string[]
+  contracts: string[]
   sorting: Sorting
   mfsSize: number
 

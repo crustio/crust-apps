@@ -40,13 +40,14 @@ import { IGNORED_FILES, ACTIONS } from './consts';
  * @param {string} [prefix]
  * @returns {FileStat}
  */
-const fileFromStats = ({ cid, cumulativeSize, isParent, name, path, pinned, size, type }, prefix = '/ipfs') => ({
+const fileFromStats = ({ cid, cumulativeSize, isParent, name, contracted, path, pinned, size, type }, prefix = '/ipfs') => ({
   size: cumulativeSize || size || 0,
   type: type === 'dir' ? 'directory' : type,
   cid,
   name: name || path.split('/').pop() || cid.toString(),
   path: path || `${prefix}/${cid.toString()}`,
   pinned: Boolean(pinned),
+  contracted: Boolean(contracted),
   isParent: isParent
 });
 
@@ -87,19 +88,13 @@ const stat = async (ipfs, cidOrPath) => {
 
   try {
     const stats = await ipfs.files.stat(path);
-
     return { path, ...stats };
   } catch (e) {
-    console.log(e);
     // Discard error and mark DAG as 'unknown' to unblock listing other pins.
     // Clicking on 'unknown' entry will open it in Inspector.
     // No information is lost: if there is an error related
     // to specified hashOrPath user will read it in Inspector.
-    console.log(path);
-
     const [, , cid] = path.split('/');
-
-    console.log(cid);
 
     return {
       path: hashOrPath,
@@ -137,6 +132,9 @@ const getPins = async function * (ipfs) {
     yield fileFromStats({ ...info, pinned: true }, '/pins');
   }
 };
+const getContracts = async function * (){
+
+}
 
 /**
  * @typedef {import('./protocol').Message} Message
@@ -182,8 +180,6 @@ const actions = () => ({
     const isConnected = store.selectIpfsConnected();
     const isFetching = store.selectFilesIsFetching();
     const info = store.selectFilesPathInfo();
-
-    ;
 
     if (isReady && isConnected && !isFetching && info) {
       await store.doFetch(info);
