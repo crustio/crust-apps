@@ -143,7 +143,7 @@ const File = ({
         <div className='ph2 pv1 flex-none dn db-l tr mw3'>
           {<div className='bg-snow br-100 o-70'
             style={{ width: '1.5rem', height: '1.5rem', visibility: contracted ? 'visible' : "hidden" }}
-            title={t('pinned')}>
+            title={t('contracted')}>
             <StrokeContract className='fill-teal-muted' />
           </div>}
         </div>

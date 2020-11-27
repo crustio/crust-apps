@@ -170,6 +170,11 @@ const actions = () => ({
 
     return { pins: cids };
   }),
+  doContractsFetch: () => perform(ACTIONS.CONTRACT_LIST, async (ipfs) => {
+    // mock get pin filelist
+    const cids = await all(getPinCIDs(ipfs));
+    return { contracts: cids };
+  }),
 
   /**
    * Syncs currently selected path file list.

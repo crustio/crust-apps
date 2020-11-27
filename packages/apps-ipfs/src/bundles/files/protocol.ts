@@ -66,6 +66,7 @@ export type Message =
   | Perform<'FILES_PIN_ADD', Error, Pin[], void>
   | Perform<'FILES_PIN_REMOVE', Error, Pin[], void>
   | Perform<'FILES_PIN_LIST', Error, { pins: CID[] }, void>
+  | Perform<'FILES_CONTRACT_LIST', Error, { pins: CID[] }, void>
   | Perform<'FILES_SIZE_GET', Error, { size: number }, void>
 
 export type MakeDir = Perform<'FILES_MAKEDIR', Error, void, void>

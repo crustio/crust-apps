@@ -50,6 +50,7 @@ class FilesPage extends React.Component {
     this.props.doFilesFetch();
 
     this.props.doPinsFetch();
+    this.props.doContractsFetch();
     this.props.doFilesSizeGet();
   }
 
@@ -309,6 +310,7 @@ FilesPage.propTypes = {
   filesPathInfo: PropTypes.object,
   doUpdateHash: PropTypes.func.isRequired,
   doPinsFetch: PropTypes.func.isRequired,
+  doContractsFetch: PropTypes.func.isRequired,
   doFilesFetch: PropTypes.func.isRequired,
   doFilesMove: PropTypes.func.isRequired,
   doFilesMakeDir: PropTypes.func.isRequired,
@@ -330,6 +332,7 @@ export default connect(
   'selectFilesPathInfo',
   'doUpdateHash',
   'doPinsFetch',
+  'doContractsFetch',
   'doFilesFetch',
   'doFilesMove',
   'doFilesMakeDir',

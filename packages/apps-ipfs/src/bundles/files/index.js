@@ -52,6 +52,19 @@ export default () => {
             pins
           };
         }
+        case ACTIONS.CONTRACT_LIST: {
+          const { task, type } = action;
+
+          const contracts = task.status === 'Exit' && task.result.ok
+            ? task.result.value.contracts.map(String)
+            : state.contracts;
+
+          return {
+            ...updateJob(state, task, type),
+            contracts
+          };
+        }
+
 
         case ACTIONS.FETCH: {
           const { task, type } = action;
