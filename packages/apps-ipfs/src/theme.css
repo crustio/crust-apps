@@ -86,6 +86,8 @@
 .b--aqua {
   border-color: #ff8812;
 }
+.teal,
+.fill-teal,
 .fill-teal-muted {
   fill: #ff8812;
 }
