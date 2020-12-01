@@ -1395,5 +1395,6 @@
   "I have saved my mnemonic seed safely": "我已经安全保存好助记词种子",
   "Next": "下一步",
   "Prev": "上一步",
-  "total storage": "总存储量"
+  "total storage": "总存储量",
+  "Guarantee selected": "担保选中的"
 }
