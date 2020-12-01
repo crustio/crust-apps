@@ -130,9 +130,9 @@ const getPins = async function * (ipfs) {
     yield fileFromStats({ ...info, pinned: true }, '/pins');
   }
 };
-const getContracts = async function * (){
-
-}
+// const getContracts = async function * (){
+//     return []
+// }
 
 /**
  * @typedef {import('./protocol').Message} Message
@@ -282,25 +282,18 @@ const actions = () => ({
     yield { entries, progress: 0 };
 
     const { progress, result } = importFiles(ipfs, files);
-
-    ;
-
     for await (const update of progress) {
       loaded += update.loaded;
       yield { entries, progress: loaded / totalSize * 100 };
     }
 
-    ;
-
     try {
       const added = await result;
 
-      ;
       const numberOfFiles = files.length;
       const numberOfDirs = countDirs(files);
       const expectedResponseCount = numberOfFiles + numberOfDirs;
 
-      ;
 
       if (added.length !== expectedResponseCount) {
         // See https://github.com/ipfs/js-ipfs-api/issues/797
@@ -328,12 +321,10 @@ const actions = () => ({
       }
 
       yield { entries, progress: 100 };
-      ;
 
       return entries;
     } finally {
       await store.doFilesFetch();
-      ;
     }
   }),
 
@@ -422,9 +413,9 @@ const actions = () => ({
    */
   doFilesMove: (src, dst) => perform(ACTIONS.MOVE, async (ipfs, { store }) => {
     ensureMFS(store);
-
+    console.log(src, dst, 'doFilesMove');
     try {
-      await ipfs.files.mv(realMfsPath(src), realMfsPath(dst));
+      await ipfs.files.mv(realMfsPath(getRealPath(src)), realMfsPath(getRealPath(dst)));
 
       const page = store.selectFiles();
       const pagePath = page && page.path;

@@ -14,6 +14,7 @@ import AddByPathModal from './add-by-path-modal/AddByPathModal';
 import CliTutorMode from '../../components/cli-tutor-mode/CliTutorMode';
 import { cliCommandList, cliCmdKeys } from '../../bundles/files/consts';
 import { realMfsPath } from '../../bundles/files/actions';
+import { getRealPath } from '@polkadot/apps-ipfs/bundles/files/utils';
 // Constants
 const NEW_FOLDER = 'new_folder';
 const SHARE = 'share';
@@ -59,9 +60,10 @@ class Modals extends React.Component {
   }
 
   rename = (newName) => {
-    const { filename, path } = this.state.rename;
+    let { filename, path } = this.state.rename;
     const { onMove } = this.props;
-
+    console.log(filename, newName);
+    filename = getRealPath(filename)
     if (newName !== '' && newName !== filename) {
       onMove(path, path.replace(filename, newName));
     }
