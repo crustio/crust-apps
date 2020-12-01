@@ -12,6 +12,7 @@ import { NativeTypes } from 'react-dnd-html5-backend';
 import { normalizeFiles } from '../../lib/files';
 
 import './Breadcrumbs.css';
+import { getRealPath } from '@polkadot/apps-ipfs/bundles/files/utils';
 
 const DropableBreadcrumb = ({
   checkIfPinned,
@@ -162,9 +163,7 @@ Breadcrumbs.propTypes = {
 };
 
 function makeBread (root, t, isImmutable, setImmutable) {
-  if (root.startsWith('/storage')) {
-    root = root.substring(8, root.length);
-  }
+  root = getRealPath(root)
 
   if (root.endsWith('/')) {
     root = root.substring(0, root.length - 1);

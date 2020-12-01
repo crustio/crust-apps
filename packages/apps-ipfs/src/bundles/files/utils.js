@@ -340,3 +340,13 @@ export const ensureMFS = (store) => {
     throw new Error('Unable to perform task if not in MFS');
   }
 };
+/**
+ * @param {String} path
+ * @return String
+ */
+export const getRealPath =  (path) => {
+  if (path.startsWith('/storage')) {
+    path = path.substring(8, path.length);
+  }
+  return path
+}

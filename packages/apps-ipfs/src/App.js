@@ -18,7 +18,6 @@ import NavBar from './navigation/NavBar';
 import ComponentLoader from './loader/ComponentLoader';
 import Notify from './components/notify/Notify';
 import Connected from './components/connected/Connected';
-import TourHelper from './components/tour/TourHelper';
 import FilesExploreForm from './files/explore-form/FilesExploreForm';
 
 export class App extends Component {
@@ -84,7 +83,7 @@ export class App extends Component {
                   onInspect={doExploreUserProvidedPath} />
               </div>
               <div className='dn flex-ns flex-auto items-center justify-end'>
-                <TourHelper />
+                {/*<TourHelper />*/}
                 <Connected className='joyride-app-status' />
               </div>
             </div>

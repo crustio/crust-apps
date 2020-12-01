@@ -8,7 +8,7 @@ import map from 'it-map';
 import last from 'it-last';
 import CID from 'cids';
 
-import { spawn, perform, send, ensureMFS, Channel, sortFiles, infoFromPath } from './utils';
+import { spawn, perform, send, ensureMFS, Channel, sortFiles, infoFromPath, getRealPath } from './utils';
 import { IGNORED_FILES, ACTIONS } from './consts';
 
 /**
@@ -78,9 +78,7 @@ export const realMfsPath = (path) => {
 const stat = async (ipfs, cidOrPath) => {
   let hashOrPath = cidOrPath.toString();
 
-  if (hashOrPath.startsWith('/storage')) {
-    hashOrPath = hashOrPath.slice(8, hashOrPath.length) || '/';
-  }
+  hashOrPath = getRealPath(hashOrPath)  || '/'
 
   const path = hashOrPath.startsWith('/')
     ? hashOrPath
@@ -311,20 +309,13 @@ const actions = () => ({
         });
       }
 
-      ;
-
       for (const { cid, path } of added) {
         // Only go for direct children
         if (path.indexOf('/') === -1 && path !== '') {
           const src = `/ipfs/${cid}`;
-
-          if (root.startsWith('/storage')) {
-            root = root.slice(8, root.length);
-          }
+          root = getRealPath(root)
 
           const dst = join(realMfsPath(root || '/files'), path);
-
-          ;
 
           try {
             await ipfs.files.cp(src, dst);
@@ -356,9 +347,10 @@ const actions = () => ({
 
     if (files.length > 0) {
       const promises = files
-        .map((file) => ipfs.files.rm(realMfsPath(file), {
-          recursive: true
-        }));
+        .map((file) => ipfs.files.rm(realMfsPath(getRealPath(file)), {
+        recursive: true
+      })
+    );
 
       try {
         await Promise.all(promises);

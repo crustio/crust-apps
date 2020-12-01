@@ -49,7 +49,7 @@ DeleteModal.propTypes = {
   folders: PropTypes.number,
   t: PropTypes.func.isRequired,
   tReady: PropTypes.bool.isRequired
-};
+}
 
 DeleteModal.defaultProps = {
   className: '',

@@ -71,7 +71,7 @@ class Modals extends React.Component {
 
   delete = () => {
     const { paths } = this.state.delete;
-
+    console.log(paths, 'paths');
     this.props.onDelete(paths);
     this.leave();
   }
