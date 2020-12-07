@@ -45,11 +45,11 @@ function createWebpack (ENV, context) {
     alias[name] = path.resolve(context, `../${dir}/src`);
 
     return alias;
-  },  {
-    './erasExposure': path.resolve(__dirname, 'src/patch/erasExposure'), 
-  './erasRewards': path.resolve(__dirname, 'src/patch/erasRewards'),
-  './ownExposure': path.resolve(__dirname, 'src/patch/ownExposure'),
-  './ownSlashes': path.resolve(__dirname, 'src/patch/ownSlashes')
+  }, {
+    './erasExposure': path.resolve(__dirname, 'src/patch/erasExposure'),
+    './erasRewards': path.resolve(__dirname, 'src/patch/erasRewards'),
+    './ownExposure': path.resolve(__dirname, 'src/patch/ownExposure'),
+    './ownSlashes': path.resolve(__dirname, 'src/patch/ownSlashes')
   });
 
   return {
@@ -163,7 +163,7 @@ function createWebpack (ENV, context) {
           ...mapChunks('polkadot', [
             /* 00 */ /node_modules\/@polkadot\/(wasm)/,
             /* 01 */ /node_modules\/(@polkadot\/(api|metadata|rpc|types))/,
-            /* 02 */ /node_modules\/(@polkadot\/(extension|keyring|networks|react|ui|util|vanitygen)|@acala-network|@edgeware|@laminar|@ledgerhq|@open-web3|@subsocial|@zondax|edgeware)/
+            /* 02 */ /node_modules\/(@polkadot\/(extension|keyring|networks|react|ui|util|vanitygen)|@acala-network|@edgeware|@laminar|@ledgerhq|@open-web3|@sora-substrate|@subsocial|@zondax|edgeware)/
           ]),
           ...mapChunks('react', [
             /* 00 */ /node_modules\/(@fortawesome)/,

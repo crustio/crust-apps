@@ -1,6 +1,8 @@
 // Copyright 2017-2020 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+import type { ThemeProps } from '@polkadot/react-components/types';
+
 import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { Button, IdentityIcon } from '@polkadot/react-components';
@@ -68,7 +70,7 @@ function Match ({ address, className = '', count, offset, onCreateToggle, onRemo
   );
 }
 
-export default React.memo(styled(Match)`
+export default React.memo(styled(Match)(({ theme }: ThemeProps) => `
   text-align: center;
 
   &:hover {
@@ -96,7 +98,7 @@ export default React.memo(styled(Match)`
 
   .vanity--Match-item {
     display: inline-block;
-    font-family: monospace;
+    font: ${theme.fontMono};
     margin: 0 auto;
     padding: 0.5em;
     position: relative;
@@ -106,4 +108,4 @@ export default React.memo(styled(Match)`
     opacity: 0.45;
     padding: 0 1rem;
   }
-`);
+`));

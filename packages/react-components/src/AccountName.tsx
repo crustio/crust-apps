@@ -1,12 +1,12 @@
 // Copyright 2017-2020 @polkadot/react-query authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { IconName } from '@fortawesome/fontawesome-svg-core';
-import { DeriveAccountInfo, DeriveAccountRegistration } from '@polkadot/api-derive/types';
-import { AccountId, AccountIndex, Address } from '@polkadot/types/interfaces';
+import type { IconName } from '@fortawesome/fontawesome-svg-core';
+import type { DeriveAccountInfo, DeriveAccountRegistration } from '@polkadot/api-derive/types';
+import type { ThemeProps } from '@polkadot/react-components/types';
+import type { AccountId, AccountIndex, Address } from '@polkadot/types/interfaces';
 
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { ThemeProps } from '@polkadot/react-components/types';
 import styled from 'styled-components';
 import registry from '@polkadot/react-api/typeRegistry';
 import { AccountSidebarToggle } from '@polkadot/app-accounts/Sidebar';
@@ -182,7 +182,7 @@ function AccountName ({ children, className = '', defaultName, label, onClick, o
   );
 }
 
-export default React.memo(styled(AccountName)`
+export default React.memo(styled(AccountName)(({ theme }: ThemeProps) => `
   border: 1px dotted transparent;
   vertical-align: middle;
   white-space: nowrap;
@@ -193,7 +193,7 @@ export default React.memo(styled(AccountName)`
   }
 
   .via-identity {
-    align-items: end;
+    align-items: center;
     display: inline-flex;
     width: 100%;
 
@@ -210,7 +210,7 @@ export default React.memo(styled(AccountName)`
       }
 
       &.isAddress {
-        font-family: ${({ theme }: ThemeProps) => theme.fontMono};
+        font: ${theme.fontMono};
         text-transform: none;
       }
 
@@ -230,4 +230,4 @@ export default React.memo(styled(AccountName)`
       }
     }
   }
-`);
+`));

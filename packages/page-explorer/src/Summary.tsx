@@ -9,7 +9,6 @@ import { BN_ONE } from '@polkadot/util';
 
 import SummarySession from './SummarySession';
 import { useTranslation } from './translate';
-import TotalStorage from '@polkadot/react-query/TotalStorage';
 
 function Summary (): React.ReactElement {
   const { t } = useTranslation();
@@ -33,14 +32,6 @@ function Summary (): React.ReactElement {
             label={t<string>('total issuance')}
           >
             <TotalIssuance />
-          </CardSummary>
-        )}
-        {api.query.swork && (
-          <CardSummary
-            className='media--800'
-            label={t<string>('total storage')}
-          >
-            <TotalStorage />
           </CardSummary>
         )}
       </section>

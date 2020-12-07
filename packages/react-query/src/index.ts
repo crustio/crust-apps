@@ -20,6 +20,5 @@ export { default as NodeVersion } from './NodeVersion';
 export { default as Nonce } from './Nonce';
 export { default as TimeNow } from './TimeNow';
 export { default as TotalIssuance } from './TotalIssuance';
-export { default as CutGuaranteeable } from './CutGuaranteeable';
-export { default as Guaranteeable } from './Guaranteeable';
 export { default as FormatCapacity } from './FormatCapacity';
+export { default as FormatCandy } from './FormatCandy';
