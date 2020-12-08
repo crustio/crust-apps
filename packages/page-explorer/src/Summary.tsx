@@ -4,12 +4,11 @@
 import React from 'react';
 import { useApi } from '@polkadot/react-hooks';
 import { SummaryBox, CardSummary } from '@polkadot/react-components';
-import { BestFinalized, BestNumber, BlockToTime, TimeNow, TotalIssuance } from '@polkadot/react-query';
+import { BestFinalized, BestNumber, BlockToTime, TimeNow, TotalIssuance, TotalStorage } from '@polkadot/react-query';
 import { BN_ONE } from '@polkadot/util';
 
 import SummarySession from './SummarySession';
 import { useTranslation } from './translate';
-import TotalStorage from '@polkadot/react-query/TotalStorage';
 
 function Summary (): React.ReactElement {
   const { t } = useTranslation();

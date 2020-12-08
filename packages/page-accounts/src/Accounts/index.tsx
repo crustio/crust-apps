@@ -1,9 +1,9 @@
 // Copyright 2017-2020 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { ActionStatus } from '@polkadot/react-components/Status/types';
-import { AccountId, ProxyDefinition, ProxyType, Voting } from '@polkadot/types/interfaces';
-import { Delegation, SortedAccount } from '../types';
+import type { ActionStatus } from '@polkadot/react-components/Status/types';
+import type { AccountId, ProxyDefinition, ProxyType, Voting } from '@polkadot/types/interfaces';
+import type { Delegation, SortedAccount } from '../types';
 
 import BN from 'bn.js';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -139,6 +139,7 @@ function Overview ({ className = '', onStatusChange }: Props): React.ReactElemen
         {balanceTotal && <FormatBalance value={balanceTotal} />}
       </td>
       <td />
+      <td />
       <td className='media--1400' />
     </tr>
   ), [balanceTotal]);
@@ -238,7 +239,7 @@ function Overview ({ className = '', onStatusChange }: Props): React.ReactElemen
         footer={footer}
         header={headerRef.current}
       >
-        {isLoading ? undefined : sortedAccountsWithDelegation?.map(({ account, delegation, isFavorite }, index): React.ReactNode => (
+        {!isLoading && sortedAccountsWithDelegation?.map(({ account, delegation, isFavorite }, index): React.ReactNode => (
           <Account
             account={account}
             delegation={delegation}

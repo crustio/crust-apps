@@ -1,6 +1,5 @@
 // Copyright 2017-2020 @polkadot/app-accounts authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
 import BN from 'bn.js';
 import React, { useState } from 'react';
@@ -21,7 +20,6 @@ function TransferCandy ({ className = '', onClose, recipientId: propRecipientId,
   const { t } = useTranslation();
   const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
   const [hasAvailable] = useState(true);
-  const [] = useState(true);
   const [maxBalance] = useState(BN_ZERO);
   const [recipientId, setRecipientId] = useState<string | null>(propRecipientId || null);
   const [senderId, setSenderId] = useState<string | null>(propSenderId || null);

@@ -1,6 +1,6 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+/* eslint-disable */
 
 import type { TFunction } from 'i18next';
 import { DeriveStakerReward } from '@polkadot/api-derive/types';
@@ -13,7 +13,6 @@ import styled from 'styled-components';
 import { ApiPromise } from '@polkadot/api';
 import { Button, Table, ToggleGroup } from '@polkadot/react-components';
 import { useApi, useCall, useOwnEraRewards } from '@polkadot/react-hooks';
-// import { FormatBalance } from '@polkadot/react-query';
 import { BN_ZERO, isFunction } from '@polkadot/util';
 
 import ElectionBanner from '../ElectionBanner';
@@ -115,7 +114,6 @@ function getAvailable (allRewards: Record<string, DeriveStakerReward[]> | null |
     };
   }
 
-
   return {};
 }
 
@@ -163,7 +161,7 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
   const historyDepth = useCall<BN>(api.query.staking.historyDepth);
   const stakerPayoutsAfter = useStakerPayouts();
   const isDisabled = isInElection || !isFunction(api.tx.utility?.batch);
-  
+
   const eraSelection = useMemo(
     () => getOptions(api, eraLength, historyDepth, t),
     [api, eraLength, historyDepth, t]
