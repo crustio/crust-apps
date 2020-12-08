@@ -22,3 +22,4 @@ export { default as TimeNow } from './TimeNow';
 export { default as TotalIssuance } from './TotalIssuance';
 export { default as FormatCapacity } from './FormatCapacity';
 export { default as FormatCandy } from './FormatCandy';
+export { default as TotalStorage } from './TotalStorage';
