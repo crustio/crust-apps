@@ -1,14 +1,13 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+/* eslint-disable */
 
-import { IndividualExposure } from '@polkadot/types/interfaces';
+import { IndividualExposure, EraIndex, Exposure } from '@polkadot/types/interfaces';
 
 import BN from 'bn.js';
 import React from 'react';
 import { AddressMini, Expander } from '@polkadot/react-components';
 import { FormatBalance } from '@polkadot/react-query';
-import { EraIndex, Exposure } from '@polkadot/types/interfaces';
 import { BN_ZERO } from '@polkadot/util';
 import { useCall, useApi } from '@polkadot/react-hooks';
 
@@ -19,17 +18,18 @@ interface Props {
   activeEra: EraIndex;
 }
 
-function EffectiveStake ({ validators, stakeValue, activeEra, stashId }: Props): React.ReactElement<Props> {
+function EffectiveStake ({ activeEra, stakeValue, stashId, validators }: Props): React.ReactElement<Props> {
   const { api } = useApi();
 
-  let guaranteeTargets: [string, BN, BN][] = [];
+  const guaranteeTargets: [string, BN, BN][] = [];
+
   if (validators && JSON.parse(JSON.stringify(validators)) !== null && activeEra && JSON.parse(JSON.stringify(activeEra)) !== null) {
     let tmpTargets = JSON.parse(JSON.stringify(validators));
     let params = tmpTargets.map((e: { who: any; }) => e.who);
     let query = [];
     for (const param of params) {
       query.push([activeEra, param]);
-    }
+    };
     const multiQuery = useCall<Exposure[]>(api.query.staking.erasStakers.multi, [query]);
 
     if (multiQuery) {

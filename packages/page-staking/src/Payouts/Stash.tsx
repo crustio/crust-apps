@@ -1,6 +1,6 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+/* eslint-disable */
 
 import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { DeriveStakerReward, DeriveStakingAccount } from '@polkadot/api-derive/types';
@@ -70,7 +70,7 @@ function Stash ({ className = '', isDisabled, payout: { available, rewards, stas
   if (available.isZero()) {
     return null;
   }
-  
+
   return (
     <tr className={className}>
       <td

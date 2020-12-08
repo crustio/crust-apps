@@ -1,0 +1,5 @@
+.eslintrc.js
+**/build/*
+**/coverage/*
+**/node_modules/*
+**/packages/apps/src/patch/*

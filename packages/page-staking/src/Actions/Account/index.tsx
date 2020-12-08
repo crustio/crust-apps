@@ -1,6 +1,6 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+/* eslint-disable */
 
 import { DeriveBalancesAll, DeriveStakingAccount } from '@polkadot/api-derive/types';
 import { SlashingSpans, UnappliedSlash, IndividualExposure, Balance, ActiveEraInfo } from '@polkadot/types/interfaces';
@@ -386,8 +386,8 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                   </Menu.Item>
                 }
                 <Menu.Divider />
-                
-               
+
+
                 { role !== 'Validator' && 'Guarantee' }
                 { role !== 'Validator' &&
                   <Menu.Item

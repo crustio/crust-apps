@@ -37,7 +37,7 @@ import UndelegateModal from '../modals/Undelegate';
 import useMultisigApprovals from './useMultisigApprovals';
 import useProxies from './useProxies';
 import TransferCandy from '../modals/TransferCandy';
-import {FormatCandy} from "@polkadot/react-query";
+import { FormatCandy } from '@polkadot/react-query';
 
 interface Props {
   account: KeyringAddress;

@@ -287,7 +287,7 @@ function createTestNetworks (t: TFunction): LinkOption[] {
       text: t('rpc.crust.network', 'Crust Maxwell CC2', { ns: 'apps-config' }),
       textBy: t('rpc.hosted.by', 'hosted by {{host}}', { ns: 'apps-config', replace: { host: 'Crust Network' } }),
       value: 'wss://api.crust.network/'
-    },
+    }
     // {
     //   info: 'datahighway',
     //   isDisabled: true,

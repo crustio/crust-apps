@@ -1,6 +1,6 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+/* eslint-disable */
 
 import { StakerState } from '@polkadot/react-hooks/types';
 
@@ -47,7 +47,7 @@ function Nominate ({ className = '', isDisabled, ownNominators, targets }: Props
     () => (ownNominators || []).map(({ stashId }) => stashId),
     [ownNominators]
   );
-  
+
   useEffect((): void => {
     api.tx.utility && targets && setExtrinsic(
       () => createExtrinsic(api, targets, targetAmount)
@@ -104,9 +104,9 @@ function Nominate ({ className = '', isDisabled, ownNominators, targets }: Props
             <Modal.Columns>
               <Modal.Column>
                 {targets.map((validatorId) => {
-                  return <TargetGuarantee 
+                  return <TargetGuarantee
                     key={validatorId}
-                    validatorId={validatorId} 
+                    validatorId={validatorId}
                     targetAmount={targetAmount}
                     setTargetAmount={setTargetAmount}
                     />
