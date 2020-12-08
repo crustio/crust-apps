@@ -29,7 +29,7 @@ const K_LENGTH = 3 + 1;
 function format (value: Compact<any> | BN | string, withCurrency = true, withSi?: boolean, _isShort?: boolean, labelPost?: string): React.ReactNode {
   const [prefix, postfix] = formatBalance(value, { forceUnit: '-', withSi: false }).split('.');
   const isShort = _isShort || (withSi && prefix.length >= K_LENGTH);
-  const unitPost = 'candy';
+  const unitPost = 'Candy';
 
   if (prefix.length > M_LENGTH) {
     const [major, rest] = formatBalance(value, { withUnit: false }).split('.');
