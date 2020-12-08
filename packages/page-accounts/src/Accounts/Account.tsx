@@ -6,7 +6,7 @@ import type { DeriveBalancesAll, DeriveDemocracyLock } from '@polkadot/api-deriv
 import type { ActionStatus } from '@polkadot/react-components/Status/types';
 import type { ThemeDef } from '@polkadot/react-components/types';
 import type { Option } from '@polkadot/types';
-import type { ProxyDefinition, RecoveryConfig } from '@polkadot/types/interfaces';
+import type { ProxyDefinition, RecoveryConfig, Balance } from '@polkadot/types/interfaces';
 import type { KeyringAddress } from '@polkadot/ui-keyring/types';
 import type { Delegation } from '../types';
 
