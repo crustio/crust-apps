@@ -451,7 +451,7 @@ const actions = () => ({
    */
   doFilesMakeDir: (path) => perform(ACTIONS.MAKE_DIR, async (ipfs, { store }) => {
     ensureMFS(store);
-
+    path = getRealPath(path)
     try {
       await ipfs.files.mkdir(realMfsPath(path), {
         parents: true
