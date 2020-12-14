@@ -350,3 +350,14 @@ export const getRealPath =  (path) => {
   }
   return path
 }
+/**
+ *
+ * @param {String} path
+ * @return string
+ */
+export const addPrefix  = (path) => {
+  if (!path.startsWith('/storage')) {
+    path = '/storage' +  path
+  }
+  return  path
+}

@@ -6,7 +6,7 @@ import FilesPage from '../files/LoadableFilesPage';
 import StartExploringPage from '../explore/LoadableStartExploringPage';
 import ExplorePage from '../explore/LoadableExplorePage';
 import PeersPage from '../peers/LoadablePeersPage';
-// import SettingsPage from '../settings/LoadableSettingsPage';
+// import SettingsPage from '../settings/LoadableSettigsPage';
 // import AnalyticsPage from '../settings/AnalyticsPage';
 import WelcomePage from '../welcome/LoadableWelcomePage';
 // import BlankPage from '../blank/BlankPage'
