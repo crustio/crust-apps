@@ -1,7 +1,6 @@
 // // [object Object]
 // // SPDX-License-Identifier: Apache-2.0
 import i18n from '../../react-components/src/i18n';
-console.log(i18n);
 // import ICU from 'i18next-icu';
 // import Backend from 'i18next-chained-backend';
 // import LocalStorageBackend from 'i18next-localstorage-backend';

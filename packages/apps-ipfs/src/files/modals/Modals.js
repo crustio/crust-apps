@@ -62,7 +62,6 @@ class Modals extends React.Component {
   rename = (newName) => {
     let { filename, path } = this.state.rename;
     const { onMove } = this.props;
-    console.log(filename, newName);
     filename = getRealPath(filename)
     if (newName !== '' && newName !== filename) {
       onMove(path, path.replace(filename, newName));
@@ -73,7 +72,6 @@ class Modals extends React.Component {
 
   delete = () => {
     const { paths } = this.state.delete;
-    console.log(paths, 'paths');
     this.props.onDelete(paths);
     this.leave();
   }

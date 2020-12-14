@@ -350,7 +350,7 @@ export class FilesList extends React.Component {
                   checked={allSelected}
                   onChange={this.toggleAll}/>
               </div>
-              <div className='ph2 f6 flex-auto'>
+              <div className='ph2 f6 flex-auto' style={{ textAlign: 'left' }}>
                 <button aria-label={ t('sortBy', { name: t('app:terms.name') })}
                   onClick={this.changeSort(sorts.BY_NAME)}>
                   {t('app:terms.name')} {this.sortByIcon(sorts.BY_NAME)}

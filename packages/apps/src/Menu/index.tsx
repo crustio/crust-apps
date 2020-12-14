@@ -68,7 +68,6 @@ function checkVisible (name: string, { api, isApiConnected, isApiReady }: ApiPro
 }
 
 function extractGroups (routing: Routes, groupNames: Record<string, string>, apiProps: ApiProps, hasAccounts: boolean, hasSudo: boolean): Group[] {
-  console.log(groupNames);
   return Object
     .values(
       routing.reduce((all: Groups, route): Groups => {
@@ -118,7 +117,6 @@ function Menu ({ className = '' }: Props): React.ReactElement<Props> {
     [apiProps, hasAccounts, hasSudo]
   );
 
-  console.log(visibleGroups);
   const activeRoute = useMemo(
     () => routeRef.current.find((route) => location.pathname.startsWith(`/${route.name}`)) || null,
     [location]

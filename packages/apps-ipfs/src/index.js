@@ -24,7 +24,6 @@ console.log(`IPFS Web UI - v${appVersion} - https://github.com/ipfs-shipyard/ipf
 function IpfsApp () {
   const [store, setStore] = useState(null);
 
-  console.log(store);
   useEffect(() => {
     try {
       bundleCache.getAll().then((initialData) => {
@@ -35,7 +34,6 @@ function IpfsApp () {
         console.log(initialData, 'initialData');
         const s = getStore(initialData);
 
-        console.log(s, 'getStore');
         setStore(s);
       }).catch((e) => {
         console.log(e);

@@ -225,7 +225,6 @@ class FilesPage extends React.Component {
       t, toursEnabled
     } = this.props;
 
-    console.log(filesPathInfo, 'filesPathInfo');
     const { contextMenu } = this.state;
 
     return (
