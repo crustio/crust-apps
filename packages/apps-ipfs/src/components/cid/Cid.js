@@ -1,7 +1,6 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import Identicon from '../identicon/Identicon';
 
 export function cidStartAndEnd (value) {
   const chars = value.split('');
@@ -34,10 +33,8 @@ const Cid = ({ identicon = false, style, title, value, ...props }) => {
     <abbr style={style}
       title={title || value}
       {...props}>
-      { identicon && <Identicon cid={value}
-        className='mr1 v-mid' /> }
-      <span className='v-mid'>
-        <span>{start}</span>
+       <span className='v-mid'>
+         <span>{start}</span>
         <span className='o-20'>…</span>
         <span>{end}</span>
       </span>

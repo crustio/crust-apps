@@ -12,7 +12,7 @@ import WelcomePage from '../welcome/LoadableWelcomePage';
 // import BlankPage from '../blank/BlankPage'
 
 export default createRouteBundle({
-  '/storage/explore': ExplorePage,
+  '/storage/explore': StartExploringPage,
   '/storage/explore*': ExplorePage,
   '/storage/files*': FilesPage,
   '/storage/ipfs*': FilesPage,

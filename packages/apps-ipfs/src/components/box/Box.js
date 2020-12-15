@@ -1,7 +1,8 @@
 import React from 'react'
 import ErrorBoundary from '../error/ErrorBoundary'
 
-export const Box = ({
+export const
+Box = ({
   className = 'pa4',
   style,
   children,
