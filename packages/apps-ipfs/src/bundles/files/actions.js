@@ -487,7 +487,7 @@ const actions = () => ({
    * @param {string} path
    */
   doFilesNavigateTo: (path) =>
-    /**
+  /**
      * @param {Context} context
      */
     async ({ store }) => {

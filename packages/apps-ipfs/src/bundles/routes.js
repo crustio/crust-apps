@@ -23,7 +23,7 @@ export default createRouteBundle({
   // '/settings*': SettingsPage,
   '/welcome': WelcomePage,
   // '/blank': BlankPage,
-  // '/status*': StatusPage,
+  '/storage/status*': StatusPage,
   '/storage*': StatusPage,
   '/storage': StatusPage,
   '': StatusPage,

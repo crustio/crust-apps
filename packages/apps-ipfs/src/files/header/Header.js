@@ -108,7 +108,7 @@ class Header extends React.Component {
                     className='f6 relative flex justify-center items-center tc'
                     color='white'
                     disabled={!files || filesPathInfo.isRoot || files.type === 'unknown'}
-                    fill='fill-aqua'
+                    fill='fill-white'
                     minWidth='100px'
                     onClick={this.handleContextMenu}>
                     <GlyphDots className='w1 mr2' />

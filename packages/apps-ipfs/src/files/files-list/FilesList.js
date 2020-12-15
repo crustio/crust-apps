@@ -118,7 +118,6 @@ export class FilesList extends React.Component {
   }
 
   componentDidUpdate () {
-    console.log(this.props.pins);
     const selected = this.state.selected.filter((name) => (
       this.props.files.find((el) => el.name === name)
     ));

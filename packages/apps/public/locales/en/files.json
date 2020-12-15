@@ -75,7 +75,7 @@
   },
   "sortBy": "Sort items by {name}",
   "title": "Files",
-  "totalSize": "Total size: {size}",
+  "totalSize": "Total size: {{size}}",
   "tour": {
     "step1": {
       "title": "Files page",

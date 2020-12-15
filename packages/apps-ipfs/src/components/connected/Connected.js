@@ -25,7 +25,7 @@ export const Connected = ({ className, doSetIsNodeInfoOpen, ipfsConnected, ipfsR
 
   return (
     <a className={`dib ${className}`}
-      href='#/status'
+      href='#/storage'
       onClick={() => doSetIsNodeInfoOpen(true)}
       title={title}>
       <svg aria-hidden='true'

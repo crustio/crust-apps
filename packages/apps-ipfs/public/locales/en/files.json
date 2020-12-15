@@ -51,8 +51,8 @@
     "noFiles": "<0>No files in this directory. Click the “Import” button to add some.</0>"
   },
   "filesImportStatus": {
-    "imported": "{count, plural, one {Imported 1 item} other {Imported {count} items}}",
-    "importing": "{count, plural, one {Importing 1 item} other {Importing {count} items}}",
+    "imported": "Imported 1 item",
+    "importing": "Importing 1 item",
     "toggleDropdown": "Toggle dropdown",
     "closeDropdown": "Close dropdown",
     "count": "{count} of {count}"

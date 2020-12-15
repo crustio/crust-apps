@@ -20,7 +20,7 @@ const styles = {
     color: '#59595A'
   },
   count: {
-    backgroundColor: '#69C4CD',
+    backgroundColor: '#ff8812',
     color: '#F9FAFB',
     width: '38px',
     height: '38px'
@@ -31,7 +31,7 @@ const styles = {
     transform: 'translate(-50%, -50%)'
   },
   size: {
-    color: '#A4BFCC'
+    color: '#ccc3a4'
   }
 };
 
@@ -138,24 +138,21 @@ class SelectedActions extends React.Component {
               onClick={share}
               role='menuitem'>
               <StrokeShare aria-hidden='true'
-                className='w3 hover-fill-navy-muted'
-                fill='#A4BFCC'/>
+                className='w3 hover-fill-navy-muted'/>
               <p className='ma0 f6'>{t('actions.share')}</p>
             </button>
             <button className='tc mh2'
               onClick={download}
               role='menuitem'>
               <StrokeDownload aria-hidden='true'
-                className='w3 hover-fill-navy-muted'
-                fill='#A4BFCC'/>
+                className='w3 hover-fill-navy-muted'/>
               <p className='ma0 f6'>{this.downloadText}</p>
             </button>
             <button className={classNames('tc mh2', classes.action(isMfs))}
               onClick={isMfs ? remove : null}
               role='menuitem'>
               <StrokeTrash aria-hidden='true'
-                className={classes.svg(isMfs)}
-                fill='#A4BFCC'/>
+                className={classes.svg(isMfs)}/>
               <p className='ma0 f6'>{t('app:actions.delete')}</p>
             </button>
             <button className={classNames('tc mh2', classes.action(isSingle))}
@@ -172,8 +169,7 @@ class SelectedActions extends React.Component {
               role='menuitem'
               {...singleFileTooltip}>
               <StrokePencil aria-hidden='true'
-                className={classes.svg(isSingle && isMfs)}
-                fill='#A4BFCC'/>
+                className={classes.svg(isSingle && isMfs)}/>
               <p className='ma0 f6'>{t('app:actions.rename')}</p>
             </button>
           </div>

@@ -1,94 +1,65 @@
 /* IPFS theme.scss - Generated from https://github.com/ipfs-shipyard/ipfs-css/blob/master/theme.json */
 
-/* ---- color ----- */
-.navy {
-  color: #ff8812;
-}
-.navy-muted {
-  color: #ff8812;
-}
-.aqua {
-  color: #fff;
-}
-
-
-.bg-navy {
-  background-color: #ff8812;
-}
-.bg-navy-muted {
-  background-color: #ff8812;
-}
-.bg-aqua {
-  background-color: #ff8812;
-}
-
-
+/*color*/
+.navy,
+.navy-muted,
+.aqua,
 .hover-navy:hover,
-.hover-navy:focus {
-  color: #ff8812;
-}
+.hover-navy:focus,
 .hover-navy-muted:hover,
-.hover-navy-muted:focus {
-  color: #ff8812;
-}
+.hover-navy-muted:focus,
 .hover-aqua:hover,
 .hover-aqua:focus {
   color: #ff8812;
 }
 
+/*bg-color*/
 
+.bg-navy,
+.bg-navy-muted,
+.bg-aqua,
+.bg-teal,
 .hover-bg-navy:hover,
-.hover-bg-navy:focus {
-  background-color: #ff8812;
-}
+.hover-bg-navy:focus,
 .hover-bg-navy-muted:hover,
-.hover-bg-navy-muted:focus {
-  background-color: #ff8812;
-}
+.hover-bg-navy-muted:focus,
 .hover-bg-aqua:hover,
-.hover-bg-aqua:focus {
+.hover-bg-aqua:focus,
+.bg-teal {
   background-color: #ff8812;
 }
-
-.fill-navy {
-  fill: #ff8812;
-}
-.fill-navy-muted {
-  fill: #ff8812;
-}
-.fill-aqua {
-  fill: #ff8812;
-}
-
+/*svg-fill*/
 
 .hover-fill-navy:hover,
-.hover-fill-navy:focus {
-  fill: #ff8812;
-}
+.hover-fill-navy:focus,
 .hover-fill-navy-muted:hover,
-.hover-fill-navy-muted:focus {
-  fill: #ff8812;
-}
+.hover-fill-navy-muted:focus,
 .hover-fill-aqua:hover,
-.hover-fill-aqua:focus {
+.hover-fill-aqua:focus,
+.fill-aqua,
+.fill-navy,
+.fill-navy-muted {
   fill: #ff8812;
 }
 
 .border-navy,
-.b--navy {
-  border-color: #ff8812;
-}
 .border-navy-muted,
-.b--navy-muted {
-  border-color: #ff8812;
-}
+.b--navy-muted,
+.b--navy,
 .border-aqua,
 .b--aqua {
   border-color: #ff8812;
 }
+
 .teal,
 .fill-teal,
+.link,
 .fill-teal-muted {
   fill: #ff8812;
+  color: #ff8812!important;
 }
+.fill-white {
+  color: #fff;
+}
+
 
