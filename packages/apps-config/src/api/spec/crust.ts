@@ -7,6 +7,7 @@
 export default {
   Address: 'AccountId',
   AddressInfo: 'Vec<u8>',
+  ETHAddress: 'Vec<u8>',
   FileAlias: 'Vec<u8>',
   Guarantee: {
     targets: 'Vec<IndividualExposure<AccountId, Balance>>',

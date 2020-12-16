@@ -1,8 +1,8 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { SiDef } from '@polkadot/util/types';
-import { BitLength } from './types';
+import type { SiDef } from '@polkadot/util/types';
+import type { BitLength } from './types';
 
 import BN from 'bn.js';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -243,7 +243,10 @@ function InputNumber ({ autoFocus, bitLength = DEFAULT_BITLENGTH, children, clas
     [_onChangeWithSi, value]
   );
 
-  const maxValueLength = getGlobalMaxValue(bitLength).toString().length - 1;
+  // Same as the number of digits, which means it can still overflow, i.e.
+  // for u8 we allow 3, which could be 999 (however 2 digits will limit to only 99,
+  // so this is more-or-less the lesser of evils without a max-value check)
+  const maxValueLength = getGlobalMaxValue(bitLength).toString().length;
 
   return (
     <Input

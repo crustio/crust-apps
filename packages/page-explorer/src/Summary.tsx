@@ -4,7 +4,7 @@
 import React from 'react';
 import { useApi } from '@polkadot/react-hooks';
 import { SummaryBox, CardSummary } from '@polkadot/react-components';
-import { BestFinalized, BestNumber, BlockToTime, TimeNow, TotalIssuance } from '@polkadot/react-query';
+import { BestFinalized, BestNumber, BlockToTime, TimeNow, TotalIssuance, TotalStorage } from '@polkadot/react-query';
 import { BN_ONE } from '@polkadot/util';
 
 import SummarySession from './SummarySession';
@@ -32,6 +32,14 @@ function Summary (): React.ReactElement {
             label={t<string>('total issuance')}
           >
             <TotalIssuance />
+          </CardSummary>
+        )}
+        {api.query.swork && (
+          <CardSummary
+            className='media--800'
+            label={t<string>('total storage')}
+          >
+            <TotalStorage />
           </CardSummary>
         )}
       </section>

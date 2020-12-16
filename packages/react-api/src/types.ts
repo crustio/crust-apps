@@ -1,8 +1,8 @@
 // Copyright 2017-2020 @polkadot/react-api authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { InjectedExtension } from '@polkadot/extension-inject/types';
-import { SubmittableExtrinsicFunction } from '@polkadot/api/promise/types';
+import type { InjectedExtension } from '@polkadot/extension-inject/types';
+import type { SubmittableExtrinsicFunction } from '@polkadot/api/promise/types';
 
 import { ApiPromise } from '@polkadot/api/promise';
 
@@ -29,6 +29,7 @@ export interface ApiState {
 
 export interface ApiProps extends ApiState {
   api: ApiPromise;
+  apiError: string | null;
   extensions?: InjectedExtension[];
   isApiConnected: boolean;
   isApiInitialized: boolean;
@@ -54,11 +55,11 @@ export interface CallState {
 
 export type CallProps = ApiProps & CallState;
 
-export type BaseProps<T> = BareProps & CallProps & ChangeProps & {
+export interface BaseProps<T> extends BareProps, CallProps, ChangeProps {
   children?: React.ReactNode;
   label?: string;
   render?: (value?: T) => React.ReactNode;
-};
+}
 
 export type Formatter = (value?: any) => string;
 

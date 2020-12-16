@@ -1,9 +1,8 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { DeriveSessionProgress } from '@polkadot/api-derive/types';
-import { SlashEra } from './types';
+import type { DeriveSessionProgress } from '@polkadot/api-derive/types';
+import type { SlashEra } from './types';
 
 import BN from 'bn.js';
 import React, { useMemo } from 'react';
@@ -39,7 +38,7 @@ function Header ({ slash: { era, nominators, reporters, total, validators } }: P
         <CardSummary label={t<string>('validators')}>
           {formatNumber(validators.length)}
         </CardSummary>
-        <CardSummary label={t<string>('guarantors')}>
+        <CardSummary label={t<string>('nominators')}>
           {formatNumber(nominators.length)}
         </CardSummary>
         <CardSummary label={t<string>('reporters')}>

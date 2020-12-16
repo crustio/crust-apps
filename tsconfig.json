@@ -12,6 +12,7 @@
     "paths": {
       "@polkadot/apps/*": ["packages/apps/src/*"],
       "@polkadot/apps": ["packages/apps/src"],
+      "@polkadot/apps-config": [ "packages/apps-config/src" ],
       "@polkadot/apps-config/*": [ "packages/apps-config/src/*" ],
       "@polkadot/apps-ipfs/": [ "packages/apps-ipfs/src/" ],
       "@polkadot/apps-ipfs/*": [ "packages/apps-ipfs/src/*" ],

@@ -1,8 +1,7 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { Slash } from './types';
+import type { Slash } from './types';
 
 import React, { useCallback } from 'react';
 import { AddressMini, AddressSmall, Badge, Checkbox, Expander } from '@polkadot/react-components';
@@ -39,9 +38,9 @@ function Row ({ index, isSelected, onSelect, slash: { isMine, slash: { others, o
       <td className='address'>
         <AddressSmall value={validator} />
       </td>
-      <td className='start all'>
+      <td className='expand all'>
         {!!others.length && (
-          <Expander summary={t<string>('Guarantors ({{count}})', { replace: { count: formatNumber(others.length) } })}>
+          <Expander summary={t<string>('Nominators ({{count}})', { replace: { count: formatNumber(others.length) } })}>
             {others.map(([accountId, balance], index): React.ReactNode => (
               <AddressMini
                 balance={balance}
