@@ -41,16 +41,21 @@ function createWebpack (ENV, context) {
     })
   );
 
+  console.log(findPackages());
   const alias = findPackages().reduce((alias, { dir, name }) => {
     alias[name] = path.resolve(context, `../${dir}/src`);
 
     return alias;
-  },  {
+  }, {
     './erasExposure': path.resolve(__dirname, 'src/patch/erasExposure'),
-  './erasRewards': path.resolve(__dirname, 'src/patch/erasRewards'),
-  './ownExposure': path.resolve(__dirname, 'src/patch/ownExposure'),
-  './ownSlashes': path.resolve(__dirname, 'src/patch/ownSlashes')
+    './erasRewards': path.resolve(__dirname, 'src/patch/erasRewards'),
+    './ownExposure': path.resolve(__dirname, 'src/patch/ownExposure'),
+    './ownSlashes': path.resolve(__dirname, 'src/patch/ownSlashes'),
+    './components/StartExploringPage': path.resolve(__dirname, 'src/patch/StartExploringPage'),
+    './bundles/explore': path.resolve(__dirname, 'src/patch/bundles/explore')
   });
+
+  console.log(alias);
 
   return {
     context,

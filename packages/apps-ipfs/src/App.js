@@ -14,7 +14,6 @@ import { NativeTypes } from 'react-dnd-html5-backend';
 import { appTour } from './lib/tours';
 import { getJoyrideLocales } from './helpers/i8n';
 // Components
-import NavBar from './navigation/NavBar';
 import ComponentLoader from './loader/ComponentLoader';
 import Notify from './components/notify/Notify';
 import Connected from './components/connected/Connected';
