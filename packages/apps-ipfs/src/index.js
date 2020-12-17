@@ -1,20 +1,20 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
 // SPDX-License-Identifier: Apache-2.0
-import * as React from 'react';
-import App from './App';
-
-import { useEffect, useMemo, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'redux-bundler-react';
 import './index.css';
 import 'react-virtualized/styles.css';
 
-import getStore from './bundles';
-import bundleCache from './lib/bundle-cache';
-import { I18nextProvider } from 'react-i18next';
-import i18n from './i18n';
+import * as React from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { DndProvider } from 'react-dnd';
+import ReactDOM from 'react-dom';
+import { I18nextProvider } from 'react-i18next';
+import { Provider } from 'redux-bundler-react';
+
+import bundleCache from './lib/bundle-cache';
 import DndBackend from './lib/dnd-backend';
+import App from './App';
+import getStore from './bundles';
+import i18n from './i18n';
 
 const appVersion = process.env.REACT_APP_VERSION;
 const gitRevision = process.env.REACT_APP_GIT_REV;
@@ -49,7 +49,7 @@ function IpfsApp () {
         <App />
       </DndProvider>
     </I18nextProvider>
-  </Provider> : <div>123</div>;
+  </Provider> : <div>please refresh page!</div>;
 }
 
 export default IpfsApp;
