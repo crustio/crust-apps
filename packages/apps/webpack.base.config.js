@@ -41,7 +41,6 @@ function createWebpack (ENV, context) {
     })
   );
 
-  console.log(findPackages());
   const alias = findPackages().reduce((alias, { dir, name }) => {
     alias[name] = path.resolve(context, `../${dir}/src`);
 
@@ -54,8 +53,6 @@ function createWebpack (ENV, context) {
     './components/StartExploringPage': path.resolve(__dirname, 'src/patch/StartExploringPage'),
     './bundles/explore': path.resolve(__dirname, 'src/patch/bundles/explore')
   });
-
-  console.log(alias);
 
   return {
     context,
