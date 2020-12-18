@@ -1,6 +1,6 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+/* eslint-disable */
 
 import { NominateInfo } from './types';
 import { SortedTargets } from '../../types';
@@ -13,7 +13,6 @@ import { useApi, useFavorites } from '@polkadot/react-hooks';
 import { STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
 import BN from 'bn.js';
-import { Guaranteeable } from '@polkadot/react-query';
 
 interface Props {
   className?: string;
@@ -42,8 +41,6 @@ function Nominate ({ className = '', controllerId, nominating, onChange, stashId
     return shortlist
       .concat(...(validatorIds.filter((acc) => !shortlist.includes(acc))));
   });
-
-  const guaranteeable = <span className='label'>{t<string>('guaranteeable')}</span>;
 
   useEffect((): void => {
     onChange({
@@ -100,13 +97,6 @@ function Nominate ({ className = '', controllerId, nominating, onChange, stashId
           label={t<string>('amount')}
           withMax
           onChange={setAmount}
-          labelExtra={
-            selected[0] &&
-            <Guaranteeable
-              label={guaranteeable}
-              params={selected[0]}
-            />
-          }
         />
       </Modal.Column>
     </div>

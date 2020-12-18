@@ -1,0 +1,31 @@
+// [object Object]
+// SPDX-License-Identifier: Apache-2.0
+import { createRouteBundle } from 'redux-bundler';
+import StatusPage from '../status/LoadableStatusPage';
+import FilesPage from '../files/LoadableFilesPage';
+import StartExploringPage from '../explore/LoadableStartExploringPage';
+import ExplorePage from '../explore/LoadableExplorePage';
+import PeersPage from '../peers/LoadablePeersPage';
+// import SettingsPage from '../settings/LoadableSettigsPage';
+// import AnalyticsPage from '../settings/AnalyticsPage';
+import WelcomePage from '../welcome/LoadableWelcomePage';
+// import BlankPage from '../blank/BlankPage'
+
+export default createRouteBundle({
+  '/storage/explore': StartExploringPage,
+  '/storage/explore*': ExplorePage,
+  '/storage/files*': FilesPage,
+  '/storage/ipfs*': FilesPage,
+  '/storage/ipns*': FilesPage,
+  '/storage/pins*': FilesPage,
+  '/storage/peers': PeersPage,
+  // '/settings/analytics': AnalyticsPage,
+  // '/settings*': SettingsPage,
+  '/welcome': WelcomePage,
+  // '/blank': BlankPage,
+  '/storage/status*': StatusPage,
+  '/storage*': StatusPage,
+  '/storage': StatusPage,
+  '': StatusPage,
+  '/': StatusPage
+}, { routeInfoSelector: 'selectHash' });

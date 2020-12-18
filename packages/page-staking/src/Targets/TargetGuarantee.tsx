@@ -1,12 +1,11 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+/* eslint-disable */
 
 import BN from 'bn.js';
 import React, { useState, useEffect } from 'react';
 import { AddressMini, InputBalance } from '@polkadot/react-components';
 import { useTranslation } from '../translate';
-import { Guaranteeable } from '@polkadot/react-query';
 
 interface Props {
   validatorId: string;
@@ -17,7 +16,6 @@ interface Props {
 function TargetGuarantee ({ validatorId, targetAmount, setTargetAmount}: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const [amount, setAmount] = useState<BN | undefined>(new BN(0));
-  const guaranteeable = <span className='label'>{t<string>('guaranteeable')}</span>;
 
   useEffect( () => {
     const tmp = new Map<string, BN>();
@@ -43,13 +41,6 @@ function TargetGuarantee ({ validatorId, targetAmount, setTargetAmount}: Props):
             label={t<string>('amount')}
             onChange={setAmount}
             withMax
-            labelExtra={
-              validatorId &&
-              <Guaranteeable
-                label={guaranteeable}
-                params={validatorId}
-              />
-            }
           />
         </div>
       )

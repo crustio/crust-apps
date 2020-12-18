@@ -1,7 +1,7 @@
 // Copyright 2017-2020 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { ThemeProps } from '@polkadot/react-components/types';
+import type { ThemeProps } from '@polkadot/react-components/types';
 
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
@@ -178,7 +178,7 @@ export default React.memo(styled(FullSidebar)(({ theme }: ThemeProps) => `
   }
 
   .ui--AddressMenu-addr {
-    font-family: monospace;
+    font: ${theme.fontMono};
     margin: 0.5rem 0;
     overflow: hidden;
     text-align: center;
@@ -218,7 +218,7 @@ export default React.memo(styled(FullSidebar)(({ theme }: ThemeProps) => `
         width: 100%;
 
         .th {
-          font-weight: bold;
+          font-weight: 400;
           text-align: right;
           flex-basis: 20%;
 

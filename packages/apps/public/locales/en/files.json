@@ -1,0 +1,105 @@
+{
+  "actions": {
+    "copyHash": "Copy CID",
+    "share": "Share link"
+  },
+  "addByPath": "From IPFS",
+  "addByPathModal": {
+    "title": "Import from IPFS",
+    "description": "Insert an IPFS path (CID) to import.",
+    "examples": "Examples:"
+  },
+  "addFilesInfo": "<0>No files here yet! Add files to your local IPFS node by clicking the <1>Import</1> button above.</0>",
+  "breadcrumbs": "Breadcrumbs",
+  "cantBePreviewed": "Sorry, this file can’t be previewed",
+  "checkboxLabel": "View more options for {name}",
+  "cidNotFileNorDir": "The current link isn't a file, nor a directory. Try to <0>inspect</0> it instead.",
+  "companionInfo": "<0>As you are using <1>IPFS Companion</1>, the files view is limited to files added while using the extension.</0>",
+  "deleteModal": {
+    "titleItem": "Delete 1 item",
+    "titleItem_plural": "Delete {{count}} items",
+    "titleFolder": "Delete 1 folder",
+    "titleFolder_plural": " Delete {{count}} folders",
+    "titleFile": "Delete 1 file",
+    "titleFile_plural": "Delete {{count}} files",
+    "descriptionItem": "Are you sure you want to delete this item? This action is permanent and cannot be reversed.",
+    "descriptionItem_plural": "Are you sure you want to delete these {{count}} items? This action is permanent and cannot be reversed.",
+    "descriptionFolder": "Are you sure you want to delete this folder? This action is permanent and cannot be reversed.",
+    "descriptionFolder_plural": "Are you sure you want to delete these {{count}} folders? This action is permanent and cannot be reversed.",
+    "descriptionFile": "Are you sure you want to delete this file? This action is permanent and cannot be reversed.",
+    "descriptionFile_plural": "Are you sure you want to delete these {{count}} files? This action is permanent and cannot be reversed."
+  },
+  "downloadInstead": "Try <1>downloading</1> it instead.",
+  "downloadPDF": "Download PDF",
+  "fileLabel": "Select {type} {name} with size: {size}",
+  "filesImportStatus": {
+    "imported": "Imported 1 item",
+    "imported_plural": "Imported {{count}} items",
+    "importing": "Importing 1 item",
+    "importing_plural": "Importing {{count}} items",
+    "toggleDropdown": "Toggle dropdown",
+    "closeDropdown": "Close dropdown",
+    "count": "{count} of {count}"
+  },
+  "filesList": {
+    "noFiles": "<0>No files in this directory. Click the “Import” button to add some.</0>"
+  },
+  "filesListLabel": "Files list",
+  "filesSelected": "File selected",
+  "filesSelected_plural": "Files selected",
+  "finished": "Finished!",
+  "generating": "Generating…",
+  "hashUnavailable": "hash unavailable",
+  "home": "Home",
+  "individualFilesOnly": "Only available for individual files",
+  "loadMore": "Load more",
+  "menuOptions": "Options for selected item",
+  "newFolder": "New folder",
+  "newFolderModal": {
+    "title": "New folder",
+    "description": "Insert the name of the folder you want to create."
+  },
+  "noPDFSupport": "Your browser does not support PDFs. Please download the PDF to view it:",
+  "pinned": "Pinned",
+  "previousFolder": "Go back to previous folder",
+  "renameModal": {
+    "titleFile": "Rename file",
+    "titleFolder": "Rename folder",
+    "descriptionFile": "Choose a new name for this file.",
+    "descriptionFolder": "Choose a new name for this folder."
+  },
+  "selectedAllEntries": "Select all table entries",
+  "shareModal": {
+    "title": "Share files",
+    "description": "Copy the link below and share it with your friends."
+  },
+  "sortBy": "Sort items by {name}",
+  "title": "Files",
+  "totalSize": "Total size: {{size}}",
+  "tour": {
+    "step1": {
+      "title": "Files page",
+      "paragraph1": "<0>This is where the files on your <1>Mutable File System (MFS)</1> live. You can add files or folders and manage them from this page.</0>",
+      "paragraph2": "Click \"Next\" to learn more."
+    },
+    "step2": {
+      "title": "Breadcrumbs",
+      "paragraph1": "These breadcrumbs display the path to your current directory. You can…",
+      "bullet1": "Click an individual breadcrumb to go to that directory",
+      "bullet2": "Right-click a breadcrumb to get the actions menu for that directory",
+      "bullet3": "Drag files onto a breadcrumb to move or import them"
+    },
+    "step3": {
+      "title": "Add files",
+      "paragraph1": "Here you can see how many blocks and files you have pinned.",
+      "paragraph2": "You can add files or folders to your repo through the dropdown on the right.",
+      "paragraph3": "<0>If you want to add something that is already on IPFS, you can import it to your MFS by passing its <1>Content Identifier (CID)</1>.</0>"
+    },
+    "step5": {
+      "title": "Files list",
+      "paragraph1": "Finally, the listing where you can find your files and folders. Drag and drop files or folders to add them.",
+      "paragraph2": "You can share or download files, inspect them in the IPLD Explorer, rename or delete them!",
+      "paragraph3": "Pro tip: drag and drop a file from any other page of the Web UI to add them to the root of your MFS."
+    }
+  }
+}

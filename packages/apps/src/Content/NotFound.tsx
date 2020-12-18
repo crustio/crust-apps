@@ -1,7 +1,7 @@
 // Copyright 2017-2020 @polkadot/apps authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { RouteProps } from '@polkadot/apps-routing/types';
+import type { RouteProps } from '@polkadot/apps-routing/types';
 
 import React from 'react';
 import { Redirect } from 'react-router';
@@ -16,6 +16,8 @@ function NotFound ({ basePath, missingApis = [] }: Props): React.ReactElement {
   return (
     <Redirect to='/explorer' />
   );
+
+  // return <Redirect to='/storage/explorer' />;
 }
 
 export default React.memo(NotFound);

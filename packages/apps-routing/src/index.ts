@@ -1,8 +1,8 @@
 // Copyright 2017-2020 @polkadot/apps-routing authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { TFunction } from 'i18next';
-import { Routes } from './types';
+import type { TFunction } from 'i18next';
+import type { Routes } from './types';
 
 import accounts from './accounts';
 import addresses from './addresses';
@@ -27,6 +27,7 @@ import sudo from './sudo';
 import techcomm from './techcomm';
 import transfer from './transfer';
 import treasury from './treasury';
+import ipfsFiles from './ipfsFiles';
 
 export default function create (t: TFunction): Routes {
   return [
@@ -47,6 +48,7 @@ export default function create (t: TFunction): Routes {
     calendar(t),
     contracts(t),
     storage(t),
+    ipfsFiles(t),
     extrinsics(t),
     rpc(t),
     signing(t),

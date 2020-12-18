@@ -15,7 +15,8 @@ const hasPublic = fs.existsSync(path.join(context, 'public'));
 module.exports = merge(
   baseConfig(ENV, context),
   {
-    devtool: process.env.BUILD_ANALYZE ? 'source-map' : false,
+    // devtool: process.env.BUILD_ANALYZE ? 'source-map' : false,
+    devtool: 'inline-source-map',
     plugins: [
       new HtmlWebpackPlugin({
         PAGE_TITLE: 'Crust Apps',

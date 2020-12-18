@@ -21,5 +21,10 @@
   "nav.sudo": "Sudo",
   "nav.tech-comm": "Tech. comm.",
   "nav.transfer": "Transfer",
-  "nav.treasury": "Treasury"
+  "nav.treasury": "Treasury",
+  "nav.wiki": "Wiki",
+  "files": "Files",
+  "peers": "Peers",
+  "status": "Status",
+  "explore": "Explore"
 }

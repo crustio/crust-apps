@@ -1,7 +1,7 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { ThemeProps } from '../types';
+import type { ThemeProps } from '../types';
 
 import React from 'react';
 import styled from 'styled-components';
@@ -98,7 +98,7 @@ export default React.memo(styled(Body)(({ theme }: ThemeProps) => `
     }
 
     &.hash {
-      font-family: ${theme.fontMono};
+      font: ${theme.fontMono};
     }
 
     &.links {
