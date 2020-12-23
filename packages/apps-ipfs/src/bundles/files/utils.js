@@ -237,7 +237,7 @@ export const infoFromPath = (path, uriDecode = true) => {
     return;
   }
 
-  if (info.path.endsWith('/') && info.realPath !== '/') {
+  if (info.path.endsWith('/') && info.realPath !== '/storage') {
     info.path = info.path.substring(0, info.path.length - 1);
     info.realPath = info.realPath.substring(0, info.realPath.length - 1);
   }
@@ -246,6 +246,9 @@ export const infoFromPath = (path, uriDecode = true) => {
     info.realPath = decodeURIComponent(info.realPath);
     info.path = decodeURIComponent(info.path);
   }
+
+  info.path = '/files';
+  console.log(info);
 
   return info;
 };
@@ -340,24 +343,28 @@ export const ensureMFS = (store) => {
     throw new Error('Unable to perform task if not in MFS');
   }
 };
+
 /**
  * @param {String} path
  * @return String
  */
-export const getRealPath =  (path) => {
+export const getRealPath = (path) => {
   if (path.startsWith('/storage')) {
     path = path.substring(8, path.length);
   }
-  return path
-}
+
+  return path;
+};
+
 /**
  *
  * @param {String} path
  * @return string
  */
-export const addPrefix  = (path) => {
+export const addPrefix = (path) => {
   if (!path.startsWith('/storage')) {
-    path = '/storage' +  path
+    path = '/storage' + path;
   }
-  return  path
-}
+
+  return path;
+};
