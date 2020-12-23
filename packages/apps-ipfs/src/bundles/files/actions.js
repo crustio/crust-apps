@@ -40,7 +40,7 @@ import { IGNORED_FILES, ACTIONS } from './consts';
  * @param {string} [prefix]
  * @returns {FileStat}
  */
-const fileFromStats = ({ cid, cumulativeSize, isParent, name, contracted, path, pinned, size, type }, prefix = '/ipfs') => ({
+const fileFromStats = ({ cid, contracted, cumulativeSize, isParent, name, path, pinned, size, type }, prefix = '/ipfs') => ({
   size: cumulativeSize || size || 0,
   type: type === 'dir' ? 'directory' : type,
   cid,
@@ -77,12 +77,15 @@ export const realMfsPath = (path) => {
  */
 const stat = async (ipfs, cidOrPath) => {
   let hashOrPath = cidOrPath.toString();
-  hashOrPath = getRealPath(hashOrPath)  || '/'
+
+  hashOrPath = getRealPath(hashOrPath) || '/';
   const path = hashOrPath.startsWith('/')
     ? hashOrPath
     : `/ipfs/${hashOrPath}`;
+
   try {
     const stats = await ipfs.files.stat(path);
+
     return { path, ...stats };
   } catch (e) {
     // Discard error and mark DAG as 'unknown' to unblock listing other pins.
@@ -168,6 +171,7 @@ const actions = () => ({
   doContractsFetch: () => perform(ACTIONS.CONTRACT_LIST, async (ipfs) => {
     // mock get pin filelist
     const cids = await all(getPinCIDs(ipfs));
+
     return { contracts: cids };
   }),
 
@@ -193,7 +197,6 @@ const actions = () => ({
    * @returns {function(Context): *}
    */
   doFetch: ({ isMfs, isPins, isRoot, path, realPath }) => perform(ACTIONS.FETCH, async (ipfs, { store }) => {
-
     if (isRoot && !isMfs && !isPins) {
       throw new Error('not supposed to be here');
     }
@@ -215,6 +218,7 @@ const actions = () => ({
 
     const stats = await stat(ipfs, resolvedPath);
 
+    console.log(stats);
     const time = Date.now();
 
     switch (stats.type) {
@@ -276,6 +280,7 @@ const actions = () => ({
     yield { entries, progress: 0 };
 
     const { progress, result } = importFiles(ipfs, files);
+
     for await (const update of progress) {
       loaded += update.loaded;
       yield { entries, progress: loaded / totalSize * 100 };
@@ -288,7 +293,6 @@ const actions = () => ({
       const numberOfDirs = countDirs(files);
       const expectedResponseCount = numberOfFiles + numberOfDirs;
 
-
       if (added.length !== expectedResponseCount) {
         // See https://github.com/ipfs/js-ipfs-api/issues/797
         throw Object.assign(new Error('API returned a partial response.'), {
@@ -300,7 +304,8 @@ const actions = () => ({
         // Only go for direct children
         if (path.indexOf('/') === -1 && path !== '') {
           const src = `/ipfs/${cid}`;
-          root = getRealPath(root)
+
+          root = getRealPath(root);
 
           const dst = join(realMfsPath(root || '/files'), path);
 
@@ -329,18 +334,20 @@ const actions = () => ({
    */
   doFilesDelete: (files) => perform(ACTIONS.DELETE, async (ipfs, { store }) => {
     ensureMFS(store);
+
     if (files.length > 0) {
       const promises = files
         .map((file) => ipfs.files.rm(realMfsPath(getRealPath(file)), {
-        recursive: true
-      })
-    );
+          recursive: true
+        })
+        );
 
       try {
         await Promise.all(promises);
 
         const src = files[0];
-        const path = addPrefix(src.slice(0, src.lastIndexOf('/')))
+        const path = addPrefix(src.slice(0, src.lastIndexOf('/')));
+
         await store.doUpdateHash(path);
 
         return undefined;
@@ -405,6 +412,7 @@ const actions = () => ({
    */
   doFilesMove: (src, dst) => perform(ACTIONS.MOVE, async (ipfs, { store }) => {
     ensureMFS(store);
+
     try {
       await ipfs.files.mv(realMfsPath(getRealPath(src)), realMfsPath(getRealPath(dst)));
 
@@ -442,7 +450,8 @@ const actions = () => ({
    */
   doFilesMakeDir: (path) => perform(ACTIONS.MAKE_DIR, async (ipfs, { store }) => {
     ensureMFS(store);
-    path = getRealPath(path)
+    path = getRealPath(path);
+
     try {
       await ipfs.files.mkdir(realMfsPath(path), {
         parents: true
@@ -492,8 +501,9 @@ const actions = () => ({
      */
     async ({ store }) => {
       if (!path.startsWith('/storage')) {
-        path = '/storage' + path
+        path = '/storage' + path;
       }
+
       const link = path.split('/').map((p) => encodeURIComponent(p)).join('/');
       const files = store.selectFiles();
       const url = store.selectFilesPathInfo();
@@ -561,10 +571,14 @@ const importFiles = (ipfs, files) => {
  * @param {import('./utils').Sorting} options.sorting
  */
 const dirStats = async (ipfs, cid, { isRoot, path, sorting }) => {
-  const res = await all(ipfs.ls(cid)) || [];
+  let res = await all(ipfs.ls(cid)) || [];
+
+  res = res.filter((item) => item.name);
   const files = [];
   const showStats = res.length < 100;
-  path = getRealPath(path)
+
+  path = getRealPath(path);
+
   for (const f of res) {
     const absPath = join(path, f.name);
     let file = null;
@@ -599,7 +613,6 @@ const dirStats = async (ipfs, cid, { isRoot, path, sorting }) => {
       });
     }
   }
-
 
   return {
     path: path,
