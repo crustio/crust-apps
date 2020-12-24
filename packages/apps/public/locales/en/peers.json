@@ -1,11 +1,12 @@
 {
-  "addConnection": "Add connection",
-  "bootstrapNode": "bootstrap node",
-  "insertPeerAddress": "Insert the peer address you want to connect to.",
+  "title": "Peers",
   "localNetwork": "Local Network",
   "nearby": "nearby",
+  "bootstrapNode": "bootstrap node",
+  "viaRelay": "via <0>{node}</0>",
+  "addConnection": "Add connection",
+  "insertPeerAddress": "Insert the peer address you want to connect to.",
   "plusPeers": "+ {number} more peers",
-  "title": "Peers",
   "tour": {
     "step1": {
       "title": "Peers page",
@@ -20,6 +21,5 @@
       "title": "Peers table",
       "paragraph1": "Check the IDs of the connected peers, their address and approximate location."
     }
-  },
-  "viaRelay": "via <0>{node}</0>"
+  }
 }

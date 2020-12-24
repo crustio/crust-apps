@@ -36,7 +36,6 @@
     "codeLink": "See the code",
     "revision": "Revision"
   },
-  "startTourHelper": "Start tour",
   "status": {
     "connectedToIpfs": "Connected to IPFS",
     "connectingToIpfs": "Connecting to IPFS…",
@@ -87,5 +86,6 @@
     "next": "Next",
     "skip": "Skip",
     "tooltip": "Click this button any time for a guided tour on the current page."
-  }
+  },
+  "startTourHelper": "Start tour"
 }
