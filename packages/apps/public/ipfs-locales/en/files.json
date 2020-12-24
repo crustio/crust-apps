@@ -51,8 +51,8 @@
     "noFiles": "<0>No files in this directory. Click the “Import” button to add some.</0>"
   },
   "filesImportStatus": {
-    "imported": "Imported 1 item",
-    "importing": "Importing 1 item",
+    "imported": "{count, plural, one {Imported 1 item} other {Imported {count} items}}",
+    "importing": "{count, plural, one {Importing 1 item} other {Importing {count} items}}",
     "toggleDropdown": "Toggle dropdown",
     "closeDropdown": "Close dropdown",
     "count": "{count} of {count}"
@@ -91,7 +91,6 @@
   "hashUnavailable": "hash unavailable",
   "checkboxLabel": "View more options for {name}",
   "pinned": "Pinned",
-  "contracted": "Contracted",
   "cidNotFileNorDir": "The current link isn't a file, nor a directory. Try to <0>inspect</0> it instead.",
   "sortBy": "Sort items by {name}"
 }
