@@ -5,15 +5,18 @@ import i18next from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 import uiSettings, { LANGUAGE_DEFAULT } from '@polkadot/ui-settings';
-import Backend from 'i18next-chained-backend';
-import HttpBackend from 'i18next-http-backend';
+
+import Backend from './Backend';
+
 const languageDetector = new LanguageDetector();
 
 languageDetector.addDetector({
   lookup: () => {
     const i18nLang = uiSettings.i18nLang;
 
-    return i18nLang === LANGUAGE_DEFAULT ? undefined : i18nLang;
+    return i18nLang === LANGUAGE_DEFAULT
+      ? undefined
+      : i18nLang;
   },
   name: 'i18nLangDetector'
 });
@@ -23,21 +26,7 @@ i18next
   .use(initReactI18next)
   .use(Backend)
   .init({
-    backend: {
-      backends: [HttpBackend],
-      backendOptions: [
-        {
-          // LocalStorageBackend
-          defaultVersion: 'v1',
-          expirationTime: !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? 1 : 7 * 24 * 60 * 60 * 1000
-        },
-        {
-          // HttpBackend
-          // ensure a relative path is used to look up the locales, so it works when loaded from /ipfs/<cid>
-          loadPath: 'locales/{{lng}}/{{ns}}.json'
-        }
-      ]
-    },
+    backend: {},
     debug: false,
     detection: {
       order: ['i18nLangDetector', 'navigator']
@@ -46,10 +35,10 @@ i18next
     interpolation: {
       escapeValue: false
     },
+    keySeparator: false,
     load: 'languageOnly',
     ns: [
       'apps',
-      'app',
       'apps-config',
       'apps-electron',
       'apps-routing',
@@ -81,24 +70,24 @@ i18next
       'react-signer',
       'translation'
     ],
+    nsSeparator: false,
     react: {
       wait: true
     },
     returnEmptyString: false,
     returnNull: false
   })
-  .catch((error: Error): void => console.log('i18n: failure', error));
+  .catch((error: Error): void =>
+    console.log('i18n: failure', error)
+  );
 
 uiSettings.on('change', (settings): void => {
-  console.log(settings.i18nLang);
-  i18next
-    .changeLanguage(
-      settings.i18nLang === LANGUAGE_DEFAULT
-        ? // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-        i18next.services.languageDetector.detect()
-        : settings.i18nLang
-    )
-    .catch(console.error);
+  i18next.changeLanguage(
+    settings.i18nLang === LANGUAGE_DEFAULT
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+      ? i18next.services.languageDetector.detect()
+      : settings.i18nLang
+  ).catch(console.error);
 });
 
 export default i18next;
