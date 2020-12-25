@@ -11,8 +11,8 @@ export default function create (t: <T = string>(key: string, text: string, optio
     display: {},
     icon: 'ipfs',
     name: 'storage',
-    group: 'storage',
-    text: t<string>('nav.ipfs', 'Storage', { ns: 'apps-routing' })
+    group: 'ipfs',
+    text: t<string>('nav.ipfs', 'Ipfs', { ns: 'apps-routing' })
   };
 }
 // Copyright 2017-2020 @polkadot/apps-routing authors & contributors
