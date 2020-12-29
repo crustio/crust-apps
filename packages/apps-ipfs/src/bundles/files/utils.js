@@ -230,7 +230,7 @@ export const infoFromPath = (path, uriDecode = true) => {
     check('/storage/pins');
     info.isPins = true;
 
-    if (info.realPath !== '/storage/') {
+    if (info.realPath !== '/storage') {
       info.realPath = `/storage/ipfs${info.realPath}`;
     }
   } else {
@@ -246,9 +246,6 @@ export const infoFromPath = (path, uriDecode = true) => {
     info.realPath = decodeURIComponent(info.realPath);
     info.path = decodeURIComponent(info.path);
   }
-
-  info.path = '/files';
-  console.log(info);
 
   return info;
 };
