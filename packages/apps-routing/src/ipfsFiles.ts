@@ -12,7 +12,7 @@ export default function create (t: <T = string>(key: string, text: string, optio
     icon: 'ipfs',
     name: 'storage',
     group: 'ipfs',
-    text: t<string>('nav.ipfs', 'Ipfs', { ns: 'apps-routing' })
+    text: t<string>('nav.ipfs', 'IPFS', { ns: 'apps-routing' })
   };
 }
 // Copyright 2017-2020 @polkadot/apps-routing authors & contributors

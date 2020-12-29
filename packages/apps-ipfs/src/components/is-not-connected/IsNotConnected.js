@@ -29,17 +29,28 @@ const IsNotConnected = ({ apiUrl, connected, doUpdateIpfsApiAddress, ipfsApiAddr
           style={{ height: 76 }} />
         <h1 className='montserrat fw4 charcoal ma0 f3 red'>{t('app:status.couldNotConnect')}</h1>
       </div>
-      <Trans i18nKey='notConnected.paragraph1'
-        t={t}>
-        <p className='fw6 mb3'>Check out the installation guide in the <a className='link blue'
-          href='https://docs.ipfs.io/install/command-line-quick-start/'
-          rel='noopener noreferrer'
-          target='_blank'>IPFS Docs</a>, or try these common fixes:</p>
-      </Trans>
+      {/* <Trans i18nKey='notConnected.paragraph1' */}
+      {/*  t={t}> */}
+      {/*  <p className='fw6 mb3'>Check out the installation guide in the <a className='link blue' */}
+      {/*    href='https://docs.ipfs.io/install/command-line-quick-start/' */}
+      {/*    rel='noopener noreferrer' */}
+      {/*    target='_blank'>IPFS Docs</a>, or try these common fixes:</p> */}
+      {/* </Trans> */}
       <ol className='pl3 pt2'>
         <Trans i18nKey='notConnected.paragraph2'
           t={t}>
-          <li className='mb3'>Is your IPFS daemon running? Try starting or restarting it from your terminal:</li>
+          <li className='mb3'>
+              Make sure you have IPFS installed. If not, check out the installation guide:
+            <a className='link blue'
+              href='https://docs.ipfs.io/install/ipfs-desktop/'
+              rel='noopener noreferrer'
+              target='_blank'>IPFS desktop</a>
+            or
+            <a className='link blue'
+              href='https://docs.ipfs.io/how-to/command-line-quick-start/'
+              rel='noopener noreferrer'
+              target='_blank'>IPFS Command Line</a>
+          </li>
         </Trans>
         <Shell title='Any Shell'>
           <code className='db'><b className='no-select'>$ </b>ipfs daemon</code>
