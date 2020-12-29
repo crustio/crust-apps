@@ -34,11 +34,11 @@ class NodeInfo extends React.Component {
           term={t('terms.peerId')} />
         <Definition desc={<VersionLink agentVersion={this.getField(identity, 'agentVersion')} />}
           term={t('terms.agent')} />
-        <Definition desc={<a className='link blue'
-          href={'https://github.com/ipfs-shipyard/ipfs-webui/releases/tag/v' + process.env.REACT_APP_VERSION}
-          rel='noopener noreferrer'
-          target='_blank'>v{process.env.REACT_APP_VERSION}</a>}
-        term={t('terms.ui')} />
+        {/* <Definition desc={<a className='link blue' */}
+        {/*  href={'https://github.com/ipfs-shipyard/ipfs-webui/releases/tag/v' + process.env.REACT_APP_VERSION} */}
+        {/*  rel='noopener noreferrer' */}
+        {/*  target='_blank'>v{process.env.REACT_APP_VERSION}</a>} */}
+        {/* term={t('terms.ui')} /> */}
       </DefinitionList>
     );
   }
