@@ -22,6 +22,7 @@ export const StatusConnected = ({ peersCount, repoSize, t }) => {
             components={[<a className='link blue'
               href='#/storage/files'>?</a>]}
             defaults='Hosting <0>{{repoSize}} of files</0>'
+            i18nKey='StatusConnected.paragraph1'
             t={t}
             values={{ repoSize: humanRepoSize }}
           />
@@ -36,6 +37,7 @@ export const StatusConnected = ({ peersCount, repoSize, t }) => {
               </a>
             ]}
             defaults='Discovered <0>{{peersCount}} peers</0>'
+            i18nKey='StatusConnected.paragraph2'
             t={t}
             values={{ peersCount: peersCount.toString() }}
           />
