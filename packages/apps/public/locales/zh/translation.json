@@ -1396,5 +1396,9 @@
   "Guaranteeing": "担保",
   "stake limit": "质押上限",
   "guarantee fee": "担保费率",
-  "last verified block #": "最后验证区块"
+  "last verified block #": "最后验证区块",
+  "Enter the ETH Transaction hash": "输入以太坊交易hash",
+  "ETH Transaction hash": "以太坊交易hash",
+  "The transaction hash you send in Ethereum (starting by \"0x\")": "你在以太坊中所发送的交易hash (已0x开头)",
+  "nav.cruClaims": "认领CRU"
 }

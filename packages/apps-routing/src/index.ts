@@ -27,6 +27,7 @@ import sudo from './sudo';
 import techcomm from './techcomm';
 import transfer from './transfer';
 import treasury from './treasury';
+import cruClaims from "@polkadot/apps-routing/cruClaims";
 
 export default function create (t: TFunction): Routes {
   return [
@@ -34,6 +35,7 @@ export default function create (t: TFunction): Routes {
     addresses(t),
     explorer(t),
     claims(t),
+    cruClaims(t),
     poll(t),
     transfer(t),
     genericAsset(t),
