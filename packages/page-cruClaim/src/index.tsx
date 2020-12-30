@@ -1,3 +1,7 @@
+// Copyright 2017-2020 @polkadot/app-cruClaims authors & contributors
+// SPDX-License-Identifier: Apache-2.0
+
+/* eslint-disable */
 import React, { useCallback, useState } from "react";
 import { AppProps as Props } from "@polkadot/react-components/types";
 import { Button, Card, Input } from "@polkadot/react-components";

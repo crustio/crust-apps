@@ -2100,9 +2100,6 @@ __metadata:
   resolution: "@polkadot/app-cruClaims@workspace:packages/page-cruClaim"
   dependencies:
     "@babel/runtime": ^7.12.5
-    "@fortawesome/fontawesome-svg-core": ^1.2.32
-    "@fortawesome/free-solid-svg-icons": ^5.15.1
-    "@fortawesome/react-fontawesome": ^0.1.13
     "@polkadot/react-components": ^0.69.1
     secp256k1: ^3.8.0
   languageName: unknown

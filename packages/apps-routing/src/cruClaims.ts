@@ -10,13 +10,11 @@ export default function create (t: TFunction): Route {
   return {
     Component,
     display: {
-      needsAccounts: true,
-      needsApi: [
-      ]
+      needsAccounts: true
     },
     group: 'accounts',
     icon: 'star',
     name: 'cruClaims',
-    text: t('nav.cruClaims', 'Claim CRU', { ns: 'apps-routing' }),
+    text: t('nav.cruClaims', 'Claim CRU', { ns: 'apps-routing' })
   };
 }

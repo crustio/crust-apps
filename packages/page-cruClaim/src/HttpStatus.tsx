@@ -1,7 +1,8 @@
-// Copyright 2017-2020 @polkadot/react-components authors & contributors
+// Copyright 2017-2020 @polkadot/app-cruClaims authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { QueueStatus, QueueTx, QueueTxStatus } from '@polkadot/react-components/Status/types';
+/* eslint-disable */
+import type { QueueStatus } from '@polkadot/react-components/Status/types';
 
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
@@ -10,17 +11,15 @@ import type { IconName } from '@fortawesome/fontawesome-svg-core';
 import AddressMini from '@polkadot/react-components/AddressMini';
 import Button from '@polkadot/react-components//Button';
 import Icon from '@polkadot/react-components//Icon';
-import Spinner from '@polkadot/react-components//Spinner';
 import { useTranslation } from '@polkadot/react-components//translate';
 import { classes } from '@polkadot/react-components/util';
-import { STATUS_COMPLETE } from '@polkadot/react-components/Status/constants';
 
 interface Props {
   className?: string;
   isStatusOpen: boolean;
   setStatusOpen: (statusOpen: boolean) => void;
   message: string,
-  status: string
+  status: "error" | "event" | "queued" | "received" | "success"
 }
 
 function iconName (status: string): IconName {
@@ -36,35 +35,6 @@ function iconName (status: string): IconName {
 
     default:
       return 'check';
-  }
-}
-
-function signerIconName (status: QueueTxStatus): IconName {
-  switch (status) {
-    case 'cancelled':
-      return 'ban';
-
-    case 'completed':
-    case 'inblock':
-    case 'finalized':
-    case 'sent':
-      return 'check';
-
-    case 'dropped':
-    case 'invalid':
-    case 'usurped':
-      return 'arrow-down';
-
-    case 'error':
-    case 'finalitytimeout':
-      return 'exclamation-triangle';
-
-    case 'queued':
-      // case 'retracted':
-      return 'random';
-
-    default:
-      return 'spinner';
   }
 }
 
@@ -102,53 +72,6 @@ function renderStatus ({ account, action, id, message, removeItem, status }: Que
   );
 }
 
-function renderItem ({ error, extrinsic, id, removeItem, rpc, status }: QueueTx): React.ReactNode {
-  let { method, section } = rpc;
-
-  if (extrinsic) {
-    const found = extrinsic.registry.findMetaCall(extrinsic.callIndex);
-
-    if (found.section !== 'unknown') {
-      method = found.method;
-      section = found.section;
-    }
-  }
-
-  const icon = signerIconName(status) as 'ban' | 'spinner';
-
-  return (
-    <div
-      className={classes('item', status)}
-      key={id}
-    >
-      <div className='wrapper'>
-        <div className='container'>
-          {STATUS_COMPLETE.includes(status) && (
-            <Icon
-              icon='times'
-              onClick={removeItem}
-            />
-          )}
-          <div className='short'>
-            {icon === 'spinner'
-              ? <Spinner variant='push' />
-              : <Icon icon={icon} />
-            }
-          </div>
-          <div className='desc'>
-            <div className='header'>
-              {section}.{method}
-            </div>
-            <div className='status'>
-              {error ? error.message : status}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function HttpStatus ({ className = '', isStatusOpen, setStatusOpen, message, status}: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
 
@@ -176,10 +99,14 @@ function HttpStatus ({ className = '', isStatusOpen, setStatusOpen, message, sta
           />
         </div>
       )}
-      {renderStatus({
-        message,
-        status
-      })}
+
+      {
+        // @ts-ignore
+        renderStatus({
+          message,
+          status
+        })
+      }
     </div>
   );
 }
