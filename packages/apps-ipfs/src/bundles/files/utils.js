@@ -268,7 +268,7 @@ export class Channel {
   }
 
   /**
-   * @returns {Promise<IteratorResult<T, void>>}
+   * @returns {Promise<IteratorResult<T, void>>
    */
   async next () {
     const { done, pending, queue } = this;
@@ -336,7 +336,9 @@ export class Channel {
 export const ensureMFS = (store) => {
   const info = store.selectFilesPathInfo();
 
-  if (!info || !info.isMfs) {
+  console.log(info);
+
+  if (!info) {
     throw new Error('Unable to perform task if not in MFS');
   }
 };
