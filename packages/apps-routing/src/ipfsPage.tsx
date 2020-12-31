@@ -21,20 +21,24 @@ const IpfsPage: React.FC<Props> = (props) => {
     {
       isRoot: true,
       name: 'status',
-      text: t('status')
+      text: t('status', 'Status')
     },
     {
       hasParams: true,
       name: 'files',
-      text: t('files')
+      text: t('files', 'Files')
     },
     {
       name: 'explore',
-      text: t('explore')
+      text: t('explore', 'Explore')
     },
     {
       name: 'peers',
-      text: t('peers')
+      text: t('peers', 'Peers')
+    },
+    {
+      name: 'market',
+      text: t('peers', 'Storage Market')
     }
   ]);
 

@@ -10,10 +10,18 @@ export const StatusConnected = ({ peersCount, repoSize, t }) => {
 
   return (
     <header>
-      <h1 className='montserrat fw2 f3 charcoal ma0 pt0 pb2 left'>
+      <h1 className='montserrat fw2 f3 charcoal ma0 pt0 pb2 left'
+        style={{ fontSize: '15px', transformStyle: 'none' }}>
         <Trans i18nKey='app:status.connectedToIpfs'
           t={t}>
-          Connected to IPFS
+          <div >
+            IPFS network is ready
+            <br/>
+            you can check your IPFS node status in this page. Go to
+            <a className='link blue'
+              href='#/storage/files'>Files</a>
+            tab to store/retrieve files. The storage order function of Crust Network is coming soon.
+          </div>
         </Trans>
       </h1>
       <p className='montserrat fw4 f5 ma0 pb3 lh-copy left'>
@@ -22,6 +30,7 @@ export const StatusConnected = ({ peersCount, repoSize, t }) => {
             components={[<a className='link blue'
               href='#/storage/files'>?</a>]}
             defaults='Hosting <0>{{repoSize}} of files</0>'
+            i18nKey='StatusConnected.paragraph1'
             t={t}
             values={{ repoSize: humanRepoSize }}
           />
@@ -36,6 +45,7 @@ export const StatusConnected = ({ peersCount, repoSize, t }) => {
               </a>
             ]}
             defaults='Discovered <0>{{peersCount}} peers</0>'
+            i18nKey='StatusConnected.paragraph2'
             t={t}
             values={{ peersCount: peersCount.toString() }}
           />

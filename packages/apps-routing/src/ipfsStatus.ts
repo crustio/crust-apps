@@ -9,7 +9,7 @@ export default function create (t: <T = string>(key: string, text: string, optio
   return {
     Component,
     display: {},
-    group: 'storage',
+    group: 'ipfs',
     icon: 'cogs',
     name: 'storage',
     text: t<string>('nav.status', 'Status', { ns: 'apps-routing' })
