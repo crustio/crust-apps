@@ -9,7 +9,7 @@ import PeersPage from '../peers/LoadablePeersPage';
 // import SettingsPage from '../settings/LoadableSettigsPage';
 // import AnalyticsPage from '../settings/AnalyticsPage';
 import WelcomePage from '../welcome/LoadableWelcomePage';
-// import BlankPage from '../blank/BlankPage'
+import MarketPage from '../market';
 
 export default createRouteBundle({
   '/storage/explore': StartExploringPage,
@@ -19,6 +19,7 @@ export default createRouteBundle({
   '/storage/ipns*': FilesPage,
   '/storage/pins*': FilesPage,
   '/storage/peers': PeersPage,
+  '/storage/market': MarketPage,
   // '/settings/analytics': AnalyticsPage,
   // '/settings*': SettingsPage,
   '/welcome': WelcomePage,

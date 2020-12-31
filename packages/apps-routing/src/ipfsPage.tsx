@@ -35,6 +35,10 @@ const IpfsPage: React.FC<Props> = (props) => {
     {
       name: 'peers',
       text: t('peers', 'Peers')
+    },
+    {
+      name: 'market',
+      text: t('peers', 'Storage Market')
     }
   ]);
 
