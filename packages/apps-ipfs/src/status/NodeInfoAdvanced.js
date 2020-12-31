@@ -71,8 +71,9 @@ const NodeInfoAdvanced = ({ doSetIsNodeInfoOpen, gatewayUrl, identity, ipfsApiAd
                   ? (<Address value={ipfsApiAddress} />)
                   : asAPIString(ipfsApiAddress)
                 }
-                <a className='ml2 link blue sans-serif fw6'
-                  href='#/settings'>{t('app:actions.edit')}</a>
+                {/* todo:add edit page */}
+                {/* <a className='ml2 link blue sans-serif fw6' */}
+                {/*  href='#/storage/settings'>{t('app:actions.edit')}</a> */}
               </div>)
             }
             term={t('app:terms.api')} />

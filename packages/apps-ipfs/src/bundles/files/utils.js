@@ -230,7 +230,7 @@ export const infoFromPath = (path, uriDecode = true) => {
     check('/storage/pins');
     info.isPins = true;
 
-    if (info.realPath !== '/storage/') {
+    if (info.realPath !== '/storage') {
       info.realPath = `/storage/ipfs${info.realPath}`;
     }
   } else {
@@ -246,9 +246,6 @@ export const infoFromPath = (path, uriDecode = true) => {
     info.realPath = decodeURIComponent(info.realPath);
     info.path = decodeURIComponent(info.path);
   }
-
-  info.path = '/files';
-  console.log(info);
 
   return info;
 };
@@ -271,7 +268,7 @@ export class Channel {
   }
 
   /**
-   * @returns {Promise<IteratorResult<T, void>>}
+   * @returns {Promise<IteratorResult<T, void>>
    */
   async next () {
     const { done, pending, queue } = this;
@@ -339,7 +336,9 @@ export class Channel {
 export const ensureMFS = (store) => {
   const info = store.selectFilesPathInfo();
 
-  if (!info || !info.isMfs) {
+  console.log(info);
+
+  if (!info) {
     throw new Error('Unable to perform task if not in MFS');
   }
 };

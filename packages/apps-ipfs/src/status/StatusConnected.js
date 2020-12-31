@@ -40,7 +40,7 @@ export const StatusConnected = ({ peersCount, repoSize, t }) => {
           <Trans
             components={[
               <a className='link blue'
-                href='/storage/peers'>
+                href='#/storage/peers'>
                 ?
               </a>
             ]}
