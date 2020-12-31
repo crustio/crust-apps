@@ -39,7 +39,7 @@
   "status": {
     "connectedToIpfs": "Connected to IPFS",
     "connectingToIpfs": "Connecting to IPFS…",
-    "couldNotConnect": "Could not connect to the IPFS API"
+    "couldNotConnect": "Please follow steps below to connect to IPFS."
   },
   "terms": {
     "address": "Address",

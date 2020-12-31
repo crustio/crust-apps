@@ -39,7 +39,7 @@
   "status": {
     "connectedToIpfs": "已连接到 IPFS",
     "connectingToIpfs": "正在连接 IPFS",
-    "couldNotConnect": "无法连接到IPFS API"
+    "couldNotConnect": "Please follow steps below to connect to IPFS"
   },
   "terms": {
     "address": "地址",

@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import ApiAddressForm from '../api-address-form/ApiAddressForm';
 import Box from '../box/Box';
 import Shell from '../shell/Shell.js';
-import GlyphAttention from '../../icons/GlyphAttention';
+import GlyphTip from '../../icons/GlyphTip';
 
 const TABS = {
   UNIX: 'unix',
@@ -24,20 +24,13 @@ const IsNotConnected = ({ apiUrl, connected, doUpdateIpfsApiAddress, ipfsApiAddr
   return (
     <Box className='pv3 ph4 lh-copy charcoal'>
       <div className='flex flex-wrap items-center'>
-        <GlyphAttention className='fill-red mr'
-          role='presentation'
-          style={{ height: 76 }} />
-        <h1 className='montserrat fw4 charcoal ma0 f3 red'>{t('app:status.couldNotConnect')}</h1>
+        <GlyphTip className='fill-red mr'
+          style={{ height: 30 }} />
+        <h1 className='montserrat fw4 charcoal ma0 f3 red'
+          style={{ textTransform: 'none', paddingLeft: '10px' }}>{t('app:status.couldNotConnect')}</h1>
       </div>
-      {/* <Trans i18nKey='notConnected.paragraph1' */}
-      {/*  t={t}> */}
-      {/*  <p className='fw6 mb3'>Check out the installation guide in the <a className='link blue' */}
-      {/*    href='https://docs.ipfs.io/install/command-line-quick-start/' */}
-      {/*    rel='noopener noreferrer' */}
-      {/*    target='_blank'>IPFS Docs</a>, or try these common fixes:</p> */}
-      {/* </Trans> */}
       <ol className='pl3 pt2'>
-        <Trans i18nKey='notConnected.paragraph2'
+        <Trans i18nKey='notConnected.paragraph1'
           t={t}>
           <li className='mb3'>
               Make sure you have IPFS installed. If not, check out the installation guide:
@@ -52,17 +45,22 @@ const IsNotConnected = ({ apiUrl, connected, doUpdateIpfsApiAddress, ipfsApiAddr
               target='_blank'>IPFS Command Line</a>
           </li>
         </Trans>
-        <Shell title='Any Shell'>
-          <code className='db'><b className='no-select'>$ </b>ipfs daemon</code>
-          <code className='db'>Initializing daemon...</code>
-          <code className='db'>API server listening on /ip4/127.0.0.1/tcp/5001</code>
-        </Shell>
+
         { !sameOrigin && (
           <div>
+            <Trans i18nKey='notConnected.paragraph2'
+              t={t}>
+              <li className='mb3 mt4'>Make sure your IPFS daemon or IPFS desktop is running. To launch IPFS daemon, run following command: </li>
+            </Trans>
+            <Shell title='Any Shell'>
+              <code className='db'><b className='no-select'>$ </b>ipfs daemon</code>
+              <code className='db'>Initializing daemon...</code>
+              <code className='db'>API server listening on /ip4/127.0.0.1/tcp/5001</code>
+            </Shell>
             <Trans i18nKey='notConnected.paragraph3'
               t={t}>
-              <li className='mb3 mt4'>Is your IPFS API configured to allow <a className='link blue'
-                href='https://github.com/ipfs-shipyard/ipfs-webui#configure-ipfs-api-cors-headers'>cross-origin (CORS) requests</a>? If not, run these commands and then start your daemon from the terminal:</li>
+              <li className='mb3 mt4'>Make sure you have configured to allow <a className='link blue'
+                href='https://github.com/ipfs-shipyard/ipfs-webui#configure-ipfs-api-cors-headers'>cross-origin (CORS) requests</a>?  If not, run following commands and then restart IPFS daemon or IPFS desktop:</li>
             </Trans>
             <div className='br1 overflow-hidden'>
               <div className='f7 mb0 sans-serif charcoal pv1 pl2 bg-black-20 flex items-center overflow-x-auto'>
@@ -104,10 +102,10 @@ const IsNotConnected = ({ apiUrl, connected, doUpdateIpfsApiAddress, ipfsApiAddr
         )}
         <Trans i18nKey='notConnected.paragraph4'
           t={t}>
-          <li className='mt4 mb3'>Is your IPFS API on a port other than 5001? If your node is configured with a <a className='link blue'
+          <li className='mt4 mb3'>Make sure you have not changed the default  <a className='link blue'
             href='https://github.com/ipfs/go-ipfs/blob/master/docs/config.md#addresses'
             rel='noopener noreferrer'
-            target='_blank'>custom API address</a>, enter it here.</li>
+            target='_blank'>IPFS API port</a>, otherwise you need to enter the customized API port here:</li>
         </Trans>
         <ApiAddressForm
           defaultValue={ipfsApiAddress || ''}
