@@ -37,7 +37,7 @@
     "revision": "Revision"
   },
   "status": {
-    "connectedToIpfs": "Connected to IPFS",
+    "connectedToIpfs": "<0>IPFS network is ready <1/> you can check your IPFS node status in this page. Go to <3>Files</3> tab to store/retrieve files. The storage order function of Crust Network is coming soon.</0>",
     "connectingToIpfs": "Connecting to IPFS…",
     "couldNotConnect": "Please follow steps below to connect to IPFS."
   },
