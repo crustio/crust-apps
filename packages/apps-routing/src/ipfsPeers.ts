@@ -9,7 +9,7 @@ export default function create (t: <T = string>(key: string, text: string, optio
   return {
     Component,
     display: {},
-    group: 'storage',
+    group: 'ipfs',
     icon: 'ipfs',
     name: 'storage/peers',
     text: t<string>('nav.peers', 'Peers', { ns: 'apps-routing' })

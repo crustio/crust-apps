@@ -21,7 +21,7 @@ export interface Route {
     needsSudo?: boolean;
   };
   group: RouteGroup;
-  icon: IconName;
+  icon: IconName | 'ipfs';
   isIgnored?: boolean;
   name: string;
   text: string;

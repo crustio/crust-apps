@@ -12,7 +12,7 @@ import styled from 'styled-components';
 interface Props {
   className?: string;
   color?: 'gray' | 'green' | 'normal' | 'orange' | 'red' | 'transparent' | 'white';
-  icon: IconName;
+  icon: IconName | 'ipfs';
   isSpinning?: boolean;
   onClick?: () => void;
   size?: '1x' | '2x';

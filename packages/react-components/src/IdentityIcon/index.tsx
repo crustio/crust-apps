@@ -34,7 +34,6 @@ function IdentityIcon ({ className = '', prefix, size = 24, theme, value }: Prop
   const Custom = thisTheme === 'robohash'
     ? RoboHash
     : undefined;
-
   const _onCopy = useCallback(
     (account: string) => queueAction({
       account,
