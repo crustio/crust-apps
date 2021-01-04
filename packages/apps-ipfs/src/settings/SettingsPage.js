@@ -33,7 +33,7 @@ export const SettingsPage = ({
   ipfsPendingFirstConnection, isCliTutorModeEnabled, isConfigBlocked, isIpfsConnected, isLoading, isSaving, onChange,
   onReset, onSave, t, tReady, toursEnabled
 }) => (
-  <div className='mw9 center'
+  <div className='center'
     data-id='SettingsPage'>
     <Helmet>
       <title>{t('title')} | IPFS</title>
