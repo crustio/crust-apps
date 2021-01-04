@@ -6,7 +6,7 @@ import FilesPage from '../files/LoadableFilesPage';
 import StartExploringPage from '../explore/LoadableStartExploringPage';
 import ExplorePage from '../explore/LoadableExplorePage';
 import PeersPage from '../peers/LoadablePeersPage';
-// import SettingsPage from '../settings/LoadableSettigsPage';
+import SettingsPage from '../settings/LoadableSettingsPage';
 // import AnalyticsPage from '../settings/AnalyticsPage';
 import WelcomePage from '../welcome/LoadableWelcomePage';
 import MarketPage from '../market';
@@ -21,7 +21,7 @@ export default createRouteBundle({
   '/storage/peers': PeersPage,
   '/storage/market': MarketPage,
   // '/settings/analytics': AnalyticsPage,
-  // '/settings*': SettingsPage,
+  '/storage/settings*': SettingsPage,
   '/welcome': WelcomePage,
   // '/blank': BlankPage,
   '/storage/status*': StatusPage,

@@ -4771,6 +4771,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ace-builds@npm:^1.4.6":
+  version: 1.4.12
+  resolution: "ace-builds@npm:1.4.12"
+  checksum: 10f23a7e6dd333246af093a22dbb63350528a94265b9d06769bf6d45140269df51e00c8c8b6ab4e15682a03a945c48fe903614b4ad705a334d4c7b1a8ec60ad2
+  languageName: node
+  linkType: hard
+
 "acorn-bigint@npm:^0.4.0":
   version: 0.4.0
   resolution: "acorn-bigint@npm:0.4.0"
@@ -8861,7 +8868,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"diff-match-patch@npm:^1.0.0":
+"diff-match-patch@npm:^1.0.0, diff-match-patch@npm:^1.0.4":
   version: 1.0.5
   resolution: "diff-match-patch@npm:1.0.5"
   checksum: 4694f40dbfd725e6ceaaa94c4779b60ceaf2d3b382229118310154d469f983d665ecfddae3c5c402bc5bb51930db63a1d27bd30c5d91e38de13f9d8054f2f4ae
@@ -19725,6 +19732,7 @@ fsevents@^1.2.7:
     electron-builder-notarize: ^1.2.0
     i18next-scanner: ^2.11.0
     react: ^17.0.1
+    react-ace: ^9.2.1
     react-dom: ^17.0.1
     react-is: ^17.0.1
     source-map-explorer: ^2.5.1
@@ -20518,6 +20526,22 @@ fsevents@^1.2.7:
   bin:
     rc: ./cli.js
   checksum: ea2b7f7cee201a67923a2240de594a5d9b59bd312b814b06536d3d609a416dfd6fb9b85ea2abfd3b8a4eb5ed33eaff946ee75a8f2b7fb10941073c5cfee6b7a5
+  languageName: node
+  linkType: hard
+
+"react-ace@npm:^9.2.1":
+  version: 9.2.1
+  resolution: "react-ace@npm:9.2.1"
+  dependencies:
+    ace-builds: ^1.4.6
+    diff-match-patch: ^1.0.4
+    lodash.get: ^4.4.2
+    lodash.isequal: ^4.5.0
+    prop-types: ^15.7.2
+  peerDependencies:
+    react: ^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0
+    react-dom: ^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0 || ^17.0.0
+  checksum: 86567bc995302ba2603a7f97bfdbd74e077a00f07e566f8534da262c4b954184e31355b2c7980f8680ece94b7a70c58b1b89e6130320b28e8a8fa6d597ba41fa
   languageName: node
   linkType: hard
 
