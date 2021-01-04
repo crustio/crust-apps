@@ -22,6 +22,8 @@ import { getJoyrideLocales } from '../helpers/i8n';
 import Modals, { DELETE, NEW_FOLDER, SHARE, RENAME, ADD_BY_PATH, CLI_TUTOR_MODE } from './modals/Modals';
 import Header from './header/Header';
 import FileImportStatus from './file-import-status/FileImportStatus';
+import FilesExploreForm from '@polkadot/apps-ipfs/files/explore-form/FilesExploreForm';
+import Connected from '@polkadot/apps-ipfs/components/connected/Connected';
 
 const defaultState = {
   downloadAbort: null,
@@ -55,7 +57,7 @@ class FilesPage extends React.Component {
   }
 
   componentDidUpdate (prev) {
-    const { filesPathInfo } = this.props
+    const { filesPathInfo } = this.props;
 
     if (prev.files === null || !prev.ipfsConnected || filesPathInfo.path !== prev.filesPathInfo.path) {
       this.props.doFilesFetch();
@@ -221,7 +223,8 @@ class FilesPage extends React.Component {
 
   render () {
     const {
-      cliOptions, doSetCliOptions, files, filesPathInfo, handleJoyrideCallback, isCliTutorModeEnabled,
+      cliOptions, doExploreUserProvidedPath, doFilesNavigateTo, doSetCliOptions, files, filesPathInfo, handleJoyrideCallback,
+      isCliTutorModeEnabled,
       t, toursEnabled
     } = this.props;
 
@@ -234,6 +237,18 @@ class FilesPage extends React.Component {
           <title>{this.title}</title>
         </Helmet>
 
+        <div className='flex items-center ph3 ph4-l'
+          style={{ WebkitAppRegion: 'drag', height: 75, background: '#F0F6FA', paddingTop: '20px', paddingBottom: '15px' }}>
+          <div className='joyride-app-explore'
+            style={{ width: 560 }}>
+            <FilesExploreForm onBrowse={doFilesNavigateTo}
+              onInspect={doExploreUserProvidedPath} />
+          </div>
+          <div className='dn flex-ns flex-auto items-center justify-end'>
+            {/* <TourHelper /> */}
+            <Connected className='joyride-app-status' />
+          </div>
+        </div>
         <ContextMenu
           autofocus
           cid={contextMenu.file && contextMenu.file.cid}

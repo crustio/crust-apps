@@ -74,18 +74,6 @@ export class App extends Component {
         <div className='flex flex-row-reverse-l flex-column-reverse justify-end justify-start-l'
           style={{ minHeight: '100vh' }}>
           <div className='flex-auto-l'>
-            <div className='flex items-center ph3 ph4-l'
-              style={{ WebkitAppRegion: 'drag', height: 75, background: '#F0F6FA', paddingTop: '20px', paddingBottom: '15px' }}>
-              <div className='joyride-app-explore'
-                style={{ width: 560 }}>
-                <FilesExploreForm onBrowse={doFilesNavigateTo}
-                  onInspect={doExploreUserProvidedPath} />
-              </div>
-              <div className='dn flex-ns flex-auto items-center justify-end'>
-                {/*<TourHelper />*/}
-                <Connected className='joyride-app-status' />
-              </div>
-            </div>
             <main className='bg-white pv3 pa3'>
               { (ipfsReady || url === '/welcome' || url.startsWith('/settings'))
                 ? <Page />

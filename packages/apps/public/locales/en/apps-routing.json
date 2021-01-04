@@ -1,4 +1,7 @@
 {
+  "explore": "Explore",
+  "files": "Files",
+  "market": "Storage Market",
   "nav.accounts": "Accounts",
   "nav.addresses": "Address book",
   "nav.calendar": "Event calendar",
@@ -23,8 +26,7 @@
   "nav.transfer": "Transfer",
   "nav.treasury": "Treasury",
   "nav.wiki": "Wiki",
-  "files": "Files",
   "peers": "Peers",
-  "status": "Status",
-  "explore": "Explore"
+  "settings": "Ipfs Settings",
+  "status": "Status"
 }

@@ -12,7 +12,7 @@ export const StatusConnected = ({ peersCount, repoSize, t }) => {
     <header>
       <h1 className='montserrat fw2 f3 charcoal ma0 pt0 pb2 left'
         style={{ fontSize: '15px', transformStyle: 'none' }}>
-        <Trans i18nKey='app:status.connectedToIpfs'
+        <Trans i18nKey='app:status.connectedToIpfs1'
           t={t}>
           <div >
             IPFS network is ready

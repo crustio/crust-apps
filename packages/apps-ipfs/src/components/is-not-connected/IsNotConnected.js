@@ -26,8 +26,8 @@ const IsNotConnected = ({ apiUrl, connected, doUpdateIpfsApiAddress, ipfsApiAddr
       <div className='flex flex-wrap items-center'>
         <GlyphTip className='fill-red mr'
           style={{ height: 30 }} />
-        <h1 className='montserrat fw4 charcoal ma0 f3 red'
-          style={{ textTransform: 'none', paddingLeft: '10px' }}>{t('app:status.couldNotConnect')}</h1>
+        <h1 className='montserrat fw4 charcoal ma0 f3'
+          style={{ textTransform: 'none', paddingLeft: '10px', color: '#ff8812' }}>{t('app:status.couldNotConnect')}</h1>
       </div>
       <ol className='pl3 pt2'>
         <Trans i18nKey='notConnected.paragraph1'
