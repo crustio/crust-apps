@@ -98,5 +98,8 @@
     "webpack-cli": "^3.3.12",
     "webpack-merge": "^5.4.0",
     "webpack-plugin-serve": "^1.2.1"
+  },
+  "dependencies": {
+    "react-ace": "^9.2.1"
   }
 }
