@@ -38,8 +38,9 @@
   },
   "status": {
     "connectedToIpfs": "已连接到 IPFS",
+    "connectedToIpfs1": "<0>IPFS网络已经集成到Crust网络, <1/> 您可以在本页查看节点状态, 在<3>文件</3> 页存储或检索IPFS网络的文件。 Crust网络的存储市场功能即将开启，敬请期待。</0>",
     "connectingToIpfs": "正在连接 IPFS",
-    "couldNotConnect": "Please follow steps below to connect to IPFS"
+    "couldNotConnect": "请完成以下步骤以连接至IPFS网络"
   },
   "terms": {
     "address": "地址",
