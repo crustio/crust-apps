@@ -70,7 +70,7 @@ export const NavBar = ({ t }) => {
     <div className='h-100 fixed-l flex flex-column justify-between'
       style={{ overflowY: 'auto', width: 'inherit' }}>
       <div className='flex flex-column'>
-        <a href='#/welcome'
+        <a href='#/storage/welcome'
           role='menuitem'
           title={t('welcome:description')}>
           <div className='pt3 pb1 pb2-l'>

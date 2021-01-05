@@ -3,7 +3,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { findDOMNode } from 'react-dom';
-import { Helmet } from 'react-helmet';
 import { connect } from 'redux-bundler-react';
 import { withTranslation, Trans } from 'react-i18next';
 import ReactJoyride from 'react-joyride';
@@ -233,10 +232,6 @@ class FilesPage extends React.Component {
     return (
       <div className='center'
         data-id='FilesPage'>
-        <Helmet>
-          <title>{this.title}</title>
-        </Helmet>
-
         <div className='flex items-center ph3 ph4-l'
           style={{ WebkitAppRegion: 'drag', height: 75, background: '#F0F6FA', paddingTop: '20px', paddingBottom: '15px' }}>
           <div className='joyride-app-explore'

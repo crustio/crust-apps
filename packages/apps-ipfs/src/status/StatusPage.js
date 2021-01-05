@@ -1,7 +1,6 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { withTranslation, Trans } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 import ReactJoyride from 'react-joyride';
@@ -31,9 +30,6 @@ const StatusPage = ({
   return (
     <div className='center'
       data-id='StatusPage'>
-      <Helmet>
-        <title>{t('title')} | IPFS</title>
-      </Helmet>
       <Box className='pa3 joyride-status-node'
         style={{ minHeight: 0 }}>
         <div className='flex'>

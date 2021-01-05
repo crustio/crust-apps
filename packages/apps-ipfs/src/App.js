@@ -75,7 +75,7 @@ export class App extends Component {
           style={{ minHeight: '100vh' }}>
           <div className='flex-auto-l'>
             <main className='bg-white pv3 pa3'>
-              { (ipfsReady || url === '/welcome' || url.startsWith('/settings'))
+              { (ipfsReady || url === '/storage/welcome' || url.startsWith('/storage/settings'))
                 ? <Page />
                 : <ComponentLoader pastDelay />
               }
