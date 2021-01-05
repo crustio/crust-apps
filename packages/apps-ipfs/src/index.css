@@ -59,3 +59,6 @@ body,
   font-size: 14px !important;
   font-family: "Montserrat";
 }
+.left {
+  text-align: left;
+}

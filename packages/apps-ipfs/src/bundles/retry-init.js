@@ -1,5 +1,7 @@
-import { createSelector } from 'redux-bundler'
-import { ACTIONS } from './ipfs-provider'
+// [object Object]
+// SPDX-License-Identifier: Apache-2.0
+import { createSelector } from 'redux-bundler';
+import { ACTIONS } from './ipfs-provider';
 
 /**
  * @typedef {import('./ipfs-provider').Message} Message
@@ -24,25 +26,29 @@ const retryInit = {
   reducer: (state = {}, action) => {
     switch (action.type) {
       case ACTIONS.IPFS_INIT: {
-        const { task } = action
+        const { task } = action;
+
         switch (task.status) {
           case 'Init': {
-            return { ...state, startedAt: Date.now() }
+            return { ...state, startedAt: Date.now() };
           }
+
           case 'Exit': {
             if (task.result.ok) {
-              return state
+              return state;
             } else {
-              return { ...state, failedAt: Date.now() }
+              return { ...state, failedAt: Date.now() };
             }
           }
+
           default: {
-            return state
+            return state;
           }
         }
       }
+
       default: {
-        return state
+        return state;
       }
     }
   },
@@ -50,12 +56,12 @@ const retryInit = {
   /**
    * @param {State} state
    */
-  selectInitStartedAt: state => state.retryInit.startedAt,
+  selectInitStartedAt: (state) => state.retryInit.startedAt,
 
   /**
    * @param {State} state
    */
-  selectInitFailedAt: state => state.retryInit.failedAt,
+  selectInitFailedAt: (state) => state.retryInit.failedAt,
 
   reactConnectionInitRetry: createSelector(
     'selectAppTime',
@@ -67,11 +73,12 @@ const retryInit = {
      * @param {number|void} failedAt
      */
     (appTime, startedAt, failedAt) => {
-      if (!failedAt || failedAt < startedAt) return false
-      if (appTime - failedAt < 3000) return false
-      return { actionCreator: 'doTryInitIpfs' }
+      if (!failedAt || failedAt < startedAt) return false;
+      if (appTime - failedAt < 3000) return false;
+
+      return { actionCreator: 'doTryInitIpfs' };
     }
   )
-}
+};
 
-export default retryInit
+export default retryInit;
