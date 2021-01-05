@@ -21,7 +21,7 @@ export default {
     (failed, hash) => {
       hash = getRealPath(hash);
 
-      if (failed && hash !== '/welcome' && !hash.startsWith('/settings')) {
+      if (!failed && hash !== '/welcome' && !hash.startsWith('/settings')) {
         return { actionCreator: 'doUpdateHash', args: ['#/storage/welcome'] };
       }
     }
