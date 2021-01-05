@@ -18,10 +18,12 @@ export default {
   reactToIpfsConnectionFail: createSelector(
     'selectIpfsInitFailed',
     'selectHash',
-    (failed, hash) => {
+    'selectIpfsConnected',
+    (failed, hash, ipfsConnected) => {
       hash = getRealPath(hash);
+      console.log(ipfsConnected);
 
-      if (!failed && hash !== '/welcome' && !hash.startsWith('/settings')) {
+      if (!ipfsConnected && hash !== '/welcome' && !hash.startsWith('/settings')) {
         return { actionCreator: 'doUpdateHash', args: ['#/storage/welcome'] };
       }
     }

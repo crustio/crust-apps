@@ -15,8 +15,10 @@ import GlyphTick from '../../icons/GlyphTick';
 import GlyphCancel from '../../icons/GlyphCancel';
 import GlyphSmallCancel from '../../icons/GlyphSmallCancel';
 
-const Import = (job, t) =>
-  [...groupByPath(job.message.entries).values()].map((item) => (
+const Import = (job, t) => {
+  console.log(job);
+
+  return job.message ? [...groupByPath(job.message.entries).values()].map((item) => (
     <li className='flex w-100 bb b--light-gray items-center f6 charcoal'
       key={item.path}>
       {viewIcon(item)}
@@ -27,7 +29,8 @@ const Import = (job, t) =>
       </span>
       {viewImportStatus(job)}
     </li>
-  ));
+  )) : 'noFile';
+};
 
 const viewIcon = (entry) => entry.type === 'directory'
   ? <FolderIcon className='fileImportStatusIcon fill-aqua pa1'/>
