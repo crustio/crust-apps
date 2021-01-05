@@ -6,7 +6,6 @@ import IpldExploreForm from 'ipld-explorer-components/dist/components/explore/Ip
 import { colorForNode, nameForNode, shortNameForNode } from 'ipld-explorer-components/dist/components/object-info/ObjectInfo';
 import { projectsTour } from 'ipld-explorer-components/dist/lib/tours';
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { withTranslation } from 'react-i18next';
 import ReactJoyride from 'react-joyride';
 
@@ -44,7 +43,7 @@ const StartExploringPage = function StartExploringPage (_ref2) {
 
   return /* #__PURE__ */React.createElement('div', {
     className: 'mw9 center explore-sug-2'
-  }, /* #__PURE__ */React.createElement(Helmet, null, /* #__PURE__ */React.createElement('title', null, t('StartExploringPage.title'))), /* #__PURE__ */React.createElement('div', {
+  }, /* #__PURE__ */React.createElement('div', {
     className: 'flex-l'
   }, /* #__PURE__ */React.createElement('div', {
     className: 'flex-auto-l mr3-l'

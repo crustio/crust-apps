@@ -1,7 +1,6 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { connect } from 'redux-bundler-react';
 import { withTranslation, Trans } from 'react-i18next';
 import ReactJoyride from 'react-joyride';
@@ -35,10 +34,6 @@ export const SettingsPage = ({
 }) => (
   <div className='center'
     data-id='SettingsPage'>
-    <Helmet>
-      <title>{t('title')} | IPFS</title>
-    </Helmet>
-
     {/* Enable a full screen loader after updating to a new IPFS API address.
       * Will not show on consequent retries after a failure.
       */}

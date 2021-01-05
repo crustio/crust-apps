@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { connect } from 'redux-bundler-react';
-import { Helmet } from 'react-helmet';
 import { withTranslation } from 'react-i18next';
 import ReactJoyride from 'react-joyride';
 import withTour from '../components/tour/withTour';
@@ -20,10 +19,6 @@ import { cliCmdKeys, cliCommandList } from '../bundles/files/consts';
 const PeersPage = ({ handleJoyrideCallback, isCliTutorModeEnabled, t, toursEnabled }) => (
   <div className='overflow-hidden'
     data-id='PeersPage'>
-    <Helmet>
-      <title>{t('title')} | IPFS</title>
-    </Helmet>
-
     <div className='flex justify-end items-center mb3'>
       <CliTutorMode command={cliCommandList[cliCmdKeys.ADD_NEW_PEER]()}
         showIcon={true}

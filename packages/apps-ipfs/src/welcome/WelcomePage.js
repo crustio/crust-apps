@@ -1,7 +1,6 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { connect } from 'redux-bundler-react';
 import { withTranslation } from 'react-i18next';
 import ReactJoyride from 'react-joyride';
@@ -25,9 +24,6 @@ const WelcomePage = ({ apiUrl, handleJoyrideCallback, ipfsConnected, ipfsInitFai
 
   return (
     <div>
-      <Helmet>
-        <title>{t('title')}</title>
-      </Helmet>
       <div className='lh-copy charcoal'>
         <ConnectionStatus connected={ipfsConnected}
           sameOrigin={isSameOrigin}
