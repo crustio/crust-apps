@@ -42,7 +42,7 @@ const IpfsPage: React.FC<Props> = (props) => {
     },
     {
       name: 'settings',
-      text: t('settings', 'Ipfs Setting')
+      text: t('settings', 'IPFS Setting')
     }
   ]);
 

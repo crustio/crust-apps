@@ -9,7 +9,7 @@ const StorageMarket = ({ children, ...props }) => {
 
   return <div className='w-60 center'>
     <img alt=''
-      src={i18n.language === 'zh' ? '/market_zh.png' : '/market.png'}
+      src={`/images/market${i18n.language === 'zh' ? '_zh' : ''}.png`}
       style={{ width: '100%' }}/>
   </div>;
 };
