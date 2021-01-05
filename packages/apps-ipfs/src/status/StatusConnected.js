@@ -17,7 +17,7 @@ export const StatusConnected = ({ peersCount, repoSize, t }) => {
           <div >
             IPFS network is ready
             <div style={{ fontSize: '16px', paddingTop: '5px' }}>
-              you can check your IPFS node status in this page. Go to
+              You can check your IPFS node status in this page. Go to
               <a className='link blue'
                 href='#/storage/files'>Files</a>
             tab to store/retrieve files. The storage order function of Crust Network is coming soon.
