@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { DeriveSessionProgress } from '@polkadot/api-derive/types';
@@ -6,6 +6,7 @@ import type { SlashEra } from './types';
 
 import BN from 'bn.js';
 import React, { useMemo } from 'react';
+
 import { CardSummary, SummaryBox } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
