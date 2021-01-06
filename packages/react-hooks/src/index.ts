@@ -34,3 +34,4 @@ export { useSudo } from './useSudo';
 export { useToggle } from './useToggle';
 export { useVotingStatus } from './useVotingStatus';
 export { useWeight } from './useWeight';
+export { useStashIds } from './useStashIds';

@@ -1,22 +1,22 @@
-// Copyright 2017-2021 @polkadot/app-staking authors & contributors
+// Copyright 2017-2020 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+/* eslint-disable */
 
-import type { DeriveBalancesAll } from '@polkadot/api-derive/types';
-import type { AmountValidateState, DestinationType } from '../types';
-import type { BondInfo } from './types';
+import { DeriveBalancesAll } from '@polkadot/api-derive/types';
+import { AmountValidateState, DestinationType } from '../types';
+import { BondInfo } from './types';
 
 import BN from 'bn.js';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-
 import { Dropdown, InputAddress, InputBalance, Modal, Static } from '@polkadot/react-components';
-import { useApi, useCall } from '@polkadot/react-hooks';
 import { BalanceFree, BlockToTime } from '@polkadot/react-query';
+import { useApi, useCall } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 
 import { useTranslation } from '../../translate';
 import InputValidateAmount from '../Account/InputValidateAmount';
 import InputValidationController from '../Account/InputValidationController';
-import { createDestCurr } from '../destOptions';
+import { createDestPrev } from '../destOptions';
 import useUnbondDuration from '../useUnbondDuration';
 
 interface Props {
@@ -32,19 +32,19 @@ function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
   const [controllerError, setControllerError] = useState<boolean>(false);
   const [controllerId, setControllerId] = useState<string | null>(null);
   const [destination, setDestination] = useState<DestinationType>('Staked');
-  const [destAccount, setDestAccount] = useState<string | null>(null);
   const [stashId, setStashId] = useState<string | null>(null);
   const [startBalance, setStartBalance] = useState<BN | null>(null);
   const stashBalance = useCall<DeriveBalancesAll>(api.derive.balances.all, [stashId]);
   const bondedBlocks = useUnbondDuration();
 
   const options = useMemo(
-    () => createDestCurr(t),
+    () => createDestPrev(t),
     [t]
   );
 
   const _setError = useCallback(
-    (_: string | null, isFatal: boolean) => setControllerError(isFatal),
+    // eslint-disable-next-line handle-callback-err
+    (error: string | null, isFatal: boolean) => setControllerError(isFatal),
     []
   );
 
@@ -61,15 +61,11 @@ function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
   }, [stashId]);
 
   useEffect((): void => {
-    const bondDest = destination === 'Account'
-      ? { Account: destAccount }
-      : destination;
-
     onChange(
       (amount && amount.gtn(0) && !amountError?.error && !controllerError && controllerId && stashId)
         ? {
-          bondOwnTx: api.tx.staking.bond(stashId, amount, bondDest),
-          bondTx: api.tx.staking.bond(controllerId, amount, bondDest),
+          bondOwnTx: api.tx.staking.bond(stashId, amount, destination),
+          bondTx: api.tx.staking.bond(controllerId, amount, destination),
           controllerId,
           controllerTx: api.tx.staking.setController(controllerId),
           stashId
@@ -82,10 +78,9 @@ function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
           stashId: null
         }
     );
-  }, [api, amount, amountError, controllerError, controllerId, destination, destAccount, stashId, onChange]);
+  }, [api, amount, amountError, controllerError, controllerId, destination, stashId, onChange]);
 
   const hasValue = !!amount?.gtn(0);
-  const isAccount = destination === 'Account';
 
   return (
     <div className={className}>
@@ -126,7 +121,7 @@ function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
               label={t<string>('value bonded')}
               labelExtra={
                 <BalanceFree
-                  label={<span className='label'>{t<string>('balance')}</span>}
+                  label={<span className='label'>{t<string>('stash balance')}</span>}
                   params={stashId}
                 />
               }
@@ -163,15 +158,6 @@ function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
             options={options}
             value={destination}
           />
-          {isAccount && (
-            <InputAddress
-              help={t('An account that is to receive the rewards')}
-              label={t('the payment account')}
-              onChange={setDestAccount}
-              type='account'
-              value={destAccount}
-            />
-          )}
         </Modal.Column>
         <Modal.Column>
           <p>{t<string>('Rewards (once paid) can be deposited to either the stash or controller, with different effects.')}</p>

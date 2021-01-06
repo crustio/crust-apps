@@ -1,18 +1,20 @@
-// Copyright 2017-2021 @polkadot/app-staking authors & contributors
+// Copyright 2017-2020 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { SubmittableExtrinsic } from '@polkadot/api/types';
-import type { EraIndex, Weight } from '@polkadot/types/interfaces';
-import type { PayoutValidator } from './types';
+import { SubmittableExtrinsic } from '@polkadot/api/types';
+import { EraIndex } from '@polkadot/types/interfaces';
+import { PayoutValidator } from './types';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
 import { ApiPromise } from '@polkadot/api';
-import { AddressMini, Button, InputAddress, Modal, Static, TxButton } from '@polkadot/react-components';
-import { useAccounts, useApi, useToggle } from '@polkadot/react-hooks';
+import { AddressMini, Button, Modal, InputAddress, Static, TxButton } from '@polkadot/react-components';
+import { useApi, useToggle } from '@polkadot/react-hooks';
 
 import { useTranslation } from '../translate';
+
+// const DEFAULT_BATCH = 40;
+const DEFAULT_PAYOUTS = 64;
 
 interface Props {
   className?: string;
@@ -26,92 +28,53 @@ interface SinglePayout {
   validatorId: string;
 }
 
-function createBatches (api: ApiPromise, maxPayouts: number, payouts: SinglePayout[]): SubmittableExtrinsic<'promise'>[] {
-  return payouts
-    .sort((a, b) => a.era.cmp(b.era))
-    .reduce((batches: SubmittableExtrinsic<'promise'>[][], { era, validatorId }): SubmittableExtrinsic<'promise'>[][] => {
-      const tx = api.tx.staking.payoutStakers(validatorId, era);
-      const batch = batches[batches.length - 1];
+function createExtrinsic (api: ApiPromise, payout: PayoutValidator | PayoutValidator[], maxPayouts: number): SubmittableExtrinsic<'promise'> | null {
+  // const batchSize = DEFAULT_BATCH * (DEFAULT_PAYOUTS / maxPayouts);
 
-      if (batch.length >= maxPayouts) {
-        batches.push([tx]);
-      } else {
-        batch.push(tx);
-      }
-
-      return batches;
-    }, [[]])
-    .map((batch) =>
-      batch.length === 1
-        ? batch[0]
-        : api.tx.utility.batch(batch)
-    );
-}
-
-function createExtrinsics (api: ApiPromise, payout: PayoutValidator | PayoutValidator[], maxPayouts: number): SubmittableExtrinsic<'promise'>[] | null {
   if (Array.isArray(payout)) {
     if (payout.length === 1) {
-      return createExtrinsics(api, payout[0], maxPayouts);
+      return createExtrinsic(api, payout[0], maxPayouts);
     }
 
-    return createBatches(api, maxPayouts, payout.reduce((payouts: SinglePayout[], { eras, validatorId }): SinglePayout[] => {
-      eras.forEach(({ era }): void => {
-        payouts.push({ era, validatorId });
-      });
+    return api.tx.utility.batch(
+      payout
+        .reduce((payouts: SinglePayout[], { eras, validatorId }): SinglePayout[] => {
+          eras.forEach(({ era }): void => {
+            payouts.push({ era, validatorId });
+          });
 
-      return payouts;
-    }, []));
+          return payouts;
+        }, [])
+        .sort((a, b) => a.era.cmp(b.era))
+        // .filter((_, index) => index < batchSize)
+        .map(({ era, validatorId }) => api.tx.staking.rewardStakers(validatorId, era))
+    );
   }
 
   const { eras, validatorId } = payout;
 
   return eras.length === 1
-    ? [api.tx.staking.payoutStakers(validatorId, eras[0].era)]
-    : createBatches(api, maxPayouts, eras.map((era): SinglePayout => ({ era: era.era, validatorId })));
+    ? api.tx.staking.rewardStakers(validatorId, eras[0].era)
+    : api.tx.utility.batch(
+      eras
+        .sort((a, b) => a.era.cmp(b.era))
+        // .filter((_, index) => index < batchSize)
+        .map(({ era }) => api.tx.staking.rewardStakers(validatorId, era))
+    );
 }
 
 function PayButton ({ className, isAll, isDisabled, payout }: Props): React.ReactElement<Props> {
-  const { t } = useTranslation();
   const { api } = useApi();
-  const { allAccounts } = useAccounts();
+  const { t } = useTranslation();
   const [isVisible, togglePayout] = useToggle();
   const [accountId, setAccount] = useState<string | null>(null);
-  const [extrinsics, setExtrinsics] = useState<SubmittableExtrinsic<'promise'>[] | null>(null);
-  const [maxPayouts, setMaxPayouts] = useState(0);
+  const [extrinsic, setExtrinsic] = useState<SubmittableExtrinsic<'promise'> | null>(null);
 
   useEffect((): void => {
-    if (api.tx.utility && allAccounts.length && payout && (!Array.isArray(payout) || payout.length !== 0)) {
-      const { eras, validatorId } = Array.isArray(payout)
-        ? payout[0]
-        : payout;
-
-      api.tx.staking
-        .payoutStakers(validatorId, eras[0].era)
-        .paymentInfo(allAccounts[0])
-        .then((info) => setMaxPayouts(Math.floor(
-          (
-            api.consts.system.blockWeights
-              ? api.consts.system.blockWeights.maxBlock
-              : api.consts.system.maximumBlockWeight as Weight
-          )
-            .muln(64) // 65% of the block weight on a single extrinsic (64 for safety)
-            .div(info.weight)
-            .toNumber() / 100
-        )))
-        .catch(console.error);
-    } else {
-      // at 64 payouts we can fit in 36 (as per tests)
-      setMaxPayouts(Math.floor(
-        36 * 64 / (api.consts.staking.maxNominatorRewardedPerValidator?.toNumber() || 64)
-      ));
-    }
-  }, [allAccounts, api, payout]);
-
-  useEffect((): void => {
-    api.tx.utility && payout && setExtrinsics(
-      () => createExtrinsics(api, payout, maxPayouts)
+    api.tx.utility && payout && setExtrinsic(
+      () => createExtrinsic(api, payout, DEFAULT_PAYOUTS)
     );
-  }, [api, maxPayouts, payout]);
+  }, [api, isDisabled, payout]);
 
   const isPayoutEmpty = !payout || (Array.isArray(payout) && payout.length === 0);
 
@@ -172,9 +135,9 @@ function PayButton ({ className, isAll, isDisabled, payout }: Props): React.Reac
           <Modal.Actions onCancel={togglePayout}>
             <TxButton
               accountId={accountId}
-              extrinsic={extrinsics}
+              extrinsic={extrinsic}
               icon='credit-card'
-              isDisabled={!extrinsics || !extrinsics.length || !accountId}
+              isDisabled={!extrinsic || !accountId}
               label={t<string>('Payout')}
               onStart={togglePayout}
             />

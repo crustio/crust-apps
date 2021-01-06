@@ -38,6 +38,7 @@ import { createMenuGroup } from '../util';
 import useMultisigApprovals from './useMultisigApprovals';
 import useProxies from './useProxies';
 import {FormatCandy} from "@polkadot/react-query";
+import TransferCandy from "@polkadot/app-accounts/modals/TransferCandy";
 
 interface Props {
   account: KeyringAddress;
@@ -429,6 +430,13 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
             icon='paper-plane'
             label={t<string>('send')}
             onClick={toggleTransfer}
+          />
+        )}
+        {api.api.tx.candy?.transfer && (
+          <Button
+            icon='paper-plane'
+            label={t<string>('send candy')}
+            onClick={toggleTransferCandy}
           />
         )}
         <Popup

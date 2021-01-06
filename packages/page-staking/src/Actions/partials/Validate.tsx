@@ -1,14 +1,14 @@
-// Copyright 2017-2021 @polkadot/app-staking authors & contributors
+// Copyright 2017-2020 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+/* eslint-disable */
 
-import type { ValidateInfo } from './types';
+import { ValidateInfo } from './types';
 
 import BN from 'bn.js';
 import React, { useCallback } from 'react';
-
 import { InputAddress, InputNumber, Modal } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
-import { BN_HUNDRED as MAX_COMM, BN_ZERO } from '@polkadot/util';
+import { BN_ZERO, BN_HUNDRED as MAX_COMM } from '@polkadot/util';
 
 import { useTranslation } from '../../translate';
 
@@ -33,9 +33,9 @@ function Validate ({ className = '', controllerId, onChange, stashId, withSender
       onChange({
         validateTx: api.tx.staking.validate({
           commission: commission.isZero()
-            // small non-zero set to avoid isEmpty
-            ? 1
-            : commission
+          // small non-zero set to avoid isEmpty
+          ? '0'
+          : (commission.toNumber() > 1000000000) ? '1000000000' : commission.toNumber().toString()
         })
       });
     },

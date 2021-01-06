@@ -3,16 +3,17 @@
 
 /* eslint-disable */
 
-import { SiDef } from '@polkadot/util/types';
-import { BitLength } from './types';
+import type { ApiPromise } from '@polkadot/api';
+import type { SiDef } from '@polkadot/util/types';
+import type { BitLength } from './types';
 
 import BN from 'bn.js';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { registry } from '@polkadot/react-api';
-import { BN_ZERO, BN_TEN, formatBalance, isBn } from '@polkadot/util';
 
-import { classes } from './util';
+import { useApi } from '@polkadot/react-hooks';
+import { BN_TEN, BN_ZERO, formatBalance, isBn } from '@polkadot/util';
+
 import { BitLengthOption } from './constants';
 import Dropdown from './Dropdown';
 import Input, { KEYS_PRE } from './Input';
@@ -250,7 +251,7 @@ function InputCandyNumber ({ autoFocus, bitLength = DEFAULT_BITLENGTH, children,
   return (
     <Input
       autoFocus={autoFocus}
-      className={classes('ui--InputNumber', isDisabled && 'isDisabled', className)}
+      className={`ui--InputNumber${isDisabled ? ' isDisabled' : ''} ${className}`}
       help={help}
       isAction={isSi}
       isDisabled={isDisabled}
