@@ -40,6 +40,7 @@ function ValidateController ({ accountId, controllerId, defaultController, onErr
   const { t } = useTranslation();
   const { api } = useApi();
   const bondedId = useCall<string | null>(controllerId ? api.query.staking.bonded : null, [controllerId], transformBonded);
+  const accountIdBonded = useCall<string | null>(controllerId ? api.query.staking.bonded : null, [accountId], transformBonded);
   const stashId = useCall<string | null>(controllerId ? api.query.staking.ledger : null, [controllerId], transformStash);
   const allBalances = useCall<DeriveBalancesAll>(controllerId ? api.derive.balances.all : null, [controllerId]);
   const [{ error, isFatal }, setError] = useState<ErrorState>({ error: null, isFatal: false });
@@ -51,7 +52,12 @@ function ValidateController ({ accountId, controllerId, defaultController, onErr
       let newError: string | null = null;
       let isFatal = false;
 
-      if (bondedId && (controllerId !== accountId)) {
+      if (accountIdBonded) {
+        isFatal = true;
+        newError = t('A controller account should not map to another stash. This selected stash controlled by {{accountIdBonded}}', { replace: { accountIdBonded } });
+      }
+
+      if (bondedId && (controllerId !== accountId) && stashId) {
         isFatal = true;
         newError = t('A controller account should not map to another stash. This selected controller is a stash, controlled by {{bondedId}}', { replace: { bondedId } });
       } else if (stashId) {
