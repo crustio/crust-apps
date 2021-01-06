@@ -4,6 +4,7 @@
 import BN from 'bn.js';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+
 import { InputAddress, InputCandyBalance, Modal, TxButton } from '@polkadot/react-components';
 import { BN_ZERO } from '@polkadot/util';
 

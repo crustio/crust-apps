@@ -8,13 +8,13 @@ import type { StakerState } from './types';
 
 import { useEffect, useMemo, useState } from 'react';
 
+import { useCall } from '@polkadot/react-hooks/useCall';
 import { u8aConcat, u8aToHex } from '@polkadot/util';
 
 import { useAccounts } from './useAccounts';
 import { useApi } from './useApi';
 import { useIsMountedRef } from './useIsMountedRef';
 import { useOwnStashes } from './useOwnStashes';
-import {useCall} from "@polkadot/react-hooks/useCall";
 
 type ValidatorInfo = ITuple<[ValidatorPrefs, Codec]> | ValidatorPrefs;
 type Queried = Record<string, [boolean, DeriveStakingAccount, ValidatorInfo]>;
@@ -68,14 +68,15 @@ export function useOwnStashInfos (): StakerState[] | undefined {
   const [validators, setValidators] = useState<string[]>([]);
 
   useEffect(() => {
-    if ( stakingOverview && waitingInfo) {
+    if (stakingOverview && waitingInfo) {
       const overview = JSON.parse(JSON.stringify(stakingOverview));
       const waiting = JSON.parse(JSON.stringify(waitingInfo));
-      setValidators( [...waiting.waiting, ...overview.nextElected]);
+
+      setValidators([...waiting.waiting, ...overview.nextElected]);
     }
   }, [stakingOverview, waitingInfo]);
 
-  console.log('validators', validators)
+  console.log('validators', validators);
 
   useEffect((): () => void => {
     let unsub: (() => void) | undefined;

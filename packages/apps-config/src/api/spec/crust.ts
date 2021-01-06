@@ -16,41 +16,41 @@ export default {
     amount: 'Balance',
     expected_replica_count: 'u32',
     reported_replica_count: 'u32',
-    replicas: 'Vec<Replica<AccountId>>',
+    replicas: 'Vec<Replica<AccountId>>'
   },
   Guarantee: {
     targets: 'Vec<IndividualExposure<AccountId, Balance>>',
     total: 'Compact<Balance>',
     submitted_in: 'EraIndex',
-    suppressed: 'bool',
+    suppressed: 'bool'
   },
   IASSig: 'Vec<u8>',
   Identity: {
     anchor: 'SworkerAnchor',
-    group: 'Option<AccountId>',
+    group: 'Option<AccountId>'
   },
   ISVBody: 'Vec<u8>',
   LookupSource: 'AccountId',
   MerchantLedger: {
     reward: 'Balance',
-    pledge: 'Balance',
+    pledge: 'Balance'
   },
   MerkleRoot: 'Vec<u8>',
   ReportSlot: 'u64',
   Replica: {
     who: 'AccountId',
     valid_at: 'BlockNumber',
-    anchor: 'SworkerAnchor',
+    anchor: 'SworkerAnchor'
   },
   Releases: {
-    _enum: ['V1_0_0', 'V2_0_0'],
+    _enum: ['V1_0_0', 'V2_0_0']
   },
   PKInfo: {
     code: 'SworkerCode',
-    anchor: 'Option<SworkerAnchor>',
+    anchor: 'Option<SworkerAnchor>'
   },
   Status: {
-    _enum: ['Free', 'Reserved'],
+    _enum: ['Free', 'Reserved']
   },
   SworkerAnchor: 'Vec<u8>',
   SworkerCert: 'Vec<u8>',
@@ -59,7 +59,7 @@ export default {
   SworkerSignature: 'Vec<u8>',
   UsedInfo: {
     used_size: 'u64',
-    groups: 'BTreeSet<SworkerAnchor>',
+    groups: 'BTreeSet<SworkerAnchor>'
   },
   WorkReport: {
     report_slot: 'u64',
@@ -67,6 +67,6 @@ export default {
     free: 'u64',
     reported_files_size: 'u64',
     reported_srd_root: 'MerkleRoot',
-    reported_files_root: 'MerkleRoot',
+    reported_files_root: 'MerkleRoot'
   }
 };

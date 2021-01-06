@@ -1,15 +1,15 @@
 // Copyright 2017-2021 @polkadot/react-components authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { BitLength } from './types';
-
 import BN from 'bn.js';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
+
 import { BitLengthOption } from '@polkadot/react-components/constants';
 import { BN_TEN, BN_THOUSAND, formatBalance, isBn } from '@polkadot/util';
 
 import InputCandyNumber from './InputCandyNumber';
+import { BitLength } from './types';
 
 interface Props {
   autoFocus?: boolean;

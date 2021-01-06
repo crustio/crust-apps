@@ -1,13 +1,13 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { AccountId, StakingLedger } from '@polkadot/types/interfaces';
-
 import BN from 'bn.js';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+
 import { InputAddress, InputBalance, Modal, Static, Toggle, TxButton } from '@polkadot/react-components';
 import { BlockToTime } from '@polkadot/react-query';
+import { AccountId, StakingLedger } from '@polkadot/types/interfaces';
 
 import { useTranslation } from '../../translate';
 import useUnbondDuration from '../useUnbondDuration';

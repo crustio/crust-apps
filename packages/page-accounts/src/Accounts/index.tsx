@@ -132,9 +132,9 @@ function Overview ({ className = '', onStatusChange }: Props): React.ReactElemen
 
   const footer = useMemo(() => (
     <tr>
-      <td colspan={3}/>
+      <td colSpan={3}/>
       <td className='media--1400'/>
-      <td colspan={2}/>
+      <td colSpan={2}/>
       <td className='media--1500'/>
       <td className='number'>
         {balanceTotal && <FormatBalance value={balanceTotal}/>}

@@ -5,7 +5,7 @@ import React from 'react';
 
 import { CardSummary, SummaryBox } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
-import {BestFinalized, BestNumber, BlockToTime, TimeNow, TotalIssuance, TotalStorage} from '@polkadot/react-query';
+import { BestFinalized, BestNumber, BlockToTime, TimeNow, TotalIssuance, TotalStorage } from '@polkadot/react-query';
 import { BN_ONE } from '@polkadot/util';
 
 import SummarySession from './SummarySession';

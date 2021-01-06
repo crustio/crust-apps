@@ -16,7 +16,6 @@ const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 const k = 1000;
 
 function format (value: number): React.ReactNode {
-
   if (value === 0) return '0 B';
   const i = Math.floor(Math.log(value) / Math.log(k));
   const unitPost = sizes[i];
@@ -31,10 +30,10 @@ function FormatCapacity ({ children, className = '', label, labelPost, value }: 
   return (
     <div className={`ui--FormatBalance ${className}`}>
       {label || ''}<span className='ui--FormatBalance-value'>{
-      value
-        ?  format(value)
-        : `-${labelPost || ''}`
-    }</span>{children}
+        value
+          ? format(value)
+          : `-${labelPost || ''}`
+      }</span>{children}
     </div>
   );
 }
