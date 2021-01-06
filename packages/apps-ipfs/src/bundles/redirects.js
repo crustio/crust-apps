@@ -21,7 +21,6 @@ export default {
     'selectIpfsConnected',
     (failed, hash, ipfsConnected) => {
       hash = getRealPath(hash);
-      console.log(ipfsConnected);
 
       if (!ipfsConnected && hash !== '/welcome' && !hash.startsWith('/settings')) {
         return { actionCreator: 'doUpdateHash', args: ['#/storage/welcome'] };
