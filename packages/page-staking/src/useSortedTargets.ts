@@ -136,6 +136,7 @@ function extractSingle (api: ApiPromise, allAccounts: string[], derive: DeriveSt
       rankBondOther: 0,
       rankBondOwn: 0,
       rankBondTotal: 0,
+      rankComm: 0,
       rankNumNominators: 0,
       rankOverall: 0,
       rankReward: 0,

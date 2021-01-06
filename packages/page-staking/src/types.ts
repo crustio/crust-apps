@@ -38,6 +38,7 @@ interface ValidatorInfoRank {
   rankBondOther: number;
   rankBondOwn: number;
   rankBondTotal: number;
+  rankComm: number;
   rankNumNominators: number;
   rankOverall: number;
   rankReward: number;

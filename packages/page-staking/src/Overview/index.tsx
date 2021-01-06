@@ -1,7 +1,7 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { DeriveStakingOverview } from '@polkadot/api-derive/types';
 
@@ -17,9 +17,14 @@ interface Props {
   stakingOverview?: DeriveStakingOverview;
   targets: SortedTargets;
   toggleFavorite: (address: string) => void;
+  toggleLedger?: () => void;
 }
 
-function Overview ({ className = '', favorites, hasQueries, isIntentions, next, stakingOverview, targets, toggleFavorite }: Props): React.ReactElement<Props> {
+function Overview ({ className = '', favorites, hasQueries, isIntentions, next, stakingOverview, targets, toggleFavorite, toggleLedger }: Props): React.ReactElement<Props> {
+  useEffect((): void => {
+    toggleLedger && toggleLedger();
+  }, [toggleLedger]);
+
   return (
     <div className={`staking--Overview ${className}`}>
       <CurrentList

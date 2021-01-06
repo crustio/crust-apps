@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { InputAddress, InputBalance, Modal, Static, Toggle, TxButton } from '@polkadot/react-components';
+import { useApi } from '@polkadot/react-hooks';
 import { BlockToTime } from '@polkadot/react-query';
 import { AccountId, StakingLedger } from '@polkadot/types/interfaces';
 
@@ -22,6 +23,7 @@ interface Props {
 
 function Unbond ({ className = '', controllerId, onClose, stakingLedger, stashId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
+  const { api } = useApi();
   const bondedBlocks = useUnbondDuration();
   const [maxBalance] = useState<BN | null>(stakingLedger?.active.unwrap() || null);
   const [maxUnbond, setMaxUnbond] = useState<BN | null>(null);
@@ -93,7 +95,7 @@ function Unbond ({ className = '', controllerId, onClose, stakingLedger, stashId
           label={t<string>('Unbond')}
           onStart={onClose}
           params={[withMax ? maxBalance : maxUnbond]}
-          tx='staking.unbond'
+          tx={api.tx.staking.unbond}
         />
       </Modal.Actions>
     </Modal>

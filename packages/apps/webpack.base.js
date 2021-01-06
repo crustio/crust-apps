@@ -32,11 +32,11 @@ function createWebpack (context, mode = 'production') {
   }, {
     './erasExposure': path.resolve(__dirname, 'src/patch/erasExposure'),
     './erasRewards': path.resolve(__dirname, 'src/patch/erasRewards'),
+    './erasRewards.mjs': path.resolve(__dirname, 'src/patch/erasRewards.mjs'),
+    './filterEras.mjs': path.resolve(__dirname, 'src/patch/filterEras.mjs'),
     './ownExposure': path.resolve(__dirname, 'src/patch/ownExposure'),
     './ownSlashes': path.resolve(__dirname, 'src/patch/ownSlashes'),
-    './query.mjs': path.resolve(__dirname, 'src/patch/query.mjs'),
-    './erasRewards.mjs': path.resolve(__dirname, 'src/patch/erasRewards.mjs'),
-    './filterEras.mjs': path.resolve(__dirname, 'src/patch/filterEras.mjs')
+    './query.mjs': path.resolve(__dirname, 'src/patch/query.mjs')
   });
   const plugins = fs.existsSync(path.join(context, 'public'))
     ? new CopyWebpackPlugin({ patterns: [{ from: 'public' }] })

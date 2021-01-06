@@ -6,7 +6,7 @@ import { DeriveStakingOverview } from '@polkadot/api-derive/types';
 import { AppProps as Props } from '@polkadot/react-components/types';
 import { ElectionStatus } from '@polkadot/types/interfaces';
 
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Route, Switch } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
@@ -40,10 +40,11 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
   const { hasAccounts } = useAccounts();
   const { pathname } = useLocation();
   const [favorites, toggleFavorite] = useFavorites(STORE_FAVS_BASE);
+  const [withLedger, setWithLedger] = useState(false);
   const allStashes = useStashIds();
   const ownStashes = useOwnStashInfos();
   const slashes = useAvailableSlashes();
-  const targets = useSortedTargets(favorites);
+  const targets = useSortedTargets(favorites, withLedger);
   const stakingOverview = useCall<DeriveStakingOverview>(api.derive.staking.overview);
   const isInElection = useCall<boolean>(api.query.staking?.eraElectionStatus, undefined, transformElection);
 
@@ -57,6 +58,11 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
       ? allStashes.filter((address) => !stakingOverview.validators.includes(address as any))
       : undefined,
     [allStashes, stakingOverview]
+  );
+
+  const toggleLedger = useCallback(
+    () => setWithLedger(true),
+    []
   );
 
   const ownValidators = useMemo(
@@ -146,6 +152,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
             stakingOverview={stakingOverview}
             targets={targets}
             toggleFavorite={toggleFavorite}
+            toggleLedger={toggleLedger}
           />
         </Route>
         <Route path={`${basePath}/waiting`}>
@@ -157,6 +164,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
             stakingOverview={stakingOverview}
             targets={targets}
             toggleFavorite={toggleFavorite}
+            toggleLedger={toggleLedger}
           />
         </Route>
       </Switch>

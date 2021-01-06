@@ -1,5 +1,6 @@
 // Copyright 2017-2021 @polkadot/api-derive authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+
 import { filterEras } from '@polkadot/api-derive/staking/util';
 import { deriveCache, memo } from '@polkadot/api-derive/util';
 import { of } from '@polkadot/x-rxjs';
