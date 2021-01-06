@@ -287,7 +287,6 @@ export class FilesList extends React.Component {
     );
   }
 
-
   onRowsRendered = ({ startIndex }) => this.setState({ firstVisibleRow: startIndex })
 
   render () {
@@ -305,46 +304,51 @@ export class FilesList extends React.Component {
     return connectDropTarget(
       <section
         className={className}
-        ref={el => {
+        ref={(el) => {
           this.root = el;
         }}
       >
         {showLoadingAnimation ? (
           <LoadingAnimation />
         ) : (
-          <Fragment>
+          <>
             <header
-              className="gray pv3 flex items-center flex-none"
-              style={{ paddingRight: "1px", paddingLeft: "1px" }}
+              className='gray pv3 flex items-center flex-none'
+              style={{ paddingRight: '1px', paddingLeft: '1px' }}
             >
               <div className={checkBoxCls}>
-                <Checkbox aria-label={t("selectAllEntries")} checked={allSelected} onChange={this.toggleAll} />
+                <Checkbox aria-label={t('selectAllEntries')}
+                  checked={allSelected}
+                  onChange={this.toggleAll} />
               </div>
-              <div className="ph2 f6 flex-auto" style={{ textAlign: "left" }}>
+              <div className='ph2 f6 flex-auto'
+                style={{ textAlign: 'left' }}>
                 <button
-                  aria-label={t("sortBy", { name: t("app:terms.name") })}
+                  aria-label={t('sortBy', { name: t('app:terms.name') })}
                   onClick={this.changeSort(sorts.BY_NAME)}
                 >
-                  {t("app:terms.name")} {this.sortByIcon(sorts.BY_NAME)}
+                  {t('app:terms.name')} {this.sortByIcon(sorts.BY_NAME)}
                 </button>
               </div>
-              <div className="ph2 pv1 flex-none dn db-l tr mw3">{/* Badges */}</div>
-              <div className="pl2 pr4 tr f6 flex-none dn db-l mw4 w-10">
-                <button aria-label={t("sortBy", { name: t("size") })} onClick={this.changeSort(sorts.BY_SIZE)}>
-                  {t("app:terms.size")} {this.sortByIcon(sorts.BY_SIZE)}
+              <div className='ph2 pv1 flex-none dn db-l tr mw3'>{/* Badges */}</div>
+              <div className='pl2 pr4 tr f6 flex-none dn db-l mw4 w-10'>
+                <button aria-label={t('sortBy', { name: t('size') })}
+                  onClick={this.changeSort(sorts.BY_SIZE)}>
+                  {t('app:terms.size')} {this.sortByIcon(sorts.BY_SIZE)}
                 </button>
               </div>
-              <div className="pa2" style={{ width: "2.5rem" }} />
+              <div className='pa2'
+                style={{ width: '2.5rem' }} />
             </header>
             <WindowScroller>
               {({ height, isScrolling, onChildScroll, scrollTop }) => (
-                <div className="flex-auto">
+                <div className='flex-auto'>
                   <AutoSizer disableHeight>
                     {({ width }) => (
                       <List
-                        aria-label={t("filesListLabel")}
+                        aria-label={t('filesListLabel')}
                         autoHeight
-                        className="outline-0"
+                        className='outline-0'
                         data={files /* NOTE: this is a placebo prop to force the list to re-render */}
                         height={height}
                         isScrolling={isScrolling}
@@ -357,22 +361,23 @@ export class FilesList extends React.Component {
                         rowRenderer={({ index, key, style }) => {
                           const {
                             canDrop,
+                            contracts,
                             files,
                             filesPathInfo,
                             isOver,
                             onAddFiles,
                             onInspect,
                             onNavigate,
-                            pins,
-                            contracts
+                            pins
                           } = this.props;
                           const { focused, isDragging, selected } = this.state;
-                          const pinsString = pins.map(p => p.toString());
-                          const contractString = contracts.map(p => p.toString());
+                          const pinsString = pins.map((p) => p.toString());
+                          const contractString = contracts.map((p) => p.toString());
+
                           return (
                             <div
                               key={key}
-                              ref={r => {
+                              ref={(r) => {
                                 this.filesRefs[files[index].name] = r;
                               }}
                               style={style}
@@ -386,7 +391,7 @@ export class FilesList extends React.Component {
                                 onAddFiles={onAddFiles}
                                 onMove={this.move}
                                 onNavigate={() => {
-                                  if (files[index].type === "unknown") {
+                                  if (files[index].type === 'unknown') {
                                     onInspect(files[index].cid);
                                   } else {
                                     onNavigate(files[index].path);
@@ -394,7 +399,6 @@ export class FilesList extends React.Component {
                                 }}
                                 onSelect={this.toggleOne}
                                 pinned={pinsString.includes(files[index].cid.toString())}
-                                contracted={contractString.includes(files[index].cid.toString())}
                                 selected={selected.indexOf(files[index].name) !== -1}
                                 setIsDragging={this.isDragging}
                                 translucent={isDragging || (isOver && canDrop)}
@@ -411,7 +415,7 @@ export class FilesList extends React.Component {
               )}
             </WindowScroller>
             {this.selectedMenu}
-          </Fragment>
+          </>
         )}
       </section>
     );
