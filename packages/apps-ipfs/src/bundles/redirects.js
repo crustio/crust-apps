@@ -22,7 +22,7 @@ export default {
     (failed, hash, ipfsConnected) => {
       hash = getRealPath(hash);
 
-      if (!ipfsConnected && hash !== '/welcome' && !hash.startsWith('/settings')) {
+      if (!ipfsConnected && hash !== '/welcome') {
         return { actionCreator: 'doUpdateHash', args: ['#/storage/welcome'] };
       }
     }

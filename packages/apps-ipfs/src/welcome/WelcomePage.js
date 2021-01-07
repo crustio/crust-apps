@@ -11,14 +11,17 @@ import { getJoyrideLocales } from '../helpers/i8n';
 // Components
 import IsNotConnected from '../components/is-not-connected/IsNotConnected';
 import ComponentLoader from '../loader/ComponentLoader.js';
+import { useHistory } from 'react-router-dom';
 
 const WelcomePage = ({ doUpdateHash, ipfsConnected, ipfsInitFailed, ipfsReady }) => {
+  const history = useHistory();
+
   if (!ipfsInitFailed && !ipfsReady) {
     return <ComponentLoader pastDelay />;
   }
 
   if (ipfsConnected) {
-    doUpdateHash('/storage/status');
+    history.push('/storage');
   }
 
   return (
