@@ -41,7 +41,7 @@ export class App extends Component {
 
   //
   addFiles = async (filesPromise) => {
-    const { doFilesWrite, doUpdateHash, routeIfo } = this.props;
+    const { doFilesWrite, doUpdateHash, routeInfo } = this.props;
     const isFilesPage = routeInfo.pattern === '/storage/files*';
     const addAtPath = isFilesPage ? routeInfo.params.path : '/storage/';
     const files = await filesPromise;
