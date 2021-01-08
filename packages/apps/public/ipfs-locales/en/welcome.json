@@ -5,7 +5,7 @@
     "paragraph1": "Welcome to the future of the internet! You are now a valuable part of the distributed web."
   },
   "notConnected": {
-    "paragraph1": "<0>Make sure you have IPFS installed. If not, check out the installation guide:  <1>IPFS desktop </1> or <3> IPFS Command Line</3></0>",
+    "paragraph1": "<0>Make sure you have IPFS installed. If not, check out the installation guide:  <1>IPFS desktop </1> and <3> IPFS Command Line</3></0>",
     "paragraph2": "<0>Make sure your IPFS daemon or IPFS desktop is running. To launch IPFS daemon, run following command: </0>",
     "paragraph3": "<0>Make sure you have configured to allow cross-origin(CORS) requests. <1>cross-origin (CORS) requests</1>? If not, run following commands and then restart IPFS daemon or IPFS desktop:</0>",
     "paragraph4": "<0>Make sure you have not changed the default <1>IPFS API port</1>, otherwise you need to enter the customized API port here:</0>"
