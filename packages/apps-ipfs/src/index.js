@@ -6,7 +6,6 @@ import 'react-virtualized/styles.css';
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { DndProvider } from 'react-dnd';
-import ReactDOM from 'react-dom';
 import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'redux-bundler-react';
 
@@ -15,6 +14,8 @@ import DndBackend from './lib/dnd-backend';
 import App from './App';
 import getStore from './bundles';
 import i18n from './i18n';
+import { useHistory } from 'react-router-dom';
+import ComponentLoader from '@polkadot/apps-ipfs/loader/ComponentLoader';
 
 const appVersion = process.env.REACT_APP_VERSION;
 const gitRevision = process.env.REACT_APP_GIT_REV;
@@ -23,6 +24,7 @@ console.log(`IPFS Web UI - v${appVersion} - https://github.com/ipfs-shipyard/ipf
 
 function IpfsApp () {
   const [store, setStore] = useState(null);
+  const history = useHistory();
 
   useEffect(() => {
     try {
@@ -36,6 +38,7 @@ function IpfsApp () {
 
         setStore(s);
       }).catch((e) => {
+        history.go(0);
         console.log(e);
       });
     } catch (e) {
@@ -49,7 +52,7 @@ function IpfsApp () {
         <App />
       </DndProvider>
     </I18nextProvider>
-  </Provider> : <div>please refresh page!</div>;
+  </Provider> : <ComponentLoader pastDelay />;
 }
 
 export default IpfsApp;

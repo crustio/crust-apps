@@ -49,7 +49,7 @@ const IpfsPage: React.FC<Props> = (props) => {
   ]);
 
   useEffect(() => {
-    history.push('/storage/status');
+    history.push('/storage');
   }, []);
 
   return (

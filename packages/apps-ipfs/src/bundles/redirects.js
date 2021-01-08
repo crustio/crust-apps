@@ -18,11 +18,17 @@ export default {
   reactToIpfsConnectionFail: createSelector(
     'selectIpfsInitFailed',
     'selectHash',
-    'selectIpfsConnected',
-    (failed, hash, ipfsConnected) => {
+    'selectNodeBandwidthLastSuccess',
+    'selectNodeBandwidthLastError',
+    'selectIpfsReady',
+    (failed, hash, lastSuccess, lastError) => {
       hash = getRealPath(hash);
 
-      if (!ipfsConnected && hash !== '/welcome') {
+      if (failed && hash !== '/welcome') {
+        return { actionCreator: 'doUpdateHash', args: ['#/storage/welcome'] };
+      }
+
+      if (lastSuccess && lastError && lastSuccess < lastError && hash !== '/welcome') {
         return { actionCreator: 'doUpdateHash', args: ['#/storage/welcome'] };
       }
     }
