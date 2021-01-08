@@ -5,9 +5,9 @@
     "paragraph1": "欢迎来到未来的互联网！您现在已经成为分布式网络上不可或缺的一部分。"
   },
   "notConnected": {
-    "paragraph1": "<0>请确保您已安装了IPFS。如果没有，请参考文档安装<1>IPFS 桌面版 </1> 或者 <3> IPFS 命令行</3></0>",
+    "paragraph1": "<0>请确保您已安装了IPFS。如果没有，请参考文档安装<1>IPFS 桌面版 </1> 以及 <3> IPFS 命令行</3></0>",
     "paragraph2": "<0>确保您本地的IPFS Daemon或IPFS 桌面版正在运行。（您可以执行以下命令开启IPFS Daemon）</0>",
-    "paragraph3": "<0>请确保您正确配置了<1>cross-origin (CORS) 请求</1>，如果没有, 您可以执行以下步骤设置并重启IPFS Daemon或IPFS桌面：</0>",
+    "paragraph3": "<0>请确保您正确配置了<1>cross-origin (CORS) 请求</1>，如果没有，您可以执行以下步骤，然后重启IPFS Daemon或IPFS桌面：</0>",
     "paragraph4": "<0>请确保您没有手动更改过默认的<1>IPFS 端口</1>，否则您需要将您定制的IPFS端口输入到这里：</0>"
   },
   "aboutIpfs": {
