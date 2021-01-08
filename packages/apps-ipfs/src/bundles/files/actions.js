@@ -375,7 +375,7 @@ const actions = () => ({
     const srcPath = src.startsWith('/') ? src : `/ipfs/${name}`;
 
     try {
-      return ipfs.files.cp(srcPath, dst);
+      return await ipfs.files.cp(srcPath, dst);
     } finally {
       await store.doFilesFetch();
     }
