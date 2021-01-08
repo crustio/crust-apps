@@ -42,7 +42,7 @@ const StartExploringPage = function StartExploringPage (_ref2) {
   const joyrideCallback = _ref2.joyrideCallback;
 
   return /* #__PURE__ */React.createElement('div', {
-    className: 'mw9 center explore-sug-2'
+    className: 'm10 center explore-sug-2'
   }, /* #__PURE__ */React.createElement('div', {
     className: 'flex-l'
   }, /* #__PURE__ */React.createElement('div', {
