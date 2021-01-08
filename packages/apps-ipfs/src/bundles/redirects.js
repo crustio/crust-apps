@@ -22,6 +22,10 @@ export default {
     'selectNodeBandwidthLastError',
     'selectIpfsReady',
     (failed, hash, lastSuccess, lastError) => {
+      if (!hash.startsWith('/storage')) {
+        return;
+      }
+
       hash = getRealPath(hash);
 
       if (failed && hash !== '/welcome') {
