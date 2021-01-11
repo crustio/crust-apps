@@ -30,7 +30,7 @@ i18nInstance.use(new ICU({ localeData }))
         }
       ]
     },
-    ns: ['app', 'welcome', 'status', 'files', 'explore', 'peers', 'settings', 'notify'],
+    ns: ['app', 'welcome', 'status', 'files', 'explore', 'peers', 'settings', 'notify', 'order'],
     defaultNS: 'app',
     fallbackNS: 'app',
     fallbackLng: {
