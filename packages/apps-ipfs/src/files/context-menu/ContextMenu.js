@@ -13,6 +13,7 @@ import StrokeTrash from '../../icons/StrokeTrash';
 import StrokeDownload from '../../icons/StrokeDownload';
 import StrokePin from '../../icons/StrokePin';
 import { cliCmdKeys } from '../../bundles/files/consts';
+import GlyphOrder from '@polkadot/apps-ipfs/icons/GlyphOrder';
 
 class ContextMenu extends React.Component {
   constructor (props) {
@@ -22,6 +23,11 @@ class ContextMenu extends React.Component {
 
   state = {
     dropdown: false
+  }
+
+  goToOrder = (file) => () => {
+    // todo: to toggle order modal
+    console.log(file);
   }
 
   wrap = (name, cliOptions) => () => {
@@ -47,8 +53,8 @@ class ContextMenu extends React.Component {
 
   render () {
     const {
-      className, isCliTutorModeEnabled, isMfs, isUnknown, onDelete, onDownload,
-      onInspect, onRename, onShare, pinned, t, translateX, translateY
+      className, file, isCliTutorModeEnabled, isMfs, isUnknown, onDelete,
+      onDownload, onInspect, onRename, onShare, pinned, t, translateX, translateY
     } = this.props;
 
     return (
@@ -68,11 +74,23 @@ class ContextMenu extends React.Component {
               {t('actions.share')}
             </Option>
           }
+          <Option onClick={this.goToOrder(file)}>
+            <GlyphOrder className='w2 mr2 fill-aqua' />
+            {t('actions.order')}
+          </Option>
+
           <CopyToClipboard onCopy={this.props.handleClick}
             text={String(this.props.cid)}>
             <Option>
               <StrokeCopy className='w2 mr2 fill-aqua' />
               {t('actions.copyHash')}
+            </Option>
+          </CopyToClipboard>
+          <CopyToClipboard onCopy={this.props.handleClick}
+            text={String(this.props.file ? this.props.file.originalSize : '0')}>
+            <Option>
+              <StrokeCopy className='w2 mr2 fill-aqua' />
+              {t('actions.copySize', 'Copy fileSize')}
             </Option>
           </CopyToClipboard>
           { onInspect &&
@@ -119,6 +137,7 @@ class ContextMenu extends React.Component {
 }
 
 ContextMenu.propTypes = {
+  file: PropTypes.object.isRequired,
   isMfs: PropTypes.bool.isRequired,
   isOpen: PropTypes.bool.isRequired,
   isUnknown: PropTypes.bool.isRequired,
@@ -140,6 +159,7 @@ ContextMenu.propTypes = {
 };
 
 ContextMenu.defaultProps = {
+  file: null,
   isMfs: false,
   isOpen: false,
   isUnknown: false,

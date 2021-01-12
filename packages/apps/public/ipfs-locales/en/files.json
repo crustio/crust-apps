@@ -17,7 +17,9 @@
   "generating": "Generating…",
   "actions": {
     "copyHash": "Copy CID",
-    "share": "Share link"
+    "copySize": "Copy fileSize",
+    "share": "Share link",
+    "order": "Order"
   },
   "shareModal": {
     "title": "Share files",

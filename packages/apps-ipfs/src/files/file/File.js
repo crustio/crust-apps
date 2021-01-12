@@ -18,20 +18,28 @@ import FileIcon from '../file-icon/FileIcon';
 import CID from 'cids';
 import { NativeTypes } from 'react-dnd-html5-backend';
 import StrokeContract from '../../icons/StrokeContract';
+import GlyphOrder from '@polkadot/apps-ipfs/icons/GlyphOrder';
 
 const File = ({
-  cantDrag, cantSelect, cid, coloured, focused, handleContextMenuClick, contracted, isMfs, name, onAddFiles, onMove, onNavigate, onSelect, path, pinned, selected, size, t, translucent, type
+  cantDrag, cantSelect, cid, coloured, contracted, focused, handleContextMenuClick, isMfs, name, onAddFiles, onMove, onNavigate, onSelect, path, pinned, selected, size, t, translucent, type
 }) => {
   const dotsWrapper = useRef();
+  const originalSize = size;
 
   const handleCtxLeftClick = (ev) => {
+    console.log('handleCtxLeftClick');
+
     const pos = dotsWrapper.current.getBoundingClientRect();
 
-    handleContextMenuClick(ev, 'LEFT', { name, size, type, cid, path, pinned }, pos);
+    handleContextMenuClick(ev, 'LEFT', { name, size, originalSize, type, cid, path, pinned }, pos);
   };
 
+  size = size ? filesize(size, { round: 0 }) : '-';
+
   const handleCtxRightClick = (ev) => {
-    handleContextMenuClick(ev, 'RIGHT', { name, size, type, cid, path, pinned });
+    console.log('handleCtxRightClickhandleCtxRightClick');
+    console.log({ name, size, type, cid, path, pinned, originalSize });
+    handleContextMenuClick(ev, 'RIGHT', { name, size, type, cid, path, pinned, originalSize });
   };
 
   const [, drag, preview] = useDrag({
@@ -100,7 +108,6 @@ const File = ({
     styles.borderTop = '1px solid #eee';
   }
 
-  size = size ? filesize(size, { round: 0 }) : '-';
   const hash = cid.toString() || t('hashUnavailable');
 
   const select = (select) => onSelect(name, select);
@@ -142,7 +149,7 @@ const File = ({
         </button>
         <div className='ph2 pv1 flex-none dn db-l tr mw3'>
           {<div className='bg-snow br-100 o-70'
-            style={{ width: '1.5rem', height: '1.5rem', visibility: contracted ? 'visible' : "hidden" }}
+            style={{ width: '1.5rem', height: '1.5rem', visibility: contracted ? 'visible' : 'hidden' }}
             title={t('contracted')}>
             <StrokeContract className='fill-teal-muted' />
           </div>}
@@ -150,7 +157,7 @@ const File = ({
 
         <div className='ph2 pv1 flex-none dn db-l tr mw3'>
           { <div className='bg-snow br-100 o-70'
-            style={{ width: '1.5rem', height: '1.5rem', visibility: pinned ? 'visible' : "hidden" }}
+            style={{ width: '1.5rem', height: '1.5rem', visibility: pinned ? 'visible' : 'hidden' }}
             title={t('pinned')}>
             <GlyphPin className='fill-teal-muted' />
           </div> }

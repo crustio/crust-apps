@@ -248,6 +248,7 @@ class FilesPage extends React.Component {
           autofocus
           cid={contextMenu.file && contextMenu.file.cid}
           doSetCliOptions={doSetCliOptions}
+          file={contextMenu.file}
           handleClick={this.handleContextMenu}
           isCliTutorModeEnabled={isCliTutorModeEnabled}
           isMfs={filesPathInfo ? filesPathInfo.isMfs : false}

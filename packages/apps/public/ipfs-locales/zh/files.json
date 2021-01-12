@@ -17,7 +17,9 @@
   "generating": "生成 ...",
   "actions": {
     "copyHash": "复制 CID",
-    "share": "分享链接"
+    "copySize": "复制文件大小",
+    "share": "分享链接",
+    "order": "下单"
   },
   "shareModal": {
     "title": "共享文件",
