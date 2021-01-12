@@ -14,6 +14,7 @@ const WatchItem = ({ watchItem }) => {
   // }, ['pl2 w2']);
 
   return <div
+    className={'File b--light-gray relative  flex items-center bt'}
     // onContextMenu={handleCtxRightClick}
     style={{ height: 55, overflow: 'hidden' }}>
     {/* <div className={checkBoxCls}> */}
@@ -22,25 +23,41 @@ const WatchItem = ({ watchItem }) => {
     {/*   disabled={cantSelect} */}
     {/*   onChange={select} /> */}
     {/* </div> */}
-    <div className='ph2 pv1 flex-none dn db-l tr mw3'>
-      <div className='bg-snow br-100 o-70'>
-        {watchItem.hash}
+    <div className='relative tc pointer  justify-center flex items-center flex-grow-1 ph2 pv1 w-40'>
+      <div className=''>
+        {watchItem.fileCID}
+      </div>
+    </div>
+    <div className='relative tc pointer  justify-center flex items-center flex-grow-1 ph2 pv1 w-40'>
+      <div className=''>
+        {watchItem.fileSize}
       </div>
     </div>
 
-    <div className='ph2 pv1 flex-none dn db-l tr mw3'>
-      <div className='bg-snow br-100 o-70'>
+    <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-40'>
+      <div className=''>
         {watchItem.startTime}
       </div>
     </div>
-    <div className='ph2 pv1 flex-none dn db-l tr mw3'>
-      <div className='bg-snow br-100 o-70'>
+    <div className='relative tc pointer flex  justify-center items-center flex-grow-1 ph2 pv1 w-40'>
+      <div className=''>
         {watchItem.expireTime}
       </div>
     </div>
-    <div className='ph2 pv1 flex-none dn db-l tr mw3'>
-      <div className='bg-snow br-100 o-70'>
-        {watchItem.pins}
+    <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-40'>
+      <div className=''>
+        {watchItem.pinsCount}
+      </div>
+    </div>
+    <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-40'>
+      <div className=''>
+        {watchItem.fileStatus}
+      </div>
+    </div>
+    <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-40'>
+      <div className=''
+        title='action'>
+        <button>操作</button>
       </div>
     </div>
   </div>;
