@@ -28,6 +28,7 @@ class ContextMenu extends React.Component {
   goToOrder = (file) => () => {
     // todo: to toggle order modal
     console.log(file);
+    this.props.onOrder(file);
   }
 
   wrap = (name, cliOptions) => () => {

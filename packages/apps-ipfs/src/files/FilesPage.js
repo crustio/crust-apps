@@ -23,10 +23,15 @@ import Header from './header/Header';
 import FileImportStatus from './file-import-status/FileImportStatus';
 import FilesExploreForm from '@polkadot/apps-ipfs/files/explore-form/FilesExploreForm';
 import Connected from '@polkadot/apps-ipfs/components/connected/Connected';
+import OrderModal from '@polkadot/apps-ipfs/files/modals/order-modal/OrderModal';
 
 const defaultState = {
   downloadAbort: null,
   downloadProgress: null,
+  orderModal: {
+    show: false,
+    file: null
+  },
   modals: {
     show: null,
     files: null
@@ -78,6 +83,11 @@ class FilesPage extends React.Component {
     const { abort } = await downloadFile(url, filename, updater, method);
 
     this.setState({ downloadAbort: abort });
+  }
+
+  showOrderModal = (file) => {
+    // todo: choose account and sign
+    this.setState({ orderModal: { show: true, file } });
   }
 
   onAddFiles = (raw, root = '') => {
@@ -220,6 +230,15 @@ class FilesPage extends React.Component {
     return parts.join(' | ');
   }
 
+  closeOrderModal () {
+    this.setState({
+      orderModal: {
+        show: false,
+        file: null
+      }
+    });
+  }
+
   render () {
     const {
       cliOptions, doExploreUserProvidedPath, doFilesNavigateTo, doSetCliOptions, files, filesPathInfo, handleJoyrideCallback,
@@ -258,6 +277,9 @@ class FilesPage extends React.Component {
           onDelete={() => this.showModal(DELETE, [contextMenu.file])}
           onDownload={() => this.onDownload([contextMenu.file])}
           onInspect={() => this.onInspect(contextMenu.file.cid)}
+          onOrder={(file) => {
+            this.showOrderModal(file);
+          }}
           onPin={() => this.props.doFilesPin(contextMenu.file.cid)}
           onRename={() => this.showModal(RENAME, [contextMenu.file])}
           onShare={() => this.showModal(SHARE, [contextMenu.file])}
@@ -294,6 +316,15 @@ class FilesPage extends React.Component {
           onShareLink={this.props.doFilesShareLink}
           root={files ? files.path : null}
           { ...this.state.modals } />
+        {
+          this.state.orderModal.show && <OrderModal file={this.state.orderModal.file}
+            onChange={() => {
+              console.log('change');
+            }}
+            onClose={() => {
+              this.closeOrderModal();
+            }}/>
+        }
 
         <FileImportStatus />
 

@@ -9,5 +9,8 @@
     "pinsCount": "副本数",
     "fileStatus": "状态",
     "action": "操作"
+  },
+  "titles": {
+    "order": "下单"
   }
 }
