@@ -73,7 +73,7 @@ function ValidateController ({ accountId, controllerId, defaultController, onErr
       onError(newError, isFatal);
       setError((state) => state.error !== newError ? { error: newError, isFatal } : state);
     }
-  }, [accountId, allBalances, bondedId, controllerId, defaultController, onError, stashId, t]);
+  }, [accountId, accountIdBonded, allBalances, bondedId, controllerId, defaultController, onError, stashId, t]);
 
   if (!error || !accountId) {
     return null;
