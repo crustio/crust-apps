@@ -15,6 +15,7 @@ import CliTutorMode from '../../components/cli-tutor-mode/CliTutorMode';
 import { cliCommandList, cliCmdKeys } from '../../bundles/files/consts';
 import { realMfsPath } from '../../bundles/files/actions';
 import { getRealPath } from '@polkadot/apps-ipfs/bundles/files/utils';
+import OrderModal from '@polkadot/apps-ipfs/files/modals/order-modal/OrderModal';
 // Constants
 const NEW_FOLDER = 'new_folder';
 const SHARE = 'share';
@@ -22,6 +23,7 @@ const RENAME = 'rename';
 const DELETE = 'delete';
 const ADD_BY_PATH = 'add_by_path';
 const CLI_TUTOR_MODE = 'cli_tutor_mode';
+const ORDER = 'order';
 
 export {
   NEW_FOLDER,
@@ -29,7 +31,8 @@ export {
   RENAME,
   DELETE,
   ADD_BY_PATH,
-  CLI_TUTOR_MODE
+  CLI_TUTOR_MODE,
+  ORDER
 };
 
 class Modals extends React.Component {
@@ -44,6 +47,9 @@ class Modals extends React.Component {
       files: 0,
       folder: 0,
       paths: []
+    },
+    order: {
+      file: null
     },
     link: '',
     command: 'ipfs --help'
@@ -62,7 +68,9 @@ class Modals extends React.Component {
   rename = (newName) => {
     let { filename, path } = this.state.rename;
     const { onMove } = this.props;
-    filename = getRealPath(filename)
+
+    filename = getRealPath(filename);
+
     if (newName !== '' && newName !== filename) {
       onMove(path, path.replace(filename, newName));
     }
@@ -72,6 +80,7 @@ class Modals extends React.Component {
 
   delete = () => {
     const { paths } = this.state.delete;
+
     this.props.onDelete(paths);
     this.leave();
   }
@@ -96,6 +105,10 @@ class Modals extends React.Component {
         });
 
         onShareLink(files).then((link) => this.setState({ link }));
+        break;
+      }
+
+      case ORDER : {
         break;
       }
 
@@ -228,6 +241,13 @@ class Modals extends React.Component {
         <Overlay onLeave={this.leave}
           show={show === CLI_TUTOR_MODE && readyToShow}>
           <CliTutorMode command={command}
+            filesPage={true}
+            onLeave={this.leave}
+            t={t}/>
+        </Overlay>
+        <Overlay onLeave={this.leave}
+          show={show === CLI_TUTOR_MODE && readyToShow}>
+          <OrderModal command={command}
             filesPage={true}
             onLeave={this.leave}
             t={t}/>

@@ -17,6 +17,7 @@ import Input, { KEYS_PRE } from './Input';
 import { useTranslation } from './translate';
 
 interface Props {
+  onlyCru?: boolean;
   autoFocus?: boolean;
   bitLength?: BitLength;
   children?: React.ReactNode;
@@ -68,13 +69,19 @@ function getRegex (isDecimal: boolean): RegExp {
   );
 }
 
-function getSiOptions (): { text: string; value: string }[] {
-  return formatBalance.getOptions().map(({ power, text, value }): { text: string; value: string } => ({
+function getSiOptions (onlyCru = false): { text: string; value: string }[] {
+  const options = formatBalance.getOptions().map(({ power, text, value }): { text: string; value: string } => ({
     text: power === 0
       ? TokenUnit.abbr
       : text,
     value
   }));
+
+  if (onlyCru) {
+    return options.filter(({ text }) => text === 'CRU');
+  }
+
+  return options;
 }
 
 function getSiPowers (si: SiDef | null): [BN, number, number] {
@@ -165,7 +172,7 @@ function getValues (value: BN | string = BN_ZERO, si: SiDef | null, bitLength: B
     : getValuesFromString(value, si, bitLength, isZeroable, maxValue);
 }
 
-function InputNumber ({ autoFocus, bitLength = DEFAULT_BITLENGTH, children, className = '', defaultValue, help, isDecimal, isFull, isSi, isDisabled, isError = false, isWarning, isZeroable = true, label, labelExtra, maxLength, maxValue, onChange, onEnter, onEscape, placeholder, value: propsValue }: Props): React.ReactElement<Props> {
+function InputNumber ({ autoFocus, bitLength = DEFAULT_BITLENGTH, children, onlyCru, className = '', defaultValue, help, isDecimal, isFull, isSi, isDisabled, isError = false, isWarning, isZeroable = true, label, labelExtra, maxLength, maxValue, onChange, onEnter, onEscape, placeholder, value: propsValue }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const [si, setSi] = useState<SiDef | null>(isSi ? formatBalance.findSi('-') : null);
   const [isPreKeyDown, setIsPreKeyDown] = useState(false);
@@ -277,7 +284,7 @@ function InputNumber ({ autoFocus, bitLength = DEFAULT_BITLENGTH, children, clas
           dropdownClassName='ui--SiDropdown'
           isButton
           onChange={_onSelectSiUnit}
-          options={getSiOptions()}
+          options={getSiOptions(onlyCru)}
         />
       )}
       {children}

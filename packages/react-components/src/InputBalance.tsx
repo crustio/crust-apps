@@ -12,6 +12,7 @@ import { BN_TEN, formatBalance, isBn } from '@polkadot/util';
 import InputNumber from './InputNumber';
 
 interface Props {
+  onlyCru?: boolean;
   autoFocus?: boolean;
   children?: React.ReactNode;
   className?: string;
@@ -67,7 +68,7 @@ function reformat (value: string | BN, isDisabled?: boolean): string {
   return formatBalance(value, { forceUnit: '-', withSi: false }).replace(',', isDisabled ? ',' : '');
 }
 
-function InputBalance ({ autoFocus, children, className = '', defaultValue: inDefault, help, isDisabled, isError, isFull, isWarning, isZeroable, label, labelExtra, maxValue, onChange, onEnter, onEscape, placeholder, value, withEllipsis, withLabel, withMax }: Props): React.ReactElement<Props> {
+function InputBalance ({ autoFocus, children, className = '', defaultValue: inDefault, help, isDisabled, isError, isFull, isWarning, isZeroable, label, labelExtra, maxValue, onChange, onEnter, onEscape, onlyCru, placeholder, value, withEllipsis, withLabel, withMax }: Props): React.ReactElement<Props> {
   const defaultValue = useMemo(
     () => inDefault ? reformat(inDefault, isDisabled) : undefined,
     [inDefault, isDisabled]
@@ -92,6 +93,7 @@ function InputBalance ({ autoFocus, children, className = '', defaultValue: inDe
       onChange={onChange}
       onEnter={onEnter}
       onEscape={onEscape}
+      onlyCru={onlyCru}
       placeholder={placeholder}
       value={value}
       withEllipsis={withEllipsis}
