@@ -1,16 +1,17 @@
-// Copyright 2017-2020 @polkadot/apps authors & contributors
+// Copyright 2017-2021 @polkadot/apps authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+import type { TFunction } from 'i18next';
 import type { Route, Routes } from '@polkadot/apps-routing/types';
 import type { ApiProps } from '@polkadot/react-api/types';
 import type { ThemeProps } from '@polkadot/react-components/types';
 import type { AccountId } from '@polkadot/types/interfaces';
 import type { Group, Groups, ItemRoute } from './types';
 
-import type { TFunction } from 'i18next';
 import React, { useMemo, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+
 import createRoutes from '@polkadot/apps-routing';
 import { Icon } from '@polkadot/react-components';
 import { useAccounts, useApi, useCall } from '@polkadot/react-hooks';
@@ -30,8 +31,8 @@ const disabledLog = new Map<string, string>();
 
 function createExternals (t: TFunction): ItemRoute[] {
   return [
-    { href: 'https://github.com/polkadot-js/apps', icon: 'code-branch', name: 'github', text: t<string>('nav.github', 'GitHub', { ns: 'apps-routing' }) },
-    { href: 'https://wiki.polkadot.network', icon: 'book', name: 'wiki', text: t<string>('nav.wiki', 'Wiki', { ns: 'apps-routing' }) }
+    { href: 'https://github.com/crustio/crust-apps', icon: 'code-branch', name: 'github', text: t<string>('nav.github', 'GitHub', { ns: 'apps-routing' }) },
+    { href: 'https://github.com/crustio/crust/wiki', icon: 'book', name: 'wiki', text: t<string>('nav.wiki', 'Wiki', { ns: 'apps-routing' }) }
   ];
 }
 

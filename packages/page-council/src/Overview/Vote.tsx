@@ -1,9 +1,10 @@
-// Copyright 2017-2020 @polkadot/app-council authors & contributors
+// Copyright 2017-2021 @polkadot/app-council authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { DeriveElectionsInfo } from '@polkadot/api-derive/types';
 
 import React, { useEffect, useState } from 'react';
+
 import { Button, InputAddress, InputAddressMulti, Modal, TxButton, VoteValue } from '@polkadot/react-components';
 import { useApi, useToggle } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
@@ -114,12 +115,7 @@ function Vote ({ electionsInfo }: Props): React.ReactElement<Props> {
               isDisabled={!defaultVotes.length}
               label={t<string>('Unvote all')}
               onStart={toggleVisible}
-              params={[]}
-              tx={
-                api.tx.electionsPhragmen
-                  ? 'electionsPhragmen.removeVoter'
-                  : 'elections.removeVoter'
-              }
+              tx={(api.tx.electionsPhragmen || api.tx.elections).removeVoter}
             />
             <TxButton
               accountId={accountId}
@@ -127,11 +123,7 @@ function Vote ({ electionsInfo }: Props): React.ReactElement<Props> {
               label={t<string>('Vote')}
               onStart={toggleVisible}
               params={[votes, voteValue]}
-              tx={
-                api.tx.electionsPhragmen
-                  ? 'electionsPhragmen.vote'
-                  : 'elections.vote'
-              }
+              tx={(api.tx.electionsPhragmen || api.tx.elections).vote}
             />
           </Modal.Actions>
         </Modal>

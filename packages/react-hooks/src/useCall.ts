@@ -1,14 +1,15 @@
-// Copyright 2017-2020 @polkadot/react-hooks authors & contributors
+// Copyright 2017-2021 @polkadot/react-hooks authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { Codec } from '@polkadot/types/types';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { Codec } from '@polkadot/types/types';
 import type { CallOptions, CallParam, CallParams } from './types';
 
 import { useEffect, useRef, useState } from 'react';
+
 import { isNull, isUndefined } from '@polkadot/util';
 
-import { useIsMountedRef, MountedRef } from './useIsMountedRef';
+import { MountedRef, useIsMountedRef } from './useIsMountedRef';
 
 type VoidFn = () => void;
 
@@ -74,7 +75,7 @@ function subscribe <T> (mountedRef: MountedRef, tracker: TrackerRef, fn: TrackFn
         // swap to acive mode
         tracker.current.isActive = true;
 
-        tracker.current.subscriber = (fn as (...params: unknown[]) => Promise<() => void>)(...params, (value: Codec): void => {
+        tracker.current.subscriber = (fn as (...params: unknown[]) => Promise<VoidFn>)(...params, (value: Codec): void => {
           // we use the isActive flag here since .subscriber may not be set on immediate callback)
           if (mountedRef.current && tracker.current.isActive) {
             mountedRef.current && tracker.current.isActive && setValue(

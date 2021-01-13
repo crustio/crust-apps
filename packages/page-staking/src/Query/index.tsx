@@ -1,8 +1,9 @@
-// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
+
 import { Button, InputAddressSimple } from '@polkadot/react-components';
 
 import { useTranslation } from '../translate';

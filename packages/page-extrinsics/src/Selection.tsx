@@ -1,9 +1,10 @@
-// Copyright 2017-2020 @polkadot/app-extrinsics authors & contributors
+// Copyright 2017-2021 @polkadot/app-extrinsics authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { SubmittableExtrinsic } from '@polkadot/api/types';
 
 import React, { useCallback, useState } from 'react';
+
 import { Button, Extrinsic, InputAddress, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { BalanceFree } from '@polkadot/react-query';
@@ -53,7 +54,6 @@ function Selection (): React.ReactElement {
         <TxButton
           extrinsic={extrinsic}
           icon='sign-in-alt'
-          isDisabled={!extrinsic}
           isUnsigned
           label={t<string>('Submit Unsigned')}
           withSpinner
@@ -62,7 +62,6 @@ function Selection (): React.ReactElement {
           accountId={accountId}
           extrinsic={extrinsic}
           icon='sign-in-alt'
-          isDisabled={!extrinsic || !accountId}
           label={t<string>('Submit Transaction')}
         />
       </Button.Group>

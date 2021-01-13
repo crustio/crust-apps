@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/app-js authors & contributors
+// Copyright 2017-2021 @polkadot/app-js authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { SubmittableExtrinsic } from '@polkadot/api/types';
@@ -6,7 +6,8 @@ import type { SubmittableExtrinsic } from '@polkadot/api/types';
 import BN from 'bn.js';
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { Button, Icon, Extrinsic, Toggle, TxButton, InputNumber } from '@polkadot/react-components';
+
+import { Button, Extrinsic, Icon, InputNumber, Toggle, TxButton } from '@polkadot/react-components';
 import { useApi, useToggle } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 
@@ -79,8 +80,8 @@ function Sudo ({ className, isMine, sudoKey }: Props): React.ReactElement<Props>
             }
             tx={
               withWeight
-                ? 'sudo.sudoUncheckedWeight'
-                : 'sudo.sudo'
+                ? api.tx.sudo.sudoUncheckedWeight
+                : api.tx.sudo.sudo
             }
           />
         </Button.Group>

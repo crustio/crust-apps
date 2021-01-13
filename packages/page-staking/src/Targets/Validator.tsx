@@ -1,23 +1,22 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
-
-import { DeriveAccountInfo } from '@polkadot/api-derive/types';
-import { UnappliedSlash } from '@polkadot/types/interfaces';
-import { ValidatorInfo } from '../types';
+/* eslint-disable */
 
 import BN from 'bn.js';
-import React, { useCallback, useEffect, useMemo } from 'react';
-import { ApiPromise } from '@polkadot/api';
+import React, { useCallback, useMemo } from 'react';
+
+import { DeriveAccountInfo } from '@polkadot/api-derive/types';
 import { AddressSmall, Badge, Checkbox, Icon } from '@polkadot/react-components';
 import { checkVisibility } from '@polkadot/react-components/util';
-import { FormatBalance } from '@polkadot/react-query';
 import { useApi, useCall } from '@polkadot/react-hooks';
+import { FormatBalance } from '@polkadot/react-query';
+import { UnappliedSlash } from '@polkadot/types/interfaces';
 import { formatNumber } from '@polkadot/util';
-import keyring from '@polkadot/ui-keyring';
 
 import MaxBadge from '../MaxBadge';
 import Favorite from '../Overview/Address/Favorite';
 import { useTranslation } from '../translate';
+import { ValidatorInfo } from '../types';
 
 interface Props {
   allSlashes?: [BN, UnappliedSlash[]][];
@@ -32,36 +31,36 @@ interface Props {
   withIdentity: boolean;
 }
 
-function checkIdentity (api: ApiPromise, accountInfo: DeriveAccountInfo): boolean {
-  let hasIdentity = false;
-
-  const { accountId, identity, nickname } = accountInfo;
-
-  if (api.query.identity && api.query.identity.identityOf) {
-    hasIdentity = !!(identity?.display && identity.display.toString());
-  } else if (nickname) {
-    hasIdentity = !!nickname.toString();
-  }
-
-  if (!hasIdentity && accountId) {
-    const account = keyring.getAddress(accountId.toString());
-
-    hasIdentity = !!account?.meta?.name;
-  }
-
-  return hasIdentity;
-}
+// function checkIdentity (api: ApiPromise, accountInfo: DeriveAccountInfo): boolean {
+//   let hasIdentity = false;
+//
+//   const { accountId, identity, nickname } = accountInfo;
+//
+//   if (api.query.identity && api.query.identity.identityOf) {
+//     hasIdentity = !!(identity?.display && identity.display.toString());
+//   } else if (nickname) {
+//     hasIdentity = !!nickname.toString();
+//   }
+//
+//   if (!hasIdentity && accountId) {
+//     const account = keyring.getAddress(accountId.toString());
+//
+//     hasIdentity = !!account?.meta?.name;
+//   }
+//
+//   return hasIdentity;
+// }
 
 function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSelected, toggleFavorite, toggleSelected, withElected, withIdentity }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api } = useApi();
   const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, [info.accountId]);
 
-  useEffect((): void => {
-    if (accountInfo) {
-      info.hasIdentity = checkIdentity(api, accountInfo);
-    }
-  }, [api, accountInfo, info]);
+  // useEffect((): void => {
+  //   if (accountInfo) {
+  //     info.hasIdentity = checkIdentity(api, accountInfo);
+  //   }
+  // }, [api, accountInfo, info]);
 
   const isVisible = useMemo(
     () => accountInfo ? checkVisibility(api, info.key, accountInfo, filterName, withIdentity) : true,
@@ -91,7 +90,7 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
     return null;
   }
 
-  const { accountId, bondOther, bondOwn, bondTotal, commissionPer, isCommission, isElected, isFavorite, key, numNominators, rankOverall, rewardPayout, validatorPayment } = info;
+  const { accountId, bondOther, bondOwn, bondTotal, commissionPer, isElected, isFavorite, key, numNominators, rankOverall } = info;
 
   return (
     <tr>
@@ -138,16 +137,12 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
       </td>
       <td className='number media--1200'>{numNominators || ''}</td>
       <td className='number'>
-        {
-          isCommission
-            ? `${commissionPer.toFixed(2)}%`
-            : <FormatBalance value={validatorPayment} />
-        }
+        {`${commissionPer.toFixed(2)}%`}
       </td>
       <td className='number together'>{!bondTotal.isZero() && <FormatBalance value={bondTotal} />}</td>
       <td className='number together'>{!bondOwn.isZero() && <FormatBalance value={bondOwn} />}</td>
       <td className='number together media--1600'>{!bondOther.isZero() && <FormatBalance value={bondOther} />}</td>
-      <td className='number together'>{!rewardPayout.isZero() && <FormatBalance value={rewardPayout} />}</td>
+      {/*<td className='number together'>{!rewardPayout && <FormatBalance value={rewardPayout} />}</td>*/}
       <td>
         {(canSelect || isSelected) && (
           <Checkbox

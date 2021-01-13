@@ -1,9 +1,10 @@
-// Copyright 2017-2020 @polkadot/react-params authors & contributors
+// Copyright 2017-2021 @polkadot/react-params authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { Props } from '../types';
 
 import React, { useCallback, useEffect, useState } from 'react';
+
 import { Input } from '@polkadot/react-components';
 import { compactAddLength, hexToU8a, u8aConcat } from '@polkadot/util';
 

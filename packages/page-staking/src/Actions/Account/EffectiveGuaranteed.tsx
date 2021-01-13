@@ -3,8 +3,9 @@
 
 import BN from 'bn.js';
 import React from 'react';
-import { FormatBalance } from '@polkadot/react-query';
+
 import { useApi, useCall } from '@polkadot/react-hooks';
+import { FormatBalance } from '@polkadot/react-query';
 import { EraIndex, Exposure } from '@polkadot/types/interfaces';
 
 interface Props {

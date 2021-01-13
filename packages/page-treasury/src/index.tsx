@@ -1,15 +1,15 @@
-// Copyright 2017-2020 @polkadot/app-treasury authors & contributors
+// Copyright 2017-2021 @polkadot/app-treasury authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { Route, Switch } from 'react-router';
+
 import { HelpOverlay, Tabs } from '@polkadot/react-components';
 import { useApi, useIncrement, useIsMountedRef, useMembers } from '@polkadot/react-hooks';
 
 import basicMd from './md/basic.md';
 import Overview from './Overview';
 import Tips from './Tips';
-
 import { useTranslation } from './translate';
 
 export { default as useCounter } from './useCounter';
@@ -28,7 +28,7 @@ function TreasuryApp ({ basePath }: Props): React.ReactElement<Props> {
 
   useEffect((): void => {
     if (tipHashTrigger && mountedRef.current) {
-      api.query.treasury.tips.keys().then((keys) =>
+      (api.query.tips || api.query.treasury).tips.keys().then((keys) =>
         mountedRef.current && setTipHashes(
           keys.map((key) => key.args[0].toHex())
         )

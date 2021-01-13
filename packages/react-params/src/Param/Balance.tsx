@@ -1,10 +1,11 @@
-// Copyright 2017-2020 @polkadot/react-params authors & contributors
+// Copyright 2017-2021 @polkadot/react-params authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { Props } from '../types';
 
 import BN from 'bn.js';
 import React, { useCallback, useState } from 'react';
+
 import { InputBalance } from '@polkadot/react-components';
 
 import Bare from './Bare';

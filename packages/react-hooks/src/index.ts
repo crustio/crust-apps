@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/react-hooks authors & contributors
+// Copyright 2017-2021 @polkadot/react-hooks authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 export { useAccountId } from './useAccountId';
@@ -29,8 +29,9 @@ export { useOwnStashes, useOwnStashIds } from './useOwnStashes';
 export { useOwnStashInfos } from './useOwnStashInfos';
 export { usePassword } from './usePassword';
 export { useRegistrars } from './useRegistrars';
-export { useStashIds } from './useStashIds';
+export { useSavedFlags } from './useSavedFlags';
 export { useSudo } from './useSudo';
 export { useToggle } from './useToggle';
 export { useVotingStatus } from './useVotingStatus';
 export { useWeight } from './useWeight';
+export { useStashIds } from './useStashIds';

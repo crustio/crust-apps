@@ -1,7 +1,5 @@
-// Copyright 2017-2020 @polkadot/react-query authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
-/* eslint-disable */
+// Copyright 2017-2021 @polkadot/react-query authors & contributors
+// SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
 import styled from 'styled-components';
@@ -18,7 +16,6 @@ const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 const k = 1000;
 
 function format (value: number): React.ReactNode {
-
   if (value === 0) return '0 B';
   const i = Math.floor(Math.log(value) / Math.log(k));
   const unitPost = sizes[i];
@@ -33,10 +30,10 @@ function FormatCapacity ({ children, className = '', label, labelPost, value }: 
   return (
     <div className={`ui--FormatBalance ${className}`}>
       {label || ''}<span className='ui--FormatBalance-value'>{
-      value
-        ?  format(value)
-        : `-${labelPost || ''}`
-    }</span>{children}
+        value
+          ? format(value)
+          : `-${labelPost || ''}`
+      }</span>{children}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/react-components authors & contributors
+// Copyright 2017-2021 @polkadot/react-components authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { DropdownOptions } from '../util/types';
@@ -7,7 +7,6 @@ import type { ConstValueBase, StorageEntryPromise } from './types';
 import React from 'react';
 
 import Dropdown from '../Dropdown';
-import { classes } from '../util';
 
 interface Props {
   className?: string;
@@ -21,7 +20,7 @@ interface Props {
 function SelectSection ({ className = '', defaultValue, isError, onChange, options, value: { section } }: Props): React.ReactElement<Props> {
   return (
     <Dropdown
-      className={classes('ui--DropdownLinked-Sections', className)}
+      className={`ui--DropdownLinked-Sections ${className}`}
       defaultValue={defaultValue}
       isError={isError}
       onChange={onChange}

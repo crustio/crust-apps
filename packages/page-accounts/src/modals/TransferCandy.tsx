@@ -1,10 +1,12 @@
-// Copyright 2017-2020 @polkadot/app-accounts authors & contributors
+// Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import BN from 'bn.js';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+
 import { InputAddress, InputCandyBalance, Modal, TxButton } from '@polkadot/react-components';
+import { useApi } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 
 import { useTranslation } from '../translate';
@@ -18,6 +20,7 @@ interface Props {
 
 function TransferCandy ({ className = '', onClose, recipientId: propRecipientId, senderId: propSenderId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
+  const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
   const [hasAvailable] = useState(true);
   const [maxBalance] = useState(BN_ZERO);
@@ -90,7 +93,7 @@ function TransferCandy ({ className = '', onClose, recipientId: propRecipientId,
           label={t<string>('Make Transfer')}
           onStart={onClose}
           params={[recipientId, amount]}
-          tx={'candy.transfer'}
+          tx={api.tx.candy.transfer}
         />
       </Modal.Actions>
     </Modal>

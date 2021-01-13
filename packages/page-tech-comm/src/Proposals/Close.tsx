@@ -1,9 +1,10 @@
-// Copyright 2017-2020 @polkadot/app-tech-comm authors & contributors
+// Copyright 2017-2021 @polkadot/app-tech-comm authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { Hash, Proposal, ProposalIndex } from '@polkadot/types/interfaces';
 
 import React, { useState } from 'react';
+
 import { Button, InputAddress, Modal, ProposedAction, TxButton } from '@polkadot/react-components';
 import { useApi, useToggle, useWeight } from '@polkadot/react-hooks';
 
@@ -73,7 +74,7 @@ function Close ({ hasFailed, hash, idNumber, members, proposal }: Props): React.
                     : [hash, idNumber, proposalWeight, proposalLength]
                   : [hash, idNumber]
               }
-              tx='technicalCommittee.close'
+              tx={api.tx.technicalCommittee.close}
             />
           </Modal.Actions>
         </Modal>
