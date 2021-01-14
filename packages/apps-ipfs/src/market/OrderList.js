@@ -1,8 +1,9 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { AutoSizer, List, WindowScroller } from 'react-virtualized';
 import { useTranslation } from 'react-i18next';
+import { AutoSizer, List, WindowScroller } from 'react-virtualized';
+
 import WatchItem from '@polkadot/apps-ipfs/market/WatchItem';
 
 const OrderList = () => {

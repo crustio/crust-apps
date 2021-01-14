@@ -1,9 +1,12 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import { Button, Input, InputAddress, InputBalance, Modal, TxButton } from '../../../../../react-components/src';
 import React, { useCallback, useEffect, useState } from 'react';
-import { withTranslation, WithTranslation } from 'react-i18next';
+import { WithTranslation, withTranslation } from 'react-i18next';
+
 import { Available, BalanceFree } from '@polkadot/react-query';
+
+import { Button, Input, InputAddress, InputBalance, Modal, TxButton } from '../../../../../react-components/src';
+
 interface Props extends WithTranslation{
   file: IFile
   className?: string;

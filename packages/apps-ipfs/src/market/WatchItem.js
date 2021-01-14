@@ -1,10 +1,9 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-
-import { useTranslation } from 'react-i18next';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const WatchItem = ({ watchItem }) => {
   const { t } = useTranslation('order');

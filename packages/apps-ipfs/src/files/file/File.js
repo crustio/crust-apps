@@ -1,28 +1,28 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
-import { join, basename } from 'path';
-import filesize from 'filesize';
-import { withTranslation } from 'react-i18next';
+import CID from 'cids';
 import classnames from 'classnames';
-import { normalizeFiles } from '../../lib/files';
+import filesize from 'filesize';
+import { basename, join } from 'path';
+import PropTypes from 'prop-types';
+import React, { useRef } from 'react';
 // React DnD
 import { useDrag, useDrop } from 'react-dnd';
+import { NativeTypes } from 'react-dnd-html5-backend';
+import { withTranslation } from 'react-i18next';
+
+import GlyphOrder from '@polkadot/apps-ipfs/icons/GlyphOrder';
+
+import Checkbox from '../../components/checkbox/Checkbox';
+import Tooltip from '../../components/tooltip/Tooltip';
 // Components
 import GlyphDots from '../../icons/GlyphDots';
 import GlyphPin from '../../icons/GlyphPin';
-import Tooltip from '../../components/tooltip/Tooltip';
-import Checkbox from '../../components/checkbox/Checkbox';
-import FileIcon from '../file-icon/FileIcon';
-import CID from 'cids';
-import { NativeTypes } from 'react-dnd-html5-backend';
 import StrokeContract from '../../icons/StrokeContract';
-import GlyphOrder from '@polkadot/apps-ipfs/icons/GlyphOrder';
+import { normalizeFiles } from '../../lib/files';
+import FileIcon from '../file-icon/FileIcon';
 
-const File = ({
-  cantDrag, cantSelect, cid, coloured, contracted, focused, handleContextMenuClick, isMfs, name, onAddFiles, onMove, onNavigate, onSelect, path, pinned, selected, size, t, translucent, type
-}) => {
+const File = ({ cantDrag, cantSelect, cid, coloured, contracted, focused, handleContextMenuClick, isMfs, name, onAddFiles, onMove, onNavigate, onSelect, path, pinned, selected, size, t, translucent, type }) => {
   const dotsWrapper = useRef();
   const originalSize = size;
 

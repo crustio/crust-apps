@@ -5,6 +5,8 @@ import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { withTranslation } from 'react-i18next';
 
+import GlyphOrder from '@polkadot/apps-ipfs/icons/GlyphOrder';
+
 import { cliCmdKeys } from '../../bundles/files/consts';
 import StrokeCopy from '../../icons/StrokeCopy';
 import StrokeDownload from '../../icons/StrokeDownload';
@@ -14,7 +16,6 @@ import StrokePin from '../../icons/StrokePin';
 import StrokeShare from '../../icons/StrokeShare';
 import StrokeTrash from '../../icons/StrokeTrash';
 import { Dropdown, DropdownMenu, Option } from '../dropdown/Dropdown';
-import GlyphOrder from '@polkadot/apps-ipfs/icons/GlyphOrder';
 
 class ContextMenu extends React.Component {
   constructor (props) {
@@ -54,10 +55,8 @@ class ContextMenu extends React.Component {
   }
 
   render () {
-    const {
-      className, file, isCliTutorModeEnabled, isMfs, isUnknown, onDelete,
-      onDownload, onInspect, onRename, onShare, pinned, t, translateX, translateY
-    } = this.props;
+    const { className, file, isCliTutorModeEnabled, isMfs, isUnknown, onDelete,
+      onDownload, onInspect, onRename, onShare, pinned, t, translateX, translateY } = this.props;
 
     return (
       <Dropdown className={className}>
