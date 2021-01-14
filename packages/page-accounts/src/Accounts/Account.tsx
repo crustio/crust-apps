@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/app-accounts authors & contributors
+// Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { SubmittableExtrinsic } from '@polkadot/api/types';
@@ -6,38 +6,39 @@ import type { DeriveBalancesAll, DeriveDemocracyLock } from '@polkadot/api-deriv
 import type { ActionStatus } from '@polkadot/react-components/Status/types';
 import type { ThemeDef } from '@polkadot/react-components/types';
 import type { Option } from '@polkadot/types';
-import type { ProxyDefinition, RecoveryConfig, Balance } from '@polkadot/types/interfaces';
+import type { Balance, ProxyDefinition, RecoveryConfig } from '@polkadot/types/interfaces';
 import type { KeyringAddress } from '@polkadot/ui-keyring/types';
 import type { Delegation } from '../types';
 
 import BN from 'bn.js';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import styled, { ThemeContext } from 'styled-components';
+
 import { ApiPromise } from '@polkadot/api';
+import TransferCandy from '@polkadot/app-accounts/modals/TransferCandy';
 import { getLedger } from '@polkadot/react-api';
 import { AddressInfo, AddressMini, AddressSmall, Badge, Button, ChainLock, CryptoType, Forget, Icon, IdentityIcon, LinkExternal, Menu, Popup, StatusContext, Tags } from '@polkadot/react-components';
 import { useAccountInfo, useApi, useCall, useToggle } from '@polkadot/react-hooks';
-import keyring from '@polkadot/ui-keyring';
+import { FormatCandy } from '@polkadot/react-query';
+import { keyring } from '@polkadot/ui-keyring';
 import { BN_ZERO, formatBalance, formatNumber } from '@polkadot/util';
 
-import { useTranslation } from '../translate';
-import { createMenuGroup } from '../util';
 import Backup from '../modals/Backup';
 import ChangePass from '../modals/ChangePass';
 import DelegateModal from '../modals/Delegate';
 import Derive from '../modals/Derive';
 import IdentityMain from '../modals/IdentityMain';
 import IdentitySub from '../modals/IdentitySub';
-import ProxyOverview from '../modals/ProxyOverview';
 import MultisigApprove from '../modals/MultisigApprove';
+import ProxyOverview from '../modals/ProxyOverview';
 import RecoverAccount from '../modals/RecoverAccount';
 import RecoverSetup from '../modals/RecoverSetup';
 import Transfer from '../modals/Transfer';
 import UndelegateModal from '../modals/Undelegate';
+import { useTranslation } from '../translate';
+import { createMenuGroup } from '../util';
 import useMultisigApprovals from './useMultisigApprovals';
 import useProxies from './useProxies';
-import TransferCandy from '../modals/TransferCandy';
-import { FormatCandy } from '@polkadot/react-query';
 
 interface Props {
   account: KeyringAddress;
@@ -397,7 +398,7 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
         )}
       </td>
       <td className='address media--1400'>
-        {meta.parentAddress && (
+        {(meta.parentAddress as string) && (
           <AddressMini value={meta.parentAddress} />
         )}
       </td>

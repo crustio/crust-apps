@@ -1,10 +1,11 @@
-// Copyright 2017-2020 @polkadot/app-democracy authors & contributors
+// Copyright 2017-2021 @polkadot/app-democracy authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { PropIndex, Proposal } from '@polkadot/types/interfaces';
 
 import BN from 'bn.js';
 import React, { useMemo, useState } from 'react';
+
 import { Button, ConvictionDropdown, Modal, ProposedAction, TxButton, VoteAccount, VoteValue } from '@polkadot/react-components';
 import { useAccounts, useApi, useToggle } from '@polkadot/react-hooks';
 
@@ -96,7 +97,7 @@ function Voting ({ proposal, referendumId }: Props): React.ReactElement<Props> |
                   ? [referendumId, { Standard: { balance, vote: { aye: false, conviction } } }]
                   : [referendumId, { aye: false, conviction }]
               }
-              tx='democracy.vote'
+              tx={api.tx.democracy.vote}
             />
             <TxButton
               accountId={accountId}
@@ -109,7 +110,7 @@ function Voting ({ proposal, referendumId }: Props): React.ReactElement<Props> |
                   ? [referendumId, { Standard: { balance, vote: { aye: true, conviction } } }]
                   : [referendumId, { aye: true, conviction }]
               }
-              tx='democracy.vote'
+              tx={api.tx.democracy.vote}
             />
           </Modal.Actions>
         </Modal>

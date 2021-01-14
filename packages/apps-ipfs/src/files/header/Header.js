@@ -1,16 +1,17 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
 import filesize from 'filesize';
-import SimplifyNumber from 'simplify-number';
-import { connect } from 'redux-bundler-react';
+import React from 'react';
 import { withTranslation } from 'react-i18next';
-// Components
-import Breadcrumbs from '../breadcrumbs/Breadcrumbs';
-import FileInput from '../file-input/FileInput';
+import { connect } from 'redux-bundler-react';
+import SimplifyNumber from 'simplify-number';
+
 import Button from '../../components/button/Button';
 // Icons
 import GlyphDots from '../../icons/GlyphDots';
+// Components
+import Breadcrumbs from '../breadcrumbs/Breadcrumbs';
+import FileInput from '../file-input/FileInput';
 
 function BarOption ({ children, className = '', isLink = false, title, ...etc }) {
   className += ' tc pa3';
@@ -51,16 +52,14 @@ class Header extends React.Component {
   }
 
   render () {
-    const {
-      files,
+    const { files,
       filesPathInfo,
       filesSize,
       onNavigate,
       pins,
       repoNumObjects,
       repoSize,
-      t
-    } = this.props;
+      t } = this.props;
 
     return (
       <div className='db flex-l justify-between items-center'>

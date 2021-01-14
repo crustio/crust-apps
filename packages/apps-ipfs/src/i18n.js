@@ -1,13 +1,13 @@
 // // [object Object]
 // // SPDX-License-Identifier: Apache-2.0
-import ICU from 'i18next-icu';
 import i18n from 'i18next';
-import Backend from 'i18next-chained-backend';
-import LocalStorageBackend from 'i18next-localstorage-backend';
-import HttpBackend from 'i18next-http-backend';
 import LanguageDetector from 'i18next-browser-languagedetector';
-
+import Backend from 'i18next-chained-backend';
+import HttpBackend from 'i18next-http-backend';
+import ICU from 'i18next-icu';
 import en from 'i18next-icu/locale-data/en';
+import LocalStorageBackend from 'i18next-localstorage-backend';
+
 const localeData = [en];
 
 const i18nInstance = i18n.createInstance();

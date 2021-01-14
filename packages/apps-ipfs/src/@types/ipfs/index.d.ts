@@ -1,7 +1,10 @@
-declare module "ipfs" {
-  import CID from "cids"
-  import Multiaddr from 'multiaddr'
-  import { Buffer } from "buffer"
+// [object Object]
+// SPDX-License-Identifier: Apache-2.0
+
+declare module 'ipfs' {
+  import CID from 'cids';
+  import Multiaddr from 'multiaddr';
+  import { Buffer } from 'buffer';
 
   export interface IPFSService extends CoreService {
     pin: PinService
@@ -83,9 +86,9 @@ declare module "ipfs" {
   }
 
   export type PinType =
-    | "recursive"
-    | "direct"
-    | "indirect"
+    | 'recursive'
+    | 'direct'
+    | 'indirect'
 
   export type PinEntry = {
     cid: CID,
@@ -101,15 +104,11 @@ declare module "ipfs" {
     recursive?: boolean
   }
 
-
-
   export type FSStatOptions = TimeoutOptions & {
     hash?: boolean,
     size?: boolean,
     withLocal?: boolean
   }
-
-
 
   export type FSCopyOptions = TimeoutOptions & {
     parents?: boolean,
@@ -124,8 +123,6 @@ declare module "ipfs" {
     hashAlg?: string,
     cidVersion?: number
   }
-
-
 
   export type FSRemoveOptions = TimeoutOptions & {
     recursive?: boolean,
@@ -157,7 +154,6 @@ declare module "ipfs" {
     local: boolean
     sizeLocal: number
   }
-
 
   export type NameResloveOptions = TimeoutOptions & {
     recursive?: boolean,
@@ -192,11 +188,10 @@ declare module "ipfs" {
     mtime: { secs: number, nsecs?: number }
   }
 
-
   type FileContent =
     | Uint8Array
     | Blob
-    | String
+    | string
     | AsyncIterable<Uint8Array>
     | ReadableStream<Uint8Array>
 
@@ -235,12 +230,10 @@ declare module "ipfs" {
     size: number
   }
 
-
   export type UnixFSTime = {
     secs: number,
     nsecs: number
   }
 
-
-  export var IPFS: IPFSService
+  export var IPFS: IPFSService;
 }

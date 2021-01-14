@@ -1,10 +1,11 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { withTranslation } from 'react-i18next';
-import FolderIcon from '../../../icons/StrokeFolder';
+
 import TextInputModal from '../../../components/text-input-modal/TextInputModal';
+import FolderIcon from '../../../icons/StrokeFolder';
 
 function NewFolderModal ({ className, onCancel, onSubmit, t, tReady, ...props }) {
   return (

@@ -1,17 +1,17 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
+import { StartExploringPage } from 'ipld-explorer-components';
 import React from 'react';
 import { connect } from 'redux-bundler-react';
-import { StartExploringPage } from 'ipld-explorer-components';
-import withTour from '../components/tour/withTour';
+
 import FilesExploreForm from '@polkadot/apps-ipfs/files/explore-form/FilesExploreForm';
 
-const StartExploringContainer = ({
-  doExploreUserProvidedPath,
+import withTour from '../components/tour/withTour';
+
+const StartExploringContainer = ({ doExploreUserProvidedPath,
   doFilesNavigateTo,
   handleJoyrideCallback,
-  toursEnabled
-}) => (
+  toursEnabled }) => (
   <>
     <div className='flex items-center ph3 ph4-l'
       style={{ WebkitAppRegion: 'drag', height: 75, background: '#F0F6FA', paddingTop: '20px', paddingBottom: '15px' }}>

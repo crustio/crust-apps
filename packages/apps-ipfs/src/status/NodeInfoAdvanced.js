@@ -1,13 +1,14 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
 import multiaddr from 'multiaddr';
-import { connect } from 'redux-bundler-react';
+import React from 'react';
 import { withTranslation } from 'react-i18next';
+import { connect } from 'redux-bundler-react';
+
 import Address from '../components/address/Address';
+import { Definition, DefinitionList } from '../components/definition/Definition.js';
 import Details from '../components/details/Details';
 import ProviderLink from '../components/provider-link/ProviderLink';
-import { Definition, DefinitionList } from '../components/definition/Definition.js';
 
 function isMultiaddr (addr) {
   try {

@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/app-contracts authors & contributors
+// Copyright 2017-2021 @polkadot/app-contracts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 /* eslint-disable camelcase */
@@ -7,6 +7,7 @@ import type { Option } from '@polkadot/types';
 import type { PrefabWasmModule } from '@polkadot/types/interfaces';
 
 import React, { useMemo } from 'react';
+
 import { InfoForInput } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { isHex } from '@polkadot/util';

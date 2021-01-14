@@ -1,8 +1,8 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import { createAsyncResourceBundle, createSelector } from 'redux-bundler';
-import ms from 'milliseconds';
 import last from 'it-last';
+import ms from 'milliseconds';
+import { createAsyncResourceBundle, createSelector } from 'redux-bundler';
 
 const bundle = createAsyncResourceBundle({
   name: 'nodeBandwidth',

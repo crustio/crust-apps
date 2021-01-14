@@ -1,4 +1,7 @@
-import React from 'react'
+// [object Object]
+// SPDX-License-Identifier: Apache-2.0
+
+import React from 'react';
 
 export const appTour = {
   getSteps: ({ t }) => [{
@@ -20,10 +23,10 @@ export const appTour = {
       zIndex: 999
     }
   }
-}
+};
 
 export const welcomeTour = {
-  getSteps: ({ t, Trans }) => [
+  getSteps: ({ Trans, t }) => [
     {
       content: <div className='montserrat charcoal'>
         <h2 className='f3 fw4'>{t('tour.step1.title')}</h2>
@@ -43,10 +46,10 @@ export const welcomeTour = {
       zIndex: 999
     }
   }
-}
+};
 
 export const statusTour = {
-  getSteps: ({ t, Trans }) => [
+  getSteps: ({ Trans, t }) => [
     {
       content: <div className='montserrat charcoal'>
         <h2 className='f3 fw4'>{t('tour.step1.title')}</h2>
@@ -69,7 +72,8 @@ export const statusTour = {
       content: <div className='montserrat charcoal'>
         <h2 className='f3 fw4'>{t('tour.step3.title')}</h2>
         <p className='tl f6'>{t('tour.step3.paragraph1')}</p>
-        <Trans i18nKey='tour.step3.paragraph2' t={t}>
+        <Trans i18nKey='tour.step3.paragraph2'
+          t={t}>
           <p className='tl f6'>Click on <code>Advanced</code> to see more info such as the gateway URL and addresses.</p>
         </Trans>
       </div>,
@@ -103,16 +107,20 @@ export const statusTour = {
       zIndex: 999
     }
   }
-}
+};
 
 export const filesTour = {
-  getSteps: ({ t, Trans }) => [
+  getSteps: ({ Trans, t }) => [
     {
       content: <div className='montserrat charcoal'>
         <h2 className='f3 fw4'>{t('tour.step1.title')}</h2>
-        <Trans i18nKey='tour.step1.paragraph1' t={t}>
+        <Trans i18nKey='tour.step1.paragraph1'
+          t={t}>
           <p className='tl f6'>
-            This is where the files on your <a className='teal link' href='https://docs.ipfs.io/concepts/file-systems/' rel='noopener noreferrer' target='_blank'>
+            This is where the files on your <a className='teal link'
+              href='https://docs.ipfs.io/concepts/file-systems/'
+              rel='noopener noreferrer'
+              target='_blank'>
             Mutable File System (MFS)</a> live. You can add files or folders and manage them from this page.
           </p>
         </Trans>
@@ -139,9 +147,13 @@ export const filesTour = {
         <h2 className='f3 fw4'>{t('tour.step3.title')}</h2>
         <p className='tl f6'>{t('tour.step3.paragraph1')}</p>
         <p className='tl f6'>{t('tour.step3.paragraph2')}</p>
-        <Trans i18nKey='tour.step3.paragraph3' t={t}>
+        <Trans i18nKey='tour.step3.paragraph3'
+          t={t}>
           <p className='tl f6'>
-            If you want to add something that is already on IPFS, you can import it to your MFS by passing its <a className='teal link' href='https://docs.ipfs.io/concepts/content-addressing/' rel='noopener noreferrer' target='_blank'>Content
+            If you want to add something that is already on IPFS, you can import it to your MFS by passing its <a className='teal link'
+              href='https://docs.ipfs.io/concepts/content-addressing/'
+              rel='noopener noreferrer'
+              target='_blank'>Content
             Identifier (CID)</a>.
           </p>
         </Trans>
@@ -169,7 +181,7 @@ export const filesTour = {
       zIndex: 999
     }
   }
-}
+};
 
 export const peersTour = {
   getSteps: ({ t }) => [
@@ -208,10 +220,10 @@ export const peersTour = {
       zIndex: 999
     }
   }
-}
+};
 
 export const settingsTour = {
-  getSteps: ({ t, Trans }) => [
+  getSteps: ({ Trans, t }) => [
     {
       content: <div className='montserrat charcoal'>
         <h2 className='f3 fw4'>{t('tour.step1.title')}</h2>
@@ -224,9 +236,13 @@ export const settingsTour = {
     {
       content: <div className='montserrat charcoal'>
         <h2 className='f3 fw4'>{t('tour.step2.title')}</h2>
-        <Trans i18nKey='tour.step2.paragraph1' t={t}>
+        <Trans i18nKey='tour.step2.paragraph1'
+          t={t}>
           <p className='tl f6'>You can change the language of the Web UI.
-          If your preferred language isn't available, head over our project page in <a className='teal link' href='https://www.transifex.com/ipfs/ipfs-webui/translate/' rel='noopener noreferrer' target='_blank'>Transifex</a> to help us translate!
+          If your preferred language isn't available, head over our project page in <a className='teal link'
+            href='https://www.transifex.com/ipfs/ipfs-webui/translate/'
+            rel='noopener noreferrer'
+            target='_blank'>Transifex</a> to help us translate!
           </p>
         </Trans>
       </div>,
@@ -269,4 +285,4 @@ export const settingsTour = {
       zIndex: 999
     }
   }
-}
+};

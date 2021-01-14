@@ -1,8 +1,8 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { connect } from 'redux-bundler-react';
 import { withTranslation } from 'react-i18next';
+import { connect } from 'redux-bundler-react';
 
 const pickColor = (ipfsReady, ipfsConnected) => {
   if (ipfsReady && ipfsConnected) return 'teal';

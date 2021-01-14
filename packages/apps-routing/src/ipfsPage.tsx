@@ -2,13 +2,15 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 import React, { useEffect, useRef } from 'react';
-import { Tabs } from '@polkadot/react-components';
+import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
+
 // @ts-ignore
 import IpfsApp from '@polkadot/apps-ipfs/';
-import { KeyedEvent } from '@polkadot/react-query/src/types';
-import { useTranslation } from 'react-i18next';
+import { Tabs } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
-import { useHistory } from 'react-router-dom';
+import { KeyedEvent } from '@polkadot/react-query/src/types';
+
 interface Props {
   basePath: string;
   className?: string;

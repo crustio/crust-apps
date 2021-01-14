@@ -1,20 +1,20 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { connect } from 'redux-bundler-react';
 import { withTranslation } from 'react-i18next';
 import ReactJoyride from 'react-joyride';
-import withTour from '../components/tour/withTour';
-import { peersTour } from '../lib/tours';
-import { getJoyrideLocales } from '../helpers/i8n';
+import { connect } from 'redux-bundler-react';
 
+import { cliCmdKeys, cliCommandList } from '../bundles/files/consts';
 // Components
 import Box from '../components/box/Box';
-import WorldMap from './WorldMap/WorldMap';
-import PeersTable from './PeersTable/PeersTable';
-import AddConnection from './AddConnection/AddConnection';
 import CliTutorMode from '../components/cli-tutor-mode/CliTutorMode';
-import { cliCmdKeys, cliCommandList } from '../bundles/files/consts';
+import withTour from '../components/tour/withTour';
+import { getJoyrideLocales } from '../helpers/i8n';
+import { peersTour } from '../lib/tours';
+import AddConnection from './AddConnection/AddConnection';
+import PeersTable from './PeersTable/PeersTable';
+import WorldMap from './WorldMap/WorldMap';
 
 const PeersPage = ({ handleJoyrideCallback, isCliTutorModeEnabled, t, toursEnabled }) => (
   <div className='overflow-hidden'

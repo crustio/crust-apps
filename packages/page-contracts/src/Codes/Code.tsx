@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { Option } from '@polkadot/types';
@@ -7,13 +7,14 @@ import type { CodeStored } from '../types';
 
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
+
 import { Button, Card, CopyButton, Forget } from '@polkadot/react-components';
 import { useApi, useCall, useToggle } from '@polkadot/react-hooks';
 
 import { CodeRow, Messages } from '../shared';
 import store from '../store';
-import useAbi from '../useAbi';
 import { useTranslation } from '../translate';
+import useAbi from '../useAbi';
 
 interface Props {
   className?: string;

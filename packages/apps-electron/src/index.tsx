@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/apps authors & contributors
+// Copyright 2017-2021 @polkadot/apps authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 // setup these right at front
@@ -8,6 +8,7 @@ import '@polkadot/react-components/i18n';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import Root from '@polkadot/apps/Root';
 
 import { electronMainApi } from './api/global-exported-api';

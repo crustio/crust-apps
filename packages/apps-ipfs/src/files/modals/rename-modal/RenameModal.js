@@ -1,10 +1,11 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
 import PropTypes from 'prop-types';
-import PencilIcon from '../../../icons/StrokePencil';
-import TextInputModal from '../../../components/text-input-modal/TextInputModal';
+import React from 'react';
 import { withTranslation } from 'react-i18next';
+
+import TextInputModal from '../../../components/text-input-modal/TextInputModal';
+import PencilIcon from '../../../icons/StrokePencil';
 
 function RenameModal ({ className, filename, folder, onCancel, onSubmit, t, tReady, ...props }) {
   const context = folder ? 'Folder' : 'File';

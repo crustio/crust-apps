@@ -1,12 +1,13 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import multiaddr from 'multiaddr';
 // @ts-ignore
 import HttpClient from 'ipfs-http-client';
 // @ts-ignore
 import { getIpfs, providers } from 'ipfs-provider';
 import first from 'it-first';
 import last from 'it-last';
+import multiaddr from 'multiaddr';
+
 import * as Enum from './enum';
 import { perform } from './task';
 

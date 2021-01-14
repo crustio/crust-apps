@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/app-democracy authors & contributors
+// Copyright 2017-2021 @polkadot/app-democracy authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { SubmittableExtrinsic } from '@polkadot/api/types';
@@ -6,6 +6,7 @@ import type { Hash, VoteThreshold } from '@polkadot/types/interfaces';
 
 import BN from 'bn.js';
 import React, { useEffect, useMemo, useState } from 'react';
+
 import { Button, Input, InputAddress, InputNumber, Modal, TxButton } from '@polkadot/react-components';
 import { useApi, useMembers, useToggle } from '@polkadot/react-hooks';
 
@@ -100,7 +101,7 @@ function Fasttrack ({ imageHash, threshold }: Props): React.ReactElement<Props> 
                   ? [memberThreshold, proposal, proposalLength]
                   : [memberThreshold, proposal]
               }
-              tx='technicalCommittee.propose'
+              tx={api.tx.technicalCommittee.propose}
             />
           </Modal.Actions>
         </Modal>

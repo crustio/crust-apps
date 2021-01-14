@@ -1,8 +1,9 @@
-// Copyright 2017-2020 @polkadot/apps authors & contributors
+// Copyright 2017-2021 @polkadot/apps authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
+
 import { chainLogos, emptyLogos, namedLogos, nodeLogos } from '@polkadot/apps-config';
 import { useApi } from '@polkadot/react-hooks';
 

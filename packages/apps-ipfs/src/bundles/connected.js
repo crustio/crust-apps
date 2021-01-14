@@ -1,4 +1,7 @@
-import { createSelector } from 'redux-bundler'
+// [object Object]
+// SPDX-License-Identifier: Apache-2.0
+
+import { createSelector } from 'redux-bundler';
 
 /**
  * @typedef {Object} Model
@@ -24,7 +27,7 @@ const selectors = {
   /**
    * @param {State} state
    */
-  selectConnectedLastError: state => state.connected.lastError,
+  selectConnectedLastError: (state) => state.connected.lastError,
 
   selectIpfsConnected: createSelector(
     'selectIpfsReady',
@@ -43,8 +46,8 @@ const selectors = {
   /**
    * @param {State} state
    */
-  selectIsNodeInfoOpen: state => state.connected.isNodeInfoOpen
-}
+  selectIsNodeInfoOpen: (state) => state.connected.isNodeInfoOpen
+};
 
 /**
  * @typedef {import('redux-bundler').Actions<typeof actions>} Actions
@@ -56,8 +59,8 @@ const actions = {
    * @param {boolean} value
    * @returns {function(Context): void}
    */
-  doSetIsNodeInfoOpen: value => ({ dispatch }) => dispatch({ type: 'NODE_INFO_OPEN', payload: value })
-}
+  doSetIsNodeInfoOpen: (value) => ({ dispatch }) => dispatch({ type: 'NODE_INFO_OPEN', payload: value })
+};
 
 // We ask for the stats every few seconds, so that gives a good indication
 // that ipfs things are working (or not), without additional polling of the api.
@@ -70,18 +73,19 @@ const connected = {
    * @returns {Model}
    */
   reducer: (state, action) => {
-    state = state || { lastError: 0, isNodeInfoOpen: false }
+    state = state || { lastError: 0, isNodeInfoOpen: false };
+
     switch (action.type) {
       case 'STATS_FETCH_FAILED':
-        return { ...state, lastError: Date.now() }
+        return { ...state, lastError: Date.now() };
       case 'NODE_INFO_OPEN':
-        return { ...state, isNodeInfoOpen: action.payload }
+        return { ...state, isNodeInfoOpen: action.payload };
       default:
-        return state
+        return state;
     }
   },
   ...actions,
   ...selectors
-}
+};
 
-export default connected
+export default connected;

@@ -1,8 +1,9 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { connect } from 'redux-bundler-react';
 import { withTranslation } from 'react-i18next';
+import { connect } from 'redux-bundler-react';
+
 import Button from '../button/Button';
 
 const ApiAddressForm = ({ doUpdateIpfsApiAddress, ipfsApiAddress, t }) => {

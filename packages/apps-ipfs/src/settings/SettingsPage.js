@@ -1,37 +1,36 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { connect } from 'redux-bundler-react';
-import { withTranslation, Trans } from 'react-i18next';
+import { Trans, withTranslation } from 'react-i18next';
 import ReactJoyride from 'react-joyride';
-// Tour
-import { settingsTour } from '../lib/tours';
+import { connect } from 'redux-bundler-react';
+
+import { cliCmdKeys, cliCommandList } from '../bundles/files/consts';
+import AnalyticsToggle from '../components/analytics-toggle/AnalyticsToggle';
+import ApiAddressForm from '../components/api-address-form/ApiAddressForm';
+import Box from '../components/box/Box';
+import Button from '../components/button/Button';
+import Checkbox from '../components/checkbox/Checkbox';
+import CliTutorMode from '../components/cli-tutor-mode/CliTutorMode';
 import withTour from '../components/tour/withTour';
 import { getJoyrideLocales } from '../helpers/i8n';
 // Components
 import Tick from '../icons/GlyphSmallTick';
-import Box from '../components/box/Box';
-import Button from '../components/button/Button';
-import AnalyticsToggle from '../components/analytics-toggle/AnalyticsToggle';
-import ApiAddressForm from '../components/api-address-form/ApiAddressForm';
+import StrokeCode from '../icons/StrokeCode';
+// Tour
+import { settingsTour } from '../lib/tours';
+import ComponentLoader from '../loader/ComponentLoader.js';
 import JsonEditor from './editor/JsonEditor';
 // import Experiments from '../components/experiments/ExperimentsPanel';
 import Title from './Title';
-import CliTutorMode from '../components/cli-tutor-mode/CliTutorMode';
-import Checkbox from '../components/checkbox/Checkbox';
-import ComponentLoader from '../loader/ComponentLoader.js';
-import StrokeCode from '../icons/StrokeCode';
-import { cliCmdKeys, cliCommandList } from '../bundles/files/consts';
 
 const PAUSE_AFTER_SAVE_MS = 3000;
 
-export const SettingsPage = ({
-  analyticsEnabled, command, config, doToggleAnalytics,
+export const SettingsPage = ({ analyticsEnabled, command, config, doToggleAnalytics,
   doToggleCliTutorMode, editorKey, handleJoyrideCallback,
   hasErrors, hasExternalChanges, hasLocalChanges, hasSaveFailed, hasSaveSucceded,
   ipfsPendingFirstConnection, isCliTutorModeEnabled, isConfigBlocked, isIpfsConnected, isLoading, isSaving, onChange,
-  onReset, onSave, t, tReady, toursEnabled
-}) => (
+  onReset, onSave, t, tReady, toursEnabled }) => (
   <div className='center'
     data-id='SettingsPage'>
     {/* Enable a full screen loader after updating to a new IPFS API address.
@@ -104,41 +103,45 @@ export const SettingsPage = ({
               tReady={tReady} />
           </div>
         </div>
-        { config ? (
-          <div className='flex flex-column justify-center flex-row-l items-center-l'>
-            <CliTutorMode command={command}
-              config={config}
-              showIcon={true}
-              t={t}/>
-            <Button
-              bg='bg-charcoal'
-              className='tc'
-              disabled={isSaving || (!hasLocalChanges && !hasExternalChanges)}
-              height={40}
-              minWidth={100}
-              onClick={onReset}>
-              {t('app:actions.reset')}
-            </Button>
-            <SaveButton
-              hasErrors={hasErrors}
-              hasExternalChanges={hasExternalChanges}
-              hasLocalChanges={hasLocalChanges}
-              hasSaveFailed={hasSaveFailed}
-              hasSaveSucceded={hasSaveSucceded}
-              isSaving={isSaving}
-              onClick={onSave}
-              t={t}
-              tReady={tReady} />
-          </div>
-        ) : null }
+        { config
+          ? (
+            <div className='flex flex-column justify-center flex-row-l items-center-l'>
+              <CliTutorMode command={command}
+                config={config}
+                showIcon={true}
+                t={t}/>
+              <Button
+                bg='bg-charcoal'
+                className='tc'
+                disabled={isSaving || (!hasLocalChanges && !hasExternalChanges)}
+                height={40}
+                minWidth={100}
+                onClick={onReset}>
+                {t('app:actions.reset')}
+              </Button>
+              <SaveButton
+                hasErrors={hasErrors}
+                hasExternalChanges={hasExternalChanges}
+                hasLocalChanges={hasLocalChanges}
+                hasSaveFailed={hasSaveFailed}
+                hasSaveSucceded={hasSaveSucceded}
+                isSaving={isSaving}
+                onClick={onSave}
+                t={t}
+                tReady={tReady} />
+            </div>
+          )
+          : null }
       </div>
-      { config ? (
-        <JsonEditor
-          key={editorKey}
-          onChange={onChange}
-          readOnly={isSaving}
-          value={config} />
-      ) : null }
+      { config
+        ? (
+          <JsonEditor
+            key={editorKey}
+            onChange={onChange}
+            readOnly={isSaving}
+            value={config} />
+        )
+        : null }
     </Box>
     )}
 
@@ -166,13 +169,15 @@ const SaveButton = ({ hasErrors, hasExternalChanges, hasLocalChanges, hasSaveFai
       height={40}
       minWidth={100}
       onClick={onClick}>
-      { hasSaveSucceded && !hasSaveFailed ? (
-        <Tick className='fill-snow'
-          height={16}
-          style={{ transform: 'scale(3)' }} />
-      ) : (
-        isSaving ? t('app:actions.saving') : t('app:actions.save')
-      )}
+      { hasSaveSucceded && !hasSaveFailed
+        ? (
+          <Tick className='fill-snow'
+            height={16}
+            style={{ transform: 'scale(3)' }} />
+        )
+        : (
+          isSaving ? t('app:actions.saving') : t('app:actions.save')
+        )}
     </Button>
   );
 };
@@ -304,11 +309,9 @@ export class SettingsPageContainer extends React.Component {
   }
 
   render () {
-    const {
-      analyticsEnabled, configIsLoading, configIsSaving, configLastError, configSaveLastError, configSaveLastSuccess, doToggleAnalytics,
+    const { analyticsEnabled, configIsLoading, configIsSaving, configLastError, configSaveLastError, configSaveLastSuccess, doToggleAnalytics,
       doToggleCliTutorMode, handleJoyrideCallback, ipfsConnected, ipfsPendingFirstConnection, isCliTutorModeEnabled, isConfigBlocked,
-      isIpfsDesktop, t, tReady, toursEnabled
-    } = this.props;
+      isIpfsDesktop, t, tReady, toursEnabled } = this.props;
     const { editableConfig, editorKey, hasErrors, hasExternalChanges, hasLocalChanges } = this.state;
     const hasSaveSucceded = this.isRecent(configSaveLastSuccess);
     const hasSaveFailed = this.isRecent(configSaveLastError);

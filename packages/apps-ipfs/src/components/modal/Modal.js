@@ -1,31 +1,39 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import CancelIcon from '../../icons/GlyphSmallCancel'
+// [object Object]
+// SPDX-License-Identifier: Apache-2.0
 
-export const ModalActions = ({ justify, className, children, ...props }) => (
-  <div className={`flex justify-${justify} pa2 ${className}`} style={{ backgroundColor: '#f4f6f8' }} {...props}>
+import PropTypes from 'prop-types';
+import React from 'react';
+
+import CancelIcon from '../../icons/GlyphSmallCancel';
+
+export const ModalActions = ({ children, className, justify, ...props }) => (
+  <div className={`flex justify-${justify} pa2 ${className}`}
+    style={{ backgroundColor: '#f4f6f8' }}
+    {...props}>
     { children }
   </div>
-)
+);
 
 ModalActions.propTypes = {
   justify: PropTypes.string,
   className: PropTypes.string
-}
+};
 
 ModalActions.defaultProps = {
   justify: 'between',
   className: ''
-}
+};
 
-export const ModalBody = ({ className, icon, title, children, ...props }) => {
+export const ModalBody = ({ children, className, icon, title, ...props }) => {
   icon = React.createElement(icon, {
     className: 'fill-gray w3'
-  })
+  });
 
   return (
-    <div className={`ph2 pv3 tc ${className}`} {...props}>
-      <div className='center bg-snow br-100 flex justify-center items-center' style={{ width: '80px', height: '80px' }}>
+    <div className={`ph2 pv3 tc ${className}`}
+      {...props}>
+      <div className='center bg-snow br-100 flex justify-center items-center'
+        style={{ width: '80px', height: '80px' }}>
         {icon}
       </div>
 
@@ -33,8 +41,8 @@ export const ModalBody = ({ className, icon, title, children, ...props }) => {
 
       {children}
     </div>
-  )
-}
+  );
+};
 
 ModalBody.propTypes = {
   icon: PropTypes.func.isRequired,
@@ -42,31 +50,34 @@ ModalBody.propTypes = {
     PropTypes.string,
     PropTypes.node
   ])
-}
+};
 
 ModalBody.defaultProps = {
   className: ''
-}
+};
 
-export const Modal = ({ onCancel, children, className, ...props }) => {
+export const Modal = ({ children, className, onCancel, ...props }) => {
   return (
-    <div className={`${className} bg-white w-80 shadow-4 sans-serif relative`} style={{ maxWidth: '30em' }} {...props}>
+    <div className={`${className} bg-white w-80 shadow-4 sans-serif relative`}
+      style={{ maxWidth: '30em' }}
+      {...props}>
       { onCancel &&
-        <CancelIcon className='absolute pointer w2 h2 top-0 right-0 fill-gray' onClick={onCancel} />
+        <CancelIcon className='absolute pointer w2 h2 top-0 right-0 fill-gray'
+          onClick={onCancel} />
       }
 
       {children}
     </div>
-  )
-}
+  );
+};
 
 Modal.propTypes = {
   onCancel: PropTypes.func
-}
+};
 
 Modal.defaultProps = {
   onCancel: null,
   className: ''
-}
+};
 
-export default Modal
+export default Modal;

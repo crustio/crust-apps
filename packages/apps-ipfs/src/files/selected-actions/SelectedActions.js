@@ -1,17 +1,19 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import filesize from 'filesize';
-import { withTranslation } from 'react-i18next';
-import GlyphSmallCancel from '../../icons/GlyphSmallCancel';
-import StrokeShare from '../../icons/StrokeShare';
-import StrokePencil from '../../icons/StrokePencil';
-import StrokeIpld from '../../icons/StrokeIpld';
-import StrokeTrash from '../../icons/StrokeTrash';
-import StrokeDownload from '../../icons/StrokeDownload';
 import './SelectedActions.css';
+
+import classNames from 'classnames';
+import filesize from 'filesize';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { withTranslation } from 'react-i18next';
+
+import GlyphSmallCancel from '../../icons/GlyphSmallCancel';
+import StrokeDownload from '../../icons/StrokeDownload';
+import StrokeIpld from '../../icons/StrokeIpld';
+import StrokePencil from '../../icons/StrokePencil';
+import StrokeShare from '../../icons/StrokeShare';
+import StrokeTrash from '../../icons/StrokeTrash';
 
 const styles = {
   bar: {

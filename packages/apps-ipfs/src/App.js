@@ -1,23 +1,24 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'redux-bundler-react';
 import { getNavHelper } from 'internal-nav-helper';
-import ReactJoyride from 'react-joyride';
-import { withTranslation } from 'react-i18next';
-import { normalizeFiles } from './lib/files';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 // React DnD
 import { DropTarget } from 'react-dnd';
 import { NativeTypes } from 'react-dnd-html5-backend';
+import { withTranslation } from 'react-i18next';
+import ReactJoyride from 'react-joyride';
+import { connect } from 'redux-bundler-react';
+
+import Connected from './components/connected/Connected';
+import Notify from './components/notify/Notify';
+import FilesExploreForm from './files/explore-form/FilesExploreForm';
+import { getJoyrideLocales } from './helpers/i8n';
+import { normalizeFiles } from './lib/files';
 // Lib
 import { appTour } from './lib/tours';
-import { getJoyrideLocales } from './helpers/i8n';
 // Components
 import ComponentLoader from './loader/ComponentLoader';
-import Notify from './components/notify/Notify';
-import Connected from './components/connected/Connected';
-import FilesExploreForm from './files/explore-form/FilesExploreForm';
 
 export class App extends Component {
   static propTypes = {

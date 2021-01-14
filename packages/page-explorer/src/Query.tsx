@@ -1,8 +1,9 @@
-// Copyright 2017-2020 @polkadot/app-explorer authors & contributors
+// Copyright 2017-2021 @polkadot/app-explorer authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
+
 import { Button, FilterOverlay, Input } from '@polkadot/react-components';
 import { isHex } from '@polkadot/util';
 
@@ -44,7 +45,7 @@ function Query ({ className = '', value: propsValue }: Props): React.ReactElemen
   );
 
   return (
-    <FilterOverlay className={className}>
+    <FilterOverlay className={`ui--FilterOverlay hasOwnMaxWidth ${className}`}>
       <Input
         className='explorer--query'
         defaultValue={propsValue}

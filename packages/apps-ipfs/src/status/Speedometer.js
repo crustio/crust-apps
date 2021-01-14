@@ -1,11 +1,14 @@
-import React from 'react'
-import { Doughnut } from 'react-chartjs-2'
-import filesize from 'filesize'
+// [object Object]
+// SPDX-License-Identifier: Apache-2.0
 
-const rotation = (n) => (0.5 + (1 - n)) * Math.PI
-const circumference = (n) => n * 2 * Math.PI
+import filesize from 'filesize';
+import React from 'react';
+import { Doughnut } from 'react-chartjs-2';
 
-export default function ({ total = 100, title, filled = 0, noSpeed = false, color = '#FF6384' }) {
+const rotation = (n) => (0.5 + (1 - n)) * Math.PI;
+const circumference = (n) => n * 2 * Math.PI;
+
+export default function ({ color = '#FF6384', filled = 0, noSpeed = false, title, total = 100 }) {
   const doughnut = {
     options: {
       legend: {
@@ -28,24 +31,26 @@ export default function ({ total = 100, title, filled = 0, noSpeed = false, colo
         borderWidth: [0, 0]
       }]
     }
-  }
+  };
 
   const data = filesize(filled, {
     output: 'array',
     round: 0,
     bits: !noSpeed
-  })
+  });
 
   return (
-    <div className='relative tc center overflow-hidden' style={{ width: '11em', height: '9em' }} >
+    <div className='relative tc center overflow-hidden'
+      style={{ width: '11em', height: '9em' }} >
       <div style={{ width: '11em', height: '11em', marginTop: '-1em' }}>
         <Doughnut {...doughnut} />
       </div>
 
-      <div className='absolute' style={{ top: '60%', left: '50%', transform: 'translate(-50%, -50%)' }} >
+      <div className='absolute'
+        style={{ top: '60%', left: '50%', transform: 'translate(-50%, -50%)' }} >
         <span className='f3'>{data[0]}</span><span className='ml1 f7'>{data[1]}{ noSpeed ? '' : '/s' }</span>
         <span className='db f7 fw5'>{title}</span>
       </div>
     </div>
-  )
+  );
 }

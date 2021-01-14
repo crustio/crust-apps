@@ -1,7 +1,8 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
 import './Button.css';
+
+import React from 'react';
 
 const Button = ({ bg = 'bg-teal', children, className = '', color = 'white', danger, disabled, fill = 'white', minWidth = 86, style, ...props }) => {
   const bgClass = danger ? 'bg-red' : disabled ? 'bg-gray-muted' : bg;

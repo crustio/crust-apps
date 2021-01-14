@@ -1,18 +1,19 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
 import PropTypes from 'prop-types';
-import { withTranslation } from 'react-i18next';
+import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { Dropdown, DropdownMenu, Option } from '../dropdown/Dropdown';
-import StrokeCopy from '../../icons/StrokeCopy';
-import StrokeShare from '../../icons/StrokeShare';
-import StrokePencil from '../../icons/StrokePencil';
-import StrokeIpld from '../../icons/StrokeIpld';
-import StrokeTrash from '../../icons/StrokeTrash';
-import StrokeDownload from '../../icons/StrokeDownload';
-import StrokePin from '../../icons/StrokePin';
+import { withTranslation } from 'react-i18next';
+
 import { cliCmdKeys } from '../../bundles/files/consts';
+import StrokeCopy from '../../icons/StrokeCopy';
+import StrokeDownload from '../../icons/StrokeDownload';
+import StrokeIpld from '../../icons/StrokeIpld';
+import StrokePencil from '../../icons/StrokePencil';
+import StrokePin from '../../icons/StrokePin';
+import StrokeShare from '../../icons/StrokeShare';
+import StrokeTrash from '../../icons/StrokeTrash';
+import { Dropdown, DropdownMenu, Option } from '../dropdown/Dropdown';
 import GlyphOrder from '@polkadot/apps-ipfs/icons/GlyphOrder';
 
 class ContextMenu extends React.Component {

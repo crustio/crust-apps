@@ -1,8 +1,9 @@
-// Copyright 2017-2020 @polkadot/react-signer authors & contributors
+// Copyright 2017-2021 @polkadot/react-signer authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
+
 import { InputBalance, Modal, Toggle } from '@polkadot/react-components';
 import { BN_ZERO } from '@polkadot/util';
 

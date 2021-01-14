@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/app-extrinsics authors & contributors
+// Copyright 2017-2021 @polkadot/app-extrinsics authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { SubmittableExtrinsic, SubmittableExtrinsicFunction } from '@polkadot/api/types';
@@ -6,9 +6,10 @@ import type { RawParam } from '@polkadot/react-params/types';
 import type { TypeDef } from '@polkadot/types/types';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { getTypeDef } from '@polkadot/types/create';
+
 import Params from '@polkadot/react-params';
 import { GenericCall } from '@polkadot/types';
+import { getTypeDef } from '@polkadot/types/create';
 import { isUndefined } from '@polkadot/util';
 
 import InputExtrinsic from './InputExtrinsic';

@@ -1,17 +1,17 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
 import { connect } from 'redux-bundler-react';
 
-// Components
-import { Modal, ModalBody, ModalActions } from '../modal/Modal';
+import { cliCmdKeys, cliCommandList } from '../../bundles/files/consts';
 import StrokeCode from '../../icons/StrokeCode';
+import StrokeDownload from '../../icons/StrokeDownload';
 import Button from '../button/Button';
+// Components
+import { Modal, ModalActions, ModalBody } from '../modal/Modal';
 import Overlay from '../overlay/Overlay';
 import Shell from '../shell/Shell';
-import StrokeDownload from '../../icons/StrokeDownload';
-import { cliCmdKeys, cliCommandList } from '../../bundles/files/consts';
 
 export const CliTutorialModal = ({ className, command, downloadConfig, onLeave, t, ...props }) => {
   const onClickCopyToClipboard = (cmd) => {
@@ -53,7 +53,8 @@ export const CliTutorialModal = ({ className, command, downloadConfig, onLeave, 
               ? <StrokeDownload className='dib fill-link pointer'
                 onClick={downloadConfig}
                 style={{ height: 38 }}
-              /> : <div />
+              />
+              : <div />
           }
           <Button className='ma2 tc'
             onClick={() => onClickCopyToClipboard(command)}>
@@ -65,9 +66,7 @@ export const CliTutorialModal = ({ className, command, downloadConfig, onLeave, 
   );
 };
 
-const CliTutorMode = ({
-  command, config, doOpenCliTutorModal, filesPage, isCliTutorModalOpen, isCliTutorModeEnabled, onLeave, showIcon, t
-}) => {
+const CliTutorMode = ({ command, config, doOpenCliTutorModal, filesPage, isCliTutorModalOpen, isCliTutorModeEnabled, onLeave, showIcon, t }) => {
   const downloadConfig = (config) => {
     const url = window.URL.createObjectURL(new Blob([config]));
     const link = document.createElement('a');
@@ -89,7 +88,7 @@ const CliTutorMode = ({
     }
 
     return (
-      <Fragment>
+      <>
         {
           showIcon
             ? <StrokeCode className='dib fill-link pointer mh2'
@@ -105,7 +104,7 @@ const CliTutorMode = ({
             onLeave={() => doOpenCliTutorModal(false)}
             t={t}/>
         </Overlay>
-      </Fragment>
+      </>
     );
   }
 

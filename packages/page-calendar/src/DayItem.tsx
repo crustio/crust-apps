@@ -1,61 +1,67 @@
-// Copyright 2017-2020 @polkadot/app-calendar authors & contributors
+// Copyright 2017-2021 @polkadot/app-calendar authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { EntryInfo } from './types';
+import type { EntryInfoTyped } from './types';
 
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { formatNumber, isString } from '@polkadot/util';
-import { dateCalendarFormat } from './util';
+
 import { Button } from '@polkadot/react-components';
+import { formatNumber, isString } from '@polkadot/util';
 
 import { useTranslation } from './translate';
+import { dateCalendarFormat } from './util';
 
 interface Props {
   className?: string;
-  item: EntryInfo;
+  showAllEvents?: boolean;
+  item: EntryInfoTyped;
 }
+
+const options = { day: 'numeric', month: 'long', weekday: 'long', year: 'numeric' };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function assertUnreachable (x: never): never {
   throw new Error('We cannot get here');
 }
 
-function DayItem ({ className, item: { date, info, type } }: Props): React.ReactElement<Props> {
+function exportCalendar (date: Date, description: string): void {
+  const startDate = dateCalendarFormat(date);
+  // For now just add 1 hour for each event
+  const endDate = dateCalendarFormat(new Date(new Date(date).setHours(new Date(date).getHours() + 1)));
+  const calData =
+    'BEGIN:VCALENDAR\n' +
+    'CALSCALE:GREGORIAN\n' +
+    'METHOD:PUBLISH\n' +
+    'PRODID:-//Test Cal//EN\n' +
+    'VERSION:2.0\n' +
+    'BEGIN:VEVENT\n' +
+    'UID:test-1\n' +
+    'DTSTART;VALUE=DATE:' + startDate + '\n' +
+    'DTEND;VALUE=DATE:' + endDate + '\n' +
+    'SUMMARY:' + description + '\n' +
+    'DESCRIPTION:' + description + '\n' +
+    'END:VEVENT\n' +
+    'END:VCALENDAR';
+  const fileNameIcs = encodeURI(description) + '.ics';
+  const data = new File([calData], fileNameIcs, { type: 'text/plain' });
+  const anchor = window.document.createElement('a');
+
+  anchor.href = window.URL.createObjectURL(data);
+  anchor.download = fileNameIcs;
+  document.body.appendChild(anchor);
+  anchor.click();
+  document.body.removeChild(anchor);
+  window.URL.revokeObjectURL(anchor.href);
+}
+
+function DayItem ({ className, item: { date, info, type }, showAllEvents }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
 
   const [description, setDescription] = useState<string>('');
 
   const _exportCal = useCallback(
-    () => {
-      const startDate = dateCalendarFormat(date);
-      // For now just add 1 hour for each event
-      const endDate = dateCalendarFormat(new Date(new Date(date).setHours(new Date(date).getHours() + 1)));
-      const calData =
-        'BEGIN:VCALENDAR\n' +
-        'CALSCALE:GREGORIAN\n' +
-        'METHOD:PUBLISH\n' +
-        'PRODID:-//Test Cal//EN\n' +
-        'VERSION:2.0\n' +
-        'BEGIN:VEVENT\n' +
-        'UID:test-1\n' +
-        'DTSTART;VALUE=DATE:' + startDate + '\n' +
-        'DTEND;VALUE=DATE:' + endDate + '\n' +
-        'SUMMARY:' + description + '\n' +
-        'DESCRIPTION:' + description + '\n' +
-        'END:VEVENT\n' +
-        'END:VCALENDAR';
-      const fileNameIcs = encodeURI(description) + '.ics';
-      const data = new File([calData], fileNameIcs, { type: 'text/plain' });
-      const anchor = window.document.createElement('a');
-
-      anchor.href = window.URL.createObjectURL(data);
-      anchor.download = fileNameIcs;
-      document.body.appendChild(anchor);
-      anchor.click();
-      document.body.removeChild(anchor);
-      window.URL.revokeObjectURL(anchor.href);
-    },
+    () => exportCalendar(date, description),
     [description, date]
   );
 
@@ -153,11 +159,14 @@ function DayItem ({ className, item: { date, info, type } }: Props): React.React
 
   return (
     <div className={className}>
+      {showAllEvents &&
+        <div className='itemDate'>{date.toLocaleString(undefined, options)}</div>
+      }
       <div className='itemTime'>{date.toLocaleTimeString().split(':').slice(0, 2).join(':')}</div>
       {desc}
       {date && (
         <Button
-          className='exportCal'
+          className={showAllEvents ? 'exportCal exportCal-allEvents' : 'exportCal'}
           icon='calendar-plus'
           onClick={_exportCal}
         />
@@ -180,11 +189,21 @@ export default React.memo(styled(DayItem)`
     padding: 0;
     position: absolute;
     right: 1.5rem;
-    
+
     .ui--Icon {
       width: 0.7rem;
       height: 0.7rem;
     }
+  }
+
+  .exportCal-allEvents {
+    right: 3.5rem;
+  }
+
+  .itemDate {
+    padding: 0 0.375rem;
+    border-radius: 0.25rem;
+    width: 17rem;
   }
 
   .itemTime {

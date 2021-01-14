@@ -9,7 +9,7 @@
  */
 // @ts-ignore
 /** @type {{ ipfsDesktop: IPFSDesktop }} */
-const root = (window)
+const root = (window);
 
 /**
  * @typedef {import('redux-bundler').Selectors<typeof baseSelectors>} BaseSelectors
@@ -24,7 +24,7 @@ const baseSelectors = {
    * @returns {string[]}
    */
   selectDesktopCountlyActions: () => ([])
-}
+};
 
 const desktopSelectors = {
   ...baseSelectors,
@@ -33,32 +33,32 @@ const desktopSelectors = {
   selectDesktopCountlyDeviceId: () => root.ipfsDesktop.countlyDeviceId,
 
   selectDesktopCountlyActions: () => root.ipfsDesktop.countlyActions
-}
+};
 
 /**
  * @typedef {import('redux-bundler').Selectors<typeof desktopSelectors>} Selectors
  */
 const selectors = root.ipfsDesktop
   ? desktopSelectors
-  : baseSelectors
+  : baseSelectors;
 
 const desktopActions = {
   /**
    * @param {string[]} consent
    * @returns {() => void}
    */
-  doDesktopAddConsent: consent => () => {
-    return root.ipfsDesktop.addConsent(consent)
+  doDesktopAddConsent: (consent) => () => {
+    return root.ipfsDesktop.addConsent(consent);
   },
 
   /**
    * @param {string[]} consent
    * @returns {() => void}
    */
-  doDesktopRemoveConsent: consent => () => {
-    return root.ipfsDesktop.removeConsent(consent)
+  doDesktopRemoveConsent: (consent) => () => {
+    return root.ipfsDesktop.removeConsent(consent);
   }
-}
+};
 
 /**
  * @typedef {never} Message
@@ -72,7 +72,7 @@ const desktopActions = {
 
 const actions = root.ipfsDesktop
   ? desktopActions
-  : {}
+  : {};
 
 const bundle = {
   name: 'ipfsDesktop',
@@ -83,6 +83,6 @@ const bundle = {
   reducer: (state = {}) => state,
   ...selectors,
   ...actions
-}
+};
 
-export default bundle
+export default bundle;

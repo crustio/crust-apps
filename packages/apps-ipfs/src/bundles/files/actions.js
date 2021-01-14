@@ -1,15 +1,15 @@
 /* eslint-disable require-yield */
 
-import { join, dirname, basename } from 'path';
-import { getDownloadLink, getShareableLink } from '../../lib/files';
-import countDirs from '../../lib/count-dirs';
-import all from 'it-all';
-import map from 'it-map';
-import last from 'it-last';
 import CID from 'cids';
+import all from 'it-all';
+import last from 'it-last';
+import map from 'it-map';
+import { basename, dirname, join } from 'path';
 
-import { spawn, perform, send, ensureMFS, Channel, sortFiles, infoFromPath, getRealPath, addPrefix } from './utils';
-import { IGNORED_FILES, ACTIONS } from './consts';
+import countDirs from '../../lib/count-dirs';
+import { getDownloadLink, getShareableLink } from '../../lib/files';
+import { ACTIONS, IGNORED_FILES } from './consts';
+import { addPrefix, Channel, ensureMFS, getRealPath, infoFromPath, perform, send, sortFiles, spawn } from './utils';
 
 /**
  * @typedef {import('ipfs').IPFSService} IPFSService

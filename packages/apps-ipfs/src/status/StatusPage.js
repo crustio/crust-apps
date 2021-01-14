@@ -1,32 +1,31 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { withTranslation, Trans } from 'react-i18next';
-import { connect } from 'redux-bundler-react';
+import { Trans, withTranslation } from 'react-i18next';
 import ReactJoyride from 'react-joyride';
-import StatusConnected from './StatusConnected';
-import BandwidthStatsDisabled from './BandwidthStatsDisabled';
+import { connect } from 'redux-bundler-react';
+
+import AskToEnable from '../components/ask/AskToEnable';
+import Box from '../components/box/Box';
 import IsNotConnected from '../components/is-not-connected/IsNotConnected';
+import withTour from '../components/tour/withTour';
+import { getJoyrideLocales } from '../helpers/i8n';
+import { statusTour } from '../lib/tours';
+import BandwidthStatsDisabled from './BandwidthStatsDisabled';
+import NetworkTraffic from './NetworkTraffic';
+import NodeBandwidthChart from './NodeBandwidthChart';
 import NodeInfo from './NodeInfo';
 import NodeInfoAdvanced from './NodeInfoAdvanced';
-import NodeBandwidthChart from './NodeBandwidthChart';
-import NetworkTraffic from './NetworkTraffic';
-import Box from '../components/box/Box';
-import AskToEnable from '../components/ask/AskToEnable';
-import { statusTour } from '../lib/tours';
-import { getJoyrideLocales } from '../helpers/i8n';
-import withTour from '../components/tour/withTour';
+import StatusConnected from './StatusConnected';
 
-const StatusPage = ({
-  analyticsAskToEnable,
+const StatusPage = ({ analyticsAskToEnable,
   doDisableAnalytics,
   doEnableAnalytics,
   handleJoyrideCallback,
   ipfsConnected,
   nodeBandwidthEnabled,
   t,
-  toursEnabled
-}) => {
+  toursEnabled }) => {
   return (
     <div className='center'
       data-id='StatusPage'>
@@ -34,19 +33,21 @@ const StatusPage = ({
         style={{ minHeight: 0 }}>
         <div className='flex'>
           <div className='flex-auto'>
-            { ipfsConnected ? (
-              <div>
-                <StatusConnected />
-                <NodeInfo />
-                <div className='pt2'>
-                  <NodeInfoAdvanced />
+            { ipfsConnected
+              ? (
+                <div>
+                  <StatusConnected />
+                  <NodeInfo />
+                  <div className='pt2'>
+                    <NodeInfoAdvanced />
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <div>
-                <IsNotConnected />
-              </div>
-            )}
+              )
+              : (
+                <div>
+                  <IsNotConnected />
+                </div>
+              )}
           </div>
         </div>
       </Box>

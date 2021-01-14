@@ -1,35 +1,39 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo, useState, useCallback } from 'react';
+import './FileImportStatus.css';
+
 import classNames from 'classnames';
 import filesize from 'filesize';
 import PropTypes from 'prop-types';
-import { connect } from 'redux-bundler-react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { withTranslation } from 'react-i18next';
+import { connect } from 'redux-bundler-react';
+
+import GlyphCancel from '../../icons/GlyphCancel';
 // Icons
 import DocumentIcon from '../../icons/GlyphDocGeneric';
 import FolderIcon from '../../icons/GlyphFolder';
-import './FileImportStatus.css';
 import GlyphSmallArrows from '../../icons/GlyphSmallArrow';
-import GlyphTick from '../../icons/GlyphTick';
-import GlyphCancel from '../../icons/GlyphCancel';
 import GlyphSmallCancel from '../../icons/GlyphSmallCancel';
+import GlyphTick from '../../icons/GlyphTick';
 
 const Import = (job, t) => {
   console.log(job);
 
-  return job.message ? [...groupByPath(job.message.entries).values()].map((item) => (
-    <li className='flex w-100 bb b--light-gray items-center f6 charcoal'
-      key={item.path}>
-      {viewIcon(item)}
-      <span className='fileImportStatusName truncate'>{item.path}</span>
-      <span className='gray mh2'> |
-        { item.entries && (<span> { t('filesImportStatus.count', { count: item.entries.length }) } | </span>) }
-        <span className='ml2'>{ filesize(item.size) }</span>
-      </span>
-      {viewImportStatus(job)}
-    </li>
-  )) : 'noFile';
+  return job.message
+    ? [...groupByPath(job.message.entries).values()].map((item) => (
+      <li className='flex w-100 bb b--light-gray items-center f6 charcoal'
+        key={item.path}>
+        {viewIcon(item)}
+        <span className='fileImportStatusName truncate'>{item.path}</span>
+        <span className='gray mh2'> |
+          { item.entries && (<span> { t('filesImportStatus.count', { count: item.entries.length }) } | </span>) }
+          <span className='ml2'>{ filesize(item.size) }</span>
+        </span>
+        {viewImportStatus(job)}
+      </li>
+    ))
+    : 'noFile';
 };
 
 const viewIcon = (entry) => entry.type === 'directory'

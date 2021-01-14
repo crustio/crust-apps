@@ -1,6 +1,5 @@
-// Copyright 2017-2020 @polkadot/react-query authors & contributors
+// Copyright 2017-2021 @polkadot/react-query authors & contributors
 // SPDX-License-Identifier: Apache-2.0
-/* eslint-disable */
 
 import type { ThemeProps } from '@polkadot/react-components/types';
 import type { Compact } from '@polkadot/types';
@@ -8,6 +7,7 @@ import type { Compact } from '@polkadot/types';
 import BN from 'bn.js';
 import React from 'react';
 import styled from 'styled-components';
+
 import { formatBalance } from '@polkadot/util';
 
 import { useTranslation } from './translate';
@@ -50,12 +50,12 @@ function FormatCandy ({ children, className = '', isShort, label, labelPost, val
   return (
     <div className={`ui--FormatBalance ${className}`}>
       {label ? <>{label}&nbsp;</> : ''}<span className='ui--FormatBalance-value'>{
-      value
-        ? value === 'all'
-        ? t<string>('everything{{labelPost}}', { replace: { labelPost } })
-        : format(value, withCurrency, withSi, isShort, labelPost)
-        : `-${labelPost || ''}`
-    }</span>{children}
+        value
+          ? value === 'all'
+            ? t<string>('everything{{labelPost}}', { replace: { labelPost } })
+            : format(value, withCurrency, withSi, isShort, labelPost)
+          : `-${labelPost || ''}`
+      }</span>{children}
     </div>
   );
 }

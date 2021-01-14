@@ -1,13 +1,14 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
-import { connect } from 'redux-bundler-react';
-import { withTranslation, Trans } from 'react-i18next';
 import classNames from 'classnames';
+import React, { useState } from 'react';
+import { Trans, withTranslation } from 'react-i18next';
+import { connect } from 'redux-bundler-react';
+
+import GlyphTip from '../../icons/GlyphTip';
 import ApiAddressForm from '../api-address-form/ApiAddressForm';
 import Box from '../box/Box';
 import Shell from '../shell/Shell.js';
-import GlyphTip from '../../icons/GlyphTip';
 
 const TABS = {
   UNIX: 'unix',

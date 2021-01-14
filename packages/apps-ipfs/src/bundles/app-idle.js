@@ -1,5 +1,5 @@
 // Extracted from https://github.com/HenrikJoreteg/redux-bundler/blob/c1b8ce7629ee6c389f4155b3254e530bd09c868e/src/bundles/create-reactor-bundle.js
-import { debounce, ric, raf } from 'redux-bundler';
+import { debounce, raf, ric } from 'redux-bundler';
 
 const defaults = {
   idleTimeout: 2000,
