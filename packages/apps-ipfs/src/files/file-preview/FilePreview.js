@@ -1,18 +1,20 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { connect } from 'redux-bundler-react';
-import isBinary from 'is-binary';
-import { Trans, withTranslation } from 'react-i18next';
-import typeFromExt from '../type-from-ext';
-import ComponentLoader from '../../loader/ComponentLoader.js';
 import './FilePreview.css';
+
 import CID from 'cids';
+import classNames from 'classnames';
+import isBinary from 'is-binary';
+import PropTypes from 'prop-types';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDrag } from 'react-dnd';
+import { Trans, withTranslation } from 'react-i18next';
+import { connect } from 'redux-bundler-react';
 import fromUint8ArrayToString from 'uint8arrays/to-string';
+
 import Button from '../../components/button/Button';
+import ComponentLoader from '../../loader/ComponentLoader.js';
+import typeFromExt from '../type-from-ext';
 
 const Preview = (props) => {
   const { cid, name, path, size } = props;

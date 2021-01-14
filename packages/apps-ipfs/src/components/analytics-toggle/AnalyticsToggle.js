@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Trans } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
+
 import Checkbox from '../checkbox/Checkbox';
 import Details from '../details/Details';
 

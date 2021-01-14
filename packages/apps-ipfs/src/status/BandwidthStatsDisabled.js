@@ -1,9 +1,10 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { withTranslation, Trans } from 'react-i18next';
-import Shell from '../components/shell/Shell';
+import { Trans, withTranslation } from 'react-i18next';
+
 import Box from '../components/box/Box';
+import Shell from '../components/shell/Shell';
 
 const StatusNotConnected = ({ t }) => {
   return (

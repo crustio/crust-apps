@@ -1,9 +1,10 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import './Popover.css';
+
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const Popover = ({ align, bottom, children, handleMouseEnter, handleMouseLeave, left, right, show, top }) => {
   return (

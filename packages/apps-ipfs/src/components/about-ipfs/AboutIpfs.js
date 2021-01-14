@@ -1,7 +1,8 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { withTranslation, Trans } from 'react-i18next';
+import { Trans, withTranslation } from 'react-i18next';
+
 import Box from '../box/Box';
 
 export const AboutIpfs = ({ t }) => {

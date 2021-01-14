@@ -1,9 +1,9 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import { sortFiles } from './utils';
-import { DEFAULT_STATE, ACTIONS, SORTING } from './consts';
-import selectors from './selectors';
 import actions from './actions';
+import { ACTIONS, DEFAULT_STATE, SORTING } from './consts';
+import selectors from './selectors';
+import { sortFiles } from './utils';
 
 export { ACTIONS };
 
@@ -52,6 +52,7 @@ export default () => {
             pins
           };
         }
+
         case ACTIONS.CONTRACT_LIST: {
           const { task, type } = action;
 
@@ -64,7 +65,6 @@ export default () => {
             contracts
           };
         }
-
 
         case ACTIONS.FETCH: {
           const { task, type } = action;

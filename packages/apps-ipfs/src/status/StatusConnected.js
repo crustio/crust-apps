@@ -1,9 +1,9 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import { withTranslation, Trans } from 'react-i18next';
-import { connect } from 'redux-bundler-react';
 import filesize from 'filesize';
+import React from 'react';
+import { Trans, withTranslation } from 'react-i18next';
+import { connect } from 'redux-bundler-react';
 
 export const StatusConnected = ({ peersCount, repoSize, t }) => {
   const humanRepoSize = filesize(repoSize || 0, { round: 1 });

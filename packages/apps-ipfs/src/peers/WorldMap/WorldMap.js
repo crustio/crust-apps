@@ -1,21 +1,20 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useState, useMemo, useEffect } from 'react';
-import ReactFauxDOM from 'react-faux-dom';
-import { connect } from 'redux-bundler-react';
-import { withTranslation } from 'react-i18next';
-import * as d3 from 'd3';
-import CountryFlag from 'react-country-flag';
-import { debounce } from 'redux-bundler';
-
-import staticMapSrc from './StaticMap.svg';
-
-import Address from '../../components/address/Address';
-import Popover from '../../components/popover/Popover';
-
 // Styles
 import './WorldMap.css';
+
+import * as d3 from 'd3';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import CountryFlag from 'react-country-flag';
+import ReactFauxDOM from 'react-faux-dom';
+import { withTranslation } from 'react-i18next';
+import { debounce } from 'redux-bundler';
+import { connect } from 'redux-bundler-react';
+
+import Address from '../../components/address/Address';
 import Cid from '../../components/cid/Cid';
+import Popover from '../../components/popover/Popover';
+import staticMapSrc from './StaticMap.svg';
 
 const calculateWidth = (windowWidth) => {
   // the d3 generated svg width includes a lot of ocean, that we crop for now, as it looks weird.

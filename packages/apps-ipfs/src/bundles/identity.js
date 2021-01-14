@@ -1,4 +1,7 @@
-import { createAsyncResourceBundle, createSelector } from 'redux-bundler'
+// [object Object]
+// SPDX-License-Identifier: Apache-2.0
+
+import { createAsyncResourceBundle, createSelector } from 'redux-bundler';
 
 const bundle = createAsyncResourceBundle({
   name: 'identity',
@@ -7,9 +10,9 @@ const bundle = createAsyncResourceBundle({
   staleAfter: Infinity,
   persist: false,
   checkIfOnline: false
-})
+});
 
-bundle.selectIdentityLastSuccess = state => state.identity.lastSuccess
+bundle.selectIdentityLastSuccess = (state) => state.identity.lastSuccess;
 
 // Update identity after we (re)connect with ipfs
 bundle.reactIdentityFetch = createSelector(
@@ -20,10 +23,10 @@ bundle.reactIdentityFetch = createSelector(
   (connected, isLoading, idLastSuccess, connLastError) => {
     if (connected && !isLoading) {
       if (!idLastSuccess || connLastError > idLastSuccess) {
-        return { actionCreator: 'doFetchIdentity' }
+        return { actionCreator: 'doFetchIdentity' };
       }
     }
   }
-)
+);
 
-export default bundle
+export default bundle;

@@ -1,10 +1,10 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import AceEditor from 'react-ace';
-
 // import 'brace/mode/json';
 import './theme/ipfs_dark';
+
+import React from 'react';
+import AceEditor from 'react-ace';
 
 class JsonEditor extends React.Component {
   render () {

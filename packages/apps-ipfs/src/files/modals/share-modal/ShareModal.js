@@ -1,12 +1,13 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
 import PropTypes from 'prop-types';
-import ShareIcon from '../../../icons/StrokeShare';
-import Button from '../../../components/button/Button';
-import { withTranslation } from 'react-i18next';
+import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { withTranslation } from 'react-i18next';
+
+import Button from '../../../components/button/Button';
 import { Modal, ModalActions, ModalBody } from '../../../components/modal/Modal';
+import ShareIcon from '../../../icons/StrokeShare';
 
 const ShareModal = ({ className, link, onLeave, t, tReady, ...props }) => (
   <Modal {...props}

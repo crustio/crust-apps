@@ -1,11 +1,12 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { withTranslation } from 'react-i18next';
-import TrashIcon from '../../../icons/StrokeTrash';
+
 import Button from '../../../components/button/Button';
 import { Modal, ModalActions, ModalBody } from '../../../components/modal/Modal';
+import TrashIcon from '../../../icons/StrokeTrash';
 
 const DeleteModal = ({ className, files, folders, onCancel, onDelete, t, tReady, ...props }) => {
   let context = 'File';
@@ -49,7 +50,7 @@ DeleteModal.propTypes = {
   folders: PropTypes.number,
   t: PropTypes.func.isRequired,
   tReady: PropTypes.bool.isRequired
-}
+};
 
 DeleteModal.defaultProps = {
   className: '',

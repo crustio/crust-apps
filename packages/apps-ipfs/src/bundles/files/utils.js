@@ -1,8 +1,8 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import { sortByName, sortBySize } from '../../lib/sort';
-import { IS_MAC, SORTING } from './consts';
 import * as Task from '../task';
+import { IS_MAC, SORTING } from './consts';
 
 /**
  * @typedef {import('ipfs').IPFSService} IPFSService

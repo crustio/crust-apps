@@ -1,13 +1,15 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import './FilesExploreForm.css';
+
 import isIPFS from 'is-ipfs';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { withTranslation } from 'react-i18next';
+
+import Button from '../../components/button/Button';
 import StrokeFolder from '../../icons/StrokeFolder';
 import StrokeIpld from '../../icons/StrokeIpld';
-import Button from '../../components/button/Button';
-import './FilesExploreForm.css';
 
 class FilesExploreForm extends React.Component {
   constructor (props) {

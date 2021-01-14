@@ -1,14 +1,14 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import { createAsyncResourceBundle, createSelector } from 'redux-bundler';
-import { getConfiguredCache } from 'money-clip';
-import geoip from 'ipfs-geoip';
-import PQueue from 'p-queue';
 import HLRU from 'hashlru';
-import Multiaddr from 'multiaddr';
-import ms from 'milliseconds';
 import ip from 'ip';
+import geoip from 'ipfs-geoip';
+import ms from 'milliseconds';
+import { getConfiguredCache } from 'money-clip';
+import Multiaddr from 'multiaddr';
 import memoize from 'p-memoize';
+import PQueue from 'p-queue';
+import { createAsyncResourceBundle, createSelector } from 'redux-bundler';
 
 // After this time interval, we re-check the locations for each peer
 // once again through PeerLocationResolver.

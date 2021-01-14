@@ -1,7 +1,8 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef } from 'react';
 import { Dropdown as Drop, DropdownMenu as Menu } from '@tableflip/react-dropdown';
+import React, { forwardRef } from 'react';
+
 import StrokeCode from '../../icons/StrokeCode';
 
 export const Option = ({ children, className = '', isCliTutorModeEnabled, onCliTutorMode, onClick, ...props }) => (

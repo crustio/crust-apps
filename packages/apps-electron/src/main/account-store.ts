@@ -5,7 +5,6 @@ import type { KeyringJson } from '@polkadot/ui-keyring/types';
 
 import { app } from 'electron';
 import path from 'path';
-import { FileStore } from '@polkadot/ui-keyring/stores';
 
 import { FileStore } from '@polkadot/ui-keyring/stores';
 

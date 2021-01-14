@@ -1,13 +1,15 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import { withTranslation } from 'react-i18next';
-// Components
-import GlyphDots from '../../icons/GlyphDots';
-import Checkbox from '../../components/checkbox/Checkbox';
-import FileIcon from '../../files/file-icon/FileIcon';
 // Styles
 import './LoadingAnimation.css';
+
+import React from 'react';
+import { withTranslation } from 'react-i18next';
+
+import Checkbox from '../../components/checkbox/Checkbox';
+import FileIcon from '../../files/file-icon/FileIcon';
+// Components
+import GlyphDots from '../../icons/GlyphDots';
 
 const FakeHeader = ({ t }) => (
   <header className='gray pv2 flex items-center flex-none'>

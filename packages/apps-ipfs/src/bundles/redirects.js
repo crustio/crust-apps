@@ -1,6 +1,7 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import { createSelector } from 'redux-bundler';
+
 import { getRealPath } from '@polkadot/apps-ipfs/bundles/files/utils';
 
 export default {

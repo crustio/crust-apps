@@ -1,9 +1,11 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import PropTypes from 'prop-types';
-import Tick from '../../icons/GlyphSmallTick';
 import './Checkbox.css';
+
+import PropTypes from 'prop-types';
+import React from 'react';
+
+import Tick from '../../icons/GlyphSmallTick';
 
 const Checkbox = ({ checked, className, disabled, label, onChange, ...props }) => {
   className = `Checkbox dib sans-serif ${className}`;

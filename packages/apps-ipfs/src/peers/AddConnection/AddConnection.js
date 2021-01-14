@@ -1,12 +1,15 @@
-import React from 'react'
-import { withTranslation } from 'react-i18next'
-import { connect } from 'redux-bundler-react'
-import isIPFS from 'is-ipfs'
+// [object Object]
+// SPDX-License-Identifier: Apache-2.0
 
-import Icon from '../../icons/StrokeDecentralization'
-import Button from '../../components/button/Button'
-import Overlay from '../../components/overlay/Overlay'
-import TextInputModal from '../../components/text-input-modal/TextInputModal'
+import isIPFS from 'is-ipfs';
+import React from 'react';
+import { withTranslation } from 'react-i18next';
+import { connect } from 'redux-bundler-react';
+
+import Button from '../../components/button/Button';
+import Overlay from '../../components/overlay/Overlay';
+import TextInputModal from '../../components/text-input-modal/TextInputModal';
+import Icon from '../../icons/StrokeDecentralization';
 
 class AddConnection extends React.Component {
   state = {
@@ -18,28 +21,29 @@ class AddConnection extends React.Component {
   toggleModal = () => {
     this.setState({
       open: !this.state.open
-    })
+    });
   }
 
   addConnection = async (maddr) => {
-    this.setState({ loading: true })
-    const { type } = await this.props.doConnectSwarm(maddr)
-    this.setState({ loading: false, hasErrored: true })
+    this.setState({ loading: true });
+    const { type } = await this.props.doConnectSwarm(maddr);
 
-    if (type === 'SWARM_CONNECT_FAILED') return
+    this.setState({ loading: false, hasErrored: true });
 
-    this.toggleModal()
+    if (type === 'SWARM_CONNECT_FAILED') return;
+
+    this.toggleModal();
   }
 
   onInputChange = () => {
-    if (!this.state.hasErrored) return
+    if (!this.state.hasErrored) return;
 
-    this.setState({ hasErrored: false })
+    this.setState({ hasErrored: false });
   }
 
   getDescription = () => {
-    const { t } = this.props
-    const codeClass = 'w-90 mb1 pa1 bg-snow f7 charcoal-muted truncate'
+    const { t } = this.props;
+    const codeClass = 'w-90 mb1 pa1 bg-snow f7 charcoal-muted truncate';
 
     return (
       <div className='mb3 flex flex-column items-center'>
@@ -47,36 +51,40 @@ class AddConnection extends React.Component {
         <span className='w-80 mv2 f7 charcoal-muted'>{t('app:terms.example')}</span>
         <code className={codeClass}>/ip4/76.176.168.65/tcp/4001/p2p/QmbBHw1Xx9pUpAbrVZUKTPL5Rsph5Q9GQhRvcWVBPFgGtC</code>
       </div>
-    )
+    );
   }
 
   render () {
-    const { open, loading, hasErrored } = this.state
-    const { t } = this.props
+    const { hasErrored, loading, open } = this.state;
+    const { t } = this.props;
 
     return (
       <div>
-        <Button onClick={this.toggleModal} className='f6 ph3 tc' bg='bg-navy' color='white'>
+        <Button bg='bg-navy'
+          className='f6 ph3 tc'
+          color='white'
+          onClick={this.toggleModal}>
           <span className={'fill-white'}>+</span> {t('addConnection')}
         </Button>
 
-        <Overlay show={open} onLeave={this.toggleModal}>
+        <Overlay onLeave={this.toggleModal}
+          show={open}>
           <TextInputModal
-            validate={isIPFS.peerMultiaddr}
-            onSubmit={this.addConnection}
+            description={this.getDescription()}
+            error={hasErrored}
+            icon={Icon}
+            loading={loading}
             onCancel={this.toggleModal}
             onInputChange={this.onInputChange}
+            onSubmit={this.addConnection}
             submitText={t('app:actions.add')}
-            icon={Icon}
             title={t('addConnection')}
-            description={this.getDescription()}
-            loading={loading}
-            error={hasErrored}
+            validate={isIPFS.peerMultiaddr}
           />
         </Overlay>
       </div>
-    )
+    );
   }
 }
 
-export default connect('doConnectSwarm', withTranslation('peers')(AddConnection))
+export default connect('doConnectSwarm', withTranslation('peers')(AddConnection));

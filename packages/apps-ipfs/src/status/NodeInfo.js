@@ -3,8 +3,9 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
-import VersionLink from '../components/version-link/VersionLink';
+
 import { Definition, DefinitionList } from '../components/definition/Definition.js';
+import VersionLink from '../components/version-link/VersionLink';
 
 class NodeInfo extends React.Component {
   getField (obj, field, fn) {

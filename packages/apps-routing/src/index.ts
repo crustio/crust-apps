@@ -14,6 +14,7 @@ import council from './council';
 import democracy from './democracy';
 import explorer from './explorer';
 import extrinsics from './extrinsics';
+import ipfsFiles from './ipfsFiles';
 import js from './js';
 import parachains from './parachains';
 import poll from './poll';
@@ -27,7 +28,6 @@ import sudo from './sudo';
 import techcomm from './techcomm';
 import transfer from './transfer';
 import treasury from './treasury';
-import ipfsFiles from './ipfsFiles';
 
 export default function create (t: TFunction): Routes {
   return [

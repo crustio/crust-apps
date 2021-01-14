@@ -1,7 +1,7 @@
 // @ts-check
 
-import * as Enum from './enum'
-import { perform } from './task'
+import * as Enum from './enum';
+import { perform } from './task';
 
 /**
  * @typedef {import('./task').Perform<'CONFIG_SAVE', Error, void, void>} ConfigSave
@@ -26,16 +26,16 @@ const selectors = {
   /**
    * @param {State} state
    */
-  selectConfigIsSaving: state => state.config_save.isSaving,
+  selectConfigIsSaving: (state) => state.config_save.isSaving,
   /**
    * @param {State} state
    */
-  selectConfigSaveLastSuccess: state => state.config_save.lastSuccess,
+  selectConfigSaveLastSuccess: (state) => state.config_save.lastSuccess,
   /**
    * @param {State} state
    */
-  selectConfigSaveLastError: state => state.config_save.lastError
-}
+  selectConfigSaveLastError: (state) => state.config_save.lastError
+};
 
 /**
  * @typedef {import('redux-bundler').Actions<typeof actions>} Actions
@@ -51,9 +51,9 @@ const actions = {
    */
   doSaveConfig: (configStr) => async ({ store }) => {
     if (store.selectConfigIsSaving()) {
-      console.log('doSaveConfig skipped, config save already in progress')
+      console.log('doSaveConfig skipped, config save already in progress');
     } else {
-      await store.doPerformSaveConfig(configStr)
+      await store.doPerformSaveConfig(configStr);
     }
   },
 
@@ -63,24 +63,25 @@ const actions = {
    */
   doPerformSaveConfig: (configStr) => perform('CONFIG_SAVE', async (context) => {
     const result = await attempt(async () => {
-      const obj = JSON.parse(configStr)
-      const ipfs = context.getIpfs()
+      const obj = JSON.parse(configStr);
+      const ipfs = context.getIpfs();
+
       if (ipfs == null) {
-        throw Error('IPFS node is not found')
+        throw Error('IPFS node is not found');
       }
 
-      await ipfs.config.replace(obj)
-    })
+      await ipfs.config.replace(obj);
+    });
 
     if (!result.ok) {
-      throw result.error
+      throw result.error;
     }
 
     // @ts-ignore - Nor TS nor @gozala can tell where below function is defined
     // but it does appear to exist at runtime 🤷‍♂️
-    await context.store.doMarkConfigAsOutdated()
+    await context.store.doMarkConfigAsOutdated();
   })
-}
+};
 
 /**
  * @template T
@@ -89,14 +90,15 @@ const actions = {
  */
 const attempt = async (fn) => {
   try {
-    const value = await fn()
-    return { ok: true, value }
-  } catch (error) {
-    return { ok: false, error }
-  }
-}
+    const value = await fn();
 
-export const ACTIONS = Enum.from(['CONFIG_SAVE'])
+    return { ok: true, value };
+  } catch (error) {
+    return { ok: false, error };
+  }
+};
+
+export const ACTIONS = Enum.from(['CONFIG_SAVE']);
 
 const bundle = {
   name: 'config_save',
@@ -110,34 +112,40 @@ const bundle = {
   reducer: (state = { isSaving: false }, action) => {
     switch (action.type) {
       case ACTIONS.CONFIG_SAVE: {
-        const { task } = action
+        const { task } = action;
+
         switch (task.status) {
           case 'Init': {
-            return { ...state, isSaving: true }
+            return { ...state, isSaving: true };
           }
+
           case 'Exit': {
-            const { result } = task
+            const { result } = task;
+
             if (result.ok) {
-              return { ...state, isSaving: false, lastSuccess: Date.now() }
+              return { ...state, isSaving: false, lastSuccess: Date.now() };
             } else {
-              const { error } = result
-              const errorMessage = (error && error.message) || String(error)
-              return { ...state, isSaving: false, lastError: Date.now(), errorMessage }
+              const { error } = result;
+              const errorMessage = (error && error.message) || String(error);
+
+              return { ...state, isSaving: false, lastError: Date.now(), errorMessage };
             }
           }
+
           default: {
-            return state
+            return state;
           }
         }
       }
+
       default: {
-        return state
+        return state;
       }
     }
   },
 
   ...selectors,
   ...actions
-}
+};
 
-export default bundle
+export default bundle;

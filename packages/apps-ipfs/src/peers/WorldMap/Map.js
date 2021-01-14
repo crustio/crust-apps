@@ -1,8 +1,9 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import * as d3 from 'd3';
-import * as topojson from 'topojson';
 import ReactFauxDOM from 'react-faux-dom';
+import * as topojson from 'topojson';
+
 import worldData from './world.json';
 
 // Earth! It's complicated, so try not to re-render so much

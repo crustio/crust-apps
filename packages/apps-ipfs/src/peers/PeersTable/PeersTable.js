@@ -1,16 +1,17 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import PropTypes from 'prop-types';
+import './PeersTable.css';
+
 import classNames from 'classnames';
-import { connect } from 'redux-bundler-react';
-import { withTranslation, Trans } from 'react-i18next';
-import { Table, Column, AutoSizer, SortDirection } from 'react-virtualized';
+import PropTypes from 'prop-types';
+import React from 'react';
 import CountryFlag from 'react-country-flag';
+import { Trans, withTranslation } from 'react-i18next';
+import { AutoSizer, Column, SortDirection, Table } from 'react-virtualized';
+import { connect } from 'redux-bundler-react';
+
 import Cid from '../../components/cid/Cid';
 import { sortByProperty } from '../../lib/sort';
-
-import './PeersTable.css';
 
 export class PeersTable extends React.Component {
   static propTypes = {
@@ -37,8 +38,12 @@ export class PeersTable extends React.Component {
 
     return (
       <span className='f4 pr2'>
-        {isPrivate ? '🤝' : flagCode ? <CountryFlag code={flagCode}
-          svg={isWindows} /> : '🌐'}
+        {isPrivate
+          ? '🤝'
+          : flagCode
+            ? <CountryFlag code={flagCode}
+              svg={isWindows} />
+            : '🌐'}
       </span>
     );
   }

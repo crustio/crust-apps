@@ -1,7 +1,7 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
 import Multiaddr from 'multiaddr';
+import React from 'react';
 
 const Address = ({ value }) => {
   if (!value) return null;

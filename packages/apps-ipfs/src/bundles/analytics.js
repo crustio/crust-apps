@@ -1,14 +1,15 @@
 // @ts-check
 
 // @ts-ignore
-import root from 'window-or-global';
 import changeCase from 'change-case';
-import * as Enum from './enum';
 import { createSelector } from 'redux-bundler';
+import root from 'window-or-global';
+
 import { ACTIONS as FILES } from './files/consts';
 import { ACTIONS as CONIFG } from './config-save';
-import { ACTIONS as INIT } from './ipfs-provider';
+import * as Enum from './enum';
 import { ACTIONS as EXP } from './experiments';
+import { ACTIONS as INIT } from './ipfs-provider';
 
 /**
  * @typedef {import('./ipfs-provider').Init} Init
@@ -248,14 +249,12 @@ const actions = {
   }
 };
 
-const createAnalyticsBundle = ({
-  countlyUrl = 'https://countly.ipfs.io',
+const createAnalyticsBundle = ({ countlyUrl = 'https://countly.ipfs.io',
   countlyAppKey = pickAppKey(),
   appVersion = process.env.REACT_APP_VERSION,
   // @ts-ignore - declared but never used
   appGitRevision = process.env.REACT_APP_GIT_REV,
-  debug = false
-}) => {
+  debug = false }) => {
   return {
     name: 'analytics',
 

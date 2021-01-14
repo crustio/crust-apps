@@ -1,16 +1,16 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import typeFromExt from '../type-from-ext';
 
-import Folder from '../../icons/GlyphFolder';
+import DocCalc from '../../icons/GlyphDocCalc';
 import Doc from '../../icons/GlyphDocGeneric';
 import DocMovie from '../../icons/GlyphDocMovie';
-import DocCalc from '../../icons/GlyphDocCalc';
 import DocMusic from '../../icons/GlyphDocMusic';
 import DocPicture from '../../icons/GlyphDocPicture';
 import DocText from '../../icons/GlyphDocText';
+import Folder from '../../icons/GlyphFolder';
 import Cube from '../../icons/StrokeCube';
+import typeFromExt from '../type-from-ext';
 
 const style = { width: 36 };
 
