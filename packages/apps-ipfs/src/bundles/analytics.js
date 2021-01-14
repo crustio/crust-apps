@@ -1,6 +1,6 @@
-// @ts-check
+// [object Object]
+// SPDX-License-Identifier: Apache-2.0
 
-// @ts-ignore
 import changeCase from 'change-case';
 import { createSelector } from 'redux-bundler';
 import root from 'window-or-global';
@@ -113,6 +113,8 @@ const consentGroups = {
  * @param {Store} store
  */
 function addConsent (consent, store) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   root.Countly.q.push(['add_consent', consent]);
 
   if (store.selectIsIpfsDesktop()) {
@@ -125,6 +127,8 @@ function addConsent (consent, store) {
  * @param {Store} store
  */
 function removeConsent (consent, store) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   root.Countly.q.push(['remove_consent', consent]);
 
   if (store.selectIsIpfsDesktop()) {
@@ -252,7 +256,6 @@ const actions = {
 const createAnalyticsBundle = ({ countlyUrl = 'https://countly.ipfs.io',
   countlyAppKey = pickAppKey(),
   appVersion = process.env.REACT_APP_VERSION,
-  // @ts-ignore - declared but never used
   appGitRevision = process.env.REACT_APP_GIT_REV,
   debug = false }) => {
   return {
