@@ -1,10 +1,11 @@
-// Copyright 2017-2020 @polkadot/app-democracy authors & contributors
+// Copyright 2017-2021 @polkadot/app-democracy authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { DeriveProposal } from '@polkadot/api-derive/types';
 
 import React from 'react';
 import styled from 'styled-components';
+
 import { AddressMini, Button, Expander, LinkExternal } from '@polkadot/react-components';
 import { FormatBalance } from '@polkadot/react-query';
 import { formatNumber } from '@polkadot/util';
@@ -54,6 +55,7 @@ function Proposal ({ className = '', value: { balance, image, imageHash, index, 
       <td className='button'>
         <Button.Group>
           <Seconding
+            deposit={balance}
             depositors={seconds || []}
             image={image}
             proposalId={index}

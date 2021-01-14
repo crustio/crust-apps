@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/react-signer authors & contributors
+// Copyright 2017-2021 @polkadot/react-signer authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { QueueTx } from '@polkadot/react-components/Status/types';
@@ -6,10 +6,11 @@ import type { QueueTx } from '@polkadot/react-components/Status/types';
 import BN from 'bn.js';
 import React from 'react';
 import styled from 'styled-components';
+
 import { Call, Expander, Modal } from '@polkadot/react-components';
 
-import { useTranslation } from './translate';
 import PaymentInfo from './PaymentInfo';
+import { useTranslation } from './translate';
 
 interface Props {
   className?: string;

@@ -1,13 +1,15 @@
-// Copyright 2017-2020 @polkadot/app-accounts authors & contributors
+// Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import BN from 'bn.js';
 import React, { useState } from 'react';
-import { InputAddressMulti, InputAddress, InputNumber, Modal, TxButton } from '@polkadot/react-components';
+
+import { InputAddress, InputAddressMulti, InputNumber, Modal, TxButton } from '@polkadot/react-components';
+import { useApi } from '@polkadot/react-hooks';
 import { sortAddresses } from '@polkadot/util-crypto';
 
-import { useTranslation } from '../translate';
 import useKnownAddresses from '../Accounts/useKnownAddresses';
+import { useTranslation } from '../translate';
 
 interface Props {
   address: string;
@@ -19,6 +21,7 @@ const MAX_HELPERS = 16;
 
 function RecoverSetup ({ address, className = '', onClose }: Props): React.ReactElement {
   const { t } = useTranslation();
+  const { api } = useApi();
   const availableHelpers = useKnownAddresses(address);
   const [delay, setDelay] = useState<BN | undefined>();
   const [helpers, setHelpers] = useState<string[]>([]);
@@ -93,7 +96,7 @@ function RecoverSetup ({ address, className = '', onClose }: Props): React.React
           label={t<string>('Make recoverable')}
           onStart={onClose}
           params={[sortAddresses(helpers), threshold, delay]}
-          tx='recovery.createRecovery'
+          tx={api.tx.recovery.createRecovery}
         />
       </Modal.Actions>
     </Modal>

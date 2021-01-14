@@ -1,7 +1,8 @@
-// Copyright 2017-2020 @polkadot/apps authors & contributors
+// Copyright 2017-2021 @polkadot/apps authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useState } from 'react';
+
 import { useApi, useCall } from '@polkadot/react-hooks';
 
 function WarmUp (): React.ReactElement {

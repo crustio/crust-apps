@@ -1,8 +1,9 @@
-// Copyright 2017-2020 @polkadot/app-society authors & contributors
+// Copyright 2017-2021 @polkadot/app-society authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useRef } from 'react';
 import { Route, Switch } from 'react-router';
+
 import { Tabs } from '@polkadot/react-components';
 
 import Overview from './Overview';

@@ -1,25 +1,26 @@
-// Copyright 2017-2020 @polkadot/app-claims authors & contributors
+// Copyright 2017-2021 @polkadot/app-claims authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { AppProps as Props, ThemeProps } from '@polkadot/react-components/types';
 import type { Option } from '@polkadot/types';
 import type { EcdsaSignature, EthereumAddress, StatementKind } from '@polkadot/types/interfaces';
 
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import { Trans } from 'react-i18next';
 import styled from 'styled-components';
-import CopyToClipboard from 'react-copy-to-clipboard';
-import { Button, Card, Columar, Column, Input, InputAddress, Tabs, Tooltip } from '@polkadot/react-components';
-import { useApi, useCall } from '@polkadot/react-hooks';
+
+import { Button, Card, Columar, Input, InputAddress, Tabs, Tooltip } from '@polkadot/react-components';
 import { TokenUnit } from '@polkadot/react-components/InputNumber';
+import { useApi, useCall } from '@polkadot/react-hooks';
 import { u8aToHex, u8aToString } from '@polkadot/util';
 import { decodeAddress } from '@polkadot/util-crypto';
 
-import { useTranslation } from './translate';
-import { recoverFromJSON, getStatement } from './util';
 import AttestDisplay from './Attest';
 import ClaimDisplay from './Claim';
 import Statement from './Statement';
+import { useTranslation } from './translate';
+import { getStatement, recoverFromJSON } from './util';
 import Warning from './Warning';
 
 export { default as useCounter } from './useCounter';
@@ -197,7 +198,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
         <Trans>Claim your <em>{TokenUnit.abbr}</em> tokens</Trans>
       </h1>
       <Columar>
-        <Column>
+        <Columar.Column>
           <Card withBottomMargin>
             <h3>{t<string>('1. Select your {{chain}} account', {
               replace: {
@@ -295,8 +296,8 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
               )}
             </Card>
           )}
-        </Column>
-        <Column showEmptyText={false}>
+        </Columar.Column>
+        <Columar.Column>
           {(step >= Step.Claim) && (
             isPreclaimed
               ? <AttestDisplay
@@ -313,10 +314,9 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
                 isOldClaimProcess={isOldClaimProcess}
                 onSuccess={goToStepAccount}
                 statementKind={statementKind}
-                systemChain={systemChain}
               />
           )}
-        </Column>
+        </Columar.Column>
       </Columar>
     </main>
   );

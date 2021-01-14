@@ -1,13 +1,14 @@
-// Copyright 2017-2020 @polkadot/app-accounts authors & contributors
+// Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
-import { useApi } from '@polkadot/react-hooks';
-import chains from '@polkadot/ui-settings/defaults/chains';
 
-import { useTranslation } from './translate';
+import { useApi } from '@polkadot/react-hooks';
+import { chains } from '@polkadot/ui-settings/defaults/chains';
+
 import Toggle from './Toggle';
+import { useTranslation } from './translate';
 
 interface Props {
   className?: string;

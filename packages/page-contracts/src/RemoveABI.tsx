@@ -1,9 +1,10 @@
-// Copyright 2017-2020 @polkadot/app-accounts authors & contributors
+// Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { CodeStored } from './types';
 
 import React, { useCallback } from 'react';
+
 import { Button, Modal } from '@polkadot/react-components';
 
 import CodeRow from './shared/CodeRow';

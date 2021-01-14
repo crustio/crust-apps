@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/app-democracy authors & contributors
+// Copyright 2017-2021 @polkadot/app-democracy authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { SubmittableExtrinsic } from '@polkadot/api/promise/types';
@@ -7,7 +7,8 @@ import type { Hash } from '@polkadot/types/interfaces';
 import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Input, InputAddress, InputBalance, Extrinsic, Modal, TxButton } from '@polkadot/react-components';
+
+import { Extrinsic, Input, InputAddress, InputBalance, Modal, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { Available } from '@polkadot/react-query';
 import { BN_ZERO } from '@polkadot/util';
@@ -122,7 +123,11 @@ function PreImage ({ className = '', imageHash, isImminent = false, onClose }: P
           label={t<string>('Submit preimage')}
           onStart={onClose}
           params={[encodedProposal]}
-          tx={isImminent ? 'democracy.noteImminentPreimage' : 'democracy.notePreimage'}
+          tx={
+            isImminent
+              ? api.tx.democracy.noteImminentPreimage
+              : api.tx.democracy.notePreimage
+          }
         />
       </Modal.Actions>
     </Modal>
