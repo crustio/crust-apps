@@ -19640,6 +19640,7 @@ fsevents@~2.1.2:
     stylelint-config-styled-components: ^0.1.1
     webpack: ^5.11.1
     webpack-cli: ^4.3.0
+    window-or-global: ^1.0.1
   languageName: unknown
   linkType: soft
 
