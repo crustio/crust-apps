@@ -1,24 +1,31 @@
-import React from 'react'
+// [object Object]
+// SPDX-License-Identifier: Apache-2.0
 
-const GlyphNewFolder = props => (
+import React from 'react';
+
+const GlyphNewFolder = (props) => (
   <svg
-    width={58}
     height={58}
+    width={58}
     xmlnsXlink='http://www.w3.org/1999/xlink'
     {...props}
   >
     <defs>
-      <path id='a' d='M0 .256h30.593v25.376H0z' />
-      <path id='c' d='M0 49h30.594V.416H0z' />
+      <path d='M0 .256h30.593v25.376H0z'
+        id='a' />
+      <path d='M0 49h30.594V.416H0z'
+        id='c' />
     </defs>
-    <g fill='none' fillRule='evenodd'>
+    <g fill='none'
+      fillRule='evenodd'>
       <path
+        d='M15.751 8.889l2.71 4.848 1.746-.976-2.71-4.85zm12.327 1.96h2v-5.85h-2zm10.951 2.888l-1.746-.976 2.71-4.85 1.746.978zm-23.278 35.96l1.746.976 2.71-4.85-1.746-.978zm12.327 3.886h2v-5.848h-2zm11.915-2.91l-2.71-4.85 1.746-.976 2.71 4.85z'
         fill='#000'
         fillRule='nonzero'
-        d='M15.751 8.889l2.71 4.848 1.746-.976-2.71-4.85zm12.327 1.96h2v-5.85h-2zm10.951 2.888l-1.746-.976 2.71-4.85 1.746.978zm-23.278 35.96l1.746.976 2.71-4.85-1.746-.978zm12.327 3.886h2v-5.848h-2zm11.915-2.91l-2.71-4.85 1.746-.976 2.71 4.85z'
       />
       <g transform='translate(14 16.583)'>
-        <mask id='b' fill='#fff'>
+        <mask fill='#fff'
+          id='b'>
           <use xlinkHref='#a' />
         </mask>
         <path
@@ -29,18 +36,19 @@ const GlyphNewFolder = props => (
         />
       </g>
       <g transform='translate(14 4.583)'>
-        <mask id='d' fill='#fff'>
+        <mask fill='#fff'
+          id='d'>
           <use xlinkHref='#c' />
         </mask>
         <path
+          d='M1.14 21.252h28.594v-2H1.14z'
           fill='#000'
           fillRule='nonzero'
           mask='url(#d)'
-          d='M1.14 21.252h28.594v-2H1.14z'
         />
       </g>
     </g>
   </svg>
-)
+);
 
-export default GlyphNewFolder
+export default GlyphNewFolder;

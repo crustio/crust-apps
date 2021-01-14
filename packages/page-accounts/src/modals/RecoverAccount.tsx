@@ -1,8 +1,10 @@
-// Copyright 2017-2020 @polkadot/app-accounts authors & contributors
+// Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useState } from 'react';
+
 import { InputAddress, Modal, TxButton } from '@polkadot/react-components';
+import { useApi } from '@polkadot/react-hooks';
 
 import { useTranslation } from '../translate';
 
@@ -14,6 +16,7 @@ interface Props {
 
 function RecoverAccount ({ address, className = '', onClose }: Props): React.ReactElement {
   const { t } = useTranslation();
+  const { api } = useApi();
   const [recover, setRecover] = useState<string | null>(null);
 
   return (
@@ -42,7 +45,7 @@ function RecoverAccount ({ address, className = '', onClose }: Props): React.Rea
           label={t<string>('Start recovery')}
           onStart={onClose}
           params={[recover]}
-          tx='recovery.initiateRecovery'
+          tx={api.tx.recovery.initiateRecovery}
         />
       </Modal.Actions>
     </Modal>

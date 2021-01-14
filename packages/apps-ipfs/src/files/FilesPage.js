@@ -1,28 +1,29 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { findDOMNode } from 'react-dom';
-import { connect } from 'redux-bundler-react';
-import { withTranslation, Trans } from 'react-i18next';
+import { Trans, withTranslation } from 'react-i18next';
 import ReactJoyride from 'react-joyride';
+import { connect } from 'redux-bundler-react';
+
+import Connected from '@polkadot/apps-ipfs/components/connected/Connected';
+import FilesExploreForm from '@polkadot/apps-ipfs/files/explore-form/FilesExploreForm';
+
+import withTour from '../components/tour/withTour';
+import { getJoyrideLocales } from '../helpers/i8n';
 // Lib
 import { filesTour } from '../lib/tours';
-import downloadFile from './download-file';
 // Components
 import ContextMenu from './context-menu/ContextMenu';
-import withTour from '../components/tour/withTour';
-import InfoBoxes from './info-boxes/InfoBoxes';
+import FileImportStatus from './file-import-status/FileImportStatus';
 import FilePreview from './file-preview/FilePreview';
 import FilesList from './files-list/FilesList';
-import { getJoyrideLocales } from '../helpers/i8n';
-
-// Icons
-import Modals, { DELETE, NEW_FOLDER, SHARE, RENAME, ADD_BY_PATH, CLI_TUTOR_MODE } from './modals/Modals';
 import Header from './header/Header';
-import FileImportStatus from './file-import-status/FileImportStatus';
-import FilesExploreForm from '@polkadot/apps-ipfs/files/explore-form/FilesExploreForm';
-import Connected from '@polkadot/apps-ipfs/components/connected/Connected';
+import InfoBoxes from './info-boxes/InfoBoxes';
+// Icons
+import Modals, { ADD_BY_PATH, CLI_TUTOR_MODE, DELETE, NEW_FOLDER, RENAME, SHARE } from './modals/Modals';
+import downloadFile from './download-file';
 
 const defaultState = {
   downloadAbort: null,
@@ -221,11 +222,9 @@ class FilesPage extends React.Component {
   }
 
   render () {
-    const {
-      cliOptions, doExploreUserProvidedPath, doFilesNavigateTo, doSetCliOptions, files, filesPathInfo, handleJoyrideCallback,
+    const { cliOptions, doExploreUserProvidedPath, doFilesNavigateTo, doSetCliOptions, files, filesPathInfo, handleJoyrideCallback,
       isCliTutorModeEnabled,
-      t, toursEnabled
-    } = this.props;
+      t, toursEnabled } = this.props;
 
     const { contextMenu } = this.state;
 

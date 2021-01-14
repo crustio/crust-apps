@@ -1,21 +1,21 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import './Breadcrumbs.css';
+
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import { basename, join } from 'path';
-import { connect } from 'redux-bundler-react';
-import { withTranslation } from 'react-i18next';
+import PropTypes from 'prop-types';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { NativeTypes } from 'react-dnd-html5-backend';
+import { withTranslation } from 'react-i18next';
+import { connect } from 'redux-bundler-react';
+
+import { getRealPath } from '@polkadot/apps-ipfs/bundles/files/utils';
 
 import { normalizeFiles } from '../../lib/files';
 
-import './Breadcrumbs.css';
-import { getRealPath } from '@polkadot/apps-ipfs/bundles/files/utils';
-
-const DropableBreadcrumb = ({
-  checkIfPinned,
+const DropableBreadcrumb = ({ checkIfPinned,
   getPathInfo,
   immutable,
   index,
@@ -23,8 +23,7 @@ const DropableBreadcrumb = ({
   onAddFiles,
   onClick,
   onContextMenuHandle,
-  onMove
-}) => {
+  onMove }) => {
   const [{ isOver }, drop] = useDrop({
     accept: [NativeTypes.FILE, 'FILE'],
     drop: async ({ files, filesPromise, path: filePath }) => {
@@ -92,8 +91,7 @@ const DropableBreadcrumb = ({
   );
 };
 
-const Breadcrumbs = ({
-  className,
+const Breadcrumbs = ({ className,
   doCheckIfPinned,
   doGetPathInfo,
   onAddFiles,
@@ -103,8 +101,7 @@ const Breadcrumbs = ({
   path,
   t,
   tReady,
-  ...props
-}) => {
+  ...props }) => {
   const [overflows, setOverflows] = useState(false);
   const [isImmutable, setImmutable] = useState(false);
   const anchors = useRef();
@@ -163,7 +160,7 @@ Breadcrumbs.propTypes = {
 };
 
 function makeBread (root, t, isImmutable, setImmutable) {
-  root = getRealPath(root)
+  root = getRealPath(root);
 
   if (root.endsWith('/')) {
     root = root.substring(0, root.length - 1);

@@ -2,8 +2,8 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { Route } from './types';
 import Component from './ipfsPage';
+import { Route } from './types';
 
 export default function create (t: <T = string>(key: string, text: string, options: { ns: string }) => T): Route {
   return {

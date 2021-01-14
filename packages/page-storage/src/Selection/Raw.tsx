@@ -1,13 +1,14 @@
-// Copyright 2017-2020 @polkadot/app-storage authors & contributors
+// Copyright 2017-2021 @polkadot/app-storage authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { ComponentProps as Props } from '../types';
 
 import React, { useCallback, useState } from 'react';
+
 import { Button, Input } from '@polkadot/react-components';
+import { compactAddLength, u8aToU8a } from '@polkadot/util';
 
 import { useTranslation } from '../translate';
-import { compactAddLength, u8aToU8a } from '@polkadot/util';
 
 function Raw ({ onAdd }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();

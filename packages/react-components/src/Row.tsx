@@ -1,11 +1,11 @@
-// Copyright 2017-2020 @polkadot/react-components authors & contributors
+// Copyright 2017-2021 @polkadot/react-components authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
 import styled from 'styled-components';
+
 import { useToggle } from '@polkadot/react-hooks';
 
-import { classes } from './util';
 import EditButton from './EditButton';
 import Input from './Input';
 import Tags from './Tags';
@@ -167,7 +167,7 @@ export interface RowProps {
   tags?: string[];
 }
 
-function Row ({ address, buttons, children, className, defaultName, details, icon, iconInfo, isDisabled, isEditableName, isEditableTags, isInline, name, onChangeName, onChangeTags, onSaveName, onSaveTags, tags }: RowProps): React.ReactElement<RowProps> {
+function Row ({ address, buttons, children, className = '', defaultName, details, icon, iconInfo, isDisabled, isEditableName, isEditableTags, isInline, name, onChangeName, onChangeTags, onSaveName, onSaveTags, tags }: RowProps): React.ReactElement<RowProps> {
   const [isEditingName, toggleIsEditingName] = useToggle();
   const [isEditingTags, toggleIsEditingTags] = useToggle();
 
@@ -178,7 +178,7 @@ function Row ({ address, buttons, children, className, defaultName, details, ico
 
   return (
     <div
-      className={classes('ui--Row', isDisabled && 'isDisabled', isInline && 'isInline', className)}
+      className={`ui--Row${isDisabled ? ' isDisabled' : ''}${isInline ? ' isInline' : ''} ${className}`}
     >
       <div className='ui--Row-base'>
         {icon && (

@@ -1,12 +1,13 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
+import filesize from 'filesize';
+import PropTypes from 'prop-types';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Line } from 'react-chartjs-2';
+import ReactDOM from 'react-dom';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
-import PropTypes from 'prop-types';
-import filesize from 'filesize';
+
 import { Title } from './Commons';
 
 const chartsize = filesize.partial({ round: 1, exponent: 2, bits: true });

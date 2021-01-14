@@ -1,7 +1,8 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
 import './ComponentLoader.css';
+
+import React from 'react';
 
 const ComponentLoader = ({ isLoading, pastDelay, retry, timedOut, ...props }) => {
   if (!pastDelay) return null;

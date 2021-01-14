@@ -1,22 +1,23 @@
 /* global getComputedStyle */
-import React, { Fragment } from 'react';
-import { findDOMNode } from 'react-dom';
-import PropTypes from 'prop-types';
-import { connect } from 'redux-bundler-react';
-import { Trans, withTranslation } from 'react-i18next';
 import classnames from 'classnames';
 import { join } from 'path';
-import { sorts } from '../../bundles/files';
-import { normalizeFiles } from '../../lib/files';
-import { List, WindowScroller, AutoSizer } from 'react-virtualized';
+import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
+import { DropTarget } from 'react-dnd';
 // Reac DnD
 import { NativeTypes } from 'react-dnd-html5-backend';
-import { DropTarget } from 'react-dnd';
+import { findDOMNode } from 'react-dom';
+import { Trans, withTranslation } from 'react-i18next';
+import { AutoSizer, List, WindowScroller } from 'react-virtualized';
+import { connect } from 'redux-bundler-react';
+
+import { sorts } from '../../bundles/files';
 // Components
 import Checkbox from '../../components/checkbox/Checkbox';
-import SelectedActions from '../selected-actions/SelectedActions';
-import File from '../file/File';
 import LoadingAnimation from '../../components/loading-animation/LoadingAnimation';
+import { normalizeFiles } from '../../lib/files';
+import File from '../file/File';
+import SelectedActions from '../selected-actions/SelectedActions';
 
 export class FilesList extends React.Component {
   constructor (props) {
@@ -359,8 +360,7 @@ export class FilesList extends React.Component {
                         rowCount={rowCount}
                         rowHeight={55}
                         rowRenderer={({ index, key, style }) => {
-                          const {
-                            canDrop,
+                          const { canDrop,
                             contracts,
                             files,
                             filesPathInfo,
@@ -368,8 +368,7 @@ export class FilesList extends React.Component {
                             onAddFiles,
                             onInspect,
                             onNavigate,
-                            pins
-                          } = this.props;
+                            pins } = this.props;
                           const { focused, isDragging, selected } = this.state;
                           const pinsString = pins.map((p) => p.toString());
                           const contractString = contracts.map((p) => p.toString());

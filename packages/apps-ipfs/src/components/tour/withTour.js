@@ -1,8 +1,8 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { connect } from 'redux-bundler-react';
 import { STATUS } from 'react-joyride';
+import { connect } from 'redux-bundler-react';
 
 const withTour = (WrappedComponent) => {
   class WithTour extends React.Component {

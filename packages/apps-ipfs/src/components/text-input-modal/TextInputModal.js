@@ -1,11 +1,12 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { withTranslation } from 'react-i18next';
+
+import ComponentLoader from '../../loader/ComponentLoader';
 import Button from '../button/Button';
 import { Modal, ModalActions, ModalBody } from '../modal/Modal';
-import ComponentLoader from '../../loader/ComponentLoader';
-import { withTranslation } from 'react-i18next';
 
 class TextInputModal extends React.Component {
   static propTypes = {
@@ -92,8 +93,7 @@ class TextInputModal extends React.Component {
   }
 
   render () {
-    const {
-      className,
+    const { className,
       defaultValue,
       description,
       error,
@@ -108,8 +108,7 @@ class TextInputModal extends React.Component {
       t,
       title,
       validate,
-      ...props
-    } = this.props;
+      ...props } = this.props;
 
     return (
       <Modal {...props}

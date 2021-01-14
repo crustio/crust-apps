@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/react-signer authors & contributors
+// Copyright 2017-2021 @polkadot/react-signer authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { SubmittableExtrinsic } from '@polkadot/api/types';
@@ -9,13 +9,14 @@ import type { ITuple } from '@polkadot/types/types';
 import type { AddressFlags, AddressProxy } from './types';
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+
 import { ApiPromise } from '@polkadot/api';
 import { InputAddress, Modal, Toggle } from '@polkadot/react-components';
 import { useAccounts, useApi, useIsMountedRef } from '@polkadot/react-hooks';
 import { isFunction } from '@polkadot/util';
 
-import { useTranslation } from './translate';
 import Password from './Password';
+import { useTranslation } from './translate';
 import { extractExternal } from './util';
 
 interface Props {

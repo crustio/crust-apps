@@ -1,15 +1,20 @@
-import React from 'react'
-import { withTranslation, Trans } from 'react-i18next'
-import Box from '../../../components/box/Box'
+// [object Object]
+// SPDX-License-Identifier: Apache-2.0
+
+import React from 'react';
+import { Trans, withTranslation } from 'react-i18next';
+
+import Box from '../../../components/box/Box';
 
 const AddFilesInfo = ({ t }) => (
   <div className='mv4 tc navy f5' >
     <Box style={{ background: 'rgba(105, 196, 205, 0.1)' }}>
-      <Trans i18nKey='addFilesInfo' t={t}>
+      <Trans i18nKey='addFilesInfo'
+        t={t}>
         <p className='ma0'>No files here yet! Add files to your local IPFS node by clicking the <strong>Import</strong> button above.</p>
       </Trans>
     </Box>
   </div>
-)
+);
 
-export default withTranslation('files')(AddFilesInfo)
+export default withTranslation('files')(AddFilesInfo);

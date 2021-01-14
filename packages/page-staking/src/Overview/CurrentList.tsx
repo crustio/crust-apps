@@ -17,6 +17,7 @@ import Filtering from '../Filtering';
 import { useTranslation } from '../translate';
 import Address from './Address';
 import { Guarantee } from "@polkadot/app-staking/Actions/Account";
+import Legend from "@polkadot/app-staking/Legend";
 
 interface Props {
   favorites: string[];
@@ -183,6 +184,7 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
           />
         }
         header={headerWaitingRef.current}
+        legend={<Legend />}
       >
         {isLoading ? undefined : _renderRows(elected, false).concat(_renderRows(waiting, false))}
       </Table>
@@ -199,6 +201,7 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
           />
         }
         header={headerActiveRef.current}
+        legend={<Legend />}
       >
         {isLoading ? undefined : _renderRows(validators, true)}
       </Table>

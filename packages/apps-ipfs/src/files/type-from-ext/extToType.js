@@ -1,3 +1,6 @@
+// [object Object]
+// SPDX-License-Identifier: Apache-2.0
+
 export default {
   wav: 'audio',
   bwf: 'audio',
@@ -503,4 +506,4 @@ export default {
   zabw: 'text',
   zrtf: 'text',
   zw: 'text'
-}
+};

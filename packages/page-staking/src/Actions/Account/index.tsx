@@ -271,7 +271,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                   isDisabled={!isOwnController || isDisabled}
                   key='stop'
                   label={t<string>('Stop')}
-                  tx='staking.chill'
+                  tx={api.tx.staking.chill}
                 />
               )
               : (
@@ -309,7 +309,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                     isDisabled={!isOwnController || isDisabled}
                     key='stop'
                     label={t<string>('Stop')}
-                    tx='staking.chill'
+                    tx={api.tx.staking.chill}
                   />
                 </Button.Group>
               )

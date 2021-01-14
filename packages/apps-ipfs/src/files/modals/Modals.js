@@ -1,20 +1,23 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import PropTypes from 'prop-types';
 import { join } from 'path';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { withTranslation } from 'react-i18next';
+
+import { getRealPath } from '@polkadot/apps-ipfs/bundles/files/utils';
+
+import { realMfsPath } from '../../bundles/files/actions';
+import { cliCmdKeys, cliCommandList } from '../../bundles/files/consts';
+import CliTutorMode from '../../components/cli-tutor-mode/CliTutorMode';
 import Overlay from '../../components/overlay/Overlay';
+import AddByPathModal from './add-by-path-modal/AddByPathModal';
+import DeleteModal from './delete-modal/DeleteModal';
 // Modals
 import NewFolderModal from './new-folder-modal/NewFolderModal';
-import ShareModal from './share-modal/ShareModal';
 import RenameModal from './rename-modal/RenameModal';
-import DeleteModal from './delete-modal/DeleteModal';
-import AddByPathModal from './add-by-path-modal/AddByPathModal';
-import CliTutorMode from '../../components/cli-tutor-mode/CliTutorMode';
-import { cliCommandList, cliCmdKeys } from '../../bundles/files/consts';
-import { realMfsPath } from '../../bundles/files/actions';
-import { getRealPath } from '@polkadot/apps-ipfs/bundles/files/utils';
+import ShareModal from './share-modal/ShareModal';
+
 // Constants
 const NEW_FOLDER = 'new_folder';
 const SHARE = 'share';
@@ -62,7 +65,9 @@ class Modals extends React.Component {
   rename = (newName) => {
     let { filename, path } = this.state.rename;
     const { onMove } = this.props;
-    filename = getRealPath(filename)
+
+    filename = getRealPath(filename);
+
     if (newName !== '' && newName !== filename) {
       onMove(path, path.replace(filename, newName));
     }
@@ -72,6 +77,7 @@ class Modals extends React.Component {
 
   delete = () => {
     const { paths } = this.state.delete;
+
     this.props.onDelete(paths);
     this.leave();
   }

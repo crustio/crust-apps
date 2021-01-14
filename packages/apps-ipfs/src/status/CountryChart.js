@@ -1,10 +1,11 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { withTranslation } from 'react-i18next';
-import { Title } from './Commons';
 import { Pie } from 'react-chartjs-2';
+import { withTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
+
+import { Title } from './Commons';
 
 const CountryChart = ({ className, peerLocations, t }) => {
   const countryLabels = {};

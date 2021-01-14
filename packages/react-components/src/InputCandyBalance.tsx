@@ -1,17 +1,15 @@
-// Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
-/* eslint-disable */
-
-import { BitLength } from './types';
+// Copyright 2017-2021 @polkadot/react-components authors & contributors
+// SPDX-License-Identifier: Apache-2.0
 
 import BN from 'bn.js';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
+
 import { BitLengthOption } from '@polkadot/react-components/constants';
 import { BN_TEN, BN_THOUSAND, formatBalance, isBn } from '@polkadot/util';
 
 import InputCandyNumber from './InputCandyNumber';
+import { BitLength } from './types';
 
 interface Props {
   autoFocus?: boolean;

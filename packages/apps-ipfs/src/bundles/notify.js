@@ -1,6 +1,10 @@
-import { createSelector } from 'redux-bundler'
-import { ACTIONS as EXP_ACTIONS } from './experiments'
-import { ACTIONS as FILES_ACTIONS } from './files'
+// [object Object]
+// SPDX-License-Identifier: Apache-2.0
+
+import { createSelector } from 'redux-bundler';
+
+import { ACTIONS as EXP_ACTIONS } from './experiments';
+import { ACTIONS as FILES_ACTIONS } from './files';
 
 /*
 # Notify
@@ -14,14 +18,14 @@ const defaultState = {
   error: false,
   eventId: null,
   code: null
-}
+};
 
 const notify = {
   name: 'notify',
 
   reducer: (state = defaultState, action) => {
     if (action.type === 'NOTIFY_DISMISSED') {
-      return { ...state, show: false }
+      return { ...state, show: false };
     }
 
     if (action.type === 'STATS_FETCH_FAILED') {
@@ -30,7 +34,7 @@ const notify = {
         show: true,
         error: true,
         eventId: action.type
-      }
+      };
     }
 
     if (action.type.match(/^FILES_\w+_FAILED$/)) {
@@ -40,7 +44,7 @@ const notify = {
         error: true,
         eventId: 'FILES_EVENT_FAILED',
         code: action.payload.error.code
-      }
+      };
     }
 
     if (action.type === 'STATS_FETCH_FINISHED' && state.eventId === 'STATS_FETCH_FAILED') {
@@ -49,7 +53,7 @@ const notify = {
         error: false,
         eventId: 'STATS_FETCH_FINISHED',
         lastSuccess: Date.now()
-      }
+      };
     }
 
     if (action.type === 'SWARM_CONNECT_FAILED' || action.type === 'SWARM_CONNECT_FINISHED') {
@@ -58,7 +62,7 @@ const notify = {
         show: true,
         error: action.type === 'SWARM_CONNECT_FAILED',
         eventId: action.type
-      }
+      };
     }
 
     if (action.type === EXP_ACTIONS.EXP_TOGGLE_FAILED) {
@@ -67,62 +71,62 @@ const notify = {
         show: true,
         error: true,
         eventId: `experimentsErrors.${action.payload.key}`
-      }
+      };
     }
 
-    return state
+    return state;
   },
 
-  selectNotify: state => state.notify,
+  selectNotify: (state) => state.notify,
 
   selectNotifyI18nKey: createSelector(
     'selectNotify',
     'selectIpfsProvider',
     (notify, provider) => {
-      const { eventId, code } = notify
+      const { code, eventId } = notify;
 
       if (eventId === 'STATS_FETCH_FAILED') {
-        return provider === 'window.ipfs' ? 'windowIpfsRequestFailed' : 'ipfsApiRequestFailed'
+        return provider === 'window.ipfs' ? 'windowIpfsRequestFailed' : 'ipfsApiRequestFailed';
       }
 
       if (eventId === 'FILES_EVENT_FAILED') {
-        const type = code ? code.replace(/^(ERR_)/, '') : ''
+        const type = code ? code.replace(/^(ERR_)/, '') : '';
 
         switch (type) {
           case 'FOLDER_EXISTS':
-            return 'folderExists'
+            return 'folderExists';
           case FILES_ACTIONS.WRITE:
           case FILES_ACTIONS.ADD_BY_PATH:
           case 'API_RESPONSE':
-            return 'filesAddFailed'
+            return 'filesAddFailed';
           case FILES_ACTIONS.FETCH:
-            return 'filesFetchFailed'
+            return 'filesFetchFailed';
           case FILES_ACTIONS.MOVE:
-            return 'filesRenameFailed'
+            return 'filesRenameFailed';
           case FILES_ACTIONS.MAKE_DIR:
-            return 'filesMakeDirFailed'
+            return 'filesMakeDirFailed';
           case FILES_ACTIONS.COPY:
-            return 'filesCopyFailed'
+            return 'filesCopyFailed';
           case FILES_ACTIONS.DELETE:
-            return 'filesDeleteFailed'
+            return 'filesDeleteFailed';
           default:
-            return 'filesEventFailed'
+            return 'filesEventFailed';
         }
       }
 
       if (eventId === 'STATS_FETCH_FINISHED') {
-        return 'ipfsIsBack'
+        return 'ipfsIsBack';
       }
 
       if (eventId === 'SWARM_CONNECT_FAILED') {
-        return 'couldntConnectToPeer'
+        return 'couldntConnectToPeer';
       }
 
       if (eventId === 'SWARM_CONNECT_FINISHED') {
-        return 'connectedToPeer'
+        return 'connectedToPeer';
       }
 
-      return eventId
+      return eventId;
     }
   ),
 
@@ -134,10 +138,10 @@ const notify = {
     'selectNotify',
     (appTime, notify) => {
       if (notify.eventId === 'STATS_FETCH_FINISHED' && notify.show && appTime - notify.lastSuccess > 3000) {
-        return { type: 'NOTIFY_DISMISSED' }
+        return { type: 'NOTIFY_DISMISSED' };
       }
     }
   )
-}
+};
 
-export default notify
+export default notify;

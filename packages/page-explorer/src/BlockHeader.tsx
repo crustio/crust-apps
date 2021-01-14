@@ -1,8 +1,9 @@
-// Copyright 2017-2020 @polkadot/app-explorer authors & contributors
+// Copyright 2017-2021 @polkadot/app-explorer authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import { HeaderExtended } from '@polkadot/api-derive';
 import { AddressMini } from '@polkadot/react-components';
 import { formatNumber } from '@polkadot/util';

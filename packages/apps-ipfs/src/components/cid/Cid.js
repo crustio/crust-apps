@@ -33,8 +33,8 @@ const Cid = ({ identicon = false, style, title, value, ...props }) => {
     <abbr style={style}
       title={title || value}
       {...props}>
-       <span className='v-mid'>
-         <span>{start}</span>
+      <span className='v-mid'>
+        <span>{start}</span>
         <span className='o-20'>…</span>
         <span>{end}</span>
       </span>

@@ -1,8 +1,9 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import ErrorIcon from '../../icons/GlyphSmallCancel';
 import root from 'window-or-global';
+
+import ErrorIcon from '../../icons/GlyphSmallCancel';
 
 class ErrorBoundary extends React.Component {
   state = {

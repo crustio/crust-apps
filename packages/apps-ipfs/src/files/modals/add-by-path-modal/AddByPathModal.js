@@ -1,11 +1,12 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import PropTypes from 'prop-types';
 import isIPFS from 'is-ipfs';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { withTranslation } from 'react-i18next';
-import Icon from '../../../icons/StrokeDecentralization';
+
 import TextInputModal from '../../../components/text-input-modal/TextInputModal';
+import Icon from '../../../icons/StrokeDecentralization';
 
 function ByPathModal ({ className, onCancel, onSubmit, t, tReady, ...props }) {
   const validatePath = (p) => {

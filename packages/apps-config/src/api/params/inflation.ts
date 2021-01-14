@@ -1,9 +1,9 @@
-// Copyright 2017-2020 @polkadot/app-config authors & contributors
+// Copyright 2017-2021 @polkadot/app-config authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { ApiPromise } from '@polkadot/api';
 
-import { POLKADOT_GENESIS, KUSAMA_GENESIS } from '../constants';
+import { KUSAMA_GENESIS, POLKADOT_GENESIS } from '../constants';
 
 interface InflationParams {
   falloff: number;

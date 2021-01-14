@@ -1,14 +1,15 @@
-// Copyright 2017-2020 @polkadot/react-components authors & contributors
+// Copyright 2017-2021 @polkadot/react-components authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { IdentityProps } from '@polkadot/react-identicon/types';
 
 import React, { useCallback, useContext } from 'react';
 import styled from 'styled-components';
+
 import { getSystemIcon } from '@polkadot/apps-config';
 import { useApi } from '@polkadot/react-hooks';
 import BaseIdentityIcon from '@polkadot/react-identicon';
-import uiSettings from '@polkadot/ui-settings';
+import { settings } from '@polkadot/ui-settings';
 
 import StatusContext from '../Status/Context';
 import { useTranslation } from '../translate';
@@ -23,7 +24,7 @@ interface Props {
 }
 
 export function getIdentityTheme (systemName: string): 'substrate' {
-  return ((uiSettings.icon === 'default' && getSystemIcon(systemName)) || uiSettings.icon) as 'substrate';
+  return ((settings.icon === 'default' && getSystemIcon(systemName)) || settings.icon) as 'substrate';
 }
 
 function IdentityIcon ({ className = '', prefix, size = 24, theme, value }: Props): React.ReactElement<Props> {
@@ -34,6 +35,7 @@ function IdentityIcon ({ className = '', prefix, size = 24, theme, value }: Prop
   const Custom = thisTheme === 'robohash'
     ? RoboHash
     : undefined;
+
   const _onCopy = useCallback(
     (account: string) => queueAction({
       account,

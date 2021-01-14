@@ -1,27 +1,26 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import { connect } from 'redux-bundler-react';
-import { withTranslation } from 'react-i18next';
-import classnames from 'classnames';
-import ipfsLogoTextVert from './ipfs-logo-text-vert.svg';
-import ipfsLogoTextHoriz from './ipfs-logo-text-horiz.svg';
-import StrokeMarketing from '../icons/StrokeMarketing';
-import StrokeWeb from '../icons/StrokeWeb';
-import StrokeCube from '../icons/StrokeCube';
-import StrokeSettings from '../icons/StrokeSettings';
-import StrokeIpld from '../icons/StrokeIpld';
-
 // Styles
 import './NavBar.css';
 
-const NavLink = ({
-  alternative,
+import classnames from 'classnames';
+import React from 'react';
+import { withTranslation } from 'react-i18next';
+import { connect } from 'redux-bundler-react';
+
+import StrokeCube from '../icons/StrokeCube';
+import StrokeIpld from '../icons/StrokeIpld';
+import StrokeMarketing from '../icons/StrokeMarketing';
+import StrokeSettings from '../icons/StrokeSettings';
+import StrokeWeb from '../icons/StrokeWeb';
+import ipfsLogoTextHoriz from './ipfs-logo-text-horiz.svg';
+import ipfsLogoTextVert from './ipfs-logo-text-vert.svg';
+
+const NavLink = ({ alternative,
   children,
   disabled,
   icon,
-  to
-}) => {
+  to }) => {
   const Svg = icon;
   const { hash } = window.location;
   const href = `#${to}`;
