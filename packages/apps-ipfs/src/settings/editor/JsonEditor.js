@@ -1,7 +1,8 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 // import 'brace/mode/json';
-import './theme/ipfs_dark';
+// tofix: import ace theme lead to ipfs-setting page load error.
+// import './theme/ipfs_dark';
 
 import React from 'react';
 import AceEditor from 'react-ace';

@@ -19,6 +19,7 @@ import ipfsProvider from './ipfs-provider';
 import nodeBandwidthBundle from './node-bandwidth';
 import nodeBandwidthChartBundle from './node-bandwidth-chart';
 import notifyBundle from './notify';
+import orderBundle from './orders';
 import peerLocationsBundle from './peer-locations';
 import peersBundle from './peers';
 import redirectsBundle from './redirects';
@@ -37,6 +38,7 @@ export default composeBundles(
   routesBundle,
   redirectsBundle,
   toursBundle,
+  orderBundle,
   filesBundle(),
   exploreBundle(),
   configBundle,
