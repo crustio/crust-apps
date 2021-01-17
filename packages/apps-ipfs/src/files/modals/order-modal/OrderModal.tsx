@@ -6,12 +6,14 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { Available, BalanceFree } from '@polkadot/react-query';
 
 import { Button, Input, InputAddress, InputBalance, Modal, TxButton } from '../../../../../react-components/src';
+import { connect } from 'redux-bundler-react';
 
 interface Props extends WithTranslation{
   file: IFile
   className?: string;
   onChange: () => void;
-  onClose: () => void
+  onClose: () => void;
+  doAddOrder: (any) => void
 }
 type IFile = {
   CID: string,
@@ -19,7 +21,7 @@ type IFile = {
   originalSize: string
 }
 
-const OrderModal: React.FC<Props> = ({ className = '', file, onChange, onClose, t }) => {
+const OrderModal: React.FC<Props> = ({ className = '', file, onChange, onClose, t, doAddOrder }) => {
   const [account, setAccount] = useState(null);
   const [fileCID, setFileCID] = useState<string>(file.CID);
   const [fileSize, setFileSize] = useState<string>(file.originalSize);
@@ -86,6 +88,14 @@ const OrderModal: React.FC<Props> = ({ className = '', file, onChange, onClose, 
     </Modal.Content>
     <Modal.Actions onCancel={onClose}>
       <TxButton
+        onClick={() => {doAddOrder({
+          fileCID: "123",
+          fileSize: "123121",
+          startTime: "12312",
+          expireTime: "1221",
+          fileStatus: 1,
+          pinsCount: 2
+        })}}
         accountId={account}
         icon='paper-plane'
         isDisabled={!account || !price}
@@ -100,5 +110,5 @@ const OrderModal: React.FC<Props> = ({ className = '', file, onChange, onClose, 
     </Modal.Actions>
   </Modal>;
 };
-
-export default withTranslation('order')(OrderModal);
+const OrderWithBundle = connect('doAddOrder', OrderModal)
+export default withTranslation('order')(OrderWithBundle);
