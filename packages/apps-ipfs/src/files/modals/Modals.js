@@ -6,7 +6,6 @@ import React from 'react';
 import { withTranslation } from 'react-i18next';
 
 import { getRealPath } from '@polkadot/apps-ipfs/bundles/files/utils';
-import OrderModal from '@polkadot/apps-ipfs/files/modals/order-modal/OrderModal';
 
 import { realMfsPath } from '../../bundles/files/actions';
 import { cliCmdKeys, cliCommandList } from '../../bundles/files/consts';
@@ -34,8 +33,7 @@ export {
   RENAME,
   DELETE,
   ADD_BY_PATH,
-  CLI_TUTOR_MODE,
-  ORDER
+  CLI_TUTOR_MODE
 };
 
 class Modals extends React.Component {
@@ -108,10 +106,6 @@ class Modals extends React.Component {
         });
 
         onShareLink(files).then((link) => this.setState({ link }));
-        break;
-      }
-
-      case ORDER : {
         break;
       }
 
@@ -244,13 +238,6 @@ class Modals extends React.Component {
         <Overlay onLeave={this.leave}
           show={show === CLI_TUTOR_MODE && readyToShow}>
           <CliTutorMode command={command}
-            filesPage={true}
-            onLeave={this.leave}
-            t={t}/>
-        </Overlay>
-        <Overlay onLeave={this.leave}
-          show={show === CLI_TUTOR_MODE && readyToShow}>
-          <OrderModal command={command}
             filesPage={true}
             onLeave={this.leave}
             t={t}/>

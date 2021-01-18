@@ -14,7 +14,7 @@ import { BN_ZERO, formatBalance, formatNumber } from '@polkadot/util';
 import { Input, InputAddress, InputBalance, Modal, TxButton } from '../../../../../react-components/src';
 
 interface Props extends WithTranslation{
-  file: IFile
+  file?: IFile
   className?: string;
   onChange: () => void;
   onClose: () => void;
@@ -25,18 +25,20 @@ type IFile = {
   size: string,
   originalSize: string
 }
+
 const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChange, onClose, t }) => {
   const [account, setAccount] = useState(null);
-  const [fileCid, setFileCID] = useState<string>(file.cid.toString());
-  const [fileSize, setFileSize] = useState<string>(file.originalSize);
+  const [fileCid, setFileCID] = useState<string>(file ? file.cid.toString() : '');
+  const [fileSize, setFileSize] = useState<string>(file ? file.originalSize : '0');
   const [price, setPrice] = useState<string | undefined>('0 CRU');
   const [tip, setTip] = useState<BN | undefined>(BN_ZERO);
   const { api } = useApi();
   const filePrice = useCall<BN>(api.query.market.filePrice);
 
   useEffect(() => {
-    setPrice(formatBalance(filePrice?.divn(1000000), { decimals: 12 }));
-  }, [file, filePrice]);
+    console.log(filePrice);
+    setPrice(formatBalance(filePrice?.mul(new BN(fileSize)).divn(1000000), { decimals: 12 }));
+  }, [fileSize, filePrice]);
 
   return <Modal
     className='app--accounts-Modal'
@@ -88,6 +90,7 @@ const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChang
           isDisabled
           label={t<string>('Price')}
           maxLength={32}
+          onChange={setPrice}
           placeholder={t('My On-Chain Name')}
           value={price}
         />
