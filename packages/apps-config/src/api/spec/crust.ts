@@ -9,6 +9,7 @@ export default {
   AddressInfo: 'Vec<u8>',
   ETHAddress: 'Vec<u8>',
   FileAlias: 'Vec<u8>',
+  EthereumTxHash: 'Vec<u8>',
   FileInfo: {
     file_size: 'u64',
     expired_on: 'BlockNumber',

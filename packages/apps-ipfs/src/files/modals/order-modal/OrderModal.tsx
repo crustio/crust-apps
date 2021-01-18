@@ -1,12 +1,17 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useState } from 'react';
+import type { Balance } from '@polkadot/types/interfaces';
+
+import BN from 'bn.js';
+import React, { useEffect, useState } from 'react';
 import { WithTranslation, withTranslation } from 'react-i18next';
-
-import { Available, BalanceFree } from '@polkadot/react-query';
-
-import { Button, Input, InputAddress, InputBalance, Modal, TxButton } from '../../../../../react-components/src';
 import { connect } from 'redux-bundler-react';
+
+import { useApi, useCall } from '@polkadot/react-hooks';
+import { Available } from '@polkadot/react-query';
+import { BN_ZERO, formatBalance, formatNumber } from '@polkadot/util';
+
+import { Input, InputAddress, InputBalance, Modal, TxButton } from '../../../../../react-components/src';
 
 interface Props extends WithTranslation{
   file: IFile
@@ -16,21 +21,22 @@ interface Props extends WithTranslation{
   doAddOrder: (any) => void
 }
 type IFile = {
-  CID: string,
+  cid: string,
   size: string,
   originalSize: string
 }
-
-const OrderModal: React.FC<Props> = ({ className = '', file, onChange, onClose, t, doAddOrder }) => {
+const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChange, onClose, t }) => {
   const [account, setAccount] = useState(null);
-  const [fileCID, setFileCID] = useState<string>(file.CID);
+  const [fileCid, setFileCID] = useState<string>(file.cid.toString());
   const [fileSize, setFileSize] = useState<string>(file.originalSize);
-  const [price, setPrice] = useState<string>('0');
-  const [tip, setTip] = useState<string>('0');
+  const [price, setPrice] = useState<string | undefined>('0 CRU');
+  const [tip, setTip] = useState<BN | undefined>(BN_ZERO);
+  const { api } = useApi();
+  const filePrice = useCall<BN>(api.query.market.filePrice);
 
   useEffect(() => {
-    setPrice('100');
-  }, [fileSize]);
+    setPrice(formatBalance(filePrice?.divn(1000000), { decimals: 12 }));
+  }, [file, filePrice]);
 
   return <Modal
     className='app--accounts-Modal'
@@ -54,11 +60,11 @@ const OrderModal: React.FC<Props> = ({ className = '', file, onChange, onClose, 
         <Input
           autoFocus
           help={t<string>('The name that will be displayed in your accounts list.')}
-          label={t<string>('fileCID')}
+          label={t<string>('fileCid')}
           maxLength={32}
           onChange={setFileCID}
           placeholder={t('My On-Chain Name')}
-          value={fileCID}
+          value={fileCid}
         />
         <Input
           autoFocus
@@ -71,44 +77,44 @@ const OrderModal: React.FC<Props> = ({ className = '', file, onChange, onClose, 
         />
         <InputBalance
           autoFocus
-          defaultValue={price}
-          help={t<string>('The total amount of the stash balance that will be at stake in any forthcoming rounds (should be less than the free amount available)')}
-          isDisabled
-          label={t<string>('Price')}
-        />
-        <InputBalance
-          autoFocus
           defaultValue={tip}
           help={t<string>('The total amount of the stash balance that will be at stake in any forthcoming rounds (should be less than the free amount available)')}
           label={t<string>('Tip')}
           onChange={setTip}
           onlyCru
         />
+        <Input
+          help={t<string>('The name that will be displayed in your accounts list.')}
+          isDisabled
+          label={t<string>('Price')}
+          maxLength={32}
+          placeholder={t('My On-Chain Name')}
+          value={price}
+        />
       </div>
     </Modal.Content>
     <Modal.Actions onCancel={onClose}>
       <TxButton
-        onClick={() => {doAddOrder({
-          fileCID: "123",
-          fileSize: "123121",
-          startTime: "12312",
-          expireTime: "1221",
-          fileStatus: 1,
-          pinsCount: 2
-        })}}
         accountId={account}
         icon='paper-plane'
         isDisabled={!account || !price}
         label={t<string>('Make Transfer')}
-        onStart={onClose}
+        onStart={() => {
+          doAddOrder({
+            fileCid,
+            fileSize
+          });
+          onClose();
+        }}
         params={
-          [account, fileSize, tip]
+          [fileCid, fileSize, tip, false]
         }
-        tx={
-          'balances.transfer' }
+        tx={api.tx.market.placeStorageOrder }
       />
     </Modal.Actions>
   </Modal>;
 };
-const OrderWithBundle = connect('doAddOrder', OrderModal)
+
+const OrderWithBundle = connect('doAddOrder', OrderModal);
+
 export default withTranslation('order')(OrderWithBundle);

@@ -24,7 +24,7 @@ const WatchItem = ({ watchItem }) => {
     {/* </div> */}
     <div className='relative tc pointer  justify-center flex items-center flex-grow-1 ph2 pv1 w-40'>
       <div className=''>
-        {watchItem.fileCID}
+        {watchItem.fileCid}
       </div>
     </div>
     <div className='relative tc pointer  justify-center flex items-center flex-grow-1 ph2 pv1 w-40'>

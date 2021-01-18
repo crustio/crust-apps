@@ -1,24 +1,21 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import PropTypes from "prop-types";
-import { useEffect } from "react";
-import { connect } from "redux-bundler-react";
+import PropTypes from 'prop-types';
+import { useEffect } from 'react';
+import { connect } from 'redux-bundler-react';
 
-import OrderList from "./OrderList";
+import OrderList from './OrderList';
 
-const Order = ({ doFetchOrders, watchList, doAddOrder }) => {
-  useEffect(() => {
-    doFetchOrders();
-  }, []);
+const Order = ({ doAddOrder, doFetchOrders, watchList }) => {
   return (
-    <div className={"w-100"}>
+    <div className={'w-100'}>
       <button
         onClick={() => {
           doAddOrder({
-            fileCID: "124",
-            fileSize: "123121",
-            startTime: "12312",
-            expireTime: "1221",
+            fileCid: '124',
+            fileSize: '123121',
+            startTime: '12312',
+            expireTime: '1221',
             fileStatus: 2,
             pinsCount: 1
           });
@@ -32,4 +29,4 @@ const Order = ({ doFetchOrders, watchList, doAddOrder }) => {
   );
 };
 
-export default connect("doFetchOrders", "doAddOrder", "selectWatchList", Order);
+export default connect('doAddOrder', 'selectWatchList', Order);

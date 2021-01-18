@@ -2,7 +2,7 @@
   "actions": {
     "add": "添加订单",
     "search": "搜索",
-    "fileCID": "文件CID",
+    "fileCid": "文件CID",
     "fileSize": "文件大小",
     "startTime": "最近下单时间",
     "expireTime": "到期时间",

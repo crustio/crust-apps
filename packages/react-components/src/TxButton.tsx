@@ -21,6 +21,7 @@ function TxButton ({ accountId, className = '', extrinsic: propsExtrinsic, icon,
   const [isSending, setIsSending] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
 
+  console.log(params);
   useEffect((): void => {
     (isStarted && onStart) && onStart();
   }, [isStarted, onStart]);
