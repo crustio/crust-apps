@@ -77,8 +77,6 @@ export function useOwnStashInfos (): StakerState[] | undefined {
     }
   }, [stakingOverview, waitingInfo]);
 
-  console.log('validators', validators);
-
   useEffect((): () => void => {
     let unsub: (() => void) | undefined;
 

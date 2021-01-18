@@ -28,8 +28,8 @@ export { default as useCounter } from './useCounter';
 enum Step {
   Account = 0,
   ETHAddress = 1,
-  Sign = 2,
-  Claim = 3,
+  Sign = 4,
+  Claim = 2,
 }
 
 const PRECLAIMS_LOADING = 'PRECLAIMS_LOADING';
@@ -76,6 +76,7 @@ const transformStatement = {
 function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
   const [didCopy, setDidCopy] = useState(false);
   const [ethereumAddress, setEthereumAddress] = useState<string | undefined | null>(null);
+  const [ethereumTxHash, setEthereumTxHash] = useState<string | undefined | null>(null);
   const [signature, setSignature] = useState<EcdsaSignature | null>(null);
   const [step, setStep] = useState<Step>(Step.Account);
   const [accountId, setAccountId] = useState<string | null>(null);
@@ -104,6 +105,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
 
     setStep(Step.Account);
     setEthereumAddress(null);
+    setEthereumTxHash(null);
     setPreclaimEthereumAddress(PRECLAIMS_LOADING);
 
     if (!api.query.claims || !api.query.claims.preclaims) {
@@ -170,6 +172,10 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
     setEthereumAddress(value.trim());
   }, []);
 
+  const onChangeEthereumTxHash = useCallback((value: string) => {
+    setEthereumTxHash(value.trim());
+  }, []);
+
   const onCopy = useCallback(() => {
     setDidCopy(true);
   }, []);
@@ -212,11 +218,19 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
               onChange={setAccountId}
               type='all'
             />
+            <Input
+              autoFocus
+              className='full'
+              help={t<string>('The the Ethereum tx hash you used during the pre-sale (starting by "0x")')}
+              label={t<string>('Ethereum tx hash')}
+              onChange={onChangeEthereumTxHash}
+              value={ethereumTxHash || ''}
+            />
             {(step === Step.Account) && (
               <Button.Group>
                 <Button
                   icon='sign-in-alt'
-                  isDisabled={preclaimEthereumAddress === PRECLAIMS_LOADING}
+                  isDisabled={preclaimEthereumAddress === PRECLAIMS_LOADING || ethereumTxHash === null || ethereumTxHash === ''}
                   label={preclaimEthereumAddress === PRECLAIMS_LOADING
                     ? t<string>('Loading')
                     : t<string>('Continue')
