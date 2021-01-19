@@ -22,6 +22,8 @@ import Statement from './Statement';
 import { useTranslation } from './translate';
 import { getStatement, recoverFromJSON } from './util';
 import Warning from './Warning';
+// @ts-ignore
+import { httpPost } from './http';
 
 export { default as useCounter } from './useCounter';
 
@@ -147,15 +149,20 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
   }, []);
 
   // Depending on the account, decide which step to show.
-  const handleAccountStep = useCallback(() => {
-    if (isPreclaimed) {
-      goToStepClaim();
-    } else if (ethereumAddress || isOldClaimProcess) {
-      goToStepSign();
-    } else {
-      setStep(Step.ETHAddress);
+  const handleAccountStep = useCallback(async () => {
+    const result = await httpPost('http://localhost:4000/claim/' + ethereumTxHash );
+
+    if (result.status == 400) {
+      if (isPreclaimed) {
+        goToStepClaim();
+      } else if (ethereumAddress || isOldClaimProcess) {
+        goToStepSign();
+      } else {
+        setStep(Step.ETHAddress);
+      }
     }
-  }, [ethereumAddress, goToStepClaim, goToStepSign, isPreclaimed, isOldClaimProcess]);
+
+  }, [ethereumAddress, goToStepClaim, goToStepSign, isPreclaimed, isOldClaimProcess, ethereumTxHash]);
 
   const onChangeSignature = useCallback((event: React.SyntheticEvent<Element>) => {
     const { value: signatureJson } = event.target as HTMLInputElement;
