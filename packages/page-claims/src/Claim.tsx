@@ -14,8 +14,10 @@ import { Button, Card, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 
 import { useTranslation } from './translate';
-import { getStatement } from './util';
+import { addrToChecksum, getStatement } from './util';
 import { FormatBalance } from '@polkadot/react-query';
+import { TypeRegistry } from '@polkadot/types/create';
+import BN from 'bn.js';
 
 interface Props {
   accountId: string;
@@ -51,9 +53,10 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
   const { api, systemChain } = useApi();
   const [claimValue, setClaimValue] = useState<BalanceOf | null>(null);
   const [isBusy, setIsBusy] = useState(false);
+  const [claimedAddress, setClaimedAddress] = useState<string | undefined | null>(null);
 
   useEffect((): void => {
-    if (!ethereumAddress) {
+    if (!ethereumTxHash) {
       return;
     }
 
@@ -62,13 +65,19 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
     api.query.claims
       .claims<Option<BalanceOf>>(ethereumTxHash)
       .then((claim): void => {
-        setClaimValue(claim.unwrapOr(null));
-        setIsBusy(false);
+        const registry = new TypeRegistry();
+        const claimOpt = JSON.parse(JSON.stringify(claim));
+        if (claimOpt) {
+          const claimBalance = registry.createType('BalanceOf', new BN(claimOpt[1]));
+          setClaimValue(claimBalance);
+          setClaimedAddress(claimOpt[0]);
+          setIsBusy(false);
+        }
       })
       .catch((): void => setIsBusy(false));
   }, [api, ethereumTxHash]);
 
-  if (!ethereumTxHash || isBusy || !ethereumSignature) {
+  if (!ethereumTxHash || isBusy || !ethereumSignature || !ethereumAddress || !claimedAddress) {
     return null;
   }
 
@@ -80,9 +89,9 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
       isSuccess={!!hasClaim}
     >
       <div className={className}>
-        {t<string>('Your Ethereum TX hash')}
-        <h3>{ethereumTxHash.toString()}</h3>
-        {ethereumTxHash !== ''
+        {t<string>('Your Ethereum account')}
+        <h3>{addrToChecksum(claimedAddress.toString())}</h3>
+        {ethereumTxHash !== '' && hasClaim
           ? (
             <>
               {t<string>('has a valid claim for')}

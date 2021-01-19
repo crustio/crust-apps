@@ -89,6 +89,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
   const [result, setResult] = useState<string>("");
   const [status, setStatus] = useState<string>("");
   const [ethereumTxHashValid, setEthereumTxHashValid] = useState<boolean>(false);
+  const [isBusy, setIsBusy] = useState<boolean>(false);
 
   // This preclaimEthereumAddress holds the result of `api.query.claims.preclaims`:
   // - an `EthereumAddress` when there's a preclaim
@@ -155,11 +156,12 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
 
   // Depending on the account, decide which step to show.
   const handleAccountStep = useCallback(async () => {
-    const result = await httpPost('http://localhost:4000/claim/' + ethereumTxHash );
+    setIsBusy(true);
+    const result = await httpPost('http://localhost:4001/claim/' + ethereumTxHash );
     setStatusOpen(true);
     setResult(result.statusText);
     setStatus(result.status);
-    if (result.code == 400) {
+    if (result.code == 200) {
       setEthereumTxHashValid(true);
       if (isPreclaimed) {
         goToStepClaim();
@@ -169,6 +171,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
         setStep(Step.ETHAddress);
       }
     }
+    setIsBusy(false);
 
   }, [ethereumAddress, goToStepClaim, goToStepSign, isPreclaimed, isOldClaimProcess, ethereumTxHash]);
 
@@ -252,6 +255,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
                     ? t<string>('Loading')
                     : t<string>('Continue')
                   }
+                  isBusy={isBusy}
                   onClick={handleAccountStep}
                 />
               </Button.Group>
