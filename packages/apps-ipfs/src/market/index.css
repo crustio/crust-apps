@@ -1,0 +1,47 @@
+/*background-color: #ff8812;*/
+
+.btn-wrapper {
+  display: flex;
+  border:  2px dashed #ff8812;
+  height: 250px;
+  border-radius: 15px;
+  justify-content: center;
+  align-items: center;
+  background: url('./order.png') no-repeat center center;
+  background-size: 600px 250px;
+  background-color: #FFFFFF;
+}
+.btn {
+  letter-spacing: 2px;
+  border-radius: 10px;
+  display: inline-block;
+  font-size: 20px;
+  padding: 5px 30px;
+  background-color: #ff8812;
+  color: #fff;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+.btn:hover{
+  border: 2px solid #ff8812;
+  color: #ff8812;
+  background-color: #fff;
+}
+button:focus {outline:0!important;}
+.add-watch-list-wrapper {
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  background-color: #f0f6fa;
+  min-width: 200px;
+}
+.input-btn {
+  margin-left: 5px;
+  text-align: center;
+  display: inline-block;
+  height: 32px;
+  line-height: 3px;
+}
+
+
