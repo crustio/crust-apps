@@ -95,14 +95,6 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
                   onSuccess={onSuccess}
                   {...constructTx(api, systemChain, accountId, ethereumSignature, statementKind, isOldClaimProcess, ethereumTxHash)}
                 />
-                {/* <TxButton
-                  accountId={accountId}
-                  icon='paper-plane'
-                  isDisabled={!accountId}
-                  label={t('Claim')}
-                  params={[accountId, ethereumTxHash, ethereumSignature]}
-                  tx={api.tx.claims.claim}
-                /> */}
               </Button.Group>
             </>
           )
