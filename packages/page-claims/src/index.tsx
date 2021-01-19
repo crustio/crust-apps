@@ -24,6 +24,7 @@ import { getStatement, recoverFromJSON } from './util';
 import Warning from './Warning';
 // @ts-ignore
 import { httpPost } from './http';
+import HttpStatus from './HttpStatus';
 
 export { default as useCounter } from './useCounter';
 
@@ -84,6 +85,10 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
   const [accountId, setAccountId] = useState<string | null>(null);
   const { api, systemChain } = useApi();
   const { t } = useTranslation();
+  const [statusOpen, setStatusOpen] = useState<boolean>(false);
+  const [result, setResult] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
+  const [ethereumTxHashValid, setEthereumTxHashValid] = useState<boolean>(false);
 
   // This preclaimEthereumAddress holds the result of `api.query.claims.preclaims`:
   // - an `EthereumAddress` when there's a preclaim
@@ -151,8 +156,11 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
   // Depending on the account, decide which step to show.
   const handleAccountStep = useCallback(async () => {
     const result = await httpPost('http://localhost:4000/claim/' + ethereumTxHash );
-
-    if (result.status == 400) {
+    setStatusOpen(true);
+    setResult(JSON.stringify(result));
+    setStatus(result.status);
+    if (result.code == 400) {
+      setEthereumTxHashValid(true);
       if (isPreclaimed) {
         goToStepClaim();
       } else if (ethereumAddress || isOldClaimProcess) {
@@ -171,6 +179,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
 
     setEthereumAddress(ethereumAddress?.toString());
     setSignature(signature);
+    setStatusOpen(false);
   }, []);
 
   const onChangeEthereumAddress = useCallback((value: string) => {
@@ -232,6 +241,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
               label={t<string>('Ethereum tx hash')}
               onChange={onChangeEthereumTxHash}
               value={ethereumTxHash || ''}
+              isDisabled={ethereumTxHashValid}
             />
             {(step === Step.Account) && (
               <Button.Group>
@@ -246,6 +256,12 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
                 />
               </Button.Group>
             )}
+            <HttpStatus
+              isStatusOpen={statusOpen}
+              setStatusOpen={setStatusOpen}
+              message={result}
+              status={status}
+            />
           </Card>
           {
             // We need to know the ethereuem address only for the new process
@@ -331,6 +347,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
               : <ClaimDisplay
                 accountId={accountId}
                 ethereumAddress={ethereumAddress}
+                ethereumTxHash={ethereumTxHash}
                 ethereumSignature={signature}
                 isOldClaimProcess={isOldClaimProcess}
                 onSuccess={goToStepAccount}

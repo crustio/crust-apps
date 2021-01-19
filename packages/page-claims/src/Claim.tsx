@@ -1,8 +1,6 @@
 // Copyright 2017-2021 @polkadot/app-claims authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { ApiPromise } from '@polkadot/api';
-import type { SubmittableExtrinsic } from '@polkadot/api/types';
 import type { TxCallback } from '@polkadot/react-components/Status/types';
 import type { Option } from '@polkadot/types';
 import type { BalanceOf, EthereumAddress, StatementKind } from '@polkadot/types/interfaces';
@@ -15,7 +13,7 @@ import { useApi } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
 
 import { useTranslation } from './translate';
-import { addrToChecksum, getStatement } from './util';
+import { addrToChecksum } from './util';
 
 interface Props {
   accountId: string;
@@ -26,28 +24,29 @@ interface Props {
   isOldClaimProcess: boolean;
   onSuccess?: TxCallback;
   statementKind?: StatementKind;
+  ethereumTxHash: string;
 }
 
-interface ConstructTx {
-  params?: any[];
-  tx?: (...args: any[]) => SubmittableExtrinsic<'promise'>;
-}
+// interface ConstructTx {
+//   params?: any[];
+//   tx?: (...args: any[]) => SubmittableExtrinsic<'promise'>;
+// }
 
 // Depending on isOldClaimProcess, construct the correct tx.
 // FIXME We actually want to return the constructed extrinsic here (probably in useMemo)
-function constructTx (api: ApiPromise, systemChain: string, accountId: string, ethereumSignature: string | null, kind: StatementKind | undefined, isOldClaimProcess: boolean): ConstructTx {
-  if (!ethereumSignature) {
-    return {};
-  }
+// function constructTx (api: ApiPromise, systemChain: string, accountId: string, ethereumSignature: string | null, kind: StatementKind | undefined, isOldClaimProcess: boolean, ethereumTxHash: string): ConstructTx {
+//   if (!ethereumSignature) {
+//     return {};
+//   }
 
-  return isOldClaimProcess || !kind
-    ? { params: [accountId, ethereumSignature], tx: api.tx.claims.claim }
-    : { params: [accountId, ethereumSignature, getStatement(systemChain, kind)?.sentence], tx: api.tx.claims.claimAttest };
-}
+//   return isOldClaimProcess || !kind
+//     ? { params: [accountId, ethereumTxHash, ethereumSignature], tx: api.tx.claims.claim }
+//     : { params: [accountId, ethereumSignature, getStatement(systemChain, kind)?.sentence], tx: api.tx.claims.claimAttest };
+// }
 
-function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature, isOldClaimProcess, onSuccess, statementKind }: Props): React.ReactElement<Props> | null {
+function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature, isOldClaimProcess, onSuccess, statementKind, ethereumTxHash }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
-  const { api, systemChain } = useApi();
+  const { api } = useApi();
   const [claimValue, setClaimValue] = useState<BalanceOf | null>(null);
   const [isBusy, setIsBusy] = useState(false);
 
@@ -81,18 +80,26 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
       <div className={className}>
         {t<string>('Your Ethereum account')}
         <h3>{addrToChecksum(ethereumAddress.toString())}</h3>
-        {hasClaim && claimValue
+        {ethereumTxHash !== ''
           ? (
             <>
               {t<string>('has a valid claim for')}
               <h2><FormatBalance value={claimValue} /></h2>
               <Button.Group>
-                <TxButton
+                {/* <TxButton
                   icon='paper-plane'
                   isUnsigned
                   label={t('Claim')}
                   onSuccess={onSuccess}
-                  {...constructTx(api, systemChain, accountId, ethereumSignature, statementKind, isOldClaimProcess)}
+                  {...constructTx(api, systemChain, accountId, ethereumSignature, statementKind, isOldClaimProcess, ethereumTxHash)}
+                /> */}
+                <TxButton
+                  accountId={accountId}
+                  icon='paper-plane'
+                  isDisabled={!accountId}
+                  label={t('Claim')}
+                  params={[accountId, ethereumTxHash, ethereumSignature]}
+                  tx={api.tx.claims.claim}
                 />
               </Button.Group>
             </>

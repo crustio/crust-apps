@@ -30,13 +30,22 @@ export function httpPost(url,data){
     console.log('response', response)
     return response
   }).then((data) => {
+    if (data.status == 200) {
+      return {
+        code: 200,
+        status: 'success',
+        statusText: data.statusText
+      };   
+    }
     return {
-      status: data.status,
+      code: 400,
+      status: 'error',
       statusText: data.statusText
     };   
   }).catch(function (error) {
     return {
-      status: 400,
+      code: 400,
+      status: 'error',
       statusText: error
     }
   })
