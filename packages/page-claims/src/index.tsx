@@ -157,7 +157,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
   const handleAccountStep = useCallback(async () => {
     const result = await httpPost('http://localhost:4000/claim/' + ethereumTxHash );
     setStatusOpen(true);
-    setResult(JSON.stringify(result));
+    setResult(result.statusText);
     setStatus(result.status);
     if (result.code == 400) {
       setEthereumTxHashValid(true);

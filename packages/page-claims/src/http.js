@@ -34,19 +34,19 @@ export function httpPost(url,data){
       return {
         code: 200,
         status: 'success',
-        statusText: data.statusText
+        statusText: 'You has a valid claim'
       };   
     }
     return {
       code: 400,
       status: 'error',
-      statusText: data.statusText
+      statusText: 'Does not appear to have a valid claim. Please double check that you have signed the transaction correctly on the correct ETH account.'
     };   
   }).catch(function (error) {
     return {
       code: 400,
       status: 'error',
-      statusText: error
+      statusText: 'Does not appear to have a valid claim. Please double check that you have signed the transaction correctly on the correct ETH account.'
     }
   })
 }
