@@ -28,6 +28,10 @@ const Order = ({ doAddOrder, doFetchOrders, watchList, watchedCidList }) => {
     }
   };
 
+  const handleDelete = () => {
+    // do delete
+  };
+
   return (
     <div className={'w-100'}>
       {
@@ -49,8 +53,10 @@ const Order = ({ doAddOrder, doFetchOrders, watchList, watchedCidList }) => {
       <WatchListInput onAddWatchItem={() => {
         console.log(123);
       }}
-      onFilterWatchList={handleFilterWatchList}/>
-      {tableData ? <OrderList watchList={tableData} /> : <div>noone</div>}
+      onDelete={handleDelete}
+      onFilterWatchList={handleFilterWatchList}
+      />
+      {tableData ? <OrderList watchList={tableData}/> : <div>noone</div>}
     </div>
   );
 };

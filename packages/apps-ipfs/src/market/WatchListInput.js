@@ -8,7 +8,7 @@ import { connect } from 'redux-bundler-react';
 
 import Button from '../components/button/Button';
 
-const WatchListInput = ({ doAddOrder, onAddWatchItem, onFilterWatchList, watchedCidList }) => {
+const WatchListInput = ({ doAddOrder, doRemoveWatchItems, onFilterWatchList, selectedCidList, watchedCidList }) => {
   const [path, setPath] = useState('');
   const [pathValid, toggleValid] = useState(false);
   const [inputClass, setInputClass] = useState('focus-outline');
@@ -57,6 +57,11 @@ const WatchListInput = ({ doAddOrder, onAddWatchItem, onFilterWatchList, watched
       onClick={() => {
         doAddOrder({ fileCid: path });
       }}>+&nbsp;添加</Button>
+    <Button className='input-btn input-btn-delete'
+      disabled={selectedCidList.length < 1}
+      onClick={() => {
+        doRemoveWatchItems(selectedCidList);
+      }}>删除</Button>
   </div>;
 };
 
@@ -65,4 +70,4 @@ WatchListInput.propTypes = {
   onAddWatchItem: PropTypes.func.isRequired
 };
 
-export default connect('selectWatchedCidList', 'doAddOrder', WatchListInput);
+export default connect('selectWatchedCidList', 'doAddOrder', 'doRemoveWatchItems', 'selectSelectedCidList', WatchListInput);

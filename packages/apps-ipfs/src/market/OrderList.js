@@ -7,44 +7,45 @@ import { AutoSizer, List, WindowScroller } from 'react-virtualized';
 import { connect } from 'redux-bundler-react';
 
 import WatchItem from '@polkadot/apps-ipfs/market/WatchItem';
+import { Button as ButtonPk } from '@polkadot/react-components';
 
 import Checkbox from '../components/checkbox/Checkbox';
 
-const OrderList = ({ watchList, watchedCidList }) => {
+const OrderList = ({ doSelectedItems, selectedCidList, watchList, watchedCidList }) => {
   const { t } = useTranslation();
   const itemList = ['fileSize', 'startTime', 'expireTime', 'pinsCount', 'fileStatus'];
-  const [selectedList, setSelected] = useState([]);
   const tableHeight = 300;
   const tableRef = useRef(null);
 
   const toggleOne = (fileCid) => {
-    const index = selectedList.indexOf(fileCid);
+    const index = selectedCidList.indexOf(fileCid);
 
     if (index < 0) {
-      selectedList.push(fileCid);
-      setSelected(selectedList);
+      selectedCidList.push(fileCid);
     } else {
-      selectedList.splice(selectedList.indexOf(fileCid), 1);
+      selectedCidList.splice(selectedCidList.indexOf(fileCid), 1);
     }
 
-    setSelected(selectedList);
+    doSelectedItems(selectedCidList);
     tableRef.current.forceUpdateGrid();
   };
 
   const toggleAll = () => {
     const isSelected = isAllSelected();
 
-    console.log(isSelected);
-
     if (isSelected) {
-      setSelected([]);
+      doSelectedItems([]);
     } else {
-      setSelected(watchedCidList);
+      doSelectedItems(watchedCidList);
     }
   };
 
+  const removeItems = () => {
+    // doRemoveWatchItems();
+  };
+
   const isAllSelected = () => {
-    if (_.isEqual(watchedCidList, selectedList)) {
+    if (!_.isEmpty(watchedCidList) && _.isEqual(watchedCidList, selectedCidList)) {
       return true;
     }
 
@@ -93,10 +94,10 @@ const OrderList = ({ watchList, watchedCidList }) => {
                   // onRowsRendered={this.onRowsRendered}
                   ref={tableRef}
                   rowCount={watchList.length}
-                  rowHeight={40}
+                  rowHeight={50}
                   rowRenderer={({ index, key, style }) => {
                     return <WatchItem onSelect={toggleOne}
-                      selected={selectedList.indexOf(watchList[index].fileCid) > -1}
+                      selected={selectedCidList.indexOf(watchList[index].fileCid) > -1}
                       watchItem={watchList[index]} />;
                   }}
                   scrollTop={scrollTop}
@@ -111,4 +112,4 @@ const OrderList = ({ watchList, watchedCidList }) => {
   );
 };
 
-export default connect('selectWatchedCidList', OrderList);
+export default connect('selectWatchedCidList', 'doRemoveWatchItems', 'doSelectedItems', 'selectSelectedCidList', OrderList);
