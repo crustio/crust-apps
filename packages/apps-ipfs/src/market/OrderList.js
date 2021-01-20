@@ -1,20 +1,19 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import _ from 'lodash';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AutoSizer, List, WindowScroller } from 'react-virtualized';
 import { connect } from 'redux-bundler-react';
 
 import WatchItem from '@polkadot/apps-ipfs/market/WatchItem';
-import { Button as ButtonPk } from '@polkadot/react-components';
 
 import Checkbox from '../components/checkbox/Checkbox';
 
-const OrderList = ({ doSelectedItems, selectedCidList, watchList, watchedCidList }) => {
+const OrderList = ({ doFetch, doSelectedItems, selectedCidList, watchList, watchedCidList }) => {
   const { t } = useTranslation();
+  const [listSorting, setListSorting] = useState({ by: null, asc: true });
   const itemList = ['fileSize', 'startTime', 'expireTime', 'pinsCount', 'fileStatus'];
-  const tableHeight = 300;
   const tableRef = useRef(null);
 
   const toggleOne = (fileCid) => {
@@ -40,16 +39,37 @@ const OrderList = ({ doSelectedItems, selectedCidList, watchList, watchedCidList
     }
   };
 
-  const removeItems = () => {
-    // doRemoveWatchItems();
-  };
-
   const isAllSelected = () => {
     if (!_.isEmpty(watchedCidList) && _.isEqual(watchedCidList, selectedCidList)) {
       return true;
     }
 
     return false;
+  };
+
+  const sortByIcon = (order) => {
+    if (listSorting.by === order) {
+      return listSorting.asc ? '↑' : '↓';
+    }
+
+    return null;
+  };
+
+  useEffect(() => {
+    const _list = _.orderBy(watchList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc']);
+
+    doFetch(_list);
+    tableRef.current.forceUpdateGrid();
+  }, [listSorting, watchList]);
+
+  const changeSort = (order) => {
+    console.log(order);
+
+    if (order === listSorting.by) {
+      setListSorting({ by: order, asc: !listSorting.asc });
+    } else {
+      setListSorting({ by: order, asc: true });
+    }
   };
 
   return (
@@ -61,17 +81,26 @@ const OrderList = ({ doSelectedItems, selectedCidList, watchList, watchedCidList
             checked={isAllSelected()}
             onChange={toggleAll}/>
         </div>
-        <div className='ph2 pv1 flex-auto db-l tc w-20'>{t('order:fileCid')}</div>
+        <div className='ph2 pv1 flex-auto db-l tc w-20'>
+          <button
+            aria-label={t('sortBy', { name: t('order:fileCid') })}
+            onClick={() => {
+              changeSort('fileCid');
+            }}
+          >
+            {t('order:fileCid')}{sortByIcon('fileCid')}
+          </button>
+        </div>
         {itemList.map((item) => (
           <div className='ph2 pv1 flex-auto db-l tc w-10'
             key={item}>
             <button
               aria-label={t('sortBy', { name: t(`order:${item}`) })}
               onClick={() => {
-                console.log(123);
+                changeSort(item);
               }}
             >
-              {t(`order:${item}`)}
+              {t(`order:${item}`)}{sortByIcon(item)}
             </button>
           </div>
         ))}
@@ -112,4 +141,4 @@ const OrderList = ({ doSelectedItems, selectedCidList, watchList, watchedCidList
   );
 };
 
-export default connect('selectWatchedCidList', 'doRemoveWatchItems', 'doSelectedItems', 'selectSelectedCidList', OrderList);
+export default connect('selectWatchedCidList', 'doRemoveWatchItems', 'doFetch', 'doSelectedItems', 'selectSelectedCidList', OrderList);

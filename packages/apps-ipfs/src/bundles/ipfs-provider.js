@@ -434,7 +434,26 @@ const actions = {
       context.dispatch({ type: 'IPFS_STOPPED' });
     }
   },
+  /**
+   * @param {hash} String
+   * @returns {function(hash):Promise<number>}
+   */
+  doFindProvs: (hash) => async (context) => {
+    if (ipfs) {
+      const find = ipfs.dht.findProvs(hash, { timeout: 10000 });
+      let count = 0;
 
+      try {
+        for await (const provider of find) {
+          count += 1;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+
+      return count;
+    }
+  },
   /**
    * @param {string} address
    * @returns {function(Context):Promise<boolean>}

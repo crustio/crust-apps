@@ -30,11 +30,10 @@ const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChang
   const [fileSize, setFileSize] = useState<string>(file ? file.originalSize : '0');
   const [price, setPrice] = useState<string | undefined>('0 CRU');
   const [tip, setTip] = useState<BN | undefined>(BN_ZERO);
-  const { api } = useApi();
-  const filePrice = useCall<BN>(api.query.market.filePrice);
+  const { api, isApiReady } = useApi();
+  const filePrice = useCall<BN>(isApiReady && api.query.market.filePrice);
 
   useEffect(() => {
-    console.log(filePrice);
     // 0.01cru + storagePrice + tip
     setPrice(formatBalance(filePrice?.mul(new BN(fileSize)).divn(1000000), { decimals: 12 }));
   }, [fileSize, filePrice]);
@@ -117,6 +116,7 @@ const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChang
   </Modal>;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 const OrderWithBundle = connect('doAddOrder', OrderModal);
 
 export default withTranslation('order')(OrderWithBundle);

@@ -12,6 +12,7 @@ declare module 'ipfs' {
     name: NameService
     object: ObjectService
     config: ConfigService
+    dht: DhtService
 
     stop(options?: TimeoutOptions): Promise<void>
   }
@@ -44,6 +45,9 @@ declare module 'ipfs' {
     replace(config: Object, options?: TimeoutOptions): Promise<void>
 
     profiles: ConfigProfiles
+  }
+  export interface DhtService {
+    findProvs(cid: string, options: Object): Promise<Object>
   }
 
   export interface ConfigProfiles {

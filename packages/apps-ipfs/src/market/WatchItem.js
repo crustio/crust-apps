@@ -1,9 +1,11 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import classnames from 'classnames';
+import filesize from 'filesize';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { connect } from 'redux-bundler-react';
 
 import Cid from '@polkadot/apps-ipfs/components/cid/Cid';
 
@@ -18,9 +20,10 @@ const fileStatusEnum = {
   EXPIRE: 'EXPIRE'
 };
 
-const WatchItem = ({ onSelect, selected, watchItem }) => {
+const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, selected, watchItem }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
+  const [spin, setSpin] = useState(false);
   const checkBoxCls = classnames({
     'o-1': selected
   }, ['pl2 w2']);
@@ -67,15 +70,26 @@ const WatchItem = ({ onSelect, selected, watchItem }) => {
         status = fileStatusEnum.FAILED;
       }
     }
-
-    watchItem.fileStatus = status;
-
-    // todo update items status
-    // need to check trash to get correct status
   }
 
-  const syncStatus = () => {
-    // todo: get pins count
+  watchItem.fileStatus = status;
+  const readableSize = watchItem.fileSize ? filesize(watchItem.fileSize, { round: 2 }) : '-';
+
+  const syncStatus = async () => {
+    if (spin) {
+      return;
+    }
+
+    try {
+      setSpin(true);
+      const pinsCount = await doFindProvs(watchItem.fileCid);
+
+      setSpin(false);
+
+      doUpdateWatchItem(watchItem.fileCid, { pinsCount });
+    } catch (e) {
+      setSpin(false);
+    }
   };
 
   return <div
@@ -97,7 +111,7 @@ const WatchItem = ({ onSelect, selected, watchItem }) => {
     </div>
     <div className='relative tc pointer  justify-center flex items-center flex-grow-1 ph2 pv1 w-10'>
       <div className=''>
-        {watchItem.fileSize}
+        {readableSize}
       </div>
     </div>
 
@@ -114,7 +128,7 @@ const WatchItem = ({ onSelect, selected, watchItem }) => {
     <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-10'>
       <div className=''>
         {watchItem.pinsCount}
-        <Icon className={'fill-teal-muted refresh-icon'}
+        <Icon className={`fill-teal-muted refresh-icon ${spin ? 'spin' : ''}`}
           icon='sync'
           onClick={syncStatus} />
       </div>
@@ -139,4 +153,4 @@ WatchItem.prototype = {
   selected: PropTypes.boolean
 };
 
-export default WatchItem;
+export default connect('doFindProvs', 'doUpdateWatchItem', WatchItem);

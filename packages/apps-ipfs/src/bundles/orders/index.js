@@ -1,13 +1,11 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-
-import _ from 'lodash';
-
 import { ACTIONS } from './consts';
 
 const bundle = { name: 'orders',
   persistActions: [
-    ACTIONS.ADD
+    ACTIONS.ADD,
+    ACTIONS.FETCH
   ],
   reducer: (state = { watchList: [], selectedCidList: [] }, action) => {
     switch (action.type) {
@@ -21,7 +19,12 @@ const bundle = { name: 'orders',
         return state;
     }
   },
-  doAddOrder: ({ fileCid }) => ({ dispatch }) => {
+  doFetch: (_list) => ({ dispatch }) => {
+    dispatch({ type: ACTIONS.FETCH, payload: _list });
+  },
+  doAddOrder: ({ fileCid }) => ({ dispatch, store }) => {
+    const CidList = store.selectWatchedCidList();
+
     const watchItem = {
       fileCid,
       fileSize: 0,
@@ -32,6 +35,11 @@ const bundle = { name: 'orders',
       insertAt: (new Date()).valueOf()
     };
 
+    if (CidList.indexOf(fileCid) > -1) {
+      return;
+    }
+
+    dispatch({ type: ACTIONS.SELECTED, payload: [] });
     dispatch({ type: ACTIONS.ADD, payload: watchItem });
   },
   doSelectedItems: (fileCids) => ({ dispatch, store }) => {
@@ -40,17 +48,24 @@ const bundle = { name: 'orders',
   doRemoveWatchItems: (fileCids) => ({ dispatch, store }) => {
     const watchList = store.selectWatchList();
 
-    for (const fileCid in fileCids) {
-      const idx = watchList.findIndex((item) => fileCid === item.fileCid);
+    for (const idx in fileCids) {
+      const _idx = watchList.findIndex((item) => fileCids[idx] === item.fileCid);
 
-      watchList.splice(idx, 1);
+      watchList.splice(_idx, 1);
     }
 
+    dispatch({ type: ACTIONS.SELECTED, payload: [] });
     dispatch({ type: ACTIONS.FETCH, payload: watchList });
-    this.doSelectedItems([]);
+  },
+  doUpdateWatchItem: (fileCid, info) => ({ dispatch, store }) => {
+    const watchList = store.selectWatchList();
+    const _idx = watchList.findIndex((item) => fileCid === item.fileCid);
+
+    watchList[_idx] = { ...watchList[_idx], ...info };
+    dispatch({ type: ACTIONS.FETCH, payload: watchList });
   },
   selectWatchList: (state) => state.orders.watchList,
   selectWatchedCidList: (state) => state.orders.watchList.map((item) => item.fileCid),
-  selectSelectedCidList: (state) => state.orders.selectedCidList };
+  selectSelectedCidList: (state) => state.orders.selectedCidList || [] };
 
 export default bundle;

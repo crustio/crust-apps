@@ -55,4 +55,19 @@ button:focus {outline:0!important;}
   padding: 0 5px;
   width: auto!important;
 }
+.spin {
+  transition: all;
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+@keyframes spin {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
+}
 
