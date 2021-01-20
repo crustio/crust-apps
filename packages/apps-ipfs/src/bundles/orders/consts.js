@@ -15,7 +15,9 @@ export const ACTIONS = {
   /** @type {'ORDERS_WRITE_UPDATED'} */
   WRITE_UPDATED: ('ORDERS_WRITE_UPDATED'),
   /** @type {'ORDERS_UPDATE_SORT'} */
-  UPDATE_SORT: ('ORDERS_UPDATE_SORT')
+  UPDATE_SORT: ('ORDERS_UPDATE_SORT'),
+  /** @type {'ORDERS_SELECTED'} */
+  SELECTED: ('ORDERS_SELECTED')
 };
 
 export const SORTING = {

@@ -11,18 +11,67 @@ import Icon from '../../../react-components/src/Icon';
 import { useApi, useCall } from '../../../react-hooks/src';
 import Checkbox from '../components/checkbox/Checkbox';
 
+const fileStatusEnum = {
+  PENDING: 'PENDING',
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED',
+  EXPIRE: 'EXPIRE'
+};
+
 const WatchItem = ({ onSelect, selected, watchItem }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
   const checkBoxCls = classnames({
     'o-1': selected
   }, ['pl2 w2']);
-  const status = useCall(isApiReady && api.query?.market.files, [watchItem.fileCid]);
+  const fileStatus = useCall(isApiReady && api.query?.market.files, [watchItem.fileCid]);
+  let bestNumber = useCall(isApiReady && api.derive.chain.bestNumber);
+  const trash1 = useCall(isApiReady && api.query?.market.transh1, [watchItem.fileCid]);
+  const trash2 = useCall(isApiReady && api.query?.market.transh2, [watchItem.fileCid]);
 
-  if (status) {
+  bestNumber = bestNumber && JSON.parse(JSON.stringify(bestNumber));
+  let status = fileStatusEnum.PENDING;
+
+  if (fileStatus) {
+    const _fileStatus = JSON.parse(JSON.stringify(fileStatus));
+
+    if (_fileStatus && Array.isArray(_fileStatus)) {
+      const { amount,
+        claimed_at,
+        expired_on,
+        file_size,
+        replicas,
+        reported_replica_count } = _fileStatus[0];
+
+      watchItem.startTime = claimed_at;
+      watchItem.expireTime = expired_on;
+      watchItem.fileSize = file_size;
+
+      if (expired_on > bestNumber || (trash1 && trash2)) {
+        // expried
+        status = fileStatusEnum.EXPIRE;
+      }
+
+      if (expired_on < bestNumber && replicas.length < 1) {
+        // pending
+        status = fileStatusEnum.PENDING;
+      }
+
+      if (expired_on && replicas.length > 0) {
+        // success
+        status = fileStatusEnum.SUCCESS;
+      }
+    } else {
+      if (!trash1 && !trash2) {
+        // failed
+        status = fileStatusEnum.FAILED;
+      }
+    }
+
+    watchItem.fileStatus = status;
+
     // todo update items status
     // need to check trash to get correct status
-    console.log(JSON.parse(JSON.stringify(status)));
   }
 
   const syncStatus = () => {

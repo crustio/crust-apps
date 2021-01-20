@@ -1,7 +1,5 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-import type { Balance } from '@polkadot/types/interfaces';
-
 import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
 import { WithTranslation, withTranslation } from 'react-i18next';
@@ -9,7 +7,7 @@ import { connect } from 'redux-bundler-react';
 
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { Available } from '@polkadot/react-query';
-import { BN_ZERO, formatBalance, formatNumber } from '@polkadot/util';
+import { BN_ZERO, formatBalance } from '@polkadot/util';
 
 import { Input, InputAddress, InputBalance, Modal, TxButton } from '../../../../../react-components/src';
 
@@ -37,6 +35,7 @@ const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChang
 
   useEffect(() => {
     console.log(filePrice);
+    // 0.01cru + storagePrice + tip
     setPrice(formatBalance(filePrice?.mul(new BN(fileSize)).divn(1000000), { decimals: 12 }));
   }, [fileSize, filePrice]);
 
