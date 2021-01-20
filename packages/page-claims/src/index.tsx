@@ -3,7 +3,7 @@
 
 import type { AppProps as Props, ThemeProps } from '@polkadot/react-components/types';
 import type { Option } from '@polkadot/types';
-import type { EcdsaSignature, EthereumAddress, StatementKind } from '@polkadot/types/interfaces';
+import type { BalanceOf, EcdsaSignature, EthereumAddress, StatementKind } from '@polkadot/types/interfaces';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
@@ -158,22 +158,51 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
   const handleAccountStep = useCallback(async () => {
     setIsBusy(true);
     const result = await httpPost('http://localhost:4001/claim/' + ethereumTxHash );
-    setStatusOpen(true);
+    setIsBusy(false);
     setResult(result.statusText);
     setStatus(result.status);
     if (result.code == 200) {
+      setStatusOpen(true);
       setEthereumTxHashValid(true);
-      if (isPreclaimed) {
-        goToStepClaim();
-      } else if (ethereumAddress || isOldClaimProcess) {
-        goToStepSign();
-      } else {
-        setStep(Step.ETHAddress);
-      }
+      stepHandle(isPreclaimed);
+    } else {
+      api.query.claims
+      .claims<Option<BalanceOf>>(ethereumTxHash?.toString())
+      .then((claim): void => {
+        const claimOpt = JSON.parse(JSON.stringify(claim));
+        if (claimOpt) {
+          api.query.claims
+          .claimed<Option<BalanceOf>>(ethereumTxHash?.toString())
+          .then((claimed): void => {
+            const isClaimed = JSON.parse(JSON.stringify(claimed));
+            if (isClaimed) {
+              setStatusOpen(true);
+            } else {
+              setStatusOpen(true);
+              setResult("You has a valid claim");
+              setStatus("success");
+              setEthereumTxHashValid(true);
+              stepHandle(isPreclaimed);
+            }
+          })    
+        } else {
+          setStatusOpen(true);
+        }
+      })
+      .catch((): void => setIsBusy(false));
     }
-    setIsBusy(false);
 
   }, [ethereumAddress, goToStepClaim, goToStepSign, isPreclaimed, isOldClaimProcess, ethereumTxHash]);
+
+  const stepHandle = (isPreclaimed: boolean) => {
+    if (isPreclaimed) {
+      goToStepClaim();
+    } else if (ethereumAddress || isOldClaimProcess) {
+      goToStepSign();
+    } else {
+      setStep(Step.ETHAddress);
+    }
+  }
 
   const onChangeSignature = useCallback((event: React.SyntheticEvent<Element>) => {
     const { value: signatureJson } = event.target as HTMLInputElement;
@@ -231,6 +260,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
               }
             })}</h3>
             <InputAddress
+              isDisabled={ethereumTxHashValid}
               defaultValue={accountId}
               help={t<string>('The account you want to claim to.')}
               label={t<string>('claim to account')}
@@ -330,7 +360,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
                   <Button
                     icon='sign-in-alt'
                     isDisabled={!accountId || !signature}
-                    label={t<string>('Confirm claim')}
+                    label={t<string>('Confirm')}
                     onClick={goToStepClaim}
                   />
                 </Button.Group>

@@ -81,7 +81,32 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
     return null;
   }
 
-  const hasClaim = claimValue && claimValue.gten(0);
+  let hasClaim = claimValue && claimValue.gten(0);
+
+  let isSignedAddr = true;
+
+  if (claimedAddress.toString() !== ethereumAddress.toString()) {
+    isSignedAddr = false;
+    hasClaim = false;
+  }
+
+  if (!isSignedAddr) {
+
+    return (<Card
+      isError={!isSignedAddr}
+    >
+      <div className={className}>
+        {t<string>('Your Sign account')}
+        <h3>{addrToChecksum(ethereumAddress.toString())}</h3>
+          <>
+            {t<string>('is not samed as Your Transfer account')}
+          </>
+        <h3>{addrToChecksum(claimedAddress.toString())}</h3>
+        {t<string>('Please make sure that the account you trade in Ethereum is the same as the signature account.')}
+      </div>
+    </Card>)
+  }
+  
 
   return (
     <Card
@@ -90,7 +115,7 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
     >
       <div className={className}>
         {t<string>('Your Ethereum account')}
-        <h3>{addrToChecksum(claimedAddress.toString())}</h3>
+        <h3>{addrToChecksum(ethereumAddress.toString())}</h3>
         {ethereumTxHash !== '' && hasClaim
           ? (
             <>

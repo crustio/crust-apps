@@ -1396,5 +1396,6 @@
   "Guaranteeing": "担保",
   "stake limit": "质押上限",
   "guarantee fee": "担保费率",
-  "last verified block #": "最后验证区块"
+  "last verified block #": "最后验证区块",
+  "Confirm": "确认"
 }

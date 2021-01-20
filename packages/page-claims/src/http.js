@@ -18,35 +18,46 @@ export function httpGet(url){
   })
 }
 
-export function httpPost(url,data){
-  return fetch(url, {
-    method: 'post',
-    mode: "cors",
-    headers: {
-      'Accept': 'application/json,text/plain,*/*',
-      'Content-Type': 'application/json'
-    },
-  }).then((response) => {
-    console.log('response', response)
-    return response
-  }).then((data) => {
-    if (data.status == 200) {
-      return {
+const MAX_RETRY = 3;
+const RETRY_INTERVAL = 500 
+
+function sleep(ms){
+  return new Promise((resolve)=>setTimeout(resolve,ms));
+}
+
+export async function httpPost(url, retry = MAX_RETRY) {
+  let requireRetry;
+  let res;
+  try {
+    res = await fetch(url, {
+      method: 'post',
+      mode: "cors",
+      headers: {
+        'Accept': 'application/json,text/plain,*/*',
+        'Content-Type': 'application/json'
+      },
+    });
+    if (res.status == 200) {
+      res = {
         code: 200,
         status: 'success',
         statusText: 'You has a valid claim'
-      };   
+      }
+    } else if (400 == res.status) {
+      requireRetry = true;
+      res = {
+        code: 400,
+        status: 'error',
+        statusText: 'Does not appear to have a valid claim. Please double check that you have signed the transaction correctly on the correct ETH account.'
+      }; 
     }
-    return {
-      code: 400,
-      status: 'error',
-      statusText: 'Does not appear to have a valid claim. Please double check that you have signed the transaction correctly on the correct ETH account.'
-    };   
-  }).catch(function (error) {
-    return {
-      code: 400,
-      status: 'error',
-      statusText: 'Does not appear to have a valid claim. Please double check that you have signed the transaction correctly on the correct ETH account.'
-    }
-  })
+  } catch {
+    console.log(err)
+    requireRetry = true;
+  }
+  if (requireRetry && retry > 0){
+    await sleep(RETRY_INTERVAL);
+    res = await httpPost(url, --retry);
+  }
+  return res;
 }
