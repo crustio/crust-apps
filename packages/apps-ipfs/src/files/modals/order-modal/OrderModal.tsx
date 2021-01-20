@@ -28,7 +28,7 @@ type IFile = {
 const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChange, onClose, t, title = 'order' }) => {
   const [account, setAccount] = useState(null);
   const [fileCid, setFileCID] = useState<string>(file ? file.cid.toString() : '');
-  const [fileSize, setFileSize] = useState<string>(file ? file.originalSize : '0');
+  const [fileSize, setFileSize] = useState<string>(file ? file.originalSize.toString() : '0');
   const [price, setPrice] = useState<string | undefined>('0 CRU');
   const [tip, setTip] = useState<BN | undefined>(BN_ZERO);
   const { api, isApiReady } = useApi();
