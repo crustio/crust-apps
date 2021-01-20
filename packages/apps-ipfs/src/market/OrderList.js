@@ -1,6 +1,7 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import _ from 'lodash';
+import propTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AutoSizer, List, WindowScroller } from 'react-virtualized';
@@ -10,7 +11,7 @@ import WatchItem from '@polkadot/apps-ipfs/market/WatchItem';
 
 import Checkbox from '../components/checkbox/Checkbox';
 
-const OrderList = ({ doFetch, doSelectedItems, selectedCidList, watchList, watchedCidList }) => {
+const OrderList = ({ doFetch, doSelectedItems, onToggleBtn, selectedCidList, watchList, watchedCidList }) => {
   const { t } = useTranslation();
   const [listSorting, setListSorting] = useState({ by: null, asc: true });
   const itemList = ['fileSize', 'startTime', 'expireTime', 'pinsCount', 'fileStatus'];
@@ -126,6 +127,9 @@ const OrderList = ({ doFetch, doSelectedItems, selectedCidList, watchList, watch
                   rowHeight={50}
                   rowRenderer={({ index, key, style }) => {
                     return <WatchItem onSelect={toggleOne}
+                      onToggleBtn={(type, file) => {
+                        onToggleBtn(type, file);
+                      }}
                       selected={selectedCidList.indexOf(watchList[index].fileCid) > -1}
                       watchItem={watchList[index]} />;
                   }}
@@ -139,6 +143,16 @@ const OrderList = ({ doFetch, doSelectedItems, selectedCidList, watchList, watch
       </WindowScroller>
     </div>
   );
+};
+
+OrderList.propTypes = {
+  selectWatchedCidList: propTypes.array.isRequired,
+  onToggleBtn: propTypes.func.isRequired,
+  doRemoveWatchItems: propTypes.func.isRequired,
+  doFetch: propTypes.func.isRequired,
+  doSelectedItems: propTypes.array.isRequired,
+  selectSelectedCidList: propTypes.array.isRequired,
+  OrderList
 };
 
 export default connect('selectWatchedCidList', 'doRemoveWatchItems', 'doFetch', 'doSelectedItems', 'selectSelectedCidList', OrderList);

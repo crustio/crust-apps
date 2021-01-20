@@ -66,8 +66,7 @@ const WatchListInput = ({ doAddOrder, doRemoveWatchItems, onFilterWatchList, sel
 };
 
 WatchListInput.propTypes = {
-  onFilterWatchList: PropTypes.func.isRequired,
-  onAddWatchItem: PropTypes.func.isRequired
+  onFilterWatchList: PropTypes.func.isRequired
 };
 
 export default connect('selectWatchedCidList', 'doAddOrder', 'doRemoveWatchItems', 'selectSelectedCidList', WatchListInput);

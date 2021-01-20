@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 
+import Button from '@polkadot/apps-ipfs/components/button/Button';
 import Cid from '@polkadot/apps-ipfs/components/cid/Cid';
 
 import Icon from '../../../react-components/src/Icon';
@@ -20,7 +21,7 @@ const fileStatusEnum = {
   EXPIRE: 'EXPIRE'
 };
 
-const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, selected, watchItem }) => {
+const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, selected, watchItem }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
   const [spin, setSpin] = useState(false);
@@ -92,6 +93,15 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, selected, watchIt
     }
   };
 
+  const buttonTextEnm = {
+
+    PENDING: 'speed',
+    SUCCESS: 'renew',
+    FAILED: 'retry',
+    EXPIRE: 'renew'
+
+  };
+
   return <div
     className={'File b--light-gray relative  flex items-center bt'}
     // onContextMenu={handleCtxRightClick}
@@ -141,7 +151,10 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, selected, watchIt
     <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-20'>
       <div className=''
         title='action'>
-        <button>操作</button>
+        <Button onClick={() => {
+          console.log(123);
+          onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem);
+        }}>{buttonTextEnm[watchItem.fileStatus]}</Button>
       </div>
     </div>
   </div>;
@@ -150,7 +163,8 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, selected, watchIt
 WatchItem.prototype = {
   watchItem: PropTypes.array.isRequired,
   onSelect: PropTypes.func.isRequired,
-  selected: PropTypes.boolean
+  selected: PropTypes.boolean,
+  onToggleBtn: PropTypes.func.onToggleBtn
 };
 
 export default connect('doFindProvs', 'doUpdateWatchItem', WatchItem);

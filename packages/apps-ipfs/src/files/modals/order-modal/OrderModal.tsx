@@ -9,14 +9,15 @@ import { useApi, useCall } from '@polkadot/react-hooks';
 import { Available } from '@polkadot/react-query';
 import { BN_ZERO, formatBalance } from '@polkadot/util';
 
-import { Input, InputAddress, InputBalance, Modal, TxButton } from '../../../../../react-components/src';
+import { Input, InputAddress, InputBalance, InputNumber, Modal, TxButton } from '../../../../../react-components/src';
 
 interface Props extends WithTranslation{
   file?: IFile
   className?: string;
   onChange: () => void;
   onClose: () => void;
-  doAddOrder: (any) => void
+  doAddOrder: (any) => void;
+  title?: string
 }
 type IFile = {
   cid: string,
@@ -24,7 +25,7 @@ type IFile = {
   originalSize: string
 }
 
-const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChange, onClose, t }) => {
+const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChange, onClose, t, title = 'order' }) => {
   const [account, setAccount] = useState(null);
   const [fileCid, setFileCID] = useState<string>(file ? file.cid.toString() : '');
   const [fileSize, setFileSize] = useState<string>(file ? file.originalSize : '0');
@@ -40,14 +41,14 @@ const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChang
 
   return <Modal
     className='app--accounts-Modal'
-    header={t('order')}
+    header={t(`${title}`, 'order')}
     size='large'
   >
     <Modal.Content>
       <div className={className}>
         <InputAddress
-          help={t<string>('The account you will send funds from.')}
-          label={t<string>('send from account')}
+          help={t<string>('Storage fee will be subtracted from the selected account')}
+          label={t<string>('Please choose account')}
           labelExtra={
             <Available
               label={t<string>('transferrable')}
@@ -59,37 +60,35 @@ const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChang
         />
         <Input
           autoFocus
-          help={t<string>('The name that will be displayed in your accounts list.')}
-          label={t<string>('fileCid')}
-          maxLength={32}
+          help={t<string>('File Cid')}
+          label={t<string>('FileCid')}
           onChange={setFileCID}
           placeholder={t('My On-Chain Name')}
           value={fileCid}
         />
-        <Input
+        <InputNumber
           autoFocus
-          help={t<string>('The name that will be displayed in your accounts list.')}
-          label={t<string>('fileSize')}
-          maxLength={32}
+          help={t<string>('File size')}
+          label={t<string>('fileSize (byte)')}
+          maxLength={30}
           onChange={setFileSize}
-          placeholder={t('My On-Chain Name')}
           value={fileSize}
         />
         <InputBalance
           autoFocus
           defaultValue={tip}
-          help={t<string>('The total amount of the stash balance that will be at stake in any forthcoming rounds (should be less than the free amount available)')}
+          help={t<string>('files would be stored by more merchants with higher tips.')}
           label={t<string>('Tip')}
           onChange={setTip}
           onlyCru
         />
         <Input
-          help={t<string>('The name that will be displayed in your accounts list.')}
+          help={t<string>('The minimum storage price that needs to be paid for this file.')}
           isDisabled
-          label={t<string>('Price')}
+          label={t<string>('File Price')}
           maxLength={32}
           onChange={setPrice}
-          placeholder={t('My On-Chain Name')}
+          placeholder={t('File price')}
           value={price}
         />
       </div>
@@ -98,7 +97,7 @@ const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChang
       <TxButton
         accountId={account}
         icon='paper-plane'
-        isDisabled={!account || !price}
+        isDisabled={!fileCid || !fileSize || !account || !tip}
         label={t<string>('Make Transfer')}
         onStart={() => {
           doAddOrder({

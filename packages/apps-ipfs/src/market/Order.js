@@ -10,9 +10,11 @@ import OrderModal from '../files/modals/order-modal/OrderModal';
 import OrderList from './OrderList';
 import WatchListInput from './WatchListInput';
 
-const Order = ({ doAddOrder, doFetchOrders, watchList, watchedCidList }) => {
+const Order = ({ watchList }) => {
   const [modalShow, toggleModal] = useState(false);
   const [tableData, setTableData] = useState(watchList);
+  const [title, setTitle] = useState('order');
+  const [fileInfo, setFileInfo] = useState(null);
 
   useEffect(() => {
     setTableData(watchList);
@@ -28,20 +30,26 @@ const Order = ({ doAddOrder, doFetchOrders, watchList, watchedCidList }) => {
     }
   };
 
-  const handleDelete = () => {
-    // do delete
+  const handleToggleBtn = (type, item) => {
+    // renew, retry, speed.
+    setTitle(type);
+    setFileInfo({ cid: item.fileCid, originalSize: item.fileSize });
+    toggleModal(true);
   };
 
   return (
     <div className={'w-100'}>
       {
         modalShow && <OrderModal
+          file={fileInfo}
           onChange={() => {
             console.log('change');
           }}
+
           onClose={() => {
             toggleModal(false);
-          }}/>}
+          }}
+          title={title}/>}
 
       <div className={'w-100 btn-wrapper'}>
         <button className='btn'
@@ -50,13 +58,13 @@ const Order = ({ doAddOrder, doFetchOrders, watchList, watchedCidList }) => {
           }}>添加订单</button>
       </div>
       <h3>关注列表</h3>
-      <WatchListInput onAddWatchItem={() => {
-        console.log(123);
-      }}
-      onDelete={handleDelete}
-      onFilterWatchList={handleFilterWatchList}
+      <WatchListInput
+        onFilterWatchList={handleFilterWatchList}
       />
-      {tableData ? <OrderList watchList={tableData}/> : <div>noone</div>}
+      {tableData
+        ? <OrderList onToggleBtn={handleToggleBtn}
+          watchList={tableData}/>
+        : <div>noone</div>}
     </div>
   );
 };
