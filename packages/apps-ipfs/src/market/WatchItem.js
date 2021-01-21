@@ -4,11 +4,14 @@ import classnames from 'classnames';
 import filesize from 'filesize';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 
 import Button from '@polkadot/apps-ipfs/components/button/Button';
 import Cid from '@polkadot/apps-ipfs/components/cid/Cid';
+import { Option } from '@polkadot/apps-ipfs/files/dropdown/Dropdown';
+import StrokeCopy from '@polkadot/apps-ipfs/icons/StrokeCopy';
 
 import Icon from '../../../react-components/src/Icon';
 import { useApi, useCall } from '../../../react-hooks/src';
@@ -117,6 +120,10 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, sele
     <div className='relative tc pointer  justify-center flex items-center flex-grow-1 ph2 pv1 w-20'>
       <div className=''>
         <Cid value={watchItem.fileCid} />
+        <CopyToClipboard text={watchItem.fileCid}>
+          <StrokeCopy className='fill-aqua'
+            style={{ width: 18 }} />
+        </CopyToClipboard>
       </div>
     </div>
     <div className='relative tc pointer  justify-center flex items-center flex-grow-1 ph2 pv1 w-10'>
