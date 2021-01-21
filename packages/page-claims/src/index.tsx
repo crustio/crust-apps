@@ -13,7 +13,6 @@ import styled from 'styled-components';
 import { Button, Card, Columar, Input, InputAddress, Tabs, Tooltip } from '@polkadot/react-components';
 import { TokenUnit } from '@polkadot/react-components/InputNumber';
 import { useApi, useCall } from '@polkadot/react-hooks';
-import { u8aToHex, u8aToString } from '@polkadot/util';
 import { decodeAddress } from '@polkadot/util-crypto';
 
 import AttestDisplay from './Attest';
@@ -25,6 +24,7 @@ import Warning from './Warning';
 // @ts-ignore
 import { httpPost } from './http';
 import HttpStatus from './HttpStatus';
+import { hexToU8a, isAscii, stringToU8a, u8aToHex, u8aToString } from '@polkadot/util';
 
 export { default as useCounter } from './useCounter';
 
@@ -90,6 +90,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
   const [status, setStatus] = useState<string>("");
   const [ethereumTxHashValid, setEthereumTxHashValid] = useState<boolean>(false);
   const [isBusy, setIsBusy] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState(false);
 
   // This preclaimEthereumAddress holds the result of `api.query.claims.preclaims`:
   // - an `EthereumAddress` when there's a preclaim
@@ -143,7 +144,9 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
   }, [didCopy]);
 
   const goToStepAccount = useCallback(() => {
+    setEthereumTxHashValid(false);
     setStep(Step.Account);
+    setIsValid(false);
   }, []);
 
   const goToStepSign = useCallback(() => {
@@ -220,9 +223,40 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
     setEthereumAddress(value.trim());
   }, []);
 
-  const onChangeEthereumTxHash = useCallback((value: string) => {
-    setEthereumTxHash(value.trim());
-  }, []);
+  function convertInput (value: string): [boolean, Uint8Array] {
+    if (value === '0x') {
+      return [true, new Uint8Array([])];
+    } else if (value.startsWith('0x')) {
+      try {
+        return [true, hexToU8a(value)];
+      } catch (error) {
+        return [false, new Uint8Array([])];
+      }
+    }
+  
+    // maybe it is an ss58?
+    try {
+      return [true, decodeAddress(value)];
+    } catch (error) {
+      // we continue
+    }
+  
+    return isAscii(value)
+      ? [true, stringToU8a(value)]
+      : [value === '0x', new Uint8Array([])];
+  }
+
+  const onChangeEthereumTxHash = useCallback((hex: string) => {
+
+    let [isValid, value] = convertInput(hex);
+    isValid = isValid && (
+      length !== -1
+        ? value.length === 32
+        : value.length !== 0
+    );
+    setIsValid(isValid);
+    setEthereumTxHash(hex.trim());
+  }, [ethereumTxHash]);
 
   const onCopy = useCallback(() => {
     setDidCopy(true);
@@ -270,6 +304,8 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
             <Input
               autoFocus
               className='full'
+              isError={!isValid}
+              placeholder={t<string>('0x prefixed hex, e.g. 0x1234 or ascii data')}
               help={t<string>('The the Ethereum tx hash you used during the pre-sale (starting by "0x")')}
               label={t<string>('Ethereum tx hash')}
               onChange={onChangeEthereumTxHash}
@@ -280,7 +316,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
               <Button.Group>
                 <Button
                   icon='sign-in-alt'
-                  isDisabled={preclaimEthereumAddress === PRECLAIMS_LOADING || ethereumTxHash === null || ethereumTxHash === ''}
+                  isDisabled={preclaimEthereumAddress === PRECLAIMS_LOADING || ethereumTxHash === null || ethereumTxHash === '' || !isValid}
                   label={preclaimEthereumAddress === PRECLAIMS_LOADING
                     ? t<string>('Loading')
                     : t<string>('Continue')

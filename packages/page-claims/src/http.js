@@ -19,7 +19,7 @@ export function httpGet(url){
 }
 
 const MAX_RETRY = 3;
-const RETRY_INTERVAL = 500 
+const RETRY_INTERVAL = 1000; 
 
 function sleep(ms){
   return new Promise((resolve)=>setTimeout(resolve,ms));
@@ -37,19 +37,22 @@ export async function httpPost(url, retry = MAX_RETRY) {
         'Content-Type': 'application/json'
       },
     });
-    if (res.status == 200) {
-      res = {
-        code: 200,
-        status: 'success',
-        statusText: 'You has a valid claim'
-      }
-    } else if (400 == res.status) {
-      requireRetry = true;
-      res = {
-        code: 400,
-        status: 'error',
-        statusText: 'Does not appear to have a valid claim. Please double check that you have signed the transaction correctly on the correct ETH account.'
-      }; 
+    switch (res.status) {
+      case 200:
+        res = {
+          code: 200,
+          status: 'success',
+          statusText: 'You has a valid claim'
+        };
+        break;
+      case 400:
+        requireRetry = true;
+        res = {
+          code: 400,
+          status: 'error',
+          statusText: 'Does not appear to have a valid claim. Please double check that you have signed the transaction correctly on the correct ETH account.'
+        };
+        break;
     }
   } catch {
     console.log(err)
