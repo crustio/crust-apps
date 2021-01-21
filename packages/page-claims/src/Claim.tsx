@@ -1,23 +1,24 @@
 // Copyright 2017-2021 @polkadot/app-claims authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { ApiPromise } from '@polkadot/api';
 import type { SubmittableExtrinsic } from '@polkadot/api/types';
 import type { TxCallback } from '@polkadot/react-components/Status/types';
 import type { Option } from '@polkadot/types';
 import type { BalanceOf, EthereumAddress, StatementKind } from '@polkadot/types/interfaces';
 
+import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { Button, Card, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
+import { FormatBalance } from '@polkadot/react-query';
+import { TypeRegistry } from '@polkadot/types/create';
 
 import { useTranslation } from './translate';
 import { addrToChecksum, getStatement } from './util';
-import { FormatBalance } from '@polkadot/react-query';
-import { TypeRegistry } from '@polkadot/types/create';
-import BN from 'bn.js';
 
 interface Props {
   accountId: string;
@@ -48,7 +49,7 @@ function constructTx (api: ApiPromise, systemChain: string, accountId: string, e
     : { params: [accountId, ethereumSignature, getStatement(systemChain, kind)?.sentence], tx: api.tx.claims.claimAttest };
 }
 
-function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature, isOldClaimProcess, onSuccess, statementKind, ethereumTxHash }: Props): React.ReactElement<Props> | null {
+function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature, ethereumTxHash, isOldClaimProcess, onSuccess, statementKind }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api, systemChain } = useApi();
   const [claimValue, setClaimValue] = useState<BalanceOf | null>(null);
@@ -67,8 +68,10 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
       .then((claim): void => {
         const registry = new TypeRegistry();
         const claimOpt = JSON.parse(JSON.stringify(claim));
+
         if (claimOpt) {
           const claimBalance = registry.createType('BalanceOf', new BN(claimOpt[1]));
+
           setClaimValue(claimBalance);
           setClaimedAddress(claimOpt[0]);
           setIsBusy(false);
@@ -91,22 +94,20 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
   }
 
   if (!isSignedAddr) {
-
     return (<Card
       isError={!isSignedAddr}
     >
       <div className={className}>
         {t<string>('Your Sign account')}
         <h3>{addrToChecksum(ethereumAddress.toString())}</h3>
-          <>
-            {t<string>('is not samed as Your Transfer account')}
-          </>
+        <>
+          {t<string>('is not samed as Your Transfer account')}
+        </>
         <h3>{addrToChecksum(claimedAddress.toString())}</h3>
         {t<string>('Please make sure that the account you trade in Ethereum is the same as the signature account.')}
       </div>
-    </Card>)
+    </Card>);
   }
-  
 
   return (
     <Card

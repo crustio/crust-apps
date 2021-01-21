@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/react-components authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { IconName } from '@fortawesome/fontawesome-svg-core';
 import type { QueueStatus } from '@polkadot/react-components/Status/types';
 
@@ -10,8 +11,8 @@ import styled from 'styled-components';
 import AddressMini from '@polkadot/react-components/AddressMini';
 import Button from '@polkadot/react-components/Button';
 import Icon from '@polkadot/react-components/Icon';
-import { useTranslation } from '@polkadot/react-components/translate';
 import StatusContext from '@polkadot/react-components/Status/Context';
+import { useTranslation } from '@polkadot/react-components/translate';
 
 export { StatusContext };
 
@@ -20,7 +21,7 @@ interface Props {
   isStatusOpen: boolean;
   setStatusOpen: (statusOpen: boolean) => void;
   message: string,
-  status: "error" | "event" | "queued" | "received" | "success"
+  status: 'error' | 'event' | 'queued' | 'received' | 'success'
 }
 
 function iconName (status: string): IconName {
@@ -73,7 +74,7 @@ function renderStatus ({ account, action, id, message, removeItem, status }: Que
   );
 }
 
-function HttpStatus ({ className = '', isStatusOpen, setStatusOpen, message, status }: Props): React.ReactElement<Props> | null {
+function HttpStatus ({ className = '', isStatusOpen, message, setStatusOpen, status }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
 
   const _onDismiss = useCallback(

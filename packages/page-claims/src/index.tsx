@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-claims authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { AppProps as Props, ThemeProps } from '@polkadot/react-components/types';
 import type { Option } from '@polkadot/types';
 import type { BalanceOf, EcdsaSignature, EthereumAddress, StatementKind } from '@polkadot/types/interfaces';
@@ -13,18 +14,18 @@ import styled from 'styled-components';
 import { Button, Card, Columar, Input, InputAddress, Tabs, Tooltip } from '@polkadot/react-components';
 import { TokenUnit } from '@polkadot/react-components/InputNumber';
 import { useApi, useCall } from '@polkadot/react-hooks';
+import { hexToU8a, isAscii, stringToU8a, u8aToHex, u8aToString } from '@polkadot/util';
 import { decodeAddress } from '@polkadot/util-crypto';
 
 import AttestDisplay from './Attest';
 import ClaimDisplay from './Claim';
+// @ts-ignore
+import { httpPost } from './http';
+import HttpStatus from './HttpStatus';
 import Statement from './Statement';
 import { useTranslation } from './translate';
 import { getStatement, recoverFromJSON } from './util';
 import Warning from './Warning';
-// @ts-ignore
-import { httpPost } from './http';
-import HttpStatus from './HttpStatus';
-import { hexToU8a, isAscii, stringToU8a, u8aToHex, u8aToString } from '@polkadot/util';
 
 export { default as useCounter } from './useCounter';
 
@@ -86,8 +87,8 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
   const { api, systemChain } = useApi();
   const { t } = useTranslation();
   const [statusOpen, setStatusOpen] = useState<boolean>(false);
-  const [result, setResult] = useState<string>("");
-  const [status, setStatus] = useState<string>("");
+  const [result, setResult] = useState<string>('');
+  const [status, setStatus] = useState<string>('');
   const [ethereumTxHashValid, setEthereumTxHashValid] = useState<boolean>(false);
   const [isBusy, setIsBusy] = useState<boolean>(false);
   const [isValid, setIsValid] = useState(false);
@@ -160,41 +161,44 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
   // Depending on the account, decide which step to show.
   const handleAccountStep = useCallback(async () => {
     setIsBusy(true);
-    const result = await httpPost('http://localhost:4001/claim/' + ethereumTxHash );
+    const result = await httpPost('http://localhost:4001/claim/' + ethereumTxHash);
+
     setIsBusy(false);
     setResult(result.statusText);
     setStatus(result.status);
+
     if (result.code == 200) {
       setStatusOpen(true);
       setEthereumTxHashValid(true);
       stepHandle(isPreclaimed);
     } else {
       api.query.claims
-      .claims<Option<BalanceOf>>(ethereumTxHash?.toString())
-      .then((claim): void => {
-        const claimOpt = JSON.parse(JSON.stringify(claim));
-        if (claimOpt) {
-          api.query.claims
-          .claimed<Option<BalanceOf>>(ethereumTxHash?.toString())
-          .then((claimed): void => {
-            const isClaimed = JSON.parse(JSON.stringify(claimed));
-            if (isClaimed) {
-              setStatusOpen(true);
-            } else {
-              setStatusOpen(true);
-              setResult("You has a valid claim");
-              setStatus("success");
-              setEthereumTxHashValid(true);
-              stepHandle(isPreclaimed);
-            }
-          })    
-        } else {
-          setStatusOpen(true);
-        }
-      })
-      .catch((): void => setIsBusy(false));
-    }
+        .claims<Option<BalanceOf>>(ethereumTxHash?.toString())
+        .then((claim): void => {
+          const claimOpt = JSON.parse(JSON.stringify(claim));
 
+          if (claimOpt) {
+            api.query.claims
+              .claimed<Option<BalanceOf>>(ethereumTxHash?.toString())
+              .then((claimed): void => {
+                const isClaimed = JSON.parse(JSON.stringify(claimed));
+
+                if (isClaimed) {
+                  setStatusOpen(true);
+                } else {
+                  setStatusOpen(true);
+                  setResult('You has a valid claim');
+                  setStatus('success');
+                  setEthereumTxHashValid(true);
+                  stepHandle(isPreclaimed);
+                }
+              });
+          } else {
+            setStatusOpen(true);
+          }
+        })
+        .catch((): void => setIsBusy(false));
+    }
   }, [ethereumAddress, goToStepClaim, goToStepSign, isPreclaimed, isOldClaimProcess, ethereumTxHash]);
 
   const stepHandle = (isPreclaimed: boolean) => {
@@ -205,7 +209,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
     } else {
       setStep(Step.ETHAddress);
     }
-  }
+  };
 
   const onChangeSignature = useCallback((event: React.SyntheticEvent<Element>) => {
     const { value: signatureJson } = event.target as HTMLInputElement;
@@ -233,22 +237,22 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
         return [false, new Uint8Array([])];
       }
     }
-  
+
     // maybe it is an ss58?
     try {
       return [true, decodeAddress(value)];
     } catch (error) {
       // we continue
     }
-  
+
     return isAscii(value)
       ? [true, stringToU8a(value)]
       : [value === '0x', new Uint8Array([])];
   }
 
   const onChangeEthereumTxHash = useCallback((hex: string) => {
-
     let [isValid, value] = convertInput(hex);
+
     isValid = isValid && (
       length !== -1
         ? value.length === 32
@@ -294,9 +298,9 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
               }
             })}</h3>
             <InputAddress
-              isDisabled={ethereumTxHashValid}
               defaultValue={accountId}
               help={t<string>('The account you want to claim to.')}
+              isDisabled={ethereumTxHashValid}
               label={t<string>('claim to account')}
               onChange={setAccountId}
               type='all'
@@ -304,32 +308,32 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
             <Input
               autoFocus
               className='full'
-              isError={!isValid}
-              placeholder={t<string>('0x prefixed hex, e.g. 0x1234 or ascii data')}
               help={t<string>('The the Ethereum tx hash you used during the pre-sale (starting by "0x")')}
+              isDisabled={ethereumTxHashValid}
+              isError={!isValid}
               label={t<string>('Ethereum tx hash')}
               onChange={onChangeEthereumTxHash}
+              placeholder={t<string>('0x prefixed hex, e.g. 0x1234 or ascii data')}
               value={ethereumTxHash || ''}
-              isDisabled={ethereumTxHashValid}
             />
             {(step === Step.Account) && (
               <Button.Group>
                 <Button
                   icon='sign-in-alt'
+                  isBusy={isBusy}
                   isDisabled={preclaimEthereumAddress === PRECLAIMS_LOADING || ethereumTxHash === null || ethereumTxHash === '' || !isValid}
                   label={preclaimEthereumAddress === PRECLAIMS_LOADING
                     ? t<string>('Loading')
                     : t<string>('Continue')
                   }
-                  isBusy={isBusy}
                   onClick={handleAccountStep}
                 />
               </Button.Group>
             )}
             <HttpStatus
               isStatusOpen={statusOpen}
-              setStatusOpen={setStatusOpen}
               message={result}
+              setStatusOpen={setStatusOpen}
               status={status}
             />
           </Card>
@@ -417,8 +421,8 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
               : <ClaimDisplay
                 accountId={accountId}
                 ethereumAddress={ethereumAddress}
-                ethereumTxHash={ethereumTxHash}
                 ethereumSignature={signature}
+                ethereumTxHash={ethereumTxHash}
                 isOldClaimProcess={isOldClaimProcess}
                 onSuccess={goToStepAccount}
                 statementKind={statementKind}
