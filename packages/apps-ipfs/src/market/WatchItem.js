@@ -107,9 +107,8 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, sele
 
   return <div
     className={'File b--light-gray relative  flex items-center bt'}
-    // onContextMenu={handleCtxRightClick}
     style={{ overflow: 'hidden', height: 40 }}>
-    <div className='justify-center tc flex items-center flex-grow-1 ph2 pv1 w-5'>
+    <div className='justify-center tc flex justify-center items-center flex-grow-1 ph2 pv1 w-5'>
       <Checkbox aria-label={ t('checkboxLabel', { name })}
         checked={selected}
         className={checkBoxCls}
@@ -158,10 +157,10 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, sele
     <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-20'>
       <div className=''
         title='action'>
-        <Button onClick={() => {
-          console.log(123);
-          onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem);
-        }}>{buttonTextEnm[watchItem.fileStatus]}</Button>
+        <button className={'watch-item-btn'}
+          onClick={() => {
+            onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem);
+          }}>{buttonTextEnm[watchItem.fileStatus]}</button>
       </div>
     </div>
   </div>;

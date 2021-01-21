@@ -27,6 +27,20 @@
   color: #ff8812;
   background-color: #fff;
 }
+.watch-item-btn {
+  text-align: center;
+  display: inline-block;
+  font-size: 14px;
+  width: 100px;
+  height: 30px;
+  transition: all 0.2s ease-in-out;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+.watch-item-btn:hover {
+  background-color: #ff8812;
+  color: #fff;
+}
 button:focus {outline:0!important;}
 .add-watch-list-wrapper {
   padding-left: 10px;

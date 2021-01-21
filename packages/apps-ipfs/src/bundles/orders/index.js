@@ -19,7 +19,7 @@ const bundle = { name: 'orders',
         return state;
     }
   },
-  doFetch: (_list) => ({ dispatch }) => {
+  doFetchWatchList: (_list) => ({ dispatch }) => {
     dispatch({ type: ACTIONS.FETCH, payload: _list });
   },
   doAddOrder: ({ fileCid }) => ({ dispatch, store }) => {

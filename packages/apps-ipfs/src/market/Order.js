@@ -32,7 +32,6 @@ const Order = ({ watchList }) => {
 
   const handleToggleBtn = (type, item) => {
     // renew, retry, speed.
-    console.log(item);
     setTitle(type);
     setFileInfo({ cid: item.fileCid, originalSize: item.fileSize });
     toggleModal(true);

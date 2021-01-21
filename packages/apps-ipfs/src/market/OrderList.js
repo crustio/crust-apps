@@ -11,7 +11,7 @@ import WatchItem from '@polkadot/apps-ipfs/market/WatchItem';
 
 import Checkbox from '../components/checkbox/Checkbox';
 
-const OrderList = ({ doFetch, doSelectedItems, onToggleBtn, selectedCidList, watchList, watchedCidList }) => {
+const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCidList, watchList, watchedCidList }) => {
   const { t } = useTranslation();
   const [listSorting, setListSorting] = useState({ by: null, asc: true });
   const itemList = ['fileSize', 'startTime', 'expireTime', 'pinsCount', 'fileStatus'];
@@ -59,13 +59,11 @@ const OrderList = ({ doFetch, doSelectedItems, onToggleBtn, selectedCidList, wat
   useEffect(() => {
     const _list = _.orderBy(watchList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc']);
 
-    doFetch(_list);
+    doFetchWatchList(_list);
     tableRef.current.forceUpdateGrid();
-  }, [listSorting, watchList]);
+  }, [listSorting]);
 
   const changeSort = (order) => {
-    console.log(order);
-
     if (order === listSorting.by) {
       setListSorting({ by: order, asc: !listSorting.asc });
     } else {
@@ -149,10 +147,10 @@ OrderList.propTypes = {
   selectWatchedCidList: propTypes.array.isRequired,
   onToggleBtn: propTypes.func.isRequired,
   doRemoveWatchItems: propTypes.func.isRequired,
-  doFetch: propTypes.func.isRequired,
+  doFetchWatchList: propTypes.func.isRequired,
   doSelectedItems: propTypes.array.isRequired,
   selectSelectedCidList: propTypes.array.isRequired,
   OrderList
 };
 
-export default connect('selectWatchedCidList', 'doRemoveWatchItems', 'doFetch', 'doSelectedItems', 'selectSelectedCidList', OrderList);
+export default connect('selectWatchedCidList', 'doRemoveWatchItems', 'doFetchWatchList', 'doSelectedItems', 'selectSelectedCidList', OrderList);
