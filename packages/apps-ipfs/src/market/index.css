@@ -84,4 +84,9 @@ button:focus {outline:0!important;}
     transform:rotate(360deg);
   }
 }
+.file-info {
+  padding-left: 20px;
+  color: red;
+  font-size: 14px;
+}
 

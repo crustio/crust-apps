@@ -3,7 +3,7 @@
 import _ from 'lodash';
 import propTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import { AutoSizer, List, WindowScroller } from 'react-virtualized';
 import { connect } from 'redux-bundler-react';
 
@@ -11,8 +11,7 @@ import WatchItem from '@polkadot/apps-ipfs/market/WatchItem';
 
 import Checkbox from '../components/checkbox/Checkbox';
 
-const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCidList, watchList, watchedCidList }) => {
-  const { t } = useTranslation();
+const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
   const [listSorting, setListSorting] = useState({ by: null, asc: true });
   const itemList = ['fileSize', 'startTime', 'expireTime', 'pinsCount', 'fileStatus'];
   const tableRef = useRef(null);
@@ -82,28 +81,28 @@ const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCid
         </div>
         <div className='ph2 pv1 flex-auto db-l tc w-20'>
           <button
-            aria-label={t('sortBy', { name: t('order:fileCid') })}
+            aria-label={t('sortBy', { name: t('fileCid') })}
             onClick={() => {
               changeSort('fileCid');
             }}
           >
-            {t('order:fileCid')}{sortByIcon('fileCid')}
+            {t('actions.fileCid')}{sortByIcon('fileCid')}
           </button>
         </div>
         {itemList.map((item) => (
           <div className='ph2 pv1 flex-auto db-l tc w-10'
             key={item}>
             <button
-              aria-label={t('sortBy', { name: t(`order:${item}`) })}
+              aria-label={t('sortBy', { name: t(`${item}`) })}
               onClick={() => {
                 changeSort(item);
               }}
             >
-              {t(`order:${item}`)}{sortByIcon(item)}
+              {t(`actions.${item}`)}{sortByIcon(item)}
             </button>
           </div>
         ))}
-        <div className='ph2 pv1 flex-auto db-l tc w-20'>{t('order:action')}</div>
+        <div className='ph2 pv1 flex-auto db-l tc w-20'>{t('actions.action')}</div>
       </header>
       <WindowScroller>
         {({ height, isScrolling, onChildScroll, scrollTop }) => (
@@ -123,7 +122,7 @@ const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCid
                   ref={tableRef}
                   rowCount={watchList.length}
                   rowHeight={50}
-                  rowRenderer={({ index, key, style }) => {
+                  rowRenderer={({ index }) => {
                     return <WatchItem onSelect={toggleOne}
                       onToggleBtn={(type, file) => {
                         onToggleBtn(type, file);
@@ -144,13 +143,12 @@ const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCid
 };
 
 OrderList.propTypes = {
-  selectWatchedCidList: propTypes.array.isRequired,
+  selectWatchedCidList: propTypes.array,
   onToggleBtn: propTypes.func.isRequired,
   doRemoveWatchItems: propTypes.func.isRequired,
   doFetchWatchList: propTypes.func.isRequired,
   doSelectedItems: propTypes.array.isRequired,
-  selectSelectedCidList: propTypes.array.isRequired,
-  OrderList
+  selectSelectedCidList: propTypes.array.isRequired
 };
 
-export default connect('selectWatchedCidList', 'doRemoveWatchItems', 'doFetchWatchList', 'doSelectedItems', 'selectSelectedCidList', OrderList);
+export default connect('selectWatchedCidList', 'doRemoveWatchItems', 'doFetchWatchList', 'doSelectedItems', 'selectSelectedCidList', withTranslation('order')(OrderList));

@@ -1,6 +1,8 @@
 {
   "actions": {
-    "add": "添加订单",
+    "addOrder": "添加订单",
+    "add": "添加",
+    "delete": "删除",
     "search": "搜索",
     "fileCid": "文件CID",
     "fileSize": "文件大小",
@@ -8,6 +10,10 @@
     "expireTime": "到期时间",
     "pinsCount": "副本数",
     "fileStatus": "状态",
-    "action": "操作"
-  }
+    "action": "操作",
+    "renew": "续费",
+    "retry": "重新下单",
+    "speed": "加速"
+  },
+  "watchList": "关注列表"
 }

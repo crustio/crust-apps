@@ -4,13 +4,14 @@ import './index.css';
 
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import { withTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 
 import OrderModal from '../files/modals/order-modal/OrderModal';
 import OrderList from './OrderList';
 import WatchListInput from './WatchListInput';
 
-const Order = ({ watchList }) => {
+const Order = ({ t, watchList }) => {
   const [modalShow, toggleModal] = useState(false);
   const [tableData, setTableData] = useState(watchList);
   const [title, setTitle] = useState('order');
@@ -55,9 +56,9 @@ const Order = ({ watchList }) => {
         <button className='btn'
           onClick={() => {
             toggleModal(true);
-          }}>添加订单</button>
+          }}>{t('actions.addOrder')}</button>
       </div>
-      <h3>关注列表</h3>
+      <h3>{t('watchList')}</h3>
       <WatchListInput
         onFilterWatchList={handleFilterWatchList}
       />
@@ -69,4 +70,4 @@ const Order = ({ watchList }) => {
   );
 };
 
-export default connect('doAddOrder', 'selectWatchList', 'selectWatchedCidList', Order);
+export default connect('doAddOrder', 'selectWatchList', 'selectWatchedCidList', withTranslation('order')(Order));

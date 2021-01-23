@@ -1,16 +1,21 @@
 {
   "actions": {
-    "add": "添加订单",
-    "search": "搜索",
-    "fileCid": "文件CID",
-    "fileSize": "文件大小",
-    "startTime": "最近下单时间",
-    "expireTime": "到期时间",
-    "pinsCount": "副本数",
-    "fileStatus": "状态",
-    "action": "操作"
+    "addOrder": "Place an order",
+    "add": "Add",
+    "delete":"Delete",
+    "search": "Search",
+    "fileCid": "FileCid",
+    "fileSize": "FileSize",
+    "startTime": "StartTime",
+    "expireTime": "ExpireTime",
+    "pinsCount": "Replica",
+    "fileStatus": "Status",
+    "action": "Action",
+    "renew": "Renew",
+    "speed": "Speed",
+    "order": "Order",
+    "retry": "Retry"
   },
-  "titles": {
-    "order": "下单"
-  }
+  "watchList": "Watch List",
+  "fileValid": "The file CID is not valid!"
 }

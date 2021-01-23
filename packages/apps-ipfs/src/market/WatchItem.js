@@ -8,9 +8,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 
-import Button from '@polkadot/apps-ipfs/components/button/Button';
 import Cid from '@polkadot/apps-ipfs/components/cid/Cid';
-import { Option } from '@polkadot/apps-ipfs/files/dropdown/Dropdown';
 import StrokeCopy from '@polkadot/apps-ipfs/icons/StrokeCopy';
 
 import Icon from '../../../react-components/src/Icon';
@@ -31,7 +29,7 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, sele
   const checkBoxCls = classnames({
     'o-1': selected
   }, ['pl2 w2']);
-  const fileStatus = useCall(isApiReady && api.query?.market.files, [watchItem.fileCid]);
+  const fileStatus = useCall(isApiReady && api.query?.market && api.query?.market.files, [watchItem.fileCid]);
   let bestNumber = useCall(isApiReady && api.derive.chain.bestNumber);
   const trash1 = useCall(isApiReady && api.query?.market.transh1, [watchItem.fileCid]);
   const trash2 = useCall(isApiReady && api.query?.market.transh2, [watchItem.fileCid]);
@@ -160,7 +158,7 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, sele
         <button className={'watch-item-btn'}
           onClick={() => {
             onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem);
-          }}>{buttonTextEnm[watchItem.fileStatus]}</button>
+          }}>{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</button>
       </div>
     </div>
   </div>;
