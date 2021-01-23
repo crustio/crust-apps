@@ -187,7 +187,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
                   setStatusOpen(true);
                 } else {
                   setStatusOpen(true);
-                  setResult('You has a valid claim');
+                  setResult('MintClaimSuccess');
                   setStatus('success');
                   setEthereumTxHashValid(true);
                   stepHandle(isPreclaimed);

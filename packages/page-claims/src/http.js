@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /* eslint-disable */
+import { base64Decode, base64Encode } from '@polkadot/util-crypto';
+
 export function httpGet(url){
   return fetch(url).then((response) => {
     return response.json()
@@ -20,6 +22,8 @@ export function httpGet(url){
 
 const MAX_RETRY = 3;
 const RETRY_INTERVAL = 1000; 
+const USERNAME = 'crust';
+const PASSWD = '162534'
 
 function sleep(ms){
   return new Promise((resolve)=>setTimeout(resolve,ms));
@@ -34,23 +38,33 @@ export async function httpPost(url, retry = MAX_RETRY) {
       mode: "cors",
       headers: {
         'Accept': 'application/json,text/plain,*/*',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "Authorization": "Basic " + base64Encode(`${USERNAME}:${PASSWD}`)
       },
     });
+    const resultJson = await res.json();
+  
     switch (res.status) {
       case 200:
         res = {
           code: 200,
           status: 'success',
-          statusText: 'You has a valid claim'
+          statusText: resultJson.msg
         };
         break;
       case 400:
-        requireRetry = true;
         res = {
           code: 400,
           status: 'error',
-          statusText: 'Does not appear to have a valid claim. Please double check that you have signed the transaction correctly on the correct ETH account.'
+          statusText: resultJson.msg
+        };
+        break;
+      case 409:
+        requireRetry = true;
+        res = {
+          code: 409,
+          status: 'error',
+          statusText: 'Bridge is busy'
         };
         break;
     }
