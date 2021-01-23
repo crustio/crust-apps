@@ -41,7 +41,7 @@ const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChang
 
   return <Modal
     className='app--accounts-Modal'
-    header={t(`${title}`, 'order')}
+    header={t(`actions.${title || 'order'}`)}
     size='large'
   >
     <Modal.Content>
@@ -55,6 +55,7 @@ const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChang
               params={account}
             />
           }
+          // @ts-ignore
           onChange={setAccount}
           type='account'
         />
@@ -63,7 +64,7 @@ const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChang
           help={t<string>('File Cid')}
           label={t<string>('FileCid')}
           onChange={setFileCID}
-          placeholder={t('My On-Chain Name')}
+          placeholder={t('File Cid')}
           value={fileCid}
         />
         <InputNumber
@@ -78,7 +79,7 @@ const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChang
           autoFocus
           defaultValue={tip}
           help={t<string>('files would be stored by more merchants with higher tips.')}
-          label={t<string>('Tip')}
+          label={t<string>('tip')}
           onChange={setTip}
           onlyCru
         />
@@ -100,11 +101,13 @@ const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChang
         isDisabled={!fileCid || !fileSize || !account || !tip}
         label={t<string>('Make Transfer')}
         onStart={() => {
+          onClose();
+        }}
+        onSuccess={() => {
           doAddOrder({
             fileCid,
             fileSize
           });
-          onClose();
         }}
         params={
           [fileCid, fileSize, tip, false]
@@ -115,7 +118,7 @@ const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChang
   </Modal>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const OrderWithBundle = connect('doAddOrder', OrderModal);
 
 export default withTranslation('order')(OrderWithBundle);

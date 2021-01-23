@@ -48,6 +48,8 @@ const Order = ({ t, watchList }) => {
           }}
 
           onClose={() => {
+            setTitle('order');
+            setFileInfo(null);
             toggleModal(false);
           }}
           title={title}/>}
