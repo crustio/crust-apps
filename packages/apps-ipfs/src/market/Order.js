@@ -4,8 +4,6 @@ import './index.css';
 
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { withTranslation } from 'react-i18next';
-import { connect } from 'redux-bundler-react';
 
 import OrderModal from '../files/modals/order-modal/OrderModal';
 import OrderList from './OrderList';

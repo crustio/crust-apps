@@ -11,28 +11,14 @@ import { BN_ZERO, formatBalance } from '@polkadot/util';
 
 import { Input, InputAddress, InputBalance, InputNumber, Modal, TxButton } from '../../../../../react-components/src';
 
-interface Props extends WithTranslation{
-  file?: IFile
-  className?: string;
-  onChange: () => void;
-  onClose: () => void;
-  doAddOrder: (any) => void;
-  title?: string
-}
-type IFile = {
-  cid: string,
-  size: string,
-  originalSize: string
-}
-
-const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChange, onClose, t, title = 'order' }) => {
+const OrderModal = ({ className = '', doAddOrder, file, onChange, onClose, t, title = 'order' }) => {
   const [account, setAccount] = useState(null);
-  const [fileCid, setFileCID] = useState<string>(file ? file.cid.toString() : '');
-  const [fileSize, setFileSize] = useState<string>(file ? file.originalSize.toString() : '0');
-  const [price, setPrice] = useState<string | undefined>('0 CRU');
-  const [tip, setTip] = useState<BN | undefined>(BN_ZERO);
+  const [fileCid, setFileCID] = useState(file ? file.cid.toString() : '');
+  const [fileSize, setFileSize] = useState(file ? file.originalSize.toString() : '0');
+  const [price, setPrice] = useState('0 CRU');
+  const [tip, setTip] = useState(BN_ZERO);
   const { api, isApiReady } = useApi();
-  const filePrice = useCall<BN>(isApiReady && api.query.market.filePrice);
+  const filePrice = useCall(isApiReady && api.query.market.filePrice);
 
   useEffect(() => {
     // 0.01cru + storagePrice + tip
@@ -47,30 +33,29 @@ const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChang
     <Modal.Content>
       <div className={className}>
         <InputAddress
-          help={t<string>('Storage fee will be subtracted from the selected account')}
-          label={t<string>('Please choose account')}
+          help={t('Storage fee will be subtracted from the selected account')}
+          label={t('Please choose account')}
           labelExtra={
             <Available
-              label={t<string>('transferrable')}
+              label={t('transferrable')}
               params={account}
             />
           }
-          // @ts-ignore
           onChange={setAccount}
           type='account'
         />
         <Input
           autoFocus
-          help={t<string>('File Cid')}
-          label={t<string>('FileCid')}
+          help={t('File Cid')}
+          label={t('FileCid')}
           onChange={setFileCID}
           placeholder={t('File Cid')}
           value={fileCid}
         />
         <InputNumber
           autoFocus
-          help={t<string>('File size')}
-          label={t<string>('fileSize (byte)')}
+          help={t('File size')}
+          label={t('fileSize (byte)')}
           maxLength={30}
           onChange={setFileSize}
           value={fileSize}
@@ -78,15 +63,15 @@ const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChang
         <InputBalance
           autoFocus
           defaultValue={tip}
-          help={t<string>('files would be stored by more merchants with higher tips.')}
-          label={t<string>('tip')}
+          help={t('files would be stored by more merchants with higher tips.')}
+          label={t('tip')}
           onChange={setTip}
           onlyCru
         />
         <Input
-          help={t<string>('The minimum storage price that needs to be paid for this file.')}
+          help={t('The minimum storage price that needs to be paid for this file.')}
           isDisabled
-          label={t<string>('File Price')}
+          label={t('File Price')}
           maxLength={32}
           onChange={setPrice}
           placeholder={t('File price')}
@@ -99,7 +84,7 @@ const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChang
         accountId={account}
         icon='paper-plane'
         isDisabled={!fileCid || !fileSize || !account || !tip}
-        label={t<string>('Make Transfer')}
+        label={t('Make Transfer')}
         onStart={() => {
           onClose();
         }}
@@ -118,7 +103,6 @@ const OrderModal: React.FC<Props> = ({ className = '', doAddOrder, file, onChang
   </Modal>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const OrderWithBundle = connect('doAddOrder', OrderModal);
 
 export default withTranslation('order')(OrderWithBundle);
