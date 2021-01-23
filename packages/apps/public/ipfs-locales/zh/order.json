@@ -11,9 +11,11 @@
     "pinsCount": "副本数",
     "fileStatus": "状态",
     "action": "操作",
+    "order": "下单",
     "renew": "续费",
     "retry": "重新下单",
     "speed": "加速"
   },
-  "watchList": "关注列表"
+  "watchList": "关注列表",
+  "files would be stored by more merchants with higher tips.": "files would be stored by more merchants with higher tips.",
 }

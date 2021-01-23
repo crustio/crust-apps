@@ -16,6 +16,10 @@ const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCid
   const itemList = ['fileSize', 'startTime', 'expireTime', 'pinsCount', 'fileStatus'];
   const tableRef = useRef(null);
 
+  useEffect(() => {
+    setListSorting({ by: 'startTime', asc: false });
+  }, []);
+
   const toggleOne = (fileCid) => {
     const index = selectedCidList.indexOf(fileCid);
 
@@ -49,7 +53,7 @@ const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCid
 
   const sortByIcon = (order) => {
     if (listSorting.by === order) {
-      return listSorting.asc ? '↑' : '↓';
+      return <span style={{ color: '#ff8812', fontSize: 13 }}>{listSorting.asc ? '↑' : '↓'}</span>;
     }
 
     return null;
@@ -79,7 +83,7 @@ const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCid
             checked={isAllSelected()}
             onChange={toggleAll}/>
         </div>
-        <div className='ph2 pv1 flex-auto db-l tc w-20'>
+        <div className='ph2 pv1 flex-auto db-l tc w-20 watch-list-header'>
           <button
             aria-label={t('sortBy', { name: t('fileCid') })}
             onClick={() => {
@@ -90,7 +94,7 @@ const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCid
           </button>
         </div>
         {itemList.map((item) => (
-          <div className='ph2 pv1 flex-auto db-l tc w-10'
+          <div className='ph2 pv1 flex-auto db-l tc w-10 watch-list-header'
             key={item}>
             <button
               aria-label={t('sortBy', { name: t(`${item}`) })}
@@ -102,7 +106,7 @@ const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCid
             </button>
           </div>
         ))}
-        <div className='ph2 pv1 flex-auto db-l tc w-20'>{t('actions.action')}</div>
+        <div className='ph2 pv1 flex-auto db-l tc w-20 watch-list-header'>{t('actions.action')}</div>
       </header>
       <WindowScroller>
         {({ height, isScrolling, onChildScroll, scrollTop }) => (

@@ -89,4 +89,11 @@ button:focus {outline:0!important;}
   color: red;
   font-size: 14px;
 }
+.watch-list-header {
+  color: #262828;
+  font-size: 16px;
+}
+.watch-list-header .icon {
+  color: #262828;
+}
 

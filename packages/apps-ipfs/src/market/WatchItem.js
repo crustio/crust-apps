@@ -87,7 +87,6 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, sele
       const pinsCount = await doFindProvs(watchItem.fileCid);
 
       setSpin(false);
-
       doUpdateWatchItem(watchItem.fileCid, { pinsCount });
     } catch (e) {
       setSpin(false);
