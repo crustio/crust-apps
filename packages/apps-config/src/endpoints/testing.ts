@@ -49,7 +49,7 @@ export function createTesting (t: TFunction): LinkOption[] {
     },
     {
       info: 'crust',
-      text: t('rpc.crust.network', 'Crust Maxwell CC2', { ns: 'apps-config' }),
+      text: t('rpc.crust.network', 'Crust Maxwell', { ns: 'apps-config' }),
       textBy: t('rpc.hosted.by', 'hosted by {{host}}', { ns: 'apps-config', replace: { host: 'Crust Network' } }),
       value: 'wss://api.crust.network/'
     },

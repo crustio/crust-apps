@@ -54,7 +54,7 @@ export { emptyColor };
 export const chainColors: Record<string, any> = [
   ['acala mandala pc1', chainRoccoAcala],
   ['Darwinia Crab', chainCrab],
-  ['crust maxwell cc2', chainCrust],
+  ['crust maxwell', chainCrust],
   ['darwinia cc1', chainDarwinia],
   ['darwinia parachain', chainRoccoDarwinia],
   ['hanonycash', chainHanonycash],
