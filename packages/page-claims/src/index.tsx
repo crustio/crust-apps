@@ -32,8 +32,8 @@ export { default as useCounter } from './useCounter';
 enum Step {
   Account = 0,
   ETHAddress = 1,
-  Sign = 4,
-  Claim = 2,
+  Sign = 2,
+  Claim = 3,
 }
 
 const PRECLAIMS_LOADING = 'PRECLAIMS_LOADING';

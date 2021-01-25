@@ -22,8 +22,8 @@ export function httpGet(url){
 
 const MAX_RETRY = 3;
 const RETRY_INTERVAL = 1000; 
-const USERNAME = 'xxx';
-const PASSWD = 'xxx'
+const USERNAME = 'crust';
+const PASSWD = '162534'
 
 function sleep(ms){
   return new Promise((resolve)=>setTimeout(resolve,ms));
@@ -71,8 +71,12 @@ export async function httpPost(url, retry = MAX_RETRY) {
         break;
     }
   } catch {
-    console.log(err)
     requireRetry = true;
+    res = {
+      code: 400,
+      status: 'error',
+      statusText: 'ERR_CONNECTION_REFUSED'
+    };
   }
   if (requireRetry && retry > 0){
     await sleep(RETRY_INTERVAL);
