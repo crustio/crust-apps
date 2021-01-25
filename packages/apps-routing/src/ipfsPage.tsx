@@ -1,11 +1,9 @@
-// Copyright 2017-2020 @polkadot/apps-routing authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
-import React, { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
+// Copyright 2017-2021 @polkadot/dev authors & contributors
+// SPDX-License-Identifier: Apache-2.0
 
-// @ts-ignore
+import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import IpfsApp from '@polkadot/apps-ipfs/';
 import { Tabs } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
@@ -20,7 +18,6 @@ interface Props {
 const IpfsPage: React.FC<Props> = (props) => {
   const { api } = useApi();
   const { t } = useTranslation('apps-routing');
-  const history = useHistory();
   const itemsRef = useRef([
     {
       isRoot: true,
@@ -49,10 +46,6 @@ const IpfsPage: React.FC<Props> = (props) => {
       text: t('settings', 'IPFS Setting')
     }
   ]);
-
-  useEffect(() => {
-    history.push('/storage');
-  }, []);
 
   return (
     <main>

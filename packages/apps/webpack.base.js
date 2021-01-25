@@ -24,7 +24,6 @@ function mapChunks (name, regs, inc) {
 }
 
 function createWebpack (context, mode = 'production') {
-  console.log(mode);
   const isProd = mode === 'production';
   const pkgJson = require(path.join(context, 'package.json'));
   const alias = findPackages().reduce((alias, { dir, name }) => {
