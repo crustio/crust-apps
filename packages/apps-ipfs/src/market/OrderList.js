@@ -1,5 +1,6 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
+// eslint-disable-next-line header/header
 import _ from 'lodash';
 import propTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
@@ -150,7 +151,7 @@ OrderList.propTypes = {
   selectWatchedCidList: propTypes.array,
   onToggleBtn: propTypes.func.isRequired,
   doRemoveWatchItems: propTypes.func.isRequired,
-  doFetchWatchList: propTypes.func.isRequired,
+  doFetchWatchList: propTypes.func,
   doSelectedItems: propTypes.array.isRequired,
   selectSelectedCidList: propTypes.array.isRequired
 };

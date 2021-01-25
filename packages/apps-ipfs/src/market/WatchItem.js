@@ -1,5 +1,7 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
+
+/* eslint-disable camelcase */
 import classnames from 'classnames';
 import filesize from 'filesize';
 import PropTypes from 'prop-types';
@@ -45,8 +47,7 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, sele
         claimed_at,
         expired_on,
         file_size,
-        replicas,
-        reported_replica_count } = _fileStatus[0];
+        replicas } = _fileStatus[0];
 
       watchItem.startTime = claimed_at;
       watchItem.expireTime = expired_on;

@@ -37,7 +37,7 @@ const NavLink = ({ alternative,
   }, ['fill-current-color']);
 
   return (
-    // eslint-disable-next-line jsx-a11y/anchor-is-valid
+    // eslint-disable-next-line
     <a className={anchorClass}
       href={disabled ? null : href}
       role='menuitem'
@@ -108,7 +108,7 @@ export const NavBar = ({ t }) => {
         { gitRevision && <div className='mb1'>
           <a className='link white'
             href={revisionUrl}
-            rel='noopener noreferrr'
+            rel='noreferrer'
             target='_blank'>{t('app:nav.revision')} {gitRevision}</a>
         </div> }
         <div className='mb1'>

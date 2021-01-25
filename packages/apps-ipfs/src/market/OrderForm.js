@@ -1,6 +1,7 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 
+// eslint-disable-next-line header/header
 import isIPFS from 'is-ipfs';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

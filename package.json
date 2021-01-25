@@ -97,8 +97,5 @@
     "webpack": "^5.11.1",
     "webpack-cli": "^4.3.0",
     "window-or-global": "^1.0.1"
-  },
-  "dependencies": {
-    "ipfs-core": "^0.4.1"
   }
 }

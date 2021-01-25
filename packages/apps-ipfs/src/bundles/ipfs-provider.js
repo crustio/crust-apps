@@ -435,16 +435,19 @@ const actions = {
     }
   },
   /**
-   * @param {hash} String
-   * @returns {function(hash):Promise<number>}
+   * @param {string} hash
+   * @returns {function():Promise<number>}
    */
-  doFindProvs: (hash) => async (context) => {
+  // @ts-ignore
+  doFindProvs: (hash) => async () => {
     if (ipfs) {
       const find = ipfs.dht.findProvs(hash, { timeout: 10000 });
       let count = 0;
 
       try {
+        // @ts-ignore
         for await (const provider of find) {
+          console.log(provider);
           count += 1;
         }
       } catch (err) {

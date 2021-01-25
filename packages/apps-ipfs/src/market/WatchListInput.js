@@ -1,9 +1,10 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 
+// eslint-disable-next-line header/header
 import isIPFS from 'is-ipfs';
 import PropTypes from 'prop-types';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 
@@ -13,7 +14,6 @@ import Button from '../components/button/Button';
 const WatchListInput = ({ doAddOrder, doRemoveWatchItems, onFilterWatchList, selectedCidList, t, watchedCidList }) => {
   const { api, isApiReady } = useApi();
   const [path, setPath] = useState('');
-  const [pathValid, toggleValid] = useState(true);
   const [inputClass, setInputClass] = useState('focus-outline');
   const [isPathWatched, toggleWatched] = useState(undefined);
   const watchedCidListStr = watchedCidList.join('-');
@@ -28,7 +28,6 @@ const WatchListInput = ({ doAddOrder, doRemoveWatchItems, onFilterWatchList, sel
     }
 
     if (path !== '' && (isIPFS.cid(path) || isIPFS.path(path))) {
-      toggleValid(true);
       setInputClass('b--green-muted focus-outline-green');
       onFilterWatchList(path);
 
@@ -38,7 +37,6 @@ const WatchListInput = ({ doAddOrder, doRemoveWatchItems, onFilterWatchList, sel
         toggleWatched(false);
       }
     } else {
-      toggleValid(false);
       setInputClass('b--red-muted focus-outline-red');
     }
   }, [path]);
