@@ -40,7 +40,9 @@
     "connectedToIpfs": "Connected to IPFS",
     "connectedToIpfs1": "<0>IPFS network is ready <1>You can check your IPFS node status in this page. Go to <1>Files</1> tab to store/retrieve files. The storage order function of Crust Network is coming soon.</1></0>",
     "connectingToIpfs": "Connecting to IPFS…",
-    "couldNotConnect": "Please follow steps below to connect to IPFS."
+    "couldNotConnect": "Please make sure you have installed and launched the IPFS desktop application that connects with Crust Network. ",,,
+    "desktop": "IPFS desktop",
+    "info": "This specific version of IPFS desktop adds the cross-domain configuration of apps.crust.network to localhost, in order to allow Crust Apps to interact with IPFS."
   },
   "terms": {
     "address": "Address",
