@@ -19,23 +19,3 @@ export const ACTIONS = {
   /** @type {'ORDERS_SELECTED'} */
   SELECTED: ('ORDERS_SELECTED')
 };
-
-export const SORTING = {
-  /** @type {'name'} */
-  BY_NAME: ('name'),
-  /** @type {'size'} */
-  BY_SIZE: ('size')
-};
-
-// export const cliCmdKeys = {
-//   DOWNLOAD_OBJECT_COMMAND: 'downloadObjectCommand',
-//   DELETE_FILE_FROM_IPFS: 'deleteFileFromIpfs',
-//   UPDATE_IPFS_CONFIG: 'updateIpfsConfig',
-//   PIN_OBJECT: 'pinObject',
-//   RENAME_IPFS_OBJECT: 'renameObject',
-//   ADD_FILE: 'addNewFile',
-//   ADD_DIRECTORY: 'addNewDirectory',
-//   CREATE_NEW_DIRECTORY: 'createNewDirectory',
-//   FROM_IPFS: 'fromIpfs',
-//   ADD_NEW_PEER: 'addNewPeer'
-// };
