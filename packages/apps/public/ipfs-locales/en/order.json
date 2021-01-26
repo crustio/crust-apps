@@ -21,5 +21,14 @@
   "files would be stored by more merchants with higher tips.": "files would be stored by more merchants with higher tips.",
   "File size": "File Size",
   "fileSize (byte)": "fileSize (byte)",
-  "FileCid": "FileCid"
+  "FileCid": "FileCid",
+  "accountDesc": "Storage fee will be subtracted from the selected account",
+  "transferrable":"transferrable",
+  "File Cid": "File Cid",
+  "fileSizeTitle": "File size",
+  "fileSizeDesc": "FileSize (byte)",
+  "tipTitle": "tip",
+  "tipDesc": "Files would be stored by more merchants with higher tips.",
+  "priceDesc": "The minimum storage price that needs to be paid for this file.",
+  "confirm": "Confirm"
 }

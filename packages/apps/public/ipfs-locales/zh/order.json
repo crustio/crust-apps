@@ -17,5 +17,15 @@
     "speed": "加速"
   },
   "watchList": "关注列表",
-  "files would be stored by more merchants with higher tips.": "files would be stored by more merchants with higher tips.",
+  "fileValid": "不是一个有效文件!",
+  "FileCid": "FileCid",
+  "accountDesc": "文件存储费用将会从选择账号中扣除",
+  "transferrable": "可转账的",
+  "File Cid": "文件 Cid",
+  "fileSizeTitle": "文件大小",
+  "fileSizeDesc": "文件大小 (byte)",
+  "tipTitle": "小费",
+  "tipDesc": "高额的小费可以使文件被更多商户存储",
+  "priceDesc": "需要为这个文件支付的最低存储价格",
+  "confirm": "确认"
 }
