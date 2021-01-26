@@ -586,7 +586,7 @@ const dirStats = async (ipfs, cid, { isRoot, path, sorting }) => {
     if (showStats && (f.type === 'directory' || f.type === 'dir')) {
       file = fileFromStats({ ...await stat(ipfs, f.cid), path: absPath });
     } else {
-      file = fileFromStats({ ...f, path: absPath });
+      file = fileFromStats({ ...await stat(ipfs, f.cid), path: absPath });
     }
 
     files.push(file);
