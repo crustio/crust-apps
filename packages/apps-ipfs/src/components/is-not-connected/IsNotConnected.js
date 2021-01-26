@@ -16,10 +16,10 @@ const IsNotConnected = ({ t }) => {
   const { i18n } = useTranslation();
 
   return (
-    <Box className='pv3 ph4 lh-copy charcoal'>
+    <Box className='pv3 ph4 lh-copy charcoal' style={{background: '#fff'}}>
       <div className='flex flex-wrap items-center'>
-        <h1 className='montserrat fw4 charcoal ma0 f3'
-          style={{ textTransform: 'none', paddingLeft: '10px', paddingTop: '10px', color: '#ff8812', fontSize: 16, lineHeight: '28px' }}>{t('app:status.couldNotConnect')} <br/>{t('app:status.couldNotConnect1')}</h1>
+        <div className='fw4 charcoal ma0 f3'
+          style={{ textTransform: 'none', padding: '10px', color: '#ff8812', fontSize: 16, lineHeight: '28px' }}>{t('app:status.couldNotConnect')} <br/>{t('app:status.couldNotConnect1')}</div>
       </div>
       <br/>
       <br/>
