@@ -65,7 +65,7 @@ const WatchListInput = ({ doAddOrder, doRemoveWatchItems, onFilterWatchList, sel
         doRemoveWatchItems(selectedCidList);
       }}>{t('actions.delete')}</Button>
     {
-      !fileStatus || fileStatus === 'null'
+      path && (!fileStatus || fileStatus === 'null')
         ? <p className='file-info'>
           {t('fileValid')}
         </p>

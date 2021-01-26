@@ -7,7 +7,7 @@ import { connect } from 'redux-bundler-react';
 import Box from '../box/Box';
 
 const ipfsDesktopMacZh = 'https://crust-data.oss-cn-shanghai.aliyuncs.com/ipfs/Crust%20IPFS%20Desktop-0.13.2.dmg';
-const ipfsDesktopWinZh = 'https://crust-data.oss-cn-shanghai.aliyuncs.com/ipfs/Crust%20IPFS%20Desktop%20Setup%200.13.2.exe';
+const ipfsDesktopWinZh = 'https://crust-data.oss-cn-shanghai.aliyuncs.com/ipfs/Crust%20IPFS%20Desktop%20Setup%200.13.2.exe'
 // todo: wait ipfs desktop github address
 const ipfsDesktopMac = 'https://crust-data.oss-cn-shanghai.aliyuncs.com/ipfs/Crust%20IPFS%20Desktop-0.13.2.dmg';
 const ipfsDesktopWin = 'https://crust-data.oss-cn-shanghai.aliyuncs.com/ipfs/Crust%20IPFS%20Desktop%20Setup%200.13.2.exe';

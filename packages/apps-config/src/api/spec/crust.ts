@@ -28,6 +28,7 @@ export default {
   IASSig: 'Vec<u8>',
   Identity: {
     anchor: 'SworkerAnchor',
+    punishment_deadline: 'u64',
     group: 'Option<AccountId>'
   },
   ISVBody: 'Vec<u8>',
@@ -41,7 +42,8 @@ export default {
   Replica: {
     who: 'AccountId',
     valid_at: 'BlockNumber',
-    anchor: 'SworkerAnchor'
+    anchor: 'SworkerAnchor',
+    is_reported: 'bool'
   },
   Releases: {
     _enum: ['V1_0_0', 'V2_0_0']
@@ -60,6 +62,7 @@ export default {
   SworkerSignature: 'Vec<u8>',
   UsedInfo: {
     used_size: 'u64',
+    reported_group_count: 'u32',
     groups: 'BTreeSet<SworkerAnchor>'
   },
   WorkReport: {
