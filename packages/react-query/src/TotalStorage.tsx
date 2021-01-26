@@ -16,9 +16,13 @@ interface Props {
 
 function TotalStorage ({ children, className = '', label }: Props): React.ReactElement<Props> {
   const { api } = useApi();
-  const used = useCall<BN>(api.query.swork?.used);
+  const reportedFilesSize = useCall<BN>(api.query.swork?.reportedFilesSize);
   const free = useCall<BN>(api.query.swork?.free);
-  const totalStorage = used && free && used.add(free);
+
+  let totalStorage = 0;
+  if (free && reportedFilesSize) {
+    totalStorage = new BN(free.toString()).add(new BN(reportedFilesSize.toString()).muln(2)).toNumber()
+  }
 
   return (
     <div className={className}>
