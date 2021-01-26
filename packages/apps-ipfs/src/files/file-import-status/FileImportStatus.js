@@ -18,8 +18,6 @@ import GlyphSmallCancel from '../../icons/GlyphSmallCancel';
 import GlyphTick from '../../icons/GlyphTick';
 
 const Import = (job, t) => {
-  console.log(job);
-
   return job.message
     ? [...groupByPath(job.message.entries).values()].map((item) => (
       <li className='flex w-100 bb b--light-gray items-center f6 charcoal'

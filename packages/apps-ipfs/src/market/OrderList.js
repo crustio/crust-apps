@@ -127,8 +127,8 @@ const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCid
                   ref={tableRef}
                   rowCount={watchList.length}
                   rowHeight={50}
-                  rowRenderer={({ index }) => {
-                    return <WatchItem onSelect={toggleOne}
+                  rowRenderer={({ index, key }) => {
+                    return <WatchItem key={key} onSelect={toggleOne}
                       onToggleBtn={(type, file) => {
                         onToggleBtn(type, file);
                       }}

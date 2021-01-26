@@ -18,15 +18,17 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
   const [fileCid, setFileCID] = useState(file ? file.cid.toString() : '');
   const [fileSize, setFileSize] = useState(file ? file.originalSize.toString() : '0');
   const [price, setPrice] = useState('0 CRU');
-  const [tip, setTip] = useState(BN_ZERO);
+  const [tip, setTip] = useState(0);
   const [cidNotValid, setCidNotValid] = useState(false);
   const { api, isApiReady } = useApi();
   const filePrice = useCall(isApiReady && api.query.market.filePrice);
 
   useEffect(() => {
-    // 0.01cru + storagePrice + tip
-    setPrice(formatBalance(filePrice?.mul(new BN(fileSize)).divn(1000000), { decimals: 12 }));
-  }, [fileSize, filePrice]);
+    // 0.002cru + storagePrice + tip
+    const stableFee = new BN(2_000_000_000)
+    const tipFee= new BN(tip.toString())
+    setPrice(formatBalance(filePrice?.mul(new BN(fileSize)).divn(1024*1024).add(stableFee).add(tipFee), { decimals: 12 }));
+  }, [fileSize, filePrice, tip]);
   useEffect(() => {
     setCidNotValid(fileCid && !isIPFS.cid(fileCid) && !isIPFS.path(fileCid));
   }, [fileCid]);
