@@ -14,6 +14,12 @@ export function createProduction (t: TFunction): LinkOption[] {
   return [
     // fixed, polkadot
     {
+      info: 'crust',
+      text: t('rpc.crust.network', 'Crust Maxwell', { ns: 'apps-config' }),
+      textBy: t('rpc.hosted.by', 'hosted by {{host}}', { ns: 'apps-config', replace: { host: 'Crust Network' } }),
+      value: 'wss://api.crust.network/'
+    },
+    {
       dnslink: 'polkadot',
       info: 'polkadot',
       text: t('rpc.polkadot.parity', 'Polkadot', { ns: 'apps-config' }),
