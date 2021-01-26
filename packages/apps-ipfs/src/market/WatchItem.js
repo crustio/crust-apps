@@ -49,12 +49,12 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, sele
         file_size,
         replicas } = _fileStatus[0];
 
-      watchItem.startTime = claimed_at;
       watchItem.expireTime = expired_on;
+      watchItem.startTime = expired_on ? expired_on - 216000 : 0;
       watchItem.fileSize = file_size;
 
       if (expired_on > bestNumber || (trash1 && trash2)) {
-        // expried
+        // expired
         status = fileStatusEnum.EXPIRE;
       }
 
@@ -136,7 +136,7 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, sele
     </div>
     <div className='relative tc pointer flex  justify-center items-center flex-grow-1 ph2 pv1 w-10'>
       <div className=''>
-        {watchItem.expireTime}
+        {watchItem.expireTime || '-'}
       </div>
     </div>
     <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-10'>

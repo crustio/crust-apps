@@ -13,7 +13,7 @@ import { BN_ZERO, formatBalance } from '@polkadot/util';
 
 import { Input, InputAddress, InputBalance, InputNumber, Modal, TxButton } from '../../../../../react-components/src';
 
-const OrderModal = ({ className = '', doAddOrder, file, onChange, onClose, t, title = 'order' }) => {
+const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'order' }) => {
   const [account, setAccount] = useState(null);
   const [fileCid, setFileCID] = useState(file ? file.cid.toString() : '');
   const [fileSize, setFileSize] = useState(file ? file.originalSize.toString() : '0');
