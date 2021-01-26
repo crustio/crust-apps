@@ -18,10 +18,10 @@ function TotalStorage ({ children, className = '', label }: Props): React.ReactE
   const { api } = useApi();
   const reportedFilesSize = useCall<BN>(api.query.swork?.reportedFilesSize);
   const free = useCall<BN>(api.query.swork?.free);
-
   let totalStorage = 0;
+
   if (free && reportedFilesSize) {
-    totalStorage = new BN(free.toString()).add(new BN(reportedFilesSize.toString()).muln(2)).toNumber()
+    totalStorage = new BN(free.toString()).add(new BN(reportedFilesSize.toString()).muln(2)).toNumber();
   }
 
   return (

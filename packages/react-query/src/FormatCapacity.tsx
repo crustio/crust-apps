@@ -19,7 +19,6 @@ function format (value: number): React.ReactNode {
   if (value === 0) return '0 B';
   const i = Math.floor(Math.log(value) / Math.log(k));
   const unitPost = sizes[i];
-  console.log('i', i)
 
   const postfix = (value / Math.pow(k, i)).toPrecision(3);
 
