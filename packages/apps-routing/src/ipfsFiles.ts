@@ -19,5 +19,3 @@ export default function create (t: <T = string>(key: string, text: string, optio
     text: t<string>('nav.ipfs', 'IPFS', { ns: 'apps-routing' })
   };
 }
-// Copyright 2017-2020 @polkadot/apps-routing authors & contributors
-// SPDX-License-Identifier: Apache-2.0

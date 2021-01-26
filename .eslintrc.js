@@ -14,7 +14,9 @@ module.exports = {
     '.yarn/**',
     '**/build/*',
     '**/coverage/*',
-    '**/node_modules/*'
+    '**/node_modules/*',
+    '**/patch/*',
+    '**/apps-ipfs/*'
   ],
   parserOptions: {
     ...base.parserOptions,
