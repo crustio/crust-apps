@@ -15,8 +15,8 @@ module.exports = {
     '**/build/*',
     '**/coverage/*',
     '**/node_modules/*',
+    '**/apps-ipfs/*',
     '**/patch/*',
-    '**/apps-ipfs/*'
   ],
   parserOptions: {
     ...base.parserOptions,
