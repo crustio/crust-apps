@@ -80,6 +80,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onChange, onClose, t, ti
             <InputNumber
               autoFocus
               help={t('File size')}
+              isDisabled={title === 'speed' || title === 'renew'}
               label={t('fileSizeDesc')}
               maxLength={30}
               onChange={setFileSize}
