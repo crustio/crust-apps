@@ -152,7 +152,7 @@ OrderList.propTypes = {
   onToggleBtn: propTypes.func.isRequired,
   doRemoveWatchItems: propTypes.func.isRequired,
   doFetchWatchList: propTypes.func,
-  doSelectedItems: propTypes.array.isRequired,
+  doSelectedItems: propTypes.func,
   selectSelectedCidList: propTypes.array.isRequired
 };
 

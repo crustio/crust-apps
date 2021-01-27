@@ -63,7 +63,7 @@ export default {
   UsedInfo: {
     used_size: 'u64',
     reported_group_count: 'u32',
-    groups: 'BTreeSet<SworkerAnchor>'
+    groups: 'BTreeMap<SworkerAnchor, bool>'
   },
   WorkReport: {
     report_slot: 'u64',

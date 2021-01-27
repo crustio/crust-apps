@@ -7,13 +7,14 @@ import React, { useEffect, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 
-import { useApi, useCall } from '@polkadot/react-hooks';
+import { useAccounts, useApi, useCall } from '@polkadot/react-hooks';
 import { Available } from '@polkadot/react-query';
 import { BN_ZERO, formatBalance } from '@polkadot/util';
 
 import { Input, InputAddress, InputBalance, InputNumber, Modal, TxButton } from '../../../../../react-components/src';
 
 const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'order' }) => {
+  const { hasAccounts } = useAccounts();
   const [account, setAccount] = useState(null);
   const [fileCid, setFileCID] = useState(file ? file.cid.toString() : '');
   const [fileSize, setFileSize] = useState(file ? file.originalSize.toString() : '0');
@@ -42,18 +43,22 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
       <div className={className}>
         <Modal.Columns>
           <Modal.Column>
-            <InputAddress
-              help={t('accountDesc', 'Storage fee will be subtracted from the selected account')}
-              label={t('Please choose account')}
-              labelExtra={
-                <Available
-                  label={t('transferrable')}
-                  params={account}
-                />
-              }
-              onChange={setAccount}
-              type='account'
-            />
+            {
+              hasAccounts ?
+              <InputAddress
+                help={t('accountDesc', 'Storage fee will be subtracted from the selected account')}
+                label={t('Please choose account')}
+                labelExtra={
+                  <Available
+                    label={t('transferrable')}
+                    params={account}
+                  />
+                }
+                defaultValue={account}
+                onChange={setAccount}
+                type='account'
+              /> : <p className='file-info'>no account</p>
+            }
           </Modal.Column>
           <Modal.Column>
             <p>{t('accountDesc')}</p>
