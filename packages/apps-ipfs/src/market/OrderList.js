@@ -11,7 +11,6 @@ import { connect } from 'redux-bundler-react';
 import WatchItem from '@polkadot/apps-ipfs/market/WatchItem';
 
 import Checkbox from '../components/checkbox/Checkbox';
-import Icon from '../../../react-components/src/Icon';
 
 const OrderList = ({ doFetchWatchList, identity, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
   const [listSorting, setListSorting] = useState({ by: null, asc: true });
@@ -54,7 +53,7 @@ const OrderList = ({ doFetchWatchList, identity, doSelectedItems, onToggleBtn, s
 
   const sortByIcon = (order) => {
     if (listSorting.by === order) {
-      return <span style={{ color: '#ff8812', fontSize: 18, fontWeight: 700 }}>{listSorting.asc ? '↑' : '↓'}</span>;
+      return <span style={{ color: '#ff8812', fontSize: 18, fontWeight: 700 }}>{listSorting.asc ? ' ↑' : ' ↓'}</span>;
     }
 
     return null;

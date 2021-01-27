@@ -43,7 +43,7 @@
     "couldNotConnect": "Please install and luanch the IPFS desktop of Crust Network",
     "couldNotConnect1": "( Current version is not supported on Safari browser )",
     "desktop": "Download IPFS desktop",
-    "info": "This specific version of IPFS desktop adds the cross-domain configuration of apps.crust.network to localhost, in order to allow Crust Apps to interact with IPFS."
+    "info": "This specific version of IPFS desktop adds the cross-domain configuration of apps.crust.network to localhost, in order to allow Crust Apps to interact with IPFS. You can also follow the steps below to install standard IPFS and configure accordingly."
   },
   "terms": {
     "address": "Address",
@@ -91,5 +91,7 @@
     "skip": "Skip",
     "tooltip": "Click this button any time for a guided tour on the current page."
   },
-  "startTourHelper": "Start tour"
+  "startTourHelper": "Start tour",
+  "fold": " Fold",
+  "unfold": " Unfold"
 }

@@ -21,6 +21,7 @@
   "noAccount": "需要导入一个有效账号",
   "orderListdesc": "注意：订单信息为本地缓存，切换浏览器或设备不会保留显示原浏览器信息",
   "fileValid": "该订单不存在!",
+  "FileCidDesc": "文件CID的解释：文件的唯一标识编码",
   "fileCidValid": "不是一个有效文件!",
   "FileCid": "FileCid",
   "accountDesc": "当前为内测阶段，只有在白名单内的账号可以下单",
