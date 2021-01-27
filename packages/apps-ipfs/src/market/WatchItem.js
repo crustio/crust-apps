@@ -54,12 +54,12 @@ const WatchItem = ({peerId,  doFindProvs, doUpdateWatchItem, onSelect, onToggleB
       watchItem.fileSize = file_size;
       watchItem.confirmedReplicas = replicas ? replicas.length : '-'
 
-      if (expired_on < bestNumber || (trash1 && trash2)) {
+      if (expired_on && expired_on < bestNumber || (trash1 && trash2)) {
         // expired
         status = fileStatusEnum.EXPIRE;
       }
 
-      if (expired_on > bestNumber && replicas.length < 1) {
+      if (!expired_on && expired_on > bestNumber && replicas.length < 1) {
         // pending
         status = fileStatusEnum.PENDING;
       }
