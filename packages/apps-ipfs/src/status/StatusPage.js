@@ -33,21 +33,13 @@ const StatusPage = ({ analyticsAskToEnable,
         style={{ minHeight: 0 }}>
         <div className='flex'>
           <div className='flex-auto'>
-            { ipfsConnected
-              ? (
-                <div>
-                  <StatusConnected />
-                  <NodeInfo />
-                  <div className='pt2'>
-                    <NodeInfoAdvanced />
-                  </div>
-                </div>
-              )
-              : (
-                <div>
-                  <IsNotConnected />
-                </div>
-              )}
+            <div>
+              <StatusConnected />
+              <NodeInfo />
+              <div className='pt2'>
+                <NodeInfoAdvanced />
+              </div>
+            </div>
           </div>
         </div>
       </Box>
