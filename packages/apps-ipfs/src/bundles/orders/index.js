@@ -28,10 +28,10 @@ const bundle = { name: 'orders',
     const watchItem = {
       fileCid,
       fileSize: 0,
-      startTime: 0,
-      expireTime: 0,
-      fileStatus: 0,
-      pinsCount: 0,
+      startTime: '-',
+      expireTime: '-',
+      fileStatus: '-',
+      pinsCount: '-',
       insertAt: (new Date()).valueOf()
     };
 

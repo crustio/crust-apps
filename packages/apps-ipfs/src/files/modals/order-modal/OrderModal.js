@@ -35,40 +35,42 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
   }, [fileCid]);
 
   return <Modal
-    className='app--accounts-Modal'
-    header={t(`actions.${title || 'order'}`)}
+    className='order--accounts-Modal'
+    header={t(`actions.${title || 'order'}`, 'Order')}
     size='large'
   >
     <Modal.Content>
       <div className={className}>
         <Modal.Columns>
           <Modal.Column>
-            {
-              hasAccounts ?
-              <InputAddress
-                help={t('accountDesc', 'Storage fee will be subtracted from the selected account')}
-                label={t('Please choose account')}
-                labelExtra={
-                  <Available
-                    label={t('transferrable')}
-                    params={account}
-                  />
-                }
-                defaultValue={account}
-                onChange={setAccount}
-                type='account'
-              /> : <p className='file-info'>no account</p>
-            }
+            <InputAddress
+              help={t('accountDesc', 'Storage fee will be subtracted from the selected account')}
+              label={t('Please choose account')}
+              isDisabled={!hasAccounts}
+              labelExtra={
+                <Available
+                  label={t('transferrable')}
+                  params={account}
+                />
+              }
+              defaultValue={account}
+              onChange={setAccount}
+              type='account'
+            />
           </Modal.Column>
           <Modal.Column>
+             {
+               !hasAccounts && <p className='file-info' style={{padding: 0}}>{t('noAccount')}</p>
+             }
             <p>{t('accountDesc')}</p>
+
           </Modal.Column>
         </Modal.Columns>
         <Modal.Columns>
           <Modal.Column>
             <Input
               autoFocus
-              help={t('File Cid')}
+              help={t('FileCidDesc')}
               label={t('File Cid')}
               onChange={setFileCID}
               placeholder={t('File Cid')}
@@ -79,16 +81,16 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
             {cidNotValid
               ? <p className='file-info'
                 style={{ padding: 0 }}>{t('fileValid')}</p>
-              : <p>{t('File Cid')}</p>}
+              : <p>{t('FileCidDesc')}</p>}
           </Modal.Column>
         </Modal.Columns>
         <Modal.Columns>
           <Modal.Column>
             <InputNumber
               autoFocus
-              help={t('File size')}
+              help={t('fileSizeDesc')}
               isDisabled={title === 'speed' || title === 'renew'}
-              label={t('fileSizeDesc')}
+              label={t('fileSizeTitle')}
               maxLength={30}
               onChange={setFileSize}
               value={fileSize}

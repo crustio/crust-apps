@@ -454,7 +454,7 @@ const actions = {
         console.error(err);
       }
 
-      return count > 0 ? count - 1 : count;
+      return count;
     }
   },
   /**

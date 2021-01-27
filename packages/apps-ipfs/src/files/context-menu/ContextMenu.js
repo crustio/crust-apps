@@ -91,7 +91,7 @@ class ContextMenu extends React.Component {
             text={String(this.props.file ? this.props.file.originalSize : '0')}>
             <Option>
               <StrokeCopy className='w2 mr2 fill-aqua' />
-              {t('actions.copySize', 'Copy fileSize')}
+              {t('actions.copySize', 'Copy file size')}
             </Option>
           </CopyToClipboard>
           { onInspect &&

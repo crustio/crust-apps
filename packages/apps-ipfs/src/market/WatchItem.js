@@ -50,15 +50,15 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, sele
         replicas } = _fileStatus[0];
 
       watchItem.expireTime = expired_on;
-      watchItem.startTime = expired_on ? expired_on - 216000 : 0;
+      watchItem.startTime = expired_on ? expired_on - 216000 : '-';
       watchItem.fileSize = file_size;
 
-      if (expired_on > bestNumber || (trash1 && trash2)) {
+      if (expired_on < bestNumber || (trash1 && trash2)) {
         // expired
         status = fileStatusEnum.EXPIRE;
       }
 
-      if (expired_on < bestNumber && replicas.length < 1) {
+      if (expired_on > bestNumber && replicas.length < 1) {
         // pending
         status = fileStatusEnum.PENDING;
       }
@@ -131,7 +131,7 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, sele
 
     <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-10'>
       <div className=''>
-        {watchItem.startTime}
+        {watchItem.startTime || '-'}
       </div>
     </div>
     <div className='relative tc pointer flex  justify-center items-center flex-grow-1 ph2 pv1 w-10'>

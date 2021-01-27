@@ -60,7 +60,9 @@ const Order = ({ t, watchList }) => {
             toggleModal(true);
           }}>{t('actions.addOrder')}</button>
       </div>
-      <h3>{t('watchList')}</h3>
+      <div className={'orderList-header'}>
+        <span className={'dib'}>{t('orderListdes')}</span>
+      </div>
       <WatchListInput
         onFilterWatchList={handleFilterWatchList}
       />

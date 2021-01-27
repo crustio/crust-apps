@@ -30,16 +30,16 @@ const IpfsPage: React.FC<Props> = (props) => {
       text: t('files', 'Files')
     },
     {
+      name: 'market',
+      text: t('market', 'Storage Market')
+    },
+    {
       name: 'explore',
       text: t('explore', 'Explore')
     },
     {
       name: 'peers',
       text: t('peers', 'Peers')
-    },
-    {
-      name: 'market',
-      text: t('market', 'Storage Market')
     },
     {
       name: 'settings',

@@ -11,6 +11,7 @@ import { connect } from 'redux-bundler-react';
 import WatchItem from '@polkadot/apps-ipfs/market/WatchItem';
 
 import Checkbox from '../components/checkbox/Checkbox';
+import Icon from '../../../react-components/src/Icon';
 
 const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
   const [listSorting, setListSorting] = useState({ by: null, asc: true });
@@ -54,7 +55,7 @@ const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCid
 
   const sortByIcon = (order) => {
     if (listSorting.by === order) {
-      return <span style={{ color: '#ff8812', fontSize: 13 }}>{listSorting.asc ? '↑' : '↓'}</span>;
+      return <span style={{ color: '#ff8812', fontSize: 18, fontWeight: 700 }}>{listSorting.asc ? '↑' : '↓'}</span>;
     }
 
     return null;
@@ -74,6 +75,10 @@ const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCid
       setListSorting({ by: order, asc: true });
     }
   };
+  const nodata =() => {
+    return <div className={'nodata'}>
+    </div>
+  }
 
   return (
     <div>
@@ -122,7 +127,7 @@ const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCid
                   height={height}
                   isScrolling={isScrolling}
                   onScroll={onChildScroll}
-                  // noRowsRenderer={this.emptyRowsRenderer}
+                  noRowsRenderer={nodata}
                   // onRowsRendered={this.onRowsRendered}
                   ref={tableRef}
                   rowCount={watchList.length}
