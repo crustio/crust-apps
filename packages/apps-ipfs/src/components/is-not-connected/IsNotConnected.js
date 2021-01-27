@@ -57,7 +57,7 @@ const IsNotConnected = ({ apiUrl, connected, doUpdateIpfsApiAddress, ipfsApiAddr
           toggleDesc(!showDesc)
         }} className='link blu pointer' style={{paddingLeft: 5}}>
           <Icon  icon={showDesc ? 'caret-down' :'caret-up'}/>
-          {showDesc ? t('app:unfold'): t('app:unfold')}
+          {showDesc ? t('app:fold'): t('app:unfold')}
         </span>
         {
           showDesc && <ol className='pl3 pt2'>

@@ -43,7 +43,7 @@
     "couldNotConnect": "请确保您已安装并启动了与Crust网络直连的IPFS桌面版",
     "couldNotConnect1": "( 当前版本不支持在Safari浏览器上使用 )",
     "desktop": "下载 IPFS 桌面版",
-    "info": "* 此版本的IPFS桌面应用将apps.crust.network的跨域配置添加到本地，使得Crust APPS和IPFS网络得以正常交互。您也可以按照以下步骤安装标准IPFS，并进行相应配置"
+    "info": "此版本的IPFS桌面应用将apps.crust.network的跨域配置添加到本地，使得Crust APPS和IPFS网络得以正常交互。您也可以按照以下步骤安装标准IPFS，并进行相应配置。"
   },
   "terms": {
     "address": "地址",
