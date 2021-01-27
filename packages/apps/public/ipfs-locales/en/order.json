@@ -8,7 +8,8 @@
     "fileSize": "File Size",
     "startTime": "Start Time",
     "expireTime": "Expired Time",
-    "pinsCount": "Replica",
+    "globalReplicas": "Global Replicas",
+    "confirmedReplicas": "Crust Replicas",
     "fileStatus": "Status",
     "action": "Action",
     "renew": "Renew",
@@ -34,5 +35,11 @@
   "tipTitle": "tip",
   "tipDesc": "Files would be stored by more merchants with higher tips.",
   "priceDesc": "The minimum storage price that needs to be paid for this file.",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "status": {
+    "PENDING": "PENDING",
+    "SUCCESS": "SUCCESS",
+    "FAILED": "FAILED",
+    "EXPIRE": "EXPIRE"
+  }
 }

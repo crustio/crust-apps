@@ -61,7 +61,7 @@ const Order = ({ t, watchList }) => {
           }}>{t('actions.addOrder')}</button>
       </div>
       <div className={'orderList-header'}>
-        <span className={'dib'}>{t('orderListdes')}</span>
+        <span className={'dib'}>{t('orderListdesc')}</span>
       </div>
       <WatchListInput
         onFilterWatchList={handleFilterWatchList}

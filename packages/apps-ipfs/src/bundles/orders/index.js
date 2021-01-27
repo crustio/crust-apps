@@ -31,7 +31,8 @@ const bundle = { name: 'orders',
       startTime: '-',
       expireTime: '-',
       fileStatus: '-',
-      pinsCount: '-',
+      confirmedReplicas: '-',
+      globalReplicas:'-',
       insertAt: (new Date()).valueOf()
     };
 

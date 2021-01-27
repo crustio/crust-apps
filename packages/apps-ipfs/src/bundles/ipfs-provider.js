@@ -436,10 +436,11 @@ const actions = {
   },
   /**
    * @param {string} hash
+   * @param {string} peerId
    * @returns {function():Promise<number>}
    */
   // @ts-ignore
-  doFindProvs: (hash) => async () => {
+  doFindProvs: (hash, peerId) => async () => {
     if (ipfs) {
       const find = ipfs.dht.findProvs(hash, { timeout: 10000 });
       let count = 0;
@@ -447,7 +448,9 @@ const actions = {
       try {
         // @ts-ignore
         for await (const provider of find) {
-          console.log(provider);
+          // if (provider.id !== peerId) {
+          //
+          // }
           count += 1;
         }
       } catch (err) {

@@ -24,7 +24,7 @@ const fileStatusEnum = {
   EXPIRE: 'EXPIRE'
 };
 
-const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, selected, watchItem }) => {
+const WatchItem = ({peerId,  doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, selected, watchItem }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
   const [spin, setSpin] = useState(false);
@@ -52,6 +52,7 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, sele
       watchItem.expireTime = expired_on;
       watchItem.startTime = expired_on ? expired_on - 216000 : '-';
       watchItem.fileSize = file_size;
+      watchItem.confirmedReplicas = replicas ? replicas.length : '-'
 
       if (expired_on < bestNumber || (trash1 && trash2)) {
         // expired
@@ -85,10 +86,10 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, sele
 
     try {
       setSpin(true);
-      const pinsCount = await doFindProvs(watchItem.fileCid);
+      const globalReplicas = await doFindProvs(watchItem.fileCid, peerId);
 
       setSpin(false);
-      doUpdateWatchItem(watchItem.fileCid, { pinsCount });
+      doUpdateWatchItem(watchItem.fileCid, { globalReplicas });
     } catch (e) {
       setSpin(false);
     }
@@ -141,7 +142,12 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, sele
     </div>
     <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-10'>
       <div className=''>
-        {watchItem.pinsCount}
+        {watchItem.confirmedReplicas}
+      </div>
+    </div>
+    <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-10'>
+      <div className=''>
+        {watchItem.globalReplicas}
         <Icon className={`fill-teal-muted refresh-icon ${spin ? 'spin' : ''}`}
           icon='sync'
           onClick={syncStatus} />
@@ -149,7 +155,7 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, sele
     </div>
     <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-10'>
       <div className=''>
-        {watchItem.fileStatus}
+        {t(`status.${watchItem.fileStatus}`)}
       </div>
     </div>
     <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-20'>
@@ -165,6 +171,7 @@ const WatchItem = ({ doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, sele
 };
 
 WatchItem.prototype = {
+  peerId: PropTypes.string.isRequired,
   watchItem: PropTypes.array.isRequired,
   onSelect: PropTypes.func.isRequired,
   selected: PropTypes.boolean,

@@ -161,7 +161,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
   // Depending on the account, decide which step to show.
   const handleAccountStep = useCallback(async () => {
     setIsBusy(true);
-    const result = await httpPost('http://localhost:4001/claim/' + ethereumTxHash);
+    const result = await httpPost('http://192.168.50.6:14001/claim/' + ethereumTxHash);
 
     setIsBusy(false);
     setResult(result.statusText);

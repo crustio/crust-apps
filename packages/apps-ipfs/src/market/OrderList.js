@@ -13,11 +13,10 @@ import WatchItem from '@polkadot/apps-ipfs/market/WatchItem';
 import Checkbox from '../components/checkbox/Checkbox';
 import Icon from '../../../react-components/src/Icon';
 
-const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
+const OrderList = ({ doFetchWatchList, identity, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
   const [listSorting, setListSorting] = useState({ by: null, asc: true });
-  const itemList = ['fileSize', 'startTime', 'expireTime', 'pinsCount', 'fileStatus'];
+  const itemList = ['fileSize', 'startTime', 'expireTime', 'confirmedReplicas', 'globalReplicas', 'fileStatus'];
   const tableRef = useRef(null);
-
   useEffect(() => {
     setListSorting({ by: 'startTime', asc: false });
   }, []);
@@ -134,6 +133,7 @@ const OrderList = ({ doFetchWatchList, doSelectedItems, onToggleBtn, selectedCid
                   rowHeight={50}
                   rowRenderer={({ index, key }) => {
                     return <WatchItem key={key} onSelect={toggleOne}
+                                      peerId={identity ? identity.id :''}
                       onToggleBtn={(type, file) => {
                         onToggleBtn(type, file);
                       }}
@@ -161,4 +161,4 @@ OrderList.propTypes = {
   selectSelectedCidList: propTypes.array.isRequired
 };
 
-export default connect('selectWatchedCidList', 'doRemoveWatchItems', 'doFetchWatchList', 'doSelectedItems', 'selectSelectedCidList', withTranslation('order')(OrderList));
+export default connect('selectWatchedCidList', 'doRemoveWatchItems', 'selectIdentity', 'doFetchWatchList', 'doSelectedItems', 'selectSelectedCidList', withTranslation('order')(OrderList));
