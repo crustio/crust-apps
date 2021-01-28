@@ -32,5 +32,6 @@
   "does not appear to have a valid claim. Please double check that you have signed the transaction correctly on the correct ETH account.": "does not appear to have a valid claim. Please double check that you have signed the transaction correctly on the correct ETH account.",
   "has a valid claim for": "has a valid claim for",
   "is not samed as Your Transfer account": "is not samed as Your Transfer account",
-  "{{step}}. Sign with your ETH address": "{{step}}. Sign with your ETH address"
+  "{{step}}. Sign with your ETH address": "{{step}}. Sign with your ETH address",
+  "Claim your {{abbr}} tokens": "Claim your {{abbr}} tokens"
 }

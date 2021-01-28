@@ -8,7 +8,6 @@ import type { BalanceOf, EcdsaSignature, EthereumAddress, StatementKind } from '
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { Trans } from 'react-i18next';
 import styled from 'styled-components';
 
 import { Button, Card, Columar, Input, InputAddress, Tabs, Tooltip } from '@polkadot/react-components';
@@ -161,7 +160,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
   // Depending on the account, decide which step to show.
   const handleAccountStep = useCallback(async () => {
     setIsBusy(true);
-    const result = await httpPost('http://localhost:4001/claim/' + ethereumTxHash);
+    const result = await httpPost('http://127.0.0.1:14001/claim/' + ethereumTxHash);
 
     setIsBusy(false);
     setResult(result.statusText);
@@ -286,17 +285,22 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
         />
       </header>
       {!isOldClaimProcess && <Warning />}
-      <h1>
-        <Trans>Claim your <em>{TokenUnit.abbr}</em> tokens</Trans>
-      </h1>
+      <h2>
+        {/* <Trans><em>C</em>laim your <em>{TokenUnit.abbr}</em> tokens</Trans> */}
+        {t<string>('Claim your {{abbr}} tokens', {
+              replace: {
+                abbr: TokenUnit.abbr.toUpperCase()
+              }
+            })}
+      </h2>
       <Columar>
         <Columar.Column>
           <Card withBottomMargin>
-            <h3>{t<string>('1. Select your {{chain}} account', {
+            <h3>{t<string>(`1. Select your {{chain}} account and enter`, {
               replace: {
                 chain: systemChain
               }
-            })}</h3>
+            })} <a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CRU')}</a> {t<string>('transfer tx hash')} </h3>
             <InputAddress
               defaultValue={accountId}
               help={t<string>('The account you want to claim to.')}
@@ -308,7 +312,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
             <Input
               autoFocus
               className='full'
-              help={t<string>('The the Ethereum tx hash you used during the pre-sale (starting by "0x")')}
+              help={t<string>('The Ethereum CRU transfer tx hash (starting by "0x")')}
               isDisabled={ethereumTxHashValid}
               isError={!isValid}
               label={t<string>('Ethereum tx hash')}
@@ -372,7 +376,11 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
                   systemChain={systemChain}
                 />
               )}
-              <div>{t<string>('Copy the following string and sign it with the Ethereum account you used during the pre-sale in the wallet of your choice, using the string as the payload, and then paste the transaction signature object below:')}</div>
+              <div>{t<string>('Copy the following string and sign it with the Ethereum account you used sending ERC20 {{abbr}} token, and then paste the transaction signature object below:', {
+              replace: {
+                abbr: TokenUnit.abbr.toUpperCase()
+              }
+            })}</div>
               <CopyToClipboard
                 onCopy={onCopy}
                 text={payload}
@@ -392,7 +400,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
               <div>{t<string>('Paste the signed message into the field below. The placeholder text is there as a hint to what the message should look like:')}</div>
               <Signature
                 onChange={onChangeSignature}
-                placeholder={`{\n  "address": "0x ...",\n  "msg": "${prefix}:...",\n  "sig": "0x ...",\n  "version": "2"\n}`}
+                placeholder={`{\n  "address": "0x ...",\n  "msg": "${prefix}:...",\n  "sig": "0x ...",\n  "version": "3",\n  "signer": "..."\n}`}
                 rows={10}
               />
               {(step === Step.Sign) && (
