@@ -34,6 +34,7 @@ const WatchItem = ({peerId,  doFindProvs, doUpdateWatchItem, onSelect, onToggleB
     'o-1': selected
   }, ['pl2 w2']);
   const fileStatus = useCall(isApiReady && api.query?.market && api.query?.market.files, [watchItem.fileCid]);
+
   let bestNumber = useCall(isApiReady && api.derive.chain.bestNumber);
   const trash1 = useCall(isApiReady && api.query?.market.transh1, [watchItem.fileCid]);
   const trash2 = useCall(isApiReady && api.query?.market.transh2, [watchItem.fileCid]);
@@ -85,6 +86,11 @@ const WatchItem = ({peerId,  doFindProvs, doUpdateWatchItem, onSelect, onToggleB
       if (!trash1 && !trash2) {
         // failed
         status = fileStatusEnum.FAILED;
+        watchItem.expireTime = 0;
+        watchItem.status = status;
+        watchItem.startTime = 0;
+        watchItem.fileSize = 0;
+        watchItem.confirmedReplicas = 0
       }
     }
   }
