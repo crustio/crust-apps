@@ -1405,6 +1405,6 @@
   "Please make sure that the account you transfer in Ethereum is the same as the signature account.": "请确保你转账的账户和签名的账户是一致的",
   "1. Select your {{chain}} account and enter": "1. 选择你的{{chain}}账户并输入以太坊",
   "transfer tx hash": "转账交易的哈希值",
-  "The Ethereum CRU transfer tx hash (starting by \"0x\")": "以太坊ERC20 CRU转账交易的哈希值",
+  "The Ethereum CRU transfer tx hash (starting by \"0x\")": "以太坊ERC20 CRU转账交易的哈希值(已\"0x\"开头)",
   "Ethereum tx hash": "以太坊转账交易哈希"
 }
