@@ -11,9 +11,8 @@ import Icon from '../../../../react-components/src/Icon';
 
 const ipfsDesktopMacZh = 'https://crust-data.oss-cn-shanghai.aliyuncs.com/ipfs/Crust%20IPFS%20Desktop-0.13.2.dmg';
 const ipfsDesktopWinZh = 'https://crust-data.oss-cn-shanghai.aliyuncs.com/ipfs/Crust%20IPFS%20Desktop%20Setup%200.13.2.exe'
-// todo: wait ipfs desktop github address
-const ipfsDesktopMac = 'https://crust-data.oss-cn-shanghai.aliyuncs.com/ipfs/Crust%20IPFS%20Desktop-0.13.2.dmg';
-const ipfsDesktopWin = 'https://crust-data.oss-cn-shanghai.aliyuncs.com/ipfs/Crust%20IPFS%20Desktop%20Setup%200.13.2.exe';
+const ipfsDesktopMac = 'https://github.com/crustio/crust-apps/releases/download/v0.74.1/Crust.IPFS.Desktop-0.13.2.dmg';
+const ipfsDesktopWin = 'https://github.com/crustio/crust-apps/releases/download/v0.74.1/Crust.IPFS.Desktop.Setup.0.13.2.exe';
 
 const IsNotConnected = ({ apiUrl, connected, doUpdateIpfsApiAddress, ipfsApiAddress, sameOrigin, t } ) => {
   const TABS = {
