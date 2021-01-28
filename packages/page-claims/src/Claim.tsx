@@ -104,7 +104,7 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
           {t<string>('is not samed as Your Transfer account')}
         </>
         <h3>{addrToChecksum(claimedAddress.toString())}</h3>
-        {t<string>('Please make sure that the account you trade in Ethereum is the same as the signature account.')}
+        {t<string>('Please make sure that the account you transfer in Ethereum is the same as the signature account.')}
       </div>
     </Card>);
   }
