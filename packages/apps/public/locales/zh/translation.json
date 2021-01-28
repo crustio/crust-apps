@@ -1398,11 +1398,13 @@
   "{{threshold}}, not passing": "{{threshold}},没有通过",
   "{{threshold}}, passing": "{{threshold}}, 通过",
   "{{value}}x voting balance, locked for {{lock}}x enactment ({{period}} days)": "{{value}}x投票余额，锁定 {{lock}}x 执行 ({{period}} days)",
-  "Claim your {{abbr}} tokens": "认领你 {{abbr}} 代币",
+  "Claim your {{abbr}} tokens": "认领你的{{abbr}}代币",
   "Copy the following string and sign it with the Ethereum account you used sending ERC20 {{abbr}} token, and then paste the transaction signature object below:": "复制以下字符串，并使用您成功转账ERC20 {{abbr}}的以太坊账户进行签名，然后将交易签名对象粘贴到下面",
   "Your Sign account": "你签名的账户",
   "is not samed as Your Transfer account": "和发起转账的账户不一致",
   "Please make sure that the account you transfer in Ethereum is the same as the signature account.": "请确保你转账的账户和签名的账户是一致的",
   "1. Select your {{chain}} account and enter": "1. 选择你的{{chain}}账户并输入以太坊",
-  "transfer tx hash": "转账交易的哈希值"
+  "transfer tx hash": "转账交易的哈希值",
+  "The Ethereum CRU transfer tx hash (starting by \"0x\")": "以太坊ERC20 CRU转账交易的哈希值",
+  "Ethereum tx hash": "以太坊转账交易哈希"
 }

@@ -312,7 +312,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
             <Input
               autoFocus
               className='full'
-              help={t<string>('The the Ethereum tx hash you used during the pre-sale (starting by "0x")')}
+              help={t<string>('The Ethereum CRU transfer tx hash (starting by "0x")')}
               isDisabled={ethereumTxHashValid}
               isError={!isValid}
               label={t<string>('Ethereum tx hash')}
