@@ -14,7 +14,29 @@ import Checkbox from '../components/checkbox/Checkbox';
 
 const OrderList = ({ doFetchWatchList, identity, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
   const [listSorting, setListSorting] = useState({ by: null, asc: true });
-  const itemList = ['fileSize', 'startTime', 'expireTime', 'confirmedReplicas', 'globalReplicas', 'fileStatus'];
+  const itemList = [{
+    name: 'fileSize',
+    width: 10,
+  }, {
+    name: 'startTime',
+    width: 15,
+  },
+    {
+      name: 'expireTime',
+      width: 15,
+    },
+    {
+      name: 'confirmedReplicas',
+      width: 10,
+    },
+    {
+      name: 'globalReplicas',
+      width: 10,
+    },
+    {
+      name: 'fileStatus',
+      width: 10,
+    }];
   const tableRef = useRef(null);
   useEffect(() => {
     setListSorting({ by: 'startTime', asc: false });
@@ -87,7 +109,7 @@ const OrderList = ({ doFetchWatchList, identity, doSelectedItems, onToggleBtn, s
             checked={isAllSelected()}
             onChange={toggleAll}/>
         </div>
-        <div className='ph2 pv1 flex-auto db-l tc w-20 watch-list-header'>
+        <div className='ph2 pv1 flex-auto db-l tc w-15 watch-list-header'>
           <button
             aria-label={t('sortBy', { name: t('fileCid') })}
             onClick={() => {
@@ -98,19 +120,19 @@ const OrderList = ({ doFetchWatchList, identity, doSelectedItems, onToggleBtn, s
           </button>
         </div>
         {itemList.map((item) => (
-          <div className='ph2 pv1 flex-auto db-l tc w-10 watch-list-header'
-            key={item}>
+          <div className={`ph2 pv1 flex-auto db-l tc  w-${item.width} watch-list-header`}
+            key={item.name}>
             <button
-              aria-label={t('sortBy', { name: t(`${item}`) })}
+              aria-label={t('sortBy', { name: t(`${item.name}`) })}
               onClick={() => {
-                changeSort(item);
+                changeSort(item.name);
               }}
             >
-              {t(`actions.${item}`)}{sortByIcon(item)}
+              {t(`actions.${item.name}`)}{sortByIcon(item.name)}
             </button>
           </div>
         ))}
-        <div className='ph2 pv1 flex-auto db-l tc w-20 watch-list-header'>{t('actions.action')}</div>
+        <div className='ph2 pv1 flex-auto db-l tc w-10 watch-list-header'>{t('actions.action')}</div>
       </header>
       <WindowScroller>
         {({ height, isScrolling, onChildScroll, scrollTop }) => (

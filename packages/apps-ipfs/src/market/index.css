@@ -108,6 +108,17 @@ button:focus {outline:0!important;}
   color: #ff8812;
   background-color: transparent!important;
   display: inline-block;
-  
+}
+.w-5 {
+  width: 5%;
+}
+.w-10 {
+  width: 10%;
+}
+.w-15 {
+  width: 15%;
+}
+.w-20 {
+  width: 20%;
 }
 

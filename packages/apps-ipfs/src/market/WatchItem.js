@@ -120,7 +120,7 @@ const WatchItem = ({peerId,  doFindProvs, doUpdateWatchItem, onSelect, onToggleB
   return <div
     className={'File b--light-gray relative  flex items-center bt'}
     style={{ overflow: 'hidden', height: 40 }}>
-    <div className='justify-center tc flex justify-center items-center flex-grow-1 ph2 pv1 w-5'>
+    <div className='justify-center tc flex justify-center items-center  ph2 pv1 w-5'>
       <Checkbox aria-label={ t('checkboxLabel', { name })}
         checked={selected}
         className={checkBoxCls}
@@ -128,7 +128,7 @@ const WatchItem = ({peerId,  doFindProvs, doUpdateWatchItem, onSelect, onToggleB
           onSelect(watchItem.fileCid);
         }}/>
     </div>
-    <div className='relative tc pointer  justify-center flex items-center flex-grow-1 ph2 pv1 w-20'>
+    <div className='relative tc pointer  justify-center flex items-center  ph2 pv1 w-15'>
       <div className=''>
         <Cid value={watchItem.fileCid} />
         <CopyButton text={watchItem.fileCid} message={t('fileCidCopied')}>
@@ -136,28 +136,28 @@ const WatchItem = ({peerId,  doFindProvs, doUpdateWatchItem, onSelect, onToggleB
         </CopyButton>
       </div>
     </div>
-    <div className='relative tc pointer  justify-center flex items-center flex-grow-1 ph2 pv1 w-10'>
+    <div className='relative tc pointer  justify-center flex items-center  ph2 pv1 w-10'>
       <div className=''>
         {readableSize  || '-'}
       </div>
     </div>
 
-    <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-10'>
+    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-15'>
       <div className=''>
         {watchItem.startTime || '-'}
       </div>
     </div>
-    <div className='relative tc pointer flex  justify-center items-center flex-grow-1 ph2 pv1 w-10'>
+    <div className='relative tc pointer flex  justify-center items-center  ph2 pv1 w-15'>
       <div className=''>
         {watchItem.expireTime || '-'}
       </div>
     </div>
-    <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-10'>
+    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-10'>
       <div className=''>
         {watchItem.confirmedReplicas || '-'}
       </div>
     </div>
-    <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-10'>
+    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-10'>
       <div className=''>
         {watchItem.globalReplicas  || '-'}
         <Icon className={`fill-teal-muted refresh-icon ${spin ? 'spin' : ''}`}
@@ -165,12 +165,12 @@ const WatchItem = ({peerId,  doFindProvs, doUpdateWatchItem, onSelect, onToggleB
           onClick={syncStatus} />
       </div>
     </div>
-    <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-10'>
+    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-10'>
       <div className=''>
         {t(`status.${watchItem.fileStatus}`)}
       </div>
     </div>
-    <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-20'>
+    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-10'>
       <div className=''
         title='action'>
         <button className={'watch-item-btn'}
