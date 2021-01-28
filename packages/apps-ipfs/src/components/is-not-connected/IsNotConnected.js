@@ -56,7 +56,7 @@ const IsNotConnected = ({ apiUrl, connected, doUpdateIpfsApiAddress, ipfsApiAddr
         <span onClick={() => {
           toggleDesc(!showDesc)
         }} className='link blu pointer' style={{paddingLeft: 5}}>
-          <Icon  icon={showDesc ? 'caret-down' :'caret-up'}/>
+          <Icon  icon={showDesc ? 'caret-up' :'caret-down'}/>
           {showDesc ? t('app:fold'): t('app:unfold')}
         </span>
         {

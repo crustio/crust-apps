@@ -16,6 +16,7 @@ import StrokePin from '../../icons/StrokePin';
 import StrokeShare from '../../icons/StrokeShare';
 import StrokeTrash from '../../icons/StrokeTrash';
 import { Dropdown, DropdownMenu, Option } from '../dropdown/Dropdown';
+import CopyButton from '@polkadot/apps-ipfs/components/copy-button';
 
 class ContextMenu extends React.Component {
   constructor (props) {
@@ -28,9 +29,8 @@ class ContextMenu extends React.Component {
   }
 
   goToOrder = (file) => () => {
-    // todo: to toggle order modal
-    console.log(file);
     this.props.onOrder(file);
+    this.props.handleClick()
   }
 
   wrap = (name, cliOptions) => () => {
@@ -80,20 +80,18 @@ class ContextMenu extends React.Component {
             {t('actions.order')}
           </Option>
 
-          <CopyToClipboard onCopy={this.props.handleClick}
-            text={String(this.props.cid)}>
+          <CopyButton onCopy={this.props.handleClick} message={t('order:fileCidCopied')} text={String(this.props.cid)}>
             <Option>
               <StrokeCopy className='w2 mr2 fill-aqua' />
               {t('actions.copyHash')}
             </Option>
-          </CopyToClipboard>
-          <CopyToClipboard onCopy={this.props.handleClick}
-            text={String(this.props.file ? this.props.file.originalSize : '0')}>
+          </CopyButton>
+          <CopyButton onCopy={this.props.handleClick} message={t('order:fileSizeCopied')} text={String(this.props.file ? this.props.file.originalSize : '0')}>
             <Option>
               <StrokeCopy className='w2 mr2 fill-aqua' />
               {t('actions.copySize', 'Copy file size')}
             </Option>
-          </CopyToClipboard>
+          </CopyButton>
           { onInspect &&
             <Option onClick={this.wrap('onInspect')}>
               <StrokeIpld className='w2 mr2 fill-aqua' />

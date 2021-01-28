@@ -41,5 +41,8 @@
     "SUCCESS": "SUCCESS",
     "FAILED": "FAILED",
     "EXPIRE": "EXPIRE"
-  }
+  },
+  "clipboard": "Clipboard",
+  "fileCidCopied": "File CID Copied",
+  "fileSizeCopied": "File Size Copied"
 }

@@ -5,7 +5,7 @@
 import classnames from 'classnames';
 import filesize from 'filesize';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
@@ -16,6 +16,8 @@ import StrokeCopy from '@polkadot/apps-ipfs/icons/StrokeCopy';
 import Icon from '../../../react-components/src/Icon';
 import { useApi, useCall } from '../../../react-hooks/src';
 import Checkbox from '../components/checkbox/Checkbox';
+import StatusContext from '../../../react-components/src/Status/Context';
+import CopyButton from '@polkadot/apps-ipfs/components/copy-button';
 
 const fileStatusEnum = {
   PENDING: 'PENDING',
@@ -35,6 +37,17 @@ const WatchItem = ({peerId,  doFindProvs, doUpdateWatchItem, onSelect, onToggleB
   let bestNumber = useCall(isApiReady && api.derive.chain.bestNumber);
   const trash1 = useCall(isApiReady && api.query?.market.transh1, [watchItem.fileCid]);
   const trash2 = useCall(isApiReady && api.query?.market.transh2, [watchItem.fileCid]);
+  const { queueAction } = useContext(StatusContext);
+  const _onCopy = useCallback(
+    () => {
+    queueAction && queueAction({
+      action: t('clipboard'),
+      message: t('fileCidCopied'),
+      status: 'queued'
+    });
+  },
+  [queueAction, t]
+);
 
   bestNumber = bestNumber && JSON.parse(JSON.stringify(bestNumber));
   let status = fileStatusEnum.PENDING;
@@ -50,9 +63,9 @@ const WatchItem = ({peerId,  doFindProvs, doUpdateWatchItem, onSelect, onToggleB
         replicas } = _fileStatus[0];
 
       watchItem.expireTime = expired_on;
-      watchItem.startTime = expired_on ? expired_on - 216000 : '-';
+      watchItem.startTime = expired_on ? expired_on - 216000 : 0;
       watchItem.fileSize = file_size;
-      watchItem.confirmedReplicas = replicas ? replicas.length : '-'
+      watchItem.confirmedReplicas = replicas ? replicas.length : 0
 
       if (expired_on && expired_on < bestNumber || (trash1 && trash2)) {
         // expired
@@ -118,15 +131,14 @@ const WatchItem = ({peerId,  doFindProvs, doUpdateWatchItem, onSelect, onToggleB
     <div className='relative tc pointer  justify-center flex items-center flex-grow-1 ph2 pv1 w-20'>
       <div className=''>
         <Cid value={watchItem.fileCid} />
-        <CopyToClipboard text={watchItem.fileCid}>
-          <StrokeCopy className='fill-aqua'
-            style={{ width: 18 }} />
-        </CopyToClipboard>
+        <CopyButton text={watchItem.fileCid} message={t('fileCidCopied')}>
+          <StrokeCopy className='fill-aqua' style={{ width: 18 }} />
+        </CopyButton>
       </div>
     </div>
     <div className='relative tc pointer  justify-center flex items-center flex-grow-1 ph2 pv1 w-10'>
       <div className=''>
-        {readableSize}
+        {readableSize  || '-'}
       </div>
     </div>
 
@@ -142,12 +154,12 @@ const WatchItem = ({peerId,  doFindProvs, doUpdateWatchItem, onSelect, onToggleB
     </div>
     <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-10'>
       <div className=''>
-        {watchItem.confirmedReplicas}
+        {watchItem.confirmedReplicas || '-'}
       </div>
     </div>
     <div className='relative tc pointer flex justify-center items-center flex-grow-1 ph2 pv1 w-10'>
       <div className=''>
-        {watchItem.globalReplicas}
+        {watchItem.globalReplicas  || '-'}
         <Icon className={`fill-teal-muted refresh-icon ${spin ? 'spin' : ''}`}
           icon='sync'
           onClick={syncStatus} />

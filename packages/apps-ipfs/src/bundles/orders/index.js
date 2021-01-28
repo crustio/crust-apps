@@ -28,11 +28,11 @@ const bundle = { name: 'orders',
     const watchItem = {
       fileCid,
       fileSize: 0,
-      startTime: '-',
-      expireTime: '-',
-      fileStatus: '-',
-      confirmedReplicas: '-',
-      globalReplicas:'-',
+      startTime: 0,
+      expireTime: 0,
+      fileStatus: 'PENDING',
+      confirmedReplicas: 0,
+      globalReplicas: 0,
       insertAt: (new Date()).valueOf()
     };
 

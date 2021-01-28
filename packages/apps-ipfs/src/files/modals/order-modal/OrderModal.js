@@ -9,7 +9,7 @@ import { connect } from 'redux-bundler-react';
 
 import { useAccounts, useApi, useCall } from '@polkadot/react-hooks';
 import { Available } from '@polkadot/react-query';
-import { BN_ZERO, formatBalance } from '@polkadot/util';
+import { formatBalance } from '@polkadot/util';
 
 import { Input, InputAddress, InputBalance, InputNumber, Modal, TxButton } from '../../../../../react-components/src';
 
@@ -28,7 +28,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
     // 0.002cru + storagePrice + tip
     const stableFee = new BN(2_000_000_000)
     const tipFee= new BN(tip.toString())
-    setPrice(formatBalance(filePrice?.mul(new BN(fileSize)).divn(1024*1024).add(stableFee).add(tipFee), { decimals: 12 }));
+    setPrice(formatBalance(filePrice?.mul(new BN(fileSize)).divn(1024*1024).add(stableFee).add(tipFee), { decimals: 12, forceUnit: 'CRU' }));
   }, [fileSize, filePrice, tip]);
   useEffect(() => {
     setCidNotValid(fileCid && !isIPFS.cid(fileCid) && !isIPFS.path(fileCid));

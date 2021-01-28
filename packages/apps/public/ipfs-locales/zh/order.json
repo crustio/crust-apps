@@ -38,6 +38,8 @@
     "SUCCESS": "成功",
     "FAILED": "失败",
     "EXPIRE": "过期"
-  }
-
+  },
+  "fileCidCopied": "文件CID复制成功",
+  "fileSizeCopied": "文件大小复制成功",
+  "clipboard": "剪切板"
 }

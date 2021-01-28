@@ -104,4 +104,10 @@ button:focus {outline:0!important;}
 .ui.modal > .header:not(.ui) {
   text-transform: none!important;
 }
+.copy-btn {
+  color: #ff8812;
+  background-color: transparent!important;
+  display: inline-block;
+  
+}
 
