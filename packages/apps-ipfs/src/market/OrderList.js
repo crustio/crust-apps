@@ -35,19 +35,21 @@ const itemList = [{
     width: 10,
   }];
 
-const OrderList = ({ doFindProvs, doUpdateWatchItem, doFetchWatchList, identity, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
-  const [listSorting, setListSorting] = useState({ by: 'startTime', asc: false });
+const OrderList = ({ doFindProvs, doUpdateWatchItem, identity, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
+  const [listSorting, setListSorting] = useState({ by: null, asc: false });
   const [spinList, setSpinList] = useState([])
-  const [sortedList, setSortedList] = useState([])
+  const [sortedList, setSortedList] = useState(watchList)
 
   const tableRef = useRef(null);
+  useEffect(() => {
+    setListSorting({ by: 'startTime', asc: false })
+  }, [])
 
   useEffect(() => {
     const _list = _.orderBy(watchList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc']);
-    console.log(_list);
     setSortedList(_list)
     tableRef.current.forceUpdateGrid();
-  }, [listSorting, watchList]);
+  }, [watchList, watchList.length, listSorting]);
 
   const syncStatus = async (fileCid) => {
     if (spinList.indexOf(fileCid) > -1) {
@@ -68,11 +70,6 @@ const OrderList = ({ doFindProvs, doUpdateWatchItem, doFetchWatchList, identity,
       setSpinList(spinList)
     }
   };
-  // useEffect(() => {
-  //   tableRef.current.forceUpdateGrid();
-  // }, [watchList])
-
-
 
   const toggleOne = (fileCid) => {
     const index = selectedCidList.indexOf(fileCid);
