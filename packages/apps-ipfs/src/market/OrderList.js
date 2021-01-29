@@ -11,38 +11,44 @@ import { connect } from 'redux-bundler-react';
 import WatchItem from '@polkadot/apps-ipfs/market/WatchItem';
 
 import Checkbox from '../components/checkbox/Checkbox';
-
-const OrderList = ({ doFindProvs, doUpdateWatchItem, doFetchWatchList, identity, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
-  const [listSorting, setListSorting] = useState({ by: null, asc: true });
-  const [spinList, setSpinList] = useState([])
-
-  const itemList = [{
-    name: 'fileSize',
-    width: 10,
-  }, {
-    name: 'startTime',
+const itemList = [{
+  name: 'fileSize',
+  width: 10,
+}, {
+  name: 'startTime',
+  width: 15,
+},
+  {
+    name: 'expireTime',
     width: 15,
   },
-    {
-      name: 'expireTime',
-      width: 15,
-    },
-    {
-      name: 'confirmedReplicas',
-      width: 10,
-    },
-    {
-      name: 'globalReplicas',
-      width: 10,
-    },
-    {
-      name: 'fileStatus',
-      width: 10,
-    }];
+  {
+    name: 'confirmedReplicas',
+    width: 10,
+  },
+  {
+    name: 'globalReplicas',
+    width: 10,
+  },
+  {
+    name: 'fileStatus',
+    width: 10,
+  }];
+
+const OrderList = ({ doFindProvs, doUpdateWatchItem, doFetchWatchList, identity, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
+  const [listSorting, setListSorting] = useState({ by: 'startTime', asc: false });
+  const [spinList, setSpinList] = useState([])
+  const [sortedList, setSortedList] = useState([])
+
   const tableRef = useRef(null);
+
   useEffect(() => {
-    setListSorting({ by: 'startTime', asc: false });
-  }, []);
+    const _list = _.orderBy(watchList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc']);
+    console.log(_list);
+    setSortedList(_list)
+    tableRef.current.forceUpdateGrid();
+  }, [listSorting, watchList]);
+
   const syncStatus = async (fileCid) => {
     if (spinList.indexOf(fileCid) > -1) {
       return;
@@ -62,6 +68,9 @@ const OrderList = ({ doFindProvs, doUpdateWatchItem, doFetchWatchList, identity,
       setSpinList(spinList)
     }
   };
+  // useEffect(() => {
+  //   tableRef.current.forceUpdateGrid();
+  // }, [watchList])
 
 
 
@@ -103,13 +112,6 @@ const OrderList = ({ doFindProvs, doUpdateWatchItem, doFetchWatchList, identity,
 
     return null;
   };
-
-  useEffect(() => {
-    const _list = _.orderBy(watchList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc']);
-
-    doFetchWatchList(_list);
-    tableRef.current.forceUpdateGrid();
-  }, [listSorting]);
 
   const changeSort = (order) => {
     if (order === listSorting.by) {
@@ -166,14 +168,14 @@ const OrderList = ({ doFindProvs, doUpdateWatchItem, doFetchWatchList, identity,
                   aria-label={t('filesListLabel')}
                   autoHeight
                   className='outline-0'
-                  data={watchList /* NOTE: this is a placebo prop to force the list to re-render */}
+                  data={sortedList /* NOTE: this is a placebo prop to force the list to re-render */}
                   height={height}
                   isScrolling={isScrolling}
                   onScroll={onChildScroll}
                   noRowsRenderer={nodata}
                   // onRowsRendered={this.onRowsRendered}
                   ref={tableRef}
-                  rowCount={watchList.length}
+                  rowCount={sortedList.length}
                   rowHeight={50}
                   rowRenderer={({ index, key }) => {
                     return <WatchItem
@@ -184,9 +186,9 @@ const OrderList = ({ doFindProvs, doUpdateWatchItem, doFetchWatchList, identity,
                         onToggleBtn(type, file);
                       }}
                       onSyncStatus={syncStatus}
-                      isSpin={spinList.indexOf(watchList[index].fileCid) > -1}
-                      selected={selectedCidList.indexOf(watchList[index].fileCid) > -1}
-                      watchItem={watchList[index]} />;
+                      isSpin={spinList.indexOf(sortedList[index].fileCid) > -1}
+                      selected={selectedCidList.indexOf(sortedList[index].fileCid) > -1}
+                      watchItem={sortedList[index]} />;
                   }}
                   scrollTop={scrollTop}
                   width={width}

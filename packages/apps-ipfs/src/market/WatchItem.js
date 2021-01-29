@@ -26,7 +26,7 @@ const fileStatusEnum = {
   EXPIRE: 'EXPIRE'
 };
 
-const WatchItem = ({ onSyncStatus, isSpin, spinList, onSelect, onToggleBtn, selected, watchItem }) => {
+const WatchItem = ({ onSyncStatus, isSpin, onSelect,doUpdateWatchItem, onToggleBtn, selected, watchItem }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
   const checkBoxCls = classnames({
