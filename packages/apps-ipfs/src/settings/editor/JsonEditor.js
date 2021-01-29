@@ -1,12 +1,11 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 // import 'brace/mode/json';
-// tofix: import ace theme lead to ipfs-setting page load error.
 // import './theme/ipfs_dark';
 
 import React from 'react';
 import AceEditor from 'react-ace';
-
+import 'ace-builds/webpack-resolver'
 class JsonEditor extends React.Component {
   render () {
     const { onChange, readOnly, value } = this.props;
