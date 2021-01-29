@@ -37,10 +37,10 @@
   "priceDesc": "The minimum storage price that needs to be paid for this file.",
   "confirm": "Confirm",
   "status": {
-    "PENDING": "PENDING",
-    "SUCCESS": "SUCCESS",
-    "FAILED": "FAILED",
-    "EXPIRE": "EXPIRE"
+    "PENDING": "pending",
+    "SUCCESS": "success",
+    "FAILED": "failed",
+    "EXPIRE": "expire"
   },
   "clipboard": "Clipboard",
   "fileCidCopied": "File CID Copied",

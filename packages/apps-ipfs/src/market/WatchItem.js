@@ -26,10 +26,9 @@ const fileStatusEnum = {
   EXPIRE: 'EXPIRE'
 };
 
-const WatchItem = ({peerId,  doFindProvs, doUpdateWatchItem, onSelect, onToggleBtn, selected, watchItem }) => {
+const WatchItem = ({ onSyncStatus, isSpin, spinList, onSelect, onToggleBtn, selected, watchItem }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
-  const [spin, setSpin] = useState(false);
   const checkBoxCls = classnames({
     'o-1': selected
   }, ['pl2 w2']);
@@ -38,17 +37,6 @@ const WatchItem = ({peerId,  doFindProvs, doUpdateWatchItem, onSelect, onToggleB
   let bestNumber = useCall(isApiReady && api.derive.chain.bestNumber);
   const trash1 = useCall(isApiReady && api.query?.market.transh1, [watchItem.fileCid]);
   const trash2 = useCall(isApiReady && api.query?.market.transh2, [watchItem.fileCid]);
-  const { queueAction } = useContext(StatusContext);
-  const _onCopy = useCallback(
-    () => {
-    queueAction && queueAction({
-      action: t('clipboard'),
-      message: t('fileCidCopied'),
-      status: 'queued'
-    });
-  },
-  [queueAction, t]
-);
 
   bestNumber = bestNumber && JSON.parse(JSON.stringify(bestNumber));
   let status = fileStatusEnum.PENDING;
@@ -97,22 +85,6 @@ const WatchItem = ({peerId,  doFindProvs, doUpdateWatchItem, onSelect, onToggleB
 
   watchItem.fileStatus = status;
   const readableSize = watchItem.fileSize ? filesize(watchItem.fileSize, { round: 2 }) : '-';
-
-  const syncStatus = async () => {
-    if (spin) {
-      return;
-    }
-
-    try {
-      setSpin(true);
-      const globalReplicas = await doFindProvs(watchItem.fileCid, peerId);
-
-      setSpin(false);
-      doUpdateWatchItem(watchItem.fileCid, { globalReplicas });
-    } catch (e) {
-      setSpin(false);
-    }
-  };
 
   const buttonTextEnm = {
 
@@ -166,13 +138,15 @@ const WatchItem = ({peerId,  doFindProvs, doUpdateWatchItem, onSelect, onToggleB
     <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-10'>
       <div className=''>
         {watchItem.globalReplicas  || '-'}
-        <Icon className={`fill-teal-muted refresh-icon ${spin ? 'spin' : ''}`}
+        <Icon className={`fill-teal-muted refresh-icon ${isSpin ? 'spin' : ''}`}
           icon='sync'
-          onClick={syncStatus} />
+          onClick={() => {
+            onSyncStatus(watchItem.fileCid)
+          }} />
       </div>
     </div>
     <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-10'>
-      <div className=''>
+      <div className="text-capitalize" style={{textTransform: 'capitalize'}}>
         {t(`status.${watchItem.fileStatus}`)}
       </div>
     </div>
@@ -192,8 +166,10 @@ WatchItem.prototype = {
   peerId: PropTypes.string.isRequired,
   watchItem: PropTypes.array.isRequired,
   onSelect: PropTypes.func.isRequired,
-  selected: PropTypes.boolean,
-  onToggleBtn: PropTypes.func.onToggleBtn
+  selected: PropTypes.bool,
+  onToggleBtn: PropTypes.func.isRequired,
+  isSpin: PropTypes.bool.isRequired,
+  onSyncStatus: PropTypes.func
 };
 
 export default connect('doFindProvs', 'doUpdateWatchItem', WatchItem);

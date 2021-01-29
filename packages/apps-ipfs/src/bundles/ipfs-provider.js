@@ -440,7 +440,7 @@ const actions = {
    * @returns {function():Promise<number>}
    */
   // @ts-ignore
-  doFindProvs: (hash, peerId) => async () => {
+  doFindProvs: (hash) => async () => {
     if (ipfs) {
       const find = ipfs.dht.findProvs(hash, { timeout: 10000 });
       let count = 0;

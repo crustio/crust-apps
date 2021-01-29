@@ -12,8 +12,10 @@ import WatchItem from '@polkadot/apps-ipfs/market/WatchItem';
 
 import Checkbox from '../components/checkbox/Checkbox';
 
-const OrderList = ({ doFetchWatchList, identity, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
+const OrderList = ({ doFindProvs, doUpdateWatchItem, doFetchWatchList, identity, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
   const [listSorting, setListSorting] = useState({ by: null, asc: true });
+  const [spinList, setSpinList] = useState([])
+
   const itemList = [{
     name: 'fileSize',
     width: 10,
@@ -41,6 +43,27 @@ const OrderList = ({ doFetchWatchList, identity, doSelectedItems, onToggleBtn, s
   useEffect(() => {
     setListSorting({ by: 'startTime', asc: false });
   }, []);
+  const syncStatus = async (fileCid) => {
+    if (spinList.indexOf(fileCid) > -1) {
+      return;
+    }
+    spinList.push(fileCid)
+    setSpinList(spinList);
+    tableRef.current.forceUpdateGrid();
+    const _idx =  watchList.findIndex((item) => fileCid === item.fileCid);
+    try {
+      const globalReplicas = await doFindProvs(fileCid);
+
+      doUpdateWatchItem(fileCid, { globalReplicas });
+    } catch (e) {
+
+    }finally {
+      spinList.splice(_idx, 1)
+      setSpinList(spinList)
+    }
+  };
+
+
 
   const toggleOne = (fileCid) => {
     const index = selectedCidList.indexOf(fileCid);
@@ -153,11 +176,15 @@ const OrderList = ({ doFetchWatchList, identity, doSelectedItems, onToggleBtn, s
                   rowCount={watchList.length}
                   rowHeight={50}
                   rowRenderer={({ index, key }) => {
-                    return <WatchItem key={key} onSelect={toggleOne}
-                                      peerId={identity ? identity.id :''}
+                    return <WatchItem
+                      key={key}
+                      onSelect={toggleOne}
+                      peerId={identity ? identity.id :''}
                       onToggleBtn={(type, file) => {
                         onToggleBtn(type, file);
                       }}
+                      onSyncStatus={syncStatus}
+                      isSpin={spinList.indexOf(watchList[index].fileCid) > -1}
                       selected={selectedCidList.indexOf(watchList[index].fileCid) > -1}
                       watchItem={watchList[index]} />;
                   }}
@@ -179,7 +206,8 @@ OrderList.propTypes = {
   doRemoveWatchItems: propTypes.func.isRequired,
   doFetchWatchList: propTypes.func,
   doSelectedItems: propTypes.func,
-  selectSelectedCidList: propTypes.array.isRequired
+  selectSelectedCidList: propTypes.array,
+  doUpdateWatchItem: propTypes.func
 };
 
-export default connect('selectWatchedCidList', 'doRemoveWatchItems', 'selectIdentity', 'doFetchWatchList', 'doSelectedItems', 'selectSelectedCidList', withTranslation('order')(OrderList));
+export default connect('selectWatchedCidList','doFindProvs', 'doRemoveWatchItems', 'selectIdentity', 'doFetchWatchList', 'doSelectedItems', 'selectSelectedCidList', 'doUpdateWatchItem', withTranslation('order')(OrderList));
