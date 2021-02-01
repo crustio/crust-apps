@@ -43,7 +43,7 @@ function extractState (ownStashes?: StakerState[]): State {
   }
 
   return {
-    bondedTotal: ownStashes.reduce((total: BN, { stakingLedger }) =>
+    bondedTotal: ownStashes.filter((e) => e.isOwnController && e.isOwnStash).reduce((total: BN, { stakingLedger }) =>
       stakingLedger
         ? total.add(stakingLedger.total.unwrap())
         : total,

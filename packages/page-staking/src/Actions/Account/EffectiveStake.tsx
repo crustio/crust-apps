@@ -10,6 +10,7 @@ import { AddressMini, Expander } from '@polkadot/react-components';
 import { FormatBalance } from '@polkadot/react-query';
 import { BN_ZERO } from '@polkadot/util';
 import { useCall, useApi } from '@polkadot/react-hooks';
+import { formatBalance } from '@polkadot/util';
 
 interface Props {
   stakeValue?: BN;
@@ -34,21 +35,20 @@ function EffectiveStake ({ activeEra, stakeValue, stashId, validators }: Props):
 
     if (multiQuery) {
       for (let index = 0; index < tmpTargets?.length; index++) {
-        let guaranteeTarget:[string, BN, BN] = [tmpTargets[index].who, new BN(0), tmpTargets[index].value];
+        let guaranteeTarget:[string, BN, BN] = [tmpTargets[index].who, new BN('0'), new BN(tmpTargets[index].value?.toString())];
         const exposure = multiQuery[index];
         if (exposure) {
           for (const other of exposure.others) {
             if (other.who.toString() === stashId) {
-              guaranteeTarget[1] = other.value.unwrap();
+              guaranteeTarget[1] = new BN(other.value.toString());
             }
           }
         }
         guaranteeTargets.push(guaranteeTarget);
       }
     }
-    stakeValue = guaranteeTargets.reduce((total: BN, [who, value]) => { return total.add(new BN(Number(value).toString()))}, BN_ZERO);
+    stakeValue = guaranteeTargets.reduce((total: BN, [who, value]) => { return total.add(new BN(value.toString()))}, BN_ZERO);
   }
-
 
   return (
     <td className='number all'>

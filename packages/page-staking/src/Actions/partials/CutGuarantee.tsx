@@ -5,7 +5,7 @@
 import { NominateInfo } from './types';
 import { SortedTargets } from '../../types';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { InputAddress, InputAddressMulti, Modal, InputBalance } from '@polkadot/react-components';
 import { useApi, useFavorites } from '@polkadot/react-hooks';
@@ -18,17 +18,12 @@ interface Props {
   className?: string;
   controllerId: string;
   next?: string[];
-  nominating?: string[];
+  nominating?: any[];
   onChange: (info: NominateInfo) => void;
   stashId: string;
   targets: SortedTargets;
   validators: string[];
   withSenders?: boolean;
-}
-
-interface Selected {
-  isAutoSelect: boolean;
-  selected: string[];
 }
 
 function autoPick (targets: SortedTargets): string[] {
@@ -43,44 +38,29 @@ function autoPick (targets: SortedTargets): string[] {
   }, []);
 }
 
-function initialPick (targets: SortedTargets): Selected {
-  const selected = targets.validators?.length
-    ? autoPick(targets)
-    : [];
-
-  return {
-    isAutoSelect: selected.length !== 0,
-    selected
-  };
+function unique (arr: any[]) {
+  return Array.from(new Set(arr))
 }
 
 function CutGuarantee ({ className = '', controllerId, next, nominating, onChange, stashId, targets, validators, withSenders }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [favorites] = useFavorites(STORE_FAVS_BASE);
-  const [{ selected }, setSelected] = useState<Selected>(initialPick(targets));
+  const [selected, setSelected] = useState<string[]>([]);
   const [amount, setAmount] = useState<BN | undefined>(new BN(0));
   const [available] = useState<string[]>((): string[] => {
     const shortlist = [
       // ensure that the favorite is included in the list of stashes
       ...favorites.filter((acc) => (validators || []).includes(acc) || (next || []).includes(acc)),
       // make sure the nominee is not in our favorites already
-      ...(nominating || []).filter((acc) => !favorites.includes(acc))
+      ...(nominating || []).map(e => e.who).filter((acc) => !favorites.includes(acc))
     ];
 
-    return shortlist
+    return unique(shortlist
       .concat(...(validators || []).filter((acc) => !shortlist.includes(acc)))
-      .concat(...(next || []).filter((acc) => !shortlist.includes(acc)));
+      .concat(...(next || []).filter((acc) => !shortlist.includes(acc))));
   });
   const [, setAutoSelected] = useState<string[]>([]);
-
-  const _setSelected = useCallback(
-    (selected: string[]) => setSelected(({ isAutoSelect }: Selected) => ({
-      isAutoSelect,
-      selected
-    })),
-    []
-  );
 
   useEffect((): void => {
     setAutoSelected(
@@ -121,57 +101,14 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
       )}
       <Modal.Columns>
         <Modal.Column>
-          {/* {isAutoSelect
-            ? (
-              <>
-                <Static
-                  label={t<string>('auto-selected targets for nomination')}
-                  value={
-                    selected.map((validatorId) => (
-                      <AddressMini
-                        key={validatorId}
-                        value={validatorId}
-                      />
-                    ))
-                  }
-                />
-                <article className='warning'>{t<string>('The auto-selection is done on the current profitability of the validators taking your favorites into account. It is adjusted based on the commission and current range of backing for the validator. The calculation may and will change over time, so it is rather a selection based on the current state of the network, not a predictor of future profitability.')}</article>
-              </>
-            )
-            : (
-              <InputAddressMulti
-                available={available}
-                availableLabel={t<string>('candidate accounts')}
-                defaultValue={nominating}
-                help={t<string>('Filter available candidates based on name, address or short account index.')}
-                maxCount={1}
-                onChange={_setSelected}
-                valueLabel={t<string>('guaranteed accounts')}
-              />
-            )
-          } */}
           <InputAddressMulti
               available={available}
               availableLabel={t<string>('candidate accounts')}
-              defaultValue={nominating}
               help={t<string>('Filter available candidates based on name, address or short account index.')}
               maxCount={1}
-              onChange={_setSelected}
+              onChange={setSelected}
               valueLabel={t<string>('guaranteed accounts')}
             />
-          {/* {autoSelected.length !== 0 && (
-            <Toggle
-              className='auto--toggle'
-              isDisabled={!targets.validators?.length}
-              label={
-                isAutoSelect
-                  ? t<string>('Use an automatic selection of the currently most profitable validators')
-                  : t<string>('Select targets manually (no auto-selection based on current profitability)')
-              }
-              onChange={_toggleAutoSelect}
-              value={isAutoSelect}
-            />
-          )} */}
         </Modal.Column>
 
         <Modal.Column>
