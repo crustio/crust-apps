@@ -11,7 +11,7 @@ WORKDIR /apps
 COPY . .
 
 RUN npm install yarn -g
-RUN NODE_ENV=production yarn build:www
+RUN yarn && NODE_ENV=production yarn build:www
 CMD ["ls", "-al", "build"]
 
 # ===========================================================
