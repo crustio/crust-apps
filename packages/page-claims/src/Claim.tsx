@@ -68,7 +68,7 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
         const claimOpt = JSON.parse(JSON.stringify(claim));
 
         if (claimOpt) {
-          const claimBalance = new BN(claimOpt[1].toString());
+          const claimBalance = new BN(claimOpt[1]?.toString());
 
           setClaimValue(claimBalance);
           setClaimedAddress(claimOpt[0]);
