@@ -21,9 +21,9 @@ export function httpGet(url){
 }
 
 const MAX_RETRY = 3;
-const RETRY_INTERVAL = 1000; 
-const USERNAME = 'crust';
-const PASSWD = '162534'
+const RETRY_INTERVAL = 1000;
+const USERNAME = 'crustbridgeadmin';
+const PASSWD = '102938'
 
 function sleep(ms){
   return new Promise((resolve)=>setTimeout(resolve,ms));
@@ -43,7 +43,7 @@ export async function httpPost(url, retry = MAX_RETRY) {
       },
     });
     const resultJson = await res.json();
-  
+
     switch (res.status) {
       case 200:
         res = {
