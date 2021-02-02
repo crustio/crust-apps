@@ -45,9 +45,6 @@ export default {
     anchor: 'SworkerAnchor',
     is_reported: 'bool'
   },
-  Releases: {
-    _enum: ['V1_0_0', 'V2_0_0']
-  },
   PKInfo: {
     code: 'SworkerCode',
     anchor: 'Option<SworkerAnchor>'

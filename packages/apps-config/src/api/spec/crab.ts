@@ -205,15 +205,7 @@ export default {
 
   MerkleMountainRangeRootLog: {
     prefix: '[u8; 4; Prefix]',
-    mmrRoot: 'Hash'
-  },
-
-  ChainProperties: {
-    ss58Format: 'Option<u8>',
-    tokenDecimals: 'Option<u32>',
-    tokenSymbol: 'Option<Text>',
-    ktonTokenDecimals: 'Option<u32>',
-    ktonTokenSymbol: 'Option<Text>'
+    ParentMmrRoot: 'Hash'
   },
 
   AccountInfo: {
@@ -263,5 +255,19 @@ export default {
   },
   PowerOf: {
     power: 'Power'
-  }
+  },
+  Signer: 'EthereumAddress',
+  RelayAuthorityT: {
+    accountId: 'AccountId',
+    signer: 'Signer',
+    stake: 'Balance',
+    term: 'BlockNumber'
+  },
+  MMRRoot: 'Hash',
+  EcdsaAddress: 'EthereumAddress',
+  EcdsaMessage: 'H256',
+  RelayAuthoritySigner: 'EcdsaAddress',
+  RelayAuthorityMessage: 'EcdsaMessage',
+  RelayAuthoritySignature: 'EcdsaSignature',
+  Term: 'u32'
 };

@@ -18,7 +18,7 @@ module.exports = merge(
     },
     plugins: [
       new HtmlWebpackPlugin({
-        PAGE_TITLE: 'Crust Apps',
+        PAGE_TITLE: 'Polkadot/Substrate Portal',
         inject: true,
         template: path.join(__dirname, 'public/index.html')
       }),

@@ -1,22 +1,22 @@
-// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
-/* eslint-disable */
+
+import type { DeriveAccountInfo } from '@polkadot/api-derive/types';
+import type { UnappliedSlash } from '@polkadot/types/interfaces';
+import type { NominatedBy, ValidatorInfo } from '../types';
 
 import BN from 'bn.js';
 import React, { useCallback, useMemo } from 'react';
 
-import { DeriveAccountInfo } from '@polkadot/api-derive/types';
 import { AddressSmall, Badge, Checkbox, Icon } from '@polkadot/react-components';
 import { checkVisibility } from '@polkadot/react-components/util';
-import { useApi, useCall } from '@polkadot/react-hooks';
+import { useApi, useBlockTime, useCall } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
-import { UnappliedSlash } from '@polkadot/types/interfaces';
 import { formatNumber } from '@polkadot/util';
 
 import MaxBadge from '../MaxBadge';
 import Favorite from '../Overview/Address/Favorite';
 import { useTranslation } from '../translate';
-import { ValidatorInfo } from '../types';
 
 interface Props {
   allSlashes?: [BN, UnappliedSlash[]][];
@@ -25,46 +25,26 @@ interface Props {
   info: ValidatorInfo;
   isNominated: boolean;
   isSelected: boolean;
+  nominatedBy?: NominatedBy[];
   toggleFavorite: (accountId: string) => void;
   toggleSelected: (accountId: string) => void;
-  withElected: boolean;
-  withIdentity: boolean;
 }
 
-// function checkIdentity (api: ApiPromise, accountInfo: DeriveAccountInfo): boolean {
-//   let hasIdentity = false;
-//
-//   const { accountId, identity, nickname } = accountInfo;
-//
-//   if (api.query.identity && api.query.identity.identityOf) {
-//     hasIdentity = !!(identity?.display && identity.display.toString());
-//   } else if (nickname) {
-//     hasIdentity = !!nickname.toString();
-//   }
-//
-//   if (!hasIdentity && accountId) {
-//     const account = keyring.getAddress(accountId.toString());
-//
-//     hasIdentity = !!account?.meta?.name;
-//   }
-//
-//   return hasIdentity;
-// }
+function queryAddress (address: string): void {
+  window.location.hash = `/staking/query/${address}`;
+}
 
-function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSelected, toggleFavorite, toggleSelected, withElected, withIdentity }: Props): React.ReactElement<Props> | null {
+function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSelected, nominatedBy = [], toggleFavorite, toggleSelected }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api } = useApi();
   const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, [info.accountId]);
-
-  // useEffect((): void => {
-  //   if (accountInfo) {
-  //     info.hasIdentity = checkIdentity(api, accountInfo);
-  //   }
-  // }, [api, accountInfo, info]);
+  const [,, time] = useBlockTime(info.lastPayout);
 
   const isVisible = useMemo(
-    () => accountInfo ? checkVisibility(api, info.key, accountInfo, filterName, withIdentity) : true,
-    [accountInfo, api, filterName, info, withIdentity]
+    () => accountInfo
+      ? checkVisibility(api, info.key, accountInfo, filterName)
+      : true,
+    [accountInfo, api, filterName, info]
   );
 
   const slashes = useMemo(
@@ -75,9 +55,7 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
   );
 
   const _onQueryStats = useCallback(
-    (): void => {
-      window.location.hash = `/staking/query/${info.key}`;
-    },
+    () => queryAddress(info.key),
     [info.key]
   );
 
@@ -86,11 +64,11 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
     [info.key, toggleSelected]
   );
 
-  if (!isVisible || (withElected && !info.isElected)) {
+  if (!isVisible) {
     return null;
   }
 
-  const { accountId, bondOther, bondOwn, bondTotal, commissionPer, isElected, isFavorite, key, numNominators, rankOverall } = info;
+  const { accountId, bondOther, bondOwn, bondTotal, commissionPer, isElected, isFavorite, key, lastPayout, numNominators, rankOverall, stakedReturnCmp } = info;
 
   return (
     <tr>
@@ -118,7 +96,7 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
           )
           : <Badge color='transparent' />
         }
-        <MaxBadge numNominators={numNominators} />
+        <MaxBadge numNominators={numNominators || nominatedBy.length} />
         {slashes.length !== 0 && (
           <Badge
             color='red'
@@ -135,14 +113,24 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
       <td className='address all'>
         <AddressSmall value={accountId} />
       </td>
-      <td className='number media--1200'>{numNominators || ''}</td>
-      <td className='number'>
-        {`${commissionPer.toFixed(2)}%`}
+      <td className='number media--1400'>
+        {lastPayout && (
+          api.consts.babe
+            ? time.days
+              ? time.days === 1
+                ? t('yesterday')
+                : t('{{days}} days', { replace: { days: time.days } })
+              : t('recently')
+            : formatNumber(lastPayout)
+        )}
       </td>
+      <td className='number media--1200 no-pad-right'>{numNominators || ''}</td>
+      <td className='number media--1200 no-pad-left'>{nominatedBy.length || ''}</td>
+      <td className='number media--1100'>{commissionPer.toFixed(2)}%</td>
       <td className='number together'>{!bondTotal.isZero() && <FormatBalance value={bondTotal} />}</td>
-      <td className='number together'>{!bondOwn.isZero() && <FormatBalance value={bondOwn} />}</td>
+      <td className='number together media--900'>{!bondOwn.isZero() && <FormatBalance value={bondOwn} />}</td>
       <td className='number together media--1600'>{!bondOther.isZero() && <FormatBalance value={bondOther} />}</td>
-      {/*<td className='number together'>{!rewardPayout && <FormatBalance value={rewardPayout} />}</td>*/}
+      <td className='number together'>{(stakedReturnCmp > 0) && <>{stakedReturnCmp.toFixed(2)}%</>}</td>
       <td>
         {(canSelect || isSelected) && (
           <Checkbox
@@ -153,7 +141,7 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
       </td>
       <td>
         <Icon
-          className='staking--stats'
+          className='staking--stats highlight--color'
           icon='chart-line'
           onClick={_onQueryStats}
         />

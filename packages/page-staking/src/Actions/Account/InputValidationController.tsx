@@ -1,12 +1,14 @@
-// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+
+import type { DeriveBalancesAll } from '@polkadot/api-derive/types';
+import type { Option } from '@polkadot/types';
+import type { AccountId, StakingLedger } from '@polkadot/types/interfaces';
 
 import React, { useEffect, useState } from 'react';
 
-import { DeriveBalancesAll } from '@polkadot/api-derive/types';
+import { MarkError, MarkWarning } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
-import { Option } from '@polkadot/types';
-import { AccountId, StakingLedger } from '@polkadot/types/interfaces';
 
 import { useTranslation } from '../../translate';
 
@@ -40,7 +42,6 @@ function ValidateController ({ accountId, controllerId, defaultController, onErr
   const { t } = useTranslation();
   const { api } = useApi();
   const bondedId = useCall<string | null>(controllerId ? api.query.staking.bonded : null, [controllerId], transformBonded);
-  const accountIdBonded = useCall<string | null>(controllerId ? api.query.staking.bonded : null, [accountId], transformBonded);
   const stashId = useCall<string | null>(controllerId ? api.query.staking.ledger : null, [controllerId], transformStash);
   const allBalances = useCall<DeriveBalancesAll>(controllerId ? api.derive.balances.all : null, [controllerId]);
   const [{ error, isFatal }, setError] = useState<ErrorState>({ error: null, isFatal: false });
@@ -52,12 +53,7 @@ function ValidateController ({ accountId, controllerId, defaultController, onErr
       let newError: string | null = null;
       let isFatal = false;
 
-      if (accountIdBonded) {
-        isFatal = true;
-        newError = t('A controller account should not map to another stash. This selected stash controlled by {{accountIdBonded}}', { replace: { accountIdBonded } });
-      }
-
-      if (bondedId && (controllerId !== accountId) && stashId) {
+      if (bondedId && (controllerId !== accountId)) {
         isFatal = true;
         newError = t('A controller account should not map to another stash. This selected controller is a stash, controlled by {{bondedId}}', { replace: { bondedId } });
       } else if (stashId) {
@@ -73,16 +69,16 @@ function ValidateController ({ accountId, controllerId, defaultController, onErr
       onError(newError, isFatal);
       setError((state) => state.error !== newError ? { error: newError, isFatal } : state);
     }
-  }, [accountId, accountIdBonded, allBalances, bondedId, controllerId, defaultController, onError, stashId, t]);
+  }, [accountId, allBalances, bondedId, controllerId, defaultController, onError, stashId, t]);
 
   if (!error || !accountId) {
     return null;
   }
 
   return (
-    <article className={isFatal ? 'error' : 'warning'}>
-      <div>{error}</div>
-    </article>
+    isFatal
+      ? <MarkError content={error} />
+      : <MarkWarning content={error} />
   );
 }
 

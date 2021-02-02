@@ -61,7 +61,7 @@ function ChartPrefs ({ validatorId }: Props): React.ReactElement<Props> {
 
   return (
     <div className='staking--Chart'>
-      <h1>{t<string>('guarantee fee')}</h1>
+      <h1>{t<string>('commission')}</h1>
       {labels.length
         ? (
           <Chart.Line

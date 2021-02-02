@@ -3,11 +3,12 @@
 
 import type { SubmittableExtrinsic } from '@polkadot/api/types';
 import type { DeriveBalancesAll, DeriveDemocracyLock } from '@polkadot/api-derive/types';
+import type { Ledger } from '@polkadot/hw-ledger';
 import type { ActionStatus } from '@polkadot/react-components/Status/types';
 import type { ThemeDef } from '@polkadot/react-components/types';
 import type { Option } from '@polkadot/types';
-import type { Balance, ProxyDefinition, RecoveryConfig } from '@polkadot/types/interfaces';
-import type { KeyringAddress } from '@polkadot/ui-keyring/types';
+import type { ProxyDefinition, RecoveryConfig } from '@polkadot/types/interfaces';
+import type { KeyringAddress, KeyringJson$Meta } from '@polkadot/ui-keyring/types';
 import type { Delegation } from '../types';
 
 import BN from 'bn.js';
@@ -15,11 +16,8 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import styled, { ThemeContext } from 'styled-components';
 
 import { ApiPromise } from '@polkadot/api';
-import TransferCandy from '@polkadot/app-accounts/modals/TransferCandy';
-import { getLedger } from '@polkadot/react-api';
 import { AddressInfo, AddressMini, AddressSmall, Badge, Button, ChainLock, CryptoType, Forget, Icon, IdentityIcon, LinkExternal, Menu, Popup, StatusContext, Tags } from '@polkadot/react-components';
-import { useAccountInfo, useApi, useCall, useToggle } from '@polkadot/react-hooks';
-import { FormatCandy } from '@polkadot/react-query';
+import { useAccountInfo, useApi, useCall, useLedger, useToggle } from '@polkadot/react-hooks';
 import { keyring } from '@polkadot/ui-keyring';
 import { BN_ZERO, formatBalance, formatNumber } from '@polkadot/util';
 
@@ -68,12 +66,20 @@ function calcVisible (filter: string, name: string, tags: string[]): boolean {
   }, name.toLowerCase().includes(_filter));
 }
 
-function createClearDemocracyTx (api: ApiPromise, address: string, unlockableIds: BN[]): SubmittableExtrinsic<'promise'> {
-  return api.tx.utility.batch(
-    unlockableIds
-      .map((id) => api.tx.democracy.removeVote(id))
-      .concat(api.tx.democracy.unlock(address))
-  );
+function createClearDemocracyTx (api: ApiPromise, address: string, unlockableIds: BN[]): SubmittableExtrinsic<'promise'> | null {
+  return api.tx.utility
+    ? api.tx.utility.batch(
+      unlockableIds
+        .map((id) => api.tx.democracy.removeVote(id))
+        .concat(api.tx.democracy.unlock(address))
+    )
+    : null;
+}
+
+async function showLedgerAddress (getLedger: () => Ledger, meta: KeyringJson$Meta): Promise<void> {
+  const ledger = getLedger();
+
+  await ledger.getAddress(true, meta.accountOffset as number || 0, meta.addressOffset as number || 0);
 }
 
 const transformRecovery = {
@@ -85,13 +91,14 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
   const { theme } = useContext<ThemeDef>(ThemeContext);
   const { queueExtrinsic } = useContext(StatusContext);
   const api = useApi();
+  const { getLedger } = useLedger();
   const bestNumber = useCall<BN>(api.api.derive.chain.bestNumber);
   const balancesAll = useCall<DeriveBalancesAll>(api.api.derive.balances.all, [address]);
   const democracyLocks = useCall<DeriveDemocracyLock[]>(api.api.derive.democracy?.locks, [address]);
   const recoveryInfo = useCall<RecoveryConfig | null>(api.api.query.recovery?.recoverable, [address], transformRecovery);
   const multiInfos = useMultisigApprovals(address);
   const proxyInfo = useProxies(address);
-  const { flags: { isDevelopment, isExternal, isHardware, isInjected, isMultisig, isProxied }, genesisHash, identity, name: accName, onSetGenesisHash, tags } = useAccountInfo(address);
+  const { flags: { isDevelopment, isEditable, isExternal, isHardware, isInjected, isMultisig, isProxied }, genesisHash, identity, name: accName, onSetGenesisHash, tags } = useAccountInfo(address);
   const [{ democracyUnlockTx }, setUnlockableIds] = useState<DemocracyUnlockable>({ democracyUnlockTx: null, ids: [] });
   const [vestingVestTx, setVestingTx] = useState<SubmittableExtrinsic<'promise'> | null>(null);
   const [isBackupOpen, toggleBackup] = useToggle();
@@ -108,8 +115,6 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
   const [isTransferOpen, toggleTransfer] = useToggle();
   const [isDelegateOpen, toggleDelegate] = useToggle();
   const [isUndelegateOpen, toggleUndelegate] = useToggle();
-  const candyAmount = useCall<Balance>(api.api.query.candy?.balances, [address]);
-  const [isTransferCandyOpen, toggleTransferCandy] = useToggle();
 
   useEffect((): void => {
     if (balancesAll) {
@@ -195,13 +200,11 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
     // TODO: we should check the hardwareType from metadata here as well,
     // for now we are always assuming hardwareType === 'ledger'
     (): void => {
-      getLedger()
-        .getAddress(true, meta.accountOffset as number || 0, meta.addressOffset as number || 0)
-        .catch((error): void => {
-          console.error(`ledger: ${(error as Error).message}`);
-        });
+      showLedgerAddress(getLedger, meta).catch((error): void => {
+        console.error(`ledger: ${(error as Error).message}`);
+      });
     },
-    [meta]
+    [getLedger, meta]
   );
 
   if (!isVisible) {
@@ -218,6 +221,31 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
         />
       </td>
       <td className='together'>
+        {meta.genesisHash
+          ? <Badge color='transparent' />
+          : isDevelopment
+            ? (
+              <Badge
+                className='devBadge'
+                color='orange'
+                hover={t<string>('This is a development account derived from the known development seed. Do now use for any funds on a non-development network.')}
+                icon='wrench'
+              />
+            )
+            : (
+              <Badge
+                color='orange'
+                hover={
+                  <div>
+                    <p>{t<string>('This account is available on all networks. It is recommended to link to a specific network via the account options ("only this network" option) to limit availability. For accounts from an extension, set the network on the extension.')}</p>
+                    <p>{t<string>('This is especially prudent in cases where the address is only destined to be used on a single network or linked to a specific device.')}</p>
+                    <p>{t<string>('This does not send any transaction, rather is only sets the genesis in the account JSON.')}</p>
+                  </div>
+                }
+                icon='exclamation-triangle'
+              />
+            )
+        }
         {recoveryInfo && (
           <Badge
             color='green'
@@ -275,7 +303,7 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
             onClick={toggleDelegate}
           />
         )}
-        {!!proxy?.[0].length && (
+        {!!proxy?.[0].length && api.api.tx.utility && (
           <Badge
             color='blue'
             hover={t<string>('This account has {{proxyNumber}} proxy set.', {
@@ -350,13 +378,6 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
             senderId={address}
           />
         )}
-        {isTransferCandyOpen && (
-          <TransferCandy
-            key='modal-transfer'
-            onClose={toggleTransferCandy}
-            senderId={address}
-          />
-        )}
         {isProxyOverviewOpen && (
           <ProxyOverview
             key='modal-proxy-overview'
@@ -421,22 +442,12 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
           withExtended={false}
         />
       </td>
-      <td className='number'>
-        <FormatCandy value={candyAmount} />
-      </td>
       <td className='button'>
         {api.api.tx.balances?.transfer && (
           <Button
             icon='paper-plane'
             label={t<string>('send')}
             onClick={toggleTransfer}
-          />
-        )}
-        {api.api.tx.candy?.transfer && (
-          <Button
-            icon='paper-plane'
-            label={t<string>('send candy')}
-            onClick={toggleTransferCandy}
           />
         )}
         <Popup
@@ -456,7 +467,7 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
             vertical
           >
             {createMenuGroup([
-              api.api.tx.identity?.setIdentity && (
+              api.api.tx.identity?.setIdentity && !isHardware && (
                 <Menu.Item
                   key='identityMain'
                   onClick={toggleIdentityMain}
@@ -464,7 +475,7 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
                   {t('Set on-chain identity')}
                 </Menu.Item>
               ),
-              api.api.tx.identity?.setSubs && identity?.display && (
+              api.api.tx.identity?.setSubs && identity?.display && !isHardware && (
                 <Menu.Item
                   key='identitySub'
                   onClick={toggleIdentitySub}
@@ -508,7 +519,7 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
               )
             ])}
             {createMenuGroup([
-              !(isExternal || isInjected || isMultisig || isDevelopment) && (
+              !(isExternal || isHardware || isInjected || isMultisig || isDevelopment) && (
                 <Menu.Item
                   key='backupJson'
                   onClick={toggleBackup}
@@ -516,7 +527,7 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
                   {t('Create a backup file for this account')}
                 </Menu.Item>
               ),
-              !(isExternal || isInjected || isMultisig || isDevelopment) && (
+              !(isExternal || isHardware || isInjected || isMultisig || isDevelopment) && (
                 <Menu.Item
                   key='changePassword'
                   onClick={togglePassword}
@@ -594,7 +605,7 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
             <ChainLock
               className='accounts--network-toggle'
               genesisHash={genesisHash}
-              isDisabled={api.isDevelopment}
+              isDisabled={api.isDevelopment || !isEditable}
               onChange={onSetGenesisHash}
             />
           </Menu>
@@ -616,5 +627,9 @@ export default React.memo(styled(Account)`
   .tags {
     width: 100%;
     min-height: 1.5rem;
+  }
+
+  .devBadge {
+    opacity: 0.65;
   }
 `);

@@ -1,21 +1,21 @@
-// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
-/* eslint-disable */
 
-import { SubmittableExtrinsic } from '@polkadot/api/types';
-import { DeriveStakerReward, DeriveStakingAccount } from '@polkadot/api-derive/types';
-import { PayoutStash } from './types';
+import type { SubmittableExtrinsic } from '@polkadot/api/types';
+import type { DeriveStakerReward, DeriveStakingAccount } from '@polkadot/api-derive/types';
+import type { PayoutStash } from './types';
 
 import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
+
 import { ApiPromise } from '@polkadot/api';
 import { AddressSmall, TxButton } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
-import { BlockToTime } from '@polkadot/react-query';
+import { BlockToTime, FormatBalance } from '@polkadot/react-query';
 
 import { useTranslation } from '../translate';
-import { createErasString } from './util';
 import useEraBlocks from './useEraBlocks';
+import { createErasString } from './util';
 
 interface Props {
   className?: string;
@@ -29,15 +29,18 @@ interface EraInfo {
   oldestEra?: BN;
 }
 
-function createPrevPayoutType (api: ApiPromise, { era, isValidator, nominating }: DeriveStakerReward, stashId: string): SubmittableExtrinsic<'promise'> {
-  return isValidator ? api.tx.staking.rewardStakers(stashId, era)
-  : api.tx.utility.batch(nominating.map(e => api.tx.staking.rewardStakers(e?.validatorId, era)));
+function createPrevPayoutType (api: ApiPromise, { era, isValidator, nominating }: DeriveStakerReward): SubmittableExtrinsic<'promise'> {
+  return isValidator
+    ? api.tx.staking.payoutValidator(era)
+    : api.tx.staking.payoutNominator(era, nominating.map(({ validatorId, validatorIndex }): [string, number] =>
+      [validatorId, validatorIndex]
+    ));
 }
 
-function createPrevPayout (api: ApiPromise, payoutRewards: DeriveStakerReward[], stashId: string): SubmittableExtrinsic<'promise'> {
+function createPrevPayout (api: ApiPromise, payoutRewards: DeriveStakerReward[]): SubmittableExtrinsic<'promise'> {
   return payoutRewards.length === 1
-    ? createPrevPayoutType(api, payoutRewards[0], stashId)
-    : api.tx.utility.batch(payoutRewards.map((reward) => createPrevPayoutType(api, reward, stashId)));
+    ? createPrevPayoutType(api, payoutRewards[0])
+    : api.tx.utility.batch(payoutRewards.map((reward) => createPrevPayoutType(api, reward)));
 }
 
 function Stash ({ className = '', isDisabled, payout: { available, rewards, stashId }, stakerPayoutsAfter }: Props): React.ReactElement<Props> | null {
@@ -61,7 +64,7 @@ function Stash ({ className = '', isDisabled, payout: { available, rewards, stas
 
       setExtrinsic(
         api.tx.utility && available.length
-          ? createPrevPayout(api, available, stashId)
+          ? createPrevPayout(api, available)
           : null
       );
     }
@@ -82,11 +85,11 @@ function Stash ({ className = '', isDisabled, payout: { available, rewards, stas
       <td className='start'>
         <span className='payout-eras'>{eraStr}</span>
       </td>
-      {/* <td className='number'><FormatBalance value={available} /></td> */}
+      <td className='number'><FormatBalance value={available} /></td>
       <td className='number'>{eraBlocks && <BlockToTime blocks={eraBlocks} />}</td>
       <td
         className='button'
-        colSpan={4}
+        colSpan={3}
       >
         {extrinsic && stakingAccount && (
           <TxButton

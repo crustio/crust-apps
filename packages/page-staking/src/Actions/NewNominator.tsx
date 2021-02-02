@@ -1,17 +1,18 @@
-// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+
+import type { SortedTargets } from '../types';
+import type { BondInfo, NominateInfo } from './partials/types';
 
 import React, { useCallback, useState } from 'react';
 
-import { Button, Modal, TxButton } from '@polkadot/react-components';
+import { BatchWarning, Button, Modal, TxButton } from '@polkadot/react-components';
 import { useApi, useToggle } from '@polkadot/react-hooks';
 import { isFunction } from '@polkadot/util';
 
 import { useTranslation } from '../translate';
-import { SortedTargets } from '../types';
 import BondPartial from './partials/Bond';
 import NominatePartial from './partials/Nominate';
-import { BondInfo, NominateInfo } from './partials/types';
 
 interface Props {
   isInElection?: boolean;
@@ -56,12 +57,12 @@ function NewNominator ({ isInElection, targets }: Props): React.ReactElement<Pro
         icon='plus'
         isDisabled={isDisabled || !targets.validators?.length}
         key='new-nominator'
-        label={t<string>('Guarantor')}
+        label={t<string>('Nominator')}
         onClick={_toggle}
       />
       {isVisible && (
         <Modal
-          header={t<string>('Setup Guarantor {{step}}/{{NUM_STEPS}}', {
+          header={t<string>('Setup Nominator {{step}}/{{NUM_STEPS}}', {
             replace: {
               NUM_STEPS,
               step
@@ -82,6 +83,11 @@ function NewNominator ({ isInElection, targets }: Props): React.ReactElement<Pro
                 targets={targets}
               />
             )}
+            <Modal.Columns>
+              <Modal.Column>
+                <BatchWarning />
+              </Modal.Column>
+            </Modal.Columns>
           </Modal.Content>
           <Modal.Actions onCancel={_toggle}>
             <Button
@@ -96,14 +102,14 @@ function NewNominator ({ isInElection, targets }: Props): React.ReactElement<Pro
                   accountId={stashId}
                   icon='sign-in-alt'
                   isDisabled={!bondTx || !nominateTx || !stashId || !controllerId}
-                  label={t<string>('Bond & Guarantee')}
+                  label={t<string>('Bond & Nominate')}
                   onStart={_toggle}
                   params={[
                     stashId === controllerId
                       ? [bondTx, nominateTx]
                       : [bondOwnTx, nominateTx, controllerTx]
                   ]}
-                  tx={api.tx.utility.batch}
+                  tx={api.tx.utility.batchAll || api.tx.utility.batch}
                 />
               )
               : (

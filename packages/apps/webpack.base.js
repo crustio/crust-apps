@@ -36,7 +36,9 @@ function createWebpack (context, mode = 'production') {
     './filterEras.mjs': path.resolve(__dirname, 'src/patch/filterEras.mjs'),
     './ownExposure': path.resolve(__dirname, 'src/patch/ownExposure'),
     './ownSlashes': path.resolve(__dirname, 'src/patch/ownSlashes'),
-    './query.mjs': path.resolve(__dirname, 'src/patch/query.mjs')
+    './query.mjs': path.resolve(__dirname, 'src/patch/query.mjs'),
+    './components/StartExploringPage': path.resolve(__dirname, 'src/patch/StartExploringPage'),
+    './bundles/explore': path.resolve(__dirname, 'src/patch/bundles/explore')
   });
   const plugins = fs.existsSync(path.join(context, 'public'))
     ? new CopyWebpackPlugin({ patterns: [{ from: 'public' }] })
@@ -48,11 +50,6 @@ function createWebpack (context, mode = 'production') {
     mode,
     module: {
       rules: [
-        {
-          include: /node_modules/,
-          test: /\.mjs$/,
-          type: 'javascript/auto'
-        },
         {
           include: /node_modules/,
           test: /\.css$/,

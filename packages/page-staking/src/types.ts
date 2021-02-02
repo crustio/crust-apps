@@ -38,7 +38,6 @@ interface ValidatorInfoRank {
   rankBondOther: number;
   rankBondOwn: number;
   rankBondTotal: number;
-  rankComm: number;
   rankNumNominators: number;
   rankOverall: number;
   rankReward: number;
@@ -59,6 +58,7 @@ export interface ValidatorInfo extends ValidatorInfoRank {
   key: string;
   knownLength: BN;
   lastPayout?: BN;
+  minNominated: BN;
   numNominators: number;
   numRecentPayouts: number;
   skipRewards: boolean;
@@ -75,6 +75,7 @@ export interface SortedTargets {
   inflation: Inflation;
   lowStaked?: BN;
   medianComm: number;
+  minNominated: BN;
   nominators?: string[];
   totalStaked?: BN;
   totalIssuance?: BN;

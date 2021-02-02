@@ -3,6 +3,7 @@
 
 import React from 'react';
 
+import SummarySession from '@polkadot/app-explorer/SummarySession';
 import { CardSummary, SummaryBox } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { BestNumber } from '@polkadot/react-query';
@@ -12,10 +13,11 @@ import { useTranslation } from '../translate';
 
 interface Props {
   parachainCount?: number;
+  proposalCount?: number;
   upcomingCount?: number;
 }
 
-function Summary ({ parachainCount, upcomingCount }: Props): React.ReactElement<Props> {
+function Summary ({ parachainCount, proposalCount, upcomingCount }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
 
@@ -38,14 +40,23 @@ function Summary ({ parachainCount, upcomingCount }: Props): React.ReactElement<
             {formatNumber(upcomingCount)}
           </CardSummary>
         )}
+        {isNumber(proposalCount) && (
+          <CardSummary label={t<string>('proposals')}>
+            {formatNumber(proposalCount)}
+          </CardSummary>
+        )}
       </section>
       <section>
         <CardSummary
-          className='media--800'
+          className='media--1000'
           label={t<string>('best block')}
         >
-          <BestNumber />
+          <BestNumber isFinalized={false} />
         </CardSummary>
+        <SummarySession
+          className='media--800'
+          withEra={false}
+        />
       </section>
     </SummaryBox>
   );

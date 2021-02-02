@@ -43,7 +43,7 @@ function Legend ({ className }: Props): React.ReactElement<Props> {
           color='green'
           icon='hand-paper'
         />
-        {t('Guaranteeing')}
+        {t('Nominating')}
       </span>
       <span>
         <Badge

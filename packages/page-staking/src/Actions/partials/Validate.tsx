@@ -1,14 +1,14 @@
-// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
-/* eslint-disable */
 
-import { ValidateInfo } from './types';
+import type { ValidateInfo } from './types';
 
 import BN from 'bn.js';
 import React, { useCallback } from 'react';
+
 import { InputAddress, InputNumber, Modal } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
-import { BN_ZERO, BN_HUNDRED as MAX_COMM } from '@polkadot/util';
+import { BN_HUNDRED as MAX_COMM } from '@polkadot/util';
 
 import { useTranslation } from '../../translate';
 
@@ -27,18 +27,13 @@ function Validate ({ className = '', controllerId, onChange, stashId, withSender
   const { api } = useApi();
 
   const _setCommission = useCallback(
-    (value?: BN): void => {
-      const commission = (value || BN_ZERO).mul(COMM_MUL);
-
-      onChange({
-        validateTx: api.tx.staking.validate({
-          commission: commission.isZero()
-          // small non-zero set to avoid isEmpty
-          ? '0'
-          : (commission.toNumber() > 1000000000) ? '1000000000' : commission.toNumber().toString()
-        })
-      });
-    },
+    (value?: BN) => onChange({
+      validateTx: value && api.tx.staking.validate({
+        commission: value.isZero()
+          ? 1 // small non-zero set to avoid isEmpty
+          : value.mul(COMM_MUL)
+      })
+    }),
     [api, onChange]
   );
 
