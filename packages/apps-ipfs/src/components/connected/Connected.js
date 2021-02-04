@@ -3,6 +3,7 @@
 import React from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
+import { useHistory } from 'react-router-dom';
 
 const pickColor = (ipfsReady, ipfsConnected) => {
   if (ipfsReady && ipfsConnected) return 'teal';
@@ -22,11 +23,13 @@ export const Connected = ({ className, doSetIsNodeInfoOpen, ipfsConnected, ipfsR
   const title = t(pickTitleKey(ipfsReady, ipfsConnected));
   const fill = pickColor(ipfsReady, ipfsConnected);
   const opacity = ipfsConnected ? 'o-60' : 'o-100';
-
+  const history = useHistory()
   return (
     <a className={`dib ${className}`}
-      href='#/storage'
-      onClick={() => doSetIsNodeInfoOpen(true)}
+      onClick={() => {
+        doSetIsNodeInfoOpen(true)
+        history.push('/storage')
+      }}
       title={title}>
       <svg aria-hidden='true'
         className={`${fill} ${opacity} fill-current-color transition-all glow`}

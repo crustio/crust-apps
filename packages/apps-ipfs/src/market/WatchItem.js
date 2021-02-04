@@ -49,24 +49,25 @@ const WatchItem = ({ onSyncStatus, isSpin, onSelect,doUpdateWatchItem, onToggleB
         claimed_at,
         expired_on,
         file_size,
-        replicas } = _fileStatus[0];
+        replicas,
+        reported_replica_count } = _fileStatus[0];
 
       watchItem.expireTime = expired_on;
       watchItem.startTime = expired_on ? expired_on - 216000 : 0;
       watchItem.fileSize = file_size;
-      watchItem.confirmedReplicas = replicas ? replicas.length : 0
+      watchItem.confirmedReplicas = reported_replica_count
 
       if (expired_on && expired_on < bestNumber || (trash1 && trash2)) {
         // expired
         status = fileStatusEnum.EXPIRE;
       }
 
-      if (!expired_on && expired_on > bestNumber && replicas.length < 1) {
+      if (!expired_on && expired_on > bestNumber && reported_replica_count < 1) {
         // pending
         status = fileStatusEnum.PENDING;
       }
 
-      if (expired_on && replicas.length > 0) {
+      if (expired_on && reported_replica_count > 0) {
         // success
         status = fileStatusEnum.SUCCESS;
       }

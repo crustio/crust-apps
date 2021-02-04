@@ -4,10 +4,11 @@ import filesize from 'filesize';
 import React from 'react';
 import { Trans, withTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
+import { useHistory } from 'react-router-dom';
 
 export const StatusConnected = ({ peersCount, repoSize, t }) => {
   const humanRepoSize = filesize(repoSize || 0, { round: 1 });
-
+  const history = useHistory()
   return (
     <header>
       <h1 className='montserrat fw2 f3 charcoal ma0 pt0 pb2'
@@ -19,7 +20,10 @@ export const StatusConnected = ({ peersCount, repoSize, t }) => {
             <div style={{ fontSize: '16px', paddingTop: '5px' }}>
               You can check your IPFS node status in this page. Go to
               <a className='link blue'
-                href='#/storage/files'>Files</a>
+                 onClick={() => {
+                   history.push('/storage/files')
+                 }}
+                >Files</a>
             tab to store/retrieve files. The storage order function of Crust Network is coming soon.
             </div>
           </div>
@@ -29,7 +33,10 @@ export const StatusConnected = ({ peersCount, repoSize, t }) => {
         <span className='db dib-ns'>
           <Trans
             components={[<a className='link blue'
-              href='#/storage/files'>?</a>]}
+                            onClick={() => {
+                              history.push('/storage/files')
+                            }}
+            >?</a>]}
             defaults='Hosting <0>{{repoSize}} of files</0>'
             i18nKey='StatusConnected.paragraph1'
             t={t}
@@ -41,7 +48,10 @@ export const StatusConnected = ({ peersCount, repoSize, t }) => {
           <Trans
             components={[
               <a className='link blue'
-                href='#/storage/peers'>
+                 onClick={() => {
+                   history.push('/storage/peers')
+                 }}
+              >
                 ?
               </a>
             ]}

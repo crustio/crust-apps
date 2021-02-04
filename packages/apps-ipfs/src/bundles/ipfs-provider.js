@@ -442,7 +442,7 @@ const actions = {
   // @ts-ignore
   doFindProvs: (hash) => async () => {
     if (ipfs) {
-      const find = ipfs.dht.findProvs(hash, { timeout: 10000 });
+      const find = ipfs.dht.findProvs(hash, { timeout: 30000 });
       let count = 0;
 
       try {
