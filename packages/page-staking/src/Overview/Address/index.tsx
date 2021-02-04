@@ -16,7 +16,6 @@ import { FormatBalance } from '@polkadot/react-query';
 import { Option } from '@polkadot/types';
 
 import Favorite from './Favorite';
-import NominatedBy from './NominatedBy';
 import Status from './Status';
 import StakeOther from './StakeOther';
 
@@ -85,7 +84,7 @@ function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
 
 function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, nominatedBy, onlineCount, onlineMessage, points, toggleFavorite, validatorInfo, withIdentity }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  const { accountInfo, slashingSpans, stakeLimit } = useAddressCalls(api, address, isMain);
+  const { accountInfo, stakeLimit } = useAddressCalls(api, address, isMain);
 
   const { commission, nominators, stakeOther, stakeOwn } = useMemo(
     () => validatorInfo ? expandInfo(validatorInfo) : { nominators: [] },
@@ -128,20 +127,12 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
       <td className='address'>
         <AddressSmall value={address} />
       </td>
-      {isMain
-        ? (
-          <StakeOther
-            nominators={nominators}
-            stakeOther={stakeOther}
-          />
-        )
-        : (
-          <NominatedBy
-            nominators={nominatedBy}
-            slashingSpans={slashingSpans}
-          />
-        )
-      }
+      {(
+        <StakeOther
+          nominators={nominators}
+          stakeOther={stakeOther}
+        />
+      )}
       <td className='number media--1100'>
         {(
           <FormatBalance value={stakeOwn} />
