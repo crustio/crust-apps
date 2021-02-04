@@ -58,14 +58,13 @@ const OrderList = ({ doFindProvs, doUpdateWatchItem, identity, doSelectedItems, 
     spinList.push(fileCid)
     setSpinList(spinList);
     tableRef.current.forceUpdateGrid();
-    const _idx =  watchList.findIndex((item) => fileCid === item.fileCid);
     try {
       const globalReplicas = await doFindProvs(fileCid);
-
       doUpdateWatchItem(fileCid, { globalReplicas });
     } catch (e) {
 
     }finally {
+      const _idx =  watchList.findIndex((item) => fileCid === item.fileCid);
       spinList.splice(_idx, 1)
       setSpinList(spinList)
     }

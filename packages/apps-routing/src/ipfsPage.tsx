@@ -21,7 +21,7 @@ const IpfsPage: React.FC<Props> = (props) => {
   const itemsRef = useRef([
     {
       isRoot: true,
-      name: 'status',
+      name: '/',
       text: t('status', 'Status')
     },
     {
