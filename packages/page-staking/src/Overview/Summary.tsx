@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { DeriveStakingOverview } from '@polkadot/api-derive/types';
 import SummarySession from '@polkadot/app-explorer/SummarySession';
 import { CardSummary, IdentityIcon, SummaryBox } from '@polkadot/react-components';
-import { BlockAuthorsContext } from '@polkadot/react-query';
+import { BlockAuthorsContext, StakingRewardPot } from '@polkadot/react-query';
 
 import { useTranslation } from '../translate';
 
@@ -45,6 +45,14 @@ function Summary ({ className = '', isVisible, next, nominators, stakingOverview
             label={t<string>('guarantors')}
           >
             {nominators.length}
+          </CardSummary>
+        )}
+        {(
+          <CardSummary
+            className='media--1100'
+            label={t<string>('rewards')}
+          >
+            <StakingRewardPot />
           </CardSummary>
         )}
       </section>
