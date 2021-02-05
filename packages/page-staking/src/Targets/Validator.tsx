@@ -55,6 +55,7 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
   const { t } = useTranslation();
   const { api } = useApi();
   const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, [info.accountId]);
+  const stakeLimit = useCall<any>(api.query.staking.stakeLimit, [info.key]);
 
   // useEffect((): void => {
   //   if (accountInfo) {
@@ -142,7 +143,7 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
       <td className='number together'>{!bondTotal.isZero() && <FormatBalance value={bondTotal} />}</td>
       <td className='number together'>{!bondOwn.isZero() && <FormatBalance value={bondOwn} />}</td>
       <td className='number together media--1600'>{!bondOther.isZero() && <FormatBalance value={bondOther} />}</td>
-      {/*<td className='number together'>{!rewardPayout && <FormatBalance value={rewardPayout} />}</td>*/}
+      <td className='number together'>{stakeLimit && <FormatBalance value={stakeLimit.unwrap()} />}</td>
       <td>
         {(canSelect || isSelected) && (
           <Checkbox

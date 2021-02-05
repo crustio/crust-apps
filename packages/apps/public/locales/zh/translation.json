@@ -1407,5 +1407,7 @@
   "transfer tx hash": "转账交易的哈希值",
   "The Ethereum CRU transfer tx hash (starting by \"0x\")": "以太坊ERC20 CRU转账交易的哈希值(以\"0x\"开头)",
   "Ethereum tx hash": "以太坊转账交易哈希",
-  "CutGuarantee": "减投"
+  "CutGuarantee": "减投",
+  "stake limit/total stakes": "质押上限/总质押",
+  "guaranteeable": "可担保量"
 }

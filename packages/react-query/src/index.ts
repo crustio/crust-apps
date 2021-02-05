@@ -24,3 +24,4 @@ export { default as FormatCandy } from './FormatCandy';
 export { default as FormatCapacity } from './FormatCapacity';
 export { default as TotalStorage } from './TotalStorage';
 export { default as StakingRewardPot } from './StakingRewardPot';
+export { default as Guaranteeable } from './Guaranteeable';

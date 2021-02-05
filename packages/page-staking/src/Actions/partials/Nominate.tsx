@@ -13,6 +13,7 @@ import { useApi, useFavorites } from '@polkadot/react-hooks';
 import { STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
 import BN from 'bn.js';
+import { Guaranteeable } from '@polkadot/react-query';
 
 interface Props {
   className?: string;
@@ -34,6 +35,7 @@ function Nominate ({ className = '', controllerId, nominating, onChange, stashId
   const [favorites] = useFavorites(STORE_FAVS_BASE);
   const [selected, setSelected] = useState<string[]>([]);
   const [amount, setAmount] = useState<BN | undefined>(new BN(0));
+  const guaranteeable = <span className='label'>{t<string>('guaranteeable')}</span>;
   const [available] = useState<string[]>((): string[] => {
     const shortlist = [
       // ensure that the favorite is included in the list of stashes
@@ -102,6 +104,13 @@ function Nominate ({ className = '', controllerId, nominating, onChange, stashId
           label={t<string>('amount')}
           withMax
           onChange={setAmount}
+          labelExtra={
+            selected[0] &&
+            <Guaranteeable
+              label={guaranteeable}
+              params={selected[0]}
+            />
+          }
         />
       </Modal.Column>
     </div>

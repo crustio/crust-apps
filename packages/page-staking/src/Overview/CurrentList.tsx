@@ -129,7 +129,7 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
     [t('intentions'), 'start', 2],
     [t('guarantors'), 1],
     [t('own effective stake')],
-    [t('stake limit')],
+    [t('stake limit/total stakes'), 2],
     [t('guarantee fee')],
     [],
     [undefined, 'media--1200']
@@ -139,7 +139,7 @@ function CurrentList ({ favorites, hasQueries, isIntentions, next, stakingOvervi
     [t('validators'), 'start', 2],
     [t('other effective stake')],
     [t('own effective stake'), 'media--1100'],
-    [t('stake limit')],
+    [t('stake limit/total stakes'), 2],
     [t('guarantee fee')],
     [t('points')],
     [t('last verified block #')],
