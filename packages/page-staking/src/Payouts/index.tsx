@@ -154,7 +154,7 @@ function getOptions (api: ApiPromise, eraLength: BN | undefined, historyDepth: B
 function Payouts ({ className = '', isInElection, ownValidators }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
-  const [hasOwnValidators] = useState(true);
+  const [hasOwnValidators] = useState(ownValidators.length !== 0);
   const [myStashesIndex, setMyStashesIndex] = useState((api.tx.staking.rewardStakers && hasOwnValidators) ? 0 : 1);
   const [eraSelectionIndex, setEraSelectionIndex] = useState(0);
   const eraLength = useCall<BN>(api.derive.session.eraLength);
@@ -191,8 +191,8 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
   ]);
 
   const valOptions = useMemo(() => [
-    { isDisabled: !hasOwnValidators, text: t('My validators'), value: 'val' },
-    { text: t('My stashes'), value: 'all' }
+    { isDisabled: !hasOwnValidators, text: t('Validator rewards'), value: 'val' },
+    { text: t('Guarantor rewards'), value: 'all' }
   ], [hasOwnValidators, t]);
 
   const footer = useMemo(() => (

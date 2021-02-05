@@ -77,24 +77,24 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
       text: t<string>('Staking overview')
     },
     {
+      name: 'waiting',
+      text: t<string>('Waiting')
+    },
+    {
       name: 'actions',
       text: t<string>('Account actions')
+    },
+    {
+      alias: 'returns',
+      name: 'targets',
+      text: t<string>('Targets')
     },
     isFunction(api.query.staking.activeEra)
       ? {
         name: 'payout',
         text: t<string>('Payouts')
       }
-      : null,
-    {
-      alias: 'returns',
-      name: 'targets',
-      text: t<string>('Targets')
-    },
-    {
-      name: 'waiting',
-      text: t<string>('Waiting')
-    },
+      : null, 
     {
       count: slashes.reduce((count, [, unapplied]) => count + unapplied.length, 0),
       name: 'slashes',

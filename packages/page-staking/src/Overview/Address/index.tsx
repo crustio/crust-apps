@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint-disable */
 
-import { Balance, SlashingSpans, ValidatorPrefs } from '@polkadot/types/interfaces';
+import { Balance, SlashingSpans, ValidatorPrefs, AccountId, StakingLedger, ActiveEraInfo, Exposure } from '@polkadot/types/interfaces';
 import { DeriveAccountInfo } from '@polkadot/api-derive/types';
 import { ValidatorInfo } from '../../types';
 
@@ -18,6 +18,7 @@ import { Option } from '@polkadot/types';
 import Favorite from './Favorite';
 import Status from './Status';
 import StakeOther from './StakeOther';
+import { Guarantee } from '@polkadot/app-staking/Actions/Account';
 
 interface Props {
   address: string;
@@ -73,24 +74,60 @@ const transformSlashes = {
   transform: (opt: Option<SlashingSpans>) => opt.unwrapOr(null)
 };
 
+const transformBonded = {
+  transform: (value: Option<AccountId>): string | null =>
+    value.isSome
+      ? value.unwrap().toString()
+      : null
+};
+
+const transformLedger = {
+  transform: (value: Option<StakingLedger>): Balance | null =>
+    value.isSome
+      ? value.unwrap().active.unwrap()
+      : null
+};
+
+const parseObj = (obj: any) => {
+  return JSON.parse(JSON.stringify(obj));
+}
+
 function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
   const params = useMemo(() => [address], [address]);
   const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, params);
   const slashingSpans = useCall<SlashingSpans | null>(!isMain && api.query.staking.slashingSpans, params, transformSlashes);
   const stakeLimit = useCall<BN>(api.query.staking.stakeLimit, params);
+  const activeEraInfo = useCall<ActiveEraInfo>(api.query.staking.activeEra);
+  const activeEra = activeEraInfo && (JSON.parse(JSON.stringify(activeEraInfo)).index);
 
-  return { accountInfo, slashingSpans, stakeLimit };
+  const accountIdBonded = useCall<string | null>(api.query.staking.bonded, params, transformBonded);
+  const controllerActive = useCall<Balance | null>(api.query.staking.ledger, [accountIdBonded], transformLedger);
+  const erasStakersStashExposure = useCall<Option<Exposure>>(api.query.staking.erasStakers, [activeEra, address]);
+  const erasStakersStash = erasStakersStashExposure && (parseObj(erasStakersStashExposure).others.map((e: { who: any; }) => e.who))
+  
+  const stakersGuarantees = useCall<Guarantee[]>(api.query.staking.guarantors.multi, [erasStakersStash]);
+  let totalStaked = new BN(Number(controllerActive).toString());
+  if (stakersGuarantees) {
+    for (const stakersGuarantee of stakersGuarantees) {
+      for (const target of parseObj(stakersGuarantee).targets) {
+        if (target.who.toString() == address) {
+          totalStaked = totalStaked?.add(new BN(Number(target.value).toString()))
+        }
+      }
+    }
+  }
+
+  return { accountInfo, slashingSpans, stakeLimit, totalStaked };
 }
 
-function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, nominatedBy, onlineCount, onlineMessage, points, toggleFavorite, validatorInfo, withIdentity }: Props): React.ReactElement<Props> | null {
+function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, onlineCount, onlineMessage, points, toggleFavorite, validatorInfo, withIdentity }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  const { accountInfo, stakeLimit } = useAddressCalls(api, address, isMain);
+  const { accountInfo, stakeLimit, totalStaked } = useAddressCalls(api, address, isMain);
 
   const { commission, nominators, stakeOther, stakeOwn } = useMemo(
     () => validatorInfo ? expandInfo(validatorInfo) : { nominators: [] },
     [validatorInfo]
   );
-
 
   const isVisible = useMemo(
     () => accountInfo ? checkVisibility(api, address, accountInfo, filterName, withIdentity) : true,
@@ -140,7 +177,9 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
       </td>
       <td className='number media--1100'>
         {stakeLimit && (
-          <FormatBalance value={new BN(stakeLimit?.toString())} />
+          <div> 
+            <FormatBalance value={new BN(Number(stakeLimit)?.toString())} /> / <FormatBalance value={totalStaked} />
+          </div>
         )}
       </td>
       <td className='number'>
