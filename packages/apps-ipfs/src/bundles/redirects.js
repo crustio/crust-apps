@@ -28,12 +28,12 @@ export default {
       }
 
       hash = getRealPath(hash);
-
-      if (failed && hash !== '/welcome') {
+      const withoutIpfs = ['/welcome', '/market']
+      if (failed && withoutIpfs.indexOf(hash) < 0 ) {
         return { actionCreator: 'doUpdateHash', args: ['#/storage/welcome'] };
       }
 
-      if (lastSuccess && lastError && lastSuccess < lastError && hash !== '/welcome') {
+      if (lastSuccess && lastError && lastSuccess < lastError && withoutIpfs.indexOf(hash) < 0) {
         return { actionCreator: 'doUpdateHash', args: ['#/storage/welcome'] };
       }
     }

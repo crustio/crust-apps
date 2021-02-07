@@ -41,5 +41,6 @@
   },
   "fileCidCopied": "文件CID复制成功",
   "fileSizeCopied": "文件大小复制成功",
-  "clipboard": "剪切板"
+  "clipboard": "剪切板",
+  "ipfsError": "IPFS未连接"
 }

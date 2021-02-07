@@ -24,13 +24,13 @@
   "fileCidValid": "The file CID is not valid!",
   "files would be stored by more merchants with higher tips.": "files would be stored by more merchants with higher tips.",
   "File size": "File Size",
-  "fileSize (byte)": "File Size (byte)",
+  "fileSize (byte)": "File size (byte)",
   "FileCid": "File CID",
   "FileCidDesc": "Unique identification code of the file",
   "accountDesc": "Only accounts in the white list can place orders during the closed beta test",
   "transferrable":"transferrable",
   "File Cid": "File CID",
-  "fileSizeTitle": "fileSize (byte)",
+  "fileSizeTitle": "File size (byte)",
   "fileSizeDesc": "If the size you fill in is smaller than the real file size, the order will fail",
   "tipTitle": "Tip",
   "tipDesc": "Files would be stored by more merchants with higher tips.",
@@ -44,5 +44,6 @@
   },
   "clipboard": "Clipboard",
   "fileCidCopied": "File CID Copied",
-  "fileSizeCopied": "File Size Copied"
+  "fileSizeCopied": "File Size Copied",
+  "ipfsError": "IPFS not connected"
 }
