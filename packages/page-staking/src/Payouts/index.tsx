@@ -46,7 +46,7 @@ function groupByValidator (allRewards: Record<string, DeriveStakerReward[]>, sta
     .entries(allRewards)
     .reduce((grouped: PayoutValidator[], [stashId, rewards]): PayoutValidator[] => {
       rewards
-        // .filter(({ era }) => era.gte(stakerPayoutsAfter))
+        .filter(({ era }) => era.gte(stakerPayoutsAfter))
         .forEach((reward): void => {
           Object
             .entries(reward.validators)
@@ -192,7 +192,7 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
 
   const valOptions = useMemo(() => [
     { isDisabled: !hasOwnValidators, text: t('Validator rewards'), value: 'val' },
-    { text: t('Guarantor rewards'), value: 'all' }
+    { text: t('Rewards'), value: 'all' }
   ], [hasOwnValidators, t]);
 
   const footer = useMemo(() => (
