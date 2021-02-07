@@ -3,11 +3,11 @@
 // eslint-disable-next-line header/header
 import _ from 'lodash';
 import propTypes from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { AutoSizer, List, WindowScroller } from 'react-virtualized';
 import { connect } from 'redux-bundler-react';
-
+import { StatusContext } from '../../../react-components/src';
 import WatchItem from '@polkadot/apps-ipfs/market/WatchItem';
 
 import Checkbox from '../components/checkbox/Checkbox';
@@ -35,11 +35,21 @@ const itemList = [{
     width: 10,
   }];
 
-const OrderList = ({ doFindProvs, doUpdateWatchItem, identity, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
+const OrderList = ({ doFindProvs, doUpdateWatchItem, identity, ipfsReady, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
   const [listSorting, setListSorting] = useState({ by: null, asc: false });
   const [spinList, setSpinList] = useState([])
   const [sortedList, setSortedList] = useState(watchList)
+  const { queueAction } = useContext(StatusContext);
 
+  const _onCopy = useCallback(
+    () => {
+    queueAction && queueAction({
+      message: t('ipfsError'),
+      status: 'error'
+    });
+  },
+  [queueAction, t]
+)
   const tableRef = useRef(null);
   useEffect(() => {
     setListSorting({ by: 'startTime', asc: false })
@@ -52,6 +62,10 @@ const OrderList = ({ doFindProvs, doUpdateWatchItem, identity, doSelectedItems, 
   }, [watchList, watchList.length, listSorting]);
 
   const syncStatus = async (fileCid) => {
+    if (!ipfsReady) {
+      _onCopy()
+      return
+    }
     if (spinList.indexOf(fileCid) > -1) {
       return;
     }
@@ -208,4 +222,4 @@ OrderList.propTypes = {
   doUpdateWatchItem: propTypes.func
 };
 
-export default connect('selectWatchedCidList','doFindProvs', 'doRemoveWatchItems', 'selectIdentity', 'doFetchWatchList', 'doSelectedItems', 'selectSelectedCidList', 'doUpdateWatchItem', withTranslation('order')(OrderList));
+export default connect('selectWatchedCidList','doFindProvs', 'selectIpfsReady', 'doRemoveWatchItems', 'selectIdentity', 'doFetchWatchList', 'doSelectedItems', 'selectSelectedCidList', 'doUpdateWatchItem', withTranslation('order')(OrderList));
