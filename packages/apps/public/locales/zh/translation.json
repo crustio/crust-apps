@@ -1410,5 +1410,7 @@
   "CutGuarantee": "减投",
   "stake limit/total stakes": "质押上限/总质押",
   "guaranteeable": "可担保量",
-  "total stakes": "总质押"
+  "total stakes": "总质押",
+  "Points rewards": "积分奖励",
+  "Staking rewards": "质押奖励"
 }

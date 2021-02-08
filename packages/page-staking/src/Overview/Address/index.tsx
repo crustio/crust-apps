@@ -9,7 +9,7 @@ import { ValidatorInfo } from '../../types';
 import BN from 'bn.js';
 import React, { useCallback, useMemo } from 'react';
 import { ApiPromise } from '@polkadot/api';
-import { AddressSmall, Icon, Label, LinkExternal } from '@polkadot/react-components';
+import { AddressSmall, Icon, LinkExternal } from '@polkadot/react-components';
 import { checkVisibility } from '@polkadot/react-components/util';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
@@ -19,7 +19,6 @@ import Favorite from './Favorite';
 import Status from './Status';
 import StakeOther from './StakeOther';
 import { Guarantee } from '@polkadot/app-staking/Actions/Account';
-import { useTranslation } from 'react-i18next';
 
 interface Props {
   address: string;
@@ -110,9 +109,11 @@ function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
   let totalStaked = new BN(Number(controllerActive).toString());
   if (stakersGuarantees) {
     for (const stakersGuarantee of stakersGuarantees) {
-      for (const target of parseObj(stakersGuarantee).targets) {
-        if (target.who.toString() == address) {
-          totalStaked = totalStaked?.add(new BN(Number(target.value).toString()))
+      if (parseObj(stakersGuarantee)) {
+        for (const target of parseObj(stakersGuarantee)?.targets) {
+          if (target.who.toString() == address) {
+            totalStaked = totalStaked?.add(new BN(Number(target.value).toString()))
+          }
         }
       }
     }
@@ -124,7 +125,6 @@ function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
 function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, onlineCount, onlineMessage, points, toggleFavorite, validatorInfo, withIdentity }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
   const { accountInfo, stakeLimit, totalStaked } = useAddressCalls(api, address, isMain);
-  const { t } = useTranslation();
 
   const { commission, nominators, stakeOther, stakeOwn } = useMemo(
     () => validatorInfo ? expandInfo(validatorInfo) : { nominators: [] },
@@ -179,22 +179,29 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
       </td>
       <td className='number media--1100'>
         {stakeLimit && (
-          // <div> 
-          //   <FormatBalance value={new BN(Number(stakeLimit)?.toString())} /> / <FormatBalance value={totalStaked} />
-          // </div>
-          <>
-            <Label label={t<string>('stake limit')} />
-              <FormatBalance
-                className='result'
-                value={new BN(Number(stakeLimit)?.toString())}
-            />
+          <div> 
+            <FormatBalance value={new BN(Number(stakeLimit)?.toString())} /> 
+          </div>
+          // <>
+          //   <Label label={t<string>('stake limit')} />
+          //     <FormatBalance
+          //       className='result'
+          //       value={new BN(Number(stakeLimit)?.toString())}
+          //   />
 
-            <Label label={t<string>('total stakes')} />
-              <FormatBalance
-                className='result'
-                value={totalStaked}
-            />
-          </>
+          //   <Label label={t<string>('total stakes')} />
+          //     <FormatBalance
+          //       className='result'
+          //       value={totalStaked}
+          //   />
+          // </>
+        )}
+      </td>
+      <td className='number media--1100'>
+        {totalStaked && (
+          <div> 
+            <FormatBalance value={totalStaked} />
+          </div>
         )}
       </td>
       <td className='number'>
