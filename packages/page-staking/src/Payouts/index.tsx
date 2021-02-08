@@ -191,8 +191,8 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
   ]);
 
   const valOptions = useMemo(() => [
-    { isDisabled: !hasOwnValidators, text: t('Points rewards'), value: 'val' },
-    { text: t('Staking rewards'), value: 'all' }
+    { isDisabled: !hasOwnValidators, text: t('Validator/Candidate rewards'), value: 'val' },
+    { text: t('Guarantor rewards'), value: 'all' }
   ], [hasOwnValidators, t]);
 
   const footer = useMemo(() => (

@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DeriveEraPoints, DeriveEraRewards, DeriveStakerReward, DeriveStakingOverview, DeriveStakingAccount, DeriveStakerRewardValidator } from '@polkadot/api-derive/types';
+import { DeriveEraPoints, DeriveEraRewards, DeriveStakerReward, DeriveStakingOverview, DeriveStakingAccount, DeriveStakerRewardValidator, DeriveStakingWaiting } from '@polkadot/api-derive/types';
 
 import { EraIndex, Exposure } from '@polkadot/types/interfaces';
 import { StakerState } from './types';
@@ -155,7 +155,8 @@ export function useOwnEraRewards (maxEras?: number, ownValidators?: StakerState[
   const erasPoints = useCall<DeriveEraPoints[]>(!!validatorEras.length && !!filteredEras.length && api.derive.staking._erasPoints, [filteredEras, false]);
   const erasRewards = useCall<DeriveEraRewards[]>(!!validatorEras.length && !!filteredEras.length && api.derive.staking._erasRewards, [filteredEras, false]);
   const stakingOverview = useCall<DeriveStakingOverview>(api.derive.staking.overview);
-  const allValidators = stakingOverview && [ ...stakingOverview.validators, ...stakingOverview.nextElected ];
+  const waitingInfo = useCall<DeriveStakingWaiting>(api.derive.staking.waitingInfo);
+  const allValidators = stakingOverview && waitingInfo && [ ...waitingInfo.waiting, ...stakingOverview.nextElected ];
   const stakingAccounts = useCall<DeriveStakingAccount[]>(allValidators && api.derive.staking.accounts, [allValidators]);
   const [eraStashExposure, setEraStashExposure] = useState<EraStashExposure[]>([]);
 
