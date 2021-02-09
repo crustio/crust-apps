@@ -76,7 +76,7 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
   const { t } = useTranslation();
   const { api } = useApi();
   const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, [info.accountId]);
-  const stakeLimit = useCall<any>(api.query.staking.stakeLimit, [info.key]);
+  const stakeLimit = useCall<BN>(api.query.staking.stakeLimit, [info.accountId]);
 
   const activeEraInfo = useCall<ActiveEraInfo>(api.query.staking.activeEra);
 
@@ -187,7 +187,7 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
       <td className='number together'>{!bondTotal.isZero() && <FormatBalance value={bondTotal} />}</td>
       <td className='number together'>{!bondOwn.isZero() && <FormatBalance value={bondOwn} />}</td>
       <td className='number together media--1600'>{!bondOther.isZero() && <FormatBalance value={bondOther} />}</td>
-      <td className='number together'>{stakeLimit && <FormatBalance value={stakeLimit?.unwrap()} />}</td>
+      <td className='number together'>{stakeLimit && <FormatBalance value={new BN(Number(stakeLimit)?.toString())} />}</td>
       <td className='number together'>{totalStaked && <FormatBalance value={totalStaked} />}</td>
       <td>
         {(canSelect || isSelected) && (
