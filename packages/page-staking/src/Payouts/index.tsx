@@ -46,7 +46,7 @@ function groupByValidator (allRewards: Record<string, DeriveStakerReward[]>, sta
     .entries(allRewards)
     .reduce((grouped: PayoutValidator[], [stashId, rewards]): PayoutValidator[] => {
       rewards
-        .filter(({ era }) => era.gte(stakerPayoutsAfter))
+        // .filter(({ era }) => era.gte(stakerPayoutsAfter))
         .forEach((reward): void => {
           Object
             .entries(reward.validators)
@@ -95,7 +95,7 @@ function extractStashes (allRewards: Record<string, DeriveStakerReward[]>): Payo
       rewards,
       stashId
     }))
-    .filter(({ available }) => !available.isZero())
+    // .filter(({ available }) => !available.isZero())
     .sort((a, b) => b.available.cmp(a.available));
 }
 
