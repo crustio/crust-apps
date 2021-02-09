@@ -1412,5 +1412,6 @@
   "guaranteeable": "可担保量",
   "total stakes": "总质押",
   "Validator/Candidate rewards": "验证人/候选人奖励",
-  "Guarantor rewards": "担保人奖励"
+  "Guarantor rewards": "担保人奖励",
+  "total effective stake": "总有效质押量"
 }

@@ -113,9 +113,9 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
   );
 
   const labelsRef = useRef({
-    rankBondOther: t<string>('other stake'),
-    rankBondOwn: t<string>('own stake'),
-    rankBondTotal: t<string>('total stake'),
+    rankBondOther: t<string>('other effective stake'),
+    rankBondOwn: t<string>('own effective stake'),
+    rankBondTotal: t<string>('total effective stake'),
     rankComm: t<string>('guarantee fee'),
     rankNumNominators: t<string>('guarantors'),
     rankOverall: t<string>('stake limit')
@@ -133,6 +133,7 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
         () => _sort(header as 'rankOverall')
       ]),
     [t('stake limit')],
+    [t('total stakes')],
     [],
     []
   ], [_sort, labelsRef, sortBy, sorted, sortFromMax, t]);
