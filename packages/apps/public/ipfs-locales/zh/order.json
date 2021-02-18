@@ -15,7 +15,8 @@
     "order": "下单",
     "renew": "续费",
     "retry": "重新下单",
-    "speed": "加速"
+    "speed": "加速",
+    "note": "备注"
   },
   "orderList": "订单列表",
   "noAccount": "需要导入一个有效账号",

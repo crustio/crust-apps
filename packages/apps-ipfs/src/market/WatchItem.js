@@ -24,8 +24,18 @@ const fileStatusEnum = {
   FAILED: 'FAILED',
   EXPIRE: 'EXPIRE'
 };
-
-const WatchItem = ({ ipfsConnected, onSelect, onToggleBtn, selected, watchItem }) => {
+console.log(123);
+const Comment = ({ isEdit, comment }) => {
+  return <div>
+    {isEdit ?
+      <input type="text" value={comment} onChange={(e) => {
+        console.log(e.target.value);
+        comment = e.target.value;
+      }}/> :
+      <div>{comment}</div>}
+  </div>
+}
+const WatchItem = ({ ipfsConnected,isEdit, onSelect,doUpdateWatchItem, onToggleBtn, selected, watchItem }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
   const checkBoxCls = classnames({
@@ -123,7 +133,7 @@ const WatchItem = ({ ipfsConnected, onSelect, onToggleBtn, selected, watchItem }
 
     <div className='relative tc  flex justify-center items-center  ph2 pv1 w-15'>
       <div className=''>
-        {watchItem.startTime || '-'}
+        <Comment isEdit={isEdit} comment={watchItem.comment}/>
       </div>
     </div>
     <div className='relative tc flex  justify-center items-center  ph2 pv1 w-15'>
@@ -182,17 +192,17 @@ const WatchItem = ({ ipfsConnected, onSelect, onToggleBtn, selected, watchItem }
                              onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem);
                            }}>{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</button>
       }
-    </div>
-  </div>;
-};
-
+  </div>
+  </div>
+}
 WatchItem.prototype = {
-  peerId: PropTypes.string.isRequired,
-  watchItem: PropTypes.array.isRequired,
-  onSelect: PropTypes.func.isRequired,
-  selected: PropTypes.bool,
-  onToggleBtn: PropTypes.func.isRequired,
-  ipfsConnected: PropTypes.bool.isRequired
-};
+    peerId: PropTypes.string.isRequired,
+    watchItem: PropTypes.array.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    selected: PropTypes.bool,
+    onToggleBtn: PropTypes.func.isRequired,
+    ipfsConnected: PropTypes.bool.isRequired,
+    isEdit: PropTypes.bool
+  };
 
-export default connect('selectIpfsConnected', WatchItem);
+export default connect('doUpdateWatchItem', 'selectIpfsConnected', WatchItem);

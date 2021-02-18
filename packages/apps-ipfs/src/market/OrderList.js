@@ -14,17 +14,18 @@ import Checkbox from '../components/checkbox/Checkbox';
 const itemList = [{
   name: 'fileSize',
   width: 10,
-}, {
-  name: 'startTime',
-  width: 15,
 },
+  {
+    name: 'note',
+    width: 15,
+  },
   {
     name: 'expireTime',
     width: 15,
   },
   {
     name: 'confirmedReplicas',
-    width: 10,
+    width: 15,
   },
   {
     name: 'fileStatus',
@@ -34,6 +35,7 @@ const itemList = [{
 const OrderList = ({ identity, ipfsReady, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
   const [listSorting, setListSorting] = useState({ by: 'startTime', asc: false });
   const [sortedList, setSortedList] = useState(watchList)
+  const [editItem, setEditItem] = useState(undefined)
 
   const tableRef = useRef(null);
 
@@ -126,7 +128,7 @@ const OrderList = ({ identity, ipfsReady, doSelectedItems, onToggleBtn, selected
             </button>
           </div>
         ))}
-        <div className='ph2 pv1 flex-auto db-l tc w-15 watch-list-header'>{t('actions.action')}</div>
+        <div className='ph2 pv1 flex-auto db-l tc w-10 watch-list-header'>{t('actions.action')}</div>
       </header>
       <WindowScroller>
         {({ height, isScrolling, onChildScroll, scrollTop }) => (
@@ -154,6 +156,10 @@ const OrderList = ({ identity, ipfsReady, doSelectedItems, onToggleBtn, selected
                       onToggleBtn={(type, file) => {
                         onToggleBtn(type, file);
                       }}
+                      onEdit={() => {
+
+                      }}
+                      isEdit={editItem === sortedList[index].fileCid}
                       selected={selectedCidList.indexOf(sortedList[index].fileCid) > -1}
                       watchItem={sortedList[index]} />;
                   }}

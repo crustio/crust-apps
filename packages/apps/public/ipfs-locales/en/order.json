@@ -15,7 +15,8 @@
     "renew": "Renew",
     "speed": "Speed up",
     "order": "Order",
-    "retry": "Retry"
+    "retry": "Retry",
+    "note": "Comment"
   },
   "noAccount": "Need to import a valid account",
   "orderList": "File Order List",
