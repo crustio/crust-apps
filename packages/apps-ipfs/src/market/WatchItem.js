@@ -67,7 +67,7 @@ const WatchItem = ({ onSyncStatus, ipfsReady, isSpin, onSelect,doUpdateWatchItem
         status = fileStatusEnum.PENDING;
       }
 
-      if (expired_on && reported_replica_count > 0) {
+      if (expired_on && expired_on > bestNumber && reported_replica_count > 0) {
         // success
         status = fileStatusEnum.SUCCESS;
       }
