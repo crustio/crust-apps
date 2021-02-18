@@ -25,7 +25,6 @@ import Statement from './Statement';
 import { useTranslation } from './translate';
 import { getStatement, recoverFromJSON } from './util';
 import Warning from './Warning';
-
 export { default as useCounter } from './useCounter';
 
 enum Step {
@@ -160,7 +159,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
   // Depending on the account, decide which step to show.
   const handleAccountStep = useCallback(async () => {
     setIsBusy(true);
-    const result = await httpPost('http://127.0.0.1:14001/claim/' + ethereumTxHash);
+    const result = await httpPost("https://bridge-api.crust.network/claim/" + ethereumTxHash);
 
     setIsBusy(false);
     setResult(result.statusText);
