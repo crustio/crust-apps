@@ -36,7 +36,7 @@ const itemList = [{
   }];
 
 const OrderList = ({ doFindProvs, doUpdateWatchItem, identity, ipfsReady, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
-  const [listSorting, setListSorting] = useState({ by: null, asc: false });
+  const [listSorting, setListSorting] = useState({ by: 'startTime', asc: false });
   const [spinList, setSpinList] = useState([])
   const [sortedList, setSortedList] = useState(watchList)
   const { queueAction } = useContext(StatusContext);
@@ -51,9 +51,6 @@ const OrderList = ({ doFindProvs, doUpdateWatchItem, identity, ipfsReady, doSele
   [queueAction, t]
 )
   const tableRef = useRef(null);
-  useEffect(() => {
-    setListSorting({ by: 'startTime', asc: false })
-  }, [])
 
   useEffect(() => {
     const _list = _.orderBy(watchList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc']);
