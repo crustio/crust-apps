@@ -34,12 +34,12 @@ function EffectiveStake ({ activeEra, stakeValue, stashId, validators }: Props):
 
     if (multiQuery) {
       for (let index = 0; index < tmpTargets?.length; index++) {
-        let guaranteeTarget:[string, BN, BN] = [tmpTargets[index].who, new BN(0), tmpTargets[index].value];
+        let guaranteeTarget:[string, BN, BN] = [tmpTargets[index].who, new BN('0'), new BN(tmpTargets[index].value?.toString())];
         const exposure = multiQuery[index];
         if (exposure) {
           for (const other of exposure.others) {
             if (other.who.toString() === stashId) {
-              guaranteeTarget[1] = other.value.unwrap();
+              guaranteeTarget[1] = new BN(other.value.toString());
             }
           }
         }

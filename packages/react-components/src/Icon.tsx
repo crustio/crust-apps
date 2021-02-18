@@ -12,7 +12,7 @@ import styled from 'styled-components';
 interface Props {
   className?: string;
   color?: 'gray' | 'green' | 'normal' | 'orange' | 'red' | 'transparent' | 'white';
-  icon: IconName;
+  icon: IconName | 'ipfs';
   isSpinning?: boolean;
   onClick?: () => void;
   size?: '1x' | '2x';
@@ -28,7 +28,8 @@ function Icon ({ className = '', color = 'normal', icon, isSpinning, onClick, si
     : {};
 
   return (
-    <FontAwesomeIcon
+  // eslint-disable-next-line multiline-ternary
+    icon === 'ipfs' ? <span className={`icomoon icomoon-ipfs ui--Icon ${color}Color${onClick ? ' isClickable' : ''} ${className}`}/> : <FontAwesomeIcon
       {...extraProps}
       className={`ui--Icon ${color}Color${onClick ? ' isClickable' : ''} ${className}`}
       icon={icon}
@@ -39,7 +40,7 @@ function Icon ({ className = '', color = 'normal', icon, isSpinning, onClick, si
   );
 }
 
-export default React.memo(styled(Icon)`
+export default React.memo(styled(Icon)`.
   &.isClickable {
     cursor: pointer;
   }

@@ -14,6 +14,7 @@ import council from './council';
 import democracy from './democracy';
 import explorer from './explorer';
 import extrinsics from './extrinsics';
+import ipfsFiles from './ipfsFiles';
 import js from './js';
 import parachains from './parachains';
 import poll from './poll';
@@ -47,6 +48,7 @@ export default function create (t: TFunction): Routes {
     calendar(t),
     contracts(t),
     storage(t),
+    ipfsFiles(t),
     extrinsics(t),
     rpc(t),
     signing(t),

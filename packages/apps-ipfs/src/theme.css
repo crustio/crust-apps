@@ -1,0 +1,65 @@
+/* IPFS theme.scss - Generated from https://github.com/ipfs-shipyard/ipfs-css/blob/master/theme.json */
+
+/*color*/
+.navy,
+.navy-muted,
+.aqua,
+.hover-navy:hover,
+.hover-navy:focus,
+.hover-navy-muted:hover,
+.hover-navy-muted:focus,
+.hover-aqua:hover,
+.hover-aqua:focus {
+  color: #ff8812;
+}
+
+/*bg-color*/
+
+.bg-navy,
+.bg-navy-muted,
+.bg-aqua,
+.bg-teal,
+.hover-bg-navy:hover,
+.hover-bg-navy:focus,
+.hover-bg-navy-muted:hover,
+.hover-bg-navy-muted:focus,
+.hover-bg-aqua:hover,
+.hover-bg-aqua:focus,
+.bg-teal {
+  background-color: #ff8812;
+}
+/*svg-fill*/
+
+.hover-fill-navy:hover,
+.hover-fill-navy:focus,
+.hover-fill-navy-muted:hover,
+.hover-fill-navy-muted:focus,
+.hover-fill-aqua:hover,
+.hover-fill-aqua:focus,
+.fill-aqua,
+.fill-navy,
+.fill-navy-muted {
+  fill: #ff8812;
+}
+
+.border-navy,
+.border-navy-muted,
+.b--navy-muted,
+.b--navy,
+.border-aqua,
+.b--aqua {
+  border-color: #ff8812;
+}
+
+.teal,
+.fill-teal,
+.link,
+.fill-teal-muted {
+  fill: #ff8812;
+  color: #ff8812!important;
+}
+.fill-white {
+  color: #fff;
+}
+
+

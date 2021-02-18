@@ -7,11 +7,15 @@
   "compilerOptions": {
     "jsx": "react",
     "baseUrl": ".",
+    "declaration": true,
+    "allowJs": true,
     "paths": {
       "@polkadot/apps/*": ["packages/apps/src/*"],
       "@polkadot/apps": ["packages/apps/src"],
       "@polkadot/apps-config": [ "packages/apps-config/src" ],
       "@polkadot/apps-config/*": [ "packages/apps-config/src/*" ],
+      "@polkadot/apps-ipfs/": [ "packages/apps-ipfs/src/" ],
+      "@polkadot/apps-ipfs/*": [ "packages/apps-ipfs/src/*" ],
       "@polkadot/apps-routing": [ "packages/apps-routing/src" ],
       "@polkadot/apps-routing/*": [ "packages/apps-routing/src/*" ],
       "@polkadot/app-accounts": [ "packages/page-accounts/src" ],

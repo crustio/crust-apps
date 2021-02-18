@@ -113,23 +113,27 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
   );
 
   const labelsRef = useRef({
-    rankBondOther: t<string>('other stake'),
-    rankBondOwn: t<string>('own stake'),
-    rankBondTotal: t<string>('total stake'),
+    rankBondOther: t<string>('other effective stake'),
+    rankBondOwn: t<string>('own effective stake'),
+    rankBondTotal: t<string>('total effective stake'),
     rankComm: t<string>('guarantee fee'),
     rankNumNominators: t<string>('guarantors'),
-    // rankOverall: t<string>('profit/era')
+    rankOverall: t<string>('stake limit')
   });
 
   const header = useMemo(() => [
     [t('validators'), 'start', 3],
-    ...(['rankNumNominators', 'rankComm', 'rankBondTotal', 'rankBondOwn', 'rankBondOther'] as (keyof typeof labelsRef.current)[])
+    [t('guarantors')],
+    [t('guarantee fee')],
+    ...(['rankBondTotal', 'rankBondOwn', 'rankBondOther'] as (keyof typeof labelsRef.current)[])
       .map((header) => [
         <>{labelsRef.current[header]}<Icon icon={sortBy === header ? (sortFromMax ? 'chevron-down' : 'chevron-up') : 'minus'} /></>,
         `${sorted ? `isClickable ${sortBy === header ? 'highlight--border' : ''} number` : 'number'} ${CLASSES[header] || ''}`,
         1,
-        () => _sort(header as 'rankComm')
+        () => _sort(header as 'rankOverall')
       ]),
+    [t('stake limit')],
+    [t('total stakes')],
     [],
     []
   ], [_sort, labelsRef, sortBy, sorted, sortFromMax, t]);
