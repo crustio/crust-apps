@@ -1,16 +1,16 @@
-// Copyright 2017-2020 @polkadot/react-query authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// SPDX-License-Identifier: Apache-2.0
 
-import { AccountId, AccountIndex, Address, Exposure, Balance, ActiveEraInfo, StakingLedger } from '@polkadot/types/interfaces';
-import React from 'react';
-import { useApi, useCall } from '@polkadot/react-hooks';
-import { Option } from '@polkadot/types';
-
-import { formatBalance } from '@polkadot/util';
+/* eslint-disable */
 import BN from 'bn.js';
+import React from 'react';
+
 import { Guarantee } from '@polkadot/app-staking/Actions/Account';
 import { useTranslation } from '@polkadot/react-components/translate';
+import { useApi, useCall } from '@polkadot/react-hooks';
+import { Option } from '@polkadot/types';
+import { AccountId, AccountIndex, ActiveEraInfo, Address, Balance, Exposure, StakingLedger } from '@polkadot/types/interfaces';
+import { formatBalance } from '@polkadot/util';
 
 interface Props {
   children?: React.ReactNode;
@@ -35,7 +35,7 @@ const transformLedger = {
 
 const parseObj = (obj: any) => {
   return JSON.parse(JSON.stringify(obj));
-}
+};
 
 function GuaranteeableDisplay ({ params }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
@@ -49,16 +49,17 @@ function GuaranteeableDisplay ({ params }: Props): React.ReactElement<Props> {
   const accountIdBonded = useCall<string | null>(api.query.staking.bonded, [params], transformBonded);
   const controllerActive = useCall<Balance | null>(api.query.staking.ledger, [accountIdBonded], transformLedger);
   const erasStakersStashExposure = useCall<Option<Exposure>>(api.query.staking.erasStakers, [activeEra, params]);
-  const erasStakersStash = erasStakersStashExposure && (parseObj(erasStakersStashExposure).others.map((e: { who: any; }) => e.who))
-  
+  const erasStakersStash = erasStakersStashExposure && (parseObj(erasStakersStashExposure).others.map((e: { who: any; }) => e.who));
+
   const stakersGuarantees = useCall<Guarantee[]>(api.query.staking.guarantors.multi, [erasStakersStash]);
   let totalStaked = new BN(Number(controllerActive).toString());
+
   if (stakersGuarantees) {
     for (const stakersGuarantee of stakersGuarantees) {
       if (parseObj(stakersGuarantee)) {
         for (const target of parseObj(stakersGuarantee)?.targets) {
           if (target.who.toString() == params?.toString()) {
-            totalStaked = totalStaked?.add(new BN(Number(target.value).toString()))
+            totalStaked = totalStaked?.add(new BN(Number(target.value).toString()));
           }
         }
       }
@@ -67,7 +68,7 @@ function GuaranteeableDisplay ({ params }: Props): React.ReactElement<Props> {
 
   return (
     <>
-      <span className='highlight'>{t<string>('stake limit')} { formatBalance(stakeLimit?.unwrap())}/{t<string>('total stakes')} {formatBalance(totalStaked, {withUnit: true})}</span>      
+      <span className='highlight'>{t<string>('stake limit')} { formatBalance(stakeLimit?.unwrap())}/{t<string>('total stakes')} {formatBalance(totalStaked, { withUnit: true })}</span>
     </>
   );
 }

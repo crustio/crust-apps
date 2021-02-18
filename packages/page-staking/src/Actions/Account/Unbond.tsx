@@ -63,14 +63,14 @@ function Unbond ({ className = '', controllerId, onClose, stakingLedger, stashId
               isDisabled={withMax}
               key={`unbondAmount-${withMax.toString()}`}
               label={t<string>('unbond amount')}
-              maxValue={maxBalance}
-              onChange={setMaxUnbond}
-              withMax
               labelExtra={
                 <BalanceUnbond
                   params={stashId}
                 />
               }
+              maxValue={maxBalance}
+              onChange={setMaxUnbond}
+              withMax
             >
               <Toggle
                 isOverlay

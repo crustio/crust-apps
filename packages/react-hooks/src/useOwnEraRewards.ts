@@ -1,16 +1,15 @@
-// Copyright 2017-2020 @polkadot/react-hooks authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// SPDX-License-Identifier: Apache-2.0
 
-import { DeriveEraPoints, DeriveEraRewards, DeriveStakerReward, DeriveStakingOverview, DeriveStakingAccount, DeriveStakerRewardValidator, DeriveStakingWaiting } from '@polkadot/api-derive/types';
-
-import { EraIndex, Exposure } from '@polkadot/types/interfaces';
-import { StakerState } from './types';
-
+/* eslint-disable */
 import { useEffect, useState } from 'react';
+
+import { DeriveEraPoints, DeriveEraRewards, DeriveStakerReward, DeriveStakerRewardValidator, DeriveStakingAccount, DeriveStakingOverview, DeriveStakingWaiting } from '@polkadot/api-derive/types';
 import registry from '@polkadot/react-api/typeRegistry';
+import { EraIndex, Exposure } from '@polkadot/types/interfaces';
 import { BN_ZERO } from '@polkadot/util';
 
+import { StakerState } from './types';
 import { useApi } from './useApi';
 import { useCall } from './useCall';
 import { useIsMountedRef } from './useIsMountedRef';
@@ -40,37 +39,43 @@ interface EraStashExposure {
 
 function getRewards ([[stashIds], available]: [[string[]], DeriveStakerReward[][]], stakingAccounts: DeriveStakingAccount[]): OwnRewards {
   const allRewards: Record<string, DeriveStakerReward[]> = {};
-  const electedIds = stakingAccounts.map(e => e.accountId.toString());
+  const electedIds = stakingAccounts.map((e) => e.accountId.toString());
 
   for (const [index, a] of available.entries()) {
     const tmpEra: string[] = [];
+
     for (const eraReward of a) {
       const tmpNominating: string[] = [];
+
       for (const e in eraReward.nominating) {
-        const sa = stakingAccounts.find(({ accountId }) => accountId.eq(eraReward.nominating[e].validatorId))
+        const sa = stakingAccounts.find(({ accountId }) => accountId.eq(eraReward.nominating[e].validatorId));
+
         if (sa?.stakingLedger.claimedRewards.includes(eraReward.era)) {
           tmpNominating.push(sa?.accountId.toString());
         }
       }
 
-      const tmp = eraReward.nominating.filter( e => !tmpNominating.includes(e.validatorId) && electedIds.includes(e.validatorId));
+      const tmp = eraReward.nominating.filter((e) => !tmpNominating.includes(e.validatorId) && electedIds.includes(e.validatorId));
 
       eraReward.nominating = tmp;
       const tmpValidators: Record<string, DeriveStakerRewardValidator> = {};
-      Object.entries(eraReward.validators).forEach(([validatorId, { total ,value }]): void => {
+
+      Object.entries(eraReward.validators).forEach(([validatorId, { total, value }]): void => {
         if (!tmpNominating.includes(validatorId) && electedIds.includes(validatorId)) {
           tmpValidators[validatorId] = {
             total: total,
             value
-          }
+          };
         }
-      })
+      });
       eraReward.validators = tmpValidators;
+
       if (eraReward.nominating.length == 0) {
         tmpEra.push(eraReward.era.toString());
       }
     }
-    available[index] = a.filter(e => !tmpEra.includes(e.era.toString()));
+
+    available[index] = a.filter((e) => !tmpEra.includes(e.era.toString()));
   }
 
   stashIds.forEach((stashId, index): void => {
@@ -86,11 +91,12 @@ function getRewards ([[stashIds], available]: [[string[]], DeriveStakerReward[][
 
 function getValRewards (validatorEras: ValidatorWithEras[], erasPoints: DeriveEraPoints[], erasRewards: DeriveEraRewards[], eraStashExposure: EraStashExposure[]): OwnRewards {
   const allRewards: Record<string, DeriveStakerReward[]> = {};
+
   validatorEras.forEach(({ eras, stashId }): void => {
     eras.forEach((era): void => {
       const eraPoints = erasPoints.find((p) => p.era.eq(era));
       const eraRewards = erasRewards.find((r) => r.era.eq(era));
-      const eraExposure = eraStashExposure.find((e) => e.era.eq(era) && e.stashId === stashId.toString())
+      const eraExposure = eraStashExposure.find((e) => e.era.eq(era) && e.stashId === stashId.toString());
 
       if (eraPoints?.eraPoints.gt(BN_ZERO) && eraPoints?.validators[stashId] && eraRewards) {
         const reward = eraPoints.validators[stashId].mul(eraRewards.eraReward).div(eraPoints.eraPoints);
@@ -120,6 +126,7 @@ function getValRewards (validatorEras: ValidatorWithEras[], erasPoints: DeriveEr
         if (!allRewards[stashId]) {
           allRewards[stashId] = [];
         }
+
         allRewards[stashId].push({
           era,
           eraReward: registry.createType('Balance', 1),
@@ -156,7 +163,7 @@ export function useOwnEraRewards (maxEras?: number, ownValidators?: StakerState[
   const erasRewards = useCall<DeriveEraRewards[]>(!!validatorEras.length && !!filteredEras.length && api.derive.staking._erasRewards, [filteredEras, false]);
   const stakingOverview = useCall<DeriveStakingOverview>(api.derive.staking.overview);
   const waitingInfo = useCall<DeriveStakingWaiting>(api.derive.staking.waitingInfo);
-  const allValidators = stakingOverview && waitingInfo && [ ...waitingInfo.waiting, ...stakingOverview.nextElected ];
+  const allValidators = stakingOverview && waitingInfo && [...waitingInfo.waiting, ...stakingOverview.nextElected];
   const stakingAccounts = useCall<DeriveStakingAccount[]>(allValidators && api.derive.staking.accounts, [allValidators]);
   const [eraStashExposure, setEraStashExposure] = useState<EraStashExposure[]>([]);
 
@@ -165,12 +172,15 @@ export function useOwnEraRewards (maxEras?: number, ownValidators?: StakerState[
 
     if (allValidators && filteredEras && mountedRef.current) {
       const query: [EraIndex, string][] = [];
+
       for (const v of allValidators) {
-        filteredEras.forEach( era => query.push([era, v.toString()]))
+        filteredEras.forEach((era) => query.push([era, v.toString()]));
       }
+
       const fns: any[] = [
         [api.query.staking.erasStakers.multi as any, query]
       ];
+
       api.combineLatest<Exposure[]>(fns, ([exposures]): void => {
         const tmp: EraStashExposure[] = [];
 
@@ -179,19 +189,21 @@ export function useOwnEraRewards (maxEras?: number, ownValidators?: StakerState[
             tmp.push({
               era: a[0],
               stashId: a[1],
-              exposure: exposures[index],
-            })
+              exposure: exposures[index]
+            });
           }
+
           setEraStashExposure(tmp);
         }
       }).then((_unsub): void => {
         unsub = _unsub;
       }).catch(console.error);
     }
+
     return (): void => {
       unsub && unsub();
     };
-  }, [filteredEras])
+  }, [filteredEras]);
 
   useEffect((): void => {
     setState({ allRewards: null, isLoadingRewards: true, rewardCount: 0 });
