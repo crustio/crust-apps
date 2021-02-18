@@ -1304,7 +1304,7 @@
   "total deposit": "总共押金",
   "total issuance": "总发行量",
   "total peers": "节点总数",
-  "total stake": "权益总量",
+  "total stake": "质押总量",
   "total staked": "质押总量",
   "total storage": "总存储量",
   "transactions": "交易",
@@ -1406,5 +1406,13 @@
   "1. Select your {{chain}} account and enter": "1. 选择你的{{chain}}账户并输入以太坊",
   "transfer tx hash": "转账交易的哈希值",
   "The Ethereum CRU transfer tx hash (starting by \"0x\")": "以太坊ERC20 CRU转账交易的哈希值(以\"0x\"开头)",
-  "Ethereum tx hash": "以太坊转账交易哈希"
+  "Ethereum tx hash": "以太坊转账交易哈希",
+  "CutGuarantee": "减投",
+  "stake limit/total stakes": "质押上限/总质押",
+  "guaranteeable": "可担保量",
+  "total stakes": "质押总量",
+  "Validator/Candidate rewards": "验证人/候选人奖励",
+  "Guarantor rewards": "担保人奖励",
+  "total effective stake": "总有效质押量",
+  "total guarantee": "担保总量"
 }

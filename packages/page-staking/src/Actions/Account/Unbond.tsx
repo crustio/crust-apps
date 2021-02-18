@@ -12,6 +12,7 @@ import { AccountId, StakingLedger } from '@polkadot/types/interfaces';
 
 import { useTranslation } from '../../translate';
 import useUnbondDuration from '../useUnbondDuration';
+import BalanceUnbond from './BalanceUnbond';
 
 interface Props {
   className?: string;
@@ -62,6 +63,11 @@ function Unbond ({ className = '', controllerId, onClose, stakingLedger, stashId
               isDisabled={withMax}
               key={`unbondAmount-${withMax.toString()}`}
               label={t<string>('unbond amount')}
+              labelExtra={
+                <BalanceUnbond
+                  params={stashId}
+                />
+              }
               maxValue={maxBalance}
               onChange={setMaxUnbond}
               withMax

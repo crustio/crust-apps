@@ -15,7 +15,6 @@ import styled from 'styled-components';
 import { Button, Card, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
-import { TypeRegistry } from '@polkadot/types/create';
 
 import { useTranslation } from './translate';
 import { addrToChecksum, getStatement } from './util';
@@ -52,7 +51,7 @@ function constructTx (api: ApiPromise, systemChain: string, accountId: string, e
 function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature, ethereumTxHash, isOldClaimProcess, onSuccess, statementKind }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api, systemChain } = useApi();
-  const [claimValue, setClaimValue] = useState<BalanceOf | null>(null);
+  const [claimValue, setClaimValue] = useState<BN | null>(null);
   const [isBusy, setIsBusy] = useState(false);
   const [claimedAddress, setClaimedAddress] = useState<string | undefined | null>(null);
 
@@ -66,11 +65,10 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
     api.query.claims
       .claims<Option<BalanceOf>>(ethereumTxHash)
       .then((claim): void => {
-        const registry = new TypeRegistry();
         const claimOpt = JSON.parse(JSON.stringify(claim));
 
         if (claimOpt) {
-          const claimBalance = registry.createType('BalanceOf', new BN(claimOpt[1]));
+          const claimBalance = new BN(Number(claimOpt[1])?.toString());
 
           setClaimValue(claimBalance);
           setClaimedAddress(claimOpt[0]);

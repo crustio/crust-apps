@@ -15,6 +15,7 @@ interface Props {
 }
 
 function NominatedBy ({ nominators }: Props): React.ReactElement<Props> {
+  console.log('nominators', nominators)
   const { t } = useTranslation();
   return (
     <td className='start all'>

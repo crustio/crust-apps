@@ -52,11 +52,6 @@ function ValidateController ({ accountId, controllerId, defaultController, onErr
       let newError: string | null = null;
       let isFatal = false;
 
-      if (accountIdBonded) {
-        isFatal = true;
-        newError = t('A controller account should not map to another stash. This selected stash controlled by {{accountIdBonded}}', { replace: { accountIdBonded } });
-      }
-
       if (bondedId && (controllerId !== accountId) && stashId) {
         isFatal = true;
         newError = t('A controller account should not map to another stash. This selected controller is a stash, controlled by {{bondedId}}', { replace: { bondedId } });

@@ -6,10 +6,11 @@ import { IndividualExposure, EraIndex, Exposure } from '@polkadot/types/interfac
 
 import BN from 'bn.js';
 import React from 'react';
-import { AddressMini, Expander } from '@polkadot/react-components';
+import { AddressSmall, Expander, Label } from '@polkadot/react-components';
 import { FormatBalance } from '@polkadot/react-query';
 import { BN_ZERO } from '@polkadot/util';
 import { useCall, useApi } from '@polkadot/react-hooks';
+import { useTranslation } from '@polkadot/apps/translate';
 
 interface Props {
   stakeValue?: BN;
@@ -20,6 +21,7 @@ interface Props {
 
 function EffectiveStake ({ activeEra, stakeValue, stashId, validators }: Props): React.ReactElement<Props> {
   const { api } = useApi();
+  const { t } = useTranslation();
 
   const guaranteeTargets: [string, BN, BN][] = [];
 
@@ -34,12 +36,12 @@ function EffectiveStake ({ activeEra, stakeValue, stashId, validators }: Props):
 
     if (multiQuery) {
       for (let index = 0; index < tmpTargets?.length; index++) {
-        let guaranteeTarget:[string, BN, BN] = [tmpTargets[index].who, new BN(0), tmpTargets[index].value];
+        let guaranteeTarget:[string, BN, BN] = [tmpTargets[index].who, new BN('0'), new BN(tmpTargets[index].value?.toString())];
         const exposure = multiQuery[index];
         if (exposure) {
           for (const other of exposure.others) {
             if (other.who.toString() === stashId) {
-              guaranteeTarget[1] = other.value.unwrap();
+              guaranteeTarget[1] = new BN(other.value.toString());
             }
           }
         }
@@ -61,14 +63,17 @@ function EffectiveStake ({ activeEra, stakeValue, stashId, validators }: Props):
             />
           }>
             {guaranteeTargets.map(([who, value, stake]): React.ReactNode =>
-              <AddressMini
-                bonded={value}
-                key={who.toString()}
-                value={who}
-                balance={stake}
-                withBonded
-                withBalance
-              />
+              <> 
+                <AddressSmall value={who} />
+                <Label label={t<string>('total stake')} />
+                <FormatBalance
+                  value={stake}
+                ></FormatBalance>
+                <Label label={t<string>('effective stake')} />
+                <FormatBalance
+                  value={value}
+                ></FormatBalance>
+              </>
             )}
           </Expander>
         </>

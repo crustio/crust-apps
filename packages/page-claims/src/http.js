@@ -2,28 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /* eslint-disable */
-import { base64Decode, base64Encode } from '@polkadot/util-crypto';
-
-export function httpGet(url){
-  return fetch(url).then((response) => {
-    return response.json()
-  }).then((data) => {
-    return {
-      status: "success",
-      result: data
-    };
-  }).catch(function (error) {
-    return {
-      status: "error",
-      result: error
-    }
-  })
-}
-
+import { base64Encode } from '@polkadot/util-crypto';
 const MAX_RETRY = 3;
-const RETRY_INTERVAL = 1000; 
-const USERNAME = 'crust';
-const PASSWD = '162534'
+const RETRY_INTERVAL = 1000;
+const USERNAME = 'crustbridgeadmin';
+const PASSWD = '102938'
 
 function sleep(ms){
   return new Promise((resolve)=>setTimeout(resolve,ms));
@@ -43,7 +26,7 @@ export async function httpPost(url, retry = MAX_RETRY) {
       },
     });
     const resultJson = await res.json();
-  
+
     switch (res.status) {
       case 200:
         res = {

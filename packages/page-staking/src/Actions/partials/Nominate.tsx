@@ -13,38 +13,45 @@ import { useApi, useFavorites } from '@polkadot/react-hooks';
 import { STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
 import BN from 'bn.js';
+import { Guaranteeable } from '@polkadot/react-query';
 
 interface Props {
   className?: string;
   controllerId: string;
-  nominating?: string[];
+  nominating?: any[];
   onChange: (info: NominateInfo) => void;
   stashId: string;
   targets: SortedTargets;
   withSenders?: boolean;
 }
 
+function unique (arr: any[]) {
+  return Array.from(new Set(arr))
+}
+
 function Nominate ({ className = '', controllerId, nominating, onChange, stashId, targets: { validatorIds = [] }, withSenders }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [favorites] = useFavorites(STORE_FAVS_BASE);
-  const [selected, setSelected] = useState<string[]>(nominating || []);
+  const [selected, setSelected] = useState<string[]>([]);
   const [amount, setAmount] = useState<BN | undefined>(new BN(0));
+  const guaranteeable = <span className='label'>{t<string>('guaranteeable')}</span>;
   const [available] = useState<string[]>((): string[] => {
     const shortlist = [
       // ensure that the favorite is included in the list of stashes
       ...favorites.filter((acc) => validatorIds.includes(acc)),
       // make sure the nominee is not in our favorites already
-      ...(nominating || []).filter((acc) => !favorites.includes(acc))
+      ...(nominating || []).map(e => e.who).filter((acc) => !favorites.includes(acc))
     ];
 
-    return shortlist
-      .concat(...(validatorIds.filter((acc) => !shortlist.includes(acc))));
+    return unique(shortlist
+      .concat(...(validatorIds.filter((acc) => !shortlist.includes(acc)))));
+
   });
 
   useEffect((): void => {
     onChange({
-      nominateTx: selected && selected.length && amount
+      nominateTx: selected && selected.length && amount && selected[0]
         ? api.tx.staking.guarantee([selected[0], amount])
         : null
     });
@@ -76,7 +83,7 @@ function Nominate ({ className = '', controllerId, nominating, onChange, stashId
           <InputAddressMulti
             available={available}
             availableLabel={t<string>('candidate accounts')}
-            defaultValue={nominating}
+            // defaultValue={nominating}
             help={t<string>('Filter available candidates based on name, address or short account index.')}
             maxCount={1}
             onChange={setSelected}
@@ -97,6 +104,13 @@ function Nominate ({ className = '', controllerId, nominating, onChange, stashId
           label={t<string>('amount')}
           withMax
           onChange={setAmount}
+          labelExtra={
+            selected[0] &&
+            <Guaranteeable
+              label={guaranteeable}
+              params={selected[0]}
+            />
+          }
         />
       </Modal.Column>
     </div>

@@ -68,7 +68,7 @@ function Validate ({ className = '', controllerId, onChange, stashId, withSender
           <InputNumber
             help={t<string>('The percentage reward (0-100) that should be applied for the validator')}
             isZeroable
-            label={t<string>('reward commission percentage')}
+            label={t<string>('guarantee fee')}
             maxValue={MAX_COMM}
             onChange={_setCommission}
           />
