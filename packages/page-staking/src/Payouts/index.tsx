@@ -95,7 +95,7 @@ function extractStashes (allRewards: Record<string, DeriveStakerReward[]>): Payo
       rewards,
       stashId
     }))
-    // .filter(({ available }) => !available.isZero())
+    .filter(({ available }) => !available.isZero())
     .sort((a, b) => b.available.cmp(a.available));
 }
 
