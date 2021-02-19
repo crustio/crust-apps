@@ -68,7 +68,8 @@ function BalanceUnbond ({ params }: Props): React.ReactElement<Props> | null {
 
   return (
     <>
-      <span className='highlight'>{t<string>('total guarantee')} { formatBalance(totalStaked)}/{t<string>('total stakes')} {formatBalance(totalActive, { withUnit: true })}</span>
+      <span className='highlight' style={{position: "relative", top: '-0.3rem'}}>{t<string>('total guarantee')} { formatBalance(totalStaked)}/{t<string>('total' +
+          ' stakes')} {formatBalance(totalActive, { withUnit: true })}</span>
     </>
   );
 }
