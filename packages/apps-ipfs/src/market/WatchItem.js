@@ -26,7 +26,7 @@ const fileStatusEnum = {
   EXPIRE: 'EXPIRE'
 };
 
-const WatchItem = ({ onSyncStatus, ipfsReady, isSpin, onSelect,doUpdateWatchItem, onToggleBtn, selected, watchItem }) => {
+const WatchItem = ({ ipfsReady, onSelect, doUpdateWatchItem, onToggleBtn, selected, watchItem }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
   const checkBoxCls = classnames({
@@ -115,13 +115,13 @@ const WatchItem = ({ onSyncStatus, ipfsReady, isSpin, onSelect,doUpdateWatchItem
         </CopyButton>
       </div>
     </div>
-    <div className='relative tc pointer  justify-center flex items-center  ph2 pv1 w-10'>
+    <div className='relative tc   justify-center flex items-center  ph2 pv1 w-10'>
       <div className=''>
         {readableSize  || '-'}
       </div>
     </div>
 
-    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-15'>
+    <div className='relative tc  flex justify-center items-center  ph2 pv1 w-15'>
       <div className=''>
         {watchItem.startTime || '-'}
       </div>
@@ -132,19 +132,21 @@ const WatchItem = ({ onSyncStatus, ipfsReady, isSpin, onSelect,doUpdateWatchItem
       </div>
     </div>
     <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-10'>
-      <div className=''>
+      <abbr title={t('tips.tip1')} style={{textDecoration: 'none'}}>
         {watchItem.confirmedReplicas || '-'}
-      </div>
+      </abbr>
     </div>
     <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-15'>
       <div className="text-capitalize" style={{textTransform: 'capitalize'}}>
-        {t(`status.${watchItem.fileStatus}`)}
+        <abbr title={t('tips.tip1')} style={{textDecoration: 'none'}}>
+          {t(`status.${watchItem.fileStatus}`)}
+      </abbr>
       </div>
     </div>
-    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-15'>
+    <div className='relative tc  flex justify-center items-center  ph2 pv1 w-15'>
       <div className=''
-        title='action'>
-        <button className={'watch-item-btn'}
+        title={!ipfsReady && watchItem.fileStatus !== fileStatusEnum.SUCCESS ? t('tips.tip2') : ''}>
+        <button disabled={!ipfsReady && watchItem.fileStatus !== fileStatusEnum.SUCCESS} className={'watch-item-btn'}
           onClick={() => {
             onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem);
           }}>{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</button>
@@ -161,4 +163,4 @@ WatchItem.prototype = {
   onToggleBtn: PropTypes.func.isRequired,
 };
 
-export default connect('doUpdateWatchItem', WatchItem);
+export default connect('doUpdateWatchItem', 'selectIpfsReady', WatchItem);

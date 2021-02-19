@@ -45,5 +45,9 @@
   "clipboard": "Clipboard",
   "fileCidCopied": "File CID Copied",
   "fileSizeCopied": "File Size Copied",
-  "ipfsError": "IPFS not connected"
+  "ipfsError": "IPFS not connected",
+  "tips": {
+    "tip1": "status提示",
+    "tip2": "ipfs 断开提示"
+  }
 }
