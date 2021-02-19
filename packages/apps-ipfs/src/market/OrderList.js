@@ -27,29 +27,14 @@ const itemList = [{
     width: 10,
   },
   {
-    name: 'globalReplicas',
-    width: 10,
-  },
-  {
     name: 'fileStatus',
-    width: 10,
+    width: 15,
   }];
 
-const OrderList = ({ doFindProvs, doUpdateWatchItem, identity, ipfsReady, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
+const OrderList = ({ identity, ipfsReady, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
   const [listSorting, setListSorting] = useState({ by: 'startTime', asc: false });
-  const [spinList, setSpinList] = useState([])
   const [sortedList, setSortedList] = useState(watchList)
-  const { queueAction } = useContext(StatusContext);
 
-  const _onCopy = useCallback(
-    () => {
-    queueAction && queueAction({
-      message: t('ipfsError'),
-      status: 'error'
-    });
-  },
-  [queueAction, t]
-)
   const tableRef = useRef(null);
 
   useEffect(() => {
@@ -57,29 +42,6 @@ const OrderList = ({ doFindProvs, doUpdateWatchItem, identity, ipfsReady, doSele
     setSortedList(_list)
     tableRef.current.forceUpdateGrid();
   }, [watchList, watchList.length, listSorting]);
-
-  const syncStatus = async (fileCid) => {
-    if (!ipfsReady) {
-      _onCopy()
-      return
-    }
-    if (spinList.indexOf(fileCid) > -1) {
-      return;
-    }
-    spinList.push(fileCid)
-    setSpinList(spinList);
-    tableRef.current.forceUpdateGrid();
-    try {
-      const globalReplicas = await doFindProvs(fileCid);
-      doUpdateWatchItem(fileCid, { globalReplicas });
-    } catch (e) {
-
-    }finally {
-      const _idx =  watchList.findIndex((item) => fileCid === item.fileCid);
-      spinList.splice(_idx, 1)
-      setSpinList(spinList)
-    }
-  };
 
   const toggleOne = (fileCid) => {
     const index = selectedCidList.indexOf(fileCid);
@@ -164,7 +126,7 @@ const OrderList = ({ doFindProvs, doUpdateWatchItem, identity, ipfsReady, doSele
             </button>
           </div>
         ))}
-        <div className='ph2 pv1 flex-auto db-l tc w-10 watch-list-header'>{t('actions.action')}</div>
+        <div className='ph2 pv1 flex-auto db-l tc w-15 watch-list-header'>{t('actions.action')}</div>
       </header>
       <WindowScroller>
         {({ height, isScrolling, onChildScroll, scrollTop }) => (
@@ -192,8 +154,6 @@ const OrderList = ({ doFindProvs, doUpdateWatchItem, identity, ipfsReady, doSele
                       onToggleBtn={(type, file) => {
                         onToggleBtn(type, file);
                       }}
-                      onSyncStatus={syncStatus}
-                      isSpin={spinList.indexOf(sortedList[index].fileCid) > -1}
                       selected={selectedCidList.indexOf(sortedList[index].fileCid) > -1}
                       watchItem={sortedList[index]} />;
                   }}
@@ -219,4 +179,4 @@ OrderList.propTypes = {
   doUpdateWatchItem: propTypes.func
 };
 
-export default connect('selectWatchedCidList','doFindProvs', 'selectIpfsReady', 'doRemoveWatchItems', 'selectIdentity', 'doFetchWatchList', 'doSelectedItems', 'selectSelectedCidList', 'doUpdateWatchItem', withTranslation('order')(OrderList));
+export default connect('selectWatchedCidList', 'selectIpfsReady', 'doRemoveWatchItems', 'selectIdentity', 'doFetchWatchList', 'doSelectedItems', 'selectSelectedCidList', 'doUpdateWatchItem', withTranslation('order')(OrderList));
