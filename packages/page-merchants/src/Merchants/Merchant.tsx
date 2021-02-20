@@ -159,14 +159,14 @@ function Account ({ account: { address }, className = '', filter, isFavorite, pr
       <td className='button'>
         {api.api.tx.market?.pledgeExtra && (
           <Button
-            icon='paper-plane'
+            icon='plus'
             label={t<string>('add collateral')}
             onClick={toggleAddCollateral}
           />
         )}
         {api.api.tx.market?.cutPledge && (
           <Button
-            icon='paper-plane'
+            icon='cut'
             label={t<string>('cut collateral')}
             onClick={toggleCutCollateral}
           />

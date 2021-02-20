@@ -1414,5 +1414,15 @@
   "Validator/Candidate rewards": "验证人/候选人奖励",
   "Guarantor rewards": "担保人奖励",
   "total effective stake": "总有效质押量",
-  "total guarantee": "担保总量"
+  "total guarantee": "担保总量",
+  "Merchants": "商户",
+  "My merchants": "我的商户",
+  "nav.merchants": "商户",
+  "reward": "收益",
+  "collateral": "抵押金",
+  "add collateral": "增加抵押金",
+  "cut collateral": "减少抵押金",
+  "Add collateral": "增加抵押金",
+  "Cut collateral": "减少抵押金",
+  "Merchant register": "商户注册"
 }

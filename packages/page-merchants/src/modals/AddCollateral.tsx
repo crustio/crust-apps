@@ -25,7 +25,7 @@ function AddCollateral ({ accountId, onClose }: Props): React.ReactElement<Props
   return (
     <Modal
       className='staking--BondExtra'
-      header= {t<string>('Bond more funds')}
+      header= {t<string>('Add collateral')}
       size='large'
     >
       <Modal.Content>
