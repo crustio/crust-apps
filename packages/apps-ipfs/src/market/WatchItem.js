@@ -2,22 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /* eslint-disable camelcase */
+// @ts-ignore
 import classnames from 'classnames';
 import filesize from 'filesize';
 import PropTypes from 'prop-types';
 import React, { useCallback, useContext, useState } from 'react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 
 import Cid from '@polkadot/apps-ipfs/components/cid/Cid';
 import StrokeCopy from '@polkadot/apps-ipfs/icons/StrokeCopy';
 
-import Icon from '../../../react-components/src/Icon';
 import { useApi, useCall } from '../../../react-hooks/src';
 import Checkbox from '../components/checkbox/Checkbox';
-import StatusContext from '../../../react-components/src/Status/Context';
 import CopyButton from '@polkadot/apps-ipfs/components/copy-button';
+import {Popover} from 'react-tiny-popover';
 
 const fileStatusEnum = {
   PENDING: 'PENDING',
@@ -26,7 +25,7 @@ const fileStatusEnum = {
   EXPIRE: 'EXPIRE'
 };
 
-const WatchItem = ({ ipfsReady, onSelect, doUpdateWatchItem, onToggleBtn, selected, watchItem }) => {
+const WatchItem = ({ ipfsConnected, onSelect, onToggleBtn, selected, watchItem }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
   const checkBoxCls = classnames({
@@ -37,7 +36,7 @@ const WatchItem = ({ ipfsReady, onSelect, doUpdateWatchItem, onToggleBtn, select
   let bestNumber = useCall(isApiReady && api.derive.chain.bestNumber);
   const trash1 = useCall(isApiReady && api.query?.market.transh1, [watchItem.fileCid]);
   const trash2 = useCall(isApiReady && api.query?.market.transh2, [watchItem.fileCid]);
-
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   bestNumber = bestNumber && JSON.parse(JSON.stringify(bestNumber));
   let status = fileStatusEnum.PENDING;
 
@@ -126,27 +125,40 @@ const WatchItem = ({ ipfsReady, onSelect, doUpdateWatchItem, onToggleBtn, select
         {watchItem.startTime || '-'}
       </div>
     </div>
-    <div className='relative tc pointer flex  justify-center items-center  ph2 pv1 w-15'>
+    <div className='relative tc flex  justify-center items-center  ph2 pv1 w-15'>
       <div className=''>
         {watchItem.expireTime || '-'}
       </div>
     </div>
-    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-10'>
-      <abbr title={t('tips.tip1')} style={{textDecoration: 'none'}}>
-        {watchItem.confirmedReplicas || '-'}
-      </abbr>
+    <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
+      {watchItem.confirmedReplicas || '-'}
     </div>
     <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-15'>
-      <div className="text-capitalize" style={{textTransform: 'capitalize'}}>
-        <abbr title={t('tips.tip1')} style={{textDecoration: 'none'}}>
-          {t(`status.${watchItem.fileStatus}`)}
-      </abbr>
-      </div>
+      <Popover
+        containerStyle={{ backgroundColor: '#eee' }}
+        onClickOutside={() => {
+          setIsPopoverOpen(false);
+        }}
+        containerClassName={'popover-container'}
+        isOpen={isPopoverOpen}
+        positions={['top', 'bottom', 'left', 'right']} // preferred positions by priority
+        content={
+          <Trans i18nKey="tips.tip1" t={t}>
+            <div style={{width: 300, padding: 12}}>
+                  * New orders  <br/>
+                  * If your order is "Pending" for a long  IPFS is closed, or try to turn-off your firewall, please refer to <a href="https://wiki.crust.network/en" className={'aqua'} target="_blank">WIKI</a> for
+            </div>
+          </Trans>
+        } >
+              <div onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
+                  <abbr title=''>{t(`status.${watchItem.fileStatus}`)}</abbr>
+              </div>
+          </Popover>
     </div>
     <div className='relative tc  flex justify-center items-center  ph2 pv1 w-15'>
       <div className=''
-        title={!ipfsReady && watchItem.fileStatus !== fileStatusEnum.SUCCESS ? t('tips.tip2') : ''}>
-        <button disabled={!ipfsReady && watchItem.fileStatus !== fileStatusEnum.SUCCESS} className={'watch-item-btn'}
+        title={!ipfsConnected && watchItem.fileStatus !== fileStatusEnum.SUCCESS ? t('tips.tip2') : ''}>
+        <button disabled={!ipfsConnected && watchItem.fileStatus !== fileStatusEnum.SUCCESS} className={'watch-item-btn'}
           onClick={() => {
             onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem);
           }}>{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</button>
@@ -161,6 +173,7 @@ WatchItem.prototype = {
   onSelect: PropTypes.func.isRequired,
   selected: PropTypes.bool,
   onToggleBtn: PropTypes.func.isRequired,
+  ipfsConnected: PropTypes.bool.isRequired
 };
 
-export default connect('doUpdateWatchItem', 'selectIpfsReady', WatchItem);
+export default connect('selectIpfsConnected', WatchItem);
