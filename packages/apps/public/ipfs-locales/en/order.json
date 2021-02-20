@@ -45,5 +45,12 @@
   "clipboard": "Clipboard",
   "fileCidCopied": "File CID Copied",
   "fileSizeCopied": "File Size Copied",
-  "ipfsError": "IPFS not connected"
+  "ipfsError": "IPFS not connected",
+  "tips": {
+    "wikiAddress": "https://wiki.crust.network/en",
+    "tip1": "<0> * New orders will generally update the status within half an hour. Please wait for a while.<1/>* If your order is \"Pending\" for a long time, you can check whether the local IPFS is closed, or try to turn-off your firewall, please refer to <3>WIKI</3> for detailed solutions.</0>",
+    "tip2": "Please enable IPFS to use this function."
+  },
+  "durationLabel": "Valid for",
+  "durationDesc": "In the preview network, this order is valid for around 15 days."
 }

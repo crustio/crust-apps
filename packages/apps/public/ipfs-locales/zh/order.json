@@ -42,5 +42,12 @@
   "fileCidCopied": "文件CID复制成功",
   "fileSizeCopied": "文件大小复制成功",
   "clipboard": "剪切板",
-  "ipfsError": "IPFS未连接"
+  "ipfsError": "IPFS未连接",
+  "tips": {
+    "wikiAddress": "https://wiki.crust.network/zh",
+    "tip1": "<0> * 新订单一般会在半小时内更新状态，请耐心等待；<1/> * 如果订单状态长时间为“等待”，您可以检查本地IPFS是否正常运行，或者尝试关闭本地防火墙，详情参考 <3>WIKI</3></0>",
+    "tip2": "请启动本地的IPFS来使用该功能"
+  },
+  "durationLabel": "订单有效期",
+  "durationDesc": "在预览网中，订单有效期约为15天"
 }
