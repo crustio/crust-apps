@@ -40,7 +40,7 @@
     "PENDING": "pending",
     "SUCCESS": "success",
     "FAILED": "failed",
-    "EXPIRE": "expire"
+    "EXPIRE": "expired"
   },
   "clipboard": "Clipboard",
   "fileCidCopied": "File CID Copied",

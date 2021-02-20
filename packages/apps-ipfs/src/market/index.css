@@ -31,12 +31,6 @@
   background-color: #ff8812;
   color: #fff;
 }
-.watch-item-btn:disabled,
-.watch-item-btn[disabled]{
-  background-color: #d9dbe2;
-  cursor: not-allowed;
-  color: #eee;
-}
 button:focus {outline:0!important;}
 .add-watch-list-wrapper {
   padding-left: 10px;
@@ -127,4 +121,3 @@ button:focus {outline:0!important;}
 .w-20 {
   width: 20%;
 }
-

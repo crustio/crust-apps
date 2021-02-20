@@ -37,6 +37,7 @@ const WatchItem = ({ ipfsConnected, onSelect, onToggleBtn, selected, watchItem }
   const trash1 = useCall(isApiReady && api.query?.market.transh1, [watchItem.fileCid]);
   const trash2 = useCall(isApiReady && api.query?.market.transh2, [watchItem.fileCid]);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
+  const [isTipsOpen, setDisablePopover] = useState(false)
   bestNumber = bestNumber && JSON.parse(JSON.stringify(bestNumber));
   let status = fileStatusEnum.PENDING;
 
@@ -143,6 +144,7 @@ const WatchItem = ({ ipfsConnected, onSelect, onToggleBtn, selected, watchItem }
         isOpen={isPopoverOpen}
         positions={['top', 'bottom', 'left', 'right']} // preferred positions by priority
         content={
+          // TODO: need real wiki address
           <Trans i18nKey="tips.tip1" t={t}>
             <div style={{width: 300, padding: 12}}>
                   * New orders  <br/>
@@ -151,18 +153,35 @@ const WatchItem = ({ ipfsConnected, onSelect, onToggleBtn, selected, watchItem }
           </Trans>
         } >
               <div onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
-                  <abbr title=''>{t(`status.${watchItem.fileStatus}`)}</abbr>
+                  <abbr title='' style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</abbr>
               </div>
           </Popover>
     </div>
     <div className='relative tc  flex justify-center items-center  ph2 pv1 w-15'>
-      <div className=''
-        title={!ipfsConnected && watchItem.fileStatus !== fileStatusEnum.SUCCESS ? t('tips.tip2') : ''}>
-        <button disabled={!ipfsConnected && watchItem.fileStatus !== fileStatusEnum.SUCCESS} className={'watch-item-btn'}
-          onClick={() => {
-            onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem);
-          }}>{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</button>
-      </div>
+      {
+        !ipfsConnected && watchItem.fileStatus !== fileStatusEnum.SUCCESS ? <Popover
+          containerStyle={{ backgroundColor: '#eee' }}
+          onClickOutside={() => {
+            setDisablePopover(false);
+          }}
+          containerClassName={'popover-container'}
+          isOpen={isTipsOpen}
+          positions={['top', 'bottom', 'left', 'right']} // preferred positions by priority
+          content={
+            <div style={{padding: 12}}>{t('tips.tip2')} </div>
+          } >
+        <div onClick={() => {
+          setDisablePopover(!isTipsOpen)
+        }}>
+          <button className={'watch-item-btn'}
+                  style={{  backgroundColor: "#d9dbe2", cursor: "not-allowed", color: "#eef"}}
+                  >{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</button>
+        </div>
+      </Popover> : <button className={'watch-item-btn'}
+                           onClick={() => {
+                             onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem);
+                           }}>{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</button>
+      }
     </div>
   </div>;
 };
