@@ -22,7 +22,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
   const [tip, setTip] = useState(0);
   const [cidNotValid, setCidNotValid] = useState(false);
   const { api, isApiReady } = useApi();
-  const filePrice = useCall(isApiReady && api.query.market.filePrice);
+  const filePrice = useCall(isApiReady && api.query.market.filePrice) || new BN(0);
 
   useEffect(() => {
     // 0.002cru + storagePrice + tip

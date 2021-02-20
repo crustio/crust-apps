@@ -67,7 +67,7 @@ const WatchItem = ({ onSyncStatus, ipfsReady, isSpin, onSelect,doUpdateWatchItem
         status = fileStatusEnum.PENDING;
       }
 
-      if (expired_on && reported_replica_count > 0) {
+      if (expired_on && expired_on > bestNumber && reported_replica_count > 0) {
         // success
         status = fileStatusEnum.SUCCESS;
       }
@@ -136,22 +136,12 @@ const WatchItem = ({ onSyncStatus, ipfsReady, isSpin, onSelect,doUpdateWatchItem
         {watchItem.confirmedReplicas || '-'}
       </div>
     </div>
-    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-10'>
-      <div className=''>
-        {watchItem.globalReplicas  || '-'}
-        <Icon className={`fill-teal-muted refresh-icon ${isSpin ? 'spin' : ''}`}
-          icon='sync'
-          onClick={() => {
-            onSyncStatus(watchItem.fileCid)
-          }} />
-      </div>
-    </div>
-    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-10'>
+    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-15'>
       <div className="text-capitalize" style={{textTransform: 'capitalize'}}>
         {t(`status.${watchItem.fileStatus}`)}
       </div>
     </div>
-    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-10'>
+    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-15'>
       <div className=''
         title='action'>
         <button className={'watch-item-btn'}
@@ -169,8 +159,6 @@ WatchItem.prototype = {
   onSelect: PropTypes.func.isRequired,
   selected: PropTypes.bool,
   onToggleBtn: PropTypes.func.isRequired,
-  isSpin: PropTypes.bool.isRequired,
-  onSyncStatus: PropTypes.func
 };
 
-export default connect('doFindProvs', 'doUpdateWatchItem', WatchItem);
+export default connect('doUpdateWatchItem', WatchItem);

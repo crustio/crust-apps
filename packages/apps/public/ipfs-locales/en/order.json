@@ -9,7 +9,7 @@
     "startTime": "Start Block Height",
     "expireTime": "Expired Block Height",
     "globalReplicas": "Global Replicas",
-    "confirmedReplicas": "Crust Replicas",
+    "confirmedReplicas": "Replicas",
     "fileStatus": "Status",
     "action": "Action",
     "renew": "Renew",

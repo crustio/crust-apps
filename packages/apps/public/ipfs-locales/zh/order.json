@@ -8,7 +8,7 @@
     "fileSize": "文件大小",
     "startTime": "开始块高",
     "expireTime": "到期块高",
-    "confirmedReplicas": "Crust副本数",
+    "confirmedReplicas": "副本数",
     "globalReplicas": "全网副本数",
     "fileStatus": "状态",
     "action": "操作",
