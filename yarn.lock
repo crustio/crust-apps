@@ -19856,6 +19856,7 @@ fsevents@~2.1.2:
     react: ^17.0.1
     react-dom: ^17.0.1
     react-is: ^17.0.1
+    react-tiny-popover: ^6.0.4
     source-map-explorer: ^2.5.1
     styled-components: ^5.2.1
     stylelint: ^13.8.0
@@ -21122,6 +21123,16 @@ fsevents@~2.1.2:
   peerDependencies:
     react: ^16.3.0 || ^17.0.0
   checksum: 5896f7c126b9e7147e3ea6cc967dab8e3a2f6c395bd5327d16483adb91177866eec47770500a92fece866ea551f395484f6e6e078796002293bc1b53b7e65b26
+  languageName: node
+  linkType: hard
+
+"react-tiny-popover@npm:^6.0.4":
+  version: 6.0.4
+  resolution: "react-tiny-popover@npm:6.0.4"
+  peerDependencies:
+    react: ^16.0.0
+    react-dom: ^16.0.0
+  checksum: 0ac18f8e7846d3306b7f4e09e0c85645112ed84932825860b0400ace77f09b82df58819edfeba3d7ff7c14f663ec1fa107f818421cbb8418b929d28c4eb8aa8b
   languageName: node
   linkType: hard
 

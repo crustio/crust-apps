@@ -30,14 +30,20 @@ const IsNotConnected = ({ apiUrl, connected, doUpdateIpfsApiAddress, ipfsApiAddr
 
   return (
     <Box className='pv3 ph4 lh-copy charcoal' style={{background: '#fff'}}>
-      <div className='flex flex-wrap items-center'>
+      <div className='items-center' style={{marginBottom: '10'}}>
         <div className='fw4 charcoal ma0 f3'
-          style={{ textTransform: 'none', padding: '10px', color: '#ff8812', fontSize: 16, lineHeight: '28px' }}>{t('app:status.couldNotConnect')} <br/>{t('app:status.couldNotConnect1')}</div>
+          style={{ textTransform: 'none', color: '#ff8812', fontSize: 20, lineHeight: '48px' }}>{t('app:status.couldNotConnect')}      </div>
       </div>
+      <div style={{ textTransform: 'none', padding: '2 0', fontSize: 14, lineHeight: '28px' }}>
+          {t('app:status.couldNotConnect1')}
+        </div>
+      <div style={{ textTransform: 'none', padding: '2 0', fontSize: 14, lineHeight: '28px' }}>
+          {t('app:status.couldNotConnect2')}
+        </div>
       <br/>
       <br/>
 
-      <div style={{paddingLeft: 40}}>
+      <div style={{paddingLeft: 10}}>
         <div >
         &gt;&gt; {t('app:status.desktop')} <a className={'link'}
                                               href={i18n.language === 'zh' ? ipfsDesktopMacZh : ipfsDesktopMac }
