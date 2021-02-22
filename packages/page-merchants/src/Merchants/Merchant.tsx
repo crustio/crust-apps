@@ -154,8 +154,6 @@ function Account ({ account: { address }, className = '', filter, isFavorite, pr
           withExtended={false}
         />
       </td>
-      <td></td>
-      <td></td>
       <td className='button'>
         {api.api.tx.market?.pledgeExtra && (
           <Button

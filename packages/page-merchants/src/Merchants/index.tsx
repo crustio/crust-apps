@@ -59,11 +59,9 @@ function Overview ({ className = '' }: Props): React.ReactElement<Props> {
 
   const headerRef = useRef([
     [t('accounts'), 'start', 3],
-    [t('reward'), 'media--1500'],
+    [t('reward'), 'start'],
     [t('collateral'), 'start'],
     [t('balances'), 'expand'],
-    [],
-    [],
     [],
     [],
     [undefined, 'media--1400']
