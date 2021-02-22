@@ -10,7 +10,7 @@ import BN from 'bn.js';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 
-import { AddressInfo, AddressSmall, Badge, Button, Icon, IdentityIcon, LinkExternal } from '@polkadot/react-components';
+import { AddressInfo, AddressSmall, Badge, Button, Icon, IdentityIcon } from '@polkadot/react-components';
 import { useAccountInfo, useApi, useCall, useToggle } from '@polkadot/react-hooks';
 import { formatBalance, formatNumber } from '@polkadot/util';
 import { useTranslation } from '@polkadot/apps/translate';
@@ -47,7 +47,7 @@ const transformRecovery = {
   transform: (opt: Option<RecoveryConfig>) => opt.unwrapOr(null)
 };
 
-function Account ({ account: { address }, className = '', filter, isFavorite, proxy, setBalance, toggleFavorite }: Props): React.ReactElement<Props> | null {
+function Account ({ account: { address }, className = '', filter, isFavorite, setBalance, toggleFavorite }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const api = useApi();
   const balancesAll = useCall<DeriveBalancesAll>(api.api.derive.balances.all, [address]);
@@ -169,15 +169,6 @@ function Account ({ account: { address }, className = '', filter, isFavorite, pr
             onClick={toggleCutCollateral}
           />
         )}
-      </td>
-      <td className='links media--1400'></td>
-      <td className='links media--1400'>
-        <LinkExternal
-          className='ui--AddressCard-exporer-link'
-          data={address}
-          isLogo
-          type='address'
-        />
       </td>
     </tr>
   );

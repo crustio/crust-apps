@@ -62,8 +62,6 @@ function Overview ({ className = '' }: Props): React.ReactElement<Props> {
     [t('reward'), 'start'],
     [t('collateral'), 'start'],
     [t('balances'), 'expand'],
-    [],
-    [],
     [undefined, 'media--1400']
   ]);
 
@@ -149,11 +147,8 @@ function Overview ({ className = '' }: Props): React.ReactElement<Props> {
     <tr>
       <td colSpan={3}/>
       <td className='media--1400'/>
-      <td colSpan={2}/>
       <td className='media--1500'/>
       <td className='number' />
-      <td/>
-      <td/>
       <td className='media--1400'/>
     </tr>
   ), [balanceTotal]);
