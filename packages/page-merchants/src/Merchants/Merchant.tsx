@@ -53,7 +53,7 @@ function Account ({ account: { address }, className = '', filter, isFavorite, se
   const balancesAll = useCall<DeriveBalancesAll>(api.api.derive.balances.all, [address]);
   const recoveryInfo = useCall<RecoveryConfig | null>(api.api.query.recovery?.recoverable, [address], transformRecovery);
   const merchantLedger = useCall<any>(api.api.query.market.merchantLedgers, [address]);
-  const pledge = merchantLedger && JSON.parse(JSON.stringify(merchantLedger))?.pledge;
+  const collateral = merchantLedger && JSON.parse(JSON.stringify(merchantLedger))?.collateral;
   const reward = merchantLedger && JSON.parse(JSON.stringify(merchantLedger))?.reward;
   const { name: accName, tags } = useAccountInfo(address);
   const [isAddCollateralOpen, toggleAddCollateral] = useToggle();
@@ -144,7 +144,7 @@ function Account ({ account: { address }, className = '', filter, isFavorite, se
         {formatBalance(reward)}
       </td>
       <td className='all'>
-        {formatBalance(pledge)}
+        {formatBalance(collateral)}
       </td>
       <td className='number'>
         <AddressInfo
