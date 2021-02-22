@@ -75,7 +75,7 @@ function Overview ({ className = '' }: Props): React.ReactElement<Props> {
         api.combineLatest<any[]>(fns, ([ledgers]): void => {
             const tmp: SortedAccount[] = [];
             if (Array.isArray(ledgers)) {
-              ledgers.forEach(([{ args: [accountId]}]) => {
+              ledgers.forEach(([{ args: [accountId] }]) => {
                 allMerchants.push(accountId.toString());
               });
               for (const myAccount of sortedAccountsWithDelegation) {
