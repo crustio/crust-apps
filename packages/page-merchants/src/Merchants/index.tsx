@@ -39,7 +39,7 @@ function Overview ({ className = '' }: Props): React.ReactElement<Props> {
   const { api } = useApi();
   const { allAccounts, hasAccounts } = useAccounts();
   const [favorites, toggleFavorite] = useFavorites(STORE_FAVS);
-  const [{ balanceTotal }, setBalances] = useState<Balances>({ accounts: {} });
+  const [, setBalances] = useState<Balances>({ accounts: {} });
   const [filterOn, setFilter] = useState<string>('');
   const [{ sortedAccounts, sortedAddresses }, setSorted] = useState<Sorted>({ sortedAccounts: [], sortedAddresses: [] });
   const [sortedAccountsWithDelegation, setSortedAccountsWithDelegation] = useState<SortedAccount[] | undefined>();
@@ -143,16 +143,6 @@ function Overview ({ className = '' }: Props): React.ReactElement<Props> {
     []
   );
 
-  const footer = useMemo(() => (
-    <tr>
-      <td colSpan={3}/>
-      <td className='media--1400'/>
-      <td className='media--1500'/>
-      <td className='number' />
-      <td className='media--1400'/>
-    </tr>
-  ), [balanceTotal]);
-
   const filter = useMemo(() => (
     <div className='filter--tags'>
       <Input
@@ -183,7 +173,6 @@ function Overview ({ className = '' }: Props): React.ReactElement<Props> {
       <Table
         empty={(!hasAccounts || (!isLoading && sortedAccountsWithDelegation)) && t<string>("You don't have merchant accounts. Some features are currently hidden and will only become available once you have merchant accounts.")}
         filter={filter}
-        footer={footer}
         header={headerRef.current}
       >
         {!isLoading && ownMerchants?.map(({ account, delegation, isFavorite }, index): React.ReactNode => (
