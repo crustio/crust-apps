@@ -80,7 +80,7 @@ function Overview ({ className = '' }: Props): React.ReactElement<Props> {
             if (Array.isArray(ledgers) && ledgers.length && ledgers.length === query.length) {
                 for (const key in ledgers) {
                     const ledger = JSON.parse(JSON.stringify(ledgers[key]));
-                    if (ledger?.collateral == 0) {
+                    if (ledger?.collateral != 0) {
                         tmp.push(sortedAccountsWithDelegation[key]);
                     } 
                 }

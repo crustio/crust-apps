@@ -35,7 +35,7 @@ export default {
   LookupSource: 'AccountId',
   MerchantLedger: {
     reward: 'Balance',
-    pledge: 'Balance'
+    collateral: 'Balance'
   },
   MerkleRoot: 'Vec<u8>',
   ReportSlot: 'u64',
