@@ -68,24 +68,23 @@ function Overview ({ className = '' }: Props): React.ReactElement<Props> {
   useEffect(() => {
       let unsub: (() => void) | undefined;
       if (sortedAccountsWithDelegation) {
-        const query: string[] = [];
-        for (const v of sortedAccountsWithDelegation) {
-            query.push(v.account.address.toString());
-        }
         const fns: any[] = [
-            [api.query.market.merchantLedgers.multi as any, query]
+            [api.query.market.merchantLedgers.entries],
         ];
+        const allMerchants:string[] = [];
         api.combineLatest<any[]>(fns, ([ledgers]): void => {
             const tmp: SortedAccount[] = [];
-            if (Array.isArray(ledgers) && ledgers.length && ledgers.length === query.length) {
-                for (const key in ledgers) {
-                    const ledger = JSON.parse(JSON.stringify(ledgers[key]));
-                    if (ledger?.collateral != 0) {
-                        tmp.push(sortedAccountsWithDelegation[key]);
-                    } 
-                }
-                setOwnMerchants(tmp);
-            }
+            if (Array.isArray(ledgers)) {
+              ledgers.forEach(([{ args: [accountId]}]) => {
+                allMerchants.push(accountId.toString());
+              });
+              for (const myAccount of sortedAccountsWithDelegation) {
+                  if (allMerchants.includes(myAccount.account.address.toString())) {
+                      tmp.push(myAccount);
+                  }
+              }
+              setOwnMerchants(tmp);
+            } 
         }).then((_unsub): void => {
             unsub = _unsub;
         }).catch(console.error);
