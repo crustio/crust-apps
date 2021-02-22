@@ -6,7 +6,6 @@ import React, { useState } from 'react';
 
 import { InputAddress, InputBalance, Modal, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
-import { BalanceFree } from '@polkadot/react-query';
 import { BN_ZERO } from '@polkadot/util';
 
 import { useTranslation } from '@polkadot/apps/translate';
@@ -44,13 +43,7 @@ function CutCollateral ({ accountId, onClose }: Props): React.ReactElement<Props
               <InputBalance
                 autoFocus
                 isError={!maxAdditional || maxAdditional.eqn(0)}
-                label={t<string>('cut collateral')}
-                labelExtra={
-                  <BalanceFree
-                    label={<span className='label'>{t<string>('balance')}</span>}
-                    params={accountId}
-                  />
-                }
+                label={t<string>('cut collateral')} 
                 onChange={setMaxAdditional}
               />
             </Modal.Column>
