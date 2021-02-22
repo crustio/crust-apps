@@ -114,12 +114,6 @@ function Register ({ className = '', onClose, senderId: propSenderId }: Props): 
                       label={t<string>('amount')}
                       onChange={setAmount}
                     />
-                    <InputBalance
-                      defaultValue={api.consts.balances.existentialDeposit}
-                      help={t<string>('The minimum amount that an account should have to be deemed active')}
-                      isDisabled
-                      label={t<string>('existential deposit')}
-                    />
                   </>
                 )
               }

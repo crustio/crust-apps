@@ -37,18 +37,14 @@ function CutCollateral ({ accountId, onClose }: Props): React.ReactElement<Props
               label={t<string>('account')}
             />
           </Modal.Column>
-          <Modal.Column>
-            <p>{t<string>('Since this transaction deals with funding, the stash account will be used.')}</p>
-          </Modal.Column>
         </Modal.Columns>
         {(
           <Modal.Columns>
             <Modal.Column>
               <InputBalance
                 autoFocus
-                help={t<string>('Amount to add to the currently bonded funds. This is adjusted using the available funds on the account.')}
                 isError={!maxAdditional || maxAdditional.eqn(0)}
-                label={t<string>('additional bonded funds')}
+                label={t<string>('cut collateral')}
                 labelExtra={
                   <BalanceFree
                     label={<span className='label'>{t<string>('balance')}</span>}
@@ -57,9 +53,6 @@ function CutCollateral ({ accountId, onClose }: Props): React.ReactElement<Props
                 }
                 onChange={setMaxAdditional}
               />
-            </Modal.Column>
-            <Modal.Column>
-              <p>{t<string>('The amount placed at-stake should allow some free funds for future transactions.')}</p>
             </Modal.Column>
           </Modal.Columns>
         )}
@@ -72,7 +65,7 @@ function CutCollateral ({ accountId, onClose }: Props): React.ReactElement<Props
           label={t<string>('Cut collateral')}
           onStart={onClose}
           params={[maxAdditional]}
-          tx={api.tx.market.cutPledge}
+          tx={api.tx.market.cutCollateral}
         />
       </Modal.Actions>
     </Modal>

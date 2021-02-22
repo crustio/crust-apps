@@ -6,11 +6,11 @@ import { IndividualExposure, EraIndex, Exposure } from '@polkadot/types/interfac
 
 import BN from 'bn.js';
 import React from 'react';
-import { AddressSmall, Expander, Label } from '@polkadot/react-components';
+import { Expander } from '@polkadot/react-components';
 import { FormatBalance } from '@polkadot/react-query';
 import { BN_ZERO } from '@polkadot/util';
 import { useCall, useApi } from '@polkadot/react-hooks';
-import { useTranslation } from '@polkadot/apps/translate';
+import AddressMiniForEffectiveStake from './AddressMiniForEffectiveStake';
 
 interface Props {
   stakeValue?: BN;
@@ -21,7 +21,6 @@ interface Props {
 
 function EffectiveStake ({ activeEra, stakeValue, stashId, validators }: Props): React.ReactElement<Props> {
   const { api } = useApi();
-  const { t } = useTranslation();
 
   const guaranteeTargets: [string, BN, BN][] = [];
 
@@ -48,7 +47,7 @@ function EffectiveStake ({ activeEra, stakeValue, stashId, validators }: Props):
         guaranteeTargets.push(guaranteeTarget);
       }
     }
-    stakeValue = guaranteeTargets.reduce((total: BN, [who, value]) => { return total.add(new BN(Number(value).toString()))}, BN_ZERO);
+    stakeValue = guaranteeTargets.reduce((total: BN, [, value]) => { return total.add(new BN(Number(value).toString()))}, BN_ZERO);
   }
 
 
@@ -62,18 +61,8 @@ function EffectiveStake ({ activeEra, stakeValue, stashId, validators }: Props):
               value={stakeValue}
             />
           }>
-            {guaranteeTargets.map(([who, value, stake]): React.ReactNode =>
-              <> 
-                <AddressSmall value={who} />
-                <Label label={t<string>('total stake')} />
-                <FormatBalance
-                  value={stake}
-                ></FormatBalance>
-                <Label label={t<string>('effective stake')} />
-                <FormatBalance
-                  value={value}
-                ></FormatBalance>
-              </>
+            {guaranteeTargets.map(([who, effective, total]): React.ReactNode =>               
+              <AddressMiniForEffectiveStake value={who} totalStake={total} effectiveStake={effective}/>
             )}
           </Expander>
         </>

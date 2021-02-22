@@ -1419,10 +1419,10 @@
   "My merchants": "我的商户",
   "nav.merchants": "商户",
   "reward": "收益",
-  "collateral": "抵押金",
-  "add collateral": "增加抵押金",
-  "cut collateral": "减少抵押金",
-  "Add collateral": "增加抵押金",
-  "Cut collateral": "减少抵押金",
+  "collateral": "保证金",
+  "add collateral": "增加保证金",
+  "cut collateral": "减少保证金",
+  "Add collateral": "增加保证金",
+  "Cut collateral": "减少保证金",
   "Merchant register": "商户注册"
 }
