@@ -155,14 +155,14 @@ function Account ({ account: { address }, className = '', filter, isFavorite, se
         />
       </td>
       <td className='button'>
-        {api.api.tx.market?.pledgeExtra && (
+        {api.api.tx.market?.addCollateral && (
           <Button
             icon='plus'
             label={t<string>('add collateral')}
             onClick={toggleAddCollateral}
           />
         )}
-        {api.api.tx.market?.cutPledge && (
+        {api.api.tx.market?.cutCollateral && (
           <Button
             icon='cut'
             label={t<string>('cut collateral')}
