@@ -22,7 +22,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
   const [tip, setTip] = useState(0);
   const [cidNotValid, setCidNotValid] = useState(false);
   const { api, isApiReady } = useApi();
-  const filePrice = useCall(isApiReady && api.query.market.filePrice);
+  const filePrice = useCall(isApiReady && api.query.market.filePrice) || new BN(0);
 
   useEffect(() => {
     // 0.002cru + storagePrice + tip
@@ -106,7 +106,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
               autoFocus
               defaultValue={tip}
               help={t('tipDesc')}
-              label={t('tip')}
+              label={t('tipTitle')}
               onChange={setTip}
               onlyCru
             />
@@ -120,7 +120,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
             <Input
               help={t('priceDesc')}
               isDisabled
-              label={t('File Price')}
+              label={t('File price')}
               maxLength={32}
               onChange={setPrice}
               placeholder={t('File price')}
@@ -129,6 +129,20 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
           </Modal.Column>
           <Modal.Column>
             <p>{t('priceDesc')}</p>
+
+          </Modal.Column>
+        </Modal.Columns>
+        <Modal.Columns>
+          <Modal.Column>
+            <Input
+              help={t('durationDesc')}
+              isDisabled
+              label={t('durationLabel')}
+              value={15}
+            />
+          </Modal.Column>
+          <Modal.Column>
+            <p>{t('durationDesc')}</p>
 
           </Modal.Column>
         </Modal.Columns>

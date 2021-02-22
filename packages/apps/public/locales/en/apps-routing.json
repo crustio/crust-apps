@@ -1,4 +1,7 @@
 {
+  "explore": "Explore",
+  "files": "Files",
+  "market": "Storage Market",
   "nav.accounts": "Accounts",
   "nav.addresses": "Address book",
   "nav.bounties": "Bounties",
@@ -22,5 +25,8 @@
   "nav.sudo": "Sudo",
   "nav.tech-comm": "Tech. comm.",
   "nav.transfer": "Transfer",
-  "nav.treasury": "Treasury"
+  "nav.treasury": "Treasury",
+  "peers": "Peers",
+  "settings": "IPFS Settings",
+  "status": "Status"
 }
