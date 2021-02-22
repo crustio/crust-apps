@@ -17,6 +17,7 @@ import { useApi, useCall } from '../../../react-hooks/src';
 import Checkbox from '../components/checkbox/Checkbox';
 import CopyButton from '@polkadot/apps-ipfs/components/copy-button';
 import {Popover} from 'react-tiny-popover';
+import { Icon } from '../../../react-components/src';
 
 const fileStatusEnum = {
   PENDING: 'PENDING',
@@ -24,18 +25,28 @@ const fileStatusEnum = {
   FAILED: 'FAILED',
   EXPIRE: 'EXPIRE'
 };
-console.log(123);
-const Comment = ({ isEdit, comment }) => {
-  return <div>
+const Comment = ({ isEdit, comment, startEdit, confirmEdit }) => {
+  const [value, setValue] = useState(comment)
+  return <div style={{width: "100%", overflow: 'hidden'}}>
     {isEdit ?
-      <input type="text" value={comment} onChange={(e) => {
-        console.log(e.target.value);
-        comment = e.target.value;
-      }}/> :
-      <div>{comment}</div>}
+      <div style={{textAlign:'left', display:'flex', justifyContent: 'left', alignItems: 'center', overflow: 'hidden'}}>
+        <Icon icon={'edit'}/>
+        &nbsp;
+        <input style={{display: 'inline-block', width: '80%'}} className={'no-border'} autoFocus type="text" value={value} onBlur={() => {
+        confirmEdit(value)
+      }} onChange={(e) => {
+        setValue(e.target.value)
+      }}/></div> :
+      <div style={{textAlign:'left', display:'flex', justifyContent: 'left', overflow: 'hidden', alignItems: 'center'}} className={'pointer'} onClick={() => {
+        startEdit()
+      }}>
+        <Icon icon={'edit'} className={value ? '' : 'grayColor'}/>
+        &nbsp;
+        <span>{value || '请添加备注'}</span>
+      </div>}
   </div>
 }
-const WatchItem = ({ ipfsConnected,isEdit, onSelect,doUpdateWatchItem, onToggleBtn, selected, watchItem }) => {
+const WatchItem = ({ ipfsConnected, isEdit, onSelect, startEdit, confirmEdit, doUpdateWatchItem, onToggleBtn, selected, watchItem }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
   const checkBoxCls = classnames({
@@ -132,9 +143,7 @@ const WatchItem = ({ ipfsConnected,isEdit, onSelect,doUpdateWatchItem, onToggleB
     </div>
 
     <div className='relative tc  flex justify-center items-center  ph2 pv1 w-15'>
-      <div className=''>
-        <Comment isEdit={isEdit} comment={watchItem.comment}/>
-      </div>
+      <Comment isEdit={isEdit} startEdit={startEdit} confirmEdit={confirmEdit} comment={watchItem.comment}/>
     </div>
     <div className='relative tc flex  justify-center items-center  ph2 pv1 w-15'>
       <div className=''>
@@ -202,7 +211,9 @@ WatchItem.prototype = {
     selected: PropTypes.bool,
     onToggleBtn: PropTypes.func.isRequired,
     ipfsConnected: PropTypes.bool.isRequired,
-    isEdit: PropTypes.bool
+    isEdit: PropTypes.bool,
+    startEdit: PropTypes.func.isRequired,
+    confirmEdit: PropTypes.func.confirmEdit,
   };
 
 export default connect('doUpdateWatchItem', 'selectIpfsConnected', WatchItem);

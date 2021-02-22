@@ -62,9 +62,6 @@ const bundle = { name: 'orders',
     const watchList = store.selectWatchList();
     console.log(watchList);
     const _idx = watchList.findIndex((item) => fileCid === item.fileCid);
-    console.log(_idx);
-    console.log(fileCid);
-
     watchList[_idx] = { ...watchList[_idx], ...info };
     dispatch({ type: ACTIONS.FETCH, payload: watchList });
   },

@@ -32,18 +32,17 @@ const itemList = [{
     width: 15,
   }];
 
-const OrderList = ({ identity, ipfsReady, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
+const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
   const [listSorting, setListSorting] = useState({ by: 'startTime', asc: false });
   const [sortedList, setSortedList] = useState(watchList)
   const [editItem, setEditItem] = useState(undefined)
 
   const tableRef = useRef(null);
-
-  useEffect(() => {
+  useEffect (() => {
     const _list = _.orderBy(watchList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc']);
     setSortedList(_list)
     tableRef.current.forceUpdateGrid();
-  }, [watchList, watchList.length, listSorting]);
+  }, [JSON.stringify(watchList), listSorting]);
 
   const toggleOne = (fileCid) => {
     const index = selectedCidList.indexOf(fileCid);
@@ -160,6 +159,14 @@ const OrderList = ({ identity, ipfsReady, doSelectedItems, onToggleBtn, selected
 
                       }}
                       isEdit={editItem === sortedList[index].fileCid}
+                      startEdit={() => {
+                        setEditItem(sortedList[index].fileCid)
+                      }}
+                      confirmEdit={(comment) => {
+                        //
+                        setEditItem(undefined)
+                        doUpdateWatchItem(sortedList[index].fileCid, {...sortedList[index], comment})
+                      }}
                       selected={selectedCidList.indexOf(sortedList[index].fileCid) > -1}
                       watchItem={sortedList[index]} />;
                   }}

@@ -121,3 +121,8 @@ button:focus {outline:0!important;}
 .w-20 {
   width: 20%;
 }
+.no-border {
+  border: 0;
+  outline: none;
+  background-color: rgba(0, 0, 0, 0);
+}
