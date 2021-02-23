@@ -99,6 +99,6 @@
     "window-or-global": "^1.0.1"
   },
   "dependencies": {
-    "react-tiny-popover": "^6.0.4"
+    "reactjs-popup": "^2.0.4"
   }
 }

@@ -16,8 +16,8 @@ import StrokeCopy from '@polkadot/apps-ipfs/icons/StrokeCopy';
 import { useApi, useCall } from '../../../react-hooks/src';
 import Checkbox from '../components/checkbox/Checkbox';
 import CopyButton from '@polkadot/apps-ipfs/components/copy-button';
-import {Popover} from 'react-tiny-popover';
-import { Icon } from '../../../react-components/src';
+
+import Popup from 'reactjs-popup';
 
 const fileStatusEnum = {
   PENDING: 'PENDING',
@@ -52,14 +52,11 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
   const checkBoxCls = classnames({
     'o-1': selected
   }, ['pl2 w2']);
-  console.log(123);
   const fileStatus = useCall(isApiReady && api.query?.market && api.query?.market.files, [watchItem.fileCid]);
 
   let bestNumber = useCall(isApiReady && api.derive.chain.bestNumber);
   const trash1 = useCall(isApiReady && api.query?.market.transh1, [watchItem.fileCid]);
   const trash2 = useCall(isApiReady && api.query?.market.transh2, [watchItem.fileCid]);
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
-  const [isTipsOpen, setDisablePopover] = useState(false)
   bestNumber = bestNumber && JSON.parse(JSON.stringify(bestNumber));
   let status = fileStatusEnum.PENDING;
 
@@ -152,50 +149,36 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
     <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
       {watchItem.confirmedReplicas || '-'}
     </div>
-    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-15'>
-      <Popover
-        containerStyle={{ backgroundColor: '#eee' }}
-        onClickOutside={() => {
-          setIsPopoverOpen(false);
-        }}
-        containerClassName={'popover-container'}
-        isOpen={isPopoverOpen}
-        positions={['top', 'bottom', 'left', 'right']} // preferred positions by priority
-        content={
-          // TODO: need real wiki address
-          <Trans i18nKey="tips.tip1" t={t}>
-            <div style={{width: 300, padding: 12}}>
-                  * New orders  <br/>
-                  * If your order is "Pending" for a long  IPFS is closed, or try to turn-off your firewall, please refer to <a href="https://wiki.crust.network/en" className={'aqua'} target="_blank">WIKI</a> for
+    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-15'>{
+      watchItem.fileStatus === fileStatusEnum.PENDING ?
+        <Popup
+          className="my-popup"
+          trigger={<abbr title='' style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</abbr>}
+          position={['top left']}
+          closeOnDocumentClick
+          on={['hover', 'focus']}
+        >
+     <Trans i18nKey="tips.tip1" t={t}>
+            <div>
+                  * If your order is "Pending" more than 30 mins, you can check whether the local IPFS is closed, or try to turn-off your firewall, please refer to  <span className={'aqua pointer'} onClick={() => {
+                    window.open('https://wiki.crust.network/en', '_blank')
+                  }}>WIKI</span> for detailed solutions.
             </div>
           </Trans>
-        } >
-              <div onClick={() => setIsPopoverOpen(!isPopoverOpen)}>
-                  <abbr title='' style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</abbr>
-              </div>
-          </Popover>
-    </div>
+
+  </Popup>
+      :
+      <div style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</div>
+    }</div>
     <div className='relative tc  flex justify-center items-center  ph2 pv1 w-15'>
       {
-        !ipfsConnected && watchItem.fileStatus !== fileStatusEnum.SUCCESS ? <Popover
-          containerStyle={{ backgroundColor: '#eee' }}
-          onClickOutside={() => {
-            setDisablePopover(false);
-          }}
-          containerClassName={'popover-container'}
-          isOpen={isTipsOpen}
-          positions={['top', 'bottom', 'left', 'right']} // preferred positions by priority
-          content={
-            <div style={{padding: 12}}>{t('tips.tip2')} </div>
-          } >
-        <div onClick={() => {
-          setDisablePopover(!isTipsOpen)
-        }}>
-          <button className={'watch-item-btn'}
-                  style={{  backgroundColor: "#d9dbe2", cursor: "not-allowed", color: "#eef"}}
-                  >{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</button>
-        </div>
-      </Popover> : <button className={'watch-item-btn'}
+        !ipfsConnected && watchItem.fileStatus !== fileStatusEnum.SUCCESS ?
+          <Popup position={['top right']} on={['hover', 'focus']} className={'my-popup'} contentStyle={{width: 'auto'}} trigger={
+            <button className={'watch-item-btn'}
+                    style={{  backgroundColor: "#d9dbe2", cursor: "not-allowed", color: "#eef"}}
+            >{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</button>}>
+          <div>{t('tips.tip2')} </div>
+        </Popup> : <button className={'watch-item-btn'}
                            onClick={() => {
                              onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem);
                            }}>{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</button>
