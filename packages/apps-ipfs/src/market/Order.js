@@ -82,7 +82,8 @@ const Order = ({ t, watchList, doAddOrders }) => {
             toggleModal(true);
           }}>{t('actions.addOrder')}</button>
           <div style={{marginLeft: 'auto'}}>
-            <input type="file" onChange={handleFileChange} />
+            <label htmlFor="upload" style={{cursor: 'pointer'}}>导入</label>
+            <input type="file" id="upload" size="60" style={{opacity:0, position: 'absolute', zIndex:-1}} onChange={handleFileChange} />
           <button className='btn' onClick={handleImport}>导入</button>
             &nbsp;&nbsp;
             <button className='btn' onClick={_.throttle(() => {

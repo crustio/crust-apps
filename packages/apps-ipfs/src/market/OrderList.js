@@ -118,7 +118,7 @@ const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, on
           </button>
         </div>
         {itemList.map((item) => (
-          <div className={`ph2 pv1 flex-auto db-l tc  w-${item.width} watch-list-header`}
+          <div className={`ph2 pv1 flex-auto db-l  w-${item.width} watch-list-header ${item.name === 'note' ? 'tl' : 'tc'}`}
             key={item.name}>
             <button
               aria-label={t('sortBy', { name: t(`${item.name}`) })}

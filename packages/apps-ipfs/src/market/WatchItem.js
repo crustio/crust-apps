@@ -16,6 +16,7 @@ import StrokeCopy from '@polkadot/apps-ipfs/icons/StrokeCopy';
 import { useApi, useCall } from '../../../react-hooks/src';
 import Checkbox from '../components/checkbox/Checkbox';
 import CopyButton from '@polkadot/apps-ipfs/components/copy-button';
+import { Icon } from '../../../react-components/src';
 
 import Popup from 'reactjs-popup';
 
@@ -94,7 +95,9 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
       if (!trash1 && !trash2) {
         // failed
         status = fileStatusEnum.FAILED;
+        watchItem.expireTime = 0;
         watchItem.status = status;
+        watchItem.startTime = 0;
         watchItem.fileSize = 0;
         watchItem.confirmedReplicas = 0
       }
@@ -183,20 +186,17 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
                              onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem);
                            }}>{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</button>
       }
-  </div>
-  </div>
-}
-WatchItem.prototype = {
-    peerId: PropTypes.string.isRequired,
-    watchItem: PropTypes.array.isRequired,
-    onSelect: PropTypes.func.isRequired,
-    selected: PropTypes.bool,
-    onToggleBtn: PropTypes.func.isRequired,
-    ipfsConnected: PropTypes.bool.isRequired,
-    isEdit: PropTypes.bool,
-    startEdit: PropTypes.func.isRequired,
-    confirmEdit: PropTypes.func.isRequired,
-    tableRef: PropTypes.object
-  };
+    </div>
+  </div>;
+};
 
-export default connect('doUpdateWatchItem', 'selectIpfsConnected', WatchItem);
+WatchItem.prototype = {
+  peerId: PropTypes.string.isRequired,
+  watchItem: PropTypes.array.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  selected: PropTypes.bool,
+  onToggleBtn: PropTypes.func.isRequired,
+  ipfsConnected: PropTypes.bool.isRequired
+};
+
+export default connect('selectIpfsConnected', WatchItem);
