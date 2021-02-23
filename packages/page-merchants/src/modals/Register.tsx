@@ -20,9 +20,10 @@ interface Props {
   onClose: () => void;
   recipientId?: string;
   senderId?: string;
+  onSuccess: () => void;
 }
 
-function Register ({ className = '', onClose, senderId: propSenderId }: Props): React.ReactElement<Props> {
+function Register ({ className = '', onClose, senderId: propSenderId, onSuccess }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
@@ -129,6 +130,7 @@ function Register ({ className = '', onClose, senderId: propSenderId }: Props): 
           label={t<string>('Register')}
           onStart={onClose}
           params={[amount]}
+          onSuccess={onSuccess}
           tx={api.tx.market.register}
         />
       </Modal.Actions>

@@ -10,13 +10,14 @@ import BN from 'bn.js';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 
-import { AddressInfo, AddressSmall, Badge, Button, Icon, IdentityIcon } from '@polkadot/react-components';
+import { AddressSmall, Badge, Button, Icon, IdentityIcon } from '@polkadot/react-components';
 import { useAccountInfo, useApi, useCall, useToggle } from '@polkadot/react-hooks';
 import { formatBalance, formatNumber } from '@polkadot/util';
 import { useTranslation } from '@polkadot/apps/translate';
 import { Delegation } from '@polkadot/app-accounts/types';
 import AddCollateral from '../modals/AddCollateral';
 import CutCollateral from '../modals/CutCollateral';
+import RewardMerchant from '../modals/RewardMerchant';
 
 interface Props {
   account: KeyringAddress;
@@ -58,6 +59,7 @@ function Account ({ account: { address }, className = '', filter, isFavorite, se
   const { name: accName, tags } = useAccountInfo(address);
   const [isAddCollateralOpen, toggleAddCollateral] = useToggle();
   const [isCutCollateralOpen, toggleCutCollateral] = useToggle();
+  const [isRewardMerchantOpen, toggleRewardMerchant] = useToggle();
 
   useEffect((): void => {
     if (balancesAll) {
@@ -91,6 +93,12 @@ function Account ({ account: { address }, className = '', filter, isFavorite, se
           <CutCollateral
             accountId={address}
             onClose={toggleCutCollateral}
+          />
+      )}
+      {isRewardMerchantOpen && (
+          <RewardMerchant
+            accountId={address}
+            onClose={toggleRewardMerchant}
           />
       )}
       <td className='favorite'>
@@ -140,19 +148,14 @@ function Account ({ account: { address }, className = '', filter, isFavorite, se
       <td className='address'>
         <AddressSmall value={address} />
       </td>   
-      <td className='number'>
+      <td className='number together'>
         {formatBalance(reward)}
       </td>
-      <td className='all'>
-        {formatBalance(collateral)}
+      <td className='number together'>
+        {formatBalance(new BN(Number(collateral).toString()).divRound(new BN('10')))}
       </td>
-      <td className='number'>
-        <AddressInfo
-          address={address}
-          withBalance
-          withBalanceToggle
-          withExtended={false}
-        />
+      <td className='number together'>
+        {formatBalance(collateral)}
       </td>
       <td className='button'>
         {api.api.tx.market?.addCollateral && (
@@ -167,6 +170,13 @@ function Account ({ account: { address }, className = '', filter, isFavorite, se
             icon='cut'
             label={t<string>('cut collateral')}
             onClick={toggleCutCollateral}
+          />
+        )}
+        {api.api.tx.market?.rewardMerchant && (
+          <Button
+            icon='cash-register'
+            label={t<string>('reward merchant')}
+            onClick={toggleRewardMerchant}
           />
         )}
       </td>

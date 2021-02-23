@@ -54,46 +54,55 @@ function Overview ({ className = '' }: Props): React.ReactElement<Props> {
         )
   });
   const [isRegisterOpen, toggleRegister] = useToggle();
+  const [allMerchants, setAllMerchants] = useState<string[]>([]);
 
   const isLoading = useLoadingDelay();
 
   const headerRef = useRef([
     [t('accounts'), 'start', 3],
-    [t('reward'), 'start'],
-    [t('collateral'), 'start'],
-    [t('balances'), 'expand'],
-    [undefined, 'media--1400']
+    [t('reward')],
+    [t('maximum receivable income')],
+    [t('collateral')],
+    // [t('balances'), 'expand'],
+    []
   ]);
 
-  useEffect(() => {
-      let unsub: (() => void) | undefined;
-      if (sortedAccountsWithDelegation) {
-        const fns: any[] = [
-            [api.query.market.merchantLedgers.entries],
-        ];
-        const allMerchants:string[] = [];
-        api.combineLatest<any[]>(fns, ([ledgers]): void => {
-            const tmp: SortedAccount[] = [];
-            if (Array.isArray(ledgers)) {
-              ledgers.forEach(([{ args: [accountId] }]) => {
-                allMerchants.push(accountId.toString());
-              });
-              for (const myAccount of sortedAccountsWithDelegation) {
-                  if (allMerchants.includes(myAccount.account.address.toString())) {
-                      tmp.push(myAccount);
-                  }
-              }
-              setOwnMerchants(tmp);
-            } 
-        }).then((_unsub): void => {
-            unsub = _unsub;
-        }).catch(console.error);
-      }
+  const getAllMerchants = () => {
+    let unsub: (() => void) | undefined;
+    const fns: any[] = [
+      [api.query.market.merchantLedgers.entries],
+    ];
+    const allMerchants:string[] = [];
+    api.combineLatest<any[]>(fns, ([ledgers]): void => {
+        if (Array.isArray(ledgers)) {
+          ledgers.forEach(([{ args: [accountId] }]) => {
+            allMerchants.push(accountId.toString());
+          });
+          setAllMerchants(allMerchants);
+        } 
+    }).then((_unsub): void => {
+        unsub = _unsub;
+    }).catch(console.error);
+    return (): void => {
+      unsub && unsub();
+    };
+  }
 
-      return (): void => {
-        unsub && unsub();
-      };
-  }, [api, sortedAccountsWithDelegation])
+  useEffect(() => {
+    getAllMerchants()
+  }, [])
+
+  useEffect(() => {
+      const tmp: SortedAccount[] = [];
+      if (sortedAccountsWithDelegation && allMerchants) {
+        for (const myAccount of sortedAccountsWithDelegation) {
+          if (allMerchants.includes(myAccount.account.address.toString())) {
+              tmp.push(myAccount);
+          }
+        }
+        setOwnMerchants(tmp);      
+      }
+  }, [sortedAccountsWithDelegation, allMerchants])
 
   useEffect((): void => {
     const sortedAccounts = sortAccounts(allAccounts, favorites);
@@ -160,6 +169,7 @@ function Overview ({ className = '' }: Props): React.ReactElement<Props> {
           <Register
             key='modal-transfer'
             onClose={toggleRegister}
+            onSuccess={getAllMerchants}
           />
       )}
       <Button.Group>

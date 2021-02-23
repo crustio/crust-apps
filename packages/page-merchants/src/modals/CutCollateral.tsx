@@ -9,6 +9,7 @@ import { useApi } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 
 import { useTranslation } from '@polkadot/apps/translate';
+import AvailableCollateral from './AvailableCollateral';
 
 interface Props {
   accountId: string | null;
@@ -45,6 +46,12 @@ function CutCollateral ({ accountId, onClose }: Props): React.ReactElement<Props
                 isError={!maxAdditional || maxAdditional.eqn(0)}
                 label={t<string>('cut collateral')} 
                 onChange={setMaxAdditional}
+                labelExtra={
+                  <AvailableCollateral
+                    label={t<string>('collateral')}
+                    params={accountId}
+                  />
+                }
               />
             </Modal.Column>
           </Modal.Columns>

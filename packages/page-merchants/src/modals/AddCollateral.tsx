@@ -4,9 +4,8 @@
 import BN from 'bn.js';
 import React, { useState } from 'react';
 
-import { InputAddress, InputBalance, Modal, TxButton } from '@polkadot/react-components';
+import { Available, InputAddress, InputBalance, Modal, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
-import { BalanceFree } from '@polkadot/react-query';
 import { BN_ZERO } from '@polkadot/util';
 
 import { useTranslation } from '@polkadot/apps/translate';
@@ -46,8 +45,8 @@ function AddCollateral ({ accountId, onClose }: Props): React.ReactElement<Props
                 isError={!maxAdditional || maxAdditional.eqn(0)}
                 label={t<string>('add collateral')}
                 labelExtra={
-                  <BalanceFree
-                    label={<span className='label'>{t<string>('balance')}</span>}
+                  <Available
+                    label={<span className='label'>{t<string>('transferrable')}</span>}
                     params={accountId}
                   />
                 }
