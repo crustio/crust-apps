@@ -33,7 +33,7 @@
   "priceDesc": "需要为这个文件支付的最低存储价格",
   "confirm": "确认",
   "status": {
-    "PENDING": "等待",
+    "PENDING": "待处理",
     "SUCCESS": "成功",
     "FAILED": "失败",
     "EXPIRE": "过期"
@@ -44,7 +44,7 @@
   "ipfsError": "IPFS未连接",
   "tips": {
     "wikiAddress": "https://wiki.crust.network/zh",
-    "tip1": "<0> * 如果订单“等待”超过半小时，您可以检查本地IPFS是否正常运行，或者尝试关闭本地防火墙，详情参考 <1>WIKI</1></0>",
+    "tip1": "<0> * 如果订单“待处理”超过半小时，您可以检查本地IPFS是否正常运行，或者尝试关闭本地防火墙，详情参考 <1>WIKI</1></0>",
     "tip2": "请启动本地的IPFS来使用该功能"
   },
   "durationLabel": "订单有效期",
