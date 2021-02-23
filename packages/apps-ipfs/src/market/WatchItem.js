@@ -37,8 +37,6 @@ const WatchItem = ({ ipfsConnected, onSelect, onToggleBtn, selected, watchItem }
   let bestNumber = useCall(isApiReady && api.derive.chain.bestNumber);
   const trash1 = useCall(isApiReady && api.query?.market.transh1, [watchItem.fileCid]);
   const trash2 = useCall(isApiReady && api.query?.market.transh2, [watchItem.fileCid]);
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false)
-  const [isTipsOpen, setDisablePopover] = useState(false)
   bestNumber = bestNumber && JSON.parse(JSON.stringify(bestNumber));
   let status = fileStatusEnum.PENDING;
 
