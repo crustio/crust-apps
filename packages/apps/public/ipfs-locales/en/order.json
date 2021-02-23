@@ -48,7 +48,9 @@
   "ipfsError": "IPFS not connected",
   "tips": {
     "wikiAddress": "https://wiki.crust.network/en",
-    "tip1": "<0> * New orders will generally update the status within half an hour. Please wait for a while.<1/>* If your order is \"Pending\" for a long time, you can check whether the local IPFS is closed, or try to turn-off your firewall, please refer to <3>WIKI</3> for detailed solutions.</0>",
+    "tip1": "<0>* If your order is \"Pending\" more than 30 mins, you can check whether the local IPFS is closed, or try to turn-off your firewall, please refer to <1>WIKI</1> for detailed solutions.</0>",
+
+
     "tip2": "Please enable IPFS to use this function."
   },
   "durationLabel": "Valid for",
