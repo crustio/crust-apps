@@ -46,12 +46,13 @@ const Comment = ({ isEdit, comment, startEdit, confirmEdit }) => {
       </div>}
   </div>
 }
-const WatchItem = ({ ipfsConnected, isEdit, onSelect, startEdit, confirmEdit, doUpdateWatchItem, onToggleBtn, selected, watchItem }) => {
+const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confirmEdit, doUpdateWatchItem, onToggleBtn, selected, watchItem }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
   const checkBoxCls = classnames({
     'o-1': selected
   }, ['pl2 w2']);
+  console.log(123);
   const fileStatus = useCall(isApiReady && api.query?.market && api.query?.market.files, [watchItem.fileCid]);
 
   let bestNumber = useCall(isApiReady && api.derive.chain.bestNumber);
@@ -96,9 +97,7 @@ const WatchItem = ({ ipfsConnected, isEdit, onSelect, startEdit, confirmEdit, do
       if (!trash1 && !trash2) {
         // failed
         status = fileStatusEnum.FAILED;
-        watchItem.expireTime = 0;
         watchItem.status = status;
-        watchItem.startTime = 0;
         watchItem.fileSize = 0;
         watchItem.confirmedReplicas = 0
       }
@@ -213,7 +212,8 @@ WatchItem.prototype = {
     ipfsConnected: PropTypes.bool.isRequired,
     isEdit: PropTypes.bool,
     startEdit: PropTypes.func.isRequired,
-    confirmEdit: PropTypes.func.confirmEdit,
+    confirmEdit: PropTypes.func.isRequired,
+    tableRef: PropTypes.object
   };
 
 export default connect('doUpdateWatchItem', 'selectIpfsConnected', WatchItem);

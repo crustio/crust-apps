@@ -13,7 +13,7 @@ import WatchListInput from './WatchListInput';
 import FileSaver from 'file-saver';
 import _ from 'lodash';
 
-const Order = ({ t, watchList }) => {
+const Order = ({ t, watchList, doAddOrders }) => {
   const [modalShow, toggleModal] = useState(false);
   const [tableData, setTableData] = useState(watchList);
   const [title, setTitle] = useState('order');
@@ -32,6 +32,16 @@ const Order = ({ t, watchList }) => {
       target && setTableData([target]);
     }
   };
+  const handleFileChange = (e) => {
+    console.log('file');
+    const fileReader = new FileReader();
+    fileReader.readAsText(e.target.files[0], "UTF-8");
+    fileReader.onload = e => {
+      const _list = JSON.parse(e.target.result)
+      // doAddItemMulti
+      doAddOrders(_list)
+    };
+  }
 
   const handleToggleBtn = (type, item) => {
     // renew, retry, speed.
@@ -72,6 +82,7 @@ const Order = ({ t, watchList }) => {
             toggleModal(true);
           }}>{t('actions.addOrder')}</button>
           <div style={{marginLeft: 'auto'}}>
+            <input type="file" onChange={handleFileChange} />
           <button className='btn' onClick={handleImport}>导入</button>
             &nbsp;&nbsp;
             <button className='btn' onClick={_.throttle(() => {
@@ -94,4 +105,4 @@ const Order = ({ t, watchList }) => {
   );
 };
 
-export default connect('doAddOrder', 'selectWatchList', 'selectWatchedCidList', withTranslation('order')(Order));
+export default connect('doAddOrder', 'doAddOrders', 'selectWatchList', 'selectWatchedCidList', withTranslation('order')(Order));

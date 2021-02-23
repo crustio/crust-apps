@@ -22,7 +22,13 @@ const bundle = { name: 'orders',
   doFetchWatchList: (_list) => ({ dispatch }) => {
     dispatch({ type: ACTIONS.FETCH, payload: _list });
   },
-  doAddOrder: ({ fileCid }) => ({ dispatch, store }) => {
+  doAddOrders : (_list) => ({store}) => {
+    console.log(_list);
+    _list.forEach((_item) => {
+      store.doAddOrder(_item)
+    })
+  },
+  doAddOrder: ({ fileCid, comment }) => ({ dispatch, store }) => {
     const CidList = store.selectWatchedCidList();
 
     const watchItem = {
@@ -33,6 +39,7 @@ const bundle = { name: 'orders',
       fileStatus: 'PENDING',
       confirmedReplicas: 0,
       globalReplicas: 0,
+      comment,
       insertAt: (new Date()).valueOf()
     };
 
@@ -65,7 +72,11 @@ const bundle = { name: 'orders',
     watchList[_idx] = { ...watchList[_idx], ...info };
     dispatch({ type: ACTIONS.FETCH, payload: watchList });
   },
-  selectWatchList: (state) => state.orders.watchList,
+  selectWatchList: (state) => {
+    const _list = _.orderBy(state.orders.watchList, ({expireTime}) => +expireTime, ['desc'])
+    console.log(_list);
+    return  _list
+  },
   selectWatchedCidList: (state) => state.orders.watchList.map((item) => item.fileCid),
   selectSelectedCidList: (state) => state.orders.selectedCidList || [] };
 

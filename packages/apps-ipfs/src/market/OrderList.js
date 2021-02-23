@@ -33,16 +33,16 @@ const itemList = [{
   }];
 
 const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
-  const [listSorting, setListSorting] = useState({ by: 'startTime', asc: false });
+  const [listSorting, setListSorting] = useState({ by: 'expireTime', asc: false });
   const [sortedList, setSortedList] = useState(watchList)
   const [editItem, setEditItem] = useState(undefined)
 
   const tableRef = useRef(null);
-  useEffect (() => {
-    const _list = _.orderBy(watchList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc']);
-    setSortedList(_list)
-    tableRef.current.forceUpdateGrid();
-  }, [JSON.stringify(watchList), listSorting]);
+
+  // useEffect (() => {
+  //   const _list = _.orderBy(watchList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc']);
+  //   setSortedList(_list)
+  // }, [listSorting]);
 
   const toggleOne = (fileCid) => {
     const index = selectedCidList.indexOf(fileCid);
@@ -89,6 +89,9 @@ const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, on
     } else {
       setListSorting({ by: order, asc: true });
     }
+    const _list = _.orderBy(sortedList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc'])
+    setSortedList(_list)
+    tableRef.current.forceUpdateGrid();
   };
   const nodata =() => {
     return <div className={'nodata'}>
@@ -149,6 +152,7 @@ const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, on
                   rowHeight={50}
                   rowRenderer={({ index, key }) => {
                     return <WatchItem
+                      tableRef={tableRef}
                       key={key}
                       onSelect={toggleOne}
                       peerId={identity ? identity.id :''}
