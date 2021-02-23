@@ -21,7 +21,7 @@
   "orderList": "File Order List",
   "orderListdesc": "Note: The order information is cached locally, switching browsers or devices will not keep displaying the original browser information ",
   "fileValid": "The order is not exist",
-  "fileCidValid": "The file CID is not valid!",
+  "fileCidValid": "Cid is not legal!",
   "files would be stored by more merchants with higher tips.": "files would be stored by more merchants with higher tips.",
   "File size": "File Size",
   "fileSize (byte)": "File size (byte)",
