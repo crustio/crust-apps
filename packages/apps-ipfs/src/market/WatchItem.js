@@ -134,7 +134,8 @@ const WatchItem = ({ ipfsConnected, onSelect, onToggleBtn, selected, watchItem }
     <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
       {watchItem.confirmedReplicas || '-'}
     </div>
-    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-15'>
+    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-15'>{
+      watchItem.fileStatus !== fileStatusEnum.PENDING ?
       <Popover
         containerStyle={{ backgroundColor: '#eee' }}
         onClickOutside={() => {
@@ -156,7 +157,9 @@ const WatchItem = ({ ipfsConnected, onSelect, onToggleBtn, selected, watchItem }
                   <abbr title='' style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</abbr>
               </div>
           </Popover>
-    </div>
+      :
+      <div style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</div>
+    }</div>
     <div className='relative tc  flex justify-center items-center  ph2 pv1 w-15'>
       {
         !ipfsConnected && watchItem.fileStatus !== fileStatusEnum.SUCCESS ? <Popover
