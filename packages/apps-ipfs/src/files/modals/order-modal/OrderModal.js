@@ -80,7 +80,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
           <Modal.Column>
             {cidNotValid
               ? <p className='file-info'
-                style={{ padding: 0 }}>{t('fileValid')}</p>
+                style={{ padding: 0 }}>{t('fileCidValid')}</p>
               : <p>{t('FileCidDesc')}</p>}
           </Modal.Column>
         </Modal.Columns>

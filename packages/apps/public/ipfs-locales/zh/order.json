@@ -20,9 +20,8 @@
   "orderList": "订单列表",
   "noAccount": "需要导入一个有效账号",
   "orderListdesc": "注意：订单信息为本地缓存，切换浏览器或设备不会保留显示原浏览器信息",
-  "fileValid": "该订单不存在!",
   "FileCidDesc": "文件CID的解释：文件的唯一标识编码",
-  "fileCidValid": "不是一个有效文件!",
+  "fileCidValid": "文件CID不正确!",
   "FileCid": "FileCid",
   "accountDesc": "当前为内测阶段，只有在白名单内的账号可以下单",
   "transferrable": "可转账的",
@@ -34,7 +33,7 @@
   "priceDesc": "需要为这个文件支付的最低存储价格",
   "confirm": "确认",
   "status": {
-    "PENDING": "等待",
+    "PENDING": "待处理",
     "SUCCESS": "成功",
     "FAILED": "失败",
     "EXPIRE": "过期"
@@ -45,7 +44,7 @@
   "ipfsError": "IPFS未连接",
   "tips": {
     "wikiAddress": "https://wiki.crust.network/zh",
-    "tip1": "<0> * 新订单一般会在半小时内更新状态，请耐心等待；<1/> * 如果订单状态长时间为“等待”，您可以检查本地IPFS是否正常运行，或者尝试关闭本地防火墙，详情参考 <3>WIKI</3></0>",
+    "tip1": "<0> * 如果订单“待处理”超过半小时，您可以检查本地IPFS是否正常运行，或者尝试关闭本地防火墙，详情参考 <1>WIKI</1></0>",
     "tip2": "请启动本地的IPFS来使用该功能"
   },
   "durationLabel": "订单有效期",
