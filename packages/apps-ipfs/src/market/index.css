@@ -151,3 +151,6 @@ button:focus {outline:0!important;}
 .gray-fill {
   fill-opacity: 0.25;
 }
+.grayColor {
+  opacity: 0.25;
+}

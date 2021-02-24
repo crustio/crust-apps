@@ -3,8 +3,8 @@
 import './index.css';
 
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-import { withTranslation } from 'react-i18next';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 
 import OrderModal from '../files/modals/order-modal/OrderModal';
@@ -12,13 +12,26 @@ import OrderList from './OrderList';
 import WatchListInput from './WatchListInput';
 import FileSaver from 'file-saver';
 import _ from 'lodash';
+import StatusContext from '../../../react-components/src/Status/Context';
 
-const Order = ({ t, watchList, doAddOrders }) => {
+const Order = ({ watchList, doAddOrders }) => {
   const [modalShow, toggleModal] = useState(false);
   const [tableData, setTableData] = useState(watchList);
   const [title, setTitle] = useState('order');
   const [fileInfo, setFileInfo] = useState(null);
   const [filterCid, setFilterCid] = useState(undefined)
+  const { queueAction } = useContext(StatusContext);
+  const {t} = useTranslation('order')
+  const _onImportResult = useCallback(
+    (message, status = 'queued') => {
+      queueAction && queueAction({
+        action: t('importInfo'),
+        message,
+        status
+      });
+    },
+    [queueAction, t]
+  );
   useEffect(() => {
     if (!filterCid) {
       setTableData(watchList);
@@ -36,12 +49,17 @@ const Order = ({ t, watchList, doAddOrders }) => {
     const fileReader = new FileReader();
     fileReader.readAsText(e.target.files[0], "UTF-8");
     if(!(/(.json)$/i.test(e.target.value))) {
-      alert('must upload a json file.')
+      return _onImportResult(t('importResult.error1'), 'error')
     }
     fileReader.onload = e => {
       const _list = JSON.parse(e.target.result)
+      if (!Array.isArray(_list)) {
+        return _onImportResult(t('importResult.error2'), 'error')
+      }
       // doAddItemMulti
-      doAddOrders(_list)
+      doAddOrders(_list).then(status =>{
+        _onImportResult(t('importResult.success'), {success: status.success, failed: status.invalid + status.duplicated})
+      })
     }
   }
 

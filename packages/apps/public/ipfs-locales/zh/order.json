@@ -52,5 +52,13 @@
   "durationDesc": "在预览网中，订单有效期约为15天",
   "import": "导入",
   "export": "导出",
-  "noteDesc": "任何跟此文件相关的备注 （备注仅会被缓存在您的浏览器中）"
+  "noteDesc": "任何跟此文件相关的备注 （备注仅会被缓存在您的浏览器中）",
+  "importInfo": "导入结果",
+  "importResult": {
+    "error1": "必须上传一个JSON文件",
+    "error2": "文件内容不合法",
+    "success": "成功: {succeed}, 失败: {failed}"
+  },
+  "addNoteTip": "请添加备注"
+
 }

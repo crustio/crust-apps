@@ -16,7 +16,6 @@ import StrokeCopy from '@polkadot/apps-ipfs/icons/StrokeCopy';
 import { useApi, useCall } from '../../../react-hooks/src';
 import Checkbox from '../components/checkbox/Checkbox';
 import CopyButton from '@polkadot/apps-ipfs/components/copy-button';
-import { Icon } from '../../../react-components/src';
 
 import Popup from 'reactjs-popup';
 import Pen from '@polkadot/apps-ipfs/icons/Pen';
@@ -27,7 +26,7 @@ const fileStatusEnum = {
   FAILED: 'FAILED',
   EXPIRE: 'EXPIRE'
 };
-const Comment = ({ isEdit, comment, startEdit, confirmEdit }) => {
+const Comment = ({ t, isEdit, comment, startEdit, confirmEdit }) => {
   const [value, setValue] = useState(comment)
   return <div style={{width: "100%", overflow: 'hidden'}}>
     {isEdit ?
@@ -44,7 +43,7 @@ const Comment = ({ isEdit, comment, startEdit, confirmEdit }) => {
       }}>
         <Pen className={`custom-icon ${value ? '' : 'gray-fill'}`}/>
         &nbsp;&nbsp;
-        <span style={{display:'inline-block', width: '80%'}}>{value || '请添加备注'}</span>
+        <span style={{display:'inline-block', width: '80%'}} className={!value ? 'grayColor':''}>{value || t('addNoteTip')}</span>
       </div>}
   </div>
 }
@@ -143,7 +142,7 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
     </div>
 
     <div className='relative tc  flex justify-center items-center  ph2 pv1 w-15'>
-      <Comment isEdit={isEdit} startEdit={startEdit} confirmEdit={confirmEdit} comment={watchItem.comment}/>
+      <Comment t={t} isEdit={isEdit} startEdit={startEdit} confirmEdit={confirmEdit} comment={watchItem.comment}/>
     </div>
     <div className='relative tc flex  justify-center items-center  ph2 pv1 w-15'>
       <div className=''>
