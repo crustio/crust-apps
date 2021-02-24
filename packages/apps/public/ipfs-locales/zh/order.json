@@ -59,6 +59,7 @@
     "error2": "文件内容不合法",
     "success": "成功: {succeed}, 失败: {failed}"
   },
-  "addNoteTip": "请添加备注"
-
+  "addNoteTip": "请添加备注",
+  "importBtn": "导入订单列表",
+  "exportBtn": "导出订单列表"
 }

@@ -50,8 +50,6 @@
   "tips": {
     "wikiAddress": "https://wiki.crust.network/en",
     "tip1": "<0>* If your order is \"Pending\" more than 30 mins, you can check whether the local IPFS is closed, or try to turn-off your firewall, please refer to <1>WIKI</1> for detailed solutions.</0>",
-
-
     "tip2": "Please enable IPFS to use this function."
   },
   "durationLabel": "Valid for",
@@ -65,5 +63,7 @@
     "error2": "Your file content is invalid!",
     "success": "success: {succeed}, failed: {failed}"
   },
-  "addNoteTip": "Please add note"
+  "addNoteTip": "Please add note",
+  "importBtn": "Import order list",
+  "exportBtn": "Export order list"
 }
