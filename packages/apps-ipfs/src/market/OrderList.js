@@ -39,10 +39,9 @@ const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, on
 
   const tableRef = useRef(null);
 
-  // useEffect (() => {
-  //   const _list = _.orderBy(watchList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc']);
-  //   setSortedList(_list)
-  // }, [listSorting]);
+  useEffect (() => {
+    setSortedList(watchList)
+  }, [JSON.stringify(watchList)]);
 
   const toggleOne = (fileCid) => {
     const index = selectedCidList.indexOf(fileCid);
@@ -123,6 +122,9 @@ const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, on
             <button
               aria-label={t('sortBy', { name: t(`${item.name}`) })}
               onClick={() => {
+                if (item.name === 'note') {
+                  return
+                }
                 changeSort(item.name);
               }}
             >

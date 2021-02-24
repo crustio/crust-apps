@@ -16,7 +16,7 @@
     "speed": "Speed up",
     "order": "Order",
     "retry": "Retry",
-    "note": "Comment"
+    "note": "Note"
   },
   "noAccount": "Need to import a valid account",
   "orderList": "File Order List",
@@ -55,5 +55,8 @@
     "tip2": "Please enable IPFS to use this function."
   },
   "durationLabel": "Valid for",
-  "durationDesc": "In the preview network, this order is valid for around 15 days."
+  "durationDesc": "In the preview network, this order is valid for around 15 days.",
+  "import": "Import",
+  "export": "Export",
+  "noteDesc": "Any thing about this file (The note will only be cached in your browser locally)."
 }

@@ -67,7 +67,6 @@ const bundle = { name: 'orders',
   },
   doUpdateWatchItem: (fileCid, info) => ({ dispatch, store }) => {
     const watchList = store.selectWatchList();
-    console.log(watchList);
     const _idx = watchList.findIndex((item) => fileCid === item.fileCid);
     watchList[_idx] = { ...watchList[_idx], ...info };
     dispatch({ type: ACTIONS.FETCH, payload: watchList });

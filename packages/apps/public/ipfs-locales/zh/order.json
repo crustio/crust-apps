@@ -49,5 +49,8 @@
     "tip2": "请启动本地的IPFS来使用该功能"
   },
   "durationLabel": "订单有效期",
-  "durationDesc": "在预览网中，订单有效期约为15天"
+  "durationDesc": "在预览网中，订单有效期约为15天",
+  "import": "导入",
+  "export": "导出",
+  "noteDesc": "任何跟此文件相关的备注 （备注仅会被缓存在您的浏览器中）"
 }

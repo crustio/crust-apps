@@ -33,14 +33,16 @@ const Order = ({ t, watchList, doAddOrders }) => {
     }
   };
   const handleFileChange = (e) => {
-    console.log('file');
     const fileReader = new FileReader();
     fileReader.readAsText(e.target.files[0], "UTF-8");
+    if(!(/(.json)$/i.test(e.target.value))) {
+      alert('must upload a json file.')
+    }
     fileReader.onload = e => {
       const _list = JSON.parse(e.target.result)
       // doAddItemMulti
       doAddOrders(_list)
-    };
+    }
   }
 
   const handleToggleBtn = (type, item) => {
@@ -49,16 +51,12 @@ const Order = ({ t, watchList, doAddOrders }) => {
     setFileInfo({ cid: item.fileCid, originalSize: item.fileSize });
     toggleModal(true);
   };
-  let timer = null
 
   const handleExport = () =>{
     const _list = watchList.map(_item => ({fileCid: _item.fileCid, comment: _item.comment}))
     const blob = new Blob([JSON.stringify(_list)], { type: 'application/json; charset=utf-8' });
     FileSaver.saveAs(blob, `watchList.json`);
   };
-  const handleImport = () => {
-
-  }
 
   return (
     <div className={'w-100'}>
@@ -82,15 +80,15 @@ const Order = ({ t, watchList, doAddOrders }) => {
             toggleModal(true);
           }}>{t('actions.addOrder')}</button>
           <div style={{marginLeft: 'auto'}}>
-            <label htmlFor="upload" style={{cursor: 'pointer'}}>
-              <button className='btn' onClick={handleImport}/>
-            </label>
             <input type="file" id="upload" size="60" style={{opacity:0, position: 'absolute', zIndex:-1}} onChange={handleFileChange} />
+            <label className="btn" htmlFor="upload" style={{cursor: 'pointer'}}>
+              Import
+            </label>
             &nbsp;&nbsp;
             <button className='btn' onClick={_.throttle(() => {
               handleExport()
             }, 2000)
-            }>导出</button>
+            }>Export</button>
         </div>
       </div>
       <div className={'orderList-header'}>
