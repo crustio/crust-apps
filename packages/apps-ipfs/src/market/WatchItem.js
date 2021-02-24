@@ -19,6 +19,7 @@ import CopyButton from '@polkadot/apps-ipfs/components/copy-button';
 import { Icon } from '../../../react-components/src';
 
 import Popup from 'reactjs-popup';
+import Pen from '@polkadot/apps-ipfs/icons/Pen';
 
 const fileStatusEnum = {
   PENDING: 'PENDING',
@@ -31,19 +32,19 @@ const Comment = ({ isEdit, comment, startEdit, confirmEdit }) => {
   return <div style={{width: "100%", overflow: 'hidden'}}>
     {isEdit ?
       <div style={{textAlign:'left', display:'flex', justifyContent: 'left', alignItems: 'center', overflow: 'hidden'}}>
-        <Icon icon={'edit'}/>
+        <Pen className={'custom-icon'}/>
         &nbsp;
         <input style={{display: 'inline-block', width: '80%'}} className={'no-border'} autoFocus type="text" value={value} onBlur={() => {
         confirmEdit(value)
       }} onChange={(e) => {
         setValue(e.target.value)
       }}/></div> :
-      <div style={{textAlign:'left', display:'flex', justifyContent: 'left', overflow: 'hidden', alignItems: 'center'}} className={'pointer'} onClick={() => {
+      <div style={{textAlign:'left', display:'flex', overflow: 'hidden', alignItems: 'center'}} className={'pointer'} onClick={() => {
         startEdit()
       }}>
-        <Icon icon={'edit'} className={value ? '' : 'grayColor'}/>
-        &nbsp;
-        <span>{value || '请添加备注'}</span>
+        <Pen className={`custom-icon ${value ? '' : 'gray-fill'}`}/>
+        &nbsp;&nbsp;
+        <span style={{display:'inline-block', width: '80%'}}>{value || '请添加备注'}</span>
       </div>}
   </div>
 }
