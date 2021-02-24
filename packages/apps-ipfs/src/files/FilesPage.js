@@ -87,7 +87,12 @@ class FilesPage extends React.Component {
   }
 
   showOrderModal = (file) => {
-    // todo: choose account and sign
+    const {contextMenu} = this.state
+    const isPined = contextMenu.file && contextMenu.file.pinned
+    // check file is pined or not
+    if (!isPined) {
+      this.props.doFilesPin(this.state.contextMenu.file.cid)
+    }
     this.setState({ orderModal: { show: true, file } });
   }
 
