@@ -23,7 +23,6 @@ const bundle = { name: 'orders',
     dispatch({ type: ACTIONS.FETCH, payload: _list });
   },
   doAddOrders : (_list) => ({store}) => {
-    console.log(_list);
     _list.forEach((_item) => {
       store.doAddOrder(_item)
     })
@@ -72,9 +71,7 @@ const bundle = { name: 'orders',
     dispatch({ type: ACTIONS.FETCH, payload: watchList });
   },
   selectWatchList: (state) => {
-    const _list = _.orderBy(state.orders.watchList, ({expireTime}) => +expireTime, ['desc'])
-    console.log(_list);
-    return  _list
+    return  _.orderBy(state.orders.watchList, ({expireTime}) => +expireTime, ['desc'])
   },
   selectWatchedCidList: (state) => state.orders.watchList.map((item) => item.fileCid),
   selectSelectedCidList: (state) => state.orders.selectedCidList || [] };

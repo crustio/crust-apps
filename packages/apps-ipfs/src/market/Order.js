@@ -18,19 +18,19 @@ const Order = ({ t, watchList, doAddOrders }) => {
   const [tableData, setTableData] = useState(watchList);
   const [title, setTitle] = useState('order');
   const [fileInfo, setFileInfo] = useState(null);
-
+  const [filterCid, setFilterCid] = useState(undefined)
   useEffect(() => {
-    setTableData(watchList);
-  }, [watchList]);
-
-  const handleFilterWatchList = (fileCid) => {
-    if (!fileCid) {
+    if (!filterCid) {
       setTableData(watchList);
     } else {
-      const target = watchList.find((item) => item.fileCid === fileCid);
+      const target = watchList.find((item) => item.fileCid === filterCid);
 
       target && setTableData([target]);
     }
+  }, [watchList, filterCid]);
+
+  const handleFilterWatchList = (fileCid) => {
+    setFilterCid(fileCid)
   };
   const handleFileChange = (e) => {
     const fileReader = new FileReader();
