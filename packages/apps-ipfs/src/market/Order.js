@@ -58,7 +58,7 @@ const Order = ({ watchList, doAddOrders }) => {
       }
       // doAddItemMulti
       doAddOrders(_list).then(status =>{
-        _onImportResult(t('importResult.success'), {success: status.success, failed: status.invalid + status.duplicated})
+        _onImportResult(t('importResult.success') + status.succeed + ',  ' + t('importResult.failed') + (status.invalid + status.duplicated))
       })
     }
   }
