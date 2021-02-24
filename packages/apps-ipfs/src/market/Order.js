@@ -100,13 +100,13 @@ const Order = ({ watchList, doAddOrders }) => {
           <div style={{marginLeft: 'auto'}}>
             <input type="file" id="upload" size="60" style={{opacity:0, position: 'absolute', zIndex:-1}} onChange={handleFileChange} />
             <label className="btn" htmlFor="upload" style={{cursor: 'pointer'}}>
-              Import
+              {t('importBtn')}
             </label>
             &nbsp;&nbsp;
             <button className='btn' onClick={_.throttle(() => {
               handleExport()
             }, 2000)
-            }>Export</button>
+            }>{t('exportBtn')}</button>
         </div>
       </div>
       <div className={'orderList-header'}>
