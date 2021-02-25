@@ -115,6 +115,9 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
     EXPIRE: 'renew'
 
   };
+  const handleClick = () => {
+    window.open(t('tips.wikiAddress'), '_blank')
+  }
 
   return <div
     className={'File b--light-gray relative  flex items-center bt'}
@@ -149,7 +152,7 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
         {watchItem.expireTime || '-'}
       </div>
     </div>
-    <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
+    <div className='relative tc flex justify-center items-center  ph2 pv1 w-15'>
       {watchItem.confirmedReplicas || '-'}
     </div>
     <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-15'>{
@@ -163,9 +166,7 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
         >
      <Trans i18nKey="tips.tip1" t={t}>
             <div>
-                  * If your order is "Pending" more than 30 mins, you can check whether the local IPFS is closed, or try to turn-off your firewall, please refer to  <span className={'aqua pointer'} onClick={() => {
-                    window.open('https://wiki.crust.network/en', '_blank')
-                  }}>WIKI</span> for detailed solutions.
+                  * If your order is "Pending" more than 30 mins, you can check whether the local IPFS is closed, or try to turn-off your firewall, please refer to  <span className={'aqua pointer'} onClick={handleClick}>WIKI</span> for detailed solutions.
             </div>
           </Trans>
 
@@ -173,7 +174,7 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
       :
       <div style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</div>
     }</div>
-    <div className='relative tc  flex justify-center items-center  ph2 pv1 w-15'>
+    <div className='relative tc  flex justify-center items-center  ph2 pv1 w-10'>
       {
         !ipfsConnected && watchItem.fileStatus !== fileStatusEnum.SUCCESS ?
           <Popup position={['top right']} on={['hover', 'focus']} className={'my-popup'} contentStyle={{width: 'auto'}} trigger={

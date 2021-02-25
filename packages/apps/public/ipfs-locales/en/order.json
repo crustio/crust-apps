@@ -48,7 +48,7 @@
   "fileSizeCopied": "File Size Copied",
   "ipfsError": "IPFS not connected",
   "tips": {
-    "wikiAddress": "https://wiki.crust.network/en",
+    "wikiAddress": "https://wiki.crust.network/docs/en/storageUserGuide",
     "tip1": "<0>* If your order is \"Pending\" more than 30 mins, you can check whether the local IPFS is closed, or try to turn-off your firewall, please refer to <1>WIKI</1> for detailed solutions.</0>",
     "tip2": "Please enable IPFS to use this function."
   },

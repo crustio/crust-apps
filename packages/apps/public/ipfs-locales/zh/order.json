@@ -44,7 +44,7 @@
   "clipboard": "剪切板",
   "ipfsError": "IPFS未连接",
   "tips": {
-    "wikiAddress": "https://wiki.crust.network/zh",
+    "wikiAddress": "https://wiki.crust.network/docs/zh/storageUserGuide",
     "tip1": "<0> * 如果订单“待处理”超过半小时，您可以检查本地IPFS是否正常运行，或者尝试关闭本地防火墙，详情参考 <1>WIKI</1></0>",
     "tip2": "请启动本地的IPFS来使用该功能"
   },
