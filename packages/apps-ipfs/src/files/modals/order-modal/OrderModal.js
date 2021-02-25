@@ -143,7 +143,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
             />
           </Modal.Column>
           <Modal.Column>
-            <p>{t('durationDesc')}</p>
+            <p>{t('noteDesc')}</p>
           </Modal.Column>
         </Modal.Columns>
         <Modal.Columns>
