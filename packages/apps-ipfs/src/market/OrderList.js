@@ -14,10 +14,11 @@ import Checkbox from '../components/checkbox/Checkbox';
 const itemList = [{
   name: 'fileSize',
   width: 10,
-}, {
-  name: 'startTime',
-  width: 15,
 },
+  {
+    name: 'note',
+    width: 20,
+  },
   {
     name: 'expireTime',
     width: 15,
@@ -31,17 +32,16 @@ const itemList = [{
     width: 15,
   }];
 
-const OrderList = ({ identity, ipfsReady, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
-  const [listSorting, setListSorting] = useState({ by: 'startTime', asc: false });
+const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
+  const [listSorting, setListSorting] = useState({ by: 'expireTime', asc: false });
   const [sortedList, setSortedList] = useState(watchList)
+  const [editItem, setEditItem] = useState(undefined)
 
   const tableRef = useRef(null);
 
-  useEffect(() => {
-    const _list = _.orderBy(watchList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc']);
-    setSortedList(_list)
-    tableRef.current.forceUpdateGrid();
-  }, [watchList, watchList.length, listSorting]);
+  useEffect (() => {
+    setSortedList(watchList)
+  }, [JSON.stringify(watchList)]);
 
   const toggleOne = (fileCid) => {
     const index = selectedCidList.indexOf(fileCid);
@@ -88,6 +88,9 @@ const OrderList = ({ identity, ipfsReady, doSelectedItems, onToggleBtn, selected
     } else {
       setListSorting({ by: order, asc: true });
     }
+    const _list = _.orderBy(sortedList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc'])
+    setSortedList(_list)
+    tableRef.current.forceUpdateGrid();
   };
   const nodata =() => {
     return <div className={'nodata'}>
@@ -114,11 +117,14 @@ const OrderList = ({ identity, ipfsReady, doSelectedItems, onToggleBtn, selected
           </button>
         </div>
         {itemList.map((item) => (
-          <div className={`ph2 pv1 flex-auto db-l tc  w-${item.width} watch-list-header`}
+          <div className={`ph2 pv1 flex-auto db-l  w-${item.width} watch-list-header tc`}
             key={item.name}>
             <button
               aria-label={t('sortBy', { name: t(`${item.name}`) })}
               onClick={() => {
+                if (item.name === 'note') {
+                  return
+                }
                 changeSort(item.name);
               }}
             >
@@ -126,7 +132,7 @@ const OrderList = ({ identity, ipfsReady, doSelectedItems, onToggleBtn, selected
             </button>
           </div>
         ))}
-        <div className='ph2 pv1 flex-auto db-l tc w-15 watch-list-header'>{t('actions.action')}</div>
+        <div className='ph2 pv1 flex-auto db-l tc w-10 watch-list-header'>{t('actions.action')}</div>
       </header>
       <WindowScroller>
         {({ height, isScrolling, onChildScroll, scrollTop }) => (
@@ -148,11 +154,24 @@ const OrderList = ({ identity, ipfsReady, doSelectedItems, onToggleBtn, selected
                   rowHeight={50}
                   rowRenderer={({ index, key }) => {
                     return <WatchItem
+                      tableRef={tableRef}
                       key={key}
                       onSelect={toggleOne}
                       peerId={identity ? identity.id :''}
                       onToggleBtn={(type, file) => {
                         onToggleBtn(type, file);
+                      }}
+                      onEdit={() => {
+
+                      }}
+                      isEdit={editItem === sortedList[index].fileCid}
+                      startEdit={() => {
+                        setEditItem(sortedList[index].fileCid)
+                      }}
+                      confirmEdit={(comment) => {
+                        //
+                        setEditItem(undefined)
+                        doUpdateWatchItem(sortedList[index].fileCid, {...sortedList[index], comment})
                       }}
                       selected={selectedCidList.indexOf(sortedList[index].fileCid) > -1}
                       watchItem={sortedList[index]} />;

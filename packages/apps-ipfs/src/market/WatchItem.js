@@ -18,6 +18,7 @@ import Checkbox from '../components/checkbox/Checkbox';
 import CopyButton from '@polkadot/apps-ipfs/components/copy-button';
 
 import Popup from 'reactjs-popup';
+import Pen from '@polkadot/apps-ipfs/icons/Pen';
 
 const fileStatusEnum = {
   PENDING: 'PENDING',
@@ -25,8 +26,28 @@ const fileStatusEnum = {
   FAILED: 'FAILED',
   EXPIRE: 'EXPIRE'
 };
-
-const WatchItem = ({ ipfsConnected, onSelect, onToggleBtn, selected, watchItem }) => {
+const Comment = ({ t, isEdit, comment, startEdit, confirmEdit }) => {
+  const [value, setValue] = useState(comment)
+  return <div style={{width: "100%", overflow: 'hidden'}}>
+    {isEdit ?
+      <div style={{textAlign:'left', display:'flex', justifyContent: 'left', alignItems: 'center', overflow: 'hidden'}}>
+        <Pen className={'custom-icon'}/>
+        &nbsp;
+        <input style={{display: 'inline-block', width: '80%'}} className={'no-border'} autoFocus type="text" value={value} onBlur={() => {
+        confirmEdit(value)
+      }} onChange={(e) => {
+        setValue(e.target.value)
+      }}/></div> :
+      <div style={{textAlign:'left', display:'flex', overflow: 'hidden', alignItems: 'center'}} className={'pointer'} onClick={() => {
+        startEdit()
+      }}>
+        <Pen className={`custom-icon ${value ? '' : 'gray-fill'}`}/>
+        &nbsp;&nbsp;
+        <span style={{display:'inline-block', width: '80%'}} className={!value ? 'grayColor':''}>{value || t('addNoteTip')}</span>
+      </div>}
+  </div>
+}
+const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confirmEdit, doUpdateWatchItem, onToggleBtn, selected, watchItem }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
   const checkBoxCls = classnames({
@@ -94,6 +115,9 @@ const WatchItem = ({ ipfsConnected, onSelect, onToggleBtn, selected, watchItem }
     EXPIRE: 'renew'
 
   };
+  const handleClick = () => {
+    window.open(t('tips.wikiAddress'), '_blank')
+  }
 
   return <div
     className={'File b--light-gray relative  flex items-center bt'}
@@ -120,10 +144,8 @@ const WatchItem = ({ ipfsConnected, onSelect, onToggleBtn, selected, watchItem }
       </div>
     </div>
 
-    <div className='relative tc  flex justify-center items-center  ph2 pv1 w-15'>
-      <div className=''>
-        {watchItem.startTime || '-'}
-      </div>
+    <div className='relative tc  flex justify-center items-center  ph2 pv1 w-20'>
+      <Comment t={t} isEdit={isEdit} startEdit={startEdit} confirmEdit={confirmEdit} comment={watchItem.comment}/>
     </div>
     <div className='relative tc flex  justify-center items-center  ph2 pv1 w-15'>
       <div className=''>
@@ -144,9 +166,8 @@ const WatchItem = ({ ipfsConnected, onSelect, onToggleBtn, selected, watchItem }
         >
      <Trans i18nKey="tips.tip1" t={t}>
             <div>
-                  * If your order is "Pending" more than 30 mins, you can check whether the local IPFS is closed, or try to turn-off your firewall, please refer to  <span className={'aqua pointer'} onClick={() => {
-                    window.open('https://wiki.crust.network/en', '_blank')
-                  }}>WIKI</span> for detailed solutions.
+                 *The order "pending" time generally lasts from 30 minutes to 2 hours (depending on the file size). Please keep IPFS running during this period.<br/>
+* If your order is "pending" for too long, you can refer to <span className={'aqua pointer'} onClick={handleClick}>WIKI</span> for detailed solutions.
             </div>
           </Trans>
 
@@ -154,7 +175,7 @@ const WatchItem = ({ ipfsConnected, onSelect, onToggleBtn, selected, watchItem }
       :
       <div style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</div>
     }</div>
-    <div className='relative tc  flex justify-center items-center  ph2 pv1 w-15'>
+    <div className='relative tc  flex justify-center items-center  ph2 pv1 w-10'>
       {
         !ipfsConnected && watchItem.fileStatus !== fileStatusEnum.SUCCESS ?
           <Popup position={['top right']} on={['hover', 'focus']} className={'my-popup'} contentStyle={{width: 'auto'}} trigger={
