@@ -19868,7 +19868,7 @@ fsevents@~2.1.2:
     react: ^17.0.1
     react-dom: ^17.0.1
     react-is: ^17.0.1
-    react-tiny-popover: ^6.0.4
+    reactjs-popup: ^2.0.4
     source-map-explorer: ^2.5.1
     styled-components: ^5.2.1
     stylelint: ^13.8.0
@@ -21138,16 +21138,6 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"react-tiny-popover@npm:^6.0.4":
-  version: 6.0.4
-  resolution: "react-tiny-popover@npm:6.0.4"
-  peerDependencies:
-    react: ^16.0.0
-    react-dom: ^16.0.0
-  checksum: 0ac18f8e7846d3306b7f4e09e0c85645112ed84932825860b0400ace77f09b82df58819edfeba3d7ff7c14f663ec1fa107f818421cbb8418b929d28c4eb8aa8b
-  languageName: node
-  linkType: hard
-
 "react-tooltip@npm:^4.2.11":
   version: 4.2.11
   resolution: "react-tooltip@npm:4.2.11"
@@ -21185,6 +21175,16 @@ fsevents@~2.1.2:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
   checksum: a76d86ec973eb4b25a46071ac7f974adfd66ed89ad1db63043be1d976ec25417520a210e6d724b0ad937422b706afcf9962cedda9e92125992a8c0e8a95f2051
+  languageName: node
+  linkType: hard
+
+"reactjs-popup@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "reactjs-popup@npm:2.0.4"
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: ec611d7feba3b74659fc995702815b92c1b17d34ffe14c310f87f109372a1bcf96af51a0328c9164ec36ec8d56bd655869382285212509b3eb2f92761b28d852
   languageName: node
   linkType: hard
 

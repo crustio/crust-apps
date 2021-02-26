@@ -20,6 +20,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
   const [fileSize, setFileSize] = useState(file ? file.originalSize.toString() : '0');
   const [price, setPrice] = useState('0 CRU');
   const [tip, setTip] = useState(0);
+  const [comment, setComment] = useState(file ? file.comment : '')
   const [cidNotValid, setCidNotValid] = useState(false);
   const { api, isApiReady } = useApi();
   const filePrice = useCall(isApiReady && api.query.market.filePrice) || new BN(0);
@@ -80,7 +81,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
           <Modal.Column>
             {cidNotValid
               ? <p className='file-info'
-                style={{ padding: 0 }}>{t('fileValid')}</p>
+                style={{ padding: 0 }}>{t('fileCidValid')}</p>
               : <p>{t('FileCidDesc')}</p>}
           </Modal.Column>
         </Modal.Columns>
@@ -135,6 +136,19 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
         <Modal.Columns>
           <Modal.Column>
             <Input
+              help={t('noteDesc')}
+              label={t('actions.note')}
+              value={comment}
+              onChange={setComment}
+            />
+          </Modal.Column>
+          <Modal.Column>
+            <p>{t('noteDesc')}</p>
+          </Modal.Column>
+        </Modal.Columns>
+        <Modal.Columns>
+          <Modal.Column>
+            <Input
               help={t('durationDesc')}
               isDisabled
               label={t('durationLabel')}
@@ -143,7 +157,6 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
           </Modal.Column>
           <Modal.Column>
             <p>{t('durationDesc')}</p>
-
           </Modal.Column>
         </Modal.Columns>
       </div>
@@ -160,7 +173,8 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
         onSuccess={() => {
           doAddOrder({
             fileCid,
-            fileSize
+            fileSize,
+            comment
           });
         }}
         params={

@@ -1,11 +1,12 @@
 /*background-color: #ff8812;*/
-
+@import "~reactjs-popup/dist/index.css";
 
 .btn {
   display: inline-block;
   font-size: 14px;
   padding: 5px 20px;
   background-color: #ff8812;
+  line-height: 1em;
   color: #fff;
   font-weight: 500;
   border: 2px solid #ff8812;
@@ -105,7 +106,7 @@ button:focus {outline:0!important;}
   text-transform: none!important;
 }
 .copy-btn {
-  color: #ff8812;
+  color: #f5f3f1;
   background-color: transparent!important;
   display: inline-block;
 }
@@ -120,4 +121,36 @@ button:focus {outline:0!important;}
 }
 .w-20 {
   width: 20%;
+}
+.my-popup-content {
+  padding: 20px;
+  margin: auto;
+  background: #f5f3f1;
+  border: none;
+  box-shadow: 2px 3px 16px 0px rgba(0,0,0,0.52);
+}
+.my-popup-arrow {
+  color: #fbf9f6;
+}
+[role='tooltip'].my-popup-content {
+  width: 300px;
+  box-shadow: 2px 3px 16px 0px rgba(0,0,0,0.52);
+}
+.no-border {
+  border: 0;
+  outline: none;
+  background-color: rgba(0, 0, 0, 0);
+}
+.custom-icon {
+  display: inline-block;
+  width: 16px;
+  color: #4e4e4e;
+  fill-opacity: 1;
+  fill: #4e4e4e;
+}
+.gray-fill {
+  fill-opacity: 0.25;
+}
+.grayColor {
+  opacity: 0.25;
 }

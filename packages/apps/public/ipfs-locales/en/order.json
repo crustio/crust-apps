@@ -15,13 +15,14 @@
     "renew": "Renew",
     "speed": "Speed up",
     "order": "Order",
-    "retry": "Retry"
+    "retry": "Retry",
+    "note": "Note"
   },
   "noAccount": "Need to import a valid account",
   "orderList": "File Order List",
   "orderListdesc": "Note: The order information is cached locally, switching browsers or devices will not keep displaying the original browser information ",
   "fileValid": "The order is not exist",
-  "fileCidValid": "The file CID is not valid!",
+  "fileCidValid": "Cid is not legal!",
   "files would be stored by more merchants with higher tips.": "files would be stored by more merchants with higher tips.",
   "File size": "File Size",
   "fileSize (byte)": "File size (byte)",
@@ -47,10 +48,23 @@
   "fileSizeCopied": "File Size Copied",
   "ipfsError": "IPFS not connected",
   "tips": {
-    "wikiAddress": "https://wiki.crust.network/en",
-    "tip1": "<0> * New orders will generally update the status within half an hour. Please wait for a while.<1/>* If your order is \"Pending\" for a long time, you can check whether the local IPFS is closed, or try to turn-off your firewall, please refer to <3>WIKI</3> for detailed solutions.</0>",
+    "wikiAddress": "https://wiki.crust.network/docs/en/storageUserGuide",
+    "tip1": "<0>*The order \"pending\" time generally lasts from 30 minutes to 2 hours (depending on the file size). Please keep IPFS running during this period.<1/>* If your order is \"pending\" for too long, you can refer to <3>WIKI</3> for detailed solutions.</0>",
     "tip2": "Please enable IPFS to use this function."
   },
   "durationLabel": "Valid for",
-  "durationDesc": "In the preview network, this order is valid for around 15 days."
+  "durationDesc": "In the preview network, this order is valid for around 15 days.",
+  "import": "Import",
+  "export": "Export",
+  "noteDesc": "Any thing about this file (The note will only be cached in your browser locally).",
+  "importInfo": "Import result",
+  "importResult": {
+    "error1": "You must upload a JSON file.",
+    "error2": "Your file content is invalid!",
+    "success": "success",
+    "failed": "failed"
+  },
+  "addNoteTip": "Please add note",
+  "importBtn": "Import order list",
+  "exportBtn": "Export order list"
 }
