@@ -15,7 +15,8 @@
     "order": "下单",
     "renew": "续费",
     "retry": "重新下单",
-    "speed": "加速"
+    "speed": "加速",
+    "note": "备注"
   },
   "orderList": "订单列表",
   "noAccount": "需要导入一个有效账号",
@@ -43,10 +44,23 @@
   "clipboard": "剪切板",
   "ipfsError": "IPFS未连接",
   "tips": {
-    "wikiAddress": "https://wiki.crust.network/zh",
-    "tip1": "<0> * 如果订单“待处理”超过半小时，您可以检查本地IPFS是否正常运行，或者尝试关闭本地防火墙，详情参考 <1>WIKI</1></0>",
+    "wikiAddress": "https://wiki.crust.network/docs/zh/storageUserGuide",
+    "tip1": "<0>*订单“待处理”状态一般会持续30分钟到2小时(与文件大小相关)，在此期间不能关闭IPFS<1/>* 如果订单“待处理”时间过长，您可以检查本地IPFS是否正常运行，或者尝试关闭本地防火墙，详情参考<3>WIKI</3></0>",
     "tip2": "请启动本地的IPFS来使用该功能"
   },
   "durationLabel": "订单有效期",
-  "durationDesc": "在预览网中，订单有效期约为15天"
+  "durationDesc": "在预览网中，订单有效期约为15天",
+  "import": "导入",
+  "export": "导出",
+  "noteDesc": "任何跟此文件相关的备注 （备注仅会被缓存在您的浏览器中）",
+  "importInfo": "导入结果",
+  "importResult": {
+    "error1": "必须上传一个JSON文件",
+    "error2": "文件内容不合法",
+    "success": "成功",
+    "failed": "失败"
+  },
+  "addNoteTip": "请添加备注",
+  "importBtn": "导入订单列表",
+  "exportBtn": "导出订单列表"
 }

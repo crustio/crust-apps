@@ -1,6 +1,7 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 import { ACTIONS } from './consts';
+import isIPFS from 'is-ipfs';
 
 const bundle = { name: 'orders',
   persistActions: [
@@ -22,7 +23,28 @@ const bundle = { name: 'orders',
   doFetchWatchList: (_list) => ({ dispatch }) => {
     dispatch({ type: ACTIONS.FETCH, payload: _list });
   },
-  doAddOrder: ({ fileCid }) => ({ dispatch, store }) => {
+  doAddOrders : (_list) => ({store}) => {
+  return new Promise((resolve, reject) => {
+    const CidList = store.selectWatchedCidList();
+    const status = {
+      duplicated: 0,
+      succeed: 0,
+      invalid: 0
+    }
+    _list.forEach((_item) => {
+      if (!_item.fileCid || !isIPFS.cid(_item.fileCid) && !isIPFS.path(_item.fileCid)) {
+        return status.invalid++
+      }
+      if (CidList.indexOf(_item.fileCid) > -1) {
+        return status.duplicated ++
+      }
+      status.succeed ++
+      store.doAddOrder(_item)
+    })
+    resolve(status)
+  })
+  },
+  doAddOrder: ({ fileCid, comment }) => ({ dispatch, store }) => {
     const CidList = store.selectWatchedCidList();
 
     const watchItem = {
@@ -33,6 +55,7 @@ const bundle = { name: 'orders',
       fileStatus: 'PENDING',
       confirmedReplicas: 0,
       globalReplicas: 0,
+      comment,
       insertAt: (new Date()).valueOf()
     };
 
@@ -60,15 +83,13 @@ const bundle = { name: 'orders',
   },
   doUpdateWatchItem: (fileCid, info) => ({ dispatch, store }) => {
     const watchList = store.selectWatchList();
-    console.log(watchList);
     const _idx = watchList.findIndex((item) => fileCid === item.fileCid);
-    console.log(_idx);
-    console.log(fileCid);
-
     watchList[_idx] = { ...watchList[_idx], ...info };
     dispatch({ type: ACTIONS.FETCH, payload: watchList });
   },
-  selectWatchList: (state) => state.orders.watchList,
+  selectWatchList: (state) => {
+    return  _.orderBy(state.orders.watchList, ({expireTime}) => +expireTime, ['desc'])
+  },
   selectWatchedCidList: (state) => state.orders.watchList.map((item) => item.fileCid),
   selectSelectedCidList: (state) => state.orders.selectedCidList || [] };
 

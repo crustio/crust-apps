@@ -6,6 +6,7 @@
   font-size: 14px;
   padding: 5px 20px;
   background-color: #ff8812;
+  line-height: 1em;
   color: #fff;
   font-weight: 500;
   border: 2px solid #ff8812;
@@ -134,4 +135,22 @@ button:focus {outline:0!important;}
 [role='tooltip'].my-popup-content {
   width: 300px;
   box-shadow: 2px 3px 16px 0px rgba(0,0,0,0.52);
+}
+.no-border {
+  border: 0;
+  outline: none;
+  background-color: rgba(0, 0, 0, 0);
+}
+.custom-icon {
+  display: inline-block;
+  width: 16px;
+  color: #4e4e4e;
+  fill-opacity: 1;
+  fill: #4e4e4e;
+}
+.gray-fill {
+  fill-opacity: 0.25;
+}
+.grayColor {
+  opacity: 0.25;
 }
