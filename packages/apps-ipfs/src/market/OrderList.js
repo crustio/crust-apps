@@ -17,7 +17,7 @@ const itemList = [{
 },
   {
     name: 'note',
-    width: 15,
+    width: 20,
   },
   {
     name: 'expireTime',
@@ -25,7 +25,7 @@ const itemList = [{
   },
   {
     name: 'confirmedReplicas',
-    width: 15,
+    width: 10,
   },
   {
     name: 'fileStatus',
@@ -117,7 +117,7 @@ const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, on
           </button>
         </div>
         {itemList.map((item) => (
-          <div className={`ph2 pv1 flex-auto db-l  w-${item.width} watch-list-header ${item.name === 'note' ? 'tl' : 'tc'}`}
+          <div className={`ph2 pv1 flex-auto db-l  w-${item.width} watch-list-header tc`}
             key={item.name}>
             <button
               aria-label={t('sortBy', { name: t(`${item.name}`) })}

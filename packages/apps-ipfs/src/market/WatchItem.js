@@ -144,7 +144,7 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
       </div>
     </div>
 
-    <div className='relative tc  flex justify-center items-center  ph2 pv1 w-15'>
+    <div className='relative tc  flex justify-center items-center  ph2 pv1 w-20'>
       <Comment t={t} isEdit={isEdit} startEdit={startEdit} confirmEdit={confirmEdit} comment={watchItem.comment}/>
     </div>
     <div className='relative tc flex  justify-center items-center  ph2 pv1 w-15'>
@@ -152,7 +152,7 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
         {watchItem.expireTime || '-'}
       </div>
     </div>
-    <div className='relative tc flex justify-center items-center  ph2 pv1 w-15'>
+    <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
       {watchItem.confirmedReplicas || '-'}
     </div>
     <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-15'>{
@@ -166,7 +166,8 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
         >
      <Trans i18nKey="tips.tip1" t={t}>
             <div>
-                  * If your order is "Pending" more than 30 mins, you can check whether the local IPFS is closed, or try to turn-off your firewall, please refer to  <span className={'aqua pointer'} onClick={handleClick}>WIKI</span> for detailed solutions.
+                 *The order "pending" time generally lasts from 30 minutes to 2 hours (depending on the file size). Please keep IPFS running during this period.<br/>
+* If your order is "pending" for too long, you can refer to <span className={'aqua pointer'} onClick={handleClick}>WIKI</span> for detailed solutions.
             </div>
           </Trans>
 
