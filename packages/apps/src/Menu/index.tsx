@@ -102,7 +102,8 @@ function Menu ({ className = '' }: Props): React.ReactElement<Props> {
     developer: t('Developer'),
     governance: t('Governance'),
     network: t('Network'),
-    settings: t('Settings')
+    settings: t('Settings'),
+    ipfs: t('ipfs')
   });
 
   const routeRef = useRef(createRoutes(t));

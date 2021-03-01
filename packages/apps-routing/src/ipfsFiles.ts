@@ -14,7 +14,7 @@ export default function create (t: <T = string>(key: string, text: string, optio
       ]
     },
     icon: 'ipfs',
-    name: 'storage',
+    name: 'ipfs',
     group: 'ipfs',
     text: t<string>('nav.ipfs', 'IPFS', { ns: 'apps-routing' })
   };
