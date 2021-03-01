@@ -86,14 +86,15 @@ class FilesPage extends React.Component {
     this.setState({ downloadAbort: abort });
   }
 
-  showOrderModal = (file) => {
+  showOrderModal = () => {
     const {contextMenu} = this.state
-    const isPined = contextMenu.file && contextMenu.file.pinned
+    const file = contextMenu.file
+    const isPined = file && file.pinned
     // check file is pined or not
     if (!isPined) {
-      this.props.doFilesPin(this.state.contextMenu.file.cid)
+      this.props.doFilesPin(file.cid)
     }
-    this.setState({ orderModal: { show: true, file } });
+    this.setState({ orderModal: { show: true, file:{comment: file.name, ...file} } });
   }
 
   onAddFiles = (raw, root = '') => {
@@ -281,9 +282,7 @@ class FilesPage extends React.Component {
           onDelete={() => this.showModal(DELETE, [contextMenu.file])}
           onDownload={() => this.onDownload([contextMenu.file])}
           onInspect={() => this.onInspect(contextMenu.file.cid)}
-          onOrder={(file) => {
-            this.showOrderModal(file);
-          }}
+          onOrder={this.showOrderModal}
           onPin={() => this.props.doFilesPin(contextMenu.file.cid)}
           onRename={() => this.showModal(RENAME, [contextMenu.file])}
           onShare={() => this.showModal(SHARE, [contextMenu.file])}
