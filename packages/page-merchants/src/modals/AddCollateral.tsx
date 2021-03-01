@@ -4,17 +4,15 @@
 import BN from 'bn.js';
 import React, { useState } from 'react';
 
+import { useTranslation } from '@polkadot/apps/translate';
 import { Available, InputAddress, InputBalance, Modal, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
-
-import { useTranslation } from '@polkadot/apps/translate';
 
 interface Props {
   accountId: string | null;
   onClose: () => void;
 }
-
 
 function AddCollateral ({ accountId, onClose }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();

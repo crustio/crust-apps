@@ -6,12 +6,12 @@ import type { AppProps as Props } from '@polkadot/react-components/types';
 import React, { useRef } from 'react';
 import { Route, Switch } from 'react-router';
 
+import { useTranslation } from '@polkadot/apps/translate';
 import { HelpOverlay, Tabs } from '@polkadot/react-components';
 import { useAccounts, useIpfs } from '@polkadot/react-hooks';
 
 import basicMd from './md/basic.md';
 import Merchants from './Merchants';
-import { useTranslation } from '@polkadot/apps/translate';
 
 const HIDDEN_ACC = ['vanity'];
 

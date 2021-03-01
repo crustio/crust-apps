@@ -16,6 +16,7 @@ import explorer from './explorer';
 import extrinsics from './extrinsics';
 import ipfsFiles from './ipfsFiles';
 import js from './js';
+import merchants from './merchants';
 import parachains from './parachains';
 import poll from './poll';
 import rpc from './rpc';
@@ -28,7 +29,6 @@ import sudo from './sudo';
 import techcomm from './techcomm';
 import transfer from './transfer';
 import treasury from './treasury';
-import merchants from './merchants';
 
 export default function create (t: TFunction): Routes {
   return [

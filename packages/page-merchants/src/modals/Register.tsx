@@ -8,12 +8,11 @@ import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { useTranslation } from '@polkadot/apps/translate';
 import { InputAddress, InputBalance, Modal, TxButton } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { Available } from '@polkadot/react-query';
 import { BN_ZERO, isFunction } from '@polkadot/util';
-import { useTranslation } from '@polkadot/apps/translate';
-
 
 interface Props {
   className?: string;
@@ -23,7 +22,7 @@ interface Props {
   onSuccess: () => void;
 }
 
-function Register ({ className = '', onClose, senderId: propSenderId, onSuccess }: Props): React.ReactElement<Props> {
+function Register ({ className = '', onClose, onSuccess, senderId: propSenderId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
@@ -129,8 +128,8 @@ function Register ({ className = '', onClose, senderId: propSenderId, onSuccess 
           isDisabled={!hasAvailable || !amount}
           label={t<string>('Register')}
           onStart={onClose}
-          params={[amount]}
           onSuccess={onSuccess}
+          params={[amount]}
           tx={api.tx.market.register}
         />
       </Modal.Actions>

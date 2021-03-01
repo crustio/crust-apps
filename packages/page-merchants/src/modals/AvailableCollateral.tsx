@@ -1,5 +1,6 @@
 // Copyright 2017-2021 @polkadot/react-query authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+/* eslint-disable */
 
 import type { AccountId, AccountIndex, Address } from '@polkadot/types/interfaces';
 
@@ -7,7 +8,6 @@ import React from 'react';
 
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
-
 
 interface Props {
   children?: React.ReactNode;

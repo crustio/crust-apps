@@ -1,15 +1,16 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { AccountName, IdentityIcon, Label } from '@polkadot/react-components';
-import { toShortAddress } from '@polkadot/react-components/util';
 import type { AccountId, AccountIndex, Address } from '@polkadot/types/interfaces';
 import type { KeyringItemType } from '@polkadot/ui-keyring/types';
 
 import BN from 'bn.js';
 import React from 'react';
 import styled from 'styled-components';
+
 import { useTranslation } from '@polkadot/apps/translate';
+import { AccountName, IdentityIcon, Label } from '@polkadot/react-components';
+import { toShortAddress } from '@polkadot/react-components/util';
 import { FormatBalance } from '@polkadot/react-query';
 
 interface Props {
@@ -35,7 +36,7 @@ interface Props {
   withShrink?: boolean;
 }
 
-function AddressMiniForEffectiveStake ({ totalStake, effectiveStake, children, className = '', iconInfo, isHighlight, isPadded = true, label, value, withAddress = true, withName = true, withShrink = false, withSidebar = true }: Props): React.ReactElement<Props> | null {
+function AddressMiniForEffectiveStake ({ children, className = '', effectiveStake, iconInfo, isHighlight, isPadded = true, label, totalStake, value, withAddress = true, withName = true, withShrink = false, withSidebar = true }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
 
   if (!value) {
@@ -72,7 +73,7 @@ function AddressMiniForEffectiveStake ({ totalStake, effectiveStake, children, c
         {children}
       </div>
       <div className='ui--AddressMini-balances'>
-        <Label label={t<string>('total stake')} /><FormatBalance  value={totalStake}></FormatBalance>
+        <Label label={t<string>('total stake')} /><FormatBalance value={totalStake}></FormatBalance>
         <Label label={t<string>('effective stake')} /><FormatBalance value={effectiveStake}></FormatBalance>
       </div>
     </div>

@@ -1,5 +1,6 @@
 // Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+/* eslint-disable */
 
 import type { ActionStatus } from '@polkadot/react-components/Status/types';
 import type { AccountId, ProxyDefinition, ProxyType, Voting } from '@polkadot/types/interfaces';
@@ -8,14 +9,15 @@ import BN from 'bn.js';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 
+import { Delegation, SortedAccount } from '@polkadot/app-accounts/types';
+import { sortAccounts } from '@polkadot/app-accounts/util';
+import { useTranslation } from '@polkadot/apps/translate';
 import { Button, Input, Table } from '@polkadot/react-components';
 import { useAccounts, useApi, useCall, useFavorites, useLoadingDelay, useToggle } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
-import { Delegation, SortedAccount } from '@polkadot/app-accounts/types';
-import { useTranslation } from '@polkadot/apps/translate';
-import { sortAccounts } from '@polkadot/app-accounts/util';
-import Merchant from './Merchant';
+
 import Register from '../modals/Register';
+import Merchant from './Merchant';
 
 interface Balances {
   accounts: Record<string, BN>;
@@ -70,39 +72,43 @@ function Overview ({ className = '' }: Props): React.ReactElement<Props> {
   const getAllMerchants = () => {
     let unsub: (() => void) | undefined;
     const fns: any[] = [
-      [api.query.market.merchantLedgers.entries],
+      [api.query.market.merchantLedgers.entries]
     ];
     const allMerchants:string[] = [];
+
     api.combineLatest<any[]>(fns, ([ledgers]): void => {
-        if (Array.isArray(ledgers)) {
-          ledgers.forEach(([{ args: [accountId] }]) => {
-            allMerchants.push(accountId.toString());
-          });
-          setAllMerchants(allMerchants);
-        } 
+      if (Array.isArray(ledgers)) {
+        ledgers.forEach(([{ args: [accountId] }]) => {
+          allMerchants.push(accountId.toString());
+        });
+        setAllMerchants(allMerchants);
+      }
     }).then((_unsub): void => {
-        unsub = _unsub;
+      unsub = _unsub;
     }).catch(console.error);
+
     return (): void => {
       unsub && unsub();
     };
-  }
+  };
 
   useEffect(() => {
-    getAllMerchants()
-  }, [])
+    getAllMerchants();
+  }, []);
 
   useEffect(() => {
-      const tmp: SortedAccount[] = [];
-      if (sortedAccountsWithDelegation && allMerchants) {
-        for (const myAccount of sortedAccountsWithDelegation) {
-          if (allMerchants.includes(myAccount.account.address.toString())) {
-              tmp.push(myAccount);
-          }
+    const tmp: SortedAccount[] = [];
+
+    if (sortedAccountsWithDelegation && allMerchants) {
+      for (const myAccount of sortedAccountsWithDelegation) {
+        if (allMerchants.includes(myAccount.account.address.toString())) {
+          tmp.push(myAccount);
         }
-        setOwnMerchants(tmp);      
       }
-  }, [sortedAccountsWithDelegation, allMerchants])
+
+      setOwnMerchants(tmp);
+    }
+  }, [sortedAccountsWithDelegation, allMerchants]);
 
   useEffect((): void => {
     const sortedAccounts = sortAccounts(allAccounts, favorites);
@@ -166,11 +172,11 @@ function Overview ({ className = '' }: Props): React.ReactElement<Props> {
   return (
     <div className={className}>
       {isRegisterOpen && (
-          <Register
-            key='modal-transfer'
-            onClose={toggleRegister}
-            onSuccess={getAllMerchants}
-          />
+        <Register
+          key='modal-transfer'
+          onClose={toggleRegister}
+          onSuccess={getAllMerchants}
+        />
       )}
       <Button.Group>
         <Button

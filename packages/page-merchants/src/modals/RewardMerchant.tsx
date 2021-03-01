@@ -3,16 +3,14 @@
 
 import React from 'react';
 
+import { useTranslation } from '@polkadot/apps/translate';
 import { Available, InputAddress, Modal, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
-
-import { useTranslation } from '@polkadot/apps/translate';
 
 interface Props {
   accountId: string | null;
   onClose: () => void;
 }
-
 
 function RewardMerchant ({ accountId, onClose }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();

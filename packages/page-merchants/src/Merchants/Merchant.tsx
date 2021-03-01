@@ -1,5 +1,6 @@
 // Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+/* eslint-disable */
 
 import type { DeriveBalancesAll } from '@polkadot/api-derive/types';
 import type { Option } from '@polkadot/types';
@@ -10,11 +11,12 @@ import BN from 'bn.js';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 
+import { Delegation } from '@polkadot/app-accounts/types';
+import { useTranslation } from '@polkadot/apps/translate';
 import { AddressSmall, Badge, Button, Icon, IdentityIcon } from '@polkadot/react-components';
 import { useAccountInfo, useApi, useCall, useToggle } from '@polkadot/react-hooks';
 import { formatBalance, formatNumber } from '@polkadot/util';
-import { useTranslation } from '@polkadot/apps/translate';
-import { Delegation } from '@polkadot/app-accounts/types';
+
 import AddCollateral from '../modals/AddCollateral';
 import CutCollateral from '../modals/CutCollateral';
 import RewardMerchant from '../modals/RewardMerchant';
@@ -30,7 +32,6 @@ interface Props {
   toggleFavorite: (address: string) => void;
 }
 
-
 function calcVisible (filter: string, name: string, tags: string[]): boolean {
   if (filter.length === 0) {
     return true;
@@ -42,7 +43,6 @@ function calcVisible (filter: string, name: string, tags: string[]): boolean {
     return result || tag.toLowerCase().includes(_filter);
   }, name.toLowerCase().includes(_filter));
 }
-
 
 const transformRecovery = {
   transform: (opt: Option<RecoveryConfig>) => opt.unwrapOr(null)
@@ -84,22 +84,22 @@ function Account ({ account: { address }, className = '', filter, isFavorite, se
   return (
     <tr className={className}>
       {isAddCollateralOpen && (
-          <AddCollateral
-            accountId={address}
-            onClose={toggleAddCollateral}
-          />
+        <AddCollateral
+          accountId={address}
+          onClose={toggleAddCollateral}
+        />
       )}
       {isCutCollateralOpen && (
-          <CutCollateral
-            accountId={address}
-            onClose={toggleCutCollateral}
-          />
+        <CutCollateral
+          accountId={address}
+          onClose={toggleCutCollateral}
+        />
       )}
       {isRewardMerchantOpen && (
-          <RewardMerchant
-            accountId={address}
-            onClose={toggleRewardMerchant}
-          />
+        <RewardMerchant
+          accountId={address}
+          onClose={toggleRewardMerchant}
+        />
       )}
       <td className='favorite'>
         <Icon
@@ -147,7 +147,7 @@ function Account ({ account: { address }, className = '', filter, isFavorite, se
       </td>
       <td className='address'>
         <AddressSmall value={address} />
-      </td>   
+      </td>
       <td className='number together'>
         {formatBalance(reward)}
       </td>

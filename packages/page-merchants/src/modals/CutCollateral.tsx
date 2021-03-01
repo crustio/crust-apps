@@ -4,18 +4,17 @@
 import BN from 'bn.js';
 import React, { useState } from 'react';
 
+import { useTranslation } from '@polkadot/apps/translate';
 import { InputAddress, InputBalance, Modal, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 
-import { useTranslation } from '@polkadot/apps/translate';
 import AvailableCollateral from './AvailableCollateral';
 
 interface Props {
   accountId: string | null;
   onClose: () => void;
 }
-
 
 function CutCollateral ({ accountId, onClose }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
@@ -44,14 +43,14 @@ function CutCollateral ({ accountId, onClose }: Props): React.ReactElement<Props
               <InputBalance
                 autoFocus
                 isError={!maxAdditional || maxAdditional.eqn(0)}
-                label={t<string>('cut collateral')} 
-                onChange={setMaxAdditional}
+                label={t<string>('cut collateral')}
                 labelExtra={
                   <AvailableCollateral
                     label={t<string>('collateral')}
                     params={accountId}
                   />
                 }
+                onChange={setMaxAdditional}
               />
             </Modal.Column>
           </Modal.Columns>
