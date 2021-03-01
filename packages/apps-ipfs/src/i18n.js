@@ -6,7 +6,6 @@ import Backend from 'i18next-chained-backend';
 import HttpBackend from 'i18next-http-backend';
 import ICU from 'i18next-icu';
 import en from 'i18next-icu/locale-data/en';
-import LocalStorageBackend from 'i18next-localstorage-backend';
 
 const localeData = [en];
 
@@ -16,13 +15,8 @@ i18nInstance.use(new ICU({ localeData }))
   .use(Backend)
   .use(LanguageDetector).init({
     backend: {
-      backends: [LocalStorageBackend, HttpBackend],
+      backends: [HttpBackend],
       backendOptions: [
-        {
-        // LocalStorageBackend
-          defaultVersion: 'v1',
-          expirationTime: !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? 1 : 7 * 24 * 60 * 60 * 1000
-        },
         {
         // HttpBackend
         // ensure a relative path is used to look up the locales, so it works when loaded from /ipfs/<cid>
