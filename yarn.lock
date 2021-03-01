@@ -2453,18 +2453,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@polkadot/app-merchants@workspace:packages/page-merchants":
-  version: 0.0.0-use.local
-  resolution: "@polkadot/app-merchants@workspace:packages/page-merchants"
-  dependencies:
-    "@babel/runtime": ^7.12.5
-    "@polkadot/app-explorer": ^0.74.1
-    "@polkadot/react-components": ^0.74.1
-    "@polkadot/react-query": ^0.74.1
-    "@polkadot/test-support": 0.74.1
-  languageName: unknown
-  linkType: soft
-
 "@polkadot/app-parachains@workspace:packages/page-parachains":
   version: 0.0.0-use.local
   resolution: "@polkadot/app-parachains@workspace:packages/page-parachains"
@@ -2670,6 +2658,18 @@ __metadata:
     topojson: ^3.0.2
     uint8arrays: ^1.1.0
     window-or-global: ^1.0.1
+  languageName: unknown
+  linkType: soft
+
+"@polkadot/apps-merchants@workspace:packages/page-merchants":
+  version: 0.0.0-use.local
+  resolution: "@polkadot/apps-merchants@workspace:packages/page-merchants"
+  dependencies:
+    "@babel/runtime": ^7.12.5
+    "@polkadot/app-explorer": ^0.74.1
+    "@polkadot/react-components": ^0.74.1
+    "@polkadot/react-query": ^0.74.1
+    "@polkadot/test-support": 0.74.1
   languageName: unknown
   linkType: soft
 
