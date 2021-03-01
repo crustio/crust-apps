@@ -16,6 +16,7 @@ import explorer from './explorer';
 import extrinsics from './extrinsics';
 import ipfsFiles from './ipfsFiles';
 import js from './js';
+import merchants from './merchants';
 import parachains from './parachains';
 import poll from './poll';
 import rpc from './rpc';
@@ -54,6 +55,7 @@ export default function create (t: TFunction): Routes {
     signing(t),
     sudo(t),
     js(t),
-    settings(t)
+    settings(t),
+    merchants(t)
   ];
 }
