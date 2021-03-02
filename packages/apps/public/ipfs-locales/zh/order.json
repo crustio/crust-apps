@@ -32,6 +32,7 @@
   "tipTitle": "小费",
   "tipDesc": "高额的小费可以使文件被更多商户存储",
   "priceDesc": "需要为这个文件支付的最低存储价格",
+  "File price": "文件价格",
   "confirm": "确认",
   "status": {
     "PENDING": "待处理",

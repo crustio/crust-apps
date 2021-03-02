@@ -36,6 +36,7 @@
   "tipTitle": "Tip",
   "tipDesc": "Files would be stored by more merchants with higher tips.",
   "priceDesc": "The minimum storage price that needs to be paid for this file.",
+  "File price": "File price",
   "confirm": "Confirm",
   "status": {
     "PENDING": "pending",

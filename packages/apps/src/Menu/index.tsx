@@ -103,9 +103,8 @@ function Menu ({ className = '' }: Props): React.ReactElement<Props> {
     governance: t('Governance'),
     network: t('Network'),
     settings: t('Settings'),
-    ipfs: t('ipfs')
+    storage: t('ipfs')
   });
-
   const routeRef = useRef(createRoutes(t));
 
   const hasSudo = useMemo(
