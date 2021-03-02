@@ -15,6 +15,7 @@ import WelcomePage from '../welcome/LoadableWelcomePage';
 export default createRouteBundle({
   '/storage/explore': StartExploringPage,
   '/storage/explore*': ExplorePage,
+  '/storage/files': FilesPage,
   '/storage/files*': FilesPage,
   '/storage/ipfs*': FilesPage,
   '/storage/ipns*': FilesPage,

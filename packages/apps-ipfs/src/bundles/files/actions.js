@@ -218,7 +218,6 @@ const actions = () => ({
 
     const stats = await stat(ipfs, resolvedPath);
 
-    console.log(stats);
     const time = Date.now();
 
     switch (stats.type) {
