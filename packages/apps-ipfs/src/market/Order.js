@@ -45,6 +45,9 @@ const Order = ({ watchList, doAddOrders }) => {
   const handleFilterWatchList = (fileCid) => {
     setFilterCid(fileCid)
   };
+  const handleClick = () => {
+    window.open('https://splorer.crust.network', '_blank')
+  }
   const handleFileChange = (e) => {
     const fileReader = new FileReader();
     fileReader.readAsText(e.target.files[0], "UTF-8");
@@ -107,6 +110,9 @@ const Order = ({ watchList, doAddOrders }) => {
               handleExport()
             }, 2000)
             }>{t('exportBtn')}</button>
+            &nbsp;&nbsp;
+            {/*TODO: waiting the value*/}
+            <button className='btn' onClick={handleClick}>{t('jumpToSplore')}</button>
         </div>
       </div>
       <div className={'orderList-header'}>
