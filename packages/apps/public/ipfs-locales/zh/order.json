@@ -7,7 +7,7 @@
     "fileCid": "文件CID",
     "fileSize": "文件大小",
     "startTime": "开始块高",
-    "expireTime": "到期块高",
+    "expireTime": "有效期至 (块高 / 时间)",
     "confirmedReplicas": "副本数",
     "globalReplicas": "全网副本数",
     "fileStatus": "状态",
