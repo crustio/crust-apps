@@ -36,7 +36,7 @@
   "confirm": "确认",
   "status": {
     "PENDING": "待处理",
-    "SUCCESS": "成功",
+    "SUCCESS": "履行中",
     "FAILED": "失败",
     "EXPIRE": "过期"
   },
