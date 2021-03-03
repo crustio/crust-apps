@@ -28,5 +28,6 @@
   "nav.treasury": "Treasury",
   "peers": "Peers",
   "settings": "IPFS Settings",
-  "status": "Status"
+  "status": "Status",
+  "nav.splore": "Splore"
 }
