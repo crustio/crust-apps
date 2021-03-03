@@ -7,7 +7,7 @@
     "fileCid": "File CID",
     "fileSize": "File Size",
     "startTime": "Start Block Height",
-    "expireTime": "Expired Block Height",
+    "expireTime": "Expired on (Block height / Date)",
     "globalReplicas": "Global Replicas",
     "confirmedReplicas": "Replicas",
     "fileStatus": "Status",
