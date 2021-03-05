@@ -12,7 +12,7 @@ const Component = () => {
 
   history.push('/');
 
-  return <div>Splore</div>;
+  return <div>Splorer</div>;
 };
 
 export default function create (t: TFunction): Route {
@@ -24,7 +24,7 @@ export default function create (t: TFunction): Route {
     href: 'https://splorer.crust.network',
     group: 'network',
     icon: 'boxes',
-    name: 'splore',
-    text: t('nav.splore', 'Splore', { ns: 'apps-routing' })
+    name: 'splorer',
+    text: t('nav.splorer', 'Splorer', { ns: 'apps-routing' })
   };
 }
