@@ -110,9 +110,6 @@ const Order = ({ watchList, doAddOrders }) => {
               handleExport()
             }, 2000)
             }>{t('exportBtn')}</button>
-            &nbsp;&nbsp;
-            {/*TODO: waiting the value*/}
-            <button className='btn' onClick={handleClick}>{t('jumpToSplore')}</button>
         </div>
       </div>
       <div className={'orderList-header'}>
