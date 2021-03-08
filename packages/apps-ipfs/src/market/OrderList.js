@@ -9,6 +9,7 @@ import { AutoSizer, List, WindowScroller } from 'react-virtualized';
 import { connect } from 'redux-bundler-react';
 import { StatusContext } from '../../../react-components/src';
 import WatchItem from '@polkadot/apps-ipfs/market/WatchItem';
+import PoolModal from '../files/modals/pool-modal/PoolModal';
 
 import Checkbox from '../components/checkbox/Checkbox';
 const itemList = [{
@@ -29,14 +30,14 @@ const itemList = [{
   },
   {
     name: 'fileStatus',
-    width: 10,
+    width: 5,
   },
   {
     name: 'poolBalance',
     width: 10,
   }];
 
-const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
+const OrderList = ({ identity, onAddPool, ipfsReady, doUpdateWatchItem, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
   const [listSorting, setListSorting] = useState({ by: 'expireTime', asc: false });
   const [sortedList, setSortedList] = useState(watchList)
   const [editItem, setEditItem] = useState(undefined)
@@ -59,7 +60,6 @@ const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, on
     doSelectedItems(selectedCidList);
     tableRef.current.forceUpdateGrid();
   };
-
   const toggleAll = () => {
     const isSelected = isAllSelected();
 
@@ -136,7 +136,7 @@ const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, on
             </button>
           </div>
         ))}
-        <div className='ph2 pv1 flex-auto db-l tc w-10 watch-list-header'>{t('actions.action')}</div>
+        <div className='ph2 pv1 flex-auto db-l tc w-15 watch-list-header'>{t('actions.action')}</div>
       </header>
       <WindowScroller>
         {({ height, isScrolling, onChildScroll, scrollTop }) => (
@@ -158,6 +158,7 @@ const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, on
                   rowHeight={50}
                   rowRenderer={({ index, key }) => {
                     return <WatchItem
+                      onAddPool={onAddPool}
                       tableRef={tableRef}
                       key={key}
                       onSelect={toggleOne}
@@ -199,7 +200,8 @@ OrderList.propTypes = {
   doFetchWatchList: propTypes.func,
   doSelectedItems: propTypes.func,
   selectSelectedCidList: propTypes.array,
-  doUpdateWatchItem: propTypes.func
+  doUpdateWatchItem: propTypes.func,
+  onAddPool: propTypes.func.isRequired
 };
 
 export default connect('selectWatchedCidList', 'selectIpfsReady', 'doRemoveWatchItems', 'selectIdentity', 'doFetchWatchList', 'doSelectedItems', 'selectSelectedCidList', 'doUpdateWatchItem', withTranslation('order')(OrderList));

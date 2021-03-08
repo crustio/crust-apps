@@ -8,6 +8,7 @@ import { useTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 
 import OrderModal from '../files/modals/order-modal/OrderModal';
+import PoolModal from '../files/modals/pool-modal/PoolModal';
 import OrderList from './OrderList';
 import WatchListInput from './WatchListInput';
 import FileSaver from 'file-saver';
@@ -21,6 +22,8 @@ const Order = ({ watchList, doAddOrders }) => {
   const [fileInfo, setFileInfo] = useState(null);
   const [filterCid, setFilterCid] = useState(undefined)
   const { queueAction } = useContext(StatusContext);
+  const [poolBalanceModal, togglePoolBalanceModal] = useState(false)
+
   const {t} = useTranslation('order')
   const _onImportResult = useCallback(
     (message, status = 'queued') => {
@@ -45,6 +48,12 @@ const Order = ({ watchList, doAddOrders }) => {
   const handleFilterWatchList = (fileCid) => {
     setFilterCid(fileCid)
   };
+  const handleAddPool = (item) => {
+    // add pool
+    setFileInfo({ cid: item.fileCid, originalSize: item.fileSize, comment: item.comment, poolBalance: 10 });
+    togglePoolBalanceModal(file)
+  }
+
   const handleClick = () => {
     window.open('https://splorer.crust.network', '_blank')
   }
@@ -86,6 +95,9 @@ const Order = ({ watchList, doAddOrders }) => {
 
   return (
     <div className={'w-100'}>
+      {
+        poolBalanceModal && <PoolModal file={fileInfo}/>
+      }
       {
         modalShow && <OrderModal
           file={fileInfo}
@@ -129,7 +141,7 @@ const Order = ({ watchList, doAddOrders }) => {
         onFilterWatchList={handleFilterWatchList}
       />
       {tableData
-        ? <OrderList onToggleBtn={handleToggleBtn}
+        ? <OrderList onAddPool={handleAddPool} onToggleBtn={handleToggleBtn}
           watchList={tableData}/>
         : <div>noone</div>}
     </div>

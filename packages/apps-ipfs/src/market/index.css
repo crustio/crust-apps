@@ -21,12 +21,12 @@
 .watch-item-btn {
   text-align: center;
   display: inline-block;
-  font-size: 14px;
-  width: 100px;
+  font-size: 13px;
+  width: 90px;
   height: 30px;
   transition: all 0.2s ease-in-out;
   background-color: #f9f9f9;
-  border-radius: 5px;
+  border-radius: 2px;
 }
 .watch-item-btn:hover {
   background-color: #ff8812;

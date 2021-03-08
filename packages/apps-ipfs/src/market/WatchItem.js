@@ -48,7 +48,7 @@ const Comment = ({ t, isEdit, comment, startEdit, confirmEdit }) => {
       </div>}
   </div>
 }
-const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confirmEdit, doUpdateWatchItem, onToggleBtn, selected, watchItem }) => {
+const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startEdit, confirmEdit, doUpdateWatchItem, onToggleBtn, selected, watchItem }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
   const checkBoxCls = classnames({
@@ -109,7 +109,6 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
   const readableSize = watchItem.fileSize ? filesize(watchItem.fileSize, { round: 2 }) : '-';
   const calculateExpiredTime = (expireBlock) => {
     const durations = (expireBlock - bestNumber) * 6
-    console.log(durations);
     return dayjs().add(durations, 'seconds').format('YYYY-MM-DD')
   }
 
@@ -162,7 +161,7 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
     <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
       {watchItem.confirmedReplicas || '-'}
     </div>
-    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-10'>{
+    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-5'>{
       watchItem.fileStatus === fileStatusEnum.PENDING ?
         <Popup
           className="my-popup"
@@ -185,7 +184,7 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
     <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
       {watchItem.confirmedReplicas || '-'}
     </div>
-    <div className='relative tc  flex justify-center items-center  ph2 pv1 w-10'>
+    <div className='relative tc  flex justify-center items-center  ph2 pv1 w-15'>
       {
         !ipfsConnected && watchItem.fileStatus !== fileStatusEnum.SUCCESS ?
           <Popup position={['top right']} on={['hover', 'focus']} className={'my-popup'} contentStyle={{width: 'auto'}} trigger={
@@ -198,6 +197,13 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
                              onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem);
                            }}>{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</button>
       }
+      &nbsp;&nbsp;
+      {
+        <button className={'watch-item-btn'}
+                onClick={() => {
+                  onAddPool(watchItem)
+                }}>addPool</button>
+      }
     </div>
   </div>;
 };
@@ -208,6 +214,7 @@ WatchItem.prototype = {
   onSelect: PropTypes.func.isRequired,
   selected: PropTypes.bool,
   onToggleBtn: PropTypes.func.isRequired,
+  onAddPool: PropTypes.func.isRequired,
   ipfsConnected: PropTypes.bool.isRequired
 };
 
