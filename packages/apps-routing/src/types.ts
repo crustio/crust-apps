@@ -20,6 +20,7 @@ export interface Route {
     needsApi?: (string | string[])[];
     needsSudo?: boolean;
   };
+  href?: string;
   group: RouteGroup;
   icon: IconName | 'ipfs';
   isIgnored?: boolean;

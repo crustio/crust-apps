@@ -8414,6 +8414,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dayjs@npm:^1.10.4":
+  version: 1.10.4
+  resolution: "dayjs@npm:1.10.4"
+  checksum: 3b7bb2232fff808209870bc72d4b2000941a1aa45f0226e2907f9dd1dda306d4b3a1eb9058450fd2c324b01a007a37809ac6f9b525806a86902c55e2934cd5d5
+  languageName: node
+  linkType: hard
+
 "debug@npm:2.6.9, debug@npm:^2.2.0, debug@npm:^2.3.3, debug@npm:^2.6.9":
   version: 2.6.9
   resolution: "debug@npm:2.6.9"
@@ -19871,6 +19878,7 @@ fsevents@~2.1.2:
     "@types/styled-components": ^5.1.7
     "@types/styled-theming": ^2.2.5
     concurrently: ^5.3.0
+    dayjs: ^1.10.4
     devtron: ^1.4.0
     dnslink-cloudflare: ^3.0.0
     electron: ^11.1.1

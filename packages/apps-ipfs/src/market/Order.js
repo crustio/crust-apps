@@ -45,6 +45,9 @@ const Order = ({ watchList, doAddOrders }) => {
   const handleFilterWatchList = (fileCid) => {
     setFilterCid(fileCid)
   };
+  const handleClick = () => {
+    window.open('https://splorer.crust.network', '_blank')
+  }
   const handleFileChange = (e) => {
     const fileReader = new FileReader();
     fileReader.readAsText(e.target.files[0], "UTF-8");

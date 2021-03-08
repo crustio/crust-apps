@@ -7,7 +7,7 @@
     "fileCid": "文件CID",
     "fileSize": "文件大小",
     "startTime": "开始块高",
-    "expireTime": "到期块高",
+    "expireTime": "有效期至 (块高 / 时间)",
     "confirmedReplicas": "副本数",
     "globalReplicas": "全网副本数",
     "fileStatus": "状态",
@@ -36,7 +36,7 @@
   "confirm": "确认",
   "status": {
     "PENDING": "待处理",
-    "SUCCESS": "成功",
+    "SUCCESS": "履行中",
     "FAILED": "失败",
     "EXPIRE": "过期"
   },
@@ -63,5 +63,6 @@
   },
   "addNoteTip": "请添加备注",
   "importBtn": "导入订单列表",
-  "exportBtn": "导出订单列表"
+  "exportBtn": "导出订单列表",
+  "jumpToSplorer": "查看所有订单"
 }

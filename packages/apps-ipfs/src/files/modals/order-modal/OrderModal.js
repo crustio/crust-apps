@@ -12,6 +12,7 @@ import { Available } from '@polkadot/react-query';
 import { formatBalance } from '@polkadot/util';
 
 import { Input, InputAddress, InputBalance, InputNumber, Modal, TxButton } from '../../../../../react-components/src';
+import { BitLengthOption } from '../../../../../react-components/src/constants';
 
 const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'order' }) => {
   const { hasAccounts } = useAccounts();
@@ -24,6 +25,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
   const [cidNotValid, setCidNotValid] = useState(false);
   const { api, isApiReady } = useApi();
   const filePrice = useCall(isApiReady && api.query.market.filePrice) || new BN(0);
+  const DEFAULT_BITLENGTH = BitLengthOption.CHAIN_SPEC;
 
   useEffect(() => {
     // 0.002cru + storagePrice + tip
@@ -89,10 +91,11 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
           <Modal.Column>
             <InputNumber
               autoFocus
+              bitLength={DEFAULT_BITLENGTH}
+              isError={false}
               help={t('fileSizeDesc')}
               isDisabled={title === 'speed' || title === 'renew'}
               label={t('fileSizeTitle')}
-              maxLength={30}
               onChange={setFileSize}
               value={fileSize}
             />

@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import React, { useCallback, useContext, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
+import dayjs from 'dayjs';
 
 import Cid from '@polkadot/apps-ipfs/components/cid/Cid';
 import StrokeCopy from '@polkadot/apps-ipfs/icons/StrokeCopy';
@@ -106,6 +107,11 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
 
   watchItem.fileStatus = status;
   const readableSize = watchItem.fileSize ? filesize(watchItem.fileSize, { round: 2 }) : '-';
+  const calculateExpiredTime = (expireBlock) => {
+    const durations = (expireBlock - bestNumber) * 6
+    console.log(durations);
+    return dayjs().add(durations, 'seconds').format('YYYY-MM-DD')
+  }
 
   const buttonTextEnm = {
 
@@ -149,7 +155,8 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
     </div>
     <div className='relative tc flex  justify-center items-center  ph2 pv1 w-10'>
       <div className=''>
-        {watchItem.expireTime || '-'}
+        {/*(expireTime - bestNumber) / 6*/}
+        {watchItem.expireTime  ? <span>{watchItem.expireTime} / {calculateExpiredTime(watchItem.expireTime)} </span> : '-'}
       </div>
     </div>
     <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
