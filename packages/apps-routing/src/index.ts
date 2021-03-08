@@ -23,6 +23,7 @@ import rpc from './rpc';
 import settings from './settings';
 import signing from './signing';
 import society from './society';
+import splore from './splore';
 import staking from './staking';
 import storage from './storage';
 import sudo from './sudo';
@@ -56,6 +57,7 @@ export default function create (t: TFunction): Routes {
     sudo(t),
     js(t),
     settings(t),
-    merchants(t)
+    merchants(t),
+    splore(t)
   ];
 }

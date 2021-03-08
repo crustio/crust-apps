@@ -7,7 +7,7 @@
     "fileCid": "File CID",
     "fileSize": "File Size",
     "startTime": "Start Block Height",
-    "expireTime": "Expired Block Height",
+    "expireTime": "Expired on (Block height / Date)",
     "globalReplicas": "Global Replicas",
     "confirmedReplicas": "Replicas",
     "fileStatus": "Status",
@@ -40,7 +40,7 @@
   "confirm": "Confirm",
   "status": {
     "PENDING": "pending",
-    "SUCCESS": "success",
+    "SUCCESS": "ongoing",
     "FAILED": "failed",
     "EXPIRE": "expired"
   },
@@ -67,5 +67,6 @@
   },
   "addNoteTip": "Please add note",
   "importBtn": "Import order list",
-  "exportBtn": "Export order list"
+  "exportBtn": "Export order list",
+  "jumpToSplorer": "View All Orders"
 }
