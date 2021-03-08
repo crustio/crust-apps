@@ -15,7 +15,7 @@ export default {
     expired_on: 'BlockNumber',
     claimed_at: 'BlockNumber',
     amount: 'Balance',
-    expected_replica_count: 'u32',
+    prepaid: 'Balance',
     reported_replica_count: 'u32',
     replicas: 'Vec<Replica<AccountId>>'
   },
