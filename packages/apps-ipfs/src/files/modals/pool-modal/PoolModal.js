@@ -4,7 +4,7 @@ import BN from 'bn.js';
 import Fsize from 'filesize';
 import isIPFS from 'is-ipfs';
 import React, { useEffect, useState } from 'react';
-import { withTranslation } from 'react-i18next';
+import { useTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 
 import { useAccounts, useApi, useCall } from '@polkadot/react-hooks';
@@ -14,21 +14,23 @@ import { formatBalance } from '@polkadot/util';
 import { Input, InputAddress, InputBalance, InputNumber, Modal, TxButton } from '../../../../../react-components/src';
 import { BitLengthOption } from '../../../../../react-components/src/constants';
 
-const PoolModal = (file, onClose, onSuccess) => {
+const PoolModal = ({ file, onClose, onSuccess }) => {
+  console.log(file);
+  const {t} = useTranslation('order')
   const { hasAccounts } = useAccounts();
   const [account, setAccount] = useState(null);
   const [fileCid, setFileCID] = useState(file ? file.cid.toString() : '');
-  const [] = useState()
+  const [prepaid, setPrepaid] = useState(file ? file.prepaid : '')
   // TODO: add pool balance
 
-
+  console.log(123);
   return <Modal
     className='order--accounts-Modal'
-    header={t(`actions.${title || 'order'}`, 'Order')}
+    header={'title'}
     size='large'
   >
     <Modal.Content>
-      <div className={className}>
+      <div>
         <Modal.Columns>
           <Modal.Column>
             <InputAddress
@@ -85,10 +87,10 @@ const PoolModal = (file, onClose, onSuccess) => {
           <Modal.Column>
             <InputBalance
               autoFocus
-              defaultValue={poolBalance}
+              defaultValue={prepaid}
               help={t('poolBalanceDesc')}
               label={t('poolBalanceTitle')}
-              onChange={setPoolBalance}
+              onChange={setPrepaid}
               onlyCru
             />
           </Modal.Column>
@@ -103,7 +105,7 @@ const PoolModal = (file, onClose, onSuccess) => {
       <TxButton
         accountId={account}
         icon='paper-plane'
-        isDisabled={!fileCid || !fileSize || !account || !tip || cidNotValid}
+        isDisabled={!fileCid || !account || !poolBalance}
         label={t('confirm')}
         onStart={() => {
           onClose();
@@ -111,9 +113,9 @@ const PoolModal = (file, onClose, onSuccess) => {
         onSuccess={() => {
         }}
         params={
-          [fileCid, fileSize, tip, false]
+          [fileCid, false]
         }
-        tx={ }
+        tx={'test' }
       />
     </Modal.Actions>
   </Modal>;

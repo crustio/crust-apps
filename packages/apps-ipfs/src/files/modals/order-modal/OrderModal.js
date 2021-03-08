@@ -181,7 +181,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
           });
         }}
         params={
-          [fileCid, fileSize, tip, false]
+          [fileCid, fileSize, tip]
         }
         tx={api.tx.market.placeStorageOrder }
       />

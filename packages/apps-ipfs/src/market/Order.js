@@ -50,8 +50,9 @@ const Order = ({ watchList, doAddOrders }) => {
   };
   const handleAddPool = (item) => {
     // add pool
+    console.log(item);
     setFileInfo({ cid: item.fileCid, originalSize: item.fileSize, comment: item.comment, poolBalance: 10 });
-    togglePoolBalanceModal(file)
+    togglePoolBalanceModal(true)
   }
 
   const handleClick = () => {
