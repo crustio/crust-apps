@@ -17,6 +17,7 @@ import extrinsics from './extrinsics';
 import ipfsFiles from './ipfsFiles';
 import js from './js';
 import merchants from './merchants';
+import settlements from './settlements';
 import parachains from './parachains';
 import poll from './poll';
 import rpc from './rpc';
@@ -56,6 +57,7 @@ export default function create (t: TFunction): Routes {
     sudo(t),
     js(t),
     settings(t),
-    merchants(t)
+    merchants(t),
+    settlements(t)
   ];
 }

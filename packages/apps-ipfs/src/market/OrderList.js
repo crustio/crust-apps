@@ -21,7 +21,7 @@ const itemList = [{
   },
   {
     name: 'expireTime',
-    width: 15,
+    width: 10,
   },
   {
     name: 'confirmedReplicas',
@@ -29,7 +29,11 @@ const itemList = [{
   },
   {
     name: 'fileStatus',
-    width: 15,
+    width: 10,
+  },
+  {
+    name: 'poolBalance',
+    width: 10,
   }];
 
 const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {

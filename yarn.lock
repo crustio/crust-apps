@@ -2681,6 +2681,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@polkadot/apps-settlements@workspace:packages/page-settlements":
+  version: 0.0.0-use.local
+  resolution: "@polkadot/apps-settlements@workspace:packages/page-settlements"
+  dependencies:
+    "@babel/runtime": ^7.12.5
+    "@polkadot/app-explorer": ^0.74.1
+    "@polkadot/react-components": ^0.74.1
+    "@polkadot/react-query": ^0.74.1
+    "@polkadot/test-support": 0.74.1
+  languageName: unknown
+  linkType: soft
+
 "@polkadot/apps@workspace:packages/apps":
   version: 0.0.0-use.local
   resolution: "@polkadot/apps@workspace:packages/apps"

@@ -70,6 +70,11 @@ const Order = ({ watchList, doAddOrders }) => {
     toggleModal(true);
   };
 
+  const handleFetch = () => {
+    console.log('fetch');
+  };
+
+
   const handleExport = () =>{
     const _list = watchList.map(_item => ({fileCid: _item.fileCid, comment: _item.comment}))
     const blob = new Blob([JSON.stringify(_list)], { type: 'application/json; charset=utf-8' });
@@ -107,6 +112,11 @@ const Order = ({ watchList, doAddOrders }) => {
               handleExport()
             }, 2000)
             }>{t('exportBtn')}</button>
+            &nbsp;&nbsp;
+            <button className='btn' onClick={_.throttle(() => {
+              handleFetch()
+            }, 2000)
+            }>{t('Fetch', 'Fetch')}</button>
         </div>
       </div>
       <div className={'orderList-header'}>

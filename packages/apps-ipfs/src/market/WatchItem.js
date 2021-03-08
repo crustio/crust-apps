@@ -147,7 +147,7 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
     <div className='relative tc  flex justify-center items-center  ph2 pv1 w-20'>
       <Comment t={t} isEdit={isEdit} startEdit={startEdit} confirmEdit={confirmEdit} comment={watchItem.comment}/>
     </div>
-    <div className='relative tc flex  justify-center items-center  ph2 pv1 w-15'>
+    <div className='relative tc flex  justify-center items-center  ph2 pv1 w-10'>
       <div className=''>
         {watchItem.expireTime || '-'}
       </div>
@@ -155,7 +155,7 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
     <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
       {watchItem.confirmedReplicas || '-'}
     </div>
-    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-15'>{
+    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-10'>{
       watchItem.fileStatus === fileStatusEnum.PENDING ?
         <Popup
           className="my-popup"
@@ -175,6 +175,9 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
       :
       <div style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</div>
     }</div>
+    <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
+      {watchItem.confirmedReplicas || '-'}
+    </div>
     <div className='relative tc  flex justify-center items-center  ph2 pv1 w-10'>
       {
         !ipfsConnected && watchItem.fileStatus !== fileStatusEnum.SUCCESS ?
