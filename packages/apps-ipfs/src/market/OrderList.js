@@ -33,7 +33,7 @@ const itemList = [{
     width: 5,
   },
   {
-    name: 'poolBalance',
+    name: 'prepaid',
     width: 10,
   }];
 

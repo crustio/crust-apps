@@ -22,7 +22,7 @@ const Order = ({ watchList, doAddOrders }) => {
   const [fileInfo, setFileInfo] = useState(null);
   const [filterCid, setFilterCid] = useState(undefined)
   const { queueAction } = useContext(StatusContext);
-  const [poolBalanceModal, togglePoolBalanceModal] = useState(false)
+  const [repaidModal, togglerepaidModal] = useState(false)
 
   const {t} = useTranslation('order')
   const _onImportResult = useCallback(
@@ -50,9 +50,8 @@ const Order = ({ watchList, doAddOrders }) => {
   };
   const handleAddPool = (item) => {
     // add pool
-    console.log(item);
-    setFileInfo({ cid: item.fileCid, originalSize: item.fileSize, comment: item.comment, poolBalance: 10 });
-    togglePoolBalanceModal(true)
+    setFileInfo({ cid: item.fileCid, originalSize: item.fileSize, comment: item.comment, prepaid: item.prepaid });
+    togglerepaidModal(true)
   }
 
   const handleClick = () => {
@@ -97,7 +96,10 @@ const Order = ({ watchList, doAddOrders }) => {
   return (
     <div className={'w-100'}>
       {
-        poolBalanceModal && <PoolModal file={fileInfo}/>
+        repaidModal && <PoolModal onClose={() => {
+          setFileInfo(null);
+          togglerepaidModal(false);
+        }} file={fileInfo}/>
       }
       {
         modalShow && <OrderModal

@@ -9,65 +9,46 @@ import { connect } from 'redux-bundler-react';
 
 import { useAccounts, useApi, useCall } from '@polkadot/react-hooks';
 import { Available } from '@polkadot/react-query';
+import { Input, InputAddress, InputBalance, InputNumber, Modal, TxButton } from '../../../../../react-components/src';
 import { formatBalance } from '@polkadot/util';
 
-import { Input, InputAddress, InputBalance, InputNumber, Modal, TxButton } from '../../../../../react-components/src';
-import { BitLengthOption } from '../../../../../react-components/src/constants';
-
 const PoolModal = ({ file, onClose, onSuccess }) => {
-  console.log(file);
   const {t} = useTranslation('order')
   const { hasAccounts } = useAccounts();
   const [account, setAccount] = useState(null);
   const [fileCid, setFileCID] = useState(file ? file.cid.toString() : '');
-  const [prepaid, setPrepaid] = useState(file ? file.prepaid : '')
-  // TODO: add pool balance
+  const [prepaid, setPrepaid] = useState(0)
+  const { api, isApiReady } = useApi();
 
-  console.log(123);
   return <Modal
     className='order--accounts-Modal'
-    header={'title'}
+    header={t('add prepaid', 'add prepaid')}
     size='large'
   >
     <Modal.Content>
       <div>
-        <Modal.Columns>
-          <Modal.Column>
-            <InputAddress
-              help={t('accountDesc', 'Storage fee will be subtracted from the selected account')}
-              label={t('Please choose account')}
-              isDisabled={!hasAccounts}
-              labelExtra={
-                <Available
-                  label={t('transferrable')}
-                  params={account}
-                />
-              }
-              defaultValue={account}
-              onChange={setAccount}
-              type='account'
+        <InputAddress
+          label={t('Please choose account')}
+          isDisabled={!hasAccounts}
+          labelExtra={
+            <Available
+              label={t('transferrable')}
+              params={account}
             />
-          </Modal.Column>
-          <Modal.Column>
-             {
-               !hasAccounts && <p className='file-info' style={{padding: 0}}>{t('noAccount')}</p>
-             }
-            <p>{t('accountDesc')}</p>
+          }
+          defaultValue={account}
+          onChange={setAccount}
+          type='account'
+        />
+                    <Input
+                      autoFocus
+                      help={t('FileCidDesc')}
+                      label={t('File Cid')}
+                      onChange={setFileCID}
+                      placeholder={t('File Cid')}
+                      value={fileCid}
+                    />
 
-          </Modal.Column>
-        </Modal.Columns>
-        <Modal.Columns>
-          <Modal.Column>
-            <Input
-              autoFocus
-              help={t('FileCidDesc')}
-              label={t('File Cid')}
-              onChange={setFileCID}
-              placeholder={t('File Cid')}
-              value={fileCid}
-            />
-          </Modal.Column>
-        </Modal.Columns>
         {/*<Modal.Columns>*/}
         {/*  <Modal.Column>*/}
         {/*    <InputBalance*/}
@@ -83,21 +64,14 @@ const PoolModal = ({ file, onClose, onSuccess }) => {
         {/*    <p>{t('tipDesc')}</p>*/}
         {/*  </Modal.Column>*/}
         {/*</Modal.Columns>*/}
-        <Modal.Columns>
-          <Modal.Column>
-            <InputBalance
-              autoFocus
-              defaultValue={prepaid}
-              help={t('poolBalanceDesc')}
-              label={t('poolBalanceTitle')}
-              onChange={setPrepaid}
-              onlyCru
-            />
-          </Modal.Column>
-          <Modal.Column>
-            <p>{t('tipDesc')}</p>
-          </Modal.Column>
-        </Modal.Columns>
+        <InputBalance
+          labelExtra={`Current prepaid ${formatBalance(file.prepaid, { decimals: 12, forceUnit: 'CRU' })}`}
+          autoFocus
+          defaultValue={prepaid}
+          label={t('add prepaid')}
+          onChange={setPrepaid}
+        />
+
 
       </div>
     </Modal.Content>
@@ -105,7 +79,7 @@ const PoolModal = ({ file, onClose, onSuccess }) => {
       <TxButton
         accountId={account}
         icon='paper-plane'
-        isDisabled={!fileCid || !account || !poolBalance}
+        isDisabled={!fileCid || !account || !prepaid}
         label={t('confirm')}
         onStart={() => {
           onClose();
@@ -113,9 +87,9 @@ const PoolModal = ({ file, onClose, onSuccess }) => {
         onSuccess={() => {
         }}
         params={
-          [fileCid, false]
+          [fileCid, prepaid]
         }
-        tx={'test' }
+        tx={api.tx.market.addPrepaid}
       />
     </Modal.Actions>
   </Modal>;

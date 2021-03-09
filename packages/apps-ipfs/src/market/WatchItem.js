@@ -20,6 +20,7 @@ import CopyButton from '@polkadot/apps-ipfs/components/copy-button';
 
 import Popup from 'reactjs-popup';
 import Pen from '@polkadot/apps-ipfs/icons/Pen';
+import { formatBalance } from '@polkadot/util';
 
 const fileStatusEnum = {
   PENDING: 'PENDING',
@@ -71,13 +72,13 @@ const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startE
         expired_on,
         file_size,
         replicas,
+        prepaid,
         reported_replica_count } = _fileStatus[0];
-
       watchItem.expireTime = expired_on;
       watchItem.startTime = expired_on ? expired_on - 216000 : 0;
       watchItem.fileSize = file_size;
       watchItem.confirmedReplicas = reported_replica_count
-
+      watchItem.prepaid = prepaid
       if (expired_on && expired_on < bestNumber || (trash1 && trash2)) {
         // expired
         status = fileStatusEnum.EXPIRE;
@@ -182,7 +183,7 @@ const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startE
       <div style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</div>
     }</div>
     <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
-      {watchItem.confirmedReplicas || '-'}
+      {formatBalance(watchItem.prepaid, { decimals: 12, forceUnit: 'CRU' }) || '-'}
     </div>
     <div className='relative tc  flex justify-center items-center  ph2 pv1 w-15'>
       {
@@ -201,6 +202,7 @@ const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startE
       {
         <button className={'watch-item-btn'}
                 onClick={() => {
+                  console.log(watchItem);
                   onAddPool(watchItem)
                 }}>addPool</button>
       }
