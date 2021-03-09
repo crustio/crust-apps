@@ -8,11 +8,13 @@ import laminar from './laminar';
 import moonbeam from './moonbeam';
 import polkabtc from './polkabtc';
 import soraSubstrate from './soraSubstrate';
+import crust from './crust';
 
 export default {
   Equilibrium: equilibrium,
   acala,
   'btc-parachain': polkabtc,
+  crust,
   kulupu,
   laminar,
   mandala: acala,
