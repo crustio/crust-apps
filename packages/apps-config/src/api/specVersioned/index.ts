@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import acala from './acala';
+import crust from './crust';
 import equilibrium from './equilibrium';
 import kulupu from './kulupu';
 import laminar from './laminar';
 import moonbeam from './moonbeam';
 import polkabtc from './polkabtc';
 import soraSubstrate from './soraSubstrate';
-import crust from './crust';
 
 export default {
   Equilibrium: equilibrium,
