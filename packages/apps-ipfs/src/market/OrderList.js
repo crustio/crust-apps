@@ -14,28 +14,40 @@ import PoolModal from '../files/modals/pool-modal/PoolModal';
 import Checkbox from '../components/checkbox/Checkbox';
 const itemList = [{
   name: 'fileSize',
+  label: 'fileSize',
   width: 10,
 },
   {
     name: 'note',
+    label: 'note',
     width: 20,
   },
   {
     name: 'expireTime',
+    label: 'expireTime',
     width: 10,
   },
   {
     name: 'confirmedReplicas',
+    label: 'confirmedReplicas',
     width: 10,
   },
   {
     name: 'fileStatus',
-    width: 5,
+    label: 'fileStatus',
+    width: 10,
+  },
+  {
+    name: 'amount',
+    label: 'Order Fee',
+    width: 10,
   },
   {
     name: 'prepaid',
+    label: 'Renew Pool Balance',
     width: 10,
-  }];
+  }
+];
 
 const OrderList = ({ identity, onAddPool, ipfsReady, doUpdateWatchItem, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
   const [listSorting, setListSorting] = useState({ by: 'expireTime', asc: false });
@@ -124,7 +136,7 @@ const OrderList = ({ identity, onAddPool, ipfsReady, doUpdateWatchItem, doSelect
           <div className={`ph2 pv1 flex-auto db-l  w-${item.width} watch-list-header tc`}
             key={item.name}>
             <button
-              aria-label={t('sortBy', { name: t(`${item.name}`) })}
+              aria-label={t('sortBy', { name: t(`${item.label}`) })}
               onClick={() => {
                 if (item.name === 'note') {
                   return
@@ -132,11 +144,10 @@ const OrderList = ({ identity, onAddPool, ipfsReady, doUpdateWatchItem, doSelect
                 changeSort(item.name);
               }}
             >
-              {t(`actions.${item.name}`)}{sortByIcon(item.name)}
+              {t(`actions.${item.label}`)}{sortByIcon(item.name)}
             </button>
           </div>
         ))}
-        <div className='ph2 pv1 flex-auto db-l tc w-15 watch-list-header'>{t('actions.action')}</div>
       </header>
       <WindowScroller>
         {({ height, isScrolling, onChildScroll, scrollTop }) => (

@@ -148,6 +148,9 @@ button:focus {outline:0!important;}
   fill-opacity: 1;
   fill: #4e4e4e;
 }
+.custom-icon-color {
+  fill: #ff8812;
+}
 .gray-fill {
   fill-opacity: 0.25;
 }

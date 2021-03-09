@@ -6,7 +6,7 @@
 import classnames from 'classnames';
 import filesize from 'filesize';
 import PropTypes from 'prop-types';
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 import dayjs from 'dayjs';
@@ -21,6 +21,12 @@ import CopyButton from '@polkadot/apps-ipfs/components/copy-button';
 import Popup from 'reactjs-popup';
 import Pen from '@polkadot/apps-ipfs/icons/Pen';
 import { formatBalance } from '@polkadot/util';
+import GlyphRenew from '@polkadot/apps-ipfs/icons/GlyphRenew';
+import GlyphPrepaid from '@polkadot/apps-ipfs/icons/GlyphPrepaid';
+import GlyphSpeedup from '@polkadot/apps-ipfs/icons/GlyphSpeedup';
+import GlyphRetry from '@polkadot/apps-ipfs/icons/GlyphRetry';
+import { useHistory } from 'react-router-dom';
+import BN from 'bn.js';
 
 const fileStatusEnum = {
   PENDING: 'PENDING',
@@ -62,6 +68,9 @@ const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startE
   const trash2 = useCall(isApiReady && api.query?.market.transh2, [watchItem.fileCid]);
   bestNumber = bestNumber && JSON.parse(JSON.stringify(bestNumber));
   let status = fileStatusEnum.PENDING;
+  const orderFee = useCall(() => {
+    formatBalance((new BN(1)).add(new BN(0.02)), { decimals: 12, forceUnit: 'CRU' })
+  }, [watchItem.amount])
 
   if (fileStatus) {
     const _fileStatus = JSON.parse(JSON.stringify(fileStatus));
@@ -75,6 +84,7 @@ const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startE
         prepaid,
         reported_replica_count } = _fileStatus[0];
       watchItem.expireTime = expired_on;
+      watchItem.amount = amount;
       watchItem.startTime = expired_on ? expired_on - 216000 : 0;
       watchItem.fileSize = file_size;
       watchItem.confirmedReplicas = reported_replica_count
@@ -162,7 +172,7 @@ const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startE
     <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
       {watchItem.confirmedReplicas || '-'}
     </div>
-    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-5'>{
+    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-10'>{
       watchItem.fileStatus === fileStatusEnum.PENDING ?
         <Popup
           className="my-popup"
@@ -183,29 +193,34 @@ const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startE
       <div style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</div>
     }</div>
     <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
-      {formatBalance(watchItem.prepaid, { decimals: 12, forceUnit: 'CRU' }) || '-'}
+      {watchItem.amount ? formatBalance(watchItem.amount.add(new BN(0.02)), { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '') : '-'}
+      &nbsp;
+      <span title={t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)} onClick={() => {
+        onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem)
+      }}>
+        {
+          watchItem.fileStatus === fileStatusEnum.PENDING && <GlyphSpeedup className={'custom-icon' +
+          ' custom-icon-color pointer'}/>
+        }
+        {
+          watchItem.fileStatus === fileStatusEnum.SUCCESS || watchItem.fileStatus === fileStatusEnum.EXPIRE && <GlyphRenew className={'custom-icon' +
+          ' custom-icon-color pointer'}/>
+        }
+        {
+          watchItem.fileStatus === fileStatusEnum.FAILED && <GlyphRetry className={'custom-icon' +
+          ' custom-icon-color pointer'}/>
+        }
+
+      </span>
     </div>
-    <div className='relative tc  flex justify-center items-center  ph2 pv1 w-15'>
-      {
-        !ipfsConnected && watchItem.fileStatus !== fileStatusEnum.SUCCESS ?
-          <Popup position={['top right']} on={['hover', 'focus']} className={'my-popup'} contentStyle={{width: 'auto'}} trigger={
-            <button className={'watch-item-btn'}
-                    style={{  backgroundColor: "#d9dbe2", cursor: "not-allowed", color: "#eef"}}
-            >{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</button>}>
-          <div>{t('tips.tip2')} </div>
-        </Popup> : <button className={'watch-item-btn'}
-                           onClick={() => {
-                             onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem);
-                           }}>{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</button>
-      }
-      &nbsp;&nbsp;
-      {
-        <button className={'watch-item-btn'}
-                onClick={() => {
-                  console.log(watchItem);
-                  onAddPool(watchItem)
-                }}>addPool</button>
-      }
+    <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
+      {formatBalance(watchItem.prepaid, { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '')|| '-'}
+      &nbsp;
+      <span title={t('Add Balance', 'Add Balance')}>
+        <GlyphPrepaid  onClick={() => {
+          onAddPool(watchItem)
+        }} className={'custom-icon custom-icon-color pointer'}/>
+      </span>
     </div>
   </div>;
 };

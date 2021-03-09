@@ -17,7 +17,9 @@
     "order": "Order",
     "retry": "Retry",
     "note": "Note",
-    "prepaid": "prepaid"
+    "prepaid": "prepaid",
+    "Order Fee": "Order Fee(CRU)",
+    "Renew Pool Balance": "Renew Pool Balance(CRU)"
   },
   "noAccount": "Need to import a valid account",
   "orderList": "File Order List",
@@ -69,5 +71,9 @@
   "addNoteTip": "Please add note",
   "importBtn": "Import order list",
   "exportBtn": "Export order list",
-  "jumpToSplorer": "View All Orders"
+  "jumpToSplorer": "View All Orders",
+  "Add Balance": "Add Balance",
+  "Amount": "Amount",
+  "Order Fee": "Order Fee(CRU)",
+  "Renew Pool Balance": "Renew Pool Balance(CRU)"
 }

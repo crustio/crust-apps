@@ -19,10 +19,9 @@ const PoolModal = ({ file, onClose, onSuccess }) => {
   const [fileCid, setFileCID] = useState(file ? file.cid.toString() : '');
   const [prepaid, setPrepaid] = useState(0)
   const { api, isApiReady } = useApi();
-
   return <Modal
     className='order--accounts-Modal'
-    header={t('add prepaid', 'add prepaid')}
+    header={t('Add Balance', 'Add Balance')}
     size='large'
   >
     <Modal.Content>
@@ -40,39 +39,22 @@ const PoolModal = ({ file, onClose, onSuccess }) => {
           onChange={setAccount}
           type='account'
         />
-                    <Input
-                      autoFocus
-                      help={t('FileCidDesc')}
-                      label={t('File Cid')}
-                      onChange={setFileCID}
-                      placeholder={t('File Cid')}
-                      value={fileCid}
-                    />
-
-        {/*<Modal.Columns>*/}
-        {/*  <Modal.Column>*/}
-        {/*    <InputBalance*/}
-        {/*      autoFocus*/}
-        {/*      defaultValue={tip}*/}
-        {/*      help={t('tipDesc')}*/}
-        {/*      label={t('tipTitle')}*/}
-        {/*      onChange={setTip}*/}
-        {/*      onlyCru*/}
-        {/*    />*/}
-        {/*  </Modal.Column>*/}
-        {/*  <Modal.Column>*/}
-        {/*    <p>{t('tipDesc')}</p>*/}
-        {/*  </Modal.Column>*/}
-        {/*</Modal.Columns>*/}
+        <Input
+           autoFocus
+           help={t('FileCidDesc')}
+           label={t('File Cid')}
+           onChange={setFileCID}
+           placeholder={t('File Cid')}
+           value={fileCid}
+        />
         <InputBalance
-          labelExtra={`Current prepaid ${formatBalance(file.prepaid, { decimals: 12, forceUnit: 'CRU' })}`}
+          labelExtra={`Current balance ${formatBalance(file.prepaid, { decimals: 12, forceUnit: 'CRU' })}`}
           autoFocus
+          onlyCru
           defaultValue={prepaid}
-          label={t('add prepaid')}
+          label={t('Amount')}
           onChange={setPrepaid}
         />
-
-
       </div>
     </Modal.Content>
     <Modal.Actions onCancel={onClose}>
