@@ -6,7 +6,7 @@
 import classnames from 'classnames';
 import filesize from 'filesize';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 import dayjs from 'dayjs';
@@ -34,28 +34,8 @@ const fileStatusEnum = {
   FAILED: 'FAILED',
   EXPIRE: 'EXPIRE'
 };
-const Comment = ({ t, isEdit, comment, startEdit, confirmEdit }) => {
-  const [value, setValue] = useState(comment)
-  return <div style={{width: "100%", overflow: 'hidden'}}>
-    {isEdit ?
-      <div style={{textAlign:'left', display:'flex', justifyContent: 'left', alignItems: 'center', overflow: 'hidden'}}>
-        <Pen className={'custom-icon'}/>
-        &nbsp;
-        <input style={{display: 'inline-block', width: '80%'}} className={'no-border'} autoFocus type="text" value={value} onBlur={() => {
-        confirmEdit(value)
-      }} onChange={(e) => {
-        setValue(e.target.value)
-      }}/></div> :
-      <div style={{textAlign:'left', display:'flex', overflow: 'hidden', alignItems: 'center'}} className={'pointer'} onClick={() => {
-        startEdit()
-      }}>
-        <Pen className={`custom-icon ${value ? '' : 'gray-fill'}`}/>
-        &nbsp;&nbsp;
-        <span style={{display:'inline-block', width: '80%'}} className={!value ? 'grayColor':''}>{value || t('addNoteTip')}</span>
-      </div>}
-  </div>
-}
-const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startEdit, confirmEdit, doUpdateWatchItem, onToggleBtn, selected, watchItem }) => {
+
+const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggleBtn, selected, watchItem }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
   const checkBoxCls = classnames({
@@ -68,7 +48,27 @@ const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startE
   const trash2 = useCall(isApiReady && api.query?.market.transh2, [watchItem.fileCid]);
   bestNumber = bestNumber && JSON.parse(JSON.stringify(bestNumber));
   let status = fileStatusEnum.PENDING;
-
+  const Comment = ({ t, isEdit, item, startEdit, confirmEdit }) => {
+    const [value, setValue] = useState(item.comment)
+    return <div style={{width: "100%", overflow: 'hidden'}}>
+    {isEdit ?
+      <div style={{textAlign:'left', display:'flex', justifyContent: 'left', alignItems: 'center', overflow: 'hidden'}}>
+        <Pen className={'custom-icon'}/>
+        &nbsp;
+        <input style={{display: 'inline-block', width: '80%'}} className={'no-border'} autoFocus type="text" value={value} onBlur={() => {
+          confirmEdit(value)
+        }} onChange={(e) => {
+          setValue(e.target.value)
+        }}/></div> :
+      <div style={{textAlign:'left', display:'flex', overflow: 'hidden', alignItems: 'center'}} className={'pointer'} onClick={() => {
+        startEdit()
+      }}>
+        <Pen className={`custom-icon ${value ? '' : 'gray-fill'}`}/>
+        &nbsp;&nbsp;
+        <span style={{display:'inline-block', width: '80%'}} className={!value ? 'grayColor':''}>{value || t('addNoteTip')}</span>
+      </div>}
+  </div>
+  }
   if (fileStatus) {
     const _fileStatus = JSON.parse(JSON.stringify(fileStatus));
 
@@ -88,6 +88,7 @@ const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startE
       watchItem.prepaid = prepaid
       if (expired_on && expired_on < bestNumber || (trash1 && trash2)) {
         // expired
+        console.log(1232);
         status = fileStatusEnum.EXPIRE;
       }
 
@@ -108,7 +109,9 @@ const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startE
         watchItem.status = status;
         watchItem.startTime = 0;
         watchItem.fileSize = 0;
-        watchItem.confirmedReplicas = 0
+        watchItem.confirmedReplicas = 0;
+        watchItem.amount = 0;
+        watchItem.prepaid = 0
       }
     }
   }
@@ -158,7 +161,8 @@ const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startE
     </div>
 
     <div className='relative tc  flex justify-center items-center  ph2 pv1 w-20'>
-      <Comment t={t} isEdit={isEdit} startEdit={startEdit} confirmEdit={confirmEdit} comment={watchItem.comment}/>
+      <Comment t={t} isEdit={isEdit} startEdit={startEdit} confirmEdit={confirmEdit} item={watchItem}/>
+      {/*{watchItem.comment}*/}
     </div>
     <div className='relative tc flex  justify-center items-center  ph2 pv1 w-10'>
       <div className=''>
@@ -189,7 +193,7 @@ const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startE
       :
       <div style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</div>
     }</div>
-    <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
+    <div className='relative tr flex justify-center items-center  ph2 pv1 w-10'>
       {watchItem.amount ? formatBalance((new BN(2_000_000_000)).add(new BN(watchItem.amount || 0)), { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '') : '-'}
       &nbsp;
       <span title={t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)} onClick={() => {
@@ -210,7 +214,7 @@ const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startE
 
       </span>
     </div>
-    <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
+    <div className='relative tr flex justify-center items-center  ph2 pv1 w-10'>
       {formatBalance(watchItem.prepaid, { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '')|| '-'}
       &nbsp;
       <span title={t('Add Balance', 'Add Balance')}>
@@ -223,13 +227,11 @@ const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startE
 };
 
 WatchItem.prototype = {
-  peerId: PropTypes.string.isRequired,
   watchItem: PropTypes.array.isRequired,
   onSelect: PropTypes.func.isRequired,
   selected: PropTypes.bool,
   onToggleBtn: PropTypes.func.isRequired,
   onAddPool: PropTypes.func.isRequired,
-  ipfsConnected: PropTypes.bool.isRequired
 };
 
-export default connect('selectIpfsConnected', WatchItem);
+export default connect(WatchItem);

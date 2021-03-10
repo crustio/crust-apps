@@ -61,7 +61,8 @@
     "error1": "必须上传一个JSON文件",
     "error2": "文件内容不合法",
     "success": "成功",
-    "failed": "失败"
+    "failed": "失败",
+    "duplicated": "重复"
   },
   "addNoteTip": "请添加备注",
   "importBtn": "导入",

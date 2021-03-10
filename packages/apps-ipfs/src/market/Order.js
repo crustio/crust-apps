@@ -14,7 +14,8 @@ import WatchListInput from './WatchListInput';
 import FileSaver from 'file-saver';
 import _ from 'lodash';
 import StatusContext from '../../../react-components/src/Status/Context';
-
+import { fetchInfoByAccount } from '@polkadot/apps-ipfs/helpers/fetch';
+import { Spinner } from '../../../react-components/src';
 const Order = ({ watchList, doAddOrders }) => {
   const [modalShow, toggleModal] = useState(false);
   const [tableData, setTableData] = useState(watchList);
@@ -23,6 +24,7 @@ const Order = ({ watchList, doAddOrders }) => {
   const [filterCid, setFilterCid] = useState(undefined)
   const { queueAction } = useContext(StatusContext);
   const [repaidModal, togglerepaidModal] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const {t} = useTranslation('order')
   const _onImportResult = useCallback(
@@ -53,11 +55,8 @@ const Order = ({ watchList, doAddOrders }) => {
     setFileInfo({ cid: item.fileCid, originalSize: item.fileSize, comment: item.comment, prepaid: item.prepaid });
     togglerepaidModal(true)
   }
-
-  const handleClick = () => {
-    window.open('https://splorer.crust.network', '_blank')
-  }
   const handleFileChange = (e) => {
+    setLoading(true)
     const fileReader = new FileReader();
     fileReader.readAsText(e.target.files[0], "UTF-8");
     if(!(/(.json)$/i.test(e.target.value))) {
@@ -66,11 +65,13 @@ const Order = ({ watchList, doAddOrders }) => {
     fileReader.onload = e => {
       const _list = JSON.parse(e.target.result)
       if (!Array.isArray(_list)) {
+        setLoading(false)
         return _onImportResult(t('importResult.error2'), 'error')
       }
       // doAddItemMulti
       doAddOrders(_list).then(status =>{
-        _onImportResult(t('importResult.success') + status.succeed + ',  ' + t('importResult.failed') + (status.invalid + status.duplicated))
+        _onImportResult(t('importResult.success') + status.succeed + ',  ' + t('importResult.failed') + status.invalid + ',  ' + t('importResult.duplicated') + status.duplicated)
+        setLoading(false)
       })
     }
   }
@@ -83,8 +84,18 @@ const Order = ({ watchList, doAddOrders }) => {
   };
 
   const handleFetch = () => {
-    console.log('fetch');
+    setLoading(true)
+    fetchInfoByAccount().then(res =>{
+      if (res.message === 'success' && !!res.data) {
+        const _list =  res.data.orderedFiles.map((item) => ({fileCid:item}))
+        doAddOrders(_list).then(status =>{
+          _onImportResult(t('importResult.success') + status.succeed + ',  ' + t('importResult.failed') + status.invalid + ',  ' + t('importResult.duplicated') + status.duplicated)
+          setLoading(false)
+        })
+      }
+    })
   };
+
 
 
   const handleExport = () =>{
@@ -143,10 +154,10 @@ const Order = ({ watchList, doAddOrders }) => {
       <WatchListInput
         onFilterWatchList={handleFilterWatchList}
       />
-      {tableData
-        ? <OrderList onAddPool={handleAddPool} onToggleBtn={handleToggleBtn}
+      {loading ? <Spinner label={t('Retrieving sub-identities')} />
+        : <OrderList onAddPool={handleAddPool} onToggleBtn={handleToggleBtn}
           watchList={tableData}/>
-        : <div>noone</div>}
+        }
     </div>
   );
 };

@@ -49,7 +49,7 @@ const itemList = [{
   }
 ];
 
-const OrderList = ({ identity, onAddPool, ipfsReady, doUpdateWatchItem, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
+const OrderList = ({ onAddPool, doUpdateWatchItem, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
   const [listSorting, setListSorting] = useState({ by: 'expireTime', asc: false });
   const [sortedList, setSortedList] = useState(watchList)
   const [editItem, setEditItem] = useState(undefined)
@@ -105,6 +105,7 @@ const OrderList = ({ identity, onAddPool, ipfsReady, doUpdateWatchItem, doSelect
       setListSorting({ by: order, asc: true });
     }
     const _list = _.orderBy(sortedList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc'])
+    console.log(_list);
     setSortedList(_list)
     tableRef.current.forceUpdateGrid();
   };
@@ -173,7 +174,6 @@ const OrderList = ({ identity, onAddPool, ipfsReady, doUpdateWatchItem, doSelect
                       tableRef={tableRef}
                       key={key}
                       onSelect={toggleOne}
-                      peerId={identity ? identity.id :''}
                       onToggleBtn={(type, file) => {
                         onToggleBtn(type, file);
                       }}
@@ -215,4 +215,4 @@ OrderList.propTypes = {
   onAddPool: propTypes.func.isRequired
 };
 
-export default connect('selectWatchedCidList', 'selectIpfsReady', 'doRemoveWatchItems', 'selectIdentity', 'doFetchWatchList', 'doSelectedItems', 'selectSelectedCidList', 'doUpdateWatchItem', withTranslation('order')(OrderList));
+export default connect('selectWatchedCidList', 'doRemoveWatchItems', 'doFetchWatchList', 'doSelectedItems', 'selectSelectedCidList', 'doUpdateWatchItem', withTranslation('order')(OrderList));
