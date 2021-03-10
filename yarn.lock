@@ -1427,6 +1427,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@crustio/type-definitions@npm:^0.0.5":
+  version: 0.0.5
+  resolution: "@crustio/type-definitions@npm:0.0.5"
+  dependencies:
+    "@open-web3/orml-type-definitions": ^0.8.2-9
+  checksum: 849813ac540f3a406555b99dd2a3439c279810275ca28881e8efd95604cce5800bb49644d5ccb0318aecb48f2f7cb4cf0b362198186edbf0d49816882e24414c
+  languageName: node
+  linkType: hard
+
 "@develar/schema-utils@npm:~2.6.5":
   version: 2.6.5
   resolution: "@develar/schema-utils@npm:2.6.5"
@@ -2277,6 +2286,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@open-web3/orml-type-definitions@npm:^0.8.2-9":
+  version: 0.8.2-11
+  resolution: "@open-web3/orml-type-definitions@npm:0.8.2-11"
+  checksum: 63d391208dbb4ab0acd1d82b2a7f4e8242a486b71e67803fdcd3907c45837da797cd9f812b275ef65e4d3740e0e4b9f5f0f415425d32983ab71df39f89f5ee8f
+  languageName: node
+  linkType: hard
+
 "@pinata/sdk@npm:^1.1.11":
   version: 1.1.11
   resolution: "@pinata/sdk@npm:1.1.11"
@@ -2567,6 +2583,7 @@ __metadata:
   dependencies:
     "@acala-network/type-definitions": ^0.6.1
     "@babel/runtime": ^7.12.5
+    "@crustio/type-definitions": ^0.0.5
     "@edgeware/node-types": ^3.0.11
     "@interlay/polkabtc-types": ^0.2.9
     "@laminar/type-definitions": ^0.2.0-beta.141
