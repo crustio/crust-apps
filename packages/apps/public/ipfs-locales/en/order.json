@@ -69,9 +69,9 @@
     "failed": "failed"
   },
   "addNoteTip": "Please add note",
-  "importBtn": "Import order list",
-  "exportBtn": "Export order list",
-  "jumpToSplorer": "View All Orders",
+  "importBtn": "Import",
+  "exportBtn": "Export",
+  "jumpToSplorer": "Fetch",
   "Add Balance": "Add Balance",
   "Amount": "Amount",
   "Order Fee": "Order Fee(CRU)",

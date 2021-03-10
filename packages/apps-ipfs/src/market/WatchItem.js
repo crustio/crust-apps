@@ -68,9 +68,6 @@ const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startE
   const trash2 = useCall(isApiReady && api.query?.market.transh2, [watchItem.fileCid]);
   bestNumber = bestNumber && JSON.parse(JSON.stringify(bestNumber));
   let status = fileStatusEnum.PENDING;
-  const orderFee = useCall(() => {
-    formatBalance((new BN(1)).add(new BN(0.02)), { decimals: 12, forceUnit: 'CRU' })
-  }, [watchItem.amount])
 
   if (fileStatus) {
     const _fileStatus = JSON.parse(JSON.stringify(fileStatus));
@@ -193,7 +190,7 @@ const WatchItem = ({onAddPool, ipfsConnected, tableRef, isEdit, onSelect, startE
       <div style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</div>
     }</div>
     <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
-      {watchItem.amount ? formatBalance(watchItem.amount.add(new BN(0.02)), { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '') : '-'}
+      {watchItem.amount ? formatBalance((new BN(2_000_000_000)).add(new BN(watchItem.amount || 0)), { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '') : '-'}
       &nbsp;
       <span title={t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)} onClick={() => {
         onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem)
