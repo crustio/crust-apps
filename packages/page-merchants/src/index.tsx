@@ -25,7 +25,12 @@ function MerchantsApp ({ basePath, onStatusChange }: Props): React.ReactElement<
       isRoot: true,
       name: 'overview',
       text: t<string>('My merchants')
+    },
+    {
+      name: 'settlements',
+      text: t<string>('settlements')
     }
+
   ]);
 
   return (

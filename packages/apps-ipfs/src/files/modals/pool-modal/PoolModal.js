@@ -40,12 +40,12 @@ const PoolModal = ({ file, onClose, onSuccess }) => {
           type='account'
         />
         <Input
-           autoFocus
-           help={t('FileCidDesc')}
-           label={t('File Cid')}
-           onChange={setFileCID}
-           placeholder={t('File Cid')}
-           value={fileCid}
+          autoFocus
+          help={t('FileCidDesc')}
+          label={t('File Cid')}
+          onChange={setFileCID}
+          placeholder={t('File Cid')}
+          value={fileCid}
         />
         <InputBalance
           labelExtra={`Current balance ${formatBalance(file.prepaid, { decimals: 12, forceUnit: 'CRU' })}`}

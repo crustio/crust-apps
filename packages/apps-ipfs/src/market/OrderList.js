@@ -9,7 +9,6 @@ import { AutoSizer, List, WindowScroller } from 'react-virtualized';
 import { connect } from 'redux-bundler-react';
 import { StatusContext } from '../../../react-components/src';
 import WatchItem from '@polkadot/apps-ipfs/market/WatchItem';
-import PoolModal from '../files/modals/pool-modal/PoolModal';
 
 import Checkbox from '../components/checkbox/Checkbox';
 const itemList = [{

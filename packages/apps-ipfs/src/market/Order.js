@@ -9,6 +9,7 @@ import { connect } from 'redux-bundler-react';
 
 import OrderModal from '../files/modals/order-modal/OrderModal';
 import PoolModal from '../files/modals/pool-modal/PoolModal';
+import FetchModal from '../files/modals/fetch-modal/FetchModal';
 import OrderList from './OrderList';
 import WatchListInput from './WatchListInput';
 import FileSaver from 'file-saver';
@@ -25,6 +26,7 @@ const Order = ({ watchList, doAddOrders }) => {
   const { queueAction } = useContext(StatusContext);
   const [repaidModal, togglerepaidModal] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [fetchModalShow, toggleFetchModalShow] = useState(false)
 
   const {t} = useTranslation('order')
   const _onImportResult = useCallback(
@@ -82,17 +84,23 @@ const Order = ({ watchList, doAddOrders }) => {
     setFileInfo({ cid: item.fileCid, originalSize: item.fileSize, comment: item.comment });
     toggleModal(true);
   };
+  const emitFetchModal = () => {
+    toggleFetchModalShow(true)
+  }
 
-  const handleFetch = () => {
+  const handleFetch = (accountId) => {
+    toggleFetchModalShow(false)
     setLoading(true)
-    fetchInfoByAccount().then(res =>{
-      if (res.message === 'success' && !!res.data) {
-        const _list =  res.data.orderedFiles.map((item) => ({fileCid:item}))
+    fetchInfoByAccount(accountId).then(res =>{
+      console.log(res);
+      if (res.message === 'success') {
+        let _orders = res.data ? res.data.orderedFiles : []
+        const _list =  _orders.map((item) => ({fileCid:item}))
         doAddOrders(_list).then(status =>{
           _onImportResult(t('importResult.success') + status.succeed + ',  ' + t('importResult.failed') + status.invalid + ',  ' + t('importResult.duplicated') + status.duplicated)
-          setLoading(false)
         })
       }
+      setLoading(false)
     })
   };
 
@@ -103,7 +111,6 @@ const Order = ({ watchList, doAddOrders }) => {
     const blob = new Blob([JSON.stringify(_list)], { type: 'application/json; charset=utf-8' });
     FileSaver.saveAs(blob, `watchList.json`);
   };
-
   return (
     <div className={'w-100'}>
       {
@@ -111,6 +118,13 @@ const Order = ({ watchList, doAddOrders }) => {
           setFileInfo(null);
           togglerepaidModal(false);
         }} file={fileInfo}/>
+      }
+      {
+        fetchModalShow &&
+        <FetchModal onClose={() => {
+          toggleFetchModalShow(false)
+        }} onConfirm={handleFetch}
+        />
       }
       {
         modalShow && <OrderModal
@@ -143,7 +157,7 @@ const Order = ({ watchList, doAddOrders }) => {
             }>{t('exportBtn')}</button>
             &nbsp;&nbsp;
             <button className='btn' onClick={_.throttle(() => {
-              handleFetch()
+              emitFetchModal()
             }, 2000)
             }>{t('Fetch', 'Fetch')}</button>
         </div>

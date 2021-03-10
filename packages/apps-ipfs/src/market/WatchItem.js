@@ -88,7 +88,6 @@ const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggl
       watchItem.prepaid = prepaid
       if (expired_on && expired_on < bestNumber || (trash1 && trash2)) {
         // expired
-        console.log(1232);
         status = fileStatusEnum.EXPIRE;
       }
 

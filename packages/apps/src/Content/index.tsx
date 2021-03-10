@@ -55,7 +55,7 @@ function Content ({ className }: Props): React.ReactElement<Props> {
       {needsApi && (!isApiReady || !isApiConnected)
         ? (
           <div className='connecting'>
-            prepaid label={t<string>('Initializing connection')} />
+            <Spinner label={t<string>('Initializing connection')} />
           </div>
         )
         : (
