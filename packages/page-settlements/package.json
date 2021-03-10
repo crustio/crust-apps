@@ -1,0 +1,20 @@
+{
+    "name": "@polkadot/apps-settlements",
+    "private": true,
+    "version": "0.74.1",
+    "main": "index.js",
+    "repository": "github:polkadot-js/apps",
+    "author": "zhangxu1161 <zhangxu1161@gmail.com>",
+    "maintainers": [],
+    "contributors": [],
+    "license": "Apache-2.0",
+    "dependencies": {
+        "@babel/runtime": "^7.12.5",
+        "@polkadot/app-explorer": "^0.74.1",
+        "@polkadot/react-components": "^0.74.1",
+        "@polkadot/react-query": "^0.74.1"
+    },
+    "devDependencies": {
+        "@polkadot/test-support": "0.74.1"
+    }
+}
