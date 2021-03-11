@@ -39,7 +39,7 @@
   "confirm": "Confirm",
   "status": {
     "PENDING": "pending",
-    "SUCCESS": "ongoing",
+    "SUCCESS": "success",
     "FAILED": "failed",
     "EXPIRE": "expired"
   },
