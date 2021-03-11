@@ -7,6 +7,8 @@ import { AutoSizer, List, WindowScroller } from 'react-virtualized';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import SettlementItem from '@polkadot/apps-merchants/Settlements/settlementItem';
+import { useApi, useCall } from '@polkadot/react-hooks';
+import { BlockNumber } from '@polkadot/types/interfaces';
 
 enum Status {
   Settlementable= 'Settlementable',
@@ -50,17 +52,17 @@ export const headersList: IHeaderItem[] = [{
 }, {
   name: 'settlementReward',
   width: 10,
-  label: 'settlementReward',
+  label: 'settlementReward(CRU)',
   sortable: true
 }, {
   name: 'renewReward',
   width: 10,
-  label: 'renewReward',
+  label: 'renewReward(CRU)',
   sortable: true
 }, {
   name: 'totalReward',
   width: 10,
-  label: 'totalReward',
+  label: 'totalReward(CRU)',
   sortable: true
 }, {
   name: 'action',
@@ -76,7 +78,12 @@ interface ISorting {
 
 const SettlementList: React.FC<Props> = ({ settlementList }) => {
   const { t } = useTranslation();
+  const { api } = useApi();
   const tableRef = useRef(null);
+  const bestNumber = useCall<BlockNumber>(api.derive.chain.bestNumber);
+
+  const _bestNumber: string = bestNumber ? bestNumber?.toString() : '0';
+
   const [listSorting, setListSorting] = useState<ISorting>({
     by: 'cid',
     asc: false
@@ -148,10 +155,8 @@ const SettlementList: React.FC<Props> = ({ settlementList }) => {
                 rowCount={settlementList.length}
                 rowHeight={50}
                 rowRenderer={({ index, key }: {index: number, key: string}) => {
-                  console.log(key);
-                  console.log(index);
-
-                  return <SettlementItem settlementItem={settlementList[index]}/>;
+                  return <SettlementItem bestNumber={_bestNumber}
+                    settlementItem={settlementList[index]}/>;
                 }}
                 width={width}
               />
