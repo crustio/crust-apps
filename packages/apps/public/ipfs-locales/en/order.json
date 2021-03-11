@@ -65,7 +65,7 @@
     "failed": "failed"
   },
   "addNoteTip": "Please add note",
-  "importBtn": "Import order list",
-  "exportBtn": "Export order list",
+  "importBtn": "Import",
+  "exportBtn": "Export",
   "jumpToSplorer": "View All Orders"
 }

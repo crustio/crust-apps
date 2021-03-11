@@ -61,7 +61,7 @@
     "failed": "失败"
   },
   "addNoteTip": "请添加备注",
-  "importBtn": "导入订单列表",
-  "exportBtn": "导出订单列表",
+  "importBtn": "导入",
+  "exportBtn": "导出",
   "jumpToSplorer": "查看所有订单"
 }
