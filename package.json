@@ -99,6 +99,7 @@
     "window-or-global": "^1.0.1"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.168",
     "dayjs": "^1.10.4",
     "reactjs-popup": "^2.0.4"
   }

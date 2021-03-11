@@ -2687,6 +2687,7 @@ __metadata:
     "@polkadot/react-components": ^0.74.1
     "@polkadot/react-query": ^0.74.1
     "@polkadot/test-support": 0.74.1
+    react-virtualized: ^9.22.2
   languageName: unknown
   linkType: soft
 
@@ -2695,18 +2696,6 @@ __metadata:
   resolution: "@polkadot/apps-routing@workspace:packages/apps-routing"
   dependencies:
     "@babel/runtime": ^7.12.5
-  languageName: unknown
-  linkType: soft
-
-"@polkadot/apps-settlements@workspace:packages/page-settlements":
-  version: 0.0.0-use.local
-  resolution: "@polkadot/apps-settlements@workspace:packages/page-settlements"
-  dependencies:
-    "@babel/runtime": ^7.12.5
-    "@polkadot/app-explorer": ^0.74.1
-    "@polkadot/react-components": ^0.74.1
-    "@polkadot/react-query": ^0.74.1
-    "@polkadot/test-support": 0.74.1
   languageName: unknown
   linkType: soft
 
@@ -4027,6 +4016,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 3aaf557d5b82e733d5a17b7f55af5d6be953363c3a594f006d64265790fe87c301c6e1400c0b6b1cf72add50a0ceddc25afb8231ab8302a2e5b6ebfbfac30e5d
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4.14.168":
+  version: 4.14.168
+  resolution: "@types/lodash@npm:4.14.168"
+  checksum: 9a4e25f89fc035b9f0388f1f7be85e5eff49f9e6db0d93432c9a89fce0916f8a89db4e8290415f7ea02de6b00d3573826378dcb655b7b2d20530a6e8d6dd6fd0
   languageName: node
   linkType: hard
 
@@ -19887,6 +19883,7 @@ fsevents@~2.1.2:
     "@types/chart.js": ^2.9.29
     "@types/file-saver": ^2.0.1
     "@types/jest": ^26.0.19
+    "@types/lodash": ^4.14.168
     "@types/react-beautiful-dnd": ^13.0.0
     "@types/react-copy-to-clipboard": ^5.0.0
     "@types/react-dom": ^17.0.0

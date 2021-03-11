@@ -12,6 +12,7 @@ import { useAccounts, useIpfs } from '@polkadot/react-hooks';
 
 import basicMd from './md/basic.md';
 import Merchants from './Merchants';
+import Settlements from './Settlements';
 
 const HIDDEN_ACC = ['vanity'];
 
@@ -44,12 +45,14 @@ function MerchantsApp ({ basePath, onStatusChange }: Props): React.ReactElement<
         />
       </header>
       <Switch>
-        <Route>
-          <Merchants
-            basePath={basePath}
-            onStatusChange={onStatusChange}
-          />
+        <Route path={`${basePath}/settlements`}>
+          <Settlements/>
         </Route>
+        <Route basePath={basePath}
+          onStatusChange={onStatusChange}>
+          <Merchants/>
+        </Route>
+
       </Switch>
     </main>
   );
