@@ -47,7 +47,6 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
         <Modal.Columns>
           <Modal.Column>
             <InputAddress
-              help={t('accountDesc', 'Storage fee will be subtracted from the selected account')}
               label={t('Please choose account')}
               isDisabled={!hasAccounts}
               labelExtra={
@@ -65,8 +64,6 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
              {
                !hasAccounts && <p className='file-info' style={{padding: 0}}>{t('noAccount')}</p>
              }
-            <p>{t('accountDesc')}</p>
-
           </Modal.Column>
         </Modal.Columns>
         <Modal.Columns>
@@ -181,7 +178,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
           });
         }}
         params={
-          [fileCid, fileSize, tip, false]
+          [fileCid, fileSize, tip]
         }
         tx={api.tx.market.placeStorageOrder }
       />

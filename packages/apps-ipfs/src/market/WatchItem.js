@@ -27,27 +27,6 @@ const fileStatusEnum = {
   FAILED: 'FAILED',
   EXPIRE: 'EXPIRE'
 };
-const Comment = ({ t, isEdit, comment, startEdit, confirmEdit }) => {
-  const [value, setValue] = useState(comment)
-  return <div style={{width: "100%", overflow: 'hidden'}}>
-    {isEdit ?
-      <div style={{textAlign:'left', display:'flex', justifyContent: 'left', alignItems: 'center', overflow: 'hidden'}}>
-        <Pen className={'custom-icon'}/>
-        &nbsp;
-        <input style={{display: 'inline-block', width: '80%'}} className={'no-border'} autoFocus type="text" value={value} onBlur={() => {
-        confirmEdit(value)
-      }} onChange={(e) => {
-        setValue(e.target.value)
-      }}/></div> :
-      <div style={{textAlign:'left', display:'flex', overflow: 'hidden', alignItems: 'center'}} className={'pointer'} onClick={() => {
-        startEdit()
-      }}>
-        <Pen className={`custom-icon ${value ? '' : 'gray-fill'}`}/>
-        &nbsp;&nbsp;
-        <span style={{display:'inline-block', width: '80%'}} className={!value ? 'grayColor':''}>{value || t('addNoteTip')}</span>
-      </div>}
-  </div>
-}
 const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confirmEdit, doUpdateWatchItem, onToggleBtn, selected, watchItem }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
@@ -61,6 +40,27 @@ const WatchItem = ({ ipfsConnected, tableRef, isEdit, onSelect, startEdit, confi
   const trash2 = useCall(isApiReady && api.query?.market.transh2, [watchItem.fileCid]);
   bestNumber = bestNumber && JSON.parse(JSON.stringify(bestNumber));
   let status = fileStatusEnum.PENDING;
+  const Comment = ({ t, isEdit, comment, startEdit, confirmEdit }) => {
+    const [value, setValue] = useState(comment)
+    return <div style={{width: "100%", overflow: 'hidden'}}>
+    {isEdit ?
+      <div style={{textAlign:'left', display:'flex', justifyContent: 'left', alignItems: 'center', overflow: 'hidden'}}>
+        <Pen className={'custom-icon'}/>
+        &nbsp;
+        <input style={{display: 'inline-block', width: '80%'}} className={'no-border'} autoFocus type="text" value={value} onBlur={() => {
+          confirmEdit(value)
+        }} onChange={(e) => {
+          setValue(e.target.value)
+        }}/></div> :
+      <div style={{textAlign:'left', display:'flex', overflow: 'hidden', alignItems: 'center'}} className={'pointer'} onClick={() => {
+        startEdit()
+      }}>
+        <Pen className={`custom-icon ${value ? '' : 'gray-fill'}`}/>
+        &nbsp;&nbsp;
+        <span style={{display:'inline-block', width: '80%'}} className={!value ? 'grayColor':''}>{value || t('addNoteTip')}</span>
+      </div>}
+  </div>
+  }
 
   if (fileStatus) {
     const _fileStatus = JSON.parse(JSON.stringify(fileStatus));

@@ -28,7 +28,6 @@
   "fileSize (byte)": "File size (byte)",
   "FileCid": "File CID",
   "FileCidDesc": "Unique identification code of the file",
-  "accountDesc": "Only accounts in the white list can place orders during the closed beta test",
   "transferrable":"transferrable",
   "File Cid": "File CID",
   "fileSizeTitle": "File size (byte)",
@@ -40,7 +39,7 @@
   "confirm": "Confirm",
   "status": {
     "PENDING": "pending",
-    "SUCCESS": "ongoing",
+    "SUCCESS": "success",
     "FAILED": "failed",
     "EXPIRE": "expired"
   },
@@ -66,7 +65,7 @@
     "failed": "failed"
   },
   "addNoteTip": "Please add note",
-  "importBtn": "Import order list",
-  "exportBtn": "Export order list",
+  "importBtn": "Import",
+  "exportBtn": "Export",
   "jumpToSplorer": "View All Orders"
 }
