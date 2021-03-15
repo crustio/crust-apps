@@ -1,94 +1,123 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
 
+import './index.css';
+
 import _ from 'lodash';
-import React, { useRef, useState } from 'react';
-import { AutoSizer, List, WindowScroller } from 'react-virtualized';
+import React, { useEffect, useState } from 'react';
 
 import { useTranslation } from '@polkadot/apps/translate';
+import SettleModal from '@polkadot/apps-merchants/Settlements/settle-modal/SettleModal';
 import SettlementItem from '@polkadot/apps-merchants/Settlements/settlementItem';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { BlockNumber } from '@polkadot/types/interfaces';
 
-enum Status {
-  Settlementable= 'Settlementable',
+enum EStatus {
+  Settlementable = 'Settlementable',
+  Renewable = 'Renewable'
 }
 
 export interface ISettlementItem {
-  cid: string,
-  expiredTime: number
-  fileSize: number
-  renewReward: number
-  replicas: number
-  settlementReward: number
-  status: Status
+  cid: string;
+  expiredTime: number;
+  fileSize: number;
+  renewReward: number;
+  replicas: number;
+  settlementReward: number;
+  status: EStatus;
+  totalReward?: number;
 }
 export interface Props {
-  settlementList: ISettlementItem[]
+  settlementList: ISettlementItem[];
 }
-// cid: "QmdupR3YAC2maPSwB76xzpKBiqDF2jj5nEfTHvEkxZL6d9"
-// expiredTime: 572658
-// fileSize: 75428712
-// renewReward: 0
-// replicas: 8
-// settlementReward: 14201620.335324073
-// status: "Settlementable"
-export interface IHeaderItem {name: string, width: number, label: string, sortable: boolean}
-export const headersList: IHeaderItem[] = [{
-  name: 'cid',
-  width: 20,
-  label: 'cid',
-  sortable: false
-}, {
-  name: 'expiredTime',
-  width: 15,
-  label: 'expiredTime',
-  sortable: true
-}, {
-  name: 'fileSize',
-  width: 20,
-  label: 'fileSize',
-  sortable: true
-}, {
-  name: 'settlementReward',
-  width: 10,
-  label: 'settlementReward(CRU)',
-  sortable: true
-}, {
-  name: 'renewReward',
-  width: 10,
-  label: 'renewReward(CRU)',
-  sortable: true
-}, {
-  name: 'totalReward',
-  width: 10,
-  label: 'totalReward(CRU)',
-  sortable: true
-}, {
-  name: 'action',
-  width: 15,
-  label: 'action',
-  sortable: false
-}];
+export interface IHeaderItem {
+  name: string;
+  width: number;
+  label: string;
+  sortable: boolean;
+}
+export const headersList: IHeaderItem[] = [
+  {
+    name: 'cid',
+    width: 20,
+    label: 'File Cid',
+    sortable: false
+  },
+  {
+    name: 'fileSize',
+    width: 10,
+    label: 'File Size',
+    sortable: true
+  },
+  {
+    name: 'expiredTime',
+    width: 15,
+    label: 'expired On(block/date)',
+    sortable: true
+  },
+  {
+    name: 'settlementReward',
+    width: 15,
+    label: 'Settlement Commission',
+    sortable: true
+  },
+  {
+    name: 'renewReward',
+    width: 15,
+    label: 'Renewal Commission',
+    sortable: true
+  },
+  {
+    name: 'totalReward',
+    width: 15,
+    label: 'Total Commission',
+    sortable: true
+  },
+  {
+    name: 'action',
+    width: 10,
+    label: 'Action',
+    sortable: false
+  }
+];
 
 interface ISorting {
-  by: string
-  asc: boolean
+  by: string;
+  asc: boolean;
 }
 
 const SettlementList: React.FC<Props> = ({ settlementList }) => {
   const { t } = useTranslation();
   const { api } = useApi();
-  const tableRef = useRef(null);
+  const [settleDialog, toggleSettleDialog] = useState(false);
+  const [fileCid, setFileCid] = useState('');
   const bestNumber = useCall<BlockNumber>(api.derive.chain.bestNumber);
 
   const _bestNumber: string = bestNumber ? bestNumber?.toString() : '0';
 
   const [listSorting, setListSorting] = useState<ISorting>({
-    by: 'cid',
+    by: 'expiredTime',
     asc: false
   });
-  const [sortedList, setSortedList] = useState<ISettlementItem[]>(settlementList);
+  const [sortedList, setSortedList] = useState<ISettlementItem[]>([]);
+
+  useEffect(() => {
+    setSortedList(settlementList);
+  }, [settlementList]);
+
+  const handleSettle = (fileCid: string) => {
+    toggleSettleDialog(true);
+    setFileCid(fileCid);
+  };
+
+  const onCloseSettle = () => {
+    toggleSettleDialog(false);
+    setFileCid('');
+  };
+
+  const onSettleSuccess = () => {
+    console.log('success');
+  };
 
   const changeSort = (headerItem: IHeaderItem) => {
     const { name } = headerItem;
@@ -108,7 +137,6 @@ const SettlementList: React.FC<Props> = ({ settlementList }) => {
     const _list = _.orderBy(sortedList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc']);
 
     setSortedList(_list);
-    tableRef.current.forceUpdateGrid();
   };
 
   const sortByIcon = (order: string) => {
@@ -119,53 +147,42 @@ const SettlementList: React.FC<Props> = ({ settlementList }) => {
     return null;
   };
 
-  return <div>
-    <header className='gray pv3 flex items-center flex-none'
-      style={{ paddingRight: '1px', paddingLeft: '1px' }}>
-      {headersList.map((item) => (
-        <div className={`ph2 pv1 flex-auto db-l  w-${item.width} watch-list-header tc`}
-          key={item.name}>
-          <button
-            onClick={() => {
-              if (item.name === 'note') {
-                return;
-              }
+  return (
 
-              changeSort(item);
-            }}
-          >
-            {t(`${item.label}`)}{sortByIcon(item.name)}
-          </button>
-        </div>
-      ))}
-    </header>
-    <WindowScroller>
-      {({ height, isScrolling }: {height: number, isScrolling: boolean }) => (
-        <div className='flex-auto'>
-          <AutoSizer disableHeight>
-            {({ width }: {width: number}) => (
-              <List
-                aria-label={t('filesListLabel')}
-                autoHeight
-                className='outline-0'
-                data={settlementList /* NOTE: this is a placebo prop to force the list to re-render */}
-                height={height}
-                isScrolling={isScrolling}
-                ref={tableRef}
-                rowCount={settlementList.length}
-                rowHeight={50}
-                rowRenderer={({ index, key }: {index: number, key: string}) => {
-                  return <SettlementItem bestNumber={_bestNumber}
-                    settlementItem={settlementList[index]}/>;
+    <>
+      {settleDialog && <SettleModal fileCid={fileCid}
+        onClose={onCloseSettle}
+        onSuccess={onSettleSuccess} />}
+      <div className={'FilesList no-select sans-serif border-box w-100 flex flex-column'}>
+        <header className='gray pv3 flex items-center flex-none'
+          style={{ paddingRight: '1px', paddingLeft: '1px' }}>
+          {headersList.map((item) => (
+            <div className={`ph2 pv1 flex-auto db-l  w-${item.width} watch-list-header tc`}
+              key={item.name}>
+              <button
+                onClick={() => {
+                  item.sortable && changeSort(item);
                 }}
-                width={width}
-              />
-            )}
-          </AutoSizer>
-        </div>
-      )}
-    </WindowScroller>
-  </div>;
+              >
+                {t(`${item.label}`)}
+                {item.sortable && sortByIcon(item.name)}
+              </button>
+            </div>
+          ))}
+        </header>
+        {/* TODO: to use react-virtualized */}
+        {
+          sortedList.map((item) => {
+            return <SettlementItem
+              bestNumber={_bestNumber}
+              handleSettle={handleSettle}
+              key={item.cid}
+              settlementItem={item}
+            />;
+          })
+        }
+      </div></>
+  );
 };
 
 export default SettlementList;

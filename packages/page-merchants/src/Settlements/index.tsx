@@ -3,26 +3,71 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { SettlementItem } from '@polkadot/apps-merchants/Settlements/settlementList';
+import { ISettlementItem } from '@polkadot/apps-merchants/Settlements/settlementList';
 
+import FetchModal from './fetch-modal/FetchModal';
 import { fetchFileTobeClaimed } from './fetch';
 import SettlementList from './settlementList';
 
-// import { useTranslation } from '@polkadot/apps/translate';
-
 const Settlements:React.FC = () => {
   // const { t } = useTranslation();
-  const [settlements, setSettlements] = useState<SettlementItem[]>([]);
+  const [settlements, setSettlements] = useState<ISettlementItem[]>([]);
+  const [fetchModalShow, toggleFetchModalShow] = useState(false);
+  const [fileCid, setFileCid] = useState('');
+  const [filterList, setFilterList] = useState<ISettlementItem[]>([]);
 
-  useEffect(() => {
+  const fetchData = () => {
     fetchFileTobeClaimed().then((res) => {
-      setSettlements(res as SettlementItem[]);
+      (res as ISettlementItem[]).forEach((item:ISettlementItem) => {
+        item.totalReward = item.settlementReward + item.renewReward;
+      });
+      setSettlements(res as ISettlementItem[]);
     }).catch((e) => {
       console.log(e);
     });
-  }, []);
+  };
 
-  return <div><SettlementList settlementList={settlements}/></div>;
+  useEffect(() => {
+    if (!fileCid) {
+      setFilterList(settlements);
+    } else {
+      const target = filterList.find((item) => item.cid === fileCid);
+
+      target ? setFilterList([target]) : setFilterList([]);
+    }
+  }, [settlements, fileCid]);
+
+  return <div className={'w-100'}
+    style={{ background: '#fff' }}>
+    {
+      fetchModalShow && <FetchModal onClose={() => {
+        toggleFetchModalShow(false);
+      }}
+      onConfirm={() => {
+        fetchData();
+        toggleFetchModalShow(false);
+      }}/>
+    }
+
+    <div className='btn-wrapper'>
+      <span className={'btn pointer'}
+        onClick={() => {
+          toggleFetchModalShow(true);
+        }}>Fetch</span>
+    </div>
+    <div className={'add-watch-list-wrapper'}>
+      <input aria-describedby='ipfs-path-desc'
+        className={'input-reset bn pa2 dib w-30 f6 br-0 placeholder-light'}
+        id='ipfs-path'
+        onChange={(e) => {
+          setFileCid(e.target.value);
+        }}
+        placeholder='file CID'
+        style={{ borderRadius: '3px 0 0 3px' }}
+        type='text'
+        value={fileCid} />
+    </div>
+    <SettlementList settlementList={filterList}/></div>;
 };
 
 export default Settlements;
