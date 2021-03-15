@@ -24,7 +24,7 @@ const SettlementItem:React.FC<Props> = ({ bestNumber, handleSettle, settlementIt
   const { t } = useTranslation();
 
   const calculateExpiredTime = useMemo(() => {
-    const durations = (settlementItem.expiredTime - Number(bestNumber)) * 6;
+    const durations = (expiredTime - Number(bestNumber)) * 6;
 
     return dayjs().add(durations, 'seconds').format('YYYY-MM-DD');
   }, [settlementItem, bestNumber]);
