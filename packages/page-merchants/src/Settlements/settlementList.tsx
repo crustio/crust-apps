@@ -85,7 +85,6 @@ interface ISorting {
 }
 export interface Props {
   settlementList: ISettlementItem[];
-  onSettleSuccess: () => void
 }
 
 const SettlementList: React.FC<Props> = ({ settlementList }) => {

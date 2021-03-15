@@ -6,21 +6,15 @@ import { useTranslation } from 'react-i18next';
 import { useAccounts, useApi } from '@polkadot/react-hooks';
 import { Available } from '@polkadot/react-query';
 
-import { Dropdown, Input, InputAddress, Modal, TxButton } from '../../../../react-components/src';
-
-const options = [{
-  text: 'Crust Storage Explorer',
-  value: 'Crust Storage Explorer'
-}];
+import { Input, InputAddress, Modal, TxButton } from '../../../../react-components/src';
 
 interface Props { fileCid: string, onClose: () => void, onSuccess: () => void }
 
 const SettleModal:React.FC<Props> = ({ fileCid, onClose, onSuccess }) => {
   const { t } = useTranslation();
   const { hasAccounts } = useAccounts();
-  const [account, setAccount] = useState(null);
-  const [_fileCid] = useState(fileCid);
-  const { api, isApiReady } = useApi();
+  const [account, setAccount] = useState<string|null>('');
+  const { api } = useApi();
 
   return <Modal
     className='order--accounts-Modal'

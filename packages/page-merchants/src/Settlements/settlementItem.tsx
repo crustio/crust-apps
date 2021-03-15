@@ -1,6 +1,5 @@
 // [object Object]
 // SPDX-License-Identifier: Apache-2.0
-
 import dayjs from 'dayjs';
 import filesize from 'filesize';
 import React, { useMemo } from 'react/index';
@@ -27,7 +26,7 @@ const SettlementItem:React.FC<Props> = ({ bestNumber, handleSettle, settlementIt
     const durations = (expiredTime - Number(bestNumber)) * 6;
 
     return dayjs().add(durations, 'seconds').format('YYYY-MM-DD');
-  }, [settlementItem, bestNumber]);
+  }, [expiredTime, bestNumber]);
 
   const formatNum = (num: any) => {
     return formatBalance(num, { decimals: 12, withSi: true });
@@ -41,7 +40,9 @@ const SettlementItem:React.FC<Props> = ({ bestNumber, handleSettle, settlementIt
         {
           item.name === 'cid' &&
             <>
-              <Cid value={cid} />
+              <Cid style={{ display: 'inline' }}
+                title={cid}
+                value={cid} />
               <CopyButton message={t('fileCidCopied')}
                 text={cid}>
                 <StrokeCopy className='fill-aqua pointer'
