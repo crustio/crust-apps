@@ -20,7 +20,7 @@ const FetchModal:React.FC<Props> = ({ onClose, onConfirm }) => {
 
   return <Modal
     className='order--accounts-Modal'
-    header={t('Add Balance', 'Add Balance')}
+    header={t('Choose Data Source', 'Choose Data Source')}
     size='large'
   >
     <Modal.Content>

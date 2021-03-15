@@ -27,9 +27,7 @@ export interface ISettlementItem {
   status: EStatus;
   totalReward?: number;
 }
-export interface Props {
-  settlementList: ISettlementItem[];
-}
+
 export interface IHeaderItem {
   name: string;
   width: number;
@@ -52,7 +50,7 @@ export const headersList: IHeaderItem[] = [
   {
     name: 'expiredTime',
     width: 15,
-    label: 'expired On(block/date)',
+    label: 'Expired On(block/date)',
     sortable: true
   },
   {
@@ -85,6 +83,10 @@ interface ISorting {
   by: string;
   asc: boolean;
 }
+export interface Props {
+  settlementList: ISettlementItem[];
+  onSettleSuccess: () => void
+}
 
 const SettlementList: React.FC<Props> = ({ settlementList }) => {
   const { t } = useTranslation();
@@ -116,7 +118,8 @@ const SettlementList: React.FC<Props> = ({ settlementList }) => {
   };
 
   const onSettleSuccess = () => {
-    console.log('success');
+    _.remove(sortedList, (item) => item.cid === fileCid);
+    setSortedList(sortedList);
   };
 
   const changeSort = (headerItem: IHeaderItem) => {
@@ -130,18 +133,14 @@ const SettlementList: React.FC<Props> = ({ settlementList }) => {
     } else {
       setListSorting({
         by: name,
-        asc: !listSorting.asc
+        asc: false
       });
     }
-
-    const _list = _.orderBy(sortedList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc']);
-
-    setSortedList(_list);
   };
 
   const sortByIcon = (order: string) => {
     if (listSorting.by === order) {
-      return <span style={{ color: '#ff8812', fontSize: 18, fontWeight: 700 }}>{listSorting.asc ? ' ↑' : ' ↓'}</span>;
+      return <span style={{ color: '#ff8812', fontSize: 18, fontWeight: 700 }}>{listSorting.asc ? ' ↓' : ' ↑'}</span>;
     }
 
     return null;
@@ -172,14 +171,16 @@ const SettlementList: React.FC<Props> = ({ settlementList }) => {
         </header>
         {/* TODO: to use react-virtualized */}
         {
-          sortedList.map((item) => {
-            return <SettlementItem
-              bestNumber={_bestNumber}
-              handleSettle={handleSettle}
-              key={item.cid}
-              settlementItem={item}
-            />;
-          })
+          sortedList.length > 0
+            ? sortedList.map((item) => {
+              return <SettlementItem
+                bestNumber={_bestNumber}
+                handleSettle={handleSettle}
+                key={item.cid}
+                settlementItem={item}
+              />;
+            })
+            : <div className={'nodata'}/>
         }
       </div></>
   );

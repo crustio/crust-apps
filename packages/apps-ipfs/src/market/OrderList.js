@@ -101,10 +101,9 @@ const OrderList = ({ onAddPool, doUpdateWatchItem, doSelectedItems, onToggleBtn,
     if (order === listSorting.by) {
       setListSorting({ by: order, asc: !listSorting.asc });
     } else {
-      setListSorting({ by: order, asc: true });
+      setListSorting({ by: order, asc: false });
     }
     const _list = _.orderBy(sortedList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc'])
-    console.log(_list);
     setSortedList(_list)
     tableRef.current.forceUpdateGrid();
   };
@@ -136,6 +135,7 @@ const OrderList = ({ onAddPool, doUpdateWatchItem, doSelectedItems, onToggleBtn,
           <div className={`ph2 pv1 flex-auto db-l  w-${item.width} watch-list-header tc`}
             key={item.name}>
             <button
+              className='tc'
               aria-label={t('sortBy', { name: t(`${item.label}`) })}
               onClick={() => {
                 if (item.name === 'note') {

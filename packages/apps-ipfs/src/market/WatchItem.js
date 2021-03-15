@@ -193,9 +193,8 @@ const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggl
       <div style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</div>
     }</div>
     <div className='relative tr flex justify-center items-center  ph2 pv1 w-10'>
-      {watchItem.amount ? formatBalance((new BN(2_000_000_000)).add(new BN(watchItem.amount || 0)), { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '') : '-'}
-      &nbsp;
-      <span title={t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)} onClick={() => {
+      <span className='dib tc' style={{minWidth:"50%"}}>{watchItem.amount ? formatBalance((new BN(2_000_000_000)).add(new BN(watchItem.amount || 0)), { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '') : '-'}</span>
+      <span className="self-end" title={t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)} onClick={() => {
         onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem)
       }}>
         {
@@ -203,7 +202,7 @@ const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggl
           ' custom-icon-color pointer'}/>
         }
         {
-          watchItem.fileStatus === fileStatusEnum.SUCCESS || watchItem.fileStatus === fileStatusEnum.EXPIRE && <GlyphRenew className={'custom-icon' +
+          (watchItem.fileStatus === fileStatusEnum.SUCCESS || watchItem.fileStatus === fileStatusEnum.EXPIRE) && <GlyphRenew className={'custom-icon' +
           ' custom-icon-color pointer'}/>
         }
         {
@@ -214,8 +213,7 @@ const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggl
       </span>
     </div>
     <div className='relative tr flex justify-center items-center  ph2 pv1 w-10'>
-      {formatBalance(watchItem.prepaid, { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '')|| '-'}
-      &nbsp;
+      <span  className='dib tc' style={{minWidth:"50%"}}>{formatBalance(watchItem.prepaid, { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '')|| '-'}</span>
       <span title={t('Add Balance', 'Add Balance')}>
         <GlyphPrepaid  onClick={() => {
           onAddPool(watchItem)

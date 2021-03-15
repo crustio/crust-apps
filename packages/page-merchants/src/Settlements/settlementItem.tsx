@@ -20,7 +20,7 @@ interface Props {
 }
 
 const SettlementItem:React.FC<Props> = ({ bestNumber, handleSettle, settlementItem }) => {
-  const { cid, expiredTime, fileSize, renewReward, settlementReward, status, totalReward } = settlementItem;
+  const { cid, expiredTime, fileSize, renewReward, settlementReward, totalReward } = settlementItem;
   const { t } = useTranslation();
 
   const calculateExpiredTime = useMemo(() => {
@@ -32,8 +32,6 @@ const SettlementItem:React.FC<Props> = ({ bestNumber, handleSettle, settlementIt
   const formatNum = (num: any) => {
     return formatBalance(num, { decimals: 12, withSi: true });
   };
-
-  console.log(1232);
 
   return <div className={'File b--light-gray relative  flex items-center bt'}
     style={{ height: 50 }}>

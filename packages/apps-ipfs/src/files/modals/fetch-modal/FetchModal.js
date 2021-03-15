@@ -22,7 +22,7 @@ const FetchModal = ({  onClose, onConfirm }) => {
   const [dataSource] = useState('Crust Storage Explorer')
   return <Modal
     className='order--accounts-Modal'
-    header={t('Add Balance', 'Add Balance')}
+    header={t('Fetch Orders', 'Fetch Orders')}
     size='large'
   >
     <Modal.Content>
@@ -50,9 +50,9 @@ const FetchModal = ({  onClose, onConfirm }) => {
       </div>
     </Modal.Content>
     <Modal.Actions onCancel={onClose}>
-      <Button icon={'check'} isDisabled={!account} onClick={() => {
+      <Button icon={'check'} isDisabled={!account} label={t('actions.submit')} onClick={() => {
         onConfirm(account)
-      }} className='tc'>{t('actions.submit')}</Button>
+      }} className='tc'/>
     </Modal.Actions>
   </Modal>;
 };

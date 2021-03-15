@@ -62,9 +62,7 @@ const SettleModal:React.FC<Props> = ({ fileCid, onClose, onSuccess }) => {
         onStart={() => {
           onClose();
         }}
-        onSuccess={() => {
-          console.log('success');
-        }}
+        onSuccess={onSuccess}
         params={
           [fileCid]
         }
