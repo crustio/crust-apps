@@ -58,23 +58,27 @@ const Order = ({ watchList, doAddOrders }) => {
     togglerepaidModal(true)
   }
   const handleFileChange = (e) => {
-    setLoading(true)
-    const fileReader = new FileReader();
-    fileReader.readAsText(e.target.files[0], "UTF-8");
-    if(!(/(.json)$/i.test(e.target.value))) {
-      return _onImportResult(t('importResult.error1'), 'error')
-    }
-    fileReader.onload = e => {
-      const _list = JSON.parse(e.target.result)
-      if (!Array.isArray(_list)) {
-        setLoading(false)
-        return _onImportResult(t('importResult.error2'), 'error')
+    try {
+      setLoading(true)
+      const fileReader = new FileReader();
+      fileReader.readAsText(e.target.files[0], "UTF-8");
+      if(!(/(.json)$/i.test(e.target.value))) {
+        return _onImportResult(t('importResult.error1'), 'error')
       }
-      // doAddItemMulti
-      doAddOrders(_list).then(status =>{
-        _onImportResult(t('importResult.success') + status.succeed + ',  ' + t('importResult.failed') + status.invalid + ',  ' + t('importResult.duplicated') + status.duplicated)
+      fileReader.onload = e => {
+        const _list = JSON.parse(e.target.result)
+        if (!Array.isArray(_list)) {
+          return _onImportResult(t('importResult.error2'), 'error')
+        }
+        // doAddItemMulti
+        doAddOrders(_list).then(status =>{
+          _onImportResult(t('importResult.success') + status.succeed + ',  ' + t('importResult.failed') + status.invalid + ',  ' + t('importResult.duplicated') + status.duplicated)
+        })
         setLoading(false)
-      })
+      }
+    } catch(e) {
+      setLoading(false)
+
     }
   }
 
@@ -100,6 +104,9 @@ const Order = ({ watchList, doAddOrders }) => {
           _onImportResult(t('importResult.success') + status.succeed + ',  ' + t('importResult.failed') + status.invalid + ',  ' + t('importResult.duplicated') + status.duplicated)
         })
       }
+    }).catch(() => {
+
+    }).finally(() => {
       setLoading(false)
     })
   };
@@ -146,7 +153,9 @@ const Order = ({ watchList, doAddOrders }) => {
             toggleModal(true);
           }}>{t('actions.addOrder')}</button>
           <div style={{marginLeft: 'auto'}}>
-            <input type="file" id="upload" size="60" style={{opacity:0, position: 'absolute', zIndex:-1}} onChange={handleFileChange} />
+            <input type="file" id="upload" size="60" onClick={(e) => {
+              e.target.value = null
+            }} style={{opacity:0, position: 'absolute', zIndex:-1}} onChange={handleFileChange} />
             <label className="btn" htmlFor="upload" style={{cursor: 'pointer'}}>
               {t('importBtn')}
             </label>
