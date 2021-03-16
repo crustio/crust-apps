@@ -534,7 +534,7 @@
   "Set to 0 to make transaction immortal": "设置为0使交易存在",
   "Set validator preferences": "设置验证人偏好",
   "Settings": "设置",
-  "Settle": "操作",
+  "Settle": "清算",
   "Settlement Commission": "清算收益",
   "Settlements": "清算",
   "Setup Nominator {{step}}/{{NUM_STEPS}}": "设置提名人 {{step}}/{{NUM_STEPS}}",
