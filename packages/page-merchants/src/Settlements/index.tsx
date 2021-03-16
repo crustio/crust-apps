@@ -41,7 +41,7 @@ const Settlements:React.FC = () => {
 
       target ? setFilterList([target]) : setFilterList([]);
     }
-  }, [settlements, fileCid, filterList]);
+  }, [settlements, fileCid]);
 
   return <div className={'w-100'}
     style={{ background: '#fff' }}>

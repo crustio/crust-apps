@@ -76,7 +76,7 @@ const SettlementItem:React.FC<Props> = ({ bestNumber, handleSettle, settlementIt
           <span className={'btn pointer'}
             onClick={() => {
               handleSettle(settlementItem.cid);
-            }}>Settle</span>
+            }}>{t('Settle', 'Settle')}</span>
         }
       </div>)
     }
