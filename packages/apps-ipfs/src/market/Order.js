@@ -168,7 +168,7 @@ const Order = ({ watchList, doAddOrders }) => {
       <WatchListInput
         onFilterWatchList={handleFilterWatchList}
       />
-      {loading ? <Spinner label={t('Retrieving sub-identities')} />
+      {loading ? <Spinner label={t('Loading')} />
         : <OrderList onAddPool={handleAddPool} onToggleBtn={handleToggleBtn}
           watchList={tableData}/>
         }

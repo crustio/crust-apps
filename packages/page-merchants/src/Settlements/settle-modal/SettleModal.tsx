@@ -18,7 +18,7 @@ const SettleModal:React.FC<Props> = ({ fileCid, onClose, onSuccess }) => {
 
   return <Modal
     className='order--accounts-Modal'
-    header={t('File Settlement', 'File Settlement')}
+    header={t('Order Settlement', 'Order Settlement')}
     size='large'
   >
     <Modal.Content>

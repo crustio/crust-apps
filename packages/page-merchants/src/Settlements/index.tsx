@@ -19,8 +19,6 @@ const Settlements:React.FC = () => {
   const [fileCid, setFileCid] = useState('');
   const [filterList, setFilterList] = useState<ISettlementItem[]>([]);
 
-  console.log(123);
-
   const fetchData = () => {
     toggleLoading(true);
     fetchFileTobeClaimed().then((res) => {
@@ -43,7 +41,7 @@ const Settlements:React.FC = () => {
 
       target ? setFilterList([target]) : setFilterList([]);
     }
-  }, [settlements, fileCid]);
+  }, [settlements, fileCid, filterList]);
 
   return <div className={'w-100'}
     style={{ background: '#fff' }}>
@@ -64,7 +62,7 @@ const Settlements:React.FC = () => {
           <span className={'btn pointer'}
             onClick={() => {
               toggleFetchModalShow(true);
-            }}>Fetch</span>
+            }}>{t('Fetch')}</span>
         </div>
         <div className={'add-watch-list-wrapper'}>
           <input aria-describedby='ipfs-path-desc'

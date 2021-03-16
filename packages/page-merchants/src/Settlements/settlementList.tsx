@@ -172,7 +172,13 @@ const SettlementList: React.FC<Props> = ({ settlementList }) => {
                     item.sortable && changeSort(item);
                   }}
                 >
-                  {t(`${item.label}`)}
+                  {item.label === 'File Cid' && t('File Cid')}
+                  {item.label === 'File Size' && t('File Size')}
+                  {item.label === 'Expired On(block/date)' && t('Expired On(block/date)')}
+                  {item.label === 'Settlement Commission' && t('Settlement Commission')}
+                  {item.label === 'Renewal Commission' && t('Renewal Commission')}
+                  {item.label === 'Total Commission' && t('Total Commission')}
+                  {item.label === 'Action' && t('Action')}
                 </span>
                 {item.tip && <CruTooltip/>}
               </span>
