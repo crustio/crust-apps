@@ -24,13 +24,12 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
   const [cidNotValid, setCidNotValid] = useState(false);
   const { api, isApiReady } = useApi();
   const filePrice = useCall(isApiReady && api.query.market.filePrice) || new BN(0);
+  const basePrice = api.consts.market.fileBaseFee || new BN(0)
   const DEFAULT_BITLENGTH = BitLengthOption.CHAIN_SPEC;
 
   useEffect(() => {
-    // 0.002cru + storagePrice + tip
-    const stableFee = new BN(2_000_000_000)
     const tipFee= new BN(tip.toString())
-    setPrice(formatBalance(filePrice?.mul(new BN(fileSize)).divn(1024*1024).add(stableFee).add(tipFee), { decimals: 12, forceUnit: 'CRU' }));
+    setPrice(formatBalance(filePrice?.mul(new BN(fileSize)).divn(1024*1024).add(new BN(basePrice)).add(tipFee), { decimals: 12, forceUnit: 'CRU' }));
   }, [fileSize, filePrice, tip]);
   useEffect(() => {
     setCidNotValid(fileCid && !isIPFS.cid(fileCid) && !isIPFS.path(fileCid));

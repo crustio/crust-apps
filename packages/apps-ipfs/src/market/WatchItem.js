@@ -19,13 +19,11 @@ import Checkbox from '../components/checkbox/Checkbox';
 import CopyButton from '@polkadot/apps-ipfs/components/copy-button';
 
 import Popup from 'reactjs-popup';
-import Pen from '@polkadot/apps-ipfs/icons/Pen';
 import { formatBalance } from '@polkadot/util';
 import GlyphRenew from '@polkadot/apps-ipfs/icons/GlyphRenew';
 import GlyphPrepaid from '@polkadot/apps-ipfs/icons/GlyphPrepaid';
 import GlyphSpeedup from '@polkadot/apps-ipfs/icons/GlyphSpeedup';
 import GlyphRetry from '@polkadot/apps-ipfs/icons/GlyphRetry';
-import { useHistory } from 'react-router-dom';
 import BN from 'bn.js';
 
 const fileStatusEnum = {
@@ -48,27 +46,10 @@ const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggl
   const trash2 = useCall(isApiReady && api.query?.market.transh2, [watchItem.fileCid]);
   bestNumber = bestNumber && JSON.parse(JSON.stringify(bestNumber));
   let status = fileStatusEnum.PENDING;
-  const Comment = ({ t, isEdit, item, startEdit, confirmEdit }) => {
-    const [value, setValue] = useState(item.comment)
-    return <div style={{width: "100%", overflow: 'hidden'}}>
-    {isEdit ?
-      <div style={{textAlign:'left', display:'flex', justifyContent: 'left', alignItems: 'center', overflow: 'hidden'}}>
-        <Pen className={'custom-icon'}/>
-        &nbsp;
-        <input style={{display: 'inline-block', width: '80%'}} className={'no-border'} autoFocus type="text" value={value} onBlur={() => {
-          confirmEdit(value)
-        }} onChange={(e) => {
-          setValue(e.target.value)
-        }}/></div> :
-      <div style={{textAlign:'left', display:'flex', overflow: 'hidden', alignItems: 'center'}} className={'pointer'} onClick={() => {
-        startEdit()
-      }}>
-        <Pen className={`custom-icon ${value ? '' : 'gray-fill'}`}/>
-        &nbsp;&nbsp;
-        <span style={{display:'inline-block', width: '80%'}} className={!value ? 'grayColor':''}>{value || t('addNoteTip')}</span>
-      </div>}
-  </div>
-  }
+  const basePrice = api.consts.market.fileBaseFee || 0
+  const taxRatio = api.consts.market.taxRatio || 0
+  const stakingRatio = api.consts.market.stakingRatio || 0
+  const ratio = ((1 - Number(stakingRatio.toString())/1000000000) * (1- Number(taxRatio.toString())/1000000000))
   if (fileStatus) {
     const _fileStatus = JSON.parse(JSON.stringify(fileStatus));
 
@@ -189,7 +170,7 @@ const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggl
       <div style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</div>
     }</div>
     <div className='relative tr flex justify-center items-center  ph2 pv1 w-15'>
-      <span className='dib tc' style={{minWidth:"50%"}}>{watchItem.amount ? formatBalance((new BN(2_000_000_000)).add(new BN(watchItem.amount || 0)), { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '') : '-'}</span>
+      <span className='dib tc' style={{minWidth:"50%"}}>{watchItem.amount ? formatBalance(new BN(watchItem.amount.toString() || 0).divn(ratio), { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '') : '-'}</span>
       <Popup
         trigger={<span className="self-end" onClick={() => {
           onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem)
