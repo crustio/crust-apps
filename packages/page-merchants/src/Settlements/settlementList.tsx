@@ -7,6 +7,7 @@ import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 
 import { useTranslation } from '@polkadot/apps/translate';
+import CruTooltip from '@polkadot/apps-merchants/Settlements/CruTooltip';
 import SettleModal from '@polkadot/apps-merchants/Settlements/settle-modal/SettleModal';
 import SettlementItem from '@polkadot/apps-merchants/Settlements/settlementItem';
 import { useApi, useCall } from '@polkadot/react-hooks';
@@ -32,7 +33,8 @@ export interface IHeaderItem {
   name: string;
   width: number;
   label: string;
-  sortable: boolean;
+  sortable?: boolean;
+  tip?: boolean;
 }
 export const headersList: IHeaderItem[] = [
   {
@@ -57,19 +59,22 @@ export const headersList: IHeaderItem[] = [
     name: 'settlementReward',
     width: 15,
     label: 'Settlement Commission',
-    sortable: true
+    sortable: true,
+    tip: true
   },
   {
     name: 'renewReward',
     width: 15,
     label: 'Renewal Commission',
-    sortable: true
+    sortable: true,
+    tip: true
   },
   {
     name: 'totalReward',
     width: 15,
     label: 'Total Commission',
-    sortable: true
+    sortable: true,
+    tip: true
   },
   {
     name: 'action',
@@ -135,6 +140,10 @@ const SettlementList: React.FC<Props> = ({ settlementList }) => {
         asc: false
       });
     }
+
+    const _list = _.orderBy(sortedList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc']);
+
+    setSortedList(_list);
   };
 
   const sortByIcon = (order: string) => {
@@ -155,16 +164,19 @@ const SettlementList: React.FC<Props> = ({ settlementList }) => {
         <header className='gray pv3 flex items-center flex-none'
           style={{ paddingRight: '1px', paddingLeft: '1px' }}>
           {headersList.map((item) => (
-            <div className={`ph2 pv1 flex-auto db-l  w-${item.width} watch-list-header tc`}
+            <div className={`ph2 pv1 flex-auto db-l justify-between  w-${item.width} watch-list-header tc`}
               key={item.name}>
-              <button
-                onClick={() => {
-                  item.sortable && changeSort(item);
-                }}
-              >
-                {t(`${item.label}`)}
-                {item.sortable && sortByIcon(item.name)}
-              </button>
+              <span>
+                <span className='pointer'
+                  onClick={() => {
+                    item.sortable && changeSort(item);
+                  }}
+                >
+                  {t(`${item.label}`)}
+                </span>
+                {item.tip && <CruTooltip/>}
+              </span>
+              {item.sortable && sortByIcon(item.name)}
             </div>
           ))}
         </header>

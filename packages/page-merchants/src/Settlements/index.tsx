@@ -58,7 +58,7 @@ const Settlements:React.FC = () => {
     }
 
     {loading
-      ? <Spinner label={t<string>('Retrieving sub-identities')} />
+      ? <Spinner label={t<string>('Loading')} />
       : <div>
         <div className='btn-wrapper'>
           <span className={'btn pointer'}
