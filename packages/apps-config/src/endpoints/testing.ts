@@ -54,6 +54,12 @@ export function createTesting (t: TFunction): LinkOption[] {
       value: 'wss://api.crust.network/'
     },
     {
+      info: 'crust',
+      text: t('rpc.crusdecloudft.com', 'Crust Maxwell', { ns: 'apps-config' }),
+      textBy: t('rpc.hosted.by', 'hosted by {{host}}', { ns: 'apps-config', replace: { host: 'DCloud Foundation' } }),
+      value: 'wss://api.decloudf.com/'
+    },
+    {
       info: 'datahighway',
       isDisabled: true,
       text: t('rpc.datahighway.harbour', 'Harbour', { ns: 'apps-config' }),
