@@ -21,17 +21,17 @@ const IpfsPage: React.FC<Props> = (props) => {
   const itemsRef = useRef([
     {
       isRoot: true,
-      name: '/',
+      name: 'market',
+      text: t('market', 'Storage Order')
+    },
+    {
+      name: 'status',
       text: t('status', 'Status')
     },
     {
       hasParams: true,
       name: 'files',
       text: t('files', 'Files')
-    },
-    {
-      name: 'market',
-      text: t('market', 'Storage Order')
     },
     {
       name: 'explore',
