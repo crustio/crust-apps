@@ -26,7 +26,6 @@
   "FileCidDesc": "文件CID的解释：文件的唯一标识编码",
   "fileCidValid": "文件CID不正确!",
   "FileCid": "FileCid",
-  "accountDesc": "当前为内测阶段，只有在白名单内的账号可以下单",
   "transferrable": "可转账的",
   "File Cid": "文件 Cid",
   "fileSizeTitle": "文件大小",
@@ -38,7 +37,7 @@
   "confirm": "确认",
   "status": {
     "PENDING": "待处理",
-    "SUCCESS": "履行中",
+    "SUCCESS": "成功",
     "FAILED": "失败",
     "EXPIRE": "过期"
   },
