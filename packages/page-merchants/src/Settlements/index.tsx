@@ -37,7 +37,7 @@ const Settlements:React.FC = () => {
     if (!fileCid) {
       setFilterList(settlements);
     } else {
-      const target = filterList.find((item) => item.cid === fileCid);
+      const target = settlements.find((item) => item.cid === fileCid);
 
       target ? setFilterList([target]) : setFilterList([]);
     }
