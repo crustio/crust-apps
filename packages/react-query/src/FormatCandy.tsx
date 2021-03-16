@@ -32,6 +32,8 @@ function format (value: Compact<any> | BN | string, withCurrency = true, withSi?
   const isShort = _isShort || (withSi && prefix.length >= K_LENGTH);
   const unitPost = 'Candy';
 
+  console.log(withCurrency);
+
   if (prefix.length > M_LENGTH) {
     const [major, rest] = formatBalance(value, { withUnit: false }).split('.');
     const minor = rest.substr(0, 4);

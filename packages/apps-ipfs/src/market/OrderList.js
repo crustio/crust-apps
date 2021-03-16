@@ -13,26 +13,37 @@ import WatchItem from '@polkadot/apps-ipfs/market/WatchItem';
 import Checkbox from '../components/checkbox/Checkbox';
 const itemList = [{
   name: 'fileSize',
+  label: 'fileSize',
   width: 10,
 },
   {
-    name: 'note',
+    name: 'expireTime',
+    label: 'expireTime',
     width: 20,
   },
   {
-    name: 'expireTime',
-    width: 15,
-  },
-  {
     name: 'confirmedReplicas',
+    label: 'confirmedReplicas',
     width: 10,
   },
   {
     name: 'fileStatus',
+    label: 'fileStatus',
+    width: 10,
+  },
+  {
+    name: 'amount',
+    label: 'Order Fee',
     width: 15,
-  }];
+  },
+  {
+    name: 'prepaid',
+    label: 'Renew Pool Balance',
+    width: 15,
+  }
+];
 
-const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
+const OrderList = ({ onAddPool, doUpdateWatchItem, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
   const [listSorting, setListSorting] = useState({ by: 'expireTime', asc: false });
   const [sortedList, setSortedList] = useState(watchList)
   const [editItem, setEditItem] = useState(undefined)
@@ -55,7 +66,6 @@ const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, on
     doSelectedItems(selectedCidList);
     tableRef.current.forceUpdateGrid();
   };
-
   const toggleAll = () => {
     const isSelected = isAllSelected();
 
@@ -86,7 +96,7 @@ const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, on
     if (order === listSorting.by) {
       setListSorting({ by: order, asc: !listSorting.asc });
     } else {
-      setListSorting({ by: order, asc: true });
+      setListSorting({ by: order, asc: false });
     }
     const _list = _.orderBy(sortedList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc'])
     setSortedList(_list)
@@ -120,7 +130,8 @@ const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, on
           <div className={`ph2 pv1 flex-auto db-l  w-${item.width} watch-list-header tc`}
             key={item.name}>
             <button
-              aria-label={t('sortBy', { name: t(`${item.name}`) })}
+              className='tc'
+              aria-label={t('sortBy', { name: t(`${item.label}`) })}
               onClick={() => {
                 if (item.name === 'note') {
                   return
@@ -128,11 +139,10 @@ const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, on
                 changeSort(item.name);
               }}
             >
-              {t(`actions.${item.name}`)}{sortByIcon(item.name)}
+              {t(`actions.${item.label}`)}{sortByIcon(item.name)}
             </button>
           </div>
         ))}
-        <div className='ph2 pv1 flex-auto db-l tc w-10 watch-list-header'>{t('actions.action')}</div>
       </header>
       <WindowScroller>
         {({ height, isScrolling, onChildScroll, scrollTop }) => (
@@ -154,10 +164,10 @@ const OrderList = ({ identity, ipfsReady, doUpdateWatchItem, doSelectedItems, on
                   rowHeight={50}
                   rowRenderer={({ index, key }) => {
                     return <WatchItem
+                      onAddPool={onAddPool}
                       tableRef={tableRef}
                       key={key}
                       onSelect={toggleOne}
-                      peerId={identity ? identity.id :''}
                       onToggleBtn={(type, file) => {
                         onToggleBtn(type, file);
                       }}
@@ -195,7 +205,8 @@ OrderList.propTypes = {
   doFetchWatchList: propTypes.func,
   doSelectedItems: propTypes.func,
   selectSelectedCidList: propTypes.array,
-  doUpdateWatchItem: propTypes.func
+  doUpdateWatchItem: propTypes.func,
+  onAddPool: propTypes.func.isRequired
 };
 
-export default connect('selectWatchedCidList', 'selectIpfsReady', 'doRemoveWatchItems', 'selectIdentity', 'doFetchWatchList', 'doSelectedItems', 'selectSelectedCidList', 'doUpdateWatchItem', withTranslation('order')(OrderList));
+export default connect('selectWatchedCidList', 'doRemoveWatchItems', 'doFetchWatchList', 'doSelectedItems', 'selectSelectedCidList', 'doUpdateWatchItem', withTranslation('order')(OrderList));

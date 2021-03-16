@@ -16,7 +16,9 @@
     "renew": "续费",
     "retry": "重新下单",
     "speed": "加速",
-    "note": "备注"
+    "note": "备注",
+    "Order Fee": "订单金额(CRU)",
+    "Renew Pool Balance": "续费池(CRU)"
   },
   "orderList": "订单列表",
   "noAccount": "需要导入一个有效账号",
@@ -44,7 +46,7 @@
   "clipboard": "剪切板",
   "ipfsError": "IPFS未连接",
   "tips": {
-    "wikiAddress": "https://wiki.crust.network/docs/zh/storageUserGuide",
+    "wikiAddress": "https://wiki.crust.network/docs/zh-CN/storageUserGuide",
     "tip1": "<0>*订单“待处理”状态一般会持续30分钟到2小时(与文件大小相关)，在此期间不能关闭IPFS<1/>* 如果订单“待处理”时间过长，您可以检查本地IPFS是否正常运行，或者尝试关闭本地防火墙，详情参考<3>WIKI</3></0>",
     "tip2": "请启动本地的IPFS来使用该功能"
   },
@@ -58,10 +60,15 @@
     "error1": "必须上传一个JSON文件",
     "error2": "文件内容不合法",
     "success": "成功",
-    "failed": "失败"
+    "failed": "失败",
+    "duplicated": "重复"
   },
   "addNoteTip": "请添加备注",
   "importBtn": "导入",
   "exportBtn": "导出",
-  "jumpToSplorer": "查看所有订单"
+  "Fetch": "拉取",
+  "Add Balance": "充值",
+  "Amount": "金额",
+  "Order Fee": "订单金额(CRU)",
+  "Renew Pool Balance": "续费池(CRU)"
 }

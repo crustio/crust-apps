@@ -15,23 +15,23 @@ interface Props {
   newEvents?: KeyedEvent[];
 }
 
-const IpfsPage: React.FC<Props> = (props) => {
+const IpfsPage: React.FC<Props> = () => {
   const { api } = useApi();
   const { t } = useTranslation('apps-routing');
   const itemsRef = useRef([
     {
       isRoot: true,
-      name: '/',
+      name: 'market',
+      text: t('market', 'Storage Orders')
+    },
+    {
+      name: 'status',
       text: t('status', 'Status')
     },
     {
       hasParams: true,
       name: 'files',
       text: t('files', 'Files')
-    },
-    {
-      name: 'market',
-      text: t('market', 'Storage Order')
     },
     {
       name: 'explore',

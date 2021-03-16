@@ -22,12 +22,12 @@
 .watch-item-btn {
   text-align: center;
   display: inline-block;
-  font-size: 14px;
-  width: 100px;
+  font-size: 13px;
+  width: 90px;
   height: 30px;
   transition: all 0.2s ease-in-out;
   background-color: #f9f9f9;
-  border-radius: 5px;
+  border-radius: 2px;
 }
 .watch-item-btn:hover {
   background-color: #ff8812;
@@ -137,6 +137,11 @@ button:focus {outline:0!important;}
   width: 300px;
   box-shadow: 2px 3px 16px 0px rgba(0,0,0,0.52);
 }
+[role='tooltip'].popup-content {
+  display: inline-block;
+  width: auto;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
+}
 .no-border {
   border: 0;
   outline: none;
@@ -148,6 +153,9 @@ button:focus {outline:0!important;}
   color: #4e4e4e;
   fill-opacity: 1;
   fill: #4e4e4e;
+}
+.custom-icon-color {
+  fill: #ff8812;
 }
 .gray-fill {
   fill-opacity: 0.25;

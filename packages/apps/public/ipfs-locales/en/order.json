@@ -16,7 +16,10 @@
     "speed": "Speed up",
     "order": "Order",
     "retry": "Retry",
-    "note": "Note"
+    "note": "Note",
+    "prepaid": "prepaid",
+    "Order Fee": "Order Fee(CRU)",
+    "Renew Pool Balance": "Renew Pool Balance(CRU)"
   },
   "noAccount": "Need to import a valid account",
   "orderList": "File Order List",
@@ -62,10 +65,15 @@
     "error1": "You must upload a JSON file.",
     "error2": "Your file content is invalid!",
     "success": "success",
-    "failed": "failed"
+    "failed": "failed",
+    "duplicated": "duplicated"
   },
   "addNoteTip": "Please add note",
   "importBtn": "Import",
   "exportBtn": "Export",
-  "jumpToSplorer": "View All Orders"
+  "jumpToSplorer": "Fetch",
+  "Add Balance": "Add Balance",
+  "Amount": "Amount",
+  "Order Fee": "Order Fee(CRU)",
+  "Renew Pool Balance": "Renew Pool Balance(CRU)"
 }
