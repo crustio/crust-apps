@@ -159,11 +159,7 @@ const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggl
       </div>
     </div>
 
-    <div className='relative tc  flex justify-center items-center  ph2 pv1 w-20'>
-      <Comment t={t} isEdit={isEdit} startEdit={startEdit} confirmEdit={confirmEdit} item={watchItem}/>
-      {/*{watchItem.comment}*/}
-    </div>
-    <div className='relative tc flex  justify-center items-center  ph2 pv1 w-10'>
+    <div className='relative tc flex  justify-center items-center  ph2 pv1 w-20'>
       <div className=''>
         {/*(expireTime - bestNumber) / 6*/}
         {watchItem.expireTime  ? <span>{watchItem.expireTime} / {calculateExpiredTime(watchItem.expireTime)} </span> : '-'}
@@ -192,32 +188,45 @@ const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggl
       :
       <div style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</div>
     }</div>
-    <div className='relative tr flex justify-center items-center  ph2 pv1 w-10'>
+    <div className='relative tr flex justify-center items-center  ph2 pv1 w-15'>
       <span className='dib tc' style={{minWidth:"50%"}}>{watchItem.amount ? formatBalance((new BN(2_000_000_000)).add(new BN(watchItem.amount || 0)), { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '') : '-'}</span>
-      <span className="self-end" title={t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)} onClick={() => {
-        onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem)
-      }}>
+      <Popup
+        trigger={<span className="self-end" onClick={() => {
+          onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem)
+        }}>
         {
           watchItem.fileStatus === fileStatusEnum.PENDING && <GlyphSpeedup className={'custom-icon' +
           ' custom-icon-color pointer'}/>
         }
-        {
-          (watchItem.fileStatus === fileStatusEnum.SUCCESS || watchItem.fileStatus === fileStatusEnum.EXPIRE) && <GlyphRenew className={'custom-icon' +
-          ' custom-icon-color pointer'}/>
-        }
-        {
-          watchItem.fileStatus === fileStatusEnum.FAILED && <GlyphRetry className={'custom-icon' +
-          ' custom-icon-color pointer'}/>
-        }
-
-      </span>
+          {
+            (watchItem.fileStatus === fileStatusEnum.SUCCESS || watchItem.fileStatus === fileStatusEnum.EXPIRE) && <GlyphRenew className={'custom-icon' +
+            ' custom-icon-color pointer'}/>
+          }
+          {
+            watchItem.fileStatus === fileStatusEnum.FAILED && <GlyphRetry className={'custom-icon' +
+            ' custom-icon-color pointer'}/>
+          }
+      </span>}
+        on={['hover', 'focus']}
+        position="right center"
+        closeOnDocumentClick
+      >
+          <span>{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</span>
+        </Popup>
     </div>
-    <div className='relative tr flex justify-center items-center  ph2 pv1 w-10'>
+    <div className='relative tr flex justify-center items-center  ph2 pv1 w-15'>
       <span  className='dib tc' style={{minWidth:"50%"}}>{formatBalance(watchItem.prepaid, { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '')|| '-'}</span>
-      <span title={t('Add Balance', 'Add Balance')}>
-        <GlyphPrepaid  onClick={() => {
-          onAddPool(watchItem)
-        }} className={'custom-icon custom-icon-color pointer'}/>
+      <span>
+          <Popup
+            trigger={<span><GlyphPrepaid  onClick={() => {
+              onAddPool(watchItem)
+            }} className={'custom-icon custom-icon-color pointer'}/></span>}
+            on={['hover', 'focus']}
+            position="right center"
+            closeOnDocumentClick
+          >
+          <span>{t('Add Balance', 'Add Balance')}</span>
+        </Popup>
       </span>
     </div>
   </div>;

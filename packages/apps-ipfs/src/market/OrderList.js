@@ -17,14 +17,9 @@ const itemList = [{
   width: 10,
 },
   {
-    name: 'note',
-    label: 'note',
-    width: 20,
-  },
-  {
     name: 'expireTime',
     label: 'expireTime',
-    width: 10,
+    width: 20,
   },
   {
     name: 'confirmedReplicas',
@@ -39,12 +34,12 @@ const itemList = [{
   {
     name: 'amount',
     label: 'Order Fee',
-    width: 10,
+    width: 15,
   },
   {
     name: 'prepaid',
     label: 'Renew Pool Balance',
-    width: 10,
+    width: 15,
   }
 ];
 

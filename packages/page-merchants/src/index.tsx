@@ -29,7 +29,7 @@ function MerchantsApp ({ basePath, onStatusChange }: Props): React.ReactElement<
     },
     {
       name: 'settlements',
-      text: t<string>('Settlements')
+      text: t<string>('Order settlement')
     }
 
   ]);

@@ -22,7 +22,7 @@ const IpfsPage: React.FC<Props> = (props) => {
     {
       isRoot: true,
       name: 'market',
-      text: t('market', 'Storage Order')
+      text: t('market', 'Storage Orders')
     },
     {
       name: 'status',

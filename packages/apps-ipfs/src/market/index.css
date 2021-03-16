@@ -136,6 +136,11 @@ button:focus {outline:0!important;}
   width: 300px;
   box-shadow: 2px 3px 16px 0px rgba(0,0,0,0.52);
 }
+[role='tooltip'].popup-content {
+  display: inline-block;
+  width: auto;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
+}
 .no-border {
   border: 0;
   outline: none;
