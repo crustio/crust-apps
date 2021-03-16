@@ -66,7 +66,7 @@
   "addNoteTip": "请添加备注",
   "importBtn": "导入",
   "exportBtn": "导出",
-  "jumpToSplorer": "拉取",
+  "Fetch": "拉取",
   "Add Balance": "充值",
   "Amount": "金额",
   "Order Fee": "订单金额(CRU)",
