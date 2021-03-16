@@ -15,7 +15,7 @@ interface Props {
   newEvents?: KeyedEvent[];
 }
 
-const IpfsPage: React.FC<Props> = (props) => {
+const IpfsPage: React.FC<Props> = () => {
   const { api } = useApi();
   const { t } = useTranslation('apps-routing');
   const itemsRef = useRef([

@@ -1,5 +1,6 @@
 // Copyright 2017-2021 @polkadot/page-merchants authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+
 const headers = new Headers();
 
 headers.append('Authorization', 'Basic Y3J1c3Q6MTYyNTM0');

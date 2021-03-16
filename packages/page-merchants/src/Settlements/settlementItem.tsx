@@ -1,5 +1,6 @@
-// [object Object]
+// Copyright 2017-2021 @polkadot/react-components authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+
 import dayjs from 'dayjs';
 import filesize from 'filesize';
 import React, { useMemo } from 'react/index';
