@@ -64,7 +64,6 @@ const OrderList = ({ onAddPool, doUpdateWatchItem, doSelectedItems, onToggleBtn,
     }
 
     doSelectedItems(selectedCidList);
-    tableRef.current.forceUpdateGrid();
   };
   const toggleAll = () => {
     const isSelected = isAllSelected();
@@ -100,11 +99,10 @@ const OrderList = ({ onAddPool, doUpdateWatchItem, doSelectedItems, onToggleBtn,
     }
     const _list = _.orderBy(sortedList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc'])
     setSortedList(_list)
-    tableRef.current.forceUpdateGrid();
+    console.log(123);
   };
   const nodata =() => {
-    return <div className={'nodata'}>
-    </div>
+    return
   }
 
   return (
@@ -144,56 +142,32 @@ const OrderList = ({ onAddPool, doUpdateWatchItem, doSelectedItems, onToggleBtn,
           </div>
         ))}
       </header>
-      <WindowScroller>
-        {({ height, isScrolling, onChildScroll, scrollTop }) => (
-          <div className='flex-auto'>
-            <AutoSizer disableHeight>
-              {({ width }) => (
-                <List
-                  aria-label={t('filesListLabel')}
-                  autoHeight
-                  className='outline-0'
-                  data={sortedList /* NOTE: this is a placebo prop to force the list to re-render */}
-                  height={height}
-                  isScrolling={isScrolling}
-                  onScroll={onChildScroll}
-                  noRowsRenderer={nodata}
-                  // onRowsRendered={this.onRowsRendered}
-                  ref={tableRef}
-                  rowCount={sortedList.length}
-                  rowHeight={50}
-                  rowRenderer={({ index, key }) => {
-                    return <WatchItem
-                      onAddPool={onAddPool}
-                      tableRef={tableRef}
-                      key={key}
-                      onSelect={toggleOne}
-                      onToggleBtn={(type, file) => {
-                        onToggleBtn(type, file);
-                      }}
-                      onEdit={() => {
+      <div>
+        {sortedList.length > 0 ? sortedList.map((item) => (
+          <WatchItem
+            onAddPool={onAddPool}
+            tableRef={tableRef}
+            key={item.fileCid}
+            onSelect={toggleOne}
+            onToggleBtn={(type, file) => {
+              onToggleBtn(type, file);
+            }}
+            onEdit={() => {
 
-                      }}
-                      isEdit={editItem === sortedList[index].fileCid}
-                      startEdit={() => {
-                        setEditItem(sortedList[index].fileCid)
-                      }}
-                      confirmEdit={(comment) => {
-                        //
-                        setEditItem(undefined)
-                        doUpdateWatchItem(sortedList[index].fileCid, {...sortedList[index], comment})
-                      }}
-                      selected={selectedCidList.indexOf(sortedList[index].fileCid) > -1}
-                      watchItem={sortedList[index]} />;
-                  }}
-                  scrollTop={scrollTop}
-                  width={width}
-                />
-              )}
-            </AutoSizer>
-          </div>
-        )}
-      </WindowScroller>
+            }}
+            isEdit={editItem === item.fileCid}
+            startEdit={() => {
+              setEditItem(item.fileCid)
+            }}
+            confirmEdit={(comment) => {
+              //
+              setEditItem(undefined)
+              doUpdateWatchItem(item.fileCid, {...item, comment})
+            }}
+            selected={selectedCidList.indexOf(item.fileCid) > -1}
+            watchItem={item} />
+        )): <div className={'nodata'}/>  }
+      </div>
     </div>
   );
 };
