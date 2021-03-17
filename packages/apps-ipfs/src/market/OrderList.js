@@ -99,11 +99,7 @@ const OrderList = ({ onAddPool, doUpdateWatchItem, doSelectedItems, onToggleBtn,
     }
     const _list = _.orderBy(sortedList, [listSorting.by], [listSorting.asc ? 'asc' : 'desc'])
     setSortedList(_list)
-    console.log(123);
   };
-  const nodata =() => {
-    return
-  }
 
   return (
     <div>

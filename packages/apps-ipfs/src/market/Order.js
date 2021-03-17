@@ -96,7 +96,6 @@ const Order = ({ watchList, doAddOrders }) => {
     toggleFetchModalShow(false)
     setLoading(true)
     fetchInfoByAccount(accountId).then(res =>{
-      console.log(res);
       if (res.message === 'success') {
         let _orders = res.data ? res.data.orderedFiles : []
         const _list =  _orders.map((item) => ({fileCid:item}))
