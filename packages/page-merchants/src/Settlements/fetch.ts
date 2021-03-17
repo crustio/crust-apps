@@ -15,7 +15,7 @@ interface IRes<ISettlement> {
 }
 
 export function fetchFileTobeClaimed<ISettlement> ():Promise<ISettlement[]> {
-  return fetch('http://47.100.33.107:13030/api/filesToBeClaimed', requestOptions)
+  return fetch('https://splorer-api.crustcode.com/api/filesToBeClaimed', requestOptions)
     .then((res) => res.json())
     .then((r: IRes<ISettlement>) => {
       console.log(r);
