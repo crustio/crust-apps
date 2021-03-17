@@ -13,6 +13,7 @@ import { useApi, useFavorites } from '@polkadot/react-hooks';
 import { MAX_NOMINATIONS, MAX_PAYOUTS, STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
 import BN from 'bn.js';
+import MaxCutGuarantee from './MaxCutGuarantee';
 
 interface Props {
   className?: string;
@@ -61,6 +62,29 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
       .concat(...(next || []).filter((acc) => !shortlist.includes(acc))));
   });
   const [, setAutoSelected] = useState<string[]>([]);
+
+  const [maxBalance, setMaxBalance] = useState<BN>(new BN(0));
+
+  const cutGuaranteeable = <span className='label'>{t<string>('cutGuaranteeable')}</span>;
+
+  useEffect(() => {
+    if (selected.length) {
+      api.query.staking
+      .guarantors<any>(stashId)
+      .then((guarantee): void => {
+        const guaranteeInfo = JSON.parse(JSON.stringify(guarantee));
+
+        if (guaranteeInfo) {
+          for (const validate of guaranteeInfo.targets) {
+            if (selected[0] == validate.who.toString()) {
+              setMaxBalance(validate.value)
+            }
+          }
+        }
+      })
+      .catch(console.error);
+    }
+  }, [api, selected, stashId])
 
   useEffect((): void => {
     setAutoSelected(
@@ -124,6 +148,13 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
           label={t<string>('amount')}
           withMax
           onChange={setAmount}
+          labelExtra={
+            selected[0] &&
+            <MaxCutGuarantee
+              label={cutGuaranteeable}
+              params={maxBalance}
+            />
+          }
         />
       </Modal.Column>
     </div>
