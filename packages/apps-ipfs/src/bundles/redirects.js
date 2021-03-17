@@ -27,8 +27,7 @@ export default {
         return;
       }
 
-      hash = getRealPath(hash);
-      const withoutIpfs = ['/welcome', '/market']
+      const withoutIpfs = ['/storage/welcome', '/storage/market', '/storage']
       if (failed && withoutIpfs.indexOf(hash) < 0 ) {
         return { actionCreator: 'doUpdateHash', args: ['#/storage/welcome'] };
       }
