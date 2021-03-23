@@ -105,5 +105,6 @@ jobs:
             - https://cloudflare-ipfs.com/ipfs/${{ steps.upload.outputs.hash }}/
             - https://ipfs.infura.io/ipfs/${{ steps.upload.outputs.hash }}/
             - https://ipfs.io/ipfs/${{ steps.upload.outputs.hash }}/
+            - https://dweb.link/ipfs/${{ steps.upload.outputs.hash }}/
 
             ${{ needs.bump_version.outputs.changelog }}
