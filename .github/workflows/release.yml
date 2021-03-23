@@ -54,6 +54,7 @@ jobs:
 
       - name: Pin to Crust
         uses: crustio/ipfs-crust-action@v1.0.8
+        timeout-minutes: 2
         with:
           cid: ${{ steps.upload.outputs.hash }}
           seeds: ${{ secrets.CRUST_SEEDS }}
