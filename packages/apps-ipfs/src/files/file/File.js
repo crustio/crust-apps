@@ -37,8 +37,6 @@ const File = ({ cantDrag, cantSelect, cid, coloured, contracted, focused, handle
   size = size ? filesize(size, { round: 0 }) : '-';
 
   const handleCtxRightClick = (ev) => {
-    console.log('handleCtxRightClickhandleCtxRightClick');
-    console.log({ name, size, type, cid, path, pinned, originalSize });
     handleContextMenuClick(ev, 'RIGHT', { name, size, type, cid, path, pinned, originalSize });
   };
 

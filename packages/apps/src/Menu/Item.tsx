@@ -61,6 +61,13 @@ export default React.memo(styled(Item)`
       top: 0.95rem;
     }
   }
+  @media (max-width: 1500px) {
+    &.external {
+      a {
+        padding: 1rem 0.3rem;
+      }
+  }
+  }
 
   &.withCounter a {
     padding-right: 3rem;

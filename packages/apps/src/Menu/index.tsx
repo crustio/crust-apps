@@ -32,7 +32,8 @@ const disabledLog = new Map<string, string>();
 function createExternals (t: TFunction): ItemRoute[] {
   return [
     { href: 'https://github.com/crustio/crust-apps', icon: 'code-branch', name: 'github', text: t<string>('nav.github', 'GitHub', { ns: 'apps-routing' }) },
-    { href: 'https://wiki.crust.network', icon: 'book', name: 'wiki', text: t<string>('nav.wiki', 'Wiki', { ns: 'apps-routing' }) }
+    { href: 'https://wiki.crust.network', icon: 'book', name: 'wiki', text: t<string>('nav.wiki', 'Wiki', { ns: 'apps-routing' }) },
+    { href: 'https://wiki.crust.network/docs/en/crustWallet', icon: 'wallet', name: 'wallet', text: t<string>('nav.Wallet', 'Wallet', { ns: 'apps-routing' }) }
   ];
 }
 
@@ -148,6 +149,7 @@ function Menu ({ className = '' }: Props): React.ReactElement<Props> {
         <ul className='menuItems'>
           {externalRef.current.map((route): React.ReactNode => (
             <Item
+              className='external'
               isToplevel
               key={route.name}
               route={route}
