@@ -7,12 +7,13 @@ import { SortedTargets } from '../../types';
 
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { InputAddress, InputAddressMulti, Modal, InputBalance } from '@polkadot/react-components';
+import { InputAddress, InputAddressMulti, Modal, InputBalance, Toggle } from '@polkadot/react-components';
 import { useApi, useFavorites } from '@polkadot/react-hooks';
 
 import { MAX_NOMINATIONS, MAX_PAYOUTS, STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
 import BN from 'bn.js';
+import MaxCutGuarantee from './MaxCutGuarantee';
 
 interface Props {
   className?: string;
@@ -62,6 +63,31 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
   });
   const [, setAutoSelected] = useState<string[]>([]);
 
+  const [maxBalance, setMaxBalance] = useState<BN>(new BN(0));
+
+  const cutGuaranteeable = <span className='label'>{t<string>('cutGuaranteeable')}</span>;
+  const [withMax, setWithMax] = useState(false);
+  const MAX_CUT = new BN(20_000_000).mul(new BN(1_000_000_000_000));
+
+  useEffect(() => {
+    if (selected.length) {
+      api.query.staking
+      .guarantors<any>(stashId)
+      .then((guarantee): void => {
+        const guaranteeInfo = JSON.parse(JSON.stringify(guarantee));
+
+        if (guaranteeInfo) {
+          for (const validate of guaranteeInfo.targets) {
+            if (selected[0] == validate.who.toString()) {
+              setMaxBalance(validate.value)
+            }
+          }
+        }
+      })
+      .catch(console.error);
+    }
+  }, [api, selected, stashId])
+
   useEffect((): void => {
     setAutoSelected(
       targets.validators?.length
@@ -72,11 +98,11 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
 
   useEffect((): void => {
     onChange({
-      nominateTx: selected && selected.length && amount
-        ? api.tx.staking.cutGuarantee([selected[0], amount])
+      nominateTx: (selected && selected.length && amount) || withMax
+        ? (withMax ? api.tx.staking.cutGuarantee([selected[0], MAX_CUT]) : api.tx.staking.cutGuarantee([selected[0], amount])) 
         : null
     });
-  }, [api, onChange, selected, amount]);
+  }, [api, onChange, selected, amount, withMax]);
 
   return (
     <div className={className}>
@@ -124,7 +150,22 @@ function CutGuarantee ({ className = '', controllerId, next, nominating, onChang
           label={t<string>('amount')}
           withMax
           onChange={setAmount}
-        />
+          isDisabled={withMax}
+          labelExtra={
+            selected[0] &&
+            <MaxCutGuarantee
+              label={cutGuaranteeable}
+              params={maxBalance}
+            />
+          }
+        >
+          <Toggle
+            isOverlay
+            label={t<string>('all cut')}
+            onChange={setWithMax}
+            value={withMax}
+          />
+        </InputBalance>
       </Modal.Column>
     </div>
   );
