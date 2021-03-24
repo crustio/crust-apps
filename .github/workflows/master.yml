@@ -18,7 +18,7 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Build bundle
         run: yarn build
@@ -28,7 +28,7 @@ jobs:
           docker build -t crustio/crust-apps:latest .
           docker login -u ${{ secrets.DOCKER_HUB_USER_NAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
           docker push crustio/crust-apps:latest
-          
+
       - name: Upgrade apps
         uses: fifsky/ssh-action@master
         with:
