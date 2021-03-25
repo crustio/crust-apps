@@ -43,7 +43,7 @@ jobs:
         run: yarn install --immutable
 
       - name: Build the IPFS bundle
-        run: yarn build
+        run: NODE_ENV=production yarn build:www
       
       - name: Build and push docker
         run: |
