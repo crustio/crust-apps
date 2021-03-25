@@ -1,6 +1,8 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
+
 import type { SubmittableExtrinsic } from '@polkadot/api/types';
 import type { DeriveStakerReward, DeriveStakingAccount } from '@polkadot/api-derive/types';
 import type { PayoutStash } from './types';
@@ -30,14 +32,15 @@ interface EraInfo {
 }
 
 function createPrevPayoutType (api: ApiPromise, { era, isValidator, nominating }: DeriveStakerReward, stashId: string): SubmittableExtrinsic<'promise'> {
-  return isValidator ? api.tx.staking.rewardStakers(stashId, era)
-  : api.tx.utility.batch(nominating.map(e => api.tx.staking.rewardStakers(e?.validatorId, era)));
+  return isValidator
+    ? api.tx.staking.rewardStakers(stashId, era)
+    : api.tx.utility.batch(nominating.map((e) => api.tx.staking.rewardStakers(e?.validatorId, era)));
 }
 
 function createPrevPayout (api: ApiPromise, payoutRewards: DeriveStakerReward[], stashId: string): SubmittableExtrinsic<'promise'> {
   return payoutRewards.length === 1
-  ? createPrevPayoutType(api, payoutRewards[0], stashId)
-  : api.tx.utility.batch(payoutRewards.map((reward) => createPrevPayoutType(api, reward, stashId)));
+    ? createPrevPayoutType(api, payoutRewards[0], stashId)
+    : api.tx.utility.batch(payoutRewards.map((reward) => createPrevPayoutType(api, reward, stashId)));
 }
 
 function Stash ({ className = '', isDisabled, payout: { available, rewards, stashId }, stakerPayoutsAfter }: Props): React.ReactElement<Props> | null {

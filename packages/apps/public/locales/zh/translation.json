@@ -353,8 +353,8 @@
   "Nominator": "提名人",
   "Nominators ({{count}})": "提名人({{count}})",
   "Nominators can be selected automatically based on the current on-chain conditions or supplied manually as selected from the list of all currently available validators. In both cases, your favorites appear for the selection.": "提名人可以根据当前链上条件自动选择，也可以从所有当前可用的验证人列表中选择手动提供。在这两种情况下，您的收藏夹将显示在所选内容中。",
-  "Nominators can be selected manually from the list of all currently available validators.": "可以从所有当前可用的验证人列表中手动选择提名人。",
-  "Nominators can be selected manually from the list of all currently available validators. If you have set favorites these will appear for the selection.": "可以从所有当前可用的验证人列表中手动选择提名人。如果您设置了收藏夹，这些将出现在选择中。",
+  "Guarantors can be selected manually from the list of all currently available validators.": "可以从所有当前可用的验证人列表中手动选择担保。",
+  "Guarantors can be selected manually from the list of all currently available validators. If you have set favorites these will appear for the selection.": "可以从所有当前可用的验证人列表中手动选择担保。如果您设置了收藏夹，这些将出现在选择中。",
   "Nonce": "Nonce值",
   "None": "没有一个",
   "Normal transfer without keep-alive checks": "没有保持活跃检查的正常转账",
@@ -1379,5 +1379,8 @@
   "{{step}}. Sign with your ETH address": "{{step}}. 用你的以太坊地址签名",
   "{{threshold}}, not passing": "{{threshold}},没有通过",
   "{{threshold}}, passing": "{{threshold}}, 通过",
-  "{{value}}x voting balance, locked for {{lock}}x enactment ({{period}} days)": "{{value}}x投票余额，锁定 {{lock}}x 执行 ({{period}} days)"
+  "{{value}}x voting balance, locked for {{lock}}x enactment ({{period}} days)": "{{value}}x投票余额，锁定 {{lock}}x 执行 ({{period}} days)",
+  "candies": "糖果",
+  "send candies": "发送糖果",
+  "send candy": "发送糖果"
 }

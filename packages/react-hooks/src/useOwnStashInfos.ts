@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/react-hooks authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { DeriveStakingAccount, DeriveStakingOverview, DeriveStakingWaiting } from '@polkadot/api-derive/types';
 import type { AccountId, ValidatorPrefs } from '@polkadot/types/interfaces';
 import type { Codec, ITuple } from '@polkadot/types/types';
@@ -8,8 +9,8 @@ import type { StakerState } from './types';
 
 import { useEffect, useMemo, useState } from 'react';
 
-import { u8aConcat, u8aToHex } from '@polkadot/util';
 import { useCall } from '@polkadot/react-hooks/useCall';
+import { u8aConcat, u8aToHex } from '@polkadot/util';
 
 import { useAccounts } from './useAccounts';
 import { useApi } from './useApi';

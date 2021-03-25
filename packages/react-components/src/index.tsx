@@ -98,3 +98,5 @@ export { default as VoteValue } from './VoteValue';
 export { default as TextArea } from './TextArea';
 
 export { default as media } from './media';
+export { default as InputCandyBalance } from './InputCandyBalance';
+export { default as InpuCandyNumber } from './InputCandyNumber';
