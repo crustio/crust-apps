@@ -31,8 +31,8 @@ import SetRewardDestination from './SetRewardDestination';
 import SetSessionKey from './SetSessionKey';
 import Unbond from './Unbond';
 import Validate from './Validate';
-import EffectiveStake from './EffectiveStake';
 import EffectiveGuaranteed from './EffectiveGuaranteed';
+import EffectiveStake from './EffectiveStake';
 
 interface Props {
   allSlashes?: [BN, UnappliedSlash[]][];
@@ -238,13 +238,13 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
         <StakingUnbonding stakingInfo={stakingAccount} />
         <StakingRedeemable stakingInfo={stakingAccount} />
       </td>
-      {activeEra && (role !== `Validator` && role !== `Candidate`) ? <EffectiveStake
+      {activeEra && (role !== `Validator` && role !== `Candidate`) ? <EffectiveGuaranteed
         validators = {guaranteeTargets}
         stakeValue = {stakeValue}
         stashId= {stashId}
         activeEra = {activeEra}
       /> : activeEra && (
-          <EffectiveGuaranteed activeEra={activeEra}
+          <EffectiveStake activeEra={activeEra}
             stashId={stashId}
           />
         )
