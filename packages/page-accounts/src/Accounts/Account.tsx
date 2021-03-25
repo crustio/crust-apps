@@ -18,6 +18,7 @@ import styled, { ThemeContext } from 'styled-components';
 import { ApiPromise } from '@polkadot/api';
 import { AddressInfo, AddressMini, AddressSmall, Badge, Button, ChainLock, CryptoType, Forget, Icon, IdentityIcon, LinkExternal, Menu, Popup, StatusContext, Tags } from '@polkadot/react-components';
 import { useAccountInfo, useApi, useBestNumber, useCall, useLedger, useToggle } from '@polkadot/react-hooks';
+import { FormatCandy } from '@polkadot/react-query';
 import { keyring } from '@polkadot/ui-keyring';
 import { BN_ZERO, formatBalance, formatNumber, isFunction } from '@polkadot/util';
 
@@ -32,13 +33,12 @@ import ProxyOverview from '../modals/ProxyOverview';
 import RecoverAccount from '../modals/RecoverAccount';
 import RecoverSetup from '../modals/RecoverSetup';
 import Transfer from '../modals/Transfer';
+import TransferCandy from '../modals/TransferCandy';
 import UndelegateModal from '../modals/Undelegate';
 import { useTranslation } from '../translate';
 import { createMenuGroup } from '../util';
 import useMultisigApprovals from './useMultisigApprovals';
 import useProxies from './useProxies';
-import { FormatCandy } from '@polkadot/react-query';
-import TransferCandy from '../modals/TransferCandy';
 
 interface Props {
   account: KeyringAddress;

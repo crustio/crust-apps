@@ -1,10 +1,11 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/** disable-eslint */
 import type { DeriveBalancesAll, DeriveStakingAccount } from '@polkadot/api-derive/types';
 import type { StakerState } from '@polkadot/react-hooks/types';
 import type { Option } from '@polkadot/types';
-import type { SlashingSpans, UnappliedSlash, ActiveEraInfo, IndividualExposure, Balance } from '@polkadot/types/interfaces';
+import type { ActiveEraInfo, Balance, IndividualExposure, SlashingSpans, UnappliedSlash } from '@polkadot/types/interfaces';
 import type { SortedTargets } from '../../types';
 import type { Slash } from '../types';
 
@@ -15,13 +16,14 @@ import styled from 'styled-components';
 import { ApiPromise } from '@polkadot/api';
 import { AddressInfo, AddressMini, AddressSmall, Badge, Button, Menu, Popup, StakingBonded, StakingRedeemable, StakingUnbonding, StatusContext, TxButton } from '@polkadot/react-components';
 import { useApi, useCall, useToggle } from '@polkadot/react-hooks';
-import { formatNumber, isFunction } from '@polkadot/util';
-import { Codec } from '@polkadot/types/types';
 import { Compact } from '@polkadot/types/codec';
-import { BN_ZERO } from '@polkadot/util';
+import { Codec } from '@polkadot/types/types';
+import { BN_ZERO, formatNumber, isFunction } from '@polkadot/util';
 
 import { useTranslation } from '../../translate';
 import BondExtra from './BondExtra';
+import EffectiveGuaranteed from './EffectiveGuaranteed';
+import EffectiveStake from './EffectiveStake';
 import InjectKeys from './InjectKeys';
 import KickNominees from './KickNominees';
 import ListNominees from './ListNominees';
@@ -31,8 +33,6 @@ import SetRewardDestination from './SetRewardDestination';
 import SetSessionKey from './SetSessionKey';
 import Unbond from './Unbond';
 import Validate from './Validate';
-import EffectiveGuaranteed from './EffectiveGuaranteed';
-import EffectiveStake from './EffectiveStake';
 
 interface Props {
   allSlashes?: [BN, UnappliedSlash[]][];
@@ -99,27 +99,29 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const guarantors = useCall<Guarantee>(api.query.staking.guarantors, [stashId]);
   let guaranteeTargets: IndividualExposure[] = [];
   let stakeValue = new BN(0);
+
   if (guarantors && JSON.parse(JSON.stringify(guarantors)) != null) {
     guaranteeTargets = JSON.parse(JSON.stringify(guarantors)).targets;
-    stakeValue = guaranteeTargets.reduce((total: BN, { value }) => { return total.add(new BN(Number(value).toString()))}, BN_ZERO)
+    stakeValue = guaranteeTargets.reduce((total: BN, { value }) => { return total.add(new BN(Number(value).toString())); }, BN_ZERO);
   }
+
   const isGuarantor = guarantors && JSON.parse(JSON.stringify(guarantors)) != null;
   const isValidator = targets && (targets.validatorIds?.indexOf(stashId) != -1);
   const isCandidate = targets && (targets.waitingIds?.indexOf(stashId) != -1);
 
   const [role, setRole] = useState<string>('Bonded');
-  
+
   useEffect(() => {
     if (isGuarantor) {
       setRole('Guarantor');
     } else if (isCandidate) {
       setRole('Candidate');
     } else if (isValidator) {
-      setRole('Validator')
+      setRole('Validator');
     } else {
-      setRole('Bonded')
+      setRole('Bonded');
     }
-  }, [targets, guarantors])
+  }, [targets, guarantors]);
 
   const slashes = useMemo(
     () => extractSlashes(stashId, allSlashes),
@@ -238,12 +240,14 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
         <StakingUnbonding stakingInfo={stakingAccount} />
         <StakingRedeemable stakingInfo={stakingAccount} />
       </td>
-      {activeEra && (role !== `Validator` && role !== `Candidate`) ? <EffectiveGuaranteed
-        validators = {guaranteeTargets}
-        stakeValue = {stakeValue}
-        stashId= {stashId}
-        activeEra = {activeEra}
-      /> : activeEra && (
+      {activeEra && (role !== 'Validator' && role !== 'Candidate')
+        ? <EffectiveGuaranteed
+          activeEra = {activeEra}
+          stakeValue = {stakeValue}
+          stashId= {stashId}
+          validators = {guaranteeTargets}
+        />
+        : activeEra && (
           <EffectiveStake activeEra={activeEra}
             stashId={stashId}
           />

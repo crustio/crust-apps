@@ -4,6 +4,7 @@
 import type { SortedTargets } from '../../types';
 import type { NominateInfo } from './types';
 
+import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -12,7 +13,6 @@ import { useApi, useFavorites } from '@polkadot/react-hooks';
 
 import { STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
-import BN from 'bn.js';
 
 interface Props {
   className?: string;
@@ -32,13 +32,12 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
   const [available] = useState<string[]>((): string[] => {
     const shortlist = [
       // ensure that the favorite is included in the list of stashes
-      ...favorites.filter((acc) => nominateIds.includes(acc)),
+      ...favorites.filter((acc) => nominateIds.includes(acc))
     ];
 
     return shortlist
       .concat(...(nominateIds.filter((acc) => !shortlist.includes(acc))));
   });
-
 
   const [amount, setAmount] = useState<BN | undefined>(new BN(0));
 
@@ -87,8 +86,8 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
           help={t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}
           isZeroable
           label={t<string>('amount')}
-          withMax
           onChange={setAmount}
+          withMax
           // labelExtra={
           //   selected[0] &&
           //   <Guaranteeable

@@ -1,5 +1,7 @@
-// [object Object]
+// Copyright 2017-2021 @polkadot/api-derive authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+
+/** disable-eslint */
 
 import Cid from 'cids';
 import parseIpldPath from 'ipld-explorer-components/dist/lib/parse-ipld-path'; // Find all the nodes and path boundaries traversed along a given path

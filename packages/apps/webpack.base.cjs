@@ -1,7 +1,7 @@
 // Copyright 2017-2021 @polkadot/apps authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-/* eslint-disable camelcase */
+/* eslint-disable */
 
 const fs = require('fs');
 const path = require('path');
