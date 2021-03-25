@@ -1,13 +1,14 @@
-// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+
+import type { Option } from '@polkadot/types';
+import type { EraIndex } from '@polkadot/types/interfaces';
 
 import BN from 'bn.js';
 import { useMemo } from 'react';
 
 import { useApi, useCall } from '@polkadot/react-hooks';
-import { Option } from '@polkadot/types';
-import { EraIndex } from '@polkadot/types/interfaces';
-import { isFunction } from '@polkadot/util';
+import { BN_BILLION, BN_ZERO, isFunction } from '@polkadot/util';
 
 export default function useStakerPayouts (): BN {
   const { api } = useApi();
@@ -16,8 +17,8 @@ export default function useStakerPayouts (): BN {
   return useMemo(
     () => (migrateEraOpt && migrateEraOpt.isSome && migrateEraOpt.unwrap()) || (
       isFunction(api.tx.staking.payoutStakers)
-        ? new BN(0)
-        : new BN(1_000_000_000)
+        ? BN_ZERO
+        : BN_BILLION
     ),
     [api, migrateEraOpt]
   );

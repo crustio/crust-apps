@@ -1,6 +1,5 @@
 // Copyright 2017-2021 @polkadot/react-hooks authors & contributors
 // SPDX-License-Identifier: Apache-2.0
-/* eslint-disable */
 
 import type { DeriveStakingAccount, DeriveStakingOverview, DeriveStakingWaiting } from '@polkadot/api-derive/types';
 import type { AccountId, ValidatorPrefs } from '@polkadot/types/interfaces';
@@ -9,8 +8,8 @@ import type { StakerState } from './types';
 
 import { useEffect, useMemo, useState } from 'react';
 
-import { useCall } from '@polkadot/react-hooks/useCall';
 import { u8aConcat, u8aToHex } from '@polkadot/util';
+import { useCall } from '@polkadot/react-hooks/useCall';
 
 import { useAccounts } from './useAccounts';
 import { useApi } from './useApi';
@@ -28,7 +27,6 @@ function toIdString (id?: AccountId | null): string | null {
 
 function getStakerState (stashId: string, allAccounts: string[], validators: string[], [isOwnStash, { controllerId: _controllerId, exposure, nextSessionIds, nominators, rewardDestination, sessionIds, stakingLedger, validatorPrefs }, validateInfo]: [boolean, DeriveStakingAccount, ValidatorInfo]): StakerState {
   const isStashNominating = !!(nominators?.length);
-  // const isStashValidating = !(Array.isArray(validateInfo) ? validateInfo[1].isEmpty : validateInfo.isEmpty);
   const isStashValidating = validators.indexOf(stashId) !== -1;
   const nextConcat = u8aConcat(...nextSessionIds.map((id): Uint8Array => id.toU8a()));
   const currConcat = u8aConcat(...sessionIds.map((id): Uint8Array => id.toU8a()));
@@ -84,8 +82,8 @@ export function useOwnStashInfos (): StakerState[] | undefined {
       if (ownStashes.length) {
         const stashIds = ownStashes.map(([stashId]) => stashId);
         const fns: any[] = [
-          [api.derive.staking.accounts as any, stashIds],
-          [api.query.staking.validators.multi as any, stashIds]
+          [api.derive.staking.accounts, stashIds],
+          [api.query.staking.validators.multi, stashIds]
         ];
 
         api.combineLatest<[DeriveStakingAccount[], ValidatorInfo[]]>(fns, ([accounts, validators]): void => {

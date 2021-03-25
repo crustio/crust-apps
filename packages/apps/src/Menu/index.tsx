@@ -4,7 +4,6 @@
 import type { TFunction } from 'i18next';
 import type { Route, Routes } from '@polkadot/apps-routing/types';
 import type { ApiProps } from '@polkadot/react-api/types';
-import type { ThemeProps } from '@polkadot/react-components/types';
 import type { AccountId } from '@polkadot/types/interfaces';
 import type { Group, Groups, ItemRoute } from './types';
 
@@ -13,7 +12,6 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import createRoutes from '@polkadot/apps-routing';
-import { Icon } from '@polkadot/react-components';
 import { useAccounts, useApi, useCall } from '@polkadot/react-hooks';
 
 import { findMissingApis } from '../endpoint';
@@ -31,9 +29,8 @@ const disabledLog = new Map<string, string>();
 
 function createExternals (t: TFunction): ItemRoute[] {
   return [
-    { href: 'https://github.com/crustio/crust-apps', icon: 'code-branch', name: 'github', text: t<string>('nav.github', 'GitHub', { ns: 'apps-routing' }) },
-    { href: 'https://wiki.crust.network', icon: 'book', name: 'wiki', text: t<string>('nav.wiki', 'Wiki', { ns: 'apps-routing' }) },
-    { href: 'https://wiki.crust.network/docs/en/crustWallet', icon: 'wallet', name: 'wallet', text: t<string>('nav.Wallet', 'Wallet', { ns: 'apps-routing' }) }
+    { href: 'https://github.com/polkadot-js/apps', icon: 'code-branch', name: 'github', text: t<string>('nav.github', 'GitHub', { ns: 'apps-routing' }) },
+    { href: 'https://wiki.polkadot.network', icon: 'book', name: 'wiki', text: t<string>('nav.wiki', 'Wiki', { ns: 'apps-routing' }) }
   ];
 }
 
@@ -103,9 +100,9 @@ function Menu ({ className = '' }: Props): React.ReactElement<Props> {
     developer: t('Developer'),
     governance: t('Governance'),
     network: t('Network'),
-    settings: t('Settings'),
-    storage: t('ipfs')
+    settings: t('Settings')
   });
+
   const routeRef = useRef(createRoutes(t));
 
   const hasSudo = useMemo(
@@ -127,53 +124,60 @@ function Menu ({ className = '' }: Props): React.ReactElement<Props> {
 
   return (
     <div className={`${className}${isLoading ? ' isLoading' : ''} highlight--bg`}>
-      <div className='menuSection'>
-        <ChainInfo />
-        {activeRoute && (
-          <div className='menuActive'>
-            <Icon icon={activeRoute.icon} />
-            <span>{activeRoute.text}</span>
-          </div>
-        )}
-        <ul className='menuItems'>
-          {visibleGroups.map(({ name, routes }): React.ReactNode => (
-            <Grouping
-              key={name}
-              name={name}
-              routes={routes}
-            />
-          ))}
-        </ul>
+      <div className='menuContainer'>
+        <div className='menuSection'>
+          <ChainInfo />
+          <ul className='menuItems'>
+            {visibleGroups.map(({ name, routes }): React.ReactNode => (
+              <Grouping
+                isActive={ activeRoute && activeRoute.group === name.toLowerCase()}
+                key={name}
+                name={name}
+                routes={routes}
+              />
+            ))}
+          </ul>
+        </div>
+        <div className='menuSection media--1200'>
+          <ul className='menuItems'>
+            {externalRef.current.map((route): React.ReactNode => (
+              <Item
+                isLink
+                isToplevel
+                key={route.name}
+                route={route}
+              />
+            ))}
+          </ul>
+        </div>
+        <NodeInfo className='media--1400' />
       </div>
-      <div className='menuSection media--1200'>
-        <ul className='menuItems'>
-          {externalRef.current.map((route): React.ReactNode => (
-            <Item
-              className='external'
-              isToplevel
-              key={route.name}
-              route={route}
-            />
-          ))}
-        </ul>
-      </div>
-      <NodeInfo />
     </div>
   );
 }
 
-export default React.memo(styled(Menu)(({ theme }: ThemeProps) => `
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
+export default React.memo(styled(Menu)`
+  width: 100%;
   padding: 0;
   z-index: 220;
+  position: relative;
+
+  & .menuContainer {
+    flex-direction: row;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    width: 100%;
+    max-width: var(--width-full);
+    margin: 0 auto;
+  }
 
   &.isLoading {
     background: #999 !important;
 
     .menuActive {
-      background: ${theme.bgPage};
+      background: var(--bg-page);
     }
 
     &:before {
@@ -186,16 +190,15 @@ export default React.memo(styled(Menu)(({ theme }: ThemeProps) => `
   }
 
   .menuSection {
-    align-items: flex-end;
-    align-self: flex-end;
+    align-items: center;
     display: flex;
   }
 
   .menuActive {
-    background: ${theme.bgTabs};
+    background: var(--bg-tabs);
     border-bottom: none;
     border-radius: 0.25rem 0.25rem 0 0;
-    color: ${theme.color};
+    color: var(--color-text);
     padding: 1rem 1.5rem;
     margin: 0 1rem -1px;
     z-index: 1;
@@ -214,5 +217,14 @@ export default React.memo(styled(Menu)(({ theme }: ThemeProps) => `
     > li {
       display: inline-block;
     }
+
+    > li + li {
+      margin-left: 0.375rem
+    }
   }
-`));
+
+  .ui--NodeInfo {
+    align-self: center;
+  }
+
+`);

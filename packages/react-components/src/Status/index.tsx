@@ -239,7 +239,7 @@ export default React.memo(styled(Status)`
         padding: 0.5rem 1rem;
 
         .status {
-          font-weight: 400;
+          font-weight: var(--font-weight-normal);
         }
 
         .ui--AddressMini {

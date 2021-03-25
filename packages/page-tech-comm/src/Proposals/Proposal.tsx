@@ -69,7 +69,7 @@ function Proposal ({ className = '', imageHash, members, prime }: Props): React.
       <td className='number together'>
         {remainingBlocks && end && (
           <>
-            <BlockToTime blocks={remainingBlocks} />
+            <BlockToTime value={remainingBlocks} />
             #{formatNumber(end)}
           </>
         )}
@@ -124,7 +124,7 @@ function Proposal ({ className = '', imageHash, members, prime }: Props): React.
                       : [imageHash, index, proposalWeight, proposalLength]
                     : [imageHash, index]
                 }
-                tx={api.tx.technicalCommittee.close}
+                tx={api.tx.technicalCommittee.closeOperational || api.tx.technicalCommittee.close}
               />
             )
         )}

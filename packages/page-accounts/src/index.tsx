@@ -24,7 +24,7 @@ function AccountsApp ({ basePath, onStatusChange }: Props): React.ReactElement<P
   const { hasAccounts } = useAccounts();
   const { isIpfs } = useIpfs();
 
-  const itemsRef = useRef([
+  const tabsRef = useRef([
     {
       isRoot: true,
       name: 'overview',
@@ -39,13 +39,11 @@ function AccountsApp ({ basePath, onStatusChange }: Props): React.ReactElement<P
   return (
     <main className='accounts--App'>
       <HelpOverlay md={basicMd as string} />
-      <header>
-        <Tabs
-          basePath={basePath}
-          hidden={(hasAccounts && !isIpfs) ? undefined : HIDDEN_ACC}
-          items={itemsRef.current}
-        />
-      </header>
+      <Tabs
+        basePath={basePath}
+        hidden={(hasAccounts && !isIpfs) ? undefined : HIDDEN_ACC}
+        items={tabsRef.current}
+      />
       <Switch>
         <Route path={`${basePath}/vanity`}>
           <Vanity

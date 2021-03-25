@@ -5,7 +5,7 @@ import type { SubmittableExtrinsic } from '@polkadot/api/types';
 
 import React, { useCallback, useState } from 'react';
 
-import { Button, Extrinsic, InputAddress, TxButton } from '@polkadot/react-components';
+import { Button, Extrinsic, InputAddress, MarkError, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { BalanceFree } from '@polkadot/react-query';
 
@@ -47,8 +47,8 @@ function Selection (): React.ReactElement {
         onChange={_onExtrinsicChange}
         onError={_onExtrinsicError}
       />
-      {error && (
-        <article className='error'>{error}</article>
+      {error && !extrinsic && (
+        <MarkError content={error} />
       )}
       <Button.Group>
         <TxButton

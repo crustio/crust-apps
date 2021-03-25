@@ -5,7 +5,7 @@ import type { AccountId, Hash, Proposal, ProposalIndex } from '@polkadot/types/i
 
 import React, { useState } from 'react';
 
-import { Button, Modal, ProposedAction, TxButton, VoteAccount } from '@polkadot/react-components';
+import { Button, MarkWarning, Modal, ProposedAction, TxButton, VoteAccount } from '@polkadot/react-components';
 import { useAccounts, useApi, useToggle } from '@polkadot/react-hooks';
 
 import { useTranslation } from '../translate';
@@ -40,33 +40,21 @@ function Voting ({ hash, idNumber, isDisabled, members, prime, proposal }: Props
           size='large'
         >
           <Modal.Content>
-            <Modal.Columns>
-              <Modal.Column>
-                <ProposedAction
-                  idNumber={idNumber}
-                  proposal={proposal}
-                />
-              </Modal.Column>
-              <Modal.Column>
-                <p>{t<string>('The proposal that is being voted on. It will pass when the threshold is reached.')}</p>
-              </Modal.Column>
+            <Modal.Columns hint={t<string>('The proposal that is being voted on. It will pass when the threshold is reached.')}>
+              <ProposedAction
+                idNumber={idNumber}
+                proposal={proposal}
+              />
             </Modal.Columns>
-            <Modal.Columns>
-              <Modal.Column>
-                <VoteAccount
-                  filter={members}
-                  onChange={setAccountId}
-                />
-              </Modal.Column>
-              <Modal.Column>
-                <p>{t<string>('The council account for this vote. The selection is filtered by the current members.')}</p>
-              </Modal.Column>
+            <Modal.Columns hint={t<string>('The council account for this vote. The selection is filtered by the current members.')}>
+              <VoteAccount
+                filter={members}
+                onChange={setAccountId}
+              />
+              {isPrime && (
+                <MarkWarning content={t<string>('You are voting with this collective\'s prime account. The vote will be the default outcome in case of any abstentions.')} />
+              )}
             </Modal.Columns>
-            {isPrime && (
-              <article className='warning'>
-                <div>{t<string>('You are voting with this collective\'s prime account. The vote will be the default outcome in case of any abstentions.')}</div>
-              </article>
-            )}
           </Modal.Content>
           <Modal.Actions onCancel={toggleVoting}>
             <TxButton

@@ -6,6 +6,7 @@ import type { Routes } from './types';
 
 import accounts from './accounts';
 import addresses from './addresses';
+import assets from './assets';
 import bounties from './bounties';
 import calendar from './calendar';
 import claims from './claims';
@@ -14,16 +15,14 @@ import council from './council';
 import democracy from './democracy';
 import explorer from './explorer';
 import extrinsics from './extrinsics';
-import ipfsFiles from './ipfsFiles';
+import gilt from './gilt';
 import js from './js';
-import merchants from './merchants';
 import parachains from './parachains';
 import poll from './poll';
 import rpc from './rpc';
 import settings from './settings';
 import signing from './signing';
 import society from './society';
-import splore from './splore';
 import staking from './staking';
 import storage from './storage';
 import sudo from './sudo';
@@ -46,18 +45,17 @@ export default function create (t: TFunction): Routes {
     bounties(t),
     techcomm(t),
     parachains(t),
+    gilt(t),
+    assets(t),
     society(t),
     calendar(t),
     contracts(t),
     storage(t),
-    ipfsFiles(t),
     extrinsics(t),
     rpc(t),
     signing(t),
     sudo(t),
     js(t),
-    settings(t),
-    merchants(t),
-    splore(t)
+    settings(t)
   ];
 }
