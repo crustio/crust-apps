@@ -54,7 +54,7 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
     <div className={className}>
       {withSenders && (
         <Modal.Content>
-          <Modal.Columns>
+          <Modal.Columns hint={t<string>('The stash that is to be affected. The transaction will be sent from the associated controller account.')}>
             <InputAddress
               defaultValue={stashId}
               isDisabled
@@ -66,27 +66,20 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
               label={t<string>('controller account')}
             />
           </Modal.Columns>
-          <Modal.Columns>
-            <p>{t<string>('The stash that is to be affected. The transaction will be sent from the associated controller account.')}</p>
-          </Modal.Columns>
         </Modal.Content>
       )}
       <Modal.Content>
-          <Modal.Columns>
-            <InputAddressMulti
-              available={available}
-              availableLabel={t<string>('candidate accounts')}
-              // defaultValue={nominating}
-              help={t<string>('Filter available candidates based on name, address or short account index.')}
-              maxCount={1}
-              onChange={setSelected}
-              valueLabel={t<string>('nominated accounts')}
-            />
-          </Modal.Columns>
-          <Modal.Columns>
-            <p>{t<string>('Guarantors can be selected manually from the list of all currently available validators.')}</p>
-            <p>{t<string>('Once transmitted the new selection will only take effect in 2 eras taking the new validator election cycle into account. Until then, the nominations will show as inactive.')}</p>
-          </Modal.Columns>
+        <Modal.Columns hint={[t<string>('Guarantors can be selected manually from the list of all currently available validators.'), t<string>('Once transmitted the new selection will only take effect in 2 eras taking the new validator election cycle into account. Until then, the nominations will show as inactive.')]}>
+          <InputAddressMulti
+            available={available}
+            availableLabel={t<string>('candidate accounts')}
+            // defaultValue={nominating}
+            help={t<string>('Filter available candidates based on name, address or short account index.')}
+            maxCount={1}
+            onChange={setSelected}
+            valueLabel={t<string>('nominated accounts')}
+          />
+        </Modal.Columns>
       </Modal.Content>
       <Modal.Columns>
         <InputBalance

@@ -21,3 +21,5 @@ export { default as Nonce } from './Nonce';
 export { default as SessionToTime } from './SessionToTime';
 export { default as TimeNow } from './TimeNow';
 export { default as TotalIssuance } from './TotalIssuance';
+export { default as FormatCandy } from './FormatCandy';
+

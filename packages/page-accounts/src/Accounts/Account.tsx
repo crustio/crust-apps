@@ -7,7 +7,7 @@ import type { Ledger } from '@polkadot/hw-ledger';
 import type { ActionStatus } from '@polkadot/react-components/Status/types';
 import type { ThemeDef } from '@polkadot/react-components/types';
 import type { Option } from '@polkadot/types';
-import type { ProxyDefinition, RecoveryConfig } from '@polkadot/types/interfaces';
+import type { Balance, ProxyDefinition, RecoveryConfig } from '@polkadot/types/interfaces';
 import type { KeyringAddress, KeyringJson$Meta } from '@polkadot/ui-keyring/types';
 import type { Delegation } from '../types';
 
@@ -37,6 +37,8 @@ import { useTranslation } from '../translate';
 import { createMenuGroup } from '../util';
 import useMultisigApprovals from './useMultisigApprovals';
 import useProxies from './useProxies';
+import { FormatCandy } from '@polkadot/react-query';
+import TransferCandy from '../modals/TransferCandy';
 
 interface Props {
   account: KeyringAddress;
@@ -115,6 +117,8 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
   const [isTransferOpen, toggleTransfer] = useToggle();
   const [isDelegateOpen, toggleDelegate] = useToggle();
   const [isUndelegateOpen, toggleUndelegate] = useToggle();
+  const candyAmount = useCall<Balance>(api.api.query.candy?.balances, [address]);
+  const [isTransferCandyOpen, toggleTransferCandy] = useToggle();
 
   useEffect((): void => {
     if (balancesAll) {
@@ -525,6 +529,13 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
             senderId={address}
           />
         )}
+        {isTransferCandyOpen && (
+          <TransferCandy
+            key='modal-transfer'
+            onClose={toggleTransferCandy}
+            senderId={address}
+          />
+        )}
         {isProxyOverviewOpen && (
           <ProxyOverview
             key='modal-proxy-overview'
@@ -589,12 +600,22 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
           withExtended={false}
         />
       </td>
+      <td className='number'>
+        <FormatCandy value={candyAmount} />
+      </td>
       <td className='button'>
         {isFunction(api.api.tx.balances?.transfer) && (
           <Button
             icon='paper-plane'
             label={t<string>('send')}
             onClick={toggleTransfer}
+          />
+        )}
+        {isFunction(api.api.tx.candy?.transfer) && (
+          <Button
+            icon='paper-plane'
+            label={t<string>('send candy')}
+            onClick={toggleTransferCandy}
           />
         )}
         <Popup
