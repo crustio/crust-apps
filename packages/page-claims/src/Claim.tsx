@@ -1,12 +1,14 @@
 // Copyright 2017-2021 @polkadot/app-claims authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { ApiPromise } from '@polkadot/api';
 import type { SubmittableExtrinsic } from '@polkadot/api/types';
 import type { TxCallback } from '@polkadot/react-components/Status/types';
 import type { Option } from '@polkadot/types';
 import type { BalanceOf, EthereumAddress, StatementKind } from '@polkadot/types/interfaces';
 
+import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -26,6 +28,7 @@ interface Props {
   isOldClaimProcess: boolean;
   onSuccess?: TxCallback;
   statementKind?: StatementKind;
+  ethereumTxHash: string;
 }
 
 interface ConstructTx {
@@ -35,43 +38,74 @@ interface ConstructTx {
 
 // Depending on isOldClaimProcess, construct the correct tx.
 // FIXME We actually want to return the constructed extrinsic here (probably in useMemo)
-function constructTx (api: ApiPromise, systemChain: string, accountId: string, ethereumSignature: string | null, kind: StatementKind | undefined, isOldClaimProcess: boolean): ConstructTx {
+function constructTx (api: ApiPromise, systemChain: string, accountId: string, ethereumSignature: string | null, kind: StatementKind | undefined, isOldClaimProcess: boolean, ethereumTxHash: string): ConstructTx {
   if (!ethereumSignature) {
     return {};
   }
 
   return isOldClaimProcess || !kind
-    ? { params: [accountId, ethereumSignature], tx: api.tx.claims.claim }
+    ? { params: [accountId, ethereumTxHash, ethereumSignature], tx: api.tx.claims.claim }
     : { params: [accountId, ethereumSignature, getStatement(systemChain, kind)?.sentence], tx: api.tx.claims.claimAttest };
 }
 
-function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature, isOldClaimProcess, onSuccess, statementKind }: Props): React.ReactElement<Props> | null {
+function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature, ethereumTxHash, isOldClaimProcess, onSuccess, statementKind }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api, systemChain } = useApi();
-  const [claimValue, setClaimValue] = useState<BalanceOf | null>(null);
+  const [claimValue, setClaimValue] = useState<BN | null>(null);
   const [isBusy, setIsBusy] = useState(false);
+  const [claimedAddress, setClaimedAddress] = useState<string | undefined | null>(null);
 
   useEffect((): void => {
-    if (!ethereumAddress) {
+    if (!ethereumTxHash) {
       return;
     }
 
     setIsBusy(true);
 
     api.query.claims
-      .claims<Option<BalanceOf>>(ethereumAddress)
+      .claims<Option<BalanceOf>>(ethereumTxHash)
       .then((claim): void => {
-        setClaimValue(claim.unwrapOr(null));
-        setIsBusy(false);
+        const claimOpt = JSON.parse(JSON.stringify(claim));
+
+        if (claimOpt) {
+          const claimBalance = new BN(Number(claimOpt[1])?.toString());
+
+          setClaimValue(claimBalance);
+          setClaimedAddress(claimOpt[0]);
+          setIsBusy(false);
+        }
       })
       .catch((): void => setIsBusy(false));
-  }, [api, ethereumAddress]);
+  }, [api, ethereumTxHash]);
 
-  if (!ethereumAddress || isBusy) {
+  if (!ethereumTxHash || isBusy || !ethereumSignature || !ethereumAddress || !claimedAddress) {
     return null;
   }
 
-  const hasClaim = claimValue && claimValue.gten(0);
+  let hasClaim = claimValue && claimValue.gten(0);
+
+  let isSignedAddr = true;
+
+  if (claimedAddress.toString() !== ethereumAddress.toString()) {
+    isSignedAddr = false;
+    hasClaim = false;
+  }
+
+  if (!isSignedAddr) {
+    return (<Card
+      isError={!isSignedAddr}
+    >
+      <div className={className}>
+        {t<string>('Your Sign account')}
+        <h3>{addrToChecksum(ethereumAddress.toString())}</h3>
+        <>
+          {t<string>('is not samed as Your Transfer account')}
+        </>
+        <h3>{addrToChecksum(claimedAddress.toString())}</h3>
+        {t<string>('Please make sure that the account you transfer in Ethereum is the same as the signature account.')}
+      </div>
+    </Card>);
+  }
 
   return (
     <Card
@@ -81,7 +115,7 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
       <div className={className}>
         {t<string>('Your Ethereum account')}
         <h3>{addrToChecksum(ethereumAddress.toString())}</h3>
-        {hasClaim && claimValue
+        {ethereumTxHash !== '' && hasClaim
           ? (
             <>
               {t<string>('has a valid claim for')}
@@ -92,7 +126,7 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
                   isUnsigned
                   label={t('Claim')}
                   onSuccess={onSuccess}
-                  {...constructTx(api, systemChain, accountId, ethereumSignature, statementKind, isOldClaimProcess)}
+                  {...constructTx(api, systemChain, accountId, ethereumSignature, statementKind, isOldClaimProcess, ethereumTxHash)}
                 />
               </Button.Group>
             </>

@@ -12,7 +12,7 @@ export default function create (t: TFunction): Route {
     display: {
       needsAccounts: true,
       needsApi: [
-        'tx.claims.mintClaim'
+        'query.claims.claims'
       ]
     },
     group: 'accounts',
