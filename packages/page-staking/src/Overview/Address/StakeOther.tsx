@@ -51,8 +51,9 @@ function extractTotals (maxPaid: BN | undefined, nominators: NominatorValue[], s
 function StakeOther ({ nominators, stakeOther }: Props): React.ReactElement<Props> {
   const { api } = useApi();
 
-  const [rewarded, rewardedTotal, unrewarded, unrewardedTotal] = useMemo(
-    () => extractTotals(api.consts.staking?.maxNominatorRewardedPerValidator, nominators, stakeOther),
+  const [rewarded, rewardedTotal] = useMemo(
+    // @ts-ignore
+    () => extractTotals(api.consts.staking?.maxGuarantorRewardedPerValidator, nominators, stakeOther),
     [api, nominators, stakeOther]
   );
 
@@ -69,18 +70,6 @@ function StakeOther ({ nominators, stakeOther }: Props): React.ReactElement<Prop
               />
             }
           />
-          {unrewarded && (
-            <Expander
-              className='stakeOver'
-              renderChildren={unrewarded[1]}
-              summary={
-                <FormatBalance
-                  labelPost={` (${unrewarded[0]})`}
-                  value={unrewardedTotal}
-                />
-              }
-            />
-          )}
         </>
       )}
     </td>
