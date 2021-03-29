@@ -37,6 +37,8 @@ function createWebpack (context, mode = 'production') {
     './ownExposure.js': path.resolve(__dirname, 'src/patch/ownExposure.js'),
     './ownSlashes.js': path.resolve(__dirname, 'src/patch/ownSlashes.js'),
     './query.mjs': path.resolve(__dirname, 'src/patch/query.mjs'),
+    './query.js': path.resolve(__dirname, 'src/patch/query.js'),
+    './validators.js': path.resolve(__dirname, 'src/patch/validators.js'),
     './components/StartExploringPage': path.resolve(__dirname, 'src/patch/StartExploringPage'),
     './bundles/explore': path.resolve(__dirname, 'src/patch/bundles/explore')
   });

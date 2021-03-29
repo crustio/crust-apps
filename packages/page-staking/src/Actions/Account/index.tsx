@@ -99,13 +99,13 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const guarantors = useCall<Guarantee>(api.query.staking.guarantors, [stashId]);
   let guaranteeTargets: IndividualExposure[] = [];
   let stakeValue = new BN(0);
-
-  if (guarantors && JSON.parse(JSON.stringify(guarantors)) != null) {
+  const guarantorInfo = guarantors && JSON.parse(JSON.stringify(guarantors))
+  if (guarantorInfo != null) {
     guaranteeTargets = JSON.parse(JSON.stringify(guarantors)).targets;
     stakeValue = guaranteeTargets.reduce((total: BN, { value }) => { return total.add(new BN(Number(value).toString())); }, BN_ZERO);
   }
 
-  const isGuarantor = guarantors && JSON.parse(JSON.stringify(guarantors)) != null;
+  const isGuarantor = guarantorInfo && guarantorInfo.targets.length != 0;
   const isValidator = targets && (targets.validatorIds?.indexOf(stashId) != -1);
   const isCandidate = targets && (targets.waitingIds?.indexOf(stashId) != -1);
 
@@ -114,12 +114,12 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   useEffect(() => {
     if (isGuarantor) {
       setRole('Guarantor');
-    } else if (isCandidate) {
+    }  
+    if (isCandidate) {
       setRole('Candidate');
-    } else if (isValidator) {
+    } 
+    if (isValidator) {
       setRole('Validator');
-    } else {
-      setRole('Bonded');
     }
   }, [targets, guarantors]);
 

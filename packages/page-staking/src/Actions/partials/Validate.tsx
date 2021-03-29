@@ -37,8 +37,11 @@ function Validate ({ className = '', controllerId, onChange, stashId, withSender
     try {
       onChange({
         validateTx: api.tx.staking.validate({
-          blocked: !allowNoms,
-          commission
+          // @ts-ignore
+          guaranteefee: new BN(commission).isZero()
+          // small non-zero set to avoid isEmpty
+          ? '0'
+          : (new BN(commission).toNumber() > 1000000000) ? '1000000000' : new BN(commission).toNumber().toString()
         })
       });
     } catch {

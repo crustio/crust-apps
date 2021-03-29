@@ -122,7 +122,8 @@ function extractSingle (api: ApiPromise, allAccounts: string[], derive: DeriveSt
       bondOwn,
       bondShare: 0,
       bondTotal,
-      commissionPer: validatorPrefs.commission.unwrap().toNumber() / 10_000_000,
+      // @ts-ignore
+      commissionPer: validatorPrefs.guaranteefee.unwrap().toNumber() / 10_000_000,
       exposure,
       isActive: !skipRewards,
       isBlocking: !!(validatorPrefs.blocked && validatorPrefs.blocked.isTrue),

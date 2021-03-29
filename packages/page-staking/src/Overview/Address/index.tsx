@@ -39,7 +39,7 @@ interface Props {
 }
 
 interface StakingState {
-  commission?: string;
+  guaranteefee?: string;
   nominators: NominatorValue[];
   stakeTotal?: BN;
   stakeOther?: BN;
@@ -59,10 +59,11 @@ function expandInfo ({ exposure, validatorPrefs }: ValidatorInfo): StakingState 
     stakeOther = stakeTotal.sub(stakeOwn);
   }
 
-  const commission = (validatorPrefs as ValidatorPrefs)?.commission?.unwrap();
+  // @ts-ignore
+  const guaranteefee = (validatorPrefs as ValidatorPrefs)?.guaranteefee?.unwrap();
 
   return {
-    commission: commission?.toHuman(),
+    guaranteefee: guaranteefee?.toHuman(),
     nominators,
     stakeOther,
     stakeOwn,
@@ -86,7 +87,7 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
   const { api } = useApi();
   const { accountInfo, slashingSpans } = useAddressCalls(api, address, isMain);
 
-  const { commission, nominators, stakeOther, stakeOwn } = useMemo(
+  const { guaranteefee, nominators, stakeOther, stakeOwn } = useMemo(
     () => validatorInfo
       ? expandInfo(validatorInfo)
       : { nominators: [] },
@@ -150,7 +151,7 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
         </td>
       )}
       <td className='number'>
-        {commission}
+        {guaranteefee}
       </td>
       {isMain && (
         <>
