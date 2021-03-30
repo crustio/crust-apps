@@ -107,7 +107,7 @@ function Summary ({ avgStaked, lowStaked, minNominated, stakedReturn, totalIssua
         {minNominated?.gt(BN_ZERO) && (
           <CardSummary
             className='media--1600'
-            label={t<string>('min nominated')}
+            label={t<string>('min guaranteed')}
           >
             <FormatBalance
               value={minNominated}

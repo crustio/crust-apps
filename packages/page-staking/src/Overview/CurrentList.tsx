@@ -152,7 +152,7 @@ function CurrentList ({ favorites, hasQueries, isIntentions, stakingOverview, ta
           <>
             {!waiting && <div>{t<string>('Retrieving validators')}</div>}
             {!infoMap && <div>{t<string>('Retrieving validator info')}</div>}
-            {!nominatedBy && <div>{t<string>('Retrieving nominators')}</div>}
+            {!nominatedBy && <div>{t<string>('Retrieving guarantors')}</div>}
           </>
         }
         filter={

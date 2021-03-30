@@ -13,6 +13,7 @@ import { BlockAuthorsContext } from '@polkadot/react-query';
 import { formatNumber } from '@polkadot/util';
 
 import { useTranslation } from '../translate';
+import StakingRewardPot from './StakingRewardPot';
 
 interface Props {
   className?: string;
@@ -53,7 +54,7 @@ function Summary ({ className = '', isVisible, stakingOverview, targets: { infla
             : <Spinner noLabel />
           }
         </CardSummary>
-        <CardSummary
+        {/* <CardSummary
           className='media--1200'
           label={t<string>('inflation')}
         >
@@ -61,7 +62,15 @@ function Summary ({ className = '', isVisible, stakingOverview, targets: { infla
             ? <>{inflation.toFixed(1)}%</>
             : '-'
           }
-        </CardSummary>
+        </CardSummary> */}
+        {(
+          <CardSummary
+            className='media--1100'
+            label={t<string>('rewards')}
+          >
+            <StakingRewardPot />
+          </CardSummary>
+        )}
       </section>
       <section>
         <CardSummary

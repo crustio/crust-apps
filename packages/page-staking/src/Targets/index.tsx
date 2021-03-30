@@ -197,10 +197,10 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
   const [sorted, setSorted] = useState<ValidatorInfo[] | undefined>();
 
   const labelsRef = useRef({
-    rankBondOther: t<string>('other stake'),
-    rankBondOwn: t<string>('own stake'),
-    rankBondTotal: t<string>('total stake'),
-    rankOverall: t<string>('return')
+    rankBondOther: t<string>('other effective stake'),
+    rankBondOwn: t<string>('own effective stake'),
+    rankBondTotal: t<string>('total effective stake'),
+    rankOverall: t<string>('total stakes')
   });
 
   const flags = useMemo(
@@ -271,14 +271,15 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
   const header = useMemo(() => [
     [t('validators'), 'start', 3],
     [t('payout'), 'media--1400'],
-    [t('nominators'), 'media--1200', 2],
-    [t('comm.'), 'media--1100'],
+    [t('guarantors'), 'media--1200', 2],
+    [t('guarantee fee'), 'media--1100'],
     ...(SORT_KEYS as (keyof typeof labelsRef.current)[]).map((header) => [
       <>{labelsRef.current[header]}<Icon icon={sortBy === header ? (sortFromMax ? 'chevron-down' : 'chevron-up') : 'minus'} /></>,
       `${sorted ? `isClickable ${sortBy === header ? 'highlight--border' : ''} number` : 'number'} ${CLASSES[header] || ''}`,
       1,
       () => _sort(header as 'rankOverall')
     ]),
+    ['stake limit'],
     [],
     []
   ], [_sort, labelsRef, sortBy, sorted, sortFromMax, t]);
@@ -371,7 +372,7 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
         emptySpinner={
           <>
             {!(validators && allIdentity) && <div>{t('Retrieving validators')}</div>}
-            {!nominatedBy && <div>{t('Retrieving nominators')}</div>}
+            {!nominatedBy && <div>{t('Retrieving guarantors')}</div>}
           </>
         }
         filter={filter}
