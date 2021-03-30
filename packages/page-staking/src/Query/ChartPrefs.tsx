@@ -24,7 +24,8 @@ function extractPrefs (prefs: DeriveStakerPrefs[] = []): ChartInfo {
   let total = 0;
 
   prefs.forEach(({ era, validatorPrefs }): void => {
-    const comm = validatorPrefs.commission.unwrap().mul(MULT).div(BN_BILLION).toNumber() / 100;
+    // @ts-ignore
+    const comm = validatorPrefs.guaranteefee.unwrap().mul(MULT).div(BN_BILLION).toNumber() / 100;
 
     total += comm;
     labels.push(era.toHuman());
@@ -55,13 +56,13 @@ function ChartPrefs ({ validatorId }: Props): React.ReactElement<Props> {
   );
 
   const legendsRef = useRef([
-    t<string>('commission'),
+    t<string>('guarantee fee'),
     t<string>('average')
   ]);
 
   return (
     <div className='staking--Chart'>
-      <h1>{t<string>('commission')}</h1>
+      <h1>{t<string>('guarantee fee')}</h1>
       {labels.length
         ? (
           <Chart.Line

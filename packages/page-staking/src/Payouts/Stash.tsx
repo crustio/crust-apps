@@ -13,7 +13,7 @@ import React, { useEffect, useState } from 'react';
 import { ApiPromise } from '@polkadot/api';
 import { AddressSmall, TxButton } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
-import { BlockToTime, FormatBalance } from '@polkadot/react-query';
+import { BlockToTime } from '@polkadot/react-query';
 
 import { useTranslation } from '../translate';
 import useEraBlocks from './useEraBlocks';
@@ -85,11 +85,11 @@ function Stash ({ className = '', isDisabled, payout: { available, rewards, stas
       <td className='start'>
         <span className='payout-eras'>{eraStr}</span>
       </td>
-      <td className='number'><FormatBalance value={available} /></td>
+      {/* <td className='number'><FormatBalance value={available} /></td> */}
       <td className='number'>{eraBlocks && <BlockToTime value={eraBlocks} />}</td>
       <td
         className='button'
-        colSpan={3}
+        colSpan={4}
       >
         {extrinsic && stakingAccount && (
           <TxButton

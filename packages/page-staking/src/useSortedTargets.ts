@@ -20,7 +20,7 @@ interface LastEra {
 
 const EMPTY_PARTIAL = {};
 const DEFAULT_FLAGS_ELECTED = { withController: true, withExposure: true, withPrefs: true };
-const DEFAULT_FLAGS_WAITING = { withController: true, withPrefs: true };
+const DEFAULT_FLAGS_WAITING = { withController: true, withExposure: true, withPrefs: true };
 
 function mapIndex (mapBy: TargetSortBy): (info: ValidatorInfo, index: number) => ValidatorInfo {
   return (info, index): ValidatorInfo => {
@@ -162,7 +162,7 @@ function extractSingle (api: ApiPromise, allAccounts: string[], derive: DeriveSt
 
 function extractInfo (api: ApiPromise, allAccounts: string[], electedDerive: DeriveStakingElected, waitingDerive: DeriveStakingWaiting, favorites: string[], totalIssuance: BN, lastEraInfo: LastEra, historyDepth?: BN): Partial<SortedTargets> {
   const [elected, nominators] = extractSingle(api, allAccounts, electedDerive, favorites, lastEraInfo, historyDepth);
-  const [waiting] = extractSingle(api, allAccounts, waitingDerive, favorites, lastEraInfo);
+  const [waiting, waitingNominators] = extractSingle(api, allAccounts, waitingDerive, favorites, lastEraInfo);
   const activeTotals = elected
     .filter(({ isActive }) => isActive)
     .map(({ bondTotal }) => bondTotal)
@@ -183,11 +183,17 @@ function extractInfo (api: ApiPromise, allAccounts: string[], electedDerive: Der
   });
 
   // all validators, calc median commission
-  const minNominated = Object.values(nominators).reduce((min: BN, value) => {
+  const tmpMinNominated = Object.values(nominators).reduce((min: BN, value) => {
     return min.isZero() || value.lt(min)
       ? value
       : min;
   }, BN_ZERO);
+
+  const minNominated = Object.values(waitingNominators).reduce((min: BN, value) => {
+    return min.isZero() || value.lt(min)
+      ? value
+      : min;
+  }, tmpMinNominated);
   const validators = sortValidators(arrayFlatten([elected, waiting]));
   const commValues = validators.map(({ commissionPer }) => commissionPer).sort((a, b) => a - b);
   const midIndex = Math.floor(commValues.length / 2);
@@ -215,7 +221,7 @@ function extractInfo (api: ApiPromise, allAccounts: string[], electedDerive: Der
     medianComm,
     minNominated,
     nominateIds,
-    nominators: Object.keys(nominators),
+    nominators: Object.keys(nominators).concat(Object.keys(waitingNominators).filter(e => !Object.keys(nominators).includes(e))),
     totalIssuance,
     totalStaked,
     validatorIds,

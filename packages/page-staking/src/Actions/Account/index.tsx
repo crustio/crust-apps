@@ -352,6 +352,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                 text
                 vertical
               >
+                Bond
                 <Menu.Item
                   disabled={!isOwnStash || !balancesAll?.freeBalance.gtn(0)}
                   onClick={toggleBondExtra}
@@ -371,6 +372,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                   {t<string>('Withdraw unbonded funds')}
                 </Menu.Item>
                 <Menu.Divider />
+                Validate
                 <Menu.Item
                   disabled={!isOwnStash}
                   onClick={toggleSetController}
@@ -410,6 +412,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                     {t<string>('Change session keys')}
                   </Menu.Item>
                 }
+                { (role !== 'Validator' && role != 'Candidate' ) && 'Guarantee' }
                 {isStashNominating &&
                   <Menu.Item
                     disabled={!isOwnController || !targets.validators?.length}

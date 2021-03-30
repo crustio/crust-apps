@@ -113,7 +113,7 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
     return null;
   }
 
-  const { accountId, bondOther, bondOwn, bondTotal, commissionPer, isBlocking, isElected, isFavorite, key, lastPayout, numNominators, rankOverall, stakedReturnCmp } = info;
+  const { accountId, bondOther, bondOwn, bondTotal, commissionPer, isElected, isFavorite, key, lastPayout, numNominators, rankOverall } = info;
 
   return (
     <tr>
@@ -142,12 +142,12 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
           : <Badge color='transparent' />
         }
         <MaxBadge numNominators={numNominators || nominatedBy.length} />
-        {isBlocking && (
+        {/* {isBlocking && (
           <Badge
             color='red'
             icon='user-slash'
           />
-        )}
+        )} */}
         {slashes.length !== 0 && (
           <Badge
             color='red'
@@ -184,7 +184,7 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
       <td className='number together'>{stakeLimit && <FormatBalance value={new BN(Number(stakeLimit)?.toString())} />}</td>
       <td className='number together'>{totalStaked && <FormatBalance value={totalStaked} />}</td>
       <td>
-        {!isBlocking && (canSelect || isSelected) && (
+        {(canSelect || isSelected) && (
           <Checkbox
             onChange={_toggleSelected}
             value={isSelected}

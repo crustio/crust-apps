@@ -166,9 +166,9 @@ function selectProfitable (list: ValidatorInfo[]): string[] {
   const result: string[] = [];
 
   for (let i = 0; i < list.length && result.length < MAX_NOMINATIONS; i++) {
-    const { isBlocking, isFavorite, key, stakedReturnCmp } = list[i];
+    const { isFavorite, key, stakedReturnCmp } = list[i];
 
-    (!isBlocking && (isFavorite || (stakedReturnCmp > 0))) &&
+    ((isFavorite || (stakedReturnCmp > 0))) &&
       result.push(key);
   }
 

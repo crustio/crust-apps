@@ -8,11 +8,12 @@ import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { InputAddress, InputAddressMulti, InputBalance, Modal } from '@polkadot/react-components';
+import { InputAddress, InputAddressMulti, InputBalance, Modal, Toggle } from '@polkadot/react-components';
 import { useApi, useFavorites } from '@polkadot/react-hooks';
 
 import { STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
+import MaxCutGuarantee from './MaxCutGuarantee';
 
 interface Props {
   className?: string;
@@ -27,6 +28,7 @@ interface Props {
 function CutGuarantee ({ className = '', controllerId, onChange, stashId, targets: { nominateIds = [] }, withSenders }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
+  const cutGuaranteeable = <span className='label'>{t<string>('cutGuaranteeable')}</span>;
   const [favorites] = useFavorites(STORE_FAVS_BASE);
   const [selected, setSelected] = useState<string[]>([]);
   const [available] = useState<string[]>((): string[] => {
@@ -40,14 +42,36 @@ function CutGuarantee ({ className = '', controllerId, onChange, stashId, target
   });
 
   const [amount, setAmount] = useState<BN | undefined>(new BN(0));
+  const [maxBalance, setMaxBalance] = useState<BN>(new BN(0));
+  const [withMax, setWithMax] = useState(false);
+  const MAX_CUT = new BN(20_000_000).mul(new BN(1_000_000_000_000));
 
   useEffect((): void => {
     onChange({
-      nominateTx: selected && selected.length && amount && selected[0]
-        ? api.tx.staking.cutGuarantee([selected[0], amount])
+      nominateTx: (selected && selected.length && amount) || withMax
+        ? (withMax ? api.tx.staking.cutGuarantee([selected[0], MAX_CUT]) : api.tx.staking.cutGuarantee([selected[0], amount])) 
         : null
     });
-  }, [api, onChange, selected, amount]);
+  }, [api, onChange, selected, amount, withMax]);
+
+  useEffect(() => {
+    if (selected.length) {
+      api.query.staking
+      .guarantors<any>(stashId)
+      .then((guarantee): void => {
+        const guaranteeInfo = JSON.parse(JSON.stringify(guarantee));
+
+        if (guaranteeInfo) {
+          for (const validate of guaranteeInfo.targets) {
+            if (selected[0] == validate.who.toString()) {
+              setMaxBalance(validate.value)
+            }
+          }
+        }
+      })
+      .catch(console.error);
+    }
+  }, [api, selected, stashId])
 
   return (
     <div className={className}>
@@ -88,14 +112,21 @@ function CutGuarantee ({ className = '', controllerId, onChange, stashId, target
           label={t<string>('amount')}
           onChange={setAmount}
           withMax
-          // labelExtra={
-          //   selected[0] &&
-          //   <Guaranteeable
-          //     label={guaranteeable}
-          //     params={selected[0]}
-          //   />
-          // }
-        />
+          labelExtra={
+            selected[0] &&
+            <MaxCutGuarantee
+              label={cutGuaranteeable}
+              params={maxBalance}
+            />
+          }
+        >
+            <Toggle
+              isOverlay
+              label={t<string>('all cut')}
+              onChange={setWithMax}
+              value={withMax}
+            />
+        </InputBalance>
       </Modal.Columns>
     </div>
   );
