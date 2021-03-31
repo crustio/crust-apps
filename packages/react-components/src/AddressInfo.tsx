@@ -194,7 +194,8 @@ function renderValidatorPrefs ({ stakingInfo, withValidatorPrefs = false }: Prop
           </div>
         </>
       )}
-      {validatorPrefsDisplay.validatorPayment && (stakingInfo.validatorPrefs.guaranteefee || (stakingInfo.validatorPrefs as any as ValidatorPrefsTo145).validatorPayment) && (
+      { // @ts-ignore
+        validatorPrefsDisplay.validatorPayment && (stakingInfo.validatorPrefs.guaranteefee || (stakingInfo.validatorPrefs as any as ValidatorPrefsTo145).validatorPayment) && (
         (stakingInfo.validatorPrefs as any as ValidatorPrefsTo145).validatorPayment
           ? (
             <>
@@ -208,7 +209,9 @@ function renderValidatorPrefs ({ stakingInfo, withValidatorPrefs = false }: Prop
           : (
             <>
               <Label label={t<string>('guaranteefee')} />
-              <span>{(stakingInfo.validatorPrefs.guaranteefee.unwrap().toNumber() / 10_000_000).toFixed(2)}%</span>
+              <span>{
+                // @ts-ignore
+              (stakingInfo.validatorPrefs.guaranteefee.unwrap().toNumber() / 10_000_000).toFixed(2)}%</span>
             </>
           )
       )}
