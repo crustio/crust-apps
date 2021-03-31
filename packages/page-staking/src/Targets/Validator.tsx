@@ -1,8 +1,9 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { DeriveAccountInfo } from '@polkadot/api-derive/types';
-import type { UnappliedSlash, AccountId, Exposure, Balance, ActiveEraInfo, StakingLedger } from '@polkadot/types/interfaces';
+import type { AccountId, ActiveEraInfo, Balance, Exposure, StakingLedger, UnappliedSlash } from '@polkadot/types/interfaces';
 import type { NominatedBy, ValidatorInfo } from '../types';
 
 import BN from 'bn.js';
@@ -12,13 +13,13 @@ import { AddressSmall, Badge, Checkbox, Icon } from '@polkadot/react-components'
 import { checkVisibility } from '@polkadot/react-components/util';
 import { useApi, useBlockTime, useCall } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
+import { Option } from '@polkadot/types';
 import { formatNumber } from '@polkadot/util';
 
+import { Guarantee } from '../Actions/Account';
 import MaxBadge from '../MaxBadge';
 import Favorite from '../Overview/Address/Favorite';
 import { useTranslation } from '../translate';
-import { Guarantee } from '../Actions/Account';
-import { Option } from '@polkadot/types';
 
 interface Props {
   allSlashes?: [BN, UnappliedSlash[]][];
@@ -38,7 +39,7 @@ function queryAddress (address: string): void {
 
 const parseObj = (obj: any) => {
   return JSON.parse(JSON.stringify(obj));
-}
+};
 
 const transformBonded = {
   transform: (value: Option<AccountId>): string | null =>
@@ -69,16 +70,17 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
   const accountIdBonded = useCall<string | null>(api.query.staking.bonded, [info.accountId], transformBonded);
   const controllerActive = useCall<Balance | null>(api.query.staking.ledger, [accountIdBonded], transformLedger);
   const erasStakersStashExposure = useCall<Option<Exposure>>(api.query.staking.erasStakers, [activeEra, info.accountId]);
-  const erasStakersStash = erasStakersStashExposure && (parseObj(erasStakersStashExposure).others.map((e: { who: any; }) => e.who))
-  
+  const erasStakersStash = erasStakersStashExposure && (parseObj(erasStakersStashExposure).others.map((e: { who: any; }) => e.who));
+
   const stakersGuarantees = useCall<Guarantee[]>(api.query.staking.guarantors.multi, [erasStakersStash]);
   let totalStaked = new BN(Number(controllerActive).toString());
+
   if (stakersGuarantees) {
     for (const stakersGuarantee of stakersGuarantees) {
       if (parseObj(stakersGuarantee)) {
         for (const target of parseObj(stakersGuarantee)?.targets) {
           if (target.who.toString() == info.accountId?.toString()) {
-            totalStaked = totalStaked?.add(new BN(Number(target.value).toString()))
+            totalStaked = totalStaked?.add(new BN(Number(target.value).toString()));
           }
         }
       }

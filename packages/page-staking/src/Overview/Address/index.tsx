@@ -1,13 +1,12 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { DeriveAccountInfo, DeriveHeartbeatAuthor } from '@polkadot/api-derive/types';
 import type { Option } from '@polkadot/types';
-import type { SlashingSpans, ValidatorPrefs, ActiveEraInfo, Exposure, AccountId, StakingLedger, Balance, IndividualExposure } from '@polkadot/types/interfaces';
+import type { AccountId, ActiveEraInfo, Balance, Exposure, IndividualExposure, SlashingSpans, StakingLedger, ValidatorPrefs } from '@polkadot/types/interfaces';
 import type { NominatedBy as NominatedByType, ValidatorInfo } from '../../types';
 import type { NominatorValue } from './types';
-import { Codec } from '@polkadot/types/types';
-import { Compact } from '@polkadot/types/codec';
 
 import BN from 'bn.js';
 import React, { useCallback, useMemo } from 'react';
@@ -17,6 +16,8 @@ import { AddressSmall, Icon, LinkExternal } from '@polkadot/react-components';
 import { checkVisibility } from '@polkadot/react-components/util';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
+import { Compact } from '@polkadot/types/codec';
+import { Codec } from '@polkadot/types/types';
 
 import Favorite from './Favorite';
 import StakeOther from './StakeOther';
@@ -40,13 +41,12 @@ interface Props {
 }
 
 interface StakingState {
-  guaranteefee?: string;
+  guarantee_fee?: string;
   nominators: NominatorValue[];
   stakeTotal?: BN;
   stakeOther?: BN;
   stakeOwn?: BN;
 }
-
 
 export interface Guarantee extends Codec {
   targets: IndividualExposure[];
@@ -69,10 +69,10 @@ function expandInfo ({ validatorPrefs }: ValidatorInfo, erasStakersStashExposure
   }
 
   // @ts-ignore
-  const guaranteefee = (validatorPrefs as ValidatorPrefs)?.guaranteefee?.unwrap();
+  const guarantee_fee = (validatorPrefs as ValidatorPrefs)?.guarantee_fee?.unwrap();
 
   return {
-    guaranteefee: guaranteefee?.toHuman(),
+    guarantee_fee: guarantee_fee?.toHuman(),
     nominators,
     stakeOther,
     stakeOwn,
@@ -100,7 +100,7 @@ const transformLedger = {
 
 const parseObj = (obj: any) => {
   return JSON.parse(JSON.stringify(obj));
-}
+};
 
 function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
   const params = useMemo(() => [address], [address]);
@@ -112,16 +112,17 @@ function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
   const erasStakersStashExposure = useCall<Exposure>(api.query.staking.erasStakers, [activeEra, address]);
   const accountIdBonded = useCall<string | null>(api.query.staking.bonded, params, transformBonded);
   const controllerActive = useCall<Balance | null>(api.query.staking.ledger, [accountIdBonded], transformLedger);
-  const erasStakersStash = erasStakersStashExposure && (parseObj(erasStakersStashExposure).others.map((e: { who: any; }) => e.who))
+  const erasStakersStash = erasStakersStashExposure && (parseObj(erasStakersStashExposure).others.map((e: { who: any; }) => e.who));
 
   const stakersGuarantees = useCall<Guarantee[]>(api.query.staking.guarantors.multi, [erasStakersStash]);
   let totalStaked = new BN(Number(controllerActive).toString());
+
   if (stakersGuarantees) {
     for (const stakersGuarantee of stakersGuarantees) {
       if (parseObj(stakersGuarantee)) {
         for (const target of parseObj(stakersGuarantee)?.targets) {
           if (target.who.toString() == address) {
-            totalStaked = totalStaked?.add(new BN(Number(target.value).toString()))
+            totalStaked = totalStaked?.add(new BN(Number(target.value).toString()));
           }
         }
       }
@@ -133,9 +134,9 @@ function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
 
 function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, nominatedBy, points, recentlyOnline, toggleFavorite, validatorInfo, withIdentity }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  const { accountInfo, erasStakersStashExposure, totalStaked, stakeLimit } = useAddressCalls(api, address, isMain);
+  const { accountInfo, erasStakersStashExposure, stakeLimit, totalStaked } = useAddressCalls(api, address, isMain);
 
-  const { guaranteefee, nominators, stakeOther, stakeOwn } = useMemo(
+  const { guarantee_fee, nominators, stakeOther, stakeOwn } = useMemo(
     () => validatorInfo && erasStakersStashExposure
       ? expandInfo(validatorInfo, erasStakersStashExposure)
       : { nominators: [] },
@@ -178,9 +179,9 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
         <AddressSmall value={address} />
       </td>
       {<StakeOther
-          nominators={nominators}
-          stakeOther={stakeOther}
-        />
+        nominators={nominators}
+        stakeOther={stakeOther}
+      />
       }
       {(
         <td className='number media--1100'>
@@ -191,20 +192,20 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
       )}
       <td className='number media--1100'>
         {stakeLimit && (
-          <div> 
-            <FormatBalance value={new BN(Number(stakeLimit)?.toString())} /> 
+          <div>
+            <FormatBalance value={new BN(Number(stakeLimit)?.toString())} />
           </div>
         )}
       </td>
       <td className='number media--1100'>
         {totalStaked && (
-          <div> 
+          <div>
             <FormatBalance value={totalStaked} />
           </div>
         )}
       </td>
       <td className='number'>
-        {guaranteefee}
+        {guarantee_fee}
       </td>
       {isMain && (
         <>

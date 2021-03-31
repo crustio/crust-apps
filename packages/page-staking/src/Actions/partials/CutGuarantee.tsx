@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { SortedTargets } from '../../types';
 import type { NominateInfo } from './types';
 
@@ -49,7 +50,7 @@ function CutGuarantee ({ className = '', controllerId, onChange, stashId, target
   useEffect((): void => {
     onChange({
       nominateTx: (selected && selected.length && amount) || withMax
-        ? (withMax ? api.tx.staking.cutGuarantee([selected[0], MAX_CUT]) : api.tx.staking.cutGuarantee([selected[0], amount])) 
+        ? (withMax ? api.tx.staking.cutGuarantee([selected[0], MAX_CUT]) : api.tx.staking.cutGuarantee([selected[0], amount]))
         : null
     });
   }, [api, onChange, selected, amount, withMax]);
@@ -57,21 +58,21 @@ function CutGuarantee ({ className = '', controllerId, onChange, stashId, target
   useEffect(() => {
     if (selected.length) {
       api.query.staking
-      .guarantors<any>(stashId)
-      .then((guarantee): void => {
-        const guaranteeInfo = JSON.parse(JSON.stringify(guarantee));
+        .guarantors<any>(stashId)
+        .then((guarantee): void => {
+          const guaranteeInfo = JSON.parse(JSON.stringify(guarantee));
 
-        if (guaranteeInfo) {
-          for (const validate of guaranteeInfo.targets) {
-            if (selected[0] == validate.who.toString()) {
-              setMaxBalance(validate.value)
+          if (guaranteeInfo) {
+            for (const validate of guaranteeInfo.targets) {
+              if (selected[0] == validate.who.toString()) {
+                setMaxBalance(validate.value);
+              }
             }
           }
-        }
-      })
-      .catch(console.error);
+        })
+        .catch(console.error);
     }
-  }, [api, selected, stashId])
+  }, [api, selected, stashId]);
 
   return (
     <div className={className}>
@@ -110,8 +111,6 @@ function CutGuarantee ({ className = '', controllerId, onChange, stashId, target
           help={t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}
           isZeroable
           label={t<string>('amount')}
-          onChange={setAmount}
-          withMax
           labelExtra={
             selected[0] &&
             <MaxCutGuarantee
@@ -119,13 +118,15 @@ function CutGuarantee ({ className = '', controllerId, onChange, stashId, target
               params={maxBalance}
             />
           }
+          onChange={setAmount}
+          withMax
         >
-            <Toggle
-              isOverlay
-              label={t<string>('all cut')}
-              onChange={setWithMax}
-              value={withMax}
-            />
+          <Toggle
+            isOverlay
+            label={t<string>('all cut')}
+            onChange={setWithMax}
+            value={withMax}
+          />
         </InputBalance>
       </Modal.Columns>
     </div>

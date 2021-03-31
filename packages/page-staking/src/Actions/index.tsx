@@ -128,7 +128,7 @@ function Actions ({ className = '', isInElection, ownStashes, targets }: Props):
   const typeRef = useRef([
     { text: t('All stashes'), value: 'all' },
     { text: t('Guarantors'), value: 'noms' },
-    { text: t('Validators'), value: 'vals' },
+    { text: t('Validators'), value: 'vals' }
     // { text: t('Inactive'), value: 'chill' }
   ]);
 

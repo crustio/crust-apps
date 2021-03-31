@@ -1,13 +1,14 @@
 // Copyright 2017-2021 @polkadot/react-hooks authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { ApiPromise } from '@polkadot/api';
-import { DeriveEraPoints, DeriveEraRewards, DeriveStakerReward, DeriveStakerRewardValidator, DeriveStakingAccount, DeriveStakingOverview, DeriveStakingWaiting } from '@polkadot/api-derive/types';
 import type { EraIndex, Exposure } from '@polkadot/types/interfaces';
 import type { StakerState } from './types';
 
 import { useEffect, useState } from 'react';
 
+import { DeriveEraPoints, DeriveEraRewards, DeriveStakerReward, DeriveStakerRewardValidator, DeriveStakingAccount, DeriveStakingOverview, DeriveStakingWaiting } from '@polkadot/api-derive/types';
 import { BN_ZERO } from '@polkadot/util';
 
 import { useApi } from './useApi';

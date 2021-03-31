@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/react-components authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { TFunction } from 'i18next';
 import type { DeriveBalancesAccountData, DeriveBalancesAll, DeriveDemocracyLock, DeriveStakingAccount } from '@polkadot/api-derive/types';
 import type { BlockNumber, LockIdentifier, ValidatorPrefsTo145 } from '@polkadot/types/interfaces';
@@ -195,26 +196,26 @@ function renderValidatorPrefs ({ stakingInfo, withValidatorPrefs = false }: Prop
         </>
       )}
       { // @ts-ignore
-        validatorPrefsDisplay.validatorPayment && (stakingInfo.validatorPrefs.guaranteefee || (stakingInfo.validatorPrefs as any as ValidatorPrefsTo145).validatorPayment) && (
-        (stakingInfo.validatorPrefs as any as ValidatorPrefsTo145).validatorPayment
-          ? (
-            <>
-              <Label label={t<string>('guaranteefee')} />
-              <FormatBalance
-                className='result'
-                value={(stakingInfo.validatorPrefs as any as ValidatorPrefsTo145).validatorPayment}
-              />
-            </>
-          )
-          : (
-            <>
-              <Label label={t<string>('guaranteefee')} />
-              <span>{
+        validatorPrefsDisplay.validatorPayment && (stakingInfo.validatorPrefs.guarantee_fee || (stakingInfo.validatorPrefs as any as ValidatorPrefsTo145).validatorPayment) && (
+          (stakingInfo.validatorPrefs as any as ValidatorPrefsTo145).validatorPayment
+            ? (
+              <>
+                <Label label={t<string>('guaranteefee')} />
+                <FormatBalance
+                  className='result'
+                  value={(stakingInfo.validatorPrefs as any as ValidatorPrefsTo145).validatorPayment}
+                />
+              </>
+            )
+            : (
+              <>
+                <Label label={t<string>('guaranteefee')} />
+                <span>{
                 // @ts-ignore
-              (stakingInfo.validatorPrefs.guaranteefee.unwrap().toNumber() / 10_000_000).toFixed(2)}%</span>
-            </>
-          )
-      )}
+                  (stakingInfo.validatorPrefs.guarantee_fee.unwrap().toNumber() / 10_000_000).toFixed(2)}%</span>
+              </>
+            )
+        )}
     </>
   );
 }

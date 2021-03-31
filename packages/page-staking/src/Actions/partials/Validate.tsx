@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { ValidateInfo } from './types';
 
 import BN from 'bn.js';
@@ -38,10 +39,10 @@ function Validate ({ className = '', controllerId, onChange, stashId, withSender
       onChange({
         validateTx: api.tx.staking.validate({
           // @ts-ignore
-          guaranteefee: new BN(commission).isZero()
+          guarantee_fee: new BN(commission).isZero()
           // small non-zero set to avoid isEmpty
-          ? '0'
-          : (new BN(commission).toNumber() > 1000000000) ? '1000000000' : new BN(commission).toNumber().toString()
+            ? '0'
+            : (new BN(commission).toNumber() > 1000000000) ? '1000000000' : new BN(commission).toNumber().toString()
         })
       });
     } catch {

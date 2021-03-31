@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { TFunction } from 'i18next';
 import type { DeriveStakerReward } from '@polkadot/api-derive/types';
 import type { StakerState } from '@polkadot/react-hooks/types';
@@ -159,9 +160,9 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
   const historyDepth = useCall<BN>(api.query.staking.historyDepth);
   const stakerPayoutsAfter = useStakerPayouts();
   const isDisabled = isInElection || !isFunction(api.tx.utility?.batch);
- 
-  console.log('eraLength', JSON.stringify(eraLength))
-  console.log('historyDepth', JSON.stringify(historyDepth))
+
+  console.log('eraLength', JSON.stringify(eraLength));
+  console.log('historyDepth', JSON.stringify(historyDepth));
   const eraSelection = useMemo(
     () => getOptions(api, eraLength, historyDepth, t),
     [api, eraLength, historyDepth, t]

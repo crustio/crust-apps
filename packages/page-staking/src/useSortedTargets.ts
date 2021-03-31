@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { ApiPromise } from '@polkadot/api';
 import type { DeriveSessionInfo, DeriveStakingElected, DeriveStakingWaiting } from '@polkadot/api-derive/types';
 import type { SortedTargets, TargetSortBy, ValidatorInfo } from './types';
@@ -123,7 +124,7 @@ function extractSingle (api: ApiPromise, allAccounts: string[], derive: DeriveSt
       bondShare: 0,
       bondTotal,
       // @ts-ignore
-      commissionPer: validatorPrefs.guaranteefee.unwrap().toNumber() / 10_000_000,
+      commissionPer: validatorPrefs.guarantee_fee.unwrap().toNumber() / 10_000_000,
       exposure,
       isActive: !skipRewards,
       isBlocking: !!(validatorPrefs.blocked && validatorPrefs.blocked.isTrue),
@@ -221,7 +222,7 @@ function extractInfo (api: ApiPromise, allAccounts: string[], electedDerive: Der
     medianComm,
     minNominated,
     nominateIds,
-    nominators: Object.keys(nominators).concat(Object.keys(waitingNominators).filter(e => !Object.keys(nominators).includes(e))),
+    nominators: Object.keys(nominators).concat(Object.keys(waitingNominators).filter((e) => !Object.keys(nominators).includes(e))),
     totalIssuance,
     totalStaked,
     validatorIds,

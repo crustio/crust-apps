@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { DeriveStakerPrefs } from '@polkadot/api-derive/types';
 import type { ChartInfo, LineDataEntry, Props } from './types';
 
@@ -25,7 +26,7 @@ function extractPrefs (prefs: DeriveStakerPrefs[] = []): ChartInfo {
 
   prefs.forEach(({ era, validatorPrefs }): void => {
     // @ts-ignore
-    const comm = validatorPrefs.guaranteefee.unwrap().mul(MULT).div(BN_BILLION).toNumber() / 100;
+    const comm = validatorPrefs.guarantee_fee.unwrap().mul(MULT).div(BN_BILLION).toNumber() / 100;
 
     total += comm;
     labels.push(era.toHuman());

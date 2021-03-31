@@ -84,7 +84,7 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
     isFunction(api.query.staking.activeEra) && {
       name: 'payout',
       text: t<string>('Payouts')
-    },  
+    },
     {
       count: slashes.reduce((count, [, unapplied]) => count + unapplied.length, 0),
       name: 'slashes',

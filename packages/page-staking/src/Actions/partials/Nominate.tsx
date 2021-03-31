@@ -88,8 +88,6 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
           help={t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}
           isZeroable
           label={t<string>('amount')}
-          onChange={setAmount}
-          withMax
           labelExtra={
             selected[0] &&
             <Guaranteeable
@@ -97,6 +95,8 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
               params={selected[0]}
             />
           }
+          onChange={setAmount}
+          withMax
         />
       </Modal.Columns>
     </div>

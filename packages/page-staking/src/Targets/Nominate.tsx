@@ -3,17 +3,17 @@
 
 import type { StakerState } from '@polkadot/react-hooks/types';
 
+import BN from 'bn.js';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
+import { ApiPromise } from '@polkadot/api';
+import { SubmittableExtrinsic } from '@polkadot/api/types';
 import { AddressMini, Button, InputAddress, Modal, Static, TxButton } from '@polkadot/react-components';
 import { useApi, useToggle } from '@polkadot/react-hooks';
-import { ApiPromise } from '@polkadot/api';
-import {SubmittableExtrinsic} from "@polkadot/api/types";
 
 import { useTranslation } from '../translate';
 import TargetGuarantee from './TargetGuarantee';
-import BN from 'bn.js';
 
 interface Props {
   className?: string;
@@ -27,12 +27,14 @@ interface IdState {
   stashId: string;
 }
 
-function createExtrinsic(api: ApiPromise, targets: string[], amount: Map<string, BN>) {
-  let tmp = [];
+function createExtrinsic (api: ApiPromise, targets: string[], amount: Map<string, BN>) {
+  const tmp = [];
+
   for (const entry of amount.entries()) {
-    tmp.push([entry[0], entry[1]])
+    tmp.push([entry[0], entry[1]]);
   }
-  return api.tx.utility.batch(tmp.map(e => api.tx.staking.guarantee(e)));
+
+  return api.tx.utility.batch(tmp.map((e) => api.tx.staking.guarantee(e)));
 }
 
 function Nominate ({ className = '', isDisabled, ownNominators, targets }: Props): React.ReactElement<Props> {
@@ -100,10 +102,10 @@ function Nominate ({ className = '', isDisabled, ownNominators, targets }: Props
               {targets.map((validatorId) => {
                 return <TargetGuarantee
                   key={validatorId}
-                  validatorId={validatorId}
-                  targetAmount={targetAmount}
                   setTargetAmount={setTargetAmount}
-                  />
+                  targetAmount={targetAmount}
+                  validatorId={validatorId}
+                />;
               })}
             </Modal.Columns>
             <Modal.Columns hint={
@@ -129,9 +131,9 @@ function Nominate ({ className = '', isDisabled, ownNominators, targets }: Props
           <Modal.Actions onCancel={toggleOpen}>
             <TxButton
               accountId={ids?.controllerId}
+              extrinsic={extrinsic}
               label={t<string>('Guarantee')}
               onStart={toggleOpen}
-              extrinsic={extrinsic}
             />
           </Modal.Actions>
         </Modal>
