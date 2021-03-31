@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { SortedTargets } from '../../types';
 import type { NominateInfo } from './types';
 
@@ -8,12 +9,12 @@ import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { InputAddress, InputAddressMulti, InputBalance, Modal } from '@polkadot/react-components';
+import { InputAddress, InputAddressMulti, InputBalance, Modal, Toggle } from '@polkadot/react-components';
 import { useApi, useFavorites } from '@polkadot/react-hooks';
 
 import { STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
-import Guaranteeable from './Guaranteeable';
+import MaxCutGuarantee from './MaxCutGuarantee';
 
 interface Props {
   className?: string;
@@ -25,12 +26,12 @@ interface Props {
   withSenders?: boolean;
 }
 
-function Nominate ({ className = '', controllerId, onChange, stashId, targets: { nominateIds = [] }, withSenders }: Props): React.ReactElement<Props> {
+function CutGuarantee ({ className = '', controllerId, onChange, stashId, targets: { nominateIds = [] }, withSenders }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
+  const cutGuaranteeable = <span className='label'>{t<string>('cutGuaranteeable')}</span>;
   const [favorites] = useFavorites(STORE_FAVS_BASE);
   const [selected, setSelected] = useState<string[]>([]);
-  const guaranteeable = <span className='label'>{t<string>('guaranteeable')}</span>;
   const [available] = useState<string[]>((): string[] => {
     const shortlist = [
       // ensure that the favorite is included in the list of stashes
@@ -42,14 +43,36 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
   });
 
   const [amount, setAmount] = useState<BN | undefined>(new BN(0));
+  const [maxBalance, setMaxBalance] = useState<BN>(new BN(0));
+  const [withMax, setWithMax] = useState(false);
+  const MAX_CUT = new BN(20_000_000).mul(new BN(1_000_000_000_000));
 
   useEffect((): void => {
     onChange({
-      nominateTx: selected && selected.length && amount && selected[0]
-        ? api.tx.staking.guarantee([selected[0], amount])
+      nominateTx: (selected && selected.length && amount) || withMax
+        ? (withMax ? api.tx.staking.cutGuarantee([selected[0], MAX_CUT]) : api.tx.staking.cutGuarantee([selected[0], amount]))
         : null
     });
-  }, [api, onChange, selected, amount]);
+  }, [api, onChange, selected, amount, withMax]);
+
+  useEffect(() => {
+    if (selected.length) {
+      api.query.staking
+        .guarantors<any>(stashId)
+        .then((guarantee): void => {
+          const guaranteeInfo = JSON.parse(JSON.stringify(guarantee));
+
+          if (guaranteeInfo) {
+            for (const validate of guaranteeInfo.targets) {
+              if (selected[0] == validate.who.toString()) {
+                setMaxBalance(validate.value);
+              }
+            }
+          }
+        })
+        .catch(console.error);
+    }
+  }, [api, selected, stashId]);
 
   return (
     <div className={className}>
@@ -90,20 +113,27 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
           label={t<string>('amount')}
           labelExtra={
             selected[0] &&
-            <Guaranteeable
-              label={guaranteeable}
-              params={selected[0]}
+            <MaxCutGuarantee
+              label={cutGuaranteeable}
+              params={maxBalance}
             />
           }
           onChange={setAmount}
           withMax
-        />
+        >
+          <Toggle
+            isOverlay
+            label={t<string>('all cut')}
+            onChange={setWithMax}
+            value={withMax}
+          />
+        </InputBalance>
       </Modal.Columns>
     </div>
   );
 }
 
-export default React.memo(styled(Nominate)`
+export default React.memo(styled(CutGuarantee)`
   article.warning {
     margin-top: 0;
   }

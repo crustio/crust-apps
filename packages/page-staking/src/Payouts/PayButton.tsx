@@ -30,7 +30,7 @@ function createBatches (api: ApiPromise, maxPayouts: number, payouts: SinglePayo
   return payouts
     .sort((a, b) => a.era.cmp(b.era))
     .reduce((batches: SubmittableExtrinsic<'promise'>[][], { era, validatorId }): SubmittableExtrinsic<'promise'>[][] => {
-      const tx = api.tx.staking.payoutStakers(validatorId, era);
+      const tx = api.tx.staking.rewardStakers(validatorId, era);
       const batch = batches[batches.length - 1];
 
       if (batch.length >= maxPayouts) {
@@ -66,7 +66,7 @@ function createExtrinsics (api: ApiPromise, payout: PayoutValidator | PayoutVali
   const { eras, validatorId } = payout;
 
   return eras.length === 1
-    ? [api.tx.staking.payoutStakers(validatorId, eras[0].era)]
+    ? [api.tx.staking.rewardStakers(validatorId, eras[0].era)]
     : createBatches(api, maxPayouts, eras.map((era): SinglePayout => ({ era: era.era, validatorId })));
 }
 
@@ -86,7 +86,7 @@ function PayButton ({ className, isAll, isDisabled, payout }: Props): React.Reac
         : payout;
 
       api.tx.staking
-        .payoutStakers(validatorId, eras[0].era)
+        .rewardStakers(validatorId, eras[0].era)
         .paymentInfo(allAccounts[0])
         .then((info) => setMaxPayouts(Math.floor(
           (

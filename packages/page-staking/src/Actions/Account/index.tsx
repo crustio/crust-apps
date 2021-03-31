@@ -33,6 +33,7 @@ import SetRewardDestination from './SetRewardDestination';
 import SetSessionKey from './SetSessionKey';
 import Unbond from './Unbond';
 import Validate from './Validate';
+import CutGuarantee from './CutGuarantee';
 
 interface Props {
   allSlashes?: [BN, UnappliedSlash[]][];
@@ -87,6 +88,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const [isInjectOpen, toggleInject] = useToggle();
   const [isKickOpen, toggleKick] = useToggle();
   const [isNominateOpen, toggleNominate] = useToggle();
+  const [isCutGuaranteeOpen, toggleCutGuarantee] = useToggle();
   const [isRewardDestinationOpen, toggleRewardDestination] = useToggle();
   const [isSetControllerOpen, toggleSetController] = useToggle();
   const [isSetSessionOpen, toggleSetSession] = useToggle();
@@ -99,13 +101,13 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const guarantors = useCall<Guarantee>(api.query.staking.guarantors, [stashId]);
   let guaranteeTargets: IndividualExposure[] = [];
   let stakeValue = new BN(0);
-
-  if (guarantors && JSON.parse(JSON.stringify(guarantors)) != null) {
+  const guarantorInfo = guarantors && JSON.parse(JSON.stringify(guarantors))
+  if (guarantorInfo != null) {
     guaranteeTargets = JSON.parse(JSON.stringify(guarantors)).targets;
     stakeValue = guaranteeTargets.reduce((total: BN, { value }) => { return total.add(new BN(Number(value).toString())); }, BN_ZERO);
   }
 
-  const isGuarantor = guarantors && JSON.parse(JSON.stringify(guarantors)) != null;
+  const isGuarantor = guarantorInfo && guarantorInfo.targets.length != 0;
   const isValidator = targets && (targets.validatorIds?.indexOf(stashId) != -1);
   const isCandidate = targets && (targets.waitingIds?.indexOf(stashId) != -1);
 
@@ -114,12 +116,12 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   useEffect(() => {
     if (isGuarantor) {
       setRole('Guarantor');
-    } else if (isCandidate) {
+    }  
+    if (isCandidate) {
       setRole('Candidate');
-    } else if (isValidator) {
+    } 
+    if (isValidator) {
       setRole('Validator');
-    } else {
-      setRole('Bonded');
     }
   }, [targets, guarantors]);
 
@@ -188,6 +190,15 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
             targets={targets}
           />
         )}
+        {isCutGuaranteeOpen && controllerId && (
+          <CutGuarantee
+            controllerId={controllerId}
+            nominating={nominating}
+            onClose={toggleCutGuarantee}
+            stashId={stashId}
+            targets={targets}
+          />
+        )}
         {isSetControllerOpen && controllerId && (
           <SetControllerAccount
             defaultControllerId={controllerId}
@@ -248,7 +259,8 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
           validators = {guaranteeTargets}
         />
         : activeEra && (
-          <EffectiveStake activeEra={activeEra}
+          <EffectiveStake 
+            activeEra={activeEra}
             stashId={stashId}
           />
         )
@@ -340,6 +352,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                 text
                 vertical
               >
+                Bond
                 <Menu.Item
                   disabled={!isOwnStash || !balancesAll?.freeBalance.gtn(0)}
                   onClick={toggleBondExtra}
@@ -359,6 +372,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                   {t<string>('Withdraw unbonded funds')}
                 </Menu.Item>
                 <Menu.Divider />
+                Validate
                 <Menu.Item
                   disabled={!isOwnStash}
                   onClick={toggleSetController}
@@ -398,12 +412,21 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                     {t<string>('Change session keys')}
                   </Menu.Item>
                 }
+                { (role !== 'Validator' && role != 'Candidate' ) && 'Guarantee' }
                 {isStashNominating &&
                   <Menu.Item
                     disabled={!isOwnController || !targets.validators?.length}
                     onClick={toggleNominate}
                   >
-                    {t<string>('Set nominees')}
+                    {t<string>('Guarantee')}
+                  </Menu.Item>
+                }
+                {isStashNominating &&
+                  <Menu.Item
+                    disabled={!isOwnController || !targets.validators?.length}
+                    onClick={toggleCutGuarantee}
+                  >
+                    {t<string>('Cut guarantee')}
                   </Menu.Item>
                 }
                 {!isStashNominating &&

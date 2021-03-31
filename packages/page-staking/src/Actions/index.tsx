@@ -127,9 +127,9 @@ function Actions ({ className = '', isInElection, ownStashes, targets }: Props):
 
   const typeRef = useRef([
     { text: t('All stashes'), value: 'all' },
-    { text: t('Nominators'), value: 'noms' },
-    { text: t('Validators'), value: 'vals' },
-    { text: t('Inactive'), value: 'chill' }
+    { text: t('Guarantors'), value: 'noms' },
+    { text: t('Validators'), value: 'vals' }
+    // { text: t('Inactive'), value: 'chill' }
   ]);
 
   const state = useMemo(

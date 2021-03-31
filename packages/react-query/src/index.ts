@@ -22,3 +22,5 @@ export { default as SessionToTime } from './SessionToTime';
 export { default as TimeNow } from './TimeNow';
 export { default as TotalIssuance } from './TotalIssuance';
 export { default as FormatCandy } from './FormatCandy';
+export { default as TotalStorage } from './TotalStorage';
+export { default as FormatCapacity } from './FormatCapacity';

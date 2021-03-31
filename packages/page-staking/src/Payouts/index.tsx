@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { TFunction } from 'i18next';
 import type { DeriveStakerReward } from '@polkadot/api-derive/types';
 import type { StakerState } from '@polkadot/react-hooks/types';
@@ -13,7 +14,6 @@ import styled from 'styled-components';
 import { ApiPromise } from '@polkadot/api';
 import { Button, Table, ToggleGroup } from '@polkadot/react-components';
 import { useApi, useCall, useOwnEraRewards } from '@polkadot/react-hooks';
-import { FormatBalance } from '@polkadot/react-query';
 import { BN_ZERO, isFunction } from '@polkadot/util';
 
 import ElectionBanner from '../ElectionBanner';
@@ -47,7 +47,7 @@ function groupByValidator (allRewards: Record<string, DeriveStakerReward[]>, sta
     .entries(allRewards)
     .reduce((grouped: PayoutValidator[], [stashId, rewards]): PayoutValidator[] => {
       rewards
-        .filter(({ era }) => era.gte(stakerPayoutsAfter))
+        // .filter(({ era }) => era.gte(stakerPayoutsAfter))
         .forEach((reward): void => {
           Object
             .entries(reward.validators)
@@ -154,13 +154,15 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
   const { t } = useTranslation();
   const { api } = useApi();
   const [hasOwnValidators] = useState(() => ownValidators.length !== 0);
-  const [myStashesIndex, setMyStashesIndex] = useState(() => (isFunction(api.tx.staking.payoutStakers) && hasOwnValidators) ? 0 : 1);
+  const [myStashesIndex, setMyStashesIndex] = useState(() => (isFunction(api.tx.staking.rewardStakers) && hasOwnValidators) ? 0 : 1);
   const [eraSelectionIndex, setEraSelectionIndex] = useState(0);
   const eraLength = useCall<BN>(api.derive.session.eraLength);
   const historyDepth = useCall<BN>(api.query.staking.historyDepth);
   const stakerPayoutsAfter = useStakerPayouts();
   const isDisabled = isInElection || !isFunction(api.tx.utility?.batch);
 
+  console.log('eraLength', JSON.stringify(eraLength));
+  console.log('historyDepth', JSON.stringify(historyDepth));
   const eraSelection = useMemo(
     () => getOptions(api, eraLength, historyDepth, t),
     [api, eraLength, historyDepth, t]
@@ -176,39 +178,39 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
   const headerStashes = useMemo(() => [
     [myStashesIndex ? t('payout/stash') : t('overall/validator'), 'start', 2],
     [t('eras'), 'start'],
-    [t('available')],
+    // [t('available')],
     [('remaining')],
-    [undefined, undefined, 3]
+    [undefined, undefined, 4]
   ], [myStashesIndex, t]);
 
   const headerValidatorsRef = useRef([
     [t('payout/validator'), 'start', 2],
     [t('eras'), 'start'],
-    [t('available')],
+    // [t('available')],
     [('remaining')],
     [undefined, undefined, 3]
   ]);
 
   const valOptions = useMemo(() => [
-    { isDisabled: !hasOwnValidators, text: t('My validators'), value: 'val' },
-    { text: t('My stashes'), value: 'all' }
+    { isDisabled: !hasOwnValidators, text: t('Validator/Candidate rewards'), value: 'val' },
+    { text: t('Guarantor rewards'), value: 'all' }
   ], [hasOwnValidators, t]);
 
   const footer = useMemo(() => (
     <tr>
       <td colSpan={3} />
       <td className='number'>
-        {stashTotal && <FormatBalance value={stashTotal} />}
+        {/* {stashTotal && <FormatBalance value={stashTotal} />} */}
       </td>
       <td colSpan={4} />
     </tr>
   ), [stashTotal]);
 
-  const hasPayouts = isFunction(api.tx.staking.payoutStakers);
+  const hasPayouts = isFunction(api.tx.staking.rewardStakers);
 
   return (
     <div className={className}>
-      {hasPayouts && (
+      {api.tx.staking.rewardStakers && (
         <Button.Group>
           <ToggleGroup
             onChange={setMyStashesIndex}
