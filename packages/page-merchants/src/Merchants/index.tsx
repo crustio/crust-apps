@@ -118,7 +118,8 @@ function Overview ({ className = '' }: Props): React.ReactElement<Props> {
   }, [allAccounts, favorites]);
 
   useEffect(() => {
-    if (api.query.democracy?.votingOf && !delegations?.length) {
+    // TODO: to confirm
+    if ( !delegations?.length) {
       return;
     }
 
