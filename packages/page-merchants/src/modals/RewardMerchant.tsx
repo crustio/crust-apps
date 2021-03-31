@@ -23,8 +23,8 @@ function RewardMerchant ({ accountId, onClose }: Props): React.ReactElement<Prop
       size='large'
     >
       <Modal.Content>
-        <Modal.Columns>
-          <Modal.Column>
+        <Modal.Content>
+          <Modal.Columns>
             <InputAddress
               defaultValue={accountId}
               isDisabled
@@ -36,8 +36,8 @@ function RewardMerchant ({ accountId, onClose }: Props): React.ReactElement<Prop
                 />
               }
             />
-          </Modal.Column>
-        </Modal.Columns>
+          </Modal.Columns>
+        </Modal.Content>
       </Modal.Content>
       <Modal.Actions onCancel={onClose}>
         <TxButton

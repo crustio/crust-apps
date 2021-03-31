@@ -11,7 +11,7 @@ import { Input, InputAddress, Modal, TxButton } from '../../../../react-componen
 
 interface Props { fileCid: string, onClose: () => void, onSuccess: () => void }
 
-const SettleModal:React.FC<Props> = ({ fileCid, onClose, onSuccess }) => {
+const SettleModal: React.FC<Props> = ({ fileCid, onClose, onSuccess }) => {
   const { t } = useTranslation();
   const { hasAccounts } = useAccounts();
   const [account, setAccount] = useState<string|null>('');

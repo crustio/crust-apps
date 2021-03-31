@@ -13,9 +13,9 @@ const options = [{
   value: 'Crust Storage Explorer'
 }];
 
-interface Props { onClose:() => void, onConfirm: () => void }
+interface Props { onClose: () => void, onConfirm: () => void }
 
-const FetchModal:React.FC<Props> = ({ onClose, onConfirm }) => {
+const FetchModal: React.FC<Props> = ({ onClose, onConfirm }) => {
   const { t } = useTranslation();
   const [dataSource] = useState('Crust Storage Explorer');
 

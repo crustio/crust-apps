@@ -5,16 +5,16 @@ const headers = new Headers();
 
 headers.append('Authorization', 'Basic Y3J1c3Q6MTYyNTM0');
 const requestOptions = {
-  method: 'GET',
-  headers
+  headers,
+  method: 'GET'
 };
 
 interface IRes<ISettlement> {
   message: string,
-  data:ISettlement[]
+  data: ISettlement[]
 }
 
-export function fetchFileTobeClaimed<ISettlement> ():Promise<ISettlement[]> {
+export function fetchFileTobeClaimed<ISettlement> (): Promise<ISettlement[]> {
   return fetch('https://splorer-api.crustcode.com/api/filesToBeClaimed', requestOptions)
     .then((res) => res.json())
     .then((r: IRes<ISettlement>) => {

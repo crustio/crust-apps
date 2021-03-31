@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import type { DeriveBalancesAll } from '@polkadot/api-derive/types';
-import type { AccountInfo } from '@polkadot/types/interfaces';
 
 import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
@@ -27,12 +26,10 @@ function Register ({ className = '', onClose, onSuccess, senderId: propSenderId 
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
   const [hasAvailable] = useState(true);
-  const [isProtected] = useState(true);
-  const [isAll] = useState(false);
-  const [maxTransfer, setMaxTransfer] = useState<BN | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [, setMaxTransfer] = useState<BN | null>(null);
   const [senderId, setSenderId] = useState<string | null>(propSenderId || null);
   const balances = useCall<DeriveBalancesAll>(api.derive.balances.all, [senderId]);
-  const accountInfo = useCall<AccountInfo>(api.query.system.account, [senderId]);
 
   useEffect((): void => {
     if (balances && balances.accountId.eq(senderId) && senderId && isFunction(api.rpc.payment?.queryInfo)) {
@@ -60,8 +57,6 @@ function Register ({ className = '', onClose, onSuccess, senderId: propSenderId 
     }
   }, [api, balances, senderId]);
 
-  const canToggleAll = !isProtected && balances && balances.accountId.eq(senderId) && maxTransfer && (!accountInfo || !accountInfo.refcount || accountInfo.refcount.isZero());
-
   return (
     <Modal
       className='app--accounts-Modal'
@@ -70,8 +65,8 @@ function Register ({ className = '', onClose, onSuccess, senderId: propSenderId 
     >
       <Modal.Content>
         <div className={className}>
-          <Modal.Columns>
-            <Modal.Column>
+          <Modal.Content>
+            <Modal.Columns hint={t<string>('The transferred balance will be subtracted (along with fees) from the sender account.')}>
               <InputAddress
                 defaultValue={propSenderId}
                 help={t<string>('The account you will register')}
@@ -86,39 +81,22 @@ function Register ({ className = '', onClose, onSuccess, senderId: propSenderId 
                 onChange={setSenderId}
                 type='account'
               />
-            </Modal.Column>
-            <Modal.Column>
-              <p>{t<string>('The transferred balance will be subtracted (along with fees) from the sender account.')}</p>
-            </Modal.Column>
-          </Modal.Columns>
-          <Modal.Columns>
-            <Modal.Column>
-              {canToggleAll && isAll
-                ? (
-                  <InputBalance
-                    autoFocus
-                    defaultValue={maxTransfer}
-                    help={t<string>('The full account balance to be transferred, minus the transaction fees')}
-                    isDisabled
-                    key={maxTransfer?.toString()}
-                    label={t<string>('transferrable minus fees')}
-                  />
-                )
-                : (
-                  <>
-                    <InputBalance
-                      autoFocus
-                      help={t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}
-                      isError={!hasAvailable}
-                      isZeroable
-                      label={t<string>('amount')}
-                      onChange={setAmount}
-                    />
-                  </>
-                )
+            </Modal.Columns>
+
+          </Modal.Content>
+          <Modal.Content>
+            <Modal.Columns>
+              {<InputBalance
+                autoFocus
+                help={t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}
+                isError={!hasAvailable}
+                isZeroable
+                label={t<string>('amount')}
+                onChange={setAmount}
+              />
               }
-            </Modal.Column>
-          </Modal.Columns>
+            </Modal.Columns>
+          </Modal.Content>
         </div>
       </Modal.Content>
       <Modal.Actions onCancel={onClose}>

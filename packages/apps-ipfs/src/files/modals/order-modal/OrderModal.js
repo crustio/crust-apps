@@ -42,8 +42,8 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
   >
     <Modal.Content>
       <div className={className}>
-        <Modal.Columns>
-          <Modal.Column>
+        <Modal.Content>
+          <Modal.Columns hint={!hasAccounts && <p className='file-info' style={{padding: 0}}>{t('noAccount')}</p>}>
             <InputAddress
               label={t('Please choose account')}
               isDisabled={!hasAccounts}
@@ -57,15 +57,13 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
               onChange={setAccount}
               type='account'
             />
-          </Modal.Column>
-          <Modal.Column>
-             {
-               !hasAccounts && <p className='file-info' style={{padding: 0}}>{t('noAccount')}</p>
-             }
-          </Modal.Column>
-        </Modal.Columns>
-        <Modal.Columns>
-          <Modal.Column>
+          </Modal.Columns>
+        </Modal.Content>
+        <Modal.Content>
+          <Modal.Columns hint={cidNotValid
+            ? <p className='file-info'
+                 style={{ padding: 0 }}>{t('fileCidValid')}</p>
+            : <p>{t('FileCidDesc')}</p>}>
             <Input
               autoFocus
               help={t('FileCidDesc')}
@@ -74,16 +72,10 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
               placeholder={t('File Cid')}
               value={fileCid}
             />
-          </Modal.Column>
-          <Modal.Column>
-            {cidNotValid
-              ? <p className='file-info'
-                style={{ padding: 0 }}>{t('fileCidValid')}</p>
-              : <p>{t('FileCidDesc')}</p>}
-          </Modal.Column>
-        </Modal.Columns>
-        <Modal.Columns>
-          <Modal.Column>
+          </Modal.Columns>
+        </Modal.Content>
+        <Modal.Content>
+          <Modal.Columns hint={<p>{t('fileSizeDesc')}, {Fsize(fileSize)}</p>}>
             <InputNumber
               autoFocus
               bitLength={DEFAULT_BITLENGTH}
@@ -94,13 +86,10 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
               onChange={setFileSize}
               value={fileSize}
             />
-          </Modal.Column>
-          <Modal.Column>
-            <p>{t('fileSizeDesc')}, {Fsize(fileSize)}</p>
-          </Modal.Column>
-        </Modal.Columns>
-        <Modal.Columns>
-          <Modal.Column>
+          </Modal.Columns>
+        </Modal.Content>
+        <Modal.Content>
+          <Modal.Columns hint={t('tipDesc')}>
             <InputBalance
               autoFocus
               defaultValue={tip}
@@ -109,13 +98,10 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
               onChange={setTip}
               onlyCru
             />
-          </Modal.Column>
-          <Modal.Column>
-            <p>{t('tipDesc')}</p>
-          </Modal.Column>
-        </Modal.Columns>
-        <Modal.Columns>
-          <Modal.Column>
+          </Modal.Columns>
+        </Modal.Content>
+        <Modal.Content>
+          <Modal.Columns hint={t('priceDesc')}>
             <Input
               help={t('priceDesc')}
               isDisabled
@@ -125,25 +111,18 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
               placeholder={t('File price')}
               value={price}
             />
-          </Modal.Column>
-          <Modal.Column>
-            <p>{t('priceDesc')}</p>
-
-          </Modal.Column>
-        </Modal.Columns>
-        <Modal.Columns>
-          <Modal.Column>
+          </Modal.Columns>
+        </Modal.Content>
+        <Modal.Content>
+          <Modal.Columns hint={t('durationDesc')}>
             <Input
               help={t('durationDesc')}
               isDisabled
               label={t('durationLabel')}
               value={15}
             />
-          </Modal.Column>
-          <Modal.Column>
-            <p>{t('durationDesc')}</p>
-          </Modal.Column>
-        </Modal.Columns>
+          </Modal.Columns>
+        </Modal.Content>
       </div>
     </Modal.Content>
     <Modal.Actions onCancel={onClose}>

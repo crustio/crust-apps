@@ -21,8 +21,8 @@ export default function create (t: TFunction): Route {
     display: {
       needsApi: []
     },
-    href: 'https://splorer.crust.network',
     group: 'network',
+    href: 'https://splorer.crust.network',
     icon: 'boxes',
     name: 'splorer',
     text: t('nav.splorer', 'Splorer', { ns: 'apps-routing' })
