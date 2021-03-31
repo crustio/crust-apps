@@ -24,6 +24,7 @@ function mapChunks (name, regs, inc) {
 }
 
 function createWebpack (context, mode = 'production') {
+  const isProd = mode === 'production';
   const pkgJson = require(path.join(context, 'package.json'));
   const alias = findPackages().reduce((alias, { dir, name }) => {
     alias[name] = path.resolve(context, `../${dir}/src`);
@@ -41,6 +42,8 @@ function createWebpack (context, mode = 'production') {
     './validators.js': path.resolve(__dirname, 'src/patch/validators.js'),
     './stakerRewards.js': path.resolve(__dirname, 'src/patch/stakerRewards.js'),
     './components/StartExploringPage': path.resolve(__dirname, 'src/patch/StartExploringPage'),
+    './bundles/explore': path.resolve(__dirname, 'src/patch/bundles/explore'),
+    './components/StartExploringPage': path.resolve(__dirname, 'src/patch/StartExploringPage'),
     './bundles/explore': path.resolve(__dirname, 'src/patch/bundles/explore')
   });
   const plugins = fs.existsSync(path.join(context, 'public'))
@@ -54,10 +57,29 @@ function createWebpack (context, mode = 'production') {
     module: {
       rules: [
         {
+
+          exclude: /(node_modules)/,
+          test: /\.css$/,
+          use: [
+            isProd
+              ? MiniCssExtractPlugin.loader
+              : require.resolve('style-loader'),
+            {
+              loader: require.resolve('css-loader'),
+              options: {
+                importLoaders: 1
+              }
+            }
+          ]
+
+        },
+        {
           include: /node_modules/,
           test: /\.css$/,
           use: [
-            MiniCssExtractPlugin.loader,
+            isProd
+              ? MiniCssExtractPlugin.loader
+              : require.resolve('style-loader'),
             require.resolve('css-loader')
           ]
         },
@@ -95,7 +117,7 @@ function createWebpack (context, mode = 'production') {
         },
         {
           exclude: [/semantic-ui-css/],
-          test: [/\.eot$/, /\.ttf$/, /\.svg$/, /\.woff$/, /\.woff2$/],
+          test: [/\.eot$/, /\.ttf$/, /\.svg$/, /\.otf$/, /\.woff$/, /\.woff2$/],
           use: [
             {
               loader: require.resolve('file-loader'),
@@ -184,7 +206,9 @@ function createWebpack (context, mode = 'production') {
       fallback: {
         crypto: require.resolve('crypto-browserify'),
         path: require.resolve('path-browserify'),
-        stream: require.resolve('stream-browserify')
+        stream: require.resolve('stream-browserify'),
+        os: false,
+        assert: false
       }
     }
   };

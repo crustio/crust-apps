@@ -29,8 +29,9 @@ const disabledLog = new Map<string, string>();
 
 function createExternals (t: TFunction): ItemRoute[] {
   return [
-    { href: 'https://github.com/crustio/crust-apps/', icon: 'code-branch', name: 'github', text: t<string>('nav.github', 'GitHub', { ns: 'apps-routing' }) },
-    { href: 'https://wiki.crust.network', icon: 'book', name: 'wiki', text: t<string>('nav.wiki', 'Wiki', { ns: 'apps-routing' }) }
+    { href: 'https://github.com/crustio/crust-apps', icon: 'code-branch', name: 'github', text: t<string>('nav.github', 'GitHub', { ns: 'apps-routing' }) },
+    { href: 'https://wiki.crust.network', icon: 'book', name: 'wiki', text: t<string>('nav.wiki', 'Wiki', { ns: 'apps-routing' }) },
+    { href: 'https://wiki.crust.network/docs/en/crustWallet', icon: 'wallet', name: 'wallet', text: t<string>('nav.Wallet', 'Wallet', { ns: 'apps-routing' }) }
   ];
 }
 
@@ -100,7 +101,8 @@ function Menu ({ className = '' }: Props): React.ReactElement<Props> {
     developer: t('Developer'),
     governance: t('Governance'),
     network: t('Network'),
-    settings: t('Settings')
+    settings: t('Settings'),
+    storage: t('ipfs')
   });
 
   const routeRef = useRef(createRoutes(t));
@@ -142,6 +144,7 @@ function Menu ({ className = '' }: Props): React.ReactElement<Props> {
           <ul className='menuItems'>
             {externalRef.current.map((route): React.ReactNode => (
               <Item
+                className='external'
                 isLink
                 isToplevel
                 key={route.name}
@@ -150,7 +153,7 @@ function Menu ({ className = '' }: Props): React.ReactElement<Props> {
             ))}
           </ul>
         </div>
-        <NodeInfo className='media--1400' />
+        <NodeInfo/>
       </div>
     </div>
   );

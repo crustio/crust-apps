@@ -12,7 +12,7 @@ import styled from 'styled-components';
 interface Props {
   className?: string;
   color?: 'gray' | 'green' | 'normal' | 'orange' | 'red' | 'transparent' | 'white';
-  icon: IconName;
+  icon: IconName | 'ipfs';
   isSpinning?: boolean;
   onClick?: () => void;
   size?: '1x' | '2x';
@@ -24,11 +24,12 @@ library.add(fas);
 
 function Icon ({ className = '', color = 'normal', icon, isSpinning, onClick, size = '1x', tooltip }: Props): React.ReactElement<Props> {
   const extraProps = tooltip
-    ? { 'data-for': tooltip, 'data-testid': icon, 'data-tip': true }
+    ? { 'data-for': tooltip, 'data-tip': true }
     : {};
 
   return (
-    <FontAwesomeIcon
+  // eslint-disable-next-line multiline-ternary
+    icon === 'ipfs' ? <span className={`icomoon icomoon-ipfs ui--Icon ${color}Color${onClick ? ' isClickable' : ''} ${className}`}/> : <FontAwesomeIcon
       {...extraProps}
       className={`ui--Icon ${color}Color${onClick ? ' isClickable' : ''} ${className}`}
       icon={icon}
@@ -39,7 +40,7 @@ function Icon ({ className = '', color = 'normal', icon, isSpinning, onClick, si
   );
 }
 
-export default React.memo(styled(Icon)`
+export default React.memo(styled(Icon)`.
   &.isClickable {
     cursor: pointer;
   }

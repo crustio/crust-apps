@@ -8,8 +8,7 @@ const { merge } = require('webpack-merge');
 
 const baseConfig = require('./webpack.base.cjs');
 
-const context = __dirname;
-const hasPublic = fs.existsSync(path.join(context, 'public'));
+const context = __dirname;const hasPublic = fs.existsSync(path.join(context, 'public'));
 
 module.exports = merge(
   baseConfig(context),
