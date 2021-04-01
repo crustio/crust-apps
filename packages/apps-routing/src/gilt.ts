@@ -8,6 +8,7 @@ import Component from '@polkadot/app-gilt';
 
 export default function create (t: TFunction): Route {
   return {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     Component,
     display: {
       needsApi: [

@@ -16,6 +16,6 @@ export interface TabItem {
 }
 
 export interface SectionType {
-  icon?: IconName;
+  icon?: IconName | 'ipfs';
   text?: string;
 }
