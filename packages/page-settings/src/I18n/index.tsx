@@ -155,7 +155,10 @@ function Translate ({ className }: Props): React.ReactElement<Props> {
   const [strings, setStrings] = useState<Strings | null>(null);
 
   useEffect((): void => {
-    retrieveAll().then(setDefaults).catch(console.error);
+    retrieveAll().then((res) => {
+      console.log(res);
+      setDefaults(res);
+    }).catch(console.error);
   }, []);
 
   useEffect((): void => {
