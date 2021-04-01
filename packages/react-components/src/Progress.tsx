@@ -23,7 +23,7 @@ interface RotateProps {
 
 function DivClip ({ angle, type }: RotateProps): React.ReactElement<RotateProps> {
   return (
-    <div className={`clip ${type}`}>
+    <div className={`clip1 ${type}`}>
       <div
         className='highlight--bg'
         style={{ transform: `rotate(${angle}deg)` }}
@@ -85,7 +85,7 @@ export default React.memo(styled(Progress)`
   }
 
   .background,
-  .clip {
+  .clip1 {
     bottom: 0;
     left: 0;
     position: absolute;
@@ -97,7 +97,7 @@ export default React.memo(styled(Progress)`
     opacity: 0.125;
   }
 
-  .clip {
+  .clip1 {
     div {
       border-radius: 100%;
       bottom: 0;
@@ -110,7 +110,7 @@ export default React.memo(styled(Progress)`
     }
   }
 
-  .clip.first {
+  .clip1.first {
     clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
 
     div {
@@ -118,7 +118,7 @@ export default React.memo(styled(Progress)`
     }
   }
 
-  .clip.second {
+  .clip1.second {
     clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
 
     div {
