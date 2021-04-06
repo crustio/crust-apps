@@ -5,7 +5,7 @@
 import type { DeriveBalancesAll, DeriveStakingAccount } from '@polkadot/api-derive/types';
 import type { StakerState } from '@polkadot/react-hooks/types';
 import type { Option } from '@polkadot/types';
-import type { ActiveEraInfo, Balance, IndividualExposure, SlashingSpans, UnappliedSlash } from '@polkadot/types/interfaces';
+import type { ActiveEraInfo, Balance, IndividualExposure, SlashingSpans, UnappliedSlash, ValidatorId } from '@polkadot/types/interfaces';
 import type { SortedTargets } from '../../types';
 import type { Slash } from '../types';
 
@@ -108,7 +108,8 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   }
 
   const isGuarantor = guarantorInfo && guarantorInfo.targets.length != 0;
-  const isValidator = targets && (targets.validatorIds?.indexOf(stashId) != -1);
+  const validators = useCall<ValidatorId[]>(api.query.session.validators);
+  const isValidator = validators && (validators.map(e => e.toString())?.indexOf(stashId) != -1);
   const isCandidate = targets && (targets.waitingIds?.indexOf(stashId) != -1);
 
   const [role, setRole] = useState<string>('Bonded');

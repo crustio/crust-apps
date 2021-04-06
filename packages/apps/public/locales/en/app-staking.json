@@ -164,7 +164,7 @@
   "Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.": "Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.",
   "Unbond": "Unbond",
   "Unbond funds": "Unbond funds",
-  "Use the account actions to create a new validator/nominator stash and bond it to participate in staking. Do not send funds directly via a transfer to a validator.": "Use the account actions to create a new validator/nominator stash and bond it to participate in staking. Do not send funds directly via a transfer to a validator.",
+  "Use the account actions to create a new validator/guarantor stash and bond it to participate in staking. Do not send funds directly via a transfer to a validator.": "Use the account actions to create a new validator/guarantor stash and bond it to participate in staking. Do not send funds directly via a transfer to a validator.",
   "Validate": "Validate",
   "Validator": "Validator",
   "Validator stats": "Validator stats",

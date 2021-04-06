@@ -1454,5 +1454,9 @@
   "{{step}}. Sign with your ETH address": "{{step}}. 用你的以太坊地址签名",
   "{{threshold}}, not passing": "{{threshold}},没有通过",
   "{{threshold}}, passing": "{{threshold}}, 通过",
-  "{{value}}x voting balance, locked for {{lock}}x enactment ({{period}} days)": "{{value}}x投票余额，锁定 {{lock}}x 执行 ({{period}} days)"
+  "{{value}}x voting balance, locked for {{lock}}x enactment ({{period}} days)": "{{value}}x投票余额，锁定 {{lock}}x 执行 ({{period}} days)",
+  "Guarantors": "担保人",
+  "Validators": "验证人",
+  "All stashes": "所有绑定账户",
+  "Use the account actions to create a new validator/guarantor stash and bond it to participate in staking. Do not send funds directly via a transfer to a validator.": "使用帐户操作创建一个新的验证器/担保人存储并将其绑定以参与放样。请勿直接通过转帐向验证人发送资金。"
 }
