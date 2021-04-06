@@ -162,19 +162,6 @@ function extractNominees (ownNominators: StakerState[] = []): string[] {
   return myNominees;
 }
 
-function selectProfitable (list: ValidatorInfo[]): string[] {
-  const result: string[] = [];
-
-  for (let i = 0; i < list.length && result.length < MAX_NOMINATIONS; i++) {
-    const { isFavorite, key, stakedReturnCmp } = list[i];
-
-    ((isFavorite || (stakedReturnCmp > 0))) &&
-      result.push(key);
-  }
-
-  return result;
-}
-
 function Targets ({ className = '', isInElection, ownStashes, targets: { avgStaked, inflation: { stakedReturn }, lowStaked, medianComm, minNominated, nominators, totalIssuance, totalStaked, validatorIds, validators }, toggleFavorite, toggleLedger }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
@@ -254,13 +241,6 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
         : [...selected, address]
     ),
     [selected]
-  );
-
-  const _selectProfitable = useCallback(
-    () => filtered && setSelected(
-      selectProfitable(filtered)
-    ),
-    [filtered]
   );
 
   const _setNameFilter = useCallback(
@@ -354,12 +334,12 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
         totalStaked={totalStaked}
       />
       <Button.Group>
-        <Button
+        {/* <Button
           icon='check'
           isDisabled={!validators?.length || !ownNominators?.length}
           label={t<string>('Most profitable')}
           onClick={_selectProfitable}
-        />
+        /> */}
         <Nominate
           isDisabled={isInElection || !validators?.length}
           ownNominators={ownNominators}
