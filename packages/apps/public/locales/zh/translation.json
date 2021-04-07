@@ -1462,5 +1462,6 @@
   "Retrieving validators": "检索验证人",
   "Retrieving guarantors": "检索担保人",
   "Retrieving validator info": "检索验证人信息",
-  "Retrieving online status": "检索在线信息"
+  "Retrieving online status": "检索在线信息",
+  "{{role}}": "{{role}}"
 }

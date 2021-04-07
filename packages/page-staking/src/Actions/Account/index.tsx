@@ -265,7 +265,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
           />
         )
       }
-      <td className='number ui--media-1200'>{role}</td>
+      <td className='number ui--media-1200'>{t<string>('{{role}}', { replace: { role: role } })}</td>
 
       {isStashValidating
         ? (

@@ -60,7 +60,7 @@ const CLASSES: Record<string, string> = {
   rankBondOwn: 'media--900'
 };
 const MAX_CAP_PERCENT = 100; // 75 if only using numNominators
-const MAX_COMM_PERCENT = 20; // -1 for median
+const MAX_COMM_PERCENT = 80; // -1 for median
 const MAX_DAYS = 7;
 const SORT_KEYS = ['rankBondTotal', 'rankBondOwn', 'rankBondOther', 'rankOverall'];
 
@@ -93,8 +93,8 @@ function applyFilter (validators: ValidatorInfo[], medianComm: number, allIdenti
       (!withPayout || !isBabe || (!!lastPayout && daysPayout.gte(lastPayout))) &&
       (!withoutComm || (
         MAX_COMM_PERCENT > 0
-          ? (commissionPer < MAX_COMM_PERCENT)
-          : (!medianComm || (commissionPer <= medianComm)))
+          ? (commissionPer >= MAX_COMM_PERCENT)
+          : (!medianComm || (commissionPer < medianComm)))
       ) &&
       (!withoutOver || !maxPaid || maxPaid.muln(MAX_CAP_PERCENT).div(BN_HUNDRED).gten(nomCount))
     ) {
@@ -276,8 +276,8 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
           className='staking--buttonToggle'
           label={
             MAX_COMM_PERCENT > 0
-              ? t<string>('no {{maxComm}}%+ comm', { replace: { maxComm: MAX_COMM_PERCENT } })
-              : t<string>('no median+ comm')
+              ? t<string>('with {{maxComm}}%+ guarantee fee', { replace: { maxComm: MAX_COMM_PERCENT } })
+              : t<string>('no median+ guarantee fee')
           }
           onChange={setToggle.withoutComm}
           value={toggles.withoutComm}
