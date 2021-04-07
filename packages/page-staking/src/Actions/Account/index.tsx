@@ -106,15 +106,14 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
     guaranteeTargets = JSON.parse(JSON.stringify(guarantors)).targets;
     stakeValue = guaranteeTargets.reduce((total: BN, { value }) => { return total.add(new BN(Number(value).toString())); }, BN_ZERO);
   }
-
-  const isGuarantor = guarantorInfo && guarantorInfo.targets.length != 0;
   const validators = useCall<ValidatorId[]>(api.query.session.validators);
-  const isValidator = validators && (validators.map(e => e.toString())?.indexOf(stashId) != -1);
-  const isCandidate = targets && (targets.waitingIds?.indexOf(stashId) != -1);
 
   const [role, setRole] = useState<string>('Bonded');
 
   useEffect(() => {
+    const isGuarantor = guarantorInfo && guarantorInfo.targets.length != 0;
+    const isValidator = validators && (validators.map(e => e.toString())?.indexOf(stashId) != -1);
+    const isCandidate = targets && (targets.waitingIds?.indexOf(stashId) != -1);
     if (isGuarantor) {
       setRole('Guarantor');
     }  
@@ -124,7 +123,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
     if (isValidator) {
       setRole('Validator');
     }
-  }, [targets, guarantors]);
+  }, [targets, guarantors, validators]);
 
   const slashes = useMemo(
     () => extractSlashes(stashId, allSlashes),

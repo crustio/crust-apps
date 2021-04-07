@@ -259,7 +259,7 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
       1,
       () => _sort(header as 'rankOverall')
     ]),
-    ['stake limit'],
+    [t('stake limit')],
     [],
     []
   ], [_sort, labelsRef, sortBy, sorted, sortFromMax, t]);
@@ -274,12 +274,6 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
       >
         <Toggle
           className='staking--buttonToggle'
-          label={t<string>('single from operator')}
-          onChange={setToggle.withGroup}
-          value={toggles.withGroup}
-        />
-        <Toggle
-          className='staking--buttonToggle'
           label={
             MAX_COMM_PERCENT > 0
               ? t<string>('no {{maxComm}}%+ comm', { replace: { maxComm: MAX_COMM_PERCENT } })
@@ -287,16 +281,6 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
           }
           onChange={setToggle.withoutComm}
           value={toggles.withoutComm}
-        />
-        <Toggle
-          className='staking--buttonToggle'
-          label={
-            MAX_CAP_PERCENT < 100
-              ? t<string>('no {{maxCap}}%+ capacity', { replace: { maxCap: MAX_CAP_PERCENT } })
-              : t<string>('no at capacity')
-          }
-          onChange={setToggle.withoutOver}
-          value={toggles.withoutOver}
         />
         {api.consts.babe && (
           // FIXME have some sane era defaults for Aura

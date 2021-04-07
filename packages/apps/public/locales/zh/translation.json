@@ -1458,5 +1458,9 @@
   "Guarantors": "担保人",
   "Validators": "验证人",
   "All stashes": "所有绑定账户",
-  "Use the account actions to create a new validator/guarantor stash and bond it to participate in staking. Do not send funds directly via a transfer to a validator.": "使用帐户操作创建一个新的验证器/担保人存储并将其绑定以参与放样。请勿直接通过转帐向验证人发送资金。"
+  "Use the account actions to create a new validator/guarantor stash and bond it to participate in staking. Do not send funds directly via a transfer to a validator.": "使用帐户操作创建一个新的验证器/担保人存储并将其绑定以参与放样。请勿直接通过转帐向验证人发送资金。",
+  "Retrieving validators": "检索验证人",
+  "Retrieving guarantors": "检索担保人",
+  "Retrieving validator info": "检索验证人信息",
+  "Retrieving online status": "检索在线信息"
 }

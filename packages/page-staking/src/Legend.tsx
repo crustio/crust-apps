@@ -43,14 +43,7 @@ function Legend ({ className }: Props): React.ReactElement<Props> {
           color='green'
           icon='hand-paper'
         />
-        {t('Nominating')}
-      </span>
-      <span>
-        <Badge
-          color='red'
-          icon='balance-scale-right'
-        />
-        {t('Oversubscribed')}
+        {t('Guaranteeing')}
       </span>
       <span>
         <Badge
@@ -58,13 +51,6 @@ function Legend ({ className }: Props): React.ReactElement<Props> {
           icon='skull-crossbones'
         />
         {t('Slashed')}
-      </span>
-      <span>
-        <Badge
-          color='red'
-          icon='user-slash'
-        />
-        {t('Blocks nominations')}
       </span>
     </div>
   );

@@ -78,7 +78,7 @@ function Validator ({ className = '', isDisabled, payout }: Props): React.ReactE
               // balance={balance}
               key={stashId}
               value={stashId}
-              withBalance
+              // withBalance
             />
           )}
         </Expander>
