@@ -164,10 +164,13 @@ function extractSingle (api: ApiPromise, allAccounts: string[], derive: DeriveSt
 function extractInfo (api: ApiPromise, allAccounts: string[], electedDerive: DeriveStakingElected, waitingDerive: DeriveStakingWaiting, favorites: string[], totalIssuance: BN, lastEraInfo: LastEra, historyDepth?: BN): Partial<SortedTargets> {
   const [elected, nominators] = extractSingle(api, allAccounts, electedDerive, favorites, lastEraInfo, historyDepth);
   const [waiting, waitingNominators] = extractSingle(api, allAccounts, waitingDerive, favorites, lastEraInfo);
-  const activeTotals = elected
+  const electedTotals = elected
     .filter(({ isActive }) => isActive)
     .map(({ bondTotal }) => bondTotal)
-    .sort((a, b) => a.cmp(b));
+  const waitingTotals = waiting
+  .filter(({ isActive }) => isActive)
+  .map(({ bondTotal }) => bondTotal)
+  const activeTotals = [...electedTotals, ...waitingTotals].sort((a, b) => a.cmp(b));
   const totalStaked = activeTotals.reduce((total: BN, value) => total.iadd(value), new BN(0));
   const avgStaked = totalStaked.divn(activeTotals.length);
   const inflation = calcInflation(api, totalStaked, totalIssuance);

@@ -16,6 +16,14 @@ import { expandEndpoints } from './util';
 
 export function createProduction (t: TFunction): LinkOption[] {
   return expandEndpoints(t, [
+    {
+      info: 'crust',
+      text: t('rpc.crust.network', 'Crust Maxwell', { ns: 'apps-config' }),
+      providers: {
+        'Crust Network': 'wss://api.crust.network/',
+        'DCloud Foundation': 'wss://api.decloudf.com/'
+      }
+    },
     // fixed, polkadot
     {
       dnslink: 'polkadot',

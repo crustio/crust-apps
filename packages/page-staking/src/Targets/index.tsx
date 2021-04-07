@@ -60,7 +60,7 @@ const CLASSES: Record<string, string> = {
   rankBondOwn: 'media--900'
 };
 const MAX_CAP_PERCENT = 100; // 75 if only using numNominators
-const MAX_COMM_PERCENT = 20; // -1 for median
+const MAX_COMM_PERCENT = 80; // -1 for median
 const MAX_DAYS = 7;
 const SORT_KEYS = ['rankBondTotal', 'rankBondOwn', 'rankBondOther', 'rankOverall'];
 
@@ -93,8 +93,8 @@ function applyFilter (validators: ValidatorInfo[], medianComm: number, allIdenti
       (!withPayout || !isBabe || (!!lastPayout && daysPayout.gte(lastPayout))) &&
       (!withoutComm || (
         MAX_COMM_PERCENT > 0
-          ? (commissionPer < MAX_COMM_PERCENT)
-          : (!medianComm || (commissionPer <= medianComm)))
+          ? (commissionPer >= MAX_COMM_PERCENT)
+          : (!medianComm || (commissionPer < medianComm)))
       ) &&
       (!withoutOver || !maxPaid || maxPaid.muln(MAX_CAP_PERCENT).div(BN_HUNDRED).gten(nomCount))
     ) {
@@ -160,19 +160,6 @@ function extractNominees (ownNominators: StakerState[] = []): string[] {
   });
 
   return myNominees;
-}
-
-function selectProfitable (list: ValidatorInfo[]): string[] {
-  const result: string[] = [];
-
-  for (let i = 0; i < list.length && result.length < MAX_NOMINATIONS; i++) {
-    const { isFavorite, key, stakedReturnCmp } = list[i];
-
-    ((isFavorite || (stakedReturnCmp > 0))) &&
-      result.push(key);
-  }
-
-  return result;
 }
 
 function Targets ({ className = '', isInElection, ownStashes, targets: { avgStaked, inflation: { stakedReturn }, lowStaked, medianComm, minNominated, nominators, totalIssuance, totalStaked, validatorIds, validators }, toggleFavorite, toggleLedger }: Props): React.ReactElement<Props> {
@@ -256,13 +243,6 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
     [selected]
   );
 
-  const _selectProfitable = useCallback(
-    () => filtered && setSelected(
-      selectProfitable(filtered)
-    ),
-    [filtered]
-  );
-
   const _setNameFilter = useCallback(
     (nameFilter: string, isQueryFiltered: boolean) => setNameFilter({ isQueryFiltered, nameFilter }),
     []
@@ -279,7 +259,7 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
       1,
       () => _sort(header as 'rankOverall')
     ]),
-    ['stake limit'],
+    [t('stake limit')],
     [],
     []
   ], [_sort, labelsRef, sortBy, sorted, sortFromMax, t]);
@@ -294,29 +274,13 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
       >
         <Toggle
           className='staking--buttonToggle'
-          label={t<string>('single from operator')}
-          onChange={setToggle.withGroup}
-          value={toggles.withGroup}
-        />
-        <Toggle
-          className='staking--buttonToggle'
           label={
             MAX_COMM_PERCENT > 0
-              ? t<string>('no {{maxComm}}%+ comm', { replace: { maxComm: MAX_COMM_PERCENT } })
-              : t<string>('no median+ comm')
+              ? t<string>('with {{maxComm}}%+ guarantee fee', { replace: { maxComm: MAX_COMM_PERCENT } })
+              : t<string>('no median+ guarantee fee')
           }
           onChange={setToggle.withoutComm}
           value={toggles.withoutComm}
-        />
-        <Toggle
-          className='staking--buttonToggle'
-          label={
-            MAX_CAP_PERCENT < 100
-              ? t<string>('no {{maxCap}}%+ capacity', { replace: { maxCap: MAX_CAP_PERCENT } })
-              : t<string>('no at capacity')
-          }
-          onChange={setToggle.withoutOver}
-          value={toggles.withoutOver}
         />
         {api.consts.babe && (
           // FIXME have some sane era defaults for Aura
@@ -354,12 +318,12 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
         totalStaked={totalStaked}
       />
       <Button.Group>
-        <Button
+        {/* <Button
           icon='check'
           isDisabled={!validators?.length || !ownNominators?.length}
           label={t<string>('Most profitable')}
           onClick={_selectProfitable}
-        />
+        /> */}
         <Nominate
           isDisabled={isInElection || !validators?.length}
           ownNominators={ownNominators}

@@ -34,7 +34,7 @@ const transformEra = {
   transform: ({ activeEra }: DeriveSessionIndexes) => activeEra.gt(BN_ZERO) ? activeEra.sub(BN_ONE) : undefined
 };
 
-function Summary ({ avgStaked, lowStaked, minNominated, stakedReturn, totalIssuance, totalStaked }: Props): React.ReactElement<Props> {
+function Summary ({ avgStaked, lowStaked, minNominated, numNominators, numValidators, totalIssuance, totalStaked }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const lastEra = useCall<BN | undefined>(api.derive.session.indexes, undefined, transformEra);
@@ -77,13 +77,13 @@ function Summary ({ avgStaked, lowStaked, minNominated, stakedReturn, totalIssua
           </CardSummary>
         )}
       </section>
-      <section className='media--800'>
+      {/* <section className='media--800'>
         {totalIssuance && (stakedReturn > 0) && Number.isFinite(stakedReturn) && (
           <CardSummary label={t<string>('returns')}>
             {stakedReturn.toFixed(1)}%
           </CardSummary>
         )}
-      </section>
+      </section> */}
       <section className='media--1000'>
         {avgStaked?.gtn(0) && lowStaked?.gtn(0) && (
           <CardSummary
@@ -103,6 +103,14 @@ function Summary ({ avgStaked, lowStaked, minNominated, stakedReturn, totalIssua
           </CardSummary>
         )}
       </section>
+      {numValidators && numNominators && (
+        <CardSummary
+          className='media--1600'
+          label={`${t<string>('guarantors')} / ${t<string>('validators')}`}
+        >
+          {numNominators}&nbsp;/&nbsp;{numValidators}
+        </CardSummary>
+      )}
       <section className='media--1600'>
         {minNominated?.gt(BN_ZERO) && (
           <CardSummary

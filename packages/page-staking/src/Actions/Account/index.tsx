@@ -5,7 +5,7 @@
 import type { DeriveBalancesAll, DeriveStakingAccount } from '@polkadot/api-derive/types';
 import type { StakerState } from '@polkadot/react-hooks/types';
 import type { Option } from '@polkadot/types';
-import type { ActiveEraInfo, Balance, IndividualExposure, SlashingSpans, UnappliedSlash } from '@polkadot/types/interfaces';
+import type { ActiveEraInfo, Balance, IndividualExposure, SlashingSpans, UnappliedSlash, ValidatorId } from '@polkadot/types/interfaces';
 import type { SortedTargets } from '../../types';
 import type { Slash } from '../types';
 
@@ -106,14 +106,14 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
     guaranteeTargets = JSON.parse(JSON.stringify(guarantors)).targets;
     stakeValue = guaranteeTargets.reduce((total: BN, { value }) => { return total.add(new BN(Number(value).toString())); }, BN_ZERO);
   }
-
-  const isGuarantor = guarantorInfo && guarantorInfo.targets.length != 0;
-  const isValidator = targets && (targets.validatorIds?.indexOf(stashId) != -1);
-  const isCandidate = targets && (targets.waitingIds?.indexOf(stashId) != -1);
+  const validators = useCall<ValidatorId[]>(api.query.session.validators);
 
   const [role, setRole] = useState<string>('Bonded');
 
   useEffect(() => {
+    const isGuarantor = guarantorInfo && guarantorInfo.targets.length != 0;
+    const isValidator = validators && (validators.map(e => e.toString())?.indexOf(stashId) != -1);
+    const isCandidate = targets && (targets.waitingIds?.indexOf(stashId) != -1);
     if (isGuarantor) {
       setRole('Guarantor');
     }  
@@ -123,7 +123,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
     if (isValidator) {
       setRole('Validator');
     }
-  }, [targets, guarantors]);
+  }, [targets, guarantors, validators]);
 
   const slashes = useMemo(
     () => extractSlashes(stashId, allSlashes),
@@ -265,7 +265,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
           />
         )
       }
-      <td className='number ui--media-1200'>{role}</td>
+      <td className='number ui--media-1200'>{t<string>('{{role}}', { replace: { role: role } })}</td>
 
       {isStashValidating
         ? (

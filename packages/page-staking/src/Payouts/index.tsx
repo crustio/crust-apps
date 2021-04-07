@@ -161,8 +161,6 @@ function Payouts ({ className = '', isInElection, ownValidators }: Props): React
   const stakerPayoutsAfter = useStakerPayouts();
   const isDisabled = isInElection || !isFunction(api.tx.utility?.batch);
 
-  console.log('eraLength', JSON.stringify(eraLength));
-  console.log('historyDepth', JSON.stringify(historyDepth));
   const eraSelection = useMemo(
     () => getOptions(api, eraLength, historyDepth, t),
     [api, eraLength, historyDepth, t]
