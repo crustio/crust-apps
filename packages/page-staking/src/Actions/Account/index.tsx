@@ -99,13 +99,10 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const activeEraInfo = useCall<ActiveEraInfo>(api.query.staking.activeEra);
   const activeEra = activeEraInfo && (JSON.parse(JSON.stringify(activeEraInfo)).index);
   const guarantors = useCall<Guarantee>(api.query.staking.guarantors, [stashId]);
-  let guaranteeTargets: IndividualExposure[] = [];
-  let stakeValue = new BN(0);
+  const [guaranteeTargets, setGuaranteeTargets] = useState<IndividualExposure[]>([]);
+  const [stakeValue, setStakeValue] = useState<BN>(BN_ZERO);
   const guarantorInfo = guarantors && JSON.parse(JSON.stringify(guarantors))
-  if (guarantorInfo != null) {
-    guaranteeTargets = JSON.parse(JSON.stringify(guarantors)).targets;
-    stakeValue = guaranteeTargets.reduce((total: BN, { value }) => { return total.add(new BN(Number(value).toString())); }, BN_ZERO);
-  }
+  
   const validators = useCall<ValidatorId[]>(api.query.session.validators);
 
   const [role, setRole] = useState<string>('Bonded');
@@ -124,6 +121,16 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
       setRole('Validator');
     }
   }, [targets, guarantors, validators]);
+
+  useEffect(() => {
+    if (guarantorInfo != null) {
+      setGuaranteeTargets(JSON.parse(JSON.stringify(guarantors)).targets);
+    }
+  }, [guarantorInfo, activeEra]);
+
+  useEffect(() => {
+    setStakeValue(guaranteeTargets.reduce((total: BN, { value }) => { return total.add(new BN(Number(value).toString())); }, BN_ZERO));
+  }, [activeEra, guaranteeTargets])
 
   const slashes = useMemo(
     () => extractSlashes(stashId, allSlashes),
