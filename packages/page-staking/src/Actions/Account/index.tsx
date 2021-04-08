@@ -120,17 +120,17 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
     if (isValidator) {
       setRole('Validator');
     }
-  }, [targets, guarantors, validators]);
+  }, [guarantors, validators]);
 
   useEffect(() => {
     if (guarantorInfo != null) {
       setGuaranteeTargets(JSON.parse(JSON.stringify(guarantors)).targets);
     }
-  }, [guarantorInfo, activeEra]);
+  }, [activeEra]);
 
   useEffect(() => {
     setStakeValue(guaranteeTargets.reduce((total: BN, { value }) => { return total.add(new BN(Number(value).toString())); }, BN_ZERO));
-  }, [activeEra, guaranteeTargets])
+  }, [activeEra])
 
   const slashes = useMemo(
     () => extractSlashes(stashId, allSlashes),

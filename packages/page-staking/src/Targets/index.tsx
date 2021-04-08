@@ -60,7 +60,7 @@ const CLASSES: Record<string, string> = {
   rankBondOwn: 'media--900'
 };
 const MAX_CAP_PERCENT = 100; // 75 if only using numNominators
-const MAX_COMM_PERCENT = 80; // -1 for median
+const MAX_COMM_PERCENT = 20; // -1 for median
 const MAX_DAYS = 7;
 const SORT_KEYS = ['rankBondTotal', 'rankBondOwn', 'rankBondOther', 'rankOverall'];
 
