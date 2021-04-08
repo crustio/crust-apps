@@ -1463,5 +1463,7 @@
   "Retrieving guarantors": "检索担保人",
   "Retrieving validator info": "检索验证人信息",
   "Retrieving online status": "检索在线信息",
-  "{{role}}": "{{role}}"
+  "{{role}}": "{{role}}",
+  "guarantee validators": "担保验证人",
+  "cutGuaranteeable": "可减投量"
 }

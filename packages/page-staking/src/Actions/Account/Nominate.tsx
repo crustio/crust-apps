@@ -28,7 +28,7 @@ function Nominate ({ className = '', controllerId, nominating, onClose, stashId,
   return (
     <Modal
       className={className}
-      header={t<string>('Nominate Validators')}
+      header={t<string>('Guarantee Validators')}
       size='large'
     >
       <Modal.Content>
@@ -48,7 +48,7 @@ function Nominate ({ className = '', controllerId, nominating, onClose, stashId,
           extrinsic={nominateTx}
           icon='hand-paper'
           isDisabled={!nominateTx}
-          label={t<string>('Nominate')}
+          label={t<string>('Guarantee')}
           onStart={onClose}
         />
       </Modal.Actions>
