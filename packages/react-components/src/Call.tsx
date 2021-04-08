@@ -14,6 +14,7 @@ import { Enum, GenericCall, getTypeDef } from '@polkadot/types';
 
 import Static from './Static';
 import { useTranslation } from './translate';
+import { Output } from '.';
 
 export interface Props {
   children?: React.ReactNode;
@@ -105,22 +106,22 @@ function Call ({ children, className = '', labelHash, labelSignature, mortality,
       {children}
       <div className='ui--Extrinsic--toplevel'>
         {signature && (
-          <Static
+          <Output
             className='hash'
             label={labelSignature || t<string>('signature {{type}}', { replace: { type: signatureType ? `(${signatureType})` : '' } })}
             withCopy
+            value={signature}
           >
-            {signature}
-          </Static>
+          </Output>
         )}
         {hash && (
-          <Static
+          <Output
             className='hash'
             label={labelHash || t<string>('extrinsic hash')}
             withCopy
+            value={hash}
           >
-            {hash}
-          </Static>
+          </Output>
         )}
         {mortality && (
           <Static
