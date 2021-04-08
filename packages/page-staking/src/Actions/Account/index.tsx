@@ -101,16 +101,16 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const guarantors = useCall<Guarantee>(api.query.staking.guarantors, [stashId]);
   const [guaranteeTargets, setGuaranteeTargets] = useState<IndividualExposure[]>([]);
   const [stakeValue, setStakeValue] = useState<BN>(BN_ZERO);
-  const guarantorInfo = guarantors && JSON.parse(JSON.stringify(guarantors))
-  
+  const guarantorInfo = guarantors && JSON.parse(JSON.stringify(guarantors));
   const validators = useCall<ValidatorId[]>(api.query.session.validators);
+  const isGuarantor = guarantorInfo && guarantorInfo.targets.length != 0;
+  const isValidator = validators && (validators.map(e => e.toString())?.indexOf(stashId) != -1);
+  const isCandidate = targets && (targets.waitingIds?.indexOf(stashId) != -1);
 
   const [role, setRole] = useState<string>('Bonded');
 
   useEffect(() => {
-    const isGuarantor = guarantorInfo && guarantorInfo.targets.length != 0;
-    const isValidator = validators && (validators.map(e => e.toString())?.indexOf(stashId) != -1);
-    const isCandidate = targets && (targets.waitingIds?.indexOf(stashId) != -1);
+    
     if (isGuarantor) {
       setRole('Guarantor');
     }  
@@ -126,11 +126,11 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
     if (guarantorInfo != null) {
       setGuaranteeTargets(JSON.parse(JSON.stringify(guarantors)).targets);
     }
-  }, [activeEra]);
+  }, [guarantors, validators]);
 
   useEffect(() => {
     setStakeValue(guaranteeTargets.reduce((total: BN, { value }) => { return total.add(new BN(Number(value).toString())); }, BN_ZERO));
-  }, [activeEra])
+  }, [guaranteeTargets])
 
   const slashes = useMemo(
     () => extractSlashes(stashId, allSlashes),
@@ -336,7 +336,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                     icon='hand-paper'
                     isDisabled={!isOwnController || isDisabled || !hasBonded}
                     key='nominate'
-                    label={t<string>('Nominate')}
+                    label={t<string>('Guarantee')}
                     onClick={toggleNominate}
                   />
                 </Button.Group>
@@ -378,8 +378,6 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                 >
                   {t<string>('Withdraw unbonded funds')}
                 </Menu.Item>
-                <Menu.Divider />
-                Validate
                 <Menu.Item
                   disabled={!isOwnStash}
                   onClick={toggleSetController}
@@ -392,6 +390,8 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                 >
                   {t<string>('Change reward destination')}
                 </Menu.Item>
+                <Menu.Divider />
+                Validate   
                 {isStashValidating && (
                   <>
                     <Menu.Item
@@ -410,15 +410,22 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                     )}
                   </>
                 )}
+                  {!isStashNominating &&
+                    <Menu.Item
+                      disabled={!isOwnController}
+                      onClick={toggleSetSession}
+                    >
+                      {t<string>('Change session keys')}
+                    </Menu.Item>
+                  }
+
+                  {!isStashNominating &&
+                    <Menu.Item onClick={toggleInject}>
+                      {t<string>('Inject session keys (advanced)')}
+                    </Menu.Item>
+                  }
                 <Menu.Divider />
-                {!isStashNominating &&
-                  <Menu.Item
-                    disabled={!isOwnController}
-                    onClick={toggleSetSession}
-                  >
-                    {t<string>('Change session keys')}
-                  </Menu.Item>
-                }
+                
                 { (role !== 'Validator' && role != 'Candidate' ) && 'Guarantee' }
                 {isStashNominating &&
                   <Menu.Item
@@ -436,11 +443,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                     {t<string>('Cut guarantee')}
                   </Menu.Item>
                 }
-                {!isStashNominating &&
-                  <Menu.Item onClick={toggleInject}>
-                    {t<string>('Inject session keys (advanced)')}
-                  </Menu.Item>
-                }
+                
               </Menu>
             </Popup>
           </>
