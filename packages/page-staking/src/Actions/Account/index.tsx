@@ -391,59 +391,66 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                   {t<string>('Change reward destination')}
                 </Menu.Item>
                 <Menu.Divider />
-                { (role !== 'Bonded' && role != 'Guarantor' ) && 'Validate' }
-                {isStashValidating && (
-                  <>
-                    <Menu.Item
-                      disabled={!isOwnController}
-                      onClick={toggleValidate}
-                    >
-                      {t<string>('Change validator preferences')}
-                    </Menu.Item>
-                    {isFunction(api.tx.staking.kick) && (
+                {
+                  (role !== 'Bonded' && role != 'Guarantor' ) ? <> 
+                    { 'Validate' }
+                  {isStashValidating && (
+                    <>
                       <Menu.Item
                         disabled={!isOwnController}
-                        onClick={toggleKick}
+                        onClick={toggleValidate}
                       >
-                        {t<string>('Remove nominees')}
+                        {t<string>('Change validator preferences')}
                       </Menu.Item>
-                    )}
-                  </>
-                )}
-                  {!isStashNominating &&
-                    <Menu.Item
-                      disabled={!isOwnController}
-                      onClick={toggleSetSession}
-                    >
-                      {t<string>('Change session keys')}
-                    </Menu.Item>
-                  }
+                      {isFunction(api.tx.staking.kick) && (
+                        <Menu.Item
+                          disabled={!isOwnController}
+                          onClick={toggleKick}
+                        >
+                          {t<string>('Remove nominees')}
+                        </Menu.Item>
+                      )}
+                    </>
+                  )}
+                    {
+                      <Menu.Item
+                        disabled={!isOwnController}
+                        onClick={toggleSetSession}
+                      >
+                        {t<string>('Change session keys')}
+                      </Menu.Item>
+                    }
 
-                  {!isStashNominating &&
-                    <Menu.Item onClick={toggleInject}>
-                      {t<string>('Inject session keys (advanced)')}
+                    {
+                      <Menu.Item onClick={toggleInject}>
+                        {t<string>('Inject session keys (advanced)')}
+                      </Menu.Item>
+                    } 
+
+                  </> : null
+                }
+                
+                {(role !== 'Validator' && role != 'Candidate' ) ? <>
+                  <Menu.Divider />
+                  { 'Guarantee' }
+                  {
+                    <Menu.Item
+                      disabled={!isOwnController || !targets.validators?.length}
+                      onClick={toggleNominate}
+                    >
+                      {t<string>('Guarantee')}
                     </Menu.Item>
                   }
-                <Menu.Divider />
-                
-                { (role !== 'Validator' && role != 'Candidate' ) && 'Guarantee' }
-                {isStashNominating &&
-                  <Menu.Item
-                    disabled={!isOwnController || !targets.validators?.length}
-                    onClick={toggleNominate}
-                  >
-                    {t<string>('Guarantee')}
-                  </Menu.Item>
-                }
-                {isStashNominating &&
-                  <Menu.Item
-                    disabled={!isOwnController || !targets.validators?.length}
-                    onClick={toggleCutGuarantee}
-                  >
-                    {t<string>('Cut guarantee')}
-                  </Menu.Item>
-                }
-                
+                  {
+                    <Menu.Item
+                      disabled={!isOwnController || !targets.validators?.length}
+                      onClick={toggleCutGuarantee}
+                    >
+                      {t<string>('Cut guarantee')}
+                    </Menu.Item>
+                  }
+                </> : null
+                } 
               </Menu>
             </Popup>
           </>
