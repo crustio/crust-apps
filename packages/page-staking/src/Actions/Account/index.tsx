@@ -391,7 +391,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                   {t<string>('Change reward destination')}
                 </Menu.Item>
                 <Menu.Divider />
-                Validate   
+                { (role !== 'Bonded' && role != 'Guarantor' ) && 'Validate' }
                 {isStashValidating && (
                   <>
                     <Menu.Item
