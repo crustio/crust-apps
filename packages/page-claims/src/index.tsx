@@ -167,7 +167,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
     if (result.code == 200) {
       setStatusOpen(true);
       setEthereumTxHashValid(true);
-      goToStepClaim();
+      goToStepSign();
     } else {
       api.query.claims
         .claims<Option<BalanceOf>>(ethereumTxHash?.toString())
@@ -187,7 +187,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
                   setResult('MintClaimSuccess');
                   setStatus('success');
                   setEthereumTxHashValid(true);
-                  goToStepClaim();
+                  goToStepSign();
                 }
               });
           } else {
@@ -251,6 +251,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
 
     setEthereumAddress(ethereumAddress?.toString());
     setSignature(signature);
+    setStatusOpen(false);
   }, []);
 
   const onChangeEthereumAddress = useCallback((value: string) => {
@@ -395,7 +396,7 @@ function ClaimsApp ({ basePath }: Props): React.ReactElement<Props> {
                   <Button
                     icon='sign-in-alt'
                     isDisabled={!accountId || !signature}
-                    label={t<string>('Confirm claim')}
+                    label={t<string>('Confirm')}
                     onClick={goToStepClaim}
                   />
                 </Button.Group>
