@@ -16,7 +16,7 @@ import { Button, Card, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
 
-import { useTranslation } from './translate';
+import { useTranslation } from '../translate';
 import { addrToChecksum, getStatement } from './util';
 
 interface Props {

@@ -14,7 +14,7 @@ import { FormatBalance } from '@polkadot/react-query';
 
 import { ClaimStyles } from './Claim';
 import Statement from './Statement';
-import { useTranslation } from './translate';
+import { useTranslation } from '../translate';
 import { getStatement } from './util';
 
 interface Props {
