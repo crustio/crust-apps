@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { ApiPromise } from '@polkadot/api';
 import type { DeriveSessionInfo, DeriveStakingElected, DeriveStakingWaiting } from '@polkadot/api-derive/types';
 import type { SortedTargets, TargetSortBy, ValidatorInfo } from './types';
@@ -114,7 +115,7 @@ function extractSingle (api: ApiPromise, allAccounts: string[], derive: DeriveSt
       bondOwn,
       bondShare: 0,
       bondTotal,
-      commissionPer: validatorPrefs.commission.unwrap().toNumber() / 10_000_000,
+      commissionPer: Number(validatorPrefs.commission) / 10_000_000,
       exposure,
       isActive: !skipRewards,
       isElected: !isWaitingDerive(derive) && derive.nextElected.some((e) => e.eq(accountId)),
@@ -164,7 +165,8 @@ function extractInfo (api: ApiPromise, allAccounts: string[], electedDerive: Der
   // add the explicit stakedReturn
   !avgStaked.isZero() && elected.forEach((e): void => {
     if (!e.skipRewards) {
-      e.stakedReturn = inflation.stakedReturn * avgStaked.muln(1_000_000).div(e.bondTotal).toNumber() / 1_000_000;
+      // @ts-ignore
+      e.stakedReturn = Number(inflation.stakedReturn * avgStaked.muln(1_000_000).div(e.bondTotal)) / 1_000_000;
       e.stakedReturnCmp = e.stakedReturn * (100 - e.commissionPer) / 100;
     }
   });
