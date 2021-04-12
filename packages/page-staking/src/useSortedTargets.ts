@@ -164,6 +164,7 @@ function extractInfo (api: ApiPromise, allAccounts: string[], electedDerive: Der
   // add the explicit stakedReturn
   !avgStaked.isZero() && elected.forEach((e): void => {
     if (!e.skipRewards) {
+      // @ts-ignore
       e.stakedReturn = Number(inflation.stakedReturn * avgStaked.muln(1_000_000).div(e.bondTotal)) / 1_000_000;
       e.stakedReturnCmp = e.stakedReturn * (100 - e.commissionPer) / 100;
     }
