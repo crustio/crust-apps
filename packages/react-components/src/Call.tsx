@@ -109,8 +109,8 @@ function Call ({ children, className = '', labelHash, labelSignature, mortality,
           <Output
             className='hash'
             label={labelSignature || t<string>('signature {{type}}', { replace: { type: signatureType ? `(${signatureType})` : '' } })}
-            withCopy
             value={signature}
+            withCopy
           >
           </Output>
         )}
@@ -118,8 +118,8 @@ function Call ({ children, className = '', labelHash, labelSignature, mortality,
           <Output
             className='hash'
             label={labelHash || t<string>('extrinsic hash')}
-            withCopy
             value={hash}
+            withCopy
           >
           </Output>
         )}
