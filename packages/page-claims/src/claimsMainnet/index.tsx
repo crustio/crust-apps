@@ -6,12 +6,12 @@ import type { AppProps as Props } from '@polkadot/react-components/types';
 import type { Option } from '@polkadot/types';
 import type { EcdsaSignature, EthereumAddress, StatementKind } from '@polkadot/types/interfaces';
 
-import React, { useCallback, useEffect, useState, useMemo } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Trans } from 'react-i18next';
 import styled from 'styled-components';
 
-import { Button, Card, Columar, Dropdown, Input, InputAddress, Tooltip } from '@polkadot/react-components';
+import { Button, Card, Columar, Input, InputAddress, Tooltip } from '@polkadot/react-components';
 import { TokenUnit } from '@polkadot/react-components/InputNumber';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { u8aToHex, u8aToString } from '@polkadot/util';
@@ -23,7 +23,6 @@ import { useTranslation } from '../translate';
 import { getStatement, recoverFromJSON } from './util';
 import Warning from './Warning';
 // @ts-ignore
-import { httpPost } from './http';
 import HttpStatus from './HttpStatus';
 import type { TFunction } from 'i18next';
 
@@ -111,13 +110,6 @@ function ClaimsMainnet (): React.ReactElement<Props> {
   // - `PRECLAIMS_LOADING` if we're fetching the results
   const [preclaimEthereumAddress, setPreclaimEthereumAddress] = useState<string | null | undefined | typeof PRECLAIMS_LOADING>(PRECLAIMS_LOADING);
   const isPreclaimed = !!preclaimEthereumAddress && preclaimEthereumAddress !== PRECLAIMS_LOADING;
-
-  const [tokenType, setTokenType] = useState<string>("CRU18");
-
-  const options = useMemo(
-    () => createTokenTypePrev(t),
-    [t]
-  );
 
   // Everytime we change account, reset everything, and check if the accountId
   // has a preclaim.

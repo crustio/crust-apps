@@ -17,7 +17,7 @@ import { useApi } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
 
 import { useTranslation } from '../translate';
-import { addrToChecksum, getStatement } from './util';
+import { addrToChecksum } from './util';
 
 interface Props {
   accountId: string;
@@ -66,7 +66,7 @@ function PreClaim ({ accountId, className = '', ethereumAddress, ethereumSignatu
         if (claimOpt) {
           const claimBalance = new BN(Number(claimOpt)?.toString());
           api.query.claims
-          .cru18Claimed<Boolean>(ethereumAddress)
+          .cru18Claimed<Option<BalanceOf>>(ethereumAddress)
           .then((claimed): void => {
             const claimedOpt = JSON.parse(JSON.stringify(claimed));
             setIsBusy(false)
