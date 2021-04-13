@@ -17,7 +17,7 @@ import { useApi, useCall } from '@polkadot/react-hooks';
 import { u8aToHex, u8aToString } from '@polkadot/util';
 import { decodeAddress } from '@polkadot/util-crypto';
 
-import ClaimDisplay from './Claim';
+import PreClaimDisplay from './PreClaim';
 import Statement from './Statement';
 import { useTranslation } from '../translate';
 import { getStatement, recoverFromJSON } from './util';
@@ -85,8 +85,8 @@ interface TypeOption {
 export function createTokenTypePrev (t: TFunction): TypeOption[] {
   return [
     { text: t('CRU18'), value: 'CRU18' },
-    { text: t('CRU24'), value: 'CRU24' },
-    { text: t('CRU24D6'), value: 'CRU24D6' }
+    // { text: t('CRU24'), value: 'CRU24' },
+    // { text: t('CRU24D6'), value: 'CRU24D6' }
   ];
 }
 
@@ -223,14 +223,14 @@ function ClaimsMainnet (): React.ReactElement<Props> {
               onChange={setAccountId}
               type='all'
             />
-            <Dropdown
+            {/* <Dropdown
               defaultValue={accountId?.toString()}
               help={t<string>('The destination account for any payments as either a nominator or validator')}
               label={t<string>('token types')}
               onChange={setTokenType}
               options={options}
               value={tokenType}
-            />
+            /> */}
             {(step === Step.Account) && (
               <Button.Group>
                 <Button
@@ -324,10 +324,10 @@ function ClaimsMainnet (): React.ReactElement<Props> {
         </Columar.Column>
         <Columar.Column>
           {(step >= Step.Claim) && (
-            <ClaimDisplay
+            <PreClaimDisplay
               accountId={accountId}
               ethereumAddress={ethereumAddress}
-              tokenType={tokenType}
+              // tokenType={tokenType}
               ethereumSignature={signature}
               isOldClaimProcess={isOldClaimProcess}
               // onSuccess={goToStepAccount}
