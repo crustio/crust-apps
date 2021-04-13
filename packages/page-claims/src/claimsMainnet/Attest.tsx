@@ -13,7 +13,7 @@ import { useAccounts, useApi } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
 
 import { useTranslation } from '../translate';
-import { ClaimStyles } from './Claim';
+import { ClaimStyles } from './PreClaim';
 import Statement from './Statement';
 import { getStatement } from './util';
 

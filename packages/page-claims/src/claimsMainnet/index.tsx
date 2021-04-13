@@ -6,24 +6,23 @@ import type { AppProps as Props } from '@polkadot/react-components/types';
 import type { Option } from '@polkadot/types';
 import type { EcdsaSignature, EthereumAddress, StatementKind } from '@polkadot/types/interfaces';
 
-import React, { useCallback, useEffect, useState, useMemo } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Trans } from 'react-i18next';
 import styled from 'styled-components';
 
-import { Button, Card, Columar, Dropdown, Input, InputAddress, Tooltip } from '@polkadot/react-components';
+import { Button, Card, Columar, Input, InputAddress, Tooltip } from '@polkadot/react-components';
 import { TokenUnit } from '@polkadot/react-components/InputNumber';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { u8aToHex, u8aToString } from '@polkadot/util';
 import { decodeAddress } from '@polkadot/util-crypto';
 
-import ClaimDisplay from './Claim';
+import PreClaimDisplay from './PreClaim';
 import Statement from './Statement';
 import { useTranslation } from '../translate';
 import { getStatement, recoverFromJSON } from './util';
 import Warning from './Warning';
 // @ts-ignore
-import { httpPost } from './http';
 import HttpStatus from './HttpStatus';
 import type { TFunction } from 'i18next';
 
@@ -85,8 +84,8 @@ interface TypeOption {
 export function createTokenTypePrev (t: TFunction): TypeOption[] {
   return [
     { text: t('CRU18'), value: 'CRU18' },
-    { text: t('CRU24'), value: 'CRU24' },
-    { text: t('CRU24D6'), value: 'CRU24D6' }
+    // { text: t('CRU24'), value: 'CRU24' },
+    // { text: t('CRU24D6'), value: 'CRU24D6' }
   ];
 }
 
@@ -111,13 +110,6 @@ function ClaimsMainnet (): React.ReactElement<Props> {
   // - `PRECLAIMS_LOADING` if we're fetching the results
   const [preclaimEthereumAddress, setPreclaimEthereumAddress] = useState<string | null | undefined | typeof PRECLAIMS_LOADING>(PRECLAIMS_LOADING);
   const isPreclaimed = !!preclaimEthereumAddress && preclaimEthereumAddress !== PRECLAIMS_LOADING;
-
-  const [tokenType, setTokenType] = useState<string>("CRU18");
-
-  const options = useMemo(
-    () => createTokenTypePrev(t),
-    [t]
-  );
 
   // Everytime we change account, reset everything, and check if the accountId
   // has a preclaim.
@@ -223,14 +215,14 @@ function ClaimsMainnet (): React.ReactElement<Props> {
               onChange={setAccountId}
               type='all'
             />
-            <Dropdown
+            {/* <Dropdown
               defaultValue={accountId?.toString()}
               help={t<string>('The destination account for any payments as either a nominator or validator')}
               label={t<string>('token types')}
               onChange={setTokenType}
               options={options}
               value={tokenType}
-            />
+            /> */}
             {(step === Step.Account) && (
               <Button.Group>
                 <Button
@@ -324,10 +316,10 @@ function ClaimsMainnet (): React.ReactElement<Props> {
         </Columar.Column>
         <Columar.Column>
           {(step >= Step.Claim) && (
-            <ClaimDisplay
+            <PreClaimDisplay
               accountId={accountId}
               ethereumAddress={ethereumAddress}
-              tokenType={tokenType}
+              // tokenType={tokenType}
               ethereumSignature={signature}
               isOldClaimProcess={isOldClaimProcess}
               // onSuccess={goToStepAccount}

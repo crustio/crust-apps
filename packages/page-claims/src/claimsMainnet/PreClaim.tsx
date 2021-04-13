@@ -17,7 +17,7 @@ import { useApi } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
 
 import { useTranslation } from '../translate';
-import { addrToChecksum, getStatement } from './util';
+import { addrToChecksum } from './util';
 
 interface Props {
   accountId: string;
@@ -29,7 +29,6 @@ interface Props {
   onSuccess?: TxCallback;
   statementKind?: StatementKind;
   ethereumTxHash: string;
-  tokenType: string;
 }
 
 interface ConstructTx {
@@ -39,42 +38,48 @@ interface ConstructTx {
 
 // Depending on isOldClaimProcess, construct the correct tx.
 // FIXME We actually want to return the constructed extrinsic here (probably in useMemo)
-function constructTx (api: ApiPromise, systemChain: string, accountId: string, ethereumSignature: string | null, kind: StatementKind | undefined, isOldClaimProcess: boolean, ethereumTxHash: string): ConstructTx {
+function constructTx (api: ApiPromise, accountId: string, ethereumSignature: string | null, kind: StatementKind | undefined, isOldClaimProcess: boolean, ethereumTxHash: string): ConstructTx {
   if (!ethereumSignature) {
     return {};
   }
 
   return isOldClaimProcess || !kind
-    ? { params: [accountId, ethereumTxHash, ethereumSignature], tx: api.tx.claims.claim }
-    : { params: [accountId, ethereumSignature, getStatement(systemChain, kind)?.sentence], tx: api.tx.claims.claimAttest };
+    ? { params: [accountId, ethereumSignature], tx: api.tx.claims.claimCru18 }
+    : { params: [accountId, ethereumSignature], tx: api.tx.claims.claimCru18 };
 }
 
-function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature, ethereumTxHash, isOldClaimProcess, onSuccess, statementKind, tokenType }: Props): React.ReactElement<Props> | null {
+function PreClaim ({ accountId, className = '', ethereumAddress, ethereumSignature, ethereumTxHash, isOldClaimProcess, onSuccess, statementKind }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
-  const { api, systemChain } = useApi();
+  const { api } = useApi();
   const [claimValue, setClaimValue] = useState<BN | null>(null);
-  const [, setIsBusy] = useState(false);
+  const [isBusy, setIsBusy] = useState(true);
+  const [claimed, setClaimed] = useState(false);
 
   useEffect((): void => {
-    if (!ethereumTxHash || !ethereumAddress) {
+    if (!ethereumAddress) {
       return;
     }
-
-    setIsBusy(true);
-
     api.query.claims
-      .mainnetPreClaims<Option<BalanceOf>>([ethereumAddress, tokenType])
+      .cru18PreClaims<Option<BalanceOf>>(ethereumAddress)
       .then((claim): void => {
         const claimOpt = JSON.parse(JSON.stringify(claim));
         if (claimOpt) {
-          const claimBalance = new BN(Number(claimOpt[1])?.toString());
-
-          setClaimValue(claimBalance);
-          setIsBusy(false);
+          const claimBalance = new BN(Number(claimOpt)?.toString());
+          api.query.claims
+          .cru18Claimed<Option<BalanceOf>>(ethereumAddress)
+          .then((claimed): void => {
+            const claimedOpt = JSON.parse(JSON.stringify(claimed));
+            setIsBusy(false)
+            if (claimedOpt) {
+              setClaimed(true)
+            }
+            setClaimValue(claimBalance);
+          })
+          .catch(() => setIsBusy(false));
         }
       })
-      .catch((): void => setIsBusy(false));
-  }, [api, ethereumTxHash]);
+      .catch(() => setIsBusy(false));
+  }, [api, ethereumSignature, ethereumAddress]);
 
   // if (!ethereumTxHash || isBusy || !ethereumSignature || !ethereumAddress || !claimedAddress) {
   //   return null;
@@ -82,11 +87,12 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
 
   let hasClaim = claimValue && claimValue.gten(0);
 
-  if (!ethereumAddress) {
+  if (!ethereumAddress || isBusy) {
     return null
   }
 
   return (
+    !claimed ? 
     <Card
       isError={!hasClaim}
       isSuccess={!!hasClaim}
@@ -105,7 +111,7 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
                   isUnsigned
                   label={t('Claim')}
                   onSuccess={onSuccess}
-                  {...constructTx(api, systemChain, accountId, ethereumSignature, statementKind, isOldClaimProcess, ethereumTxHash)}
+                  {...constructTx(api, accountId, ethereumSignature, statementKind, isOldClaimProcess, ethereumTxHash)}
                 />
               </Button.Group>
             </>
@@ -116,7 +122,15 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
             </>
           )}
       </div>
-    </Card>
+    </Card> : <Card
+      isError={claimed}
+    >
+      <> 
+        {t<string>('Your Ethereum account')}
+        <h3>{addrToChecksum(ethereumAddress.toString())}</h3>
+        {t<string>('has already been claimed')}
+      </>
+    </Card> 
   );
 }
 
@@ -147,4 +161,4 @@ h2 {
 }
 `;
 
-export default React.memo(styled(Claim)`${ClaimStyles}`);
+export default React.memo(styled(PreClaim)`${ClaimStyles}`);

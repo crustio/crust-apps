@@ -161,7 +161,7 @@ function Claims (): React.ReactElement<Props> {
     if (result.code == 200) {
       setStatusOpen(true);
       setEthereumTxHashValid(true);
-      goToStepClaim();
+      goToStepSign();
     } else {
       api.query.claims
         .claims<Option<BalanceOf>>(ethereumTxHash?.toString())
@@ -181,7 +181,7 @@ function Claims (): React.ReactElement<Props> {
                   setResult('MintClaimSuccess');
                   setStatus('success');
                   setEthereumTxHashValid(true);
-                  goToStepClaim();
+                  goToStepSign();
                 }
               });
           } else {
