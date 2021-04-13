@@ -110,7 +110,6 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const [role, setRole] = useState<string>('Bonded');
 
   useEffect(() => {
-    
     if (isGuarantor) {
       setRole('Guarantor');
     }  
@@ -120,17 +119,17 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
     if (isValidator) {
       setRole('Validator');
     }
-  }, [guarantors, validators]);
+  }, [guarantors, validators, activeEra]);
 
   useEffect(() => {
     if (guarantorInfo != null) {
-      setGuaranteeTargets(JSON.parse(JSON.stringify(guarantors)).targets);
+      setGuaranteeTargets(guarantorInfo.targets);
     }
-  }, [guarantors, validators]);
+  }, [guarantors, validators, activeEra]);
 
   useEffect(() => {
     setStakeValue(guaranteeTargets.reduce((total: BN, { value }) => { return total.add(new BN(Number(value).toString())); }, BN_ZERO));
-  }, [guaranteeTargets])
+  }, [guaranteeTargets, activeEra])
 
   const slashes = useMemo(
     () => extractSlashes(stashId, allSlashes),
