@@ -170,7 +170,7 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
         <Status
           isElected={isElected}
           isMain={isMain}
-          nominators={isMain ? nominators : nominatedBy}
+          nominators={nominators}
           onlineCount={recentlyOnline?.blockCount}
           onlineMessage={recentlyOnline?.hasMessage}
         />

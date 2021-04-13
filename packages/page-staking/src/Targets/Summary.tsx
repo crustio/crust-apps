@@ -67,11 +67,16 @@ function Summary ({ avgStaked, lowStaked, minNominated, numNominators, numValida
       <section className='media--800'>
         {totalIssuance && totalStaked?.gt(BN_ZERO) && (
           <CardSummary
-            label={t<string>('total staked')}
+            label={t<string>('total effective stake / totalIssuance')}
             progress={progressStake}
           >
             <FormatBalance
               value={totalStaked}
+              withSi
+            />
+             &nbsp;/&nbsp;
+            <FormatBalance
+              value={totalIssuance}
               withSi
             />
           </CardSummary>

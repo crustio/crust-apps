@@ -124,7 +124,7 @@ function extractSingle (api: ApiPromise, allAccounts: string[], derive: DeriveSt
       bondShare: 0,
       bondTotal,
       // @ts-ignore
-      commissionPer: validatorPrefs.guarantee_fee.unwrap().toNumber() / 10_000_000,
+      commissionPer: Number(validatorPrefs.guarantee_fee) / 10_000_000,
       exposure,
       isActive: !skipRewards,
       isBlocking: !!(validatorPrefs.blocked && validatorPrefs.blocked.isTrue),
@@ -181,7 +181,8 @@ function extractInfo (api: ApiPromise, allAccounts: string[], electedDerive: Der
       const adjusted = avgStaked.mul(BN_HUNDRED).imuln(inflation.stakedReturn).div(e.bondTotal);
 
       // in some cases, we may have overflows... protect against those
-      e.stakedReturn = (adjusted.gt(BN_MAX_INTEGER) ? BN_MAX_INTEGER : adjusted).toNumber() / BN_HUNDRED.toNumber();
+      // @ts-ignore
+      e.stakedReturn = Number(adjusted.gt(BN_MAX_INTEGER) ? BN_MAX_INTEGER : adjusted) / BN_HUNDRED.toNumber();
       e.stakedReturnCmp = e.stakedReturn * (100 - e.commissionPer) / 100;
     }
   });

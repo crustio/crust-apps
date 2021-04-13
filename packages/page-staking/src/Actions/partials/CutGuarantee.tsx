@@ -10,11 +10,11 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { InputAddress, InputAddressMulti, InputBalance, Modal, Toggle } from '@polkadot/react-components';
-import { useApi, useFavorites } from '@polkadot/react-hooks';
+import { useApi, useCall } from '@polkadot/react-hooks';
 
-import { STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
 import MaxCutGuarantee from './MaxCutGuarantee';
+import { Guarantee } from '@polkadot/app-staking/Overview/Address';
 
 interface Props {
   className?: string;
@@ -30,22 +30,21 @@ function CutGuarantee ({ className = '', controllerId, onChange, stashId, target
   const { t } = useTranslation();
   const { api } = useApi();
   const cutGuaranteeable = <span className='label'>{t<string>('cutGuaranteeable')}</span>;
-  const [favorites] = useFavorites(STORE_FAVS_BASE);
+  const guarantors = useCall<Guarantee>(api.query.staking.guarantors, [stashId]);
+  const guarantorInfo = guarantors && JSON.parse(JSON.stringify(guarantors));
   const [selected, setSelected] = useState<string[]>([]);
-  const [available] = useState<string[]>((): string[] => {
-    const shortlist = [
-      // ensure that the favorite is included in the list of stashes
-      ...favorites.filter((acc) => nominateIds.includes(acc))
-    ];
-
-    return shortlist
-      .concat(...(nominateIds.filter((acc) => !shortlist.includes(acc))));
-  });
+  const [available, setAvailable] = useState<string[]>([]);
 
   const [amount, setAmount] = useState<BN | undefined>(new BN(0));
   const [maxBalance, setMaxBalance] = useState<BN>(new BN(0));
   const [withMax, setWithMax] = useState(false);
   const MAX_CUT = new BN(20_000_000).mul(new BN(1_000_000_000_000));
+
+  useEffect(() => {
+    if (guarantorInfo) {
+      setAvailable(guarantorInfo.targets.map((e: { who: { toString: () => any; }; }) => e.who.toString()))
+    }
+  }, [guarantorInfo])
 
   useEffect((): void => {
     onChange({
@@ -96,12 +95,12 @@ function CutGuarantee ({ className = '', controllerId, onChange, stashId, target
         <Modal.Columns hint={[t<string>('Guarantors can be selected manually from the list of all currently available validators.'), t<string>('Once transmitted the new selection will only take effect in 2 eras taking the new validator election cycle into account. Until then, the nominations will show as inactive.')]}>
           <InputAddressMulti
             available={available}
-            availableLabel={t<string>('candidate accounts')}
+            availableLabel={t<string>('guaranteed accounts')}
             // defaultValue={nominating}
             help={t<string>('Filter available candidates based on name, address or short account index.')}
             maxCount={1}
             onChange={setSelected}
-            valueLabel={t<string>('nominated accounts')}
+            valueLabel={t<string>('selected account')}
           />
         </Modal.Columns>
       </Modal.Content>
