@@ -12,9 +12,9 @@ import { Button, Card, TxButton } from '@polkadot/react-components';
 import { useAccounts, useApi } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
 
+import { useTranslation } from '../translate';
 import { ClaimStyles } from './Claim';
 import Statement from './Statement';
-import { useTranslation } from './translate';
 import { getStatement } from './util';
 
 interface Props {

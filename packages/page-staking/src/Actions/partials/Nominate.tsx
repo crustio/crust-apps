@@ -78,7 +78,7 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
             help={t<string>('Filter available candidates based on name, address or short account index.')}
             maxCount={1}
             onChange={setSelected}
-            valueLabel={t<string>('nominated accounts')}
+            valueLabel={t<string>('selected accounts')}
           />
         </Modal.Columns>
       </Modal.Content>

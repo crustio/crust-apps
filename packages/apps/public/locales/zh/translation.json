@@ -1465,5 +1465,9 @@
   "Retrieving online status": "检索在线信息",
   "{{role}}": "{{role}}",
   "guarantee validators": "担保验证人",
-  "cutGuaranteeable": "可减投量"
+  "cutGuaranteeable": "可减投量",
+  "guaranteed accounts": "担保中的账户",
+  "selected account": "选中的账户",
+  "cutguarantee validators": "减投验证人",
+  "total effective stake / totalIssuance": "总有效质押量/总发行量"
 }
