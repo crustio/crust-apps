@@ -76,6 +76,9 @@ function PreClaim ({ accountId, className = '', ethereumAddress, ethereumSignatu
             setClaimValue(claimBalance);
           })
           .catch(() => setIsBusy(false));
+        } else {
+          setClaimValue(new BN(0));
+          setIsBusy(false)
         }
       })
       .catch(() => setIsBusy(false));
@@ -85,7 +88,7 @@ function PreClaim ({ accountId, className = '', ethereumAddress, ethereumSignatu
   //   return null;
   // }
 
-  let hasClaim = claimValue && claimValue.gten(0);
+  let hasClaim = claimValue && claimValue.gtn(0);
 
   if (!ethereumAddress || isBusy) {
     return null
@@ -125,11 +128,11 @@ function PreClaim ({ accountId, className = '', ethereumAddress, ethereumSignatu
     </Card> : <Card
       isError={claimed}
     >
-      <> 
+      <div className={className}>
         {t<string>('Your Ethereum account')}
         <h3>{addrToChecksum(ethereumAddress.toString())}</h3>
         {t<string>('has already been claimed')}
-      </>
+      </div>
     </Card> 
   );
 }
