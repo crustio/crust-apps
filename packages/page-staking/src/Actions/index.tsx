@@ -78,9 +78,9 @@ function extractState (ownStashes?: StakerState[]): State {
     bondedNoms,
     bondedNone,
     bondedTotal: ownStashes.filter((e) => e.isOwnController && e.isOwnStash).reduce((total: BN, { stakingLedger }) =>
-    stakingLedger
-      ? total.add(stakingLedger.total.unwrap())
-      : total,
+      stakingLedger
+        ? total.add(stakingLedger.total.unwrap())
+        : total,
     BN_ZERO),
     bondedVals,
     foundStashes: ownStashes.filter((e) => e.isOwnController && e.isOwnStash).sort(sortStashes)
