@@ -1,53 +1,47 @@
-// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
-/* eslint-disable */
 
-import { NominateInfo } from './types';
-import { SortedTargets } from '../../types';
+import type { SortedTargets } from '../../types';
+import type { NominateInfo } from './types';
 
+import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { InputAddress, InputAddressMulti, Modal, InputBalance } from '@polkadot/react-components';
+
+import { InputAddress, InputAddressMulti, InputBalance, Modal } from '@polkadot/react-components';
 import { useApi, useFavorites } from '@polkadot/react-hooks';
 
 import { STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
-import BN from 'bn.js';
-import { Guaranteeable } from '@polkadot/react-query';
+import Guaranteeable from './Guaranteeable';
 
 interface Props {
   className?: string;
   controllerId: string;
-  nominating?: any[];
+  nominating?: string[];
   onChange: (info: NominateInfo) => void;
   stashId: string;
   targets: SortedTargets;
   withSenders?: boolean;
 }
 
-function unique (arr: any[]) {
-  return Array.from(new Set(arr))
-}
-
-function Nominate ({ className = '', controllerId, nominating, onChange, stashId, targets: { validatorIds = [] }, withSenders }: Props): React.ReactElement<Props> {
+function Nominate ({ className = '', controllerId, onChange, stashId, targets: { nominateIds = [] }, withSenders }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [favorites] = useFavorites(STORE_FAVS_BASE);
   const [selected, setSelected] = useState<string[]>([]);
-  const [amount, setAmount] = useState<BN | undefined>(new BN(0));
   const guaranteeable = <span className='label'>{t<string>('guaranteeable')}</span>;
   const [available] = useState<string[]>((): string[] => {
     const shortlist = [
       // ensure that the favorite is included in the list of stashes
-      ...favorites.filter((acc) => validatorIds.includes(acc)),
-      // make sure the nominee is not in our favorites already
-      ...(nominating || []).map(e => e.who).filter((acc) => !favorites.includes(acc))
+      ...favorites.filter((acc) => nominateIds.includes(acc))
     ];
 
-    return unique(shortlist
-      .concat(...(validatorIds.filter((acc) => !shortlist.includes(acc)))));
-
+    return shortlist
+      .concat(...(nominateIds.filter((acc) => !shortlist.includes(acc))));
   });
+
+  const [amount, setAmount] = useState<BN | undefined>(new BN(0));
 
   useEffect((): void => {
     onChange({
@@ -60,8 +54,8 @@ function Nominate ({ className = '', controllerId, nominating, onChange, stashId
   return (
     <div className={className}>
       {withSenders && (
-        <Modal.Columns>
-          <Modal.Column>
+        <Modal.Content>
+          <Modal.Columns hint={t<string>('The stash that is to be affected. The transaction will be sent from the associated controller account.')}>
             <InputAddress
               defaultValue={stashId}
               isDisabled
@@ -72,14 +66,11 @@ function Nominate ({ className = '', controllerId, nominating, onChange, stashId
               isDisabled
               label={t<string>('controller account')}
             />
-          </Modal.Column>
-          <Modal.Column>
-            <p>{t<string>('The stash that is to be affected. The transaction will be sent from the associated controller account.')}</p>
-          </Modal.Column>
-        </Modal.Columns>
+          </Modal.Columns>
+        </Modal.Content>
       )}
-      <Modal.Columns>
-        <Modal.Column>
+      <Modal.Content>
+        <Modal.Columns hint={[t<string>('Guarantors can be selected manually from the list of all currently available validators.'), t<string>('Once transmitted the new selection will only take effect in 2 eras taking the new validator election cycle into account. Until then, the nominations will show as inactive.')]}>
           <InputAddressMulti
             available={available}
             availableLabel={t<string>('candidate accounts')}
@@ -87,23 +78,16 @@ function Nominate ({ className = '', controllerId, nominating, onChange, stashId
             help={t<string>('Filter available candidates based on name, address or short account index.')}
             maxCount={1}
             onChange={setSelected}
-            valueLabel={t<string>('nominated accounts')}
+            valueLabel={t<string>('selected accounts')}
           />
-          {/* <article className='warning'>{t<string>('You should trust your nominations to act competently and honest; basing your decision purely on their current profitability could lead to reduced profits or even loss of funds.')}</article> */}
-        </Modal.Column>
-        <Modal.Column>
-          <p>{t<string>('Guarantors can be selected manually from the list of all currently available validators.')}</p>
-          <p>{t<string>('Once transmitted the new selection will only take effect in 2 eras taking the new validator election cycle into account. Until then, the nominations will show as inactive.')}</p>
-        </Modal.Column>
-      </Modal.Columns>
-      <Modal.Column>
+        </Modal.Columns>
+      </Modal.Content>
+      <Modal.Columns>
         <InputBalance
           autoFocus
           help={t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}
           isZeroable
           label={t<string>('amount')}
-          withMax
-          onChange={setAmount}
           labelExtra={
             selected[0] &&
             <Guaranteeable
@@ -111,8 +95,10 @@ function Nominate ({ className = '', controllerId, nominating, onChange, stashId
               params={selected[0]}
             />
           }
+          onChange={setAmount}
+          withMax
         />
-      </Modal.Column>
+      </Modal.Columns>
     </div>
   );
 }
@@ -140,7 +126,7 @@ export default React.memo(styled(Nominate)`
   .shortlist {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-Columns: center;
 
     .candidate {
       border: 1px solid #eee;
@@ -151,7 +137,7 @@ export default React.memo(styled(Nominate)`
       position: relative;
 
       &::after {
-        content: '';
+        Columns: '';
         position: absolute;
         top: 0;
         right: 0;

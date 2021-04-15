@@ -48,13 +48,6 @@ function Legend ({ className }: Props): React.ReactElement<Props> {
       <span>
         <Badge
           color='red'
-          icon='balance-scale-right'
-        />
-        {t('Oversubscribed')}
-      </span>
-      <span>
-        <Badge
-          color='red'
           icon='skull-crossbones'
         />
         {t('Slashed')}

@@ -26,18 +26,18 @@ function AddCollateral ({ accountId, onClose }: Props): React.ReactElement<Props
       size='large'
     >
       <Modal.Content>
-        <Modal.Columns>
-          <Modal.Column>
+        <Modal.Content>
+          <Modal.Columns>
             <InputAddress
               defaultValue={accountId}
               isDisabled
               label={t<string>('account')}
             />
-          </Modal.Column>
-        </Modal.Columns>
+          </Modal.Columns>
+        </Modal.Content>
         {(
-          <Modal.Columns>
-            <Modal.Column>
+          <Modal.Content>
+            <Modal.Columns>
               <InputBalance
                 autoFocus
                 isError={!maxAdditional || maxAdditional.eqn(0)}
@@ -50,8 +50,8 @@ function AddCollateral ({ accountId, onClose }: Props): React.ReactElement<Props
                 }
                 onChange={setMaxAdditional}
               />
-            </Modal.Column>
-          </Modal.Columns>
+            </Modal.Columns>
+          </Modal.Content>
         )}
       </Modal.Content>
       <Modal.Actions onCancel={onClose}>

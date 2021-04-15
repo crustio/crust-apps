@@ -14,12 +14,12 @@ import { formatBalance } from '@polkadot/util';
 import { headersList, ISettlementItem } from './settlementList';
 
 interface Props {
-  settlementItem:ISettlementItem
+  settlementItem: ISettlementItem
   bestNumber: string,
-  handleSettle: (fileCid:string) => void
+  handleSettle: (fileCid: string) => void
 }
 
-const SettlementItem:React.FC<Props> = ({ bestNumber, handleSettle, settlementItem }) => {
+const SettlementItem: React.FC<Props> = ({ bestNumber, handleSettle, settlementItem }) => {
   const { cid, expiredTime, fileSize, renewReward, settlementReward, totalReward } = settlementItem;
   const { t } = useTranslation();
 

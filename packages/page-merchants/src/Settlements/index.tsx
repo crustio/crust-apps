@@ -11,7 +11,7 @@ import FetchModal from './fetch-modal/FetchModal';
 import { fetchFileTobeClaimed } from './fetch';
 import SettlementList from './settlementList';
 
-const Settlements:React.FC = () => {
+const Settlements: React.FC = () => {
   const { t } = useTranslation();
   const [settlements, setSettlements] = useState<ISettlementItem[]>([]);
   const [fetchModalShow, toggleFetchModalShow] = useState(false);
@@ -22,7 +22,7 @@ const Settlements:React.FC = () => {
   const fetchData = () => {
     toggleLoading(true);
     fetchFileTobeClaimed().then((res) => {
-      (res as ISettlementItem[]).forEach((item:ISettlementItem) => {
+      (res as ISettlementItem[]).forEach((item: ISettlementItem) => {
         item.totalReward = item.settlementReward + item.renewReward;
       });
       setSettlements(res as ISettlementItem[]);

@@ -13,9 +13,9 @@ export default function create (t: <T = string>(key: string, text: string, optio
         'query.market.files'
       ]
     },
+    group: 'storage',
     icon: 'ipfs',
     name: 'storage',
-    group: 'storage',
     text: t<string>('nav.ipfs', 'IPFS', { ns: 'apps-routing' })
   };
 }

@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { DeriveStakerPrefs } from '@polkadot/api-derive/types';
 import type { ChartInfo, LineDataEntry, Props } from './types';
 
@@ -9,11 +10,11 @@ import React, { useMemo, useRef } from 'react';
 
 import { Chart, Spinner } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
+import { BN_BILLION } from '@polkadot/util';
 
 import { useTranslation } from '../translate';
 
 const MULT = new BN(100 * 100);
-const BILLION = new BN(1_000_000_000);
 const COLORS_POINTS = [undefined, '#acacac'];
 
 function extractPrefs (prefs: DeriveStakerPrefs[] = []): ChartInfo {
@@ -24,7 +25,8 @@ function extractPrefs (prefs: DeriveStakerPrefs[] = []): ChartInfo {
   let total = 0;
 
   prefs.forEach(({ era, validatorPrefs }): void => {
-    const comm = validatorPrefs.commission.unwrap().mul(MULT).div(BILLION).toNumber() / 100;
+    // @ts-ignore
+    const comm = validatorPrefs.guarantee_fee.unwrap().mul(MULT).div(BN_BILLION).toNumber() / 100;
 
     total += comm;
     labels.push(era.toHuman());
@@ -55,7 +57,7 @@ function ChartPrefs ({ validatorId }: Props): React.ReactElement<Props> {
   );
 
   const legendsRef = useRef([
-    t<string>('commission'),
+    t<string>('guarantee fee'),
     t<string>('average')
   ]);
 

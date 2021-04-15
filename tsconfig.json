@@ -79,7 +79,11 @@
       "@polkadot/react-signer": [ "packages/react-signer/src" ],
       "@polkadot/react-signer/*": [ "packages/react-signer/src/*" ],
       "@polkadot/test-support/": [ "packages/test-support/src/" ],
-      "@polkadot/test-support/*": [ "packages/test-support/src/*" ]
+      "@polkadot/test-support/*": [ "packages/test-support/src/*" ],
+      "@polkadot/app-assets": [ "packages/page-assets/src" ],
+      "@polkadot/app-assets/*": [ "packages/page-assets/src/*" ],
+      "@polkadot/app-gilt": [ "packages/page-gilt/src" ],
+      "@polkadot/app-gilt/*": [ "packages/page-gilt/src/*" ]
     },
     "skipLibCheck": true,
     "typeRoots": [

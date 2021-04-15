@@ -1,18 +1,19 @@
-// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+
+import type { DeriveBalancesAll, DeriveStakingAccount } from '@polkadot/api-derive/types';
+import type { AmountValidateState } from '../types';
 
 import BN from 'bn.js';
 import React, { useMemo, useState } from 'react';
 
 import { ApiPromise } from '@polkadot/api';
-import { DeriveBalancesAll, DeriveStakingAccount } from '@polkadot/api-derive/types';
 import { InputAddress, InputBalance, Modal, TxButton } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { BalanceFree } from '@polkadot/react-query';
 import { BN_ZERO } from '@polkadot/util';
 
 import { useTranslation } from '../../translate';
-import { AmountValidateState } from '../types';
 import ValidateAmount from './InputValidateAmount';
 
 interface Props {
@@ -59,46 +60,36 @@ function BondExtra ({ controllerId, onClose, stakingInfo, stashId }: Props): Rea
       size='large'
     >
       <Modal.Content>
-        <Modal.Columns>
-          <Modal.Column>
-            <InputAddress
-              defaultValue={stashId}
-              isDisabled
-              label={t<string>('stash account')}
-            />
-          </Modal.Column>
-          <Modal.Column>
-            <p>{t<string>('Since this transaction deals with funding, the stash account will be used.')}</p>
-          </Modal.Column>
+        <Modal.Columns hint={t<string>('Since this transaction deals with funding, the stash account will be used.')}>
+          <InputAddress
+            defaultValue={stashId}
+            isDisabled
+            label={t<string>('stash account')}
+          />
         </Modal.Columns>
         {startBalance && (
-          <Modal.Columns>
-            <Modal.Column>
-              <InputBalance
-                autoFocus
-                defaultValue={startBalance}
-                help={t<string>('Amount to add to the currently bonded funds. This is adjusted using the available funds on the account.')}
-                isError={!!amountError?.error || !maxAdditional || maxAdditional.eqn(0)}
-                label={t<string>('additional bonded funds')}
-                labelExtra={
-                  <BalanceFree
-                    label={<span className='label'>{t<string>('balance')}</span>}
-                    params={stashId}
-                  />
-                }
-                onChange={setMaxAdditional}
-              />
-              <ValidateAmount
-                controllerId={controllerId}
-                currentAmount={currentAmount}
-                onError={setAmountError}
-                stashId={stashId}
-                value={maxAdditional}
-              />
-            </Modal.Column>
-            <Modal.Column>
-              <p>{t<string>('The amount placed at-stake should allow some free funds for future transactions.')}</p>
-            </Modal.Column>
+          <Modal.Columns hint={t<string>('The amount placed at-stake should allow some free funds for future transactions.')}>
+            <InputBalance
+              autoFocus
+              defaultValue={startBalance}
+              help={t<string>('Amount to add to the currently bonded funds. This is adjusted using the available funds on the account.')}
+              isError={!!amountError?.error || !maxAdditional || maxAdditional.eqn(0)}
+              label={t<string>('additional bonded funds')}
+              labelExtra={
+                <BalanceFree
+                  label={<span className='label'>{t<string>('balance')}</span>}
+                  params={stashId}
+                />
+              }
+              onChange={setMaxAdditional}
+            />
+            <ValidateAmount
+              controllerId={controllerId}
+              currentAmount={currentAmount}
+              onError={setAmountError}
+              stashId={stashId}
+              value={maxAdditional}
+            />
           </Modal.Columns>
         )}
       </Modal.Content>

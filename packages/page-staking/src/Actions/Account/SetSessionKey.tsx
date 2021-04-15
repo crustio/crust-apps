@@ -1,5 +1,7 @@
-// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+
+import type { SessionInfo } from '../partials/types';
 
 import React, { useState } from 'react';
 
@@ -7,7 +9,6 @@ import { Modal, TxButton } from '@polkadot/react-components';
 
 import { useTranslation } from '../../translate';
 import SessionKeyPartital from '../partials/SessionKey';
-import { SessionInfo } from '../partials/types';
 
 interface Props {
   controllerId: string;

@@ -18,14 +18,13 @@ interface Props {
   senderId?: string;
 }
 
-function TransferCandy ({ className = '', onClose, recipientId: propRecipientId, senderId: propSenderId }: Props): React.ReactElement<Props> {
+function TransferCandy ({ className = '', onClose, recipientId: propRecipientId, senderId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
   const [hasAvailable] = useState(true);
   const [maxBalance] = useState(BN_ZERO);
   const [recipientId, setRecipientId] = useState<string | null>(propRecipientId || null);
-  const [senderId, setSenderId] = useState<string | null>(propSenderId || null);
 
   return (
     <Modal
@@ -35,23 +34,19 @@ function TransferCandy ({ className = '', onClose, recipientId: propRecipientId,
     >
       <Modal.Content>
         <div className={className}>
-          <Modal.Columns>
-            <Modal.Column>
+          <Modal.Content>
+            <Modal.Columns hint={t<string>('The transferred balance will be subtracted (along with fees) from the sender account.')}>
               <InputAddress
-                defaultValue={propSenderId}
+                defaultValue={senderId}
                 help={t<string>('The account you will send funds from.')}
-                isDisabled={!!propSenderId}
+                isDisabled={!!senderId}
                 label={t<string>('send from account')}
-                onChange={setSenderId}
                 type='account'
               />
-            </Modal.Column>
-            <Modal.Column>
-              <p>{t<string>('The transferred balance will be subtracted (along with fees) from the sender account.')}</p>
-            </Modal.Column>
-          </Modal.Columns>
-          <Modal.Columns>
-            <Modal.Column>
+            </Modal.Columns>
+          </Modal.Content>
+          <Modal.Content>
+            <Modal.Columns hint={t<string>('The beneficiary will have access to the transferred fees when the transaction is included in a block.')}>
               <InputAddress
                 defaultValue={propRecipientId}
                 help={t<string>('Select a contact or paste the address you want to send funds to.')}
@@ -60,13 +55,10 @@ function TransferCandy ({ className = '', onClose, recipientId: propRecipientId,
                 onChange={setRecipientId}
                 type='allPlus'
               />
-            </Modal.Column>
-            <Modal.Column>
-              <p>{t<string>('The beneficiary will have access to the transferred fees when the transaction is included in a block.')}</p>
-            </Modal.Column>
-          </Modal.Columns>
-          <Modal.Columns>
-            <Modal.Column>
+            </Modal.Columns>
+          </Modal.Content>
+          <Modal.Content>
+            <Modal.Columns>
               <InputCandyBalance
                 autoFocus
                 help={t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}
@@ -77,12 +69,8 @@ function TransferCandy ({ className = '', onClose, recipientId: propRecipientId,
                 onChange={setAmount}
                 withMax
               />
-            </Modal.Column>
-            <Modal.Column>
-              <p>{t<string>('If the recipient account is new, the balance needs to be more than the existential deposit. Likewise if the sending account balance drops below the same value, the account will be removed from the state.')}</p>
-              <p>{t('With the keep-alive option set, the account is protected against removal due to low balances.')}</p>
-            </Modal.Column>
-          </Modal.Columns>
+            </Modal.Columns>
+          </Modal.Content>
         </div>
       </Modal.Content>
       <Modal.Actions onCancel={onClose}>

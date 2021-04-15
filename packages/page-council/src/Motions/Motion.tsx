@@ -81,7 +81,7 @@ function Motion ({ className = '', isMember, members, motion: { hash, proposal, 
       <td className='number together'>
         {remainingBlocks && end && (
           <>
-            <BlockToTime blocks={remainingBlocks} />
+            <BlockToTime value={remainingBlocks} />
             #{formatNumber(end)}
           </>
         )}
@@ -133,7 +133,7 @@ function Motion ({ className = '', isMember, members, motion: { hash, proposal, 
                       : [hash, index, proposalWeight, proposalLength]
                     : [hash, index]
                 }
-                tx={api.tx.council.close}
+                tx={api.tx.council.closeOperational || api.tx.council.close}
               />
             )
         )}

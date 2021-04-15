@@ -1,5 +1,7 @@
-// [object Object]
+// Copyright 2017-2021 @polkadot/api-derive authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+
+/* eslint-disable */
 
 import AboutIpld from 'ipld-explorer-components/dist/components/about/AboutIpld';
 import IpldExploreForm from 'ipld-explorer-components/dist/components/explore/IpldExploreForm';

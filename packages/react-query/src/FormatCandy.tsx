@@ -1,7 +1,6 @@
 // Copyright 2017-2021 @polkadot/react-query authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { ThemeProps } from '@polkadot/react-components/types';
 import type { Compact } from '@polkadot/types';
 
 import BN from 'bn.js';
@@ -62,7 +61,7 @@ function FormatCandy ({ children, className = '', isShort, label, labelPost, val
   );
 }
 
-export default React.memo(styled(FormatCandy)(({ theme }: ThemeProps) => `
+export default React.memo(styled(FormatCandy)`
   display: inline-block;
   vertical-align: baseline;
   white-space: nowrap;
@@ -86,7 +85,7 @@ export default React.memo(styled(FormatCandy)(({ theme }: ThemeProps) => `
     text-align: right;
 
     > .ui--FormatBalance-postfix {
-      font-weight: ${theme.fontWeightLight};
+      font-weight: var(--font-weight-light);
       opacity: 0.7;
       vertical-align: baseline;
     }
@@ -104,4 +103,4 @@ export default React.memo(styled(FormatCandy)(({ theme }: ThemeProps) => `
   .ui--Icon+.ui--FormatBalance-value {
     margin-left: 0.375rem;
   }
-`));
+`);

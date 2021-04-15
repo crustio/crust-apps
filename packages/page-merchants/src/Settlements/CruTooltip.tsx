@@ -6,7 +6,7 @@ import Popup from 'reactjs-popup';
 
 import { Icon } from '@polkadot/react-components';
 
-const CruTooltip:React.FC = () => {
+const CruTooltip: React.FC = () => {
   const createIndex = (index: number) => <span style={{ fontSize: 8, verticalAlign: 'text-top' }}> {index}</span>;
   const createRow = (idx: number, txt: string, desc: string) => <span style={{ whiteSpace: 'nowrap' }}>{`1.0 ${txt} = 1.0 ${desc}  = 1x10`}{createIndex(idx)}{' CRU'} </span>;
 

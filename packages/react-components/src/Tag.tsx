@@ -8,7 +8,7 @@ import Tooltip from './Tooltip';
 
 interface Props {
   className?: string;
-  color?: 'blue' | 'green' | 'grey' | 'orange' | 'pink' | 'red' | 'yellow';
+  color?: 'blue' | 'green' | 'grey' | 'orange' | 'pink' | 'red' | 'yellow' | 'theme';
   hover?: React.ReactNode;
   isTag?: boolean;
   label: React.ReactNode;
@@ -18,14 +18,14 @@ interface Props {
 let tagId = 0;
 
 function Tag ({ className = '', color = 'grey', hover, isTag = true, label, size = 'small' }: Props): React.ReactElement<Props> {
-  const [trigger] = useState(`tag-hover-${Date.now()}-${tagId++}`);
+  const [trigger] = useState(() => `tag-hover-${Date.now()}-${tagId++}`);
   const tooltipProps = hover
     ? { 'data-for': trigger, 'data-tip': true }
     : {};
 
   return (
     <div
-      className={`${color}Color${isTag ? ' isTag' : ''} ${size}Size ${className}`}
+      className={`${color === 'theme' ? 'highlight--color-bg highlight--bg' : ''} ${color}Color${isTag ? ' isTag' : ''} ${size}Size ${className}`}
       color={color || 'grey'}
       {...tooltipProps}
     >
@@ -45,9 +45,9 @@ export default React.memo(styled(Tag)`
   color: #fff;
   display: inline-block;
   font-size: 0.78571429rem;
-  font-weight: 400;
+  font-weight: var(--font-weight-normal);
   line-height: 1;
-  margin: 0.125rem;
+  margin: 0 0.125rem;
   padding: 0.5833em 0.833em;
   position: relative;
   white-space: nowrap;

@@ -74,7 +74,7 @@ async function retrieveAll (): Promise<Defaults> {
   });
 
   // fill in all empty values (useful for download, filling in)
-  keys.forEach((lng):void => {
+  keys.forEach((lng): void => {
     Object.keys(english).forEach((record): void => {
       Object.keys(english[record]).forEach((key): void => {
         if (!languageCache[lng][key]) {
@@ -155,7 +155,10 @@ function Translate ({ className }: Props): React.ReactElement<Props> {
   const [strings, setStrings] = useState<Strings | null>(null);
 
   useEffect((): void => {
-    retrieveAll().then(setDefaults).catch(console.error);
+    retrieveAll().then((res) => {
+      console.log(res);
+      setDefaults(res);
+    }).catch(console.error);
   }, []);
 
   useEffect((): void => {

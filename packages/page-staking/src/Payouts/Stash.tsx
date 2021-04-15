@@ -1,21 +1,23 @@
-// Copyright 2017-2020 @polkadot/app-staking authors & contributors
+// Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+
 /* eslint-disable */
 
-import { SubmittableExtrinsic } from '@polkadot/api/types';
-import { DeriveStakerReward, DeriveStakingAccount } from '@polkadot/api-derive/types';
-import { PayoutStash } from './types';
+import type { SubmittableExtrinsic } from '@polkadot/api/types';
+import type { DeriveStakerReward, DeriveStakingAccount } from '@polkadot/api-derive/types';
+import type { PayoutStash } from './types';
 
 import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
+
 import { ApiPromise } from '@polkadot/api';
 import { AddressSmall, TxButton } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { BlockToTime } from '@polkadot/react-query';
 
 import { useTranslation } from '../translate';
-import { createErasString } from './util';
 import useEraBlocks from './useEraBlocks';
+import { createErasString } from './util';
 
 interface Props {
   className?: string;
@@ -30,8 +32,9 @@ interface EraInfo {
 }
 
 function createPrevPayoutType (api: ApiPromise, { era, isValidator, nominating }: DeriveStakerReward, stashId: string): SubmittableExtrinsic<'promise'> {
-  return isValidator ? api.tx.staking.rewardStakers(stashId, era)
-  : api.tx.utility.batch(nominating.map(e => api.tx.staking.rewardStakers(e?.validatorId, era)));
+  return isValidator
+    ? api.tx.staking.rewardStakers(stashId, era)
+    : api.tx.utility.batch(nominating.map((e) => api.tx.staking.rewardStakers(e?.validatorId, era)));
 }
 
 function createPrevPayout (api: ApiPromise, payoutRewards: DeriveStakerReward[], stashId: string): SubmittableExtrinsic<'promise'> {
@@ -83,7 +86,7 @@ function Stash ({ className = '', isDisabled, payout: { available, rewards, stas
         <span className='payout-eras'>{eraStr}</span>
       </td>
       {/* <td className='number'><FormatBalance value={available} /></td> */}
-      <td className='number'>{eraBlocks && <BlockToTime blocks={eraBlocks} />}</td>
+      <td className='number'>{eraBlocks && <BlockToTime value={eraBlocks} />}</td>
       <td
         className='button'
         colSpan={4}

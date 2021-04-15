@@ -4,6 +4,7 @@
   "market": "Storage Market",
   "nav.accounts": "Accounts",
   "nav.addresses": "Address book",
+  "nav.assets": "Assets",
   "nav.bounties": "Bounties",
   "nav.calendar": "Event calendar",
   "nav.claims": "Claim Tokens",
@@ -13,13 +14,16 @@
   "nav.explorer": "Explorer",
   "nav.extrinsics": "Extrinsics",
   "nav.generic-asset": "Generic asset",
+  "nav.gilt": "Gilt",
   "nav.js": "Javascript",
+  "nav.market": "Market",
   "nav.parachains": "Parachains",
   "nav.poll": "Token poll",
   "nav.rpc": "RPC calls",
   "nav.settings": "Settings",
   "nav.signing": "Sign and verify",
   "nav.society": "Society",
+  "nav.splorer": "Splore",
   "nav.staking": "Staking",
   "nav.storage": "Chain state",
   "nav.sudo": "Sudo",
@@ -28,6 +32,5 @@
   "nav.treasury": "Treasury",
   "peers": "Peers",
   "settings": "IPFS Settings",
-  "status": "Status",
-  "nav.splorer": "Splore"
+  "status": "Status"
 }

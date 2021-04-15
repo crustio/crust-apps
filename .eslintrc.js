@@ -26,11 +26,10 @@ module.exports = {
   },
   rules: {
     ...base.rules,
-    // needs to be switched on at some point
+    // needs to be switched on at some pointpackages/apps-routing/src/types.ts
     '@typescript-eslint/no-explicit-any': 'off',
     // this seems very broken atm, false positives
     '@typescript-eslint/unbound-method': 'off',
-    "@typescript-eslint/ban-ts-ignore": "off",
     'sort-keys': 'off'
   }
 };
