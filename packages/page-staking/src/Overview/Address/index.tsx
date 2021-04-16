@@ -55,16 +55,16 @@ export interface Guarantee extends Codec {
   suppressed: boolean;
 }
 
-function expandInfo ({ validatorPrefs }: ValidatorInfo, erasStakersStashExposure: Exposure): StakingState {
+function expandInfo ({ exposure, validatorPrefs }: ValidatorInfo): StakingState {
   let nominators: NominatorValue[] = [];
   let stakeTotal: BN | undefined;
   let stakeOther: BN | undefined;
   let stakeOwn: BN | undefined;
 
-  if (erasStakersStashExposure && erasStakersStashExposure.total) {
-    nominators = erasStakersStashExposure.others.map(({ value, who }) => ({ nominatorId: who.toString(), value: value.unwrap() }));
-    stakeTotal = erasStakersStashExposure.total.unwrap();
-    stakeOwn = erasStakersStashExposure.own.unwrap();
+  if (exposure && exposure.total) {
+    nominators = exposure.others.map(({ value, who }) => ({ nominatorId: who.toString(), value: value.unwrap() }));
+    stakeTotal = exposure.total.unwrap();
+    stakeOwn = exposure.own.unwrap();
     stakeOther = stakeTotal.sub(stakeOwn);
   }
 
@@ -129,18 +129,18 @@ function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
     }
   }
 
-  return { accountInfo, slashingSpans, erasStakersStashExposure, totalStaked, stakeLimit };
+  return { accountInfo, slashingSpans, totalStaked, stakeLimit };
 }
 
 function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, nominatedBy, points, recentlyOnline, toggleFavorite, validatorInfo, withIdentity }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  const { accountInfo, erasStakersStashExposure, stakeLimit, totalStaked } = useAddressCalls(api, address, isMain);
+  const { accountInfo, stakeLimit, totalStaked } = useAddressCalls(api, address, isMain);
 
   const { guarantee_fee, nominators, stakeOther, stakeOwn } = useMemo(
-    () => validatorInfo && erasStakersStashExposure
-      ? expandInfo(validatorInfo, erasStakersStashExposure)
+    () => validatorInfo
+      ? expandInfo(validatorInfo)
       : { nominators: [] },
-    [validatorInfo, erasStakersStashExposure]
+    [validatorInfo]
   );
 
   const isVisible = useMemo(
