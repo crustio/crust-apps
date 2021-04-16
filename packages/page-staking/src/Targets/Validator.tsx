@@ -183,8 +183,8 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
       <td className='number together'>{!bondTotal.isZero() && <FormatBalance value={bondTotal} />}</td>
       <td className='number together media--900'>{!bondOwn.isZero() && <FormatBalance value={bondOwn} />}</td>
       <td className='number together media--1600'>{!bondOther.isZero() && <FormatBalance value={bondOther} />}</td>
-      <td className='number together'>{stakeLimit && <FormatBalance value={new BN(Number(stakeLimit)?.toString())} />}</td>
       <td className='number together'>{totalStaked && <FormatBalance value={totalStaked} />}</td>
+      <td className='number together'>{stakeLimit && <FormatBalance value={new BN(Number(stakeLimit)?.toString())} />}</td>
       <td>
         {(canSelect || isSelected) && (
           <Checkbox

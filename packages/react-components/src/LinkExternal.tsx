@@ -98,7 +98,7 @@ export default React.memo(styled(LinkExternal)`
       filter: grayscale(1) opacity(0.66);
       height: 1.5rem;
       width: 1.5rem;
-
+      max-width: inherit;
       &:hover {
         filter: grayscale(0) opacity(1);
       }
