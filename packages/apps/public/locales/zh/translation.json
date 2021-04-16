@@ -1474,5 +1474,7 @@
   "CutGuarantee Validators": "减投验证人",
   "total effective stake / totalIssuance": "总有效质押量/总发行量",
   "Claim mainnet locked tokens": "认领主网锁定代币",
-  "has already been claimed": "已经被认领"
+  "has already been claimed": "已经被认领",
+  "does not appear to have a valid CRU18 claim. Please double check that you have signed the transaction correctly on the correct ETH account.": "一个合法的CRU18认领没有出现. 请再次确认你签名的交易是否在正确的以太坊账户上.",
+  "Claim CRU18": "认领CRU18"
 }

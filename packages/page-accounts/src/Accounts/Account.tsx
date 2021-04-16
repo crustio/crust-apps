@@ -39,6 +39,7 @@ import { useTranslation } from '../translate';
 import { createMenuGroup } from '../util';
 import useMultisigApprovals from './useMultisigApprovals';
 import useProxies from './useProxies';
+import PreClaimCRU18 from './PreClaimCRU18';
 
 interface Props {
   account: KeyringAddress;
@@ -602,6 +603,9 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
       </td>
       <td className='number'>
         <FormatCandy value={candyAmount} />
+      </td>
+      <td className='number'>
+        <PreClaimCRU18 value={address} />
       </td>
       <td className='button'>
         {isFunction(api.api.tx.balances?.transfer) && (

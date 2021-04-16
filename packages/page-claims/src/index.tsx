@@ -25,7 +25,7 @@ function ClaimsApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
     text: t<string>('Claim tokens')
   }, {
     name: 'claimsMainnet',
-    text: t<string>('Claim mainnet locked tokens')
+    text: t<string>('Claim CRU18')
   }]);
 
   return (

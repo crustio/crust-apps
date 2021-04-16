@@ -79,6 +79,7 @@ function Overview ({ className = '', onStatusChange }: Props): React.ReactElemen
     [t('transactions'), 'media--1500'],
     [t('balances'), 'expand'],
     [t('candies')],
+    [t('CRU18')],
     [],
     [undefined, 'media--1400']
   ]);
