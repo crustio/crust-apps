@@ -113,7 +113,7 @@ function applyFilter (validators: ValidatorInfo[], medianComm: number, allIdenti
               .replace(/_/g, ' ')
               .split(' ')
               .map((p) => p.trim())
-              .filter((v) => !!v);
+              // .filter((v) => !!v);
 
             if (overlapsDisplay(displays, sanitized)) {
               return false;
