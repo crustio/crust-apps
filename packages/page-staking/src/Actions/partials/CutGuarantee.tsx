@@ -33,18 +33,12 @@ function CutGuarantee ({ className = '', controllerId, onChange, stashId, target
   const guarantors = useCall<Guarantee>(api.query.staking.guarantors, [stashId]);
   const guarantorInfo = guarantors && JSON.parse(JSON.stringify(guarantors));
   const [selected, setSelected] = useState<string[]>([]);
-  const [available, setAvailable] = useState<string[]>([]);
+  const available = guarantorInfo ? guarantorInfo.targets.map((e: { who: { toString: () => any; }; }) => e.who.toString()) : []
 
   const [amount, setAmount] = useState<BN | undefined>(new BN(0));
   const [maxBalance, setMaxBalance] = useState<BN>(new BN(0));
   const [withMax, setWithMax] = useState(false);
   const MAX_CUT = new BN(20_000_000).mul(new BN(1_000_000_000_000));
-
-  useEffect(() => {
-    if (guarantorInfo) {
-      setAvailable(guarantorInfo.targets.map((e: { who: { toString: () => any; }; }) => e.who.toString()))
-    }
-  }, [guarantorInfo])
 
   useEffect((): void => {
     onChange({
