@@ -64,16 +64,6 @@ const MAX_COMM_PERCENT = 20; // -1 for median
 const MAX_DAYS = 7;
 const SORT_KEYS = ['rankBondTotal', 'rankBondOwn', 'rankBondOther', 'rankOverall'];
 
-function overlapsDisplay (displays: (string[])[], test: string[]): boolean {
-  return displays.some((d) =>
-    d.length === test.length
-      ? d.length === 1
-        ? d[0] === test[0]
-        : d.reduce((c, p, i) => c + (p === test[i] ? 1 : 0), 0) >= (test.length - 1)
-      : false
-  );
-}
-
 function applyFilter (validators: ValidatorInfo[], medianComm: number, allIdentity: Record<string, DeriveHasIdentity>, { daysPayout, isBabe, maxPaid, withElected, withGroup, withIdentity, withPayout, withoutComm, withoutOver }: Flags, nominatedBy?: Record<string, NominatedBy[]>): ValidatorInfo[] {
   const displays: (string[])[] = [];
   const parentIds: string[] = [];
@@ -113,11 +103,7 @@ function applyFilter (validators: ValidatorInfo[], medianComm: number, allIdenti
               .replace(/_/g, ' ')
               .split(' ')
               .map((p) => p.trim())
-              // .filter((v) => !!v);
-
-            if (overlapsDisplay(displays, sanitized)) {
-              return false;
-            }
+              .filter((v) => !!v);
 
             displays.push(sanitized);
           }
@@ -126,7 +112,7 @@ function applyFilter (validators: ValidatorInfo[], medianComm: number, allIdenti
 
           return true;
         }
-      } else if (!parentIds.includes(thisIdentity.parentId)) {
+      } else {
         parentIds.push(thisIdentity.parentId);
 
         return true;
