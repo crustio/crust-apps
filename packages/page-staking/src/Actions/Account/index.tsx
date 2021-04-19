@@ -103,23 +103,23 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const [stakeValue, setStakeValue] = useState<BN>(BN_ZERO);
   const guarantorInfo = guarantors && JSON.parse(JSON.stringify(guarantors));
   const validators = useCall<ValidatorId[]>(api.query.session.validators);
-  const isGuarantor = guarantorInfo && guarantorInfo.targets.length != 0;
-  const isValidator = validators && (validators.map(e => e.toString())?.indexOf(stashId) != -1);
-  const isCandidate = targets && (targets.waitingIds?.indexOf(stashId) != -1);
 
   const [role, setRole] = useState<string>('Bonded');
 
   useEffect(() => {
+    const isGuarantor = guarantorInfo && guarantorInfo.targets.length != 0;
+    const isValidator = validators && (validators.map(e => e.toString())?.indexOf(stashId) != -1);
+    const isCandidate = targets && (targets.waitingIds?.indexOf(stashId) != -1);
     if (isGuarantor) {
       setRole('Guarantor');
-    }  
-    if (isCandidate) {
+    } else if (isCandidate) {
       setRole('Candidate');
-    } 
-    if (isValidator) {
+    } else if (isValidator) {
       setRole('Validator');
+    } else {
+      setRole('Bonded');
     }
-  }, [guarantors, validators, activeEra]);
+  }, [guarantorInfo, validators, activeEra, targets]);
 
   useEffect(() => {
     if (guarantorInfo != null) {

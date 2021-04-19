@@ -62,7 +62,7 @@ function NewNominator ({ isInElection, targets }: Props): React.ReactElement<Pro
       />
       {isVisible && (
         <Modal
-          header={t<string>('Setup Nominator {{step}}/{{NUM_STEPS}}', {
+          header={t<string>('Setup Guarantor {{step}}/{{NUM_STEPS}}', {
             replace: {
               NUM_STEPS,
               step
@@ -104,7 +104,7 @@ function NewNominator ({ isInElection, targets }: Props): React.ReactElement<Pro
                   accountId={stashId}
                   icon='sign-in-alt'
                   isDisabled={!bondTx || !nominateTx || !stashId || !controllerId}
-                  label={t<string>('Bond & Nominate')}
+                  label={t<string>('Bond & Guarantee')}
                   onStart={_toggle}
                   params={[
                     stashId === controllerId

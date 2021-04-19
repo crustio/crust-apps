@@ -98,7 +98,7 @@
   "Bid to join": "投标加入",
   "Block details": "区块详情",
   "Bond": "绑定",
-  "Bond & Nominate": "绑定 & 提名",
+  "Bond & Guarantee": "绑定 & 担保",
   "Bond & Validate": "绑定 & 验证",
   "Bond more": "绑定更多",
   "Bond more funds": "绑定更多资金",
@@ -1472,9 +1472,12 @@
   "guaranteed accounts": "担保中的账户",
   "selected account": "选中的账户",
   "CutGuarantee Validators": "减投验证人",
+  "Guarantee Validators": "担保验证人",
   "total effective stake / totalIssuance": "总有效质押量/总发行量",
   "Claim mainnet locked tokens": "认领主网锁定代币",
   "has already been claimed": "已经被认领",
   "does not appear to have a valid CRU18 claim. Please double check that you have signed the transaction correctly on the correct ETH account.": "一个合法的CRU18认领没有出现. 请再次确认你签名的交易是否在正确的以太坊账户上.",
-  "Claim CRU18": "认领CRU18"
+  "Claim CRU18": "认领CRU18",
+  "Setup Guarantor {{step}}/{{NUM_STEPS}}": "设置担保人 {{step}}/{{NUM_STEPS}}",
+  "min guaranteed": "最小担保"
 }

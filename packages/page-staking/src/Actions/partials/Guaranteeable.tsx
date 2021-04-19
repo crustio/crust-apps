@@ -68,7 +68,7 @@ function GuaranteeableDisplay ({ params }: Props): React.ReactElement<Props> {
 
   return (
     <>
-      <span className='highlight'>{t<string>('stake limit')} { formatBalance(new BN(Number(stakeLimit).toString()))}/{t<string>('total stakes')} {formatBalance(totalStaked, { withUnit: true })}</span>
+      <span className='highlight'>{t<string>('total stakes')} {formatBalance(totalStaked, { withUnit: true })} / {t<string>('stake limit')} { formatBalance(new BN(Number(stakeLimit).toString()))}</span>
     </>
   );
 }
