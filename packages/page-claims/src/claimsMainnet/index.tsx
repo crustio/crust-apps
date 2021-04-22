@@ -197,7 +197,7 @@ function ClaimsMainnet (): React.ReactElement<Props> {
     <main>
       {!isOldClaimProcess && <Warning />}
       <h1>
-        <Trans>Claim your <em>{TokenUnit.abbr}</em> mainnet locked tokens</Trans>
+        <Trans>Claim your mainnet <em>{TokenUnit.abbr}</em>18 tokens</Trans>
       </h1>
       <Columar>
         <Columar.Column>
