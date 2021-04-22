@@ -377,7 +377,7 @@ function Claims (): React.ReactElement<Props> {
               <div>{t<string>('Paste the signed message into the field below. The placeholder text is there as a hint to what the message should look like:')}</div>
               <Signature
                 onChange={onChangeSignature}
-                placeholder={`{\n  "address": "0x ...",\n  "msg": "${prefix}... txhash:...",\n  "sig": "0x ...",\n  "version": "3",\n  "signer": "..."\n}`}
+                placeholder={`{\n  "address": "0x ...",\n  "msg": "${prefix}...",\n  "sig": "0x ...",\n  "version": "3",\n  "signer": "..."\n}`}
                 rows={10}
               />
               {(step === Step.Sign) && (
