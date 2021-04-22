@@ -265,7 +265,7 @@ function Claims (): React.ReactElement<Props> {
 
   const prefix = u8aToString(api.consts.claims.prefix.toU8a(true));
   const payload = accountId
-    ? `${prefix}${u8aToHex(decodeAddress(accountId), -1, false)}${statementSentence} txhash:${ethereumTxHash}`
+    ? `${prefix}${u8aToHex(decodeAddress(accountId), -1, false)}${statementSentence}${ethereumTxHash?.substring(2)}`
     : '';
 
   return (
