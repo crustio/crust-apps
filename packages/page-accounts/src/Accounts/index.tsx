@@ -138,6 +138,7 @@ function Overview ({ className = '', onStatusChange }: Props): React.ReactElemen
       </td>
       <td />
       <td />
+      <td />
       <td className='media--1400' />
     </tr>
   ), [balanceTotal]);

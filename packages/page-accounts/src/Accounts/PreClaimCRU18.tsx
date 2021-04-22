@@ -102,8 +102,14 @@ function PreClaimCRU18 ({ children, className = '', iconInfo, isHighlight, isPad
   return (
     <div className={`ui--AddressMini${isHighlight ? ' isHighlight' : ''}${isPadded ? ' padded' : ''}${withShrink ? ' withShrink' : ''} ${className}`}>
       <div className='ui--AddressMini-balances'>
-        <Label label={t<string>('ethereumAddress')} />{ethAddr}
-        <Label label={t<string>('value')} />{formatBalance(new BN(Number(preValue).toString()), {decimals: 12, withUnit: 'CRU18'})}
+        <>
+          <Label label={t<string>('ethereumAddress')} />
+          <div className='result'>{ethAddr}</div>
+        </>
+        <>
+          <Label label={t<string>('value')} />
+          <div className='result'>{formatBalance(new BN(Number(preValue).toString()), {decimals: 12, withUnit: 'CRU18'})}</div>
+        </>
       </div>
     </div>
   );
@@ -123,6 +129,15 @@ export default React.memo(styled(PreClaimCRU18)`
   &.summary {
     position: relative;
     top: -0.2rem;
+  }
+  .result {
+    grid-column: 2;
+
+    .icon {
+      margin-left: 0;
+      margin-right: 0.25rem;
+      padding-right: 0 !important;
+    }
   }
 
   .ui--AddressMini-info {
