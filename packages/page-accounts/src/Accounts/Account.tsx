@@ -37,9 +37,9 @@ import TransferCandy from '../modals/TransferCandy';
 import UndelegateModal from '../modals/Undelegate';
 import { useTranslation } from '../translate';
 import { createMenuGroup } from '../util';
+import PreClaimCRU18 from './PreClaimCRU18';
 import useMultisigApprovals from './useMultisigApprovals';
 import useProxies from './useProxies';
-import PreClaimCRU18 from './PreClaimCRU18';
 
 interface Props {
   account: KeyringAddress;
