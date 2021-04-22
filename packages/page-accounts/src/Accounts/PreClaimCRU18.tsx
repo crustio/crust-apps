@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { AccountId, AccountIndex, Address, EthereumAddress } from '@polkadot/types/interfaces';
 import type { KeyringItemType } from '@polkadot/ui-keyring/types';
 
