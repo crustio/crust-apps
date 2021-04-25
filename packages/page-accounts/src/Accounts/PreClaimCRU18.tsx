@@ -13,7 +13,7 @@ import { useTranslation } from '@polkadot/apps/translate';
 import { Label } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import lodash from 'lodash';
-import { BN_ZERO, formatBalance } from '@polkadot/util';
+import { BN_ZERO, formatBalance, u8aConcat, u8aToHex } from '@polkadot/util';
 
 interface Props {
   totalStake?: BN | BN[];
@@ -86,7 +86,7 @@ function PreClaimCRU18 ({ children, className = '', iconInfo, isHighlight, isPad
     if (preClaims.length) {
       const claimTmp = lodash.filter(preClaims, e => e.account.toString() == value?.toString());
       if (claimTmp.length) {
-        setEthAddr(claimTmp[0].ethAddress.toString())
+        setEthAddr(u8aToHex(u8aConcat(claimTmp[0].ethAddress), 48))
         setPreValue(claimTmp[0].value)
       }
     }
@@ -105,7 +105,7 @@ function PreClaimCRU18 ({ children, className = '', iconInfo, isHighlight, isPad
       <div className='ui--AddressMini-balances'>
         <>
           <Label label={t<string>('ethereumAddress')} />
-          <div className='result'>{ethAddr}</div>
+          <div className='result'>{(ethAddr)}</div>
         </>
         <>
           <Label label={t<string>('value')} />
@@ -200,7 +200,6 @@ export default React.memo(styled(PreClaimCRU18)`
   }
 
   .ui--AddressMini-balances {
-    display: grid;
 
     .ui--Balance,
     .ui--Bonded,
