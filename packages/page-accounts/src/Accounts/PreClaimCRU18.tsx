@@ -2,18 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /* eslint-disable */
-import type { AccountId, AccountIndex, Address, EthereumAddress } from '@polkadot/types/interfaces';
+import type { AccountId, AccountIndex, Address } from '@polkadot/types/interfaces';
 import type { KeyringItemType } from '@polkadot/ui-keyring/types';
 
 import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { useTranslation } from '@polkadot/apps/translate';
-import { Label } from '@polkadot/react-components';
+import { Icon, Tooltip } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import lodash from 'lodash';
 import { BN_ZERO, formatBalance, u8aConcat, u8aToHex } from '@polkadot/util';
+import { FormatCru18 } from '@polkadot/react-query';
 
 interface Props {
   totalStake?: BN | BN[];
@@ -40,16 +40,15 @@ interface Props {
 
 interface PreClaimsMapping {
   account: AccountId,
-  ethAddress: EthereumAddress,
+  ethAddress: string,
   value: BN
 }
 
-function PreClaimCRU18 ({ children, className = '', iconInfo, isHighlight, isPadded = true, label, value, withAddress = true, withName = true, withShrink = false, withSidebar = true }: Props): React.ReactElement<Props> | null {
-  const { t } = useTranslation();
+function PreClaimCRU18 ({ className = '', isHighlight, isPadded = true, value, withShrink = false }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
   const [preClaims, setPreClaims] = useState<PreClaimsMapping[]>([]);
+  const [ownPreClaims, setOwnPreClaims ] = useState<PreClaimsMapping[]>([]);
 
-  const [ethAddr, setEthAddr] = useState<string | undefined | null>(null);
   const [preValue, setPreValue] = useState<BN>(BN_ZERO);
 
   const getAllPreClaims = () => {
@@ -64,7 +63,7 @@ function PreClaimCRU18 ({ children, className = '', iconInfo, isHighlight, isPad
         preClaims.forEach(([{ args: [ethereumAddress, accountId] }, value]) => {
           tmp.push({
             account: accountId,
-            ethAddress: ethereumAddress,
+            ethAddress: u8aToHex(u8aConcat(ethereumAddress), 48).toString(),
             value: new BN(Number(value).toString())
           })
         });
@@ -85,32 +84,43 @@ function PreClaimCRU18 ({ children, className = '', iconInfo, isHighlight, isPad
   useEffect(() => {
     if (preClaims.length) {
       const claimTmp = lodash.filter(preClaims, e => e.account.toString() == value?.toString());
-      if (claimTmp.length) {
-        setEthAddr(u8aToHex(u8aConcat(claimTmp[0].ethAddress), 48))
-        setPreValue(claimTmp[0].value)
-      }
+
+      setOwnPreClaims(claimTmp);
+      setPreValue(lodash.reduce(claimTmp, (sum, n) => {
+        return sum.add(n.value)
+      }, BN_ZERO))
     }
   }, [preClaims])
 
-  if (!value) {
-    return null;
-  }
-
-  if (!ethAddr) {
+  if (preValue.isZero()) {
     return null;
   }
 
   return (
     <div className={`ui--AddressMini${isHighlight ? ' isHighlight' : ''}${isPadded ? ' padded' : ''}${withShrink ? ' withShrink' : ''} ${className}`}>
       <div className='ui--AddressMini-balances'>
-        <>
-          <Label label={t<string>('ethereumAddress')} />
-          <div className='result'>{(ethAddr)}</div>
-        </>
-        <>
-          <Label label={t<string>('value')} />
-          <div className='result'>{formatBalance(new BN(Number(preValue).toString()), {decimals: 12, withUnit: 'CRU18'})}</div>
-        </>
+        <React.Fragment key={3}>
+          <FormatCru18
+            className='result'
+            label={
+              <Icon
+                icon='info-circle'
+                tooltip={`${value}-locks-trigger`}
+              />
+            }
+            value={new BN(Number(preValue).toString())}
+          >
+            <Tooltip
+              text={ownPreClaims.map(({ ethAddress, value }, index): React.ReactNode => (
+                <div key={index}>
+                  {formatBalance(value, { forceUnit: '-', withUnit: 'CRU18' })
+                  }<div className='faded'>{ethAddress.toString()}</div>
+                </div>
+              ))}
+              trigger={`${value}-locks-trigger`}
+            />
+          </FormatCru18>
+        </React.Fragment>
       </div>
     </div>
   );
@@ -200,6 +210,7 @@ export default React.memo(styled(PreClaimCRU18)`
   }
 
   .ui--AddressMini-balances {
+    display: grid;
 
     .ui--Balance,
     .ui--Bonded,
