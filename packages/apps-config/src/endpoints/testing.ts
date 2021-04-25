@@ -75,6 +75,13 @@ export function createTesting (t: TFunction): LinkOption[] {
       }
     },
     {
+      info: 'crust-rocky',
+      text: t('rpc.crust.network', 'Crust Rocky', { ns: 'apps-config' }),
+      providers: {
+        'Crust Network': 'wss://rocky-api.crust.network/',
+      }
+    },
+    {
       info: 'datahighway',
       isDisabled: true,
       text: t('rpc.datahighway.harbour', 'Harbour', { ns: 'apps-config' }),
