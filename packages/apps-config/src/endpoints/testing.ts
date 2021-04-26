@@ -78,7 +78,7 @@ export function createTesting (t: TFunction): LinkOption[] {
       info: 'crust-rocky',
       text: t('rpc.crust.network', 'Crust Rocky', { ns: 'apps-config' }),
       providers: {
-        'Crust Network': 'wss://rocky-api.crust.network/',
+        'Crust Network': 'wss://rocky-api.crust.network/'
       }
     },
     {
