@@ -60,6 +60,7 @@ import nodePolkadot from './nodes/polkadot-circle.svg';
 import nodePolkadotJs from './nodes/polkadot-js.svg';
 import nodeRealis from './nodes/realis.png';
 import nodeRobonomics from './nodes/robonomics.svg';
+import logoRocky from './nodes/rocky.svg';
 import nodeSgc from './nodes/sgc.svg';
 import nodeSora from './nodes/sora-substrate.svg';
 import nodeStafi from './nodes/stafi.png';
@@ -108,6 +109,7 @@ export const chainLogos: Record<string, unknown> = [
   ['Polkadex Testnet', nodePolkadex],
   ['Phala PC1', nodePhala],
   ['ReAlis Network', nodeRealis],
+  ['Rocky', logoRocky],
   ['Rococo', chainRococo],
   ['Sgc', nodeSgc],
   ['Tick', chainRococoTick],
@@ -213,6 +215,7 @@ export const namedLogos: Record<string, unknown> = {
   clover: nodeClover,
   crab: nodeCrab,
   crust: nodeCrust,
+  'crust-rocky': logoRocky,
   darwinia: nodeDarwinia,
   datahighway: nodeDataHighway,
   'dock-mainnet': nodeDockMainnet,
