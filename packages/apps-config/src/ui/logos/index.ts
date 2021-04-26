@@ -75,6 +75,7 @@ import nodeZenlink from './nodes/zenlink.svg';
 import nodeZero from './nodes/zero.svg';
 // last-resort fallback, just something empty
 import emptyLogo from './empty.svg';
+import logoRocky from './nodes/rocky.svg';
 
 // Alphabetical overrides based on the actual matched chain name
 // NOTE: This is as retrieved via system.chain RPC
@@ -108,6 +109,7 @@ export const chainLogos: Record<string, unknown> = [
   ['Polkadex Testnet', nodePolkadex],
   ['Phala PC1', nodePhala],
   ['ReAlis Network', nodeRealis],
+  ['Rocky', logoRocky],
   ['Rococo', chainRococo],
   ['Sgc', nodeSgc],
   ['Tick', chainRococoTick],
@@ -213,6 +215,7 @@ export const namedLogos: Record<string, unknown> = {
   clover: nodeClover,
   crab: nodeCrab,
   crust: nodeCrust,
+  'crust-rocky': logoRocky,
   darwinia: nodeDarwinia,
   datahighway: nodeDataHighway,
   'dock-mainnet': nodeDockMainnet,
