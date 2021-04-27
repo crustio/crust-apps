@@ -1447,7 +1447,7 @@
   "{{done}}/{{total}}, {{progress}}% done": "{{done}}/{{total}}, {{progress}}% done",
   "{{executionTime}}s execution time": "{{executionTime}}s 执行时间",
   "{{hours}} hrs": "{{hours}} 小时",
-  "{{minutes}} mins": "{{minutes}} 分钟",
+  "{{minutes}} mins": "{{minutes}} 分",
   "{{name}} ({{size}} bytes)": "{{name}} ({{size}} bytes)",
   "{{percentage}} aye": "{{percentage}} 是",
   "{{percentage}}% of block time": "{{percentage}}% 区块时间",
