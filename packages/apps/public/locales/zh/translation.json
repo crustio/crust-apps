@@ -1480,5 +1480,6 @@
   "Claim CRU18": "认领CRU18",
   "Setup Guarantor {{step}}/{{NUM_STEPS}}": "设置担保人 {{step}}/{{NUM_STEPS}}",
   "min guaranteed": "最小担保",
-  "ethereumAddress": "以太坊地址"
+  "ethereumAddress": "以太坊地址",
+  "Over stake limit": "超过质押上限"
 }
