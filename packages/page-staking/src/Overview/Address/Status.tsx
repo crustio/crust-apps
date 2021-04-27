@@ -60,7 +60,8 @@ function Status ({ isElected, isMain, nominators = [], onlineCount, onlineMessag
           : <Badge color='transparent' />
       )}
       {isOver && (
-        <Badge color='red' icon='balance-scale-right' />
+        <Badge color='red'
+          icon='balance-scale-right' />
       )}
       <MaxBadge numNominators={nominators.length} />
     </>
