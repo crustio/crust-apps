@@ -52,6 +52,13 @@ function Legend ({ className }: Props): React.ReactElement<Props> {
         />
         {t('Slashed')}
       </span>
+      <span>
+        <Badge
+          color='red'
+          icon='balance-scale-right'
+        />
+        {t('Over stake limit')}
+      </span>
     </div>
   );
 }
