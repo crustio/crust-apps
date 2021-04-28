@@ -119,7 +119,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
               help={t('durationDesc')}
               isDisabled
               label={t('durationLabel')}
-              value={15}
+              value={6}
             />
           </Modal.Columns>
         </Modal.Content>
