@@ -204,7 +204,7 @@ export function useOwnEraRewards (maxEras?: number, ownValidators?: StakerState[
     return (): void => {
       unsub && unsub();
     };
-  }, [filteredEras]);
+  }, [filteredEras, allValidators]);
 
   useEffect((): void => {
     setState({ allRewards: null, isLoadingRewards: true, rewardCount: 0 });
@@ -251,13 +251,13 @@ export function useOwnEraRewards (maxEras?: number, ownValidators?: StakerState[
     mountedRef.current && stakerRewards && !ownValidators && stakingAccounts && setState(
       getRewards(stakerRewards, stakingAccounts)
     );
-  }, [mountedRef, ownValidators, stakerRewards]);
+  }, [mountedRef, ownValidators, stakerRewards, stakingAccounts]);
 
   useEffect((): void => {
     mountedRef && erasPoints && erasRewards && ownValidators && eraStashExposure && setState(
       getValRewards(api, validatorEras, erasPoints, erasRewards, eraStashExposure)
     );
-  }, [api, erasPoints, erasRewards, mountedRef, ownValidators, validatorEras]);
+  }, [api, erasPoints, erasRewards, mountedRef, ownValidators, validatorEras, eraStashExposure]);
 
   return state;
 }
