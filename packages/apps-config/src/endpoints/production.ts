@@ -21,7 +21,8 @@ export function createProduction (t: TFunction): LinkOption[] {
       text: t('rpc.crust.network', 'Crust Maxwell', { ns: 'apps-config' }),
       providers: {
         'Crust Network': 'wss://api.crust.network/',
-        'DCloud Foundation': 'wss://api.decloudf.com/'
+        'DCloud Foundation': 'wss://api.decloudf.com/',
+        'Decoo Technologies': 'wss://rpc-crust.decoo.io'
       }
     }
   ]);
