@@ -170,6 +170,8 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
         <Status
           isElected={isElected}
           isMain={isMain}
+          stakeLimit={new BN(Number(stakeLimit)?.toString())}
+          totalStake={totalStaked}
           nominators={nominators}
           onlineCount={recentlyOnline?.blockCount}
           onlineMessage={recentlyOnline?.hasMessage}

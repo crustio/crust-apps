@@ -15,11 +15,14 @@ interface Props {
   nominators?: { nominatorId: string }[];
   onlineCount?: false | BN;
   onlineMessage?: boolean;
+  stakeLimit: BN;
+  totalStake: BN;
 }
 
-function Status ({ isElected, isMain, nominators = [], onlineCount, onlineMessage }: Props): React.ReactElement<Props> {
+function Status ({ isElected, isMain, nominators = [], onlineCount, onlineMessage, stakeLimit, totalStake }: Props): React.ReactElement<Props> {
   const { allAccounts } = useAccounts();
   const blockCount = onlineCount && onlineCount.toNumber();
+  const isOver = totalStake.gt(stakeLimit);
 
   const isNominating = useMemo(
     () => nominators.some(({ nominatorId }) => allAccounts.includes(nominatorId)),
@@ -55,6 +58,10 @@ function Status ({ isElected, isMain, nominators = [], onlineCount, onlineMessag
             />
           )
           : <Badge color='transparent' />
+      )}
+      {isOver && (
+        <Badge color='red'
+          icon='balance-scale-right' />
       )}
       <MaxBadge numNominators={nominators.length} />
     </>
