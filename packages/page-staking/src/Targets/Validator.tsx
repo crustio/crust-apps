@@ -87,6 +87,8 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
     }
   }
 
+  const isOverStakelimit = totalStaked.gt(new BN(Number(stakeLimit)?.toString()));
+
   const isVisible = useMemo(
     () => accountInfo
       ? checkVisibility(api, info.key, accountInfo, filterName)
@@ -159,6 +161,12 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
               }
             })}
             icon='skull-crossbones'
+          />
+        )}
+        {isOverStakelimit && (
+          <Badge
+            color='red'
+            icon='balance-scale-right'
           />
         )}
       </td>
