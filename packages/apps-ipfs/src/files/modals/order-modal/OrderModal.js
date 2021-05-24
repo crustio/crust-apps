@@ -24,7 +24,8 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
   const [cidNotValid, setCidNotValid] = useState(false);
   const { api, isApiReady } = useApi();
   const filePrice = useCall(isApiReady && api.query.market.filePrice) || new BN(0);
-  const basePrice = api.consts.market.fileBaseFee || new BN(0)
+  const fileBaseFee = useCall(isApiReady && api.query.market.fileBaseFee)
+  const basePrice = fileBaseFee ? fileBaseFee.toString() : 0
   const DEFAULT_BITLENGTH = BitLengthOption.CHAIN_SPEC;
 
   useEffect(() => {
