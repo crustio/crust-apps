@@ -46,10 +46,8 @@ const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggl
   const trash2 = useCall(isApiReady && api.query?.market.transh2, [watchItem.fileCid]);
   bestNumber = bestNumber && JSON.parse(JSON.stringify(bestNumber));
   let status = fileStatusEnum.PENDING;
-  const basePrice = api.consts.market.fileBaseFee || 0
-  const taxRatio = api.consts.market.taxRatio || 0
-  const stakingRatio = api.consts.market.stakingRatio || 0
-  const ratio = ((1 - Number(stakingRatio.toString())/1000000000) * (1- Number(taxRatio.toString())/1000000000))
+  const StorageRatio = api.consts.market.storageRatio || 0
+  const ratio = Number(StorageRatio.toString()) / 1000000000
   if (fileStatus) {
     const _fileStatus = JSON.parse(JSON.stringify(fileStatus));
 
