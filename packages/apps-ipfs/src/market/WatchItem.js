@@ -47,7 +47,7 @@ const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggl
   bestNumber = bestNumber && JSON.parse(JSON.stringify(bestNumber));
   let status = fileStatusEnum.PENDING;
   const StorageRatio = api.consts.market.storageRatio || 0
-  const ratio = StorageRatio.toString() / 1000000000
+  const ratio = Number(StorageRatio.toString()) / 1000000000
   if (fileStatus) {
     const _fileStatus = JSON.parse(JSON.stringify(fileStatus));
 
