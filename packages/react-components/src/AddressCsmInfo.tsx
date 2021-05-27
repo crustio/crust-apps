@@ -60,7 +60,7 @@ function AddressCsmInfo(props: Props): React.ReactElement<Props> {
     const { api } = useApi();
     const [csm, setCsm] = useState<any>(null);
     const csmBalances = useCall<any>(api.query.csm.account, [props.address])
-    const { children, className = '', withBalanceToggle } = props;
+    const { className = '', withBalanceToggle } = props;
     const [allItems, setAllItems] = useState<React.ReactNode[]>([]);
     useEffect(() => {
         if (csmBalances && JSON.parse(JSON.stringify(csmBalances))) {
@@ -111,13 +111,9 @@ function AddressCsmInfo(props: Props): React.ReactElement<Props> {
                             </div>
                         )}
                     </Expander>
+                    
                 </React.Fragment>
             </div>
-            {children && (
-                <div className='column'>
-                {children}
-                </div>
-            )}
         </div>
     );
 }
