@@ -264,19 +264,19 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
       isFunction(api.api.tx.csm?.transfer) && (
         <Menu.Item
           icon='paper-plane'
-          label={t<string>('send csm')}
+          label={t<string>('Send CSM')}
           onClick={toggleTransferCsm}
         >
-          {t('send csm')}
+          {t('Send CSM')}
         </Menu.Item>
       ),
       isFunction(api.api.tx.candy?.transfer) && (
         <Menu.Item
           icon='paper-plane'
-          label={t<string>('send candy')}
+          label={t<string>('Send Candy')}
           onClick={toggleTransferCandy}
         >
-          {t('send candy')}
+          {t('Send Candy')}
         </Menu.Item>
       )
     ]),
@@ -654,7 +654,7 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
         {isFunction(api.api.tx.balances?.transfer) && (
           <Button
             icon='paper-plane'
-            label={t<string>('send cru')}
+            label={t<string>('Send CRU')}
             onClick={toggleTransfer}
           />
         )}

@@ -29,7 +29,7 @@ function TransferCandy ({ className = '', onClose, recipientId: propRecipientId,
   return (
     <Modal
       className='app--accounts-Modal'
-      header={t<string>('Send candies')}
+      header={t<string>('Send Candy')}
       size='large'
     >
       <Modal.Content>

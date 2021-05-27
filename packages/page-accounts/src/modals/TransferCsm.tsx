@@ -29,7 +29,7 @@ function TransferCsm ({ className = '', onClose, recipientId: propRecipientId, s
   return (
     <Modal
       className='app--accounts-Modal'
-      header={t<string>('Send csm')}
+      header={t<string>('Send CSM')}
       size='large'
     >
       <Modal.Content>
