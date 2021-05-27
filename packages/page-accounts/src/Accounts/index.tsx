@@ -77,10 +77,10 @@ function Overview ({ className = '', onStatusChange }: Props): React.ReactElemen
     [t('type'), 'address media--1400'],
     // [t('tags'), 'start'],
     [t('transactions'), 'start'],
-    [t('cru'), 'expand'],
-    [t('csm'), 'expand'],
-    [t('candy')],
-    [t('cru18')],
+    [t('CRU'), 'expand'],
+    [t('CSM'), 'expand'],
+    [t('Candy')],
+    [t('CRU18')],
     [],
     [undefined, 'media--1400']
   ]);

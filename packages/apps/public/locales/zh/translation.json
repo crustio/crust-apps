@@ -1485,7 +1485,8 @@
   "free": "余额",
   "miscFrozen": "锁定金额",
   "Claim CSM": "认领CSM",
-  "send csm": "发送csm",
-  "send cru": "发送cru",
-  "Send cru": "发送cru"
+  "Send CRU": "发送CRU",
+  "Send CSM": "发送CSM",
+  "Send Candy": "发送糖果",
+  "Candy": "糖果"
 }
