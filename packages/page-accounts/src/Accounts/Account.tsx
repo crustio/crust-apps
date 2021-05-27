@@ -16,9 +16,9 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import styled, { ThemeContext } from 'styled-components';
 
 import { ApiPromise } from '@polkadot/api';
-import { AddressCsmInfo, AddressInfo, AddressMini, AddressSmall, Badge, Button, ChainLock, CryptoType, Forget, Icon, IdentityIcon, LinkExternal, Menu, Popup, StatusContext, Tags } from '@polkadot/react-components';
+import { AddressInfo, AddressMini, AddressSmall, Badge, Button, ChainLock, CryptoType, Forget, Icon, IdentityIcon, LinkExternal, Menu, Popup, StatusContext, Tags } from '@polkadot/react-components';
 import { useAccountInfo, useApi, useBestNumber, useCall, useLedger, useToggle } from '@polkadot/react-hooks';
-import { FormatCandy } from '@polkadot/react-query';
+import { FormatCandy, FormatCsmBalance } from '@polkadot/react-query';
 import { keyring } from '@polkadot/ui-keyring';
 import { BN_ZERO, formatBalance, formatNumber, isFunction } from '@polkadot/util';
 
@@ -120,8 +120,20 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
   const [isDelegateOpen, toggleDelegate] = useToggle();
   const [isUndelegateOpen, toggleUndelegate] = useToggle();
   const candyAmount = useCall<Balance>(api.api.query.candy?.balances, [address]);
+  /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+  const csmInfo = useCall<any>(api.api.query.csm?.account, [address]);
+  const [csmBalance, setCsmBalance] = useState<BN>(BN_ZERO);
   const [isTransferCandyOpen, toggleTransferCandy] = useToggle();
   const [isTransferCsmOpen, toggleTransferCsm] = useToggle();
+
+  useEffect(() => {
+    const tmp = csmInfo && JSON.parse(JSON.stringify(csmInfo));
+
+    if (tmp) {
+      /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+      setCsmBalance(new BN(Number(tmp.free).toString()));
+    }
+  }, [csmInfo]);
 
   useEffect((): void => {
     if (balancesAll) {
@@ -611,12 +623,7 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
         />
       </td>
       <td className='number'>
-        <AddressCsmInfo
-          address={address}
-          withBalance
-          withBalanceToggle
-          withExtended={false}
-        />
+        <FormatCsmBalance value={csmBalance} />
       </td>
       <td className='number'>
         <FormatCandy value={candyAmount} />
