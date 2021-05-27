@@ -125,7 +125,6 @@ export default React.memo(styled(Head)`
 
   tr {
     background: var(--bg-table);
-    text-transform: lowercase;
 
     &:first-child {
       th {

@@ -73,12 +73,13 @@ function Overview ({ className = '', onStatusChange }: Props): React.ReactElemen
 
   const headerRef = useRef([
     [t('accounts'), 'start', 3],
-    [t('parent'), 'address media--1400'],
-    [t('type')],
-    [t('tags'), 'start'],
-    [t('transactions'), 'media--1500'],
-    [t('balances'), 'expand'],
-    [t('candies')],
+    // [t('parent'), 'address media--1400'],
+    [t('type'), 'address media--1400'],
+    // [t('tags'), 'start'],
+    [t('transactions'), 'start'],
+    [t('CRU'), 'expand'],
+    [t('CSM'), 'expand'],
+    [t('Candy')],
     [t('CRU18')],
     [],
     [undefined, 'media--1400']
@@ -130,12 +131,13 @@ function Overview ({ className = '', onStatusChange }: Props): React.ReactElemen
   const footer = useMemo(() => (
     <tr>
       <td colSpan={3} />
-      <td className='media--1400' />
+      {/* <td className='media--1400' /> */}
       <td colSpan={2} />
-      <td className='media--1500' />
+      {/* <td className='media--1500' /> */}
       <td className='number'>
         {balanceTotal && <FormatBalance value={balanceTotal} />}
       </td>
+      <td />
       <td />
       <td />
       <td />

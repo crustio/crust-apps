@@ -5,7 +5,7 @@ import BN from 'bn.js';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { InputAddress, InputCandyBalance, Modal, TxButton } from '@polkadot/react-components';
+import { InputAddress, InputCsmBalance, Modal, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 
@@ -18,7 +18,7 @@ interface Props {
   senderId?: string;
 }
 
-function TransferCandy ({ className = '', onClose, recipientId: propRecipientId, senderId }: Props): React.ReactElement<Props> {
+function TransferCsm ({ className = '', onClose, recipientId: propRecipientId, senderId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
@@ -29,7 +29,7 @@ function TransferCandy ({ className = '', onClose, recipientId: propRecipientId,
   return (
     <Modal
       className='app--accounts-Modal'
-      header={t<string>('Send Candy')}
+      header={t<string>('Send CSM')}
       size='large'
     >
       <Modal.Content>
@@ -59,7 +59,7 @@ function TransferCandy ({ className = '', onClose, recipientId: propRecipientId,
           </Modal.Content>
           <Modal.Content>
             <Modal.Columns>
-              <InputCandyBalance
+              <InputCsmBalance
                 autoFocus
                 help={t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}
                 isError={!hasAvailable}
@@ -81,14 +81,14 @@ function TransferCandy ({ className = '', onClose, recipientId: propRecipientId,
           label={t<string>('Make Transfer')}
           onStart={onClose}
           params={[recipientId, amount]}
-          tx={api.tx.candy.transfer}
+          tx={api.tx.csm.transfer}
         />
       </Modal.Actions>
     </Modal>
   );
 }
 
-export default React.memo(styled(TransferCandy)`
+export default React.memo(styled(TransferCsm)`
   .balance {
     margin-bottom: 0.5rem;
     text-align: right;
