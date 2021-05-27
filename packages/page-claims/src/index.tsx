@@ -15,6 +15,7 @@ import { Route, Switch } from 'react-router-dom';
 export { default as useCounter } from './useCounter';
 import Claims from './claims';
 import ClaimsMainnet from './claimsMainnet';
+import CSMClaims from './maxwellCsmClaims';
 
 function ClaimsApp ({ basePath, onStatusChange }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
@@ -26,6 +27,9 @@ function ClaimsApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
   }, {
     name: 'claimsMainnet',
     text: t<string>('Claim CRU18')
+  }, {
+    name: 'maxwellCsmClaims',
+    text: t<string>('Claim CSM')
   }]);
 
   return (
@@ -39,6 +43,9 @@ function ClaimsApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
       <Switch>
         <Route path={`${basePath}/claimsMainnet`}>
           <ClaimsMainnet />
+        </Route>
+        <Route path={`${basePath}/maxwellCsmClaims`}>
+          <CSMClaims />
         </Route>
         <Route basePath={basePath}
                   onStatusChange={onStatusChange}>
