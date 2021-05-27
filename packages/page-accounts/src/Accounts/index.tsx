@@ -78,6 +78,7 @@ function Overview ({ className = '', onStatusChange }: Props): React.ReactElemen
     [t('tags'), 'start'],
     [t('transactions'), 'media--1500'],
     [t('balances'), 'expand'],
+    [t('csm'), 'expand'],
     [t('candies')],
     [t('CRU18')],
     [],
@@ -136,6 +137,7 @@ function Overview ({ className = '', onStatusChange }: Props): React.ReactElemen
       <td className='number'>
         {balanceTotal && <FormatBalance value={balanceTotal} />}
       </td>
+      <td />
       <td />
       <td />
       <td />

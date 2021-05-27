@@ -16,7 +16,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import styled, { ThemeContext } from 'styled-components';
 
 import { ApiPromise } from '@polkadot/api';
-import { AddressInfo, AddressMini, AddressSmall, Badge, Button, ChainLock, CryptoType, Forget, Icon, IdentityIcon, LinkExternal, Menu, Popup, StatusContext, Tags } from '@polkadot/react-components';
+import { AddressCsmInfo, AddressInfo, AddressMini, AddressSmall, Badge, Button, ChainLock, CryptoType, Forget, Icon, IdentityIcon, LinkExternal, Menu, Popup, StatusContext, Tags } from '@polkadot/react-components';
 import { useAccountInfo, useApi, useBestNumber, useCall, useLedger, useToggle } from '@polkadot/react-hooks';
 import { FormatCandy } from '@polkadot/react-query';
 import { keyring } from '@polkadot/ui-keyring';
@@ -34,6 +34,7 @@ import RecoverAccount from '../modals/RecoverAccount';
 import RecoverSetup from '../modals/RecoverSetup';
 import Transfer from '../modals/Transfer';
 import TransferCandy from '../modals/TransferCandy';
+import TransferCsm from '../modals/TransferCsm';
 import UndelegateModal from '../modals/Undelegate';
 import { useTranslation } from '../translate';
 import { createMenuGroup } from '../util';
@@ -120,6 +121,7 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
   const [isUndelegateOpen, toggleUndelegate] = useToggle();
   const candyAmount = useCall<Balance>(api.api.query.candy?.balances, [address]);
   const [isTransferCandyOpen, toggleTransferCandy] = useToggle();
+  const [isTransferCsmOpen, toggleTransferCsm] = useToggle();
 
   useEffect((): void => {
     if (balancesAll) {
@@ -537,6 +539,13 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
             senderId={address}
           />
         )}
+        {isTransferCsmOpen && (
+          <TransferCsm
+            key='modal-transfer'
+            onClose={toggleTransferCsm}
+            senderId={address}
+          />
+        )}
         {isProxyOverviewOpen && (
           <ProxyOverview
             key='modal-proxy-overview'
@@ -602,6 +611,14 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
         />
       </td>
       <td className='number'>
+        <AddressCsmInfo
+          address={address}
+          withBalance
+          withBalanceToggle
+          withExtended={false}
+        />
+      </td>
+      <td className='number'>
         <FormatCandy value={candyAmount} />
       </td>
       <td className='number'>
@@ -613,6 +630,13 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
             icon='paper-plane'
             label={t<string>('send')}
             onClick={toggleTransfer}
+          />
+        )}
+        {isFunction(api.api.tx.csm?.transfer) && (
+          <Button
+            icon='paper-plane'
+            label={t<string>('send csm')}
+            onClick={toggleTransferCsm}
           />
         )}
         {isFunction(api.api.tx.candy?.transfer) && (

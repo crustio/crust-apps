@@ -277,6 +277,9 @@ function Claims (): React.ReactElement<Props> {
       <Columar>
         <Columar.Column>
           <Card withBottomMargin>
+            {/* <h3>{t<string>(`0. Please confirm that you are using your wallet to transfer funds instead of using the exchange transfer`)}</h3>
+            <img src={'https://wiki.crust.network/docs/assets/claims/new_claim_addr.png'} /> */}
+
             <h3>{t<string>(`1. Select your {{chain}} account and enter`, {
                 replace: {
                   chain: systemChain

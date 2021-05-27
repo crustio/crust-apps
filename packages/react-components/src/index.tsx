@@ -6,6 +6,7 @@ export * from '@polkadot/react-qr';
 export { default as AccountIndex } from './AccountIndex';
 export { default as AccountName } from './AccountName';
 export { default as AddressInfo } from './AddressInfo';
+export { default as AddressCsmInfo } from './AddressCsmInfo';
 export { default as AddressMini } from './AddressMini';
 export { default as AddressRow } from './AddressRow';
 export { default as AddressSmall } from './AddressSmall';
@@ -99,4 +100,6 @@ export { default as TextArea } from './TextArea';
 
 export { default as media } from './media';
 export { default as InputCandyBalance } from './InputCandyBalance';
+export { default as InputCsmBalance } from './InputCsmBalance';
 export { default as InpuCandyNumber } from './InputCandyNumber';
+export { default as InputCsmNumber } from './InputCsmNumber';

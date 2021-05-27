@@ -14,7 +14,7 @@ import styled from 'styled-components';
 
 import { Button, Card, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
-import { FormatBalance } from '@polkadot/react-query';
+import { FormatCsmBalance } from '@polkadot/react-query';
 
 import { useTranslation } from '../translate';
 import { addrToChecksum, getStatement } from './util';
@@ -44,7 +44,7 @@ function constructTx (api: ApiPromise, systemChain: string, accountId: string, e
   }
 
   return isOldClaimProcess || !kind
-    ? { params: [accountId, ethereumTxHash, ethereumSignature], tx: api.tx.claims.claim }
+    ? { params: [accountId, ethereumTxHash, ethereumSignature], tx: api.tx.claims.claimCsm }
     : { params: [accountId, ethereumSignature, getStatement(systemChain, kind)?.sentence], tx: api.tx.claims.claimAttest };
 }
 
@@ -63,7 +63,7 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
     setIsBusy(true);
 
     api.query.claims
-      .claims<Option<BalanceOf>>(ethereumTxHash)
+      .csmClaims<Option<BalanceOf>>(ethereumTxHash)
       .then((claim): void => {
         const claimOpt = JSON.parse(JSON.stringify(claim));
 
@@ -119,7 +119,7 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
           ? (
             <>
               {t<string>('has a valid claim for')}
-              <h2><FormatBalance value={claimValue} /></h2>
+              <h2><FormatCsmBalance value={claimValue} /></h2>
               <Button.Group>
                 <TxButton
                   icon='paper-plane'

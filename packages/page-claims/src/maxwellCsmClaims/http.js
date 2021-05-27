@@ -5,8 +5,8 @@
 import { base64Encode } from '@polkadot/util-crypto';
 const MAX_RETRY = 3;
 const RETRY_INTERVAL = 1000;
-const USERNAME = 'crustbridgeadmin';
-const PASSWD = '102938'
+const USERNAME = '123';
+const PASSWD = '123'
 
 function sleep(ms){
   return new Promise((resolve)=>setTimeout(resolve,ms));

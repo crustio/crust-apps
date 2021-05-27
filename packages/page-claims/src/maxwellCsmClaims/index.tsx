@@ -13,7 +13,7 @@ import styled from 'styled-components';
 
 import { Button, Card, Columar, Input, InputAddress, Tooltip } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
-import { hexToU8a, isAscii, stringToU8a, u8aToHex, u8aToString } from '@polkadot/util';
+import { hexToU8a, isAscii, stringToU8a, u8aToHex } from '@polkadot/util';
 import { decodeAddress } from '@polkadot/util-crypto';
 
 import AttestDisplay from './Attest';
@@ -151,7 +151,7 @@ function CSMClaims (): React.ReactElement<Props> {
 
   const handleAccountStep = useCallback(async () => {
     setIsBusy(true);
-    const result = await httpPost("https://bridge-api.crust.network/claim/" + ethereumTxHash);
+    const result = await httpPost("http://101.132.117.183:13330/csmClaim/" + ethereumTxHash);
 
     setIsBusy(false);
     setResult(result.statusText);
@@ -163,13 +163,13 @@ function CSMClaims (): React.ReactElement<Props> {
       goToStepSign();
     } else {
       api.query.claims
-        .claims<Option<BalanceOf>>(ethereumTxHash?.toString())
+        .csmClaims<Option<BalanceOf>>(ethereumTxHash?.toString())
         .then((claim): void => {
           const claimOpt = JSON.parse(JSON.stringify(claim));
 
           if (claimOpt) {
             api.query.claims
-              .claimed<Option<BalanceOf>>(ethereumTxHash?.toString())
+              .csmClaimed<Option<BalanceOf>>(ethereumTxHash?.toString())
               .then((claimed): void => {
                 const isClaimed = JSON.parse(JSON.stringify(claimed));
 
@@ -262,7 +262,8 @@ function CSMClaims (): React.ReactElement<Props> {
 
   const statementSentence = getStatement(systemChain, statementKind)?.sentence || '';
 
-  const prefix = u8aToString(api.consts.claims.prefix.toU8a(true));
+  // const prefix = u8aToString(api.consts.claims.CsmPrefix.toU8a(true));
+  const prefix = 'Pay CSMs to the Crust account:'
   const payload = accountId
     ? `${prefix}${u8aToHex(decodeAddress(accountId), -1, false)}${statementSentence}${ethereumTxHash?.substring(2)}`
     : '';
@@ -280,7 +281,7 @@ function CSMClaims (): React.ReactElement<Props> {
                 replace: {
                   chain: systemChain
                 }
-              })} <a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CSM')}</a> {t<string>('transfer tx hash')} </h3>
+              })} <a href='https://rinkeby.etherscan.io/token/0x7a1c61c526dae21c23b50a490c18d04f8077608f'>{t('ERC20 CSM')}</a> {t<string>('transfer tx hash')} </h3>
             <InputAddress
               defaultValue={accountId}
               help={t<string>('The account you want to claim to.')}
@@ -292,7 +293,7 @@ function CSMClaims (): React.ReactElement<Props> {
             <Input
               autoFocus
               className='full'
-              help={t<string>('The Ethereum CRU transfer tx hash (starting by "0x")')}
+              help={t<string>('The Ethereum CSM transfer tx hash (starting by "0x")')}
               isDisabled={ethereumTxHashValid}
               isError={!isValid}
               label={t<string>('Ethereum tx hash')}
