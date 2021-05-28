@@ -13,6 +13,10 @@ echo -n > $TARGET
 declare -a vars=(
   "WS_URL"
   "SAMPLE"
+  "CRU_CLAIM_USER"
+  "CRU_CLAIM_PASSWD"
+  "CSM_CLAIM_USER"
+  "CSM_CLAIM_PASSWD"
 )
 
 echo "window.process_env = {" >> $TARGET
