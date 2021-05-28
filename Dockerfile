@@ -3,9 +3,6 @@ FROM nginx:stable-alpine
 # The following is mainly for doc purpose to show which ENV is supported
 ENV WS_URL=
 
-ENV CSM_CLAIM_USER=123
-ENV CSM_CLAIM_PASSWD=123
-
 WORKDIR /usr/share/nginx/html
 
 COPY env.sh .
