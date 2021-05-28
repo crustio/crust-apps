@@ -1,6 +1,8 @@
 // Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+import './account.css';
+
 import type { SubmittableExtrinsic } from '@polkadot/api/types';
 import type { DeriveBalancesAll, DeriveDemocracyLock } from '@polkadot/api-derive/types';
 import type { Ledger } from '@polkadot/hw-ledger';
@@ -260,24 +262,6 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
         >
           {t('Unlock vested amount')}
         </Menu.Item>
-      ),
-      isFunction(api.api.tx.csm?.transfer) && (
-        <Menu.Item
-          icon='paper-plane'
-          label={t<string>('Send CSM')}
-          onClick={toggleTransferCsm}
-        >
-          {t('Send CSM')}
-        </Menu.Item>
-      ),
-      isFunction(api.api.tx.candy?.transfer) && (
-        <Menu.Item
-          icon='paper-plane'
-          label={t<string>('Send Candy')}
-          onClick={toggleTransferCandy}
-        >
-          {t('Send Candy')}
-        </Menu.Item>
       )
     ]),
     createMenuGroup('deriveGroup', [
@@ -391,7 +375,7 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
       />
     ])
   ].filter((i) => i),
-  [_clearDemocracyLocks, _showOnHardware, _vestingVest, api, delegation, democracyUnlockTx, genesisHash, identity, isDevelopment, isEditable, isExternal, isHardware, isInjected, isMultisig, multiInfos, onSetGenesisHash, proxy, recoveryInfo, t, toggleBackup, toggleDelegate, toggleDerive, toggleForget, toggleIdentityMain, toggleIdentitySub, toggleMultisig, togglePassword, toggleProxyOverview, toggleRecoverAccount, toggleRecoverSetup, toggleUndelegate, toggleTransferCandy, toggleTransferCsm, vestingVestTx]);
+  [_clearDemocracyLocks, _showOnHardware, _vestingVest, api, delegation, democracyUnlockTx, genesisHash, identity, isDevelopment, isEditable, isExternal, isHardware, isInjected, isMultisig, multiInfos, onSetGenesisHash, proxy, recoveryInfo, t, toggleBackup, toggleDelegate, toggleDerive, toggleForget, toggleIdentityMain, toggleIdentitySub, toggleMultisig, togglePassword, toggleProxyOverview, toggleRecoverAccount, toggleRecoverSetup, toggleUndelegate, vestingVestTx]);
 
   if (!isVisible) {
     return null;
@@ -650,15 +634,48 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
       <td className='number'>
         <PreClaimCRU18 value={address} />
       </td>
+
       <td className='button'>
-        {isFunction(api.api.tx.balances?.transfer) && (
+        {/* {isFunction(api.api.tx.balances?.transfer) && (
           <Button
             icon='paper-plane'
             label={t<string>('Send CRU')}
             onClick={toggleTransfer}
           />
-        )}
+        )} */}
 
+        <Popup
+          className='my-popup'
+          on='click'
+          trigger={<Button
+            icon='paper-plane'
+            label={t<string>('Send')}
+          />}
+        >
+
+          {isFunction(api.api.tx.balances?.transfer) && (
+            <Button
+              icon='paper-plane'
+              label={t<string>('Send CRU')}
+              onClick={toggleTransfer}
+            />
+          )}
+          {isFunction(api.api.tx.csm?.transfer) && (
+            <Button
+              icon='paper-plane'
+              label={t<string>('Send CSM')}
+              onClick={toggleTransferCsm}
+            />
+          )}
+          {isFunction(api.api.tx.candy?.transfer) && (
+            <Button
+              icon='paper-plane'
+              label={t<string>('Send Candy')}
+              onClick={toggleTransferCandy}
+            />
+          )}
+
+        </Popup>
         <Popup
           className={`theme--${theme}`}
           isOpen={isSettingsOpen}

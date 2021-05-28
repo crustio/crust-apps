@@ -151,7 +151,7 @@ function CSMClaims (): React.ReactElement<Props> {
 
   const handleAccountStep = useCallback(async () => {
     setIsBusy(true);
-    const result = await httpPost("http://101.132.117.183:13330/csmClaim/" + ethereumTxHash);
+    const result = await httpPost("https://csm-bridge-api.crust.network/csmClaim/" + ethereumTxHash);
 
     setIsBusy(false);
     setResult(result.statusText);
@@ -272,7 +272,7 @@ function CSMClaims (): React.ReactElement<Props> {
     <main>
       {!isOldClaimProcess && <Warning />}
       <h1>
-        <Trans>Claim your CSM tokens</Trans>
+        <Trans>Claim your <em>CSM</em> tokens</Trans>
       </h1>
       <Columar>
         <Columar.Column>

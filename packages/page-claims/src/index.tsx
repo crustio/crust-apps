@@ -23,7 +23,7 @@ function ClaimsApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
   const itemsRef = useRef([{
     isRoot: true,
     name: 'claims',
-    text: t<string>('Claim tokens')
+    text: t<string>('Claim CRU')
   }, {
     name: 'claimsMainnet',
     text: t<string>('Claim CRU18')
