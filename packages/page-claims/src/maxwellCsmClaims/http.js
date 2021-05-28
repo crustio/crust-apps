@@ -5,8 +5,8 @@
 import { base64Encode } from '@polkadot/util-crypto';
 const MAX_RETRY = 3;
 const RETRY_INTERVAL = 1000;
-const USERNAME = '123';
-const PASSWD = '123'
+const USERNAME = process.env.CSM_CLAIM_USER
+const PASSWD = process.env.CSM_CLAIM_PASSWD
 
 function sleep(ms){
   return new Promise((resolve)=>setTimeout(resolve,ms));
