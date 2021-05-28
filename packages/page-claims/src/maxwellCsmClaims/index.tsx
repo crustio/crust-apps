@@ -272,7 +272,7 @@ function CSMClaims (): React.ReactElement<Props> {
     <main>
       {!isOldClaimProcess && <Warning />}
       <h1>
-        <Trans>Claim your CSM tokens</Trans>
+        <Trans>Claim your <em>CSM</em> tokens</Trans>
       </h1>
       <Columar>
         <Columar.Column>
