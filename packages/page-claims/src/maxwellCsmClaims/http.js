@@ -8,10 +8,6 @@ const RETRY_INTERVAL = 1000;
 const USERNAME = process.env.CSM_CLAIM_USER
 const PASSWD = process.env.CSM_CLAIM_PASSWD
 
-console.log('process.env', process.env)
-console.log('USERNAME', USERNAME)
-console.log('PASSWD', PASSWD)
-
 function sleep(ms){
   return new Promise((resolve)=>setTimeout(resolve,ms));
 }
