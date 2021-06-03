@@ -26,11 +26,13 @@ import Warning from './Warning';
 // @ts-ignore
 import { httpPost } from './http';
 import HttpStatus from './HttpStatus';
+import { formatBalance } from '@polkadot/util';
 
 export { default as useCounter } from '../useCounter';
-import claimPng from '../images/new_claim_addr.png';
+import claimPng from '../images/claim-addr.png';
 
 enum Step {
+  Transfer = -1,
   Account = 0,
   ETHAddress = 1,
   Sign = 2,
@@ -82,7 +84,7 @@ function Claims (): React.ReactElement<Props> {
   const [didCopy, setDidCopy] = useState(false);
   const [ethereumAddress, setEthereumAddress] = useState<string | undefined | null>(null);
   const [signature, setSignature] = useState<EcdsaSignature | null>(null);
-  const [step, setStep] = useState<Step>(Step.Account);
+  const [step, setStep] = useState<Step>(Step.Transfer);
   const [accountId, setAccountId] = useState<string | null>(null);
   const { api, systemChain } = useApi();
   const { t } = useTranslation();
@@ -100,6 +102,7 @@ function Claims (): React.ReactElement<Props> {
   // - `PRECLAIMS_LOADING` if we're fetching the results
   const [preclaimEthereumAddress, setPreclaimEthereumAddress] = useState<string | null | undefined | typeof PRECLAIMS_LOADING>(PRECLAIMS_LOADING);
   const isPreclaimed = !!preclaimEthereumAddress && preclaimEthereumAddress !== PRECLAIMS_LOADING;
+  const claimLimit = useCall<BalanceOf>(api.query.claims.claimLimit);
 
   // Everytime we change account, reset everything, and check if the accountId
   // has a preclaim.
@@ -280,11 +283,20 @@ function Claims (): React.ReactElement<Props> {
           <Card withBottomMargin>
             <h3>{t<string>(`0. Please confirm that you are using your wallet to transfer funds instead of using the exchange transfer`)}</h3>
             <img style={{'marginLeft': 'auto', 'marginRight': 'auto', 'display': 'block' }} src={claimPng as string} />
+            <Button.Group>
+              <Button
+                icon='sign-in-alt'
+                label={t<string>('Continue')}
+                onClick={goToStepAccount}
+              />
+            </Button.Group>
+          </Card>
+          {(step === Step.Account) && (<Card withBottomMargin>
             <h3>{t<string>(`1. Select your {{chain}} account and enter`, {
                 replace: {
                   chain: systemChain
                 }
-              })} <a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CRU')}</a> {t<string>('transfer tx hash')} </h3>
+              })} <a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CRU')}</a> {t<string>('transfer tx hash')}, <span>{t<string>(`The remaining claim limit is `)}<span style={{'color': '#ff8812', 'textDecoration': 'underline', 'fontStyle': 'italic'}}>{formatBalance(claimLimit, { withUnit: 'CRU' })}</span><span>{t<string>(`, If your claim amount is greater than the claim limit, please wait for the limit update`)}</span></span> </h3>
             <InputAddress
               defaultValue={accountId}
               help={t<string>('The account you want to claim to.')}
@@ -303,28 +315,26 @@ function Claims (): React.ReactElement<Props> {
               onChange={onChangeEthereumTxHash}
               placeholder={t<string>('0x prefixed hex, e.g. 0x1234 or ascii data')}
               value={ethereumTxHash || ''}
-            />
-            {(step === Step.Account) && (
-              <Button.Group>
-                <Button
-                  icon='sign-in-alt'
-                  isBusy={isBusy}
-                  isDisabled={preclaimEthereumAddress === PRECLAIMS_LOADING || ethereumTxHash === null || ethereumTxHash === '' || !isValid}
-                  label={preclaimEthereumAddress === PRECLAIMS_LOADING
-                    ? t<string>('Loading')
-                    : t<string>('Continue')
-                  }
-                  onClick={handleAccountStep}
-                />
-              </Button.Group>
-            )}
+            />    
+            <Button.Group>
+              <Button
+                icon='sign-in-alt'
+                isBusy={isBusy}
+                isDisabled={preclaimEthereumAddress === PRECLAIMS_LOADING || ethereumTxHash === null || ethereumTxHash === '' || !isValid}
+                label={preclaimEthereumAddress === PRECLAIMS_LOADING
+                  ? t<string>('Loading')
+                  : t<string>('Continue')
+                }
+                onClick={handleAccountStep}
+              />
+            </Button.Group>   
             <HttpStatus
               isStatusOpen={statusOpen}
               message={result}
               setStatusOpen={setStatusOpen}
               status={status}
             />
-          </Card>
+          </Card>)}
           {
             // We need to know the ethereuem address only for the new process
             // to be able to know the statement kind so that the users can sign it
