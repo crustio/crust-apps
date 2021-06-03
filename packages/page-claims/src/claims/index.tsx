@@ -144,6 +144,8 @@ function Claims (): React.ReactElement<Props> {
 
   const goToStepAccount = useCallback(() => {
     setStep(Step.Account);
+    setEthereumTxHash("");
+    setEthereumTxHashValid(false);
   }, []);
 
   const goToStepSign = useCallback(() => {
@@ -283,15 +285,15 @@ function Claims (): React.ReactElement<Props> {
           <Card withBottomMargin>
             <h3>{t<string>(`0. Please confirm that you are using your wallet to transfer funds instead of using the exchange transfer`)}</h3>
             <img style={{'marginLeft': 'auto', 'marginRight': 'auto', 'display': 'block' }} src={claimPng as string} />
-            <Button.Group>
+            {(step === Step.Transfer) &&(<Button.Group>
               <Button
                 icon='sign-in-alt'
                 label={t<string>('Continue')}
                 onClick={goToStepAccount}
               />
-            </Button.Group>
+            </Button.Group>)}
           </Card>
-          {(step === Step.Account) && (<Card withBottomMargin>
+          {(step >= Step.Account) && (<Card withBottomMargin>
             <h3>{t<string>(`1. Select your {{chain}} account and enter`, {
                 replace: {
                   chain: systemChain
@@ -316,7 +318,7 @@ function Claims (): React.ReactElement<Props> {
               placeholder={t<string>('0x prefixed hex, e.g. 0x1234 or ascii data')}
               value={ethereumTxHash || ''}
             />    
-            <Button.Group>
+            {(step === Step.Account) && (<Button.Group>
               <Button
                 icon='sign-in-alt'
                 isBusy={isBusy}
@@ -327,7 +329,7 @@ function Claims (): React.ReactElement<Props> {
                 }
                 onClick={handleAccountStep}
               />
-            </Button.Group>   
+            </Button.Group>)}   
             <HttpStatus
               isStatusOpen={statusOpen}
               message={result}
