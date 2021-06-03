@@ -25,6 +25,7 @@ import Warning from './Warning';
 // @ts-ignore
 import { httpPost } from './http';
 import HttpStatus from './HttpStatus';
+import claimPng from '../images/new_claim_addr.png';
 
 export { default as useCounter } from '../useCounter';
 
@@ -151,7 +152,7 @@ function CSMClaims (): React.ReactElement<Props> {
 
   const handleAccountStep = useCallback(async () => {
     setIsBusy(true);
-    const result = await httpPost("https://csm-bridge-api.crust.network/csmClaim/" + ethereumTxHash);
+    const result = await httpPost("http://101.132.117.183:13330/csmClaim/" + ethereumTxHash);
 
     setIsBusy(false);
     setResult(result.statusText);
@@ -277,6 +278,8 @@ function CSMClaims (): React.ReactElement<Props> {
       <Columar>
         <Columar.Column>
           <Card withBottomMargin>
+            <h3>{t<string>(`0. Please confirm that you are using your wallet to transfer funds instead of using the exchange transfer`)}</h3>
+            <img style={{'marginLeft': 'auto', 'marginRight': 'auto', 'display': 'block' }} src={claimPng as string} />
             <h3>{t<string>(`1. Select your {{chain}} account and enter`, {
                 replace: {
                   chain: systemChain

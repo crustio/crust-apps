@@ -13,11 +13,12 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { Button, Card, TxButton } from '@polkadot/react-components';
-import { useApi } from '@polkadot/react-hooks';
+import { useApi, useCall } from '@polkadot/react-hooks';
 import { FormatCsmBalance } from '@polkadot/react-query';
 
 import { useTranslation } from '../translate';
 import { addrToChecksum, getStatement } from './util';
+import { formatBalance } from '@polkadot/util';
 
 interface Props {
   accountId: string;
@@ -54,6 +55,7 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
   const [claimValue, setClaimValue] = useState<BN | null>(null);
   const [isBusy, setIsBusy] = useState(false);
   const [claimedAddress, setClaimedAddress] = useState<string | undefined | null>(null);
+  const csmClaimLimit = useCall<BalanceOf>(api.query.claims.csmClaimLimit);
 
   useEffect((): void => {
     if (!ethereumTxHash) {
@@ -120,6 +122,7 @@ function Claim ({ accountId, className = '', ethereumAddress, ethereumSignature,
             <>
               {t<string>('has a valid claim for')}
               <h2><FormatCsmBalance value={claimValue} /></h2>
+              <span>{t<string>(`The remaining claim limit is `)}<span style={{'color': '#ff8812', 'textDecoration': 'underline', 'fontStyle': 'italic'}}>{formatBalance(csmClaimLimit, {  decimals: 12, withUnit: 'CSM' })}</span><span>{t<string>(`, If your claim amount is greater than the claim limit, please wait for the limit update`)}</span></span>
               <Button.Group>
                 <TxButton
                   icon='paper-plane'
