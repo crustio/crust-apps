@@ -18,7 +18,6 @@ import { FormatCsmBalance } from '@polkadot/react-query';
 
 import { useTranslation } from '../translate';
 import { addrToChecksum, getStatement } from './util';
-
 interface Props {
   accountId: string;
   className?: string;
