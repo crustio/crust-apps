@@ -147,6 +147,12 @@ function CSMClaims (): React.ReactElement<Props> {
     setEthereumTxHashValid(false);
   }, []);
 
+  const goToStepTransfer = useCallback(() => {
+    setStep(Step.Transfer);
+    setEthereumTxHash("");
+    setEthereumTxHashValid(false);
+  }, []);
+
   const goToStepSign = useCallback(() => {
     setStep(Step.Sign);
   }, []);
@@ -282,17 +288,17 @@ function CSMClaims (): React.ReactElement<Props> {
       </h1>
       <Columar>
         <Columar.Column>
-          <Card withBottomMargin>
-            <h3>{t<string>(`0. Please confirm that you are using your wallet to transfer funds instead of using the exchange transfer`)}</h3>
+          {(step === Step.Transfer) && (<Card withBottomMargin>
+            <h3><span>{t<string>(`0. Please make sure you have the authority to make signature with the private key of the wallet account, using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss.`)}</span><span style={{ 'fontWeight': 'bold', 'color': 'red' }}>{t<string>(` You are responsible for the consequences!`)}</span></h3>
             <img style={{'marginLeft': 'auto', 'marginRight': 'auto', 'display': 'block', 'width': '360px' }} src={claimPng as string} />
-            {(step === Step.Transfer) && (<Button.Group>
+            <Button.Group>
               <Button
                 icon='sign-in-alt'
                 label={t<string>('Continue')}
                 onClick={goToStepAccount}
               />
-            </Button.Group>)}
-          </Card>
+            </Button.Group>
+          </Card>)}
           {(step >= Step.Account) && (<Card withBottomMargin>
             <h3>{t<string>(`1. Select your {{chain}} account and enter`, {
                 replace: {
@@ -417,7 +423,7 @@ function CSMClaims (): React.ReactElement<Props> {
               ? <AttestDisplay
                 accountId={accountId}
                 ethereumAddress={ethereumAddress}
-                onSuccess={goToStepAccount}
+                onSuccess={goToStepTransfer}
                 statementKind={statementKind}
                 systemChain={systemChain}
               />
@@ -426,7 +432,7 @@ function CSMClaims (): React.ReactElement<Props> {
                 ethereumAddress={ethereumAddress}
                 ethereumSignature={signature}
                 isOldClaimProcess={isOldClaimProcess}
-                onSuccess={goToStepAccount}
+                onSuccess={goToStepTransfer}
                 statementKind={statementKind}
                 ethereumTxHash={ethereumTxHash}
               />
