@@ -51,7 +51,7 @@ function Summary({ }: Props): React.ReactElement<Props> {
 
         <CardSummary
           className='media--1100'
-          label={t<string>('Storage Rewards')}
+          label={t<string>('Storage Data')}
         >
           <Spinner noLabel />
         </CardSummary>
