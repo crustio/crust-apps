@@ -95,6 +95,12 @@ button:focus {outline:0!important;}
   background: url('./nodata.png') no-repeat center center;
   background-size: 600px auto;
 }
+.comingsoon {
+  width: 100%;
+  height: 100vh;
+  background: url('./coming_soon.svg') no-repeat center center;
+  background-size: 600px auto;
+}
 .orderList-header {
   font-size: 14px;
   padding: 10px 0;
