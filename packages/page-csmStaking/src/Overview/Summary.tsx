@@ -26,7 +26,7 @@ function Summary({ }: Props): React.ReactElement<Props> {
       <section>
         <CardSummary
           className='media--1000'
-          label={t<string>('Mining Output')}
+          label={t<string>('Output Rewards')}
         >
           <Spinner noLabel />
         </CardSummary>
