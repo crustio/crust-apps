@@ -12,6 +12,7 @@ import calendar from './calendar';
 import claims from './claims';
 import contracts from './contracts';
 import council from './council';
+import csmStaking from './csmStaking';
 import democracy from './democracy';
 import explorer from './explorer';
 import extrinsics from './extrinsics';
@@ -55,6 +56,7 @@ export default function create (t: TFunction): Routes {
     contracts(t),
     storage(t),
     ipfsFiles(t),
+    csmStaking(t),
     extrinsics(t),
     rpc(t),
     signing(t),

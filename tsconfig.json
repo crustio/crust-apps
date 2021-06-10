@@ -34,6 +34,8 @@
       "@polkadot/app-contracts/*": [ "packages/page-contracts/src/*" ],
       "@polkadot/app-council": [ "packages/page-council/src" ],
       "@polkadot/app-council/*": [ "packages/page-council/src/*" ],
+      "@polkadot/app-csmStaking": [ "packages/page-csmStaking/src" ],
+      "@polkadot/app-csmStaking/*": [ "packages/page-csmStaking/src/*" ],
       "@polkadot/app-democracy": [ "packages/page-democracy/src" ],
       "@polkadot/app-democracy/*": [ "packages/page-democracy/src/*" ],
       "@polkadot/app-extrinsics": [ "packages/page-extrinsics/src" ],
