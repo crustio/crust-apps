@@ -84,7 +84,7 @@ function Claims (): React.ReactElement<Props> {
   const [didCopy, setDidCopy] = useState(false);
   const [ethereumAddress, setEthereumAddress] = useState<string | undefined | null>(null);
   const [signature, setSignature] = useState<EcdsaSignature | null>(null);
-  const [step, setStep] = useState<Step>(Step.Transfer);
+  const [step, setStep] = useState<Step>(Step.Account);
   const [accountId, setAccountId] = useState<string | null>(null);
   const { api, systemChain } = useApi();
   const { t } = useTranslation();
@@ -144,12 +144,6 @@ function Claims (): React.ReactElement<Props> {
 
   const goToStepAccount = useCallback(() => {
     setStep(Step.Account);
-    setEthereumTxHash("");
-    setEthereumTxHashValid(false);
-  }, []);
-
-  const goToStepTransfer = useCallback(() => {
-    setStep(Step.Transfer);
     setEthereumTxHash("");
     setEthereumTxHashValid(false);
   }, []);
@@ -288,18 +282,11 @@ function Claims (): React.ReactElement<Props> {
       </h1>
       <Columar>
         <Columar.Column>
-          {(step === Step.Transfer) && (<Card withBottomMargin>
-            <h3><span>{t<string>(`0. Please make sure you have the authority to make signature with the private key of the wallet account, using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss.`)}</span><span style={{ 'fontWeight': 'bold', 'color': 'red' }}>{t<string>(` You are responsible for the consequences!`)}</span></h3>
-            <img style={{'marginLeft': 'auto', 'marginRight': 'auto', 'display': 'block' }} src={claimPng as string} />
-            <Button.Group>
-              <Button
-                icon='sign-in-alt'
-                label={t<string>('Continue')}
-                onClick={goToStepAccount}
-              />
-            </Button.Group>
-          </Card>)}
-          {(step >= Step.Account) && (<Card withBottomMargin>
+          <Card withBottomMargin>
+            <h3><span style={{"wordWrap": "break-word", "wordBreak": "break-all"}}>{t<string>(`0. Please make sure you have the authority to make signature with the private key of the wallet account `)}<span style={{ 'fontWeight': 'bold' }}>({t<string>('address: ')}<a href='https://etherscan.io/address/0x17a9037cdfb24ffcc13697d03c3bcd4dff34732b' target="_blank">0x17A9037cdFB24FfcC13697d03C3bcd4DFF34732b</a>)</span><span>{t<string>(', using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss.')}</span> <span style={{ 'fontWeight': 'bold', 'color': 'red' }}>{t<string>(` You are responsible for the consequences!`)}</span></span></h3>
+            <img style={{'marginLeft': 'auto', 'marginRight': 'auto', 'display': 'block', "width": "150px" }} src={claimPng as string} />
+          </Card>
+          {(<Card withBottomMargin>
             <h3>{t<string>(`1. Select your {{chain}} account and enter`, {
                 replace: {
                   chain: systemChain
@@ -415,12 +402,13 @@ function Claims (): React.ReactElement<Props> {
           )}
         </Columar.Column>
         <Columar.Column>
+          
           {(step >= Step.Claim) && (
             isPreclaimed
               ? <AttestDisplay
                 accountId={accountId}
                 ethereumAddress={ethereumAddress}
-                onSuccess={goToStepTransfer}
+                onSuccess={goToStepAccount}
                 statementKind={statementKind}
                 systemChain={systemChain}
               />
@@ -429,7 +417,7 @@ function Claims (): React.ReactElement<Props> {
                 ethereumAddress={ethereumAddress}
                 ethereumSignature={signature}
                 isOldClaimProcess={isOldClaimProcess}
-                onSuccess={goToStepTransfer}
+                onSuccess={goToStepAccount}
                 statementKind={statementKind}
                 ethereumTxHash={ethereumTxHash}
               />

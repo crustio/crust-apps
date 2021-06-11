@@ -1492,7 +1492,8 @@
   "Claim CRU": "认领CRU",
   "The remaining claim limit is ": "剩余认领上限为",
   ", If your claim amount is greater than the claim limit, please wait for the limit update": ", 如果你的认领数量大于认领上限, 请等待认领上限更新",
-  "0. Please make sure you have the authority to make signature with the private key of the wallet account, using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss.": "0. 请确认您使用的是带私钥签名权限的钱包(metamask, imtoken等)进行转账，使用交易所账户发起转账(提币)交易, 均会失效, 造成资产损失.",
+  "0. Please make sure you have the authority to make signature with the private key of the wallet account ": "0. 请确认您使用的是带私钥签名权限的钱包(metamask, imtoken等)进行转账 ",
+  ", using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss.": ", 使用交易所账户发起转账(提币)交易, 均会失效, 造成资产损失.",
   " You are responsible for the consequences!": " 后果自负!",
   "nav.csmStaking": "CSM质押",
   "CSM Staking": "CSM质押",
@@ -1502,5 +1503,6 @@
   "Daily Rewards": "每日奖励",
   "Storage Data": "存储文件大小",
   "Effective stake": "总有效质押",
-  "Daily Rewards per 1K CSM": "每1000CSM每日奖励"
+  "Daily Rewards per 1K CSM": "每1000CSM每日奖励",
+  "address: ": "地址: "
 }
