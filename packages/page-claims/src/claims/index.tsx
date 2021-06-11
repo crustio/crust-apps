@@ -283,7 +283,7 @@ function Claims (): React.ReactElement<Props> {
       <Columar>
         <Columar.Column>
           <Card withBottomMargin>
-            <h3><span style={{"color": "red", 'fontWeight': 'bold'}}>{t<string>(`Scan the QR code on the right to transfer.`)}</span></h3>
+            <h3><span style={{"color": "red", 'fontWeight': 'bold'}}>{t<string>(`0. Scan the QR code on the right to transfer.`)}</span></h3>
           </Card>
           {(<Card withBottomMargin>
             <h3>{t<string>(`1. Select your {{chain}} account and enter`, {
