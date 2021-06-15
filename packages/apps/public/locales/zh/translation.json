@@ -1504,5 +1504,6 @@
   "Storage Data": "存储文件大小",
   "Effective stake": "总有效质押",
   "Daily Rewards per 1K CSM": "每1000CSM每日奖励",
-  "address: ": "地址: "
+  "address: ": "地址: ",
+  "Data Power": "数据算力"
 }
