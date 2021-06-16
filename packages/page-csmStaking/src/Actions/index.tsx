@@ -2,10 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint-disable */
 
+import { Button } from '@polkadot/react-components';
 import type { ActionStatus } from '@polkadot/react-components/Status/types';
 
 import React, {  } from 'react';
 import styled from 'styled-components';
+import NewDataGuarantor from './NewDataGuarantor';
+import NewDataMiner from './NewDataMiner';
 
 interface Props {
   className?: string;
@@ -16,7 +19,15 @@ interface Props {
 function Actions ({ }: Props): React.ReactElement<Props> {
   
   return (
-    <div className={'comingsoon'}/>
+    <div>
+
+      <Button.Group>
+        <NewDataGuarantor />
+        <NewDataMiner />
+      </Button.Group>
+      <div className={'comingsoon'}/>
+    </div>
+
   );
 }
 

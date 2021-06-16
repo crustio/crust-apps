@@ -20,7 +20,7 @@ function Overview ({ }: Props): React.ReactElement<Props> {
   return (<>
     {/* <div className={'promotional'}/> */}
     <img src={promotional as string} style={{ "marginRight":"auto", 'textAlign': 'center', 'display': 'block'}}></img>
-    <Summary></Summary>
+    <Summary />
     <div className={'comingsoon'}/>
   </>
   );
