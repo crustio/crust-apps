@@ -2,13 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint-disable */
 
-import { Button } from '@polkadot/react-components';
+import { useTranslation } from '@polkadot/apps/translate';
+import { Button, Table } from '@polkadot/react-components';
 import type { ActionStatus } from '@polkadot/react-components/Status/types';
 
-import React, {  } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
+import NewBond from './NewBond';
 import NewDataGuarantor from './NewDataGuarantor';
 import NewDataMiner from './NewDataMiner';
+import { miners } from './mock';
+import { useAccounts } from '@polkadot/react-hooks';
+import Account from './Account';
 
 interface Props {
   className?: string;
@@ -17,15 +22,36 @@ interface Props {
 
 
 function Actions ({ }: Props): React.ReactElement<Props> {
-  
+  const { t } = useTranslation();
+  const { allAccounts, hasAccounts } = useAccounts();
+  const headerRef = useRef([
+    [t('addresses'), 'address'],
+    [t('effective csm'), 'number'],
+    [t('total rewards'), 'number'],
+    [t('predice csm'), 'number'],
+    [t('role'), 'number'],
+    [undefined, undefined, 2]
+  ]);
+
   return (
     <div>
-
       <Button.Group>
         <NewDataGuarantor />
         <NewDataMiner />
+        <NewBond />
       </Button.Group>
-      <div className={'comingsoon'}/>
+      {/* <div className={'comingsoon'}/> */}
+      <Table
+        empty={hasAccounts && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
+        header={headerRef.current}
+      >
+        {miners?.map((info): React.ReactNode => (
+          <Account
+            info={info}
+            targets={miners}
+          />
+        ))}
+      </Table>
     </div>
 
   );

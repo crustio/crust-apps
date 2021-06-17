@@ -16,6 +16,6 @@ export default function create (t: TFunction): Route {
     group: 'csmStaking',
     icon: '500px',
     name: 'csmStaking',
-    text: t('nav.csmStaking', 'CSM Staking', { ns: 'apps-routing' })
+    text: t('nav.csmStaking', 'Profit Data', { ns: 'apps-routing' })
   };
 }
