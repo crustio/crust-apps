@@ -26,7 +26,7 @@ interface Props {
     className?: string;
     isDisabled?: boolean;
     info: StakerState;
-    miners: any[];
+    accounts: any[];
 }
 
 export interface Guarantee extends Codec {
@@ -36,10 +36,9 @@ export interface Guarantee extends Codec {
     suppressed: boolean;
 }
 
-function Account({ className = '', info: { accountId, effectiveCsm, totalReward, predictCsm }, isDisabled, miners }: Props): React.ReactElement<Props> {
+function Account({ className = '', info: { accountId, effectiveCsm, totalReward, predictCsm }, isDisabled, accounts }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
     const { api } = useApi();
-    console.log('miners', miners)
     const [isSetPrefOpen, toggleSetPref] = useToggle();
     const [isGuaranteeOpen, toggleGuarantee] = useToggle();
 

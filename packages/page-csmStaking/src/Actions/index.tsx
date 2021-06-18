@@ -10,8 +10,8 @@ import React, { useRef } from 'react';
 import styled from 'styled-components';
 import NewBond from './NewBond';
 import NewDataGuarantor from './NewDataGuarantor';
-import NewDataMiner from './NewDataMiner';
-import { miners } from './mock';
+import NewDataDepositor from './NewDataDepositor';
+import { accounts } from './mock';
 import { useAccounts } from '@polkadot/react-hooks';
 import Account from './Account';
 
@@ -37,7 +37,7 @@ function Actions ({ }: Props): React.ReactElement<Props> {
     <div>
       <Button.Group>
         <NewDataGuarantor />
-        <NewDataMiner />
+        <NewDataDepositor />
         <NewBond />
       </Button.Group>
       {/* <div className={'comingsoon'}/> */}
@@ -45,10 +45,10 @@ function Actions ({ }: Props): React.ReactElement<Props> {
         empty={hasAccounts && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
         header={headerRef.current}
       >
-        {miners?.map((info): React.ReactNode => (
+        {accounts?.map((info): React.ReactNode => (
           <Account
             info={info}
-            targets={miners}
+            targets={accounts}
           />
         ))}
       </Table>

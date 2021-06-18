@@ -19,7 +19,7 @@ interface Props {
 
 const NUM_STEPS = 2;
 
-function NewDataMiner ({ isInElection }: Props): React.ReactElement<Props> {
+function NewDataDepositor ({ isInElection }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [isVisible, toggleVisible] = useToggle();
@@ -119,4 +119,4 @@ function NewDataMiner ({ isInElection }: Props): React.ReactElement<Props> {
   );
 }
 
-export default React.memo(NewDataMiner);
+export default React.memo(NewDataDepositor);

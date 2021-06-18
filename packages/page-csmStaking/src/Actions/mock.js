@@ -1,4 +1,4 @@
-export const miners = [{
+export const accounts = [{
     accountId: '5ETqRiniPcSWMNSGfxfpW8zBcxUFxWZ77QwbtnA5pegS3CwJ',
     effectiveCsm: '120 csm',
     totalReward: '10 cru',
