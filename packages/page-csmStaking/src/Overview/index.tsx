@@ -9,12 +9,12 @@ import React, { useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
 import promotional from '../images/promotional.png';
 import Summary from './Summary';
-import { dataDepositors } from './mock';
+import { dataProviders } from './mock';
 import { Table } from '@polkadot/react-components';
 import { useLoadingDelay, useSavedFlags } from '@polkadot/react-hooks';
 import Filtering from '@polkadot/app-staking/Filtering';
-import DataDepositor from './DataDepositor';
-import { DataDepositorState } from './types';
+import DataProvider from './DataProvider';
+import { DataProviderState } from './types';
 
 interface Props {
   className?: string;
@@ -38,9 +38,9 @@ function Overview ({ }: Props): React.ReactElement<Props> {
   ]);
 
   const _renderRows = useCallback(
-    (addresses?: DataDepositorState[]): React.ReactNode[] =>
+    (addresses?: DataProviderState[]): React.ReactNode[] =>
       (addresses || []).map((info): React.ReactNode => (
-        <DataDepositor
+        <DataProvider
           info={info}
           filterName={nameFilter}
           withIdentity={toggles.withIdentity}
@@ -64,7 +64,7 @@ function Overview ({ }: Props): React.ReactElement<Props> {
           />
         }
       >
-        {isLoading ? undefined : _renderRows(dataDepositors)}
+        {isLoading ? undefined : _renderRows(dataProviders)}
       </Table>
   </>
   );

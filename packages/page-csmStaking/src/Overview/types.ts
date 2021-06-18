@@ -1,4 +1,4 @@
-export interface DataDepositorState {
+export interface DataProviderState {
     accountId: string;
     storageData: string,
     csmLimit: string,

@@ -1,4 +1,4 @@
-export const dataDepositors = [{
+export const dataProviders = [{
     accountId: '5ETqRiniPcSWMNSGfxfpW8zBcxUFxWZ77QwbtnA5pegS3CwJ',
     storageData: '120 gb',
     csmLimit: '10 cru',

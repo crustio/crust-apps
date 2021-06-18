@@ -10,10 +10,10 @@ import React, { useRef } from 'react';
 import styled from 'styled-components';
 import NewBond from './NewBond';
 import NewDataGuarantor from './NewDataGuarantor';
-import NewDataDepositor from './NewDataDepositor';
 import { accounts } from './mock';
 import { useAccounts } from '@polkadot/react-hooks';
 import Account from './Account';
+import NewDataProvider from './NewDataProvider';
 
 interface Props {
   className?: string;
@@ -37,7 +37,7 @@ function Actions ({ }: Props): React.ReactElement<Props> {
     <div>
       <Button.Group>
         <NewDataGuarantor />
-        <NewDataDepositor />
+        <NewDataProvider />
         <NewBond />
       </Button.Group>
       {/* <div className={'comingsoon'}/> */}

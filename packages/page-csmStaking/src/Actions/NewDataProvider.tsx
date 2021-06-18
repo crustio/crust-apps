@@ -19,7 +19,7 @@ interface Props {
 
 const NUM_STEPS = 2;
 
-function NewDataDepositor ({ isInElection }: Props): React.ReactElement<Props> {
+function NewDataprovider ({ isInElection }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [isVisible, toggleVisible] = useToggle();
@@ -53,13 +53,13 @@ function NewDataDepositor ({ isInElection }: Props): React.ReactElement<Props> {
       <Button
         icon='plus'
         isDisabled={isDisabled}
-        key='new-data-depositor'
-        label={t<string>('Data depositor')}
+        key='new-data-provider'
+        label={t<string>('Data provider')}
         onClick={_toggle}
       />
       {isVisible && (
         <Modal
-          header={t<string>('Setup Data depositor {{step}}/{{NUM_STEPS}}', {
+          header={t<string>('Setup Data provider {{step}}/{{NUM_STEPS}}', {
             replace: {
               NUM_STEPS,
               step
@@ -119,4 +119,4 @@ function NewDataDepositor ({ isInElection }: Props): React.ReactElement<Props> {
   );
 }
 
-export default React.memo(NewDataDepositor);
+export default React.memo(NewDataprovider);

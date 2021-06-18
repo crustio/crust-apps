@@ -13,14 +13,14 @@ import { useApi, useCall } from '@polkadot/react-hooks';
 import { Compact } from '@polkadot/types/codec';
 import { Codec } from '@polkadot/types/types';
 import { useTranslation } from '@polkadot/apps/translate';
-import { DataDepositorState } from './types';
+import { DataProviderState } from './types';
 import { checkVisibility } from '@polkadot/react-components/util';
 
 
 interface Props {
     className?: string;
     isDisabled?: boolean;
-    info: DataDepositorState;
+    info: DataProviderState;
     filterName: string;
     withIdentity: boolean;
 }
@@ -32,7 +32,7 @@ export interface Guarantee extends Codec {
     suppressed: boolean;
 }
 
-function DataDepositor({ className = '', filterName, withIdentity, info: { accountId, storageData, csmLimit, totalStake, guaranteeFee } }: Props): React.ReactElement<Props> | null {
+function DataProvider({ className = '', filterName, withIdentity, info: { accountId, storageData, csmLimit, totalStake, guaranteeFee } }: Props): React.ReactElement<Props> | null {
     const { t } = useTranslation();
     const { api } = useApi();
     const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, [accountId]);
@@ -66,7 +66,7 @@ function DataDepositor({ className = '', filterName, withIdentity, info: { accou
     );
 }
 
-export default React.memo(styled(DataDepositor)`
+export default React.memo(styled(DataProvider)`
   .ui--Button-Group {
     display: inline-block;
     margin-right: 0.25rem;
