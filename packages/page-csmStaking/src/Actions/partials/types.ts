@@ -8,6 +8,11 @@ export interface BondInfo {
   accountId?: string | null;
 }
 
+export interface UnbondInfo {
+  unbondTx?: SubmittableExtrinsic<'promise'> | null;
+  accountId?: string | null;
+}
+
 export interface AmountValidateState {
   error: string | null;
   warning: string | null;

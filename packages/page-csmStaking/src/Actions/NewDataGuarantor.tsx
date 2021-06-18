@@ -53,7 +53,7 @@ function NewDataGuarantor ({ isInElection }: Props): React.ReactElement<Props> {
       <Button
         icon='plus'
         isDisabled={isDisabled}
-        key='new-data-miner'
+        key='new-data-guarantor'
         label={t<string>('Data Guarantor')}
         onClick={_toggle}
       />

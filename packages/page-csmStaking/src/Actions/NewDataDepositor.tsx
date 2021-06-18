@@ -53,13 +53,13 @@ function NewDataDepositor ({ isInElection }: Props): React.ReactElement<Props> {
       <Button
         icon='plus'
         isDisabled={isDisabled}
-        key='new-data-miner'
-        label={t<string>('Data miner')}
+        key='new-data-depositor'
+        label={t<string>('Data depositor')}
         onClick={_toggle}
       />
       {isVisible && (
         <Modal
-          header={t<string>('Setup Data miner {{step}}/{{NUM_STEPS}}', {
+          header={t<string>('Setup Data depositor {{step}}/{{NUM_STEPS}}', {
             replace: {
               NUM_STEPS,
               step

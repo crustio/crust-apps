@@ -1,7 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { AmountValidateState, BondInfo } from './types';
+import type { AmountValidateState, UnbondInfo } from './types';
 
 import BN from 'bn.js';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -14,42 +14,29 @@ import { useTranslation } from '@polkadot/apps/translate';
 
 interface Props {
   className?: string;
-  isNominating?: boolean;
-  minNomination?: BN;
-  onChange: (info: BondInfo) => void;
+  accountId: string | null | undefined;
+  onChange: (info: UnbondInfo) => void;
+  withSenders?: boolean;
 }
 
 const EMPTY_INFO = {
-  bondTx: null,
-  accountId: null
+  unbondTx: null,
+  accountId: null,
 };
 
-function Bond({ className = '', onChange }: Props): React.ReactElement<Props> {
+function Bond({ className = '', accountId, onChange, withSenders }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>();
   const [amountError, setAmountError] = useState<AmountValidateState | null>(null);
-  const [accountId, setAccountId] = useState<string | null>(null);
   const [startBalance, setStartBalance] = useState<BN | null>(null);
   const accountBalance = useCall<any>(api.query.csm.account, [accountId]);
-  const { allAccounts, hasAccounts } = useAccounts();
-  
-  // TODO: change to get from jk's api
-  const accountsAlreadyHasRole = ['5CD8zuY5jDFUFh2eyKcyA63LedEKhy8NckVyztJvVRdQ4PCy'];
-
-  // TODO: change to get from jk's api
-  const available = ['5CD8zuY5jDFUFh2eyKcyA63LedEKhy8NckVyztJvVRdQ4PCy'];
-  const accounts = useMemo(
-    () => (allAccounts || []).filter(accountId => !accountsAlreadyHasRole.includes(accountId)),
-    [allAccounts]
-  );
-
 
   useEffect((): void => {
     onChange(
       (amount && amount.gtn(0) && !amountError?.error && accountId)
         ? {
-          bondTx: api.tx.csmLocking.bond(amount),
+          unbondTx: api.tx.csmLocking.unbond(amount),
           accountId
         }
         : EMPTY_INFO
@@ -72,15 +59,13 @@ function Bond({ className = '', onChange }: Props): React.ReactElement<Props> {
 
   return (
     <div className={className}>
-      <Modal.Columns>
+      {withSenders &&(<Modal.Columns>
         <InputAddress
           label={t<string>('account')}
-          filter={accounts}
-          onChange={setAccountId}
           type='account'
           value={accountId}
         />
-      </Modal.Columns>
+      </Modal.Columns>)}
       {startBalance && (
         <Modal.Columns>
           <InputCsmBalance
@@ -89,7 +74,7 @@ function Bond({ className = '', onChange }: Props): React.ReactElement<Props> {
             help={t<string>('')}
             isError={!hasValue || !!amountError?.error}
             onError={setAmountError}
-            label={t<string>('value bonded')}
+            label={t<string>('value unbonded')}
             labelExtra={
               <CsmFree
                 label={<span className='label'>{t<string>('balance')}</span>}

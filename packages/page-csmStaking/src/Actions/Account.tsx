@@ -20,6 +20,7 @@ import { useTranslation } from '@polkadot/apps/translate';
 import { StakerState } from './partials/types';
 import Guarantee from './Guarantee';
 import GuaranteePref from './GuaranteePref';
+import UnbondFounds from './UnbondFounds';
 
 
 interface Props {
@@ -41,6 +42,19 @@ function Account({ className = '', info: { accountId, effectiveCsm, totalReward,
     const { api } = useApi();
     const [isSetPrefOpen, toggleSetPref] = useToggle();
     const [isGuaranteeOpen, toggleGuarantee] = useToggle();
+    const [isSettingsOpen, toggleSettings] = useToggle();
+    const [isUnbondOpen, toggleUnbond] = useToggle();
+    const { queueExtrinsic } = useContext(StatusContext);
+
+    const withdrawFunds = useCallback(
+        () => {
+          queueExtrinsic({
+            accountId,
+            extrinsic: api.tx.csmLocking.withdrawUnbonded()
+          });
+        },
+        [api, accountId, queueExtrinsic]
+      );
 
     const [role, setRole] = useState<string>('Bonded');
 
@@ -56,6 +70,12 @@ function Account({ className = '', info: { accountId, effectiveCsm, totalReward,
                 <GuaranteePref
                     accountId={accountId}
                     onClose={toggleSetPref}
+                />
+            )}
+            {isUnbondOpen && accountId && (
+                <UnbondFounds
+                    accountId={accountId}
+                    onClose={toggleUnbond}
                 />
             )}
             <td className='address'>
@@ -96,7 +116,7 @@ function Account({ className = '', info: { accountId, effectiveCsm, totalReward,
                                 </Button.Group>
                             )
                         }
-                        {/* <Popup
+                        <Popup
                             isOpen={isSettingsOpen}
                             key='settings'
                             onClose={toggleSettings}
@@ -113,22 +133,16 @@ function Account({ className = '', info: { accountId, effectiveCsm, totalReward,
                                 text
                                 vertical
                             >
-                                Bond
-                <Menu.Divider />
-                                {
-                                    (role !== 'Bonded' && role != 'Guarantor') ? <>
-                                        {'Validate'}
-
-                                        {
-                                            <Menu.Item onClick={toggleInject}>
-                                                {t<string>('Inject session keys (advanced)')}
-                                            </Menu.Item>
-                                        }
-
-                                    </> : null
-                                }
+                                <Menu.Item onClick={toggleUnbond}>
+                                    {t<string>('Unbond founds')}
+                                </Menu.Item>
+                                <Menu.Item
+                                    onClick={withdrawFunds}
+                                >
+                                    {t<string>('Withdraw unbonded funds')}
+                                </Menu.Item>
                             </Menu>
-                        </Popup> */}
+                        </Popup>
                     </>
                 }
             </td>
