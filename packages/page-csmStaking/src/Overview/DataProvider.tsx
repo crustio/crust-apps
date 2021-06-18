@@ -32,7 +32,7 @@ export interface Guarantee extends Codec {
     suppressed: boolean;
 }
 
-function DataProvider({ className = '', filterName, withIdentity, info: { accountId, storageData, csmLimit, totalStake, guaranteeFee } }: Props): React.ReactElement<Props> | null {
+function DataProvider({ className = '', filterName, withIdentity, info: { accountId, storageData, csmLimit, totalStake, guaranteeFee, effectiveStake } }: Props): React.ReactElement<Props> | null {
     const { t } = useTranslation();
     const { api } = useApi();
     const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, [accountId]);
@@ -55,6 +55,9 @@ function DataProvider({ className = '', filterName, withIdentity, info: { accoun
             </td>
             <td className='number'>
                 {csmLimit}
+            </td>
+            <td className='number'>
+                {effectiveStake}
             </td>
             <td className='number'>
                 {totalStake}

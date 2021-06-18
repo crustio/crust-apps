@@ -4,4 +4,5 @@ export interface DataProviderState {
     csmLimit: string,
     totalStake: string,
     guaranteeFee: string
+    effectiveStake: string,
 }

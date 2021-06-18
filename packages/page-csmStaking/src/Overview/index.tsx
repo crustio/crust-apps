@@ -33,7 +33,8 @@ function Overview ({ }: Props): React.ReactElement<Props> {
     [t('addresses'), 'address'],
     [t('storage data'), 'number'],
     [t('csm limit'), 'number'],
-    [t('total stake'), 'number'],
+    [t('effective stakes'), 'number'],
+    [t('total stakes'), 'number'],
     [t('csm guarantee fee'), 'number']
   ]);
 

@@ -52,6 +52,18 @@ function Actions ({ }: Props): React.ReactElement<Props> {
           />
         ))}
       </Table>
+
+      <Table
+        empty={hasAccounts && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
+        header={headerRef.current}
+      >
+        {accounts?.map((info): React.ReactNode => (
+          <Account
+            info={info}
+            targets={accounts}
+          />
+        ))}
+      </Table>
     </div>
 
   );
