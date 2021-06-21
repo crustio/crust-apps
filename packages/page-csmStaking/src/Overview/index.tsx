@@ -5,7 +5,7 @@
 import { useTranslation } from '@polkadot/apps/translate';
 import type { ActionStatus } from '@polkadot/react-components/Status/types';
 
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import promotional from '../images/promotional.png';
 import Summary from './Summary';
@@ -15,7 +15,7 @@ import { useLoadingDelay, useSavedFlags } from '@polkadot/react-hooks';
 import Filtering from '@polkadot/app-staking/Filtering';
 import DataProvider from './DataProvider';
 import { DataProviderState } from './types';
-import CountDown from './CountDown';
+import { httpGet } from '../http';
 
 interface Props {
   className?: string;
@@ -29,6 +29,11 @@ function Overview({ }: Props): React.ReactElement<Props> {
   const [nameFilter, setNameFilter] = useState<string>('');
   const [toggles, setToggle] = useSavedFlags('csmStaking:overview', { withIdentity: false });
 
+  useEffect(() => {
+    httpGet('http://crust-sg1.ownstack.cn:8866/overview/1800').then(res => {
+      console.log('res', res)
+    })
+  }, [])
 
   const headerRef = useRef([
     [t('addresses'), 'address'],
@@ -54,7 +59,6 @@ function Overview({ }: Props): React.ReactElement<Props> {
   return (<>
     <img src={promotional as string} style={{ "marginRight": "auto", 'textAlign': 'center', 'display': 'block' }}></img>
     <Summary />
-    <CountDown />
     <Table
       empty={!isLoading && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
       header={headerRef.current}
