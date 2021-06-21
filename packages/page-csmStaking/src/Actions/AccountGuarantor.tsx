@@ -17,27 +17,22 @@ import { Compact } from '@polkadot/types/codec';
 import { Codec } from '@polkadot/types/types';
 import { BN_ZERO, formatNumber, isFunction } from '@polkadot/util';
 import { useTranslation } from '@polkadot/apps/translate';
-import { StakerState } from './partials/types';
+import { GuarantorState } from './partials/types';
 import Guarantee from './Guarantee';
 import GuaranteePref from './GuaranteePref';
 import UnbondFounds from './UnbondFounds';
-
+import { FormatCapacity, FormatCsmBalance ,FormatBalance } from '@polkadot/react-query';
 
 interface Props {
     className?: string;
     isDisabled?: boolean;
-    info: StakerState;
+    info: GuarantorState;
     accounts: any[];
 }
 
-export interface Guarantee extends Codec {
-    targets: IndividualExposure[];
-    total: Compact<Balance>;
-    submitted_in: number;
-    suppressed: boolean;
-}
+const UNIT = new BN(1_000_000_00_000);
 
-function Account({ className = '', info: { accountId, effectiveCsm, totalReward, predictCsm }, isDisabled, accounts }: Props): React.ReactElement<Props> {
+function Account({ className = '', info: { account, effectiveCsm, totalRewards, pendingRewards, role }, isDisabled, accounts }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
     const { api } = useApi();
     const [isSetPrefOpen, toggleSetPref] = useToggle();
@@ -45,54 +40,57 @@ function Account({ className = '', info: { accountId, effectiveCsm, totalReward,
     const [isSettingsOpen, toggleSettings] = useToggle();
     const [isUnbondOpen, toggleUnbond] = useToggle();
     const { queueExtrinsic } = useContext(StatusContext);
+    const [ totalCSM, setTotalCSM ] = useState<BN>(BN_ZERO);
+
+    useEffect(() => {
+        api.query.csmLocking.ledger(account)
+        .then(res => setTotalCSM(JSON.parse(JSON.stringify(res)).active))
+    }, [api, account])
 
     const withdrawFunds = useCallback(
         () => {
           queueExtrinsic({
-            accountId,
+            accountId: account,
             extrinsic: api.tx.csmLocking.withdrawUnbonded()
           });
         },
-        [api, accountId, queueExtrinsic]
+        [api, account, queueExtrinsic]
       );
-
-    const [role, setRole] = useState<string>('Bonded');
 
     return (
         <tr className={className}>
-            {isGuaranteeOpen && accountId && (
+            {isGuaranteeOpen && account && (
                 <Guarantee
-                    accountId={accountId}
+                    accountId={account}
                     onClose={toggleGuarantee}
                 />
             )}
-            {isSetPrefOpen && accountId && (
+            {isSetPrefOpen && account && (
                 <GuaranteePref
-                    accountId={accountId}
+                    accountId={account}
                     onClose={toggleSetPref}
                 />
             )}
-            {isUnbondOpen && accountId && (
+            {isUnbondOpen && account && (
                 <UnbondFounds
-                    accountId={accountId}
+                    accountId={account}
                     onClose={toggleUnbond}
                 />
             )}
             <td className='address'>
-                <AddressSmall value={accountId} />
+                <AddressSmall value={account} />
             </td>
 
             <td className='number'>
-                {effectiveCsm}
+                <FormatCsmBalance value={totalCSM} />
             </td>
             <td className='number'>
-                {totalReward}
+                <FormatBalance value={UNIT.muln(totalRewards)} />
             </td>
             <td className='number'>
-                {predictCsm}
+                <FormatBalance value={UNIT.muln(pendingRewards)} />
             </td>
 
-            <td className='number'>{t<string>('{{role}}', { replace: { role: role } })}</td>
             <td className='button'>
                 {
                     <>

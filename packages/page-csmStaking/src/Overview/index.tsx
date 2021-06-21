@@ -8,14 +8,14 @@ import type { ActionStatus } from '@polkadot/react-components/Status/types';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import promotional from '../images/promotional.png';
-import Summary from './Summary';
+import Summary, { SummaryInfo } from './Summary';
 import { dataProviders } from './mock';
 import { Table } from '@polkadot/react-components';
 import { useLoadingDelay, useSavedFlags } from '@polkadot/react-hooks';
 import Filtering from '@polkadot/app-staking/Filtering';
 import DataProvider from './DataProvider';
 import { DataProviderState } from './types';
-import { httpGet } from '../http';
+import { httpGet, httpPost } from '../http';
 
 interface Props {
   className?: string;
@@ -25,23 +25,37 @@ interface Props {
 function Overview({ }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   // we have a very large list, so we use a loading delay
-  const isLoading = useLoadingDelay();
+  const [isLoading, setIsloading] = useState<boolean>(true);
   const [nameFilter, setNameFilter] = useState<string>('');
   const [toggles, setToggle] = useSavedFlags('csmStaking:overview', { withIdentity: false });
+  const [providers, setProviders] = useState<DataProviderState[]>([]);
+  const [ summaryInfo, setSummaryInfo ] = useState<SummaryInfo | null>();
 
   useEffect(() => {
     httpGet('http://crust-sg1.ownstack.cn:8866/overview/1800').then(res => {
       console.log('res', res)
-    })
+      setProviders(res?.statusText.providers)
+      setSummaryInfo({
+        calculatedRewards: res?.statusText.calculatedRewards,
+        totalEffectiveStakes: res?.statusText.totalEffectiveStakes,
+        dataPower: res?.statusText.dataPower
+      })
+      setIsloading(false)
+    }).catch(() => setIsloading(true))
+  //   httpPost('http://crust-sg1.ownstack.cn:8866/accounts', {
+  //     accounts: ["5EJPtyWs9M3vEVGjcyjTMeGQEsnowwouZAUnFVUmdjJyPpBM", "5F9BYd21i2p6UL4j4CGZ6kFEBqnzyBuH6Tw6rGxhZsVg3e3q"]
+  // }).then((res: any) => {
+  //     console.log('res', res)
+  //   })
   }, [])
 
   const headerRef = useRef([
     [t('addresses'), 'address'],
-    [t('storage data'), 'number'],
+    [t('data size'), 'number'],
     [t('csm limit'), 'number'],
     [t('effective stakes'), 'number'],
     [t('total stakes'), 'number'],
-    [t('csm guarantee fee'), 'number']
+    [t('guarantee fee'), 'number']
   ]);
 
   const _renderRows = useCallback(
@@ -58,7 +72,7 @@ function Overview({ }: Props): React.ReactElement<Props> {
 
   return (<>
     <img src={promotional as string} style={{ "marginRight": "auto", 'textAlign': 'center', 'display': 'block' }}></img>
-    <Summary />
+    <Summary info={summaryInfo} />
     <Table
       empty={!isLoading && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
       header={headerRef.current}
@@ -71,7 +85,7 @@ function Overview({ }: Props): React.ReactElement<Props> {
         />
       }
     >
-      {isLoading ? undefined : _renderRows(dataProviders)}
+      {isLoading ? undefined : _renderRows(providers)}
     </Table>
   </>
   );

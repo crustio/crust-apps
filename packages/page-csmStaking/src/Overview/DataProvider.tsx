@@ -14,6 +14,8 @@ import { Compact } from '@polkadot/types/codec';
 import { Codec } from '@polkadot/types/types';
 import { DataProviderState } from './types';
 import { checkVisibility } from '@polkadot/react-components/util';
+import { FormatCapacity, FormatCsmBalance ,FormatBalance } from '@polkadot/react-query';
+import BN from 'bn.js';
 
 interface Props {
     className?: string;
@@ -30,12 +32,14 @@ export interface Guarantee extends Codec {
     suppressed: boolean;
 }
 
-function DataProvider({ className = '', filterName, withIdentity, info: { accountId, storageData, csmLimit, totalStake, guaranteeFee, effectiveStake } }: Props): React.ReactElement<Props> | null {
+const UNIT = new BN(1_000_000_00_000);
+
+function DataProvider({ className = '', filterName, withIdentity, info: { account, storage, csmLimit, stakedCSM, guaranteeFee, effectiveCSM } }: Props): React.ReactElement<Props> | null {
     const { api } = useApi();
-    const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, [accountId]);
+    const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, [account]);
     const isVisible = useMemo(
-        () => accountInfo ? checkVisibility(api, accountId, accountInfo, filterName, withIdentity) : true,
-        [api, accountId, filterName, withIdentity]
+        () => accountInfo ? checkVisibility(api, account, accountInfo, filterName, withIdentity) : true,
+        [api, account, filterName, withIdentity]
     );
 
     if (!isVisible) {
@@ -45,22 +49,22 @@ function DataProvider({ className = '', filterName, withIdentity, info: { accoun
     return (
         <tr className={className}>
             <td className='address'>
-                <AddressSmall value={accountId} />
+                <AddressSmall value={account} />
             </td>
             <td className='number'>
-                {storageData}
+                <FormatCapacity value={storage} />
             </td>
             <td className='number'>
-                {csmLimit}
+                <FormatCsmBalance value={UNIT.muln(csmLimit)}/>
             </td>
             <td className='number'>
-                {effectiveStake}
+                <FormatCsmBalance value={UNIT.muln(effectiveCSM)}/>
             </td>
             <td className='number'>
-                {totalStake}
+                <FormatCsmBalance value={UNIT.muln(stakedCSM)}/>
             </td>
             <td className='number'>
-                {guaranteeFee}
+                {guaranteeFee * 100 + "%"}
             </td>
         </tr>
     );

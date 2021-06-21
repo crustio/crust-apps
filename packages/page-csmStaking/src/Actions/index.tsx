@@ -6,14 +6,18 @@ import { useTranslation } from '@polkadot/apps/translate';
 import { Button, Table } from '@polkadot/react-components';
 import type { ActionStatus } from '@polkadot/react-components/Status/types';
 
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import NewBond from './NewBond';
 import NewDataGuarantor from './NewDataGuarantor';
 import { accounts } from './mock';
 import { useAccounts } from '@polkadot/react-hooks';
-import Account from './Account';
+import AccountProvider from './AccountProvider';
+import AccountGuarantor from './AccountGuarantor';
 import NewDataProvider from './NewDataProvider';
+import { httpPost } from '../http';
+import lodash from 'lodash';
+import { ProviderState, GuarantorState } from './partials/types';
 
 interface Props {
   className?: string;
@@ -24,12 +28,42 @@ interface Props {
 function Actions ({ }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { allAccounts, hasAccounts } = useAccounts();
-  const headerRef = useRef([
-    [t('addresses'), 'address'],
-    [t('effective csm'), 'number'],
+  const [providers, setProviders ] = useState<ProviderState[]>([]);
+  const [guarantors, setGuarantors ] = useState<GuarantorState[]>([]);
+
+  useEffect(() => {
+    httpPost('http://crust-sg1.ownstack.cn:8866/accounts', {
+      accounts: ["5EJPtyWs9M3vEVGjcyjTMeGQEsnowwouZAUnFVUmdjJyPpBM", "5F9BYd21i2p6UL4j4CGZ6kFEBqnzyBuH6Tw6rGxhZsVg3e3q"].concat(allAccounts)
+  }).then((res: any) => {
+      console.log('res', res)
+      const group = lodash.groupBy(res.statusText, 'role');
+      Object.keys(group).forEach(role => {
+        console.log('role', )
+        if (role == 'Provider') {
+          setProviders(group[role])
+        }
+        if (role == 'Guarantor') {
+          setGuarantors(group[role])
+        }
+      })
+
+      console.log('group', group)
+    })
+  }, [allAccounts])
+
+  const porviderHeaderRef = useRef([
+    [t('providers'), 'address'],
+    [t('total csm'), 'number'],
     [t('total rewards'), 'number'],
-    [t('predice csm'), 'number'],
-    [t('role'), 'number'],
+    [t('pending rewards'), 'number'],
+    [undefined, undefined, 2]
+  ]);
+
+  const guarantorHeaderRef = useRef([
+    [t('guarantors'), 'address'],
+    [t('total csm'), 'number'],
+    [t('total rewards'), 'number'],
+    [t('pending rewards'), 'number'],
     [undefined, undefined, 2]
   ]);
 
@@ -43,10 +77,10 @@ function Actions ({ }: Props): React.ReactElement<Props> {
       {/* <div className={'comingsoon'}/> */}
       <Table
         empty={hasAccounts && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
-        header={headerRef.current}
+        header={porviderHeaderRef.current}
       >
-        {accounts?.map((info): React.ReactNode => (
-          <Account
+        {providers?.map((info): React.ReactNode => (
+          <AccountProvider
             info={info}
             targets={accounts}
           />
@@ -55,10 +89,10 @@ function Actions ({ }: Props): React.ReactElement<Props> {
 
       <Table
         empty={hasAccounts && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
-        header={headerRef.current}
+        header={guarantorHeaderRef.current}
       >
-        {accounts?.map((info): React.ReactNode => (
-          <Account
+        {guarantors?.map((info): React.ReactNode => (
+          <AccountGuarantor
             info={info}
             targets={accounts}
           />

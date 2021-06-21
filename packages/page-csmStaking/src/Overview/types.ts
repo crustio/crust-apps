@@ -1,8 +1,8 @@
 export interface DataProviderState {
-    accountId: string;
-    storageData: string,
-    csmLimit: string,
-    totalStake: string,
-    guaranteeFee: string
-    effectiveStake: string,
+    account: string;
+    csmLimit: number,
+    effectiveCSM: number,
+    guaranteeFee: number,
+    stakedCSM: number
+    storage: number,
 }

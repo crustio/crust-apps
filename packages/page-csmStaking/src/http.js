@@ -34,14 +34,14 @@ export async function httpGet(url, data, retry = MAX_RETRY) {
         res = {
           code: 200,
           status: 'success',
-          statusText: resultJson.msg
+          statusText: resultJson
         };
         break;
       case 400:
         res = {
           code: 400,
           status: 'error',
-          statusText: resultJson.msg
+          statusText: resultJson
         };
         break;
       case 409:
@@ -49,7 +49,7 @@ export async function httpGet(url, data, retry = MAX_RETRY) {
         res = {
           code: 409,
           status: 'error',
-          statusText: 'Bridge is busy'
+          statusText: 'Network is busy'
         };
         break;
       default:
@@ -78,27 +78,27 @@ export async function httpPost(url, data, retry = MAX_RETRY) {
       method: 'post',
       mode: "cors",
       headers: {
-        'Accept': 'application/json,text/plain,*/*',
+        'Accept': 'application/json, text/plain,*/*',
         'Content-Type': 'application/json',
         "Authorization": "Basic " + base64Encode(`${USERNAME}:${PASSWD}`)
       },
-      data: JSON.stringify(data)
+      body: JSON.stringify(data)
     });
     const resultJson = await res.json();
-
     switch (res.status) {
+
       case 200:
         res = {
           code: 200,
           status: 'success',
-          statusText: resultJson.msg
+          statusText: resultJson
         };
         break;
       case 400:
         res = {
           code: 400,
           status: 'error',
-          statusText: resultJson.msg
+          statusText: resultJson
         };
         break;
       case 409:
@@ -106,7 +106,7 @@ export async function httpPost(url, data, retry = MAX_RETRY) {
         res = {
           code: 409,
           status: 'error',
-          statusText: 'Bridge is busy'
+          statusText: 'Network is busy'
         };
         break;
       default:
