@@ -9,10 +9,12 @@ import Box from '../box/Box';
 import Shell from '../shell/Shell.js';
 import Icon from '../../../../react-components/src/Icon';
 
-const ipfsDesktopMacZh = 'https://crust-data.oss-cn-shanghai.aliyuncs.com/ipfs/Crust%20IPFS%20Desktop-0.13.2.dmg';
-const ipfsDesktopWinZh = 'https://crust-data.oss-cn-shanghai.aliyuncs.com/ipfs/Crust%20IPFS%20Desktop%20Setup%200.13.2.exe'
-const ipfsDesktopMac = 'https://github.com/crustio/crust-apps/releases/download/v0.74.1/Crust.IPFS.Desktop-0.13.2.dmg';
-const ipfsDesktopWin = 'https://github.com/crustio/crust-apps/releases/download/v0.74.1/Crust.IPFS.Desktop.Setup.0.13.2.exe';
+const ipfsDesktopMacZh = 'https://crust-data.oss-cn-shanghai.aliyuncs.com/ipfs/release/Crust_IPFS_Desktop.dmg';
+const ipfsDesktopWinZh = 'https://crust-data.oss-cn-shanghai.aliyuncs.com/ipfs/release/Crust_IPFS_Destop_setup.exe'
+const ipfsDesktopWin32Zh = 'https://crust-data.oss-cn-shanghai.aliyuncs.com/ipfs/release/Crust_IPFS_Destop_setup_win32.exe'
+const ipfsDesktopMac = 'https://github.com/crustio/crust-apps/releases/download/v0.74.21/IPFS.Desktop-0.15.0.dmg';
+const ipfsDesktopWin = 'https://github.com/crustio/crust-apps/releases/download/v0.74.21/IPFS.Desktop.Setup.0.15.0.exe';
+const ipfsDesktopWin32 = 'https://github.com/crustio/crust-apps/releases/download/v0.74.21/IPFS.Desktop.Setup.0.15.0-32.bits.exe';
 
 const IsNotConnected = ({ apiUrl, connected, doUpdateIpfsApiAddress, ipfsApiAddress, sameOrigin, t } ) => {
   const TABS = {
@@ -53,7 +55,12 @@ const IsNotConnected = ({ apiUrl, connected, doUpdateIpfsApiAddress, ipfsApiAddr
           &gt;&gt; {t('app:status.desktop')} <a className={'link'}
                                                 href={i18n.language === 'zh' ? ipfsDesktopWinZh : ipfsDesktopWin }
                                                 rel='noopener noreferrer'
-                                                target='_blank'>Windows</a>
+                                                target='_blank'>Windows64</a>&nbsp;&nbsp;
+
+           <a className={'link'}
+                                                href={i18n.language === 'zh' ? ipfsDesktopWin32Zh : ipfsDesktopWin32 }
+                                                rel='noopener noreferrer'
+                                                target='_blank'>Windows32</a>
       </div>
       <br/>
       <div>
