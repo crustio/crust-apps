@@ -103,7 +103,7 @@ function Menu ({ className = '' }: Props): React.ReactElement<Props> {
     network: t('Network'),
     settings: t('Settings'),
     storage: t('ipfs'),
-    csmStaking: t('CSM Staking')
+    csmStaking: t('Profit Data')
   });
 
   const routeRef = useRef(createRoutes(t));
