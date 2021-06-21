@@ -1505,5 +1505,12 @@
   "Effective stake": "总有效质押",
   "Daily Rewards per 1K CSM": "每1000CSM每日奖励",
   "address: ": "地址: ",
-  "Data Power": "数据算力"
+  "Data Power": "数据算力",
+  "The \"Profit Data\" will start counting rewards in 732 Era, and now you can prepare the files you need to store in advance. ": "“数据创造价值”活动将于732个Era开始计算奖励，现在你可以提前准备需要存储的文件。",
+  "countdown {{day}} day {{hour}} hour: {{minute}} minute: {{second}} second": "倒计时 {{day}} 天 {{hour}} 时: {{minute}} 分: {{second}} 秒",
+  "Hours": "时",
+  "Days": "天",
+  "Minutes": "分",
+  "Seconds": "秒",
+  "Activity Countdown": "活动倒计时"
 }

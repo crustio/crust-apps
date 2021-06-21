@@ -4,7 +4,7 @@
 
 import type { ActionStatus } from '@polkadot/react-components/Status/types';
 
-import React, {  } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 interface Props {
@@ -14,9 +14,40 @@ interface Props {
 
 
 function Actions ({ }: Props): React.ReactElement<Props> {
-  
+
   return (
-    <div className={'comingsoon'}/>
+    <div>
+      {/* <Button.Group>
+        <NewDataGuarantor />
+        <NewDataProvider />
+        <NewBond />
+      </Button.Group> */}
+      <div className={'comingsoon'}/>
+      {/* <Table
+        empty={hasAccounts && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
+        header={headerRef.current}
+      >
+        {accounts?.map((info): React.ReactNode => (
+          <Account
+            info={info}
+            targets={accounts}
+          />
+        ))}
+      </Table>
+
+      <Table
+        empty={hasAccounts && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
+        header={headerRef.current}
+      >
+        {accounts?.map((info): React.ReactNode => (
+          <Account
+            info={info}
+            targets={accounts}
+          />
+        ))}
+      </Table> */}
+    </div>
+
   );
 }
 

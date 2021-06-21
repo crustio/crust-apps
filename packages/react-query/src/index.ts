@@ -26,3 +26,4 @@ export { default as TotalStorage } from './TotalStorage';
 export { default as FormatCapacity } from './FormatCapacity';
 export { default as FormatCru18 } from './FormatCru18';
 export { default as FormatCsmBalance } from './FormatCsmBalance';
+export { default as CsmFree } from './CsmFree';
