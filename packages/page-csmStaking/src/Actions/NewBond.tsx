@@ -5,16 +5,16 @@ import type { BondInfo } from './partials/types';
 
 import React, { useCallback, useState } from 'react';
 
+import { useTranslation } from '@polkadot/apps/translate';
 import { Button, Modal, TxButton } from '@polkadot/react-components';
 import { useToggle } from '@polkadot/react-hooks';
 
 import BondPartial from './partials/Bond';
-import { useTranslation } from '@polkadot/apps/translate';
 
 function NewBond (): React.ReactElement {
   const { t } = useTranslation();
   const [isVisible, toggleVisible] = useToggle();
-  const [{ bondTx, accountId }, setBondInfo] = useState<BondInfo>({});
+  const [{ accountId, bondTx }, setBondInfo] = useState<BondInfo>({});
 
   const _toggle = useCallback(
     (): void => {

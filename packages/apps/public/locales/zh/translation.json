@@ -1511,5 +1511,6 @@
   "Hours": "时",
   "Days": "天",
   "Minutes": "分",
-  "Seconds": "秒"
+  "Seconds": "秒",
+  "Countdown": "活动倒计时"
 }

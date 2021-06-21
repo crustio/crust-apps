@@ -25,7 +25,6 @@ interface Props {
 
 function CountDown({ }: Props): React.ReactElement<Props> {
     const { t, i18n } = useTranslation();
-    console.log('i18n', i18n.language)
     const endDate = Date.parse('2021-06-25 14:00');
 
     const [{ day, hour_ten, hour_one, minute_ten, minute_one, second_ten, second_one }, setCountdownInfo] = useState<CountDownType>({
@@ -65,7 +64,9 @@ function CountDown({ }: Props): React.ReactElement<Props> {
     return (
         <SummaryBox className={`comingsoon-${i18n.language == 'zh' ? 'zh' : ''}`}>
             <div className="wrap">
+                <h1><strong>{t<string>('Countdown')}</strong></h1>
                 <div className="countdown">
+
                     <div className="bloc-time hours" data-init-value="24">
                         <span className="count-title">{t<string>('Days')}</span>
 

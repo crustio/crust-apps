@@ -4,11 +4,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import { useTranslation } from '@polkadot/apps/translate';
 import { Modal, TxButton } from '@polkadot/react-components';
 
-import { SetGuaranteePrefInfo } from './partials/types';
-import { useTranslation } from '@polkadot/apps/translate';
 import SetGuaranteePref from './partials/SetGuaranteePref';
+import { SetGuaranteePrefInfo } from './partials/types';
 
 interface Props {
   className?: string;
@@ -16,7 +16,7 @@ interface Props {
   onClose: () => void;
 }
 
-function GuaranteePref ({ className = '', accountId, onClose }: Props): React.ReactElement<Props> | null {
+function GuaranteePref ({ accountId, className = '', onClose }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const [{ guaranteePrefTx }, setGuaranteePrefInfo] = useState<SetGuaranteePrefInfo>({});
 
@@ -28,8 +28,8 @@ function GuaranteePref ({ className = '', accountId, onClose }: Props): React.Re
     >
       <Modal.Content>
         <SetGuaranteePref
-          className='nominatePartial'
           accountId={accountId}
+          className='nominatePartial'
           onChange={setGuaranteePrefInfo}
           withSenders
         />

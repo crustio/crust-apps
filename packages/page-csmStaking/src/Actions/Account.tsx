@@ -2,20 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /* eslint-disable */
-import type { DeriveBalancesAll, DeriveStakingAccount } from '@polkadot/api-derive/types';
-import type { Option } from '@polkadot/types';
-import type { ActiveEraInfo, Balance, IndividualExposure, SlashingSpans, UnappliedSlash, ValidatorId } from '@polkadot/types/interfaces';
+import type { Balance, IndividualExposure } from '@polkadot/types/interfaces';
 
-import BN from 'bn.js';
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
 
-import { ApiPromise } from '@polkadot/api';
-import { AddressInfo, AddressMini, AddressSmall, Badge, Button, Menu, Popup, StakingBonded, StakingRedeemable, StakingUnbonding, StatusContext, TxButton } from '@polkadot/react-components';
-import { useApi, useCall, useToggle } from '@polkadot/react-hooks';
+import { AddressSmall, Button, Menu, Popup, StatusContext } from '@polkadot/react-components';
+import { useApi, useToggle } from '@polkadot/react-hooks';
 import { Compact } from '@polkadot/types/codec';
 import { Codec } from '@polkadot/types/types';
-import { BN_ZERO, formatNumber, isFunction } from '@polkadot/util';
 import { useTranslation } from '@polkadot/apps/translate';
 import { StakerState } from './partials/types';
 import Guarantee from './Guarantee';
@@ -37,7 +32,7 @@ export interface Guarantee extends Codec {
     suppressed: boolean;
 }
 
-function Account({ className = '', info: { accountId, effectiveCsm, totalReward, predictCsm }, isDisabled, accounts }: Props): React.ReactElement<Props> {
+function Account({ className = '', info: { accountId, effectiveCsm, totalReward, predictCsm }, isDisabled }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
     const { api } = useApi();
     const [isSetPrefOpen, toggleSetPref] = useToggle();
@@ -56,7 +51,7 @@ function Account({ className = '', info: { accountId, effectiveCsm, totalReward,
         [api, accountId, queueExtrinsic]
       );
 
-    const [role, setRole] = useState<string>('Bonded');
+    const [role] = useState<string>('Bonded');
 
     return (
         <tr className={className}>

@@ -1,16 +1,17 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { AmountValidateState, UnbondInfo } from './types';
 
 import BN from 'bn.js';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { useTranslation } from '@polkadot/apps/translate';
 import { InputAddress, InputCsmBalance, Modal } from '@polkadot/react-components';
-import { useAccounts, useApi, useCall } from '@polkadot/react-hooks';
+import { useApi, useCall } from '@polkadot/react-hooks';
 import { CsmFree } from '@polkadot/react-query';
 import { BN_ZERO } from '@polkadot/util';
-import { useTranslation } from '@polkadot/apps/translate';
 
 interface Props {
   className?: string;
@@ -21,10 +22,10 @@ interface Props {
 
 const EMPTY_INFO = {
   unbondTx: null,
-  accountId: null,
+  accountId: null
 };
 
-function Bond({ className = '', accountId, onChange, withSenders }: Props): React.ReactElement<Props> {
+function Bond ({ accountId, className = '', onChange, withSenders }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>();
@@ -59,7 +60,7 @@ function Bond({ className = '', accountId, onChange, withSenders }: Props): Reac
 
   return (
     <div className={className}>
-      {withSenders &&(<Modal.Columns>
+      {withSenders && (<Modal.Columns>
         <InputAddress
           label={t<string>('account')}
           type='account'
@@ -73,7 +74,6 @@ function Bond({ className = '', accountId, onChange, withSenders }: Props): Reac
             defaultValue={startBalance}
             help={t<string>('')}
             isError={!hasValue || !!amountError?.error}
-            onError={setAmountError}
             label={t<string>('value unbonded')}
             labelExtra={
               <CsmFree
@@ -82,6 +82,7 @@ function Bond({ className = '', accountId, onChange, withSenders }: Props): Reac
               />
             }
             onChange={setAmount}
+            onError={setAmountError}
           />
         </Modal.Columns>
       )}
