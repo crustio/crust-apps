@@ -12,10 +12,8 @@ import { AddressSmall } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { Compact } from '@polkadot/types/codec';
 import { Codec } from '@polkadot/types/types';
-import { useTranslation } from '@polkadot/apps/translate';
 import { DataProviderState } from './types';
 import { checkVisibility } from '@polkadot/react-components/util';
-
 
 interface Props {
     className?: string;
@@ -33,7 +31,6 @@ export interface Guarantee extends Codec {
 }
 
 function DataProvider({ className = '', filterName, withIdentity, info: { accountId, storageData, csmLimit, totalStake, guaranteeFee, effectiveStake } }: Props): React.ReactElement<Props> | null {
-    const { t } = useTranslation();
     const { api } = useApi();
     const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, [accountId]);
     const isVisible = useMemo(

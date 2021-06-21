@@ -15,19 +15,20 @@ import { useLoadingDelay, useSavedFlags } from '@polkadot/react-hooks';
 import Filtering from '@polkadot/app-staking/Filtering';
 import DataProvider from './DataProvider';
 import { DataProviderState } from './types';
+import CountDown from './CountDown';
 
 interface Props {
   className?: string;
   onStatusChange: (status: ActionStatus) => void;
 }
 
-
-function Overview ({ }: Props): React.ReactElement<Props> {
+function Overview({ }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   // we have a very large list, so we use a loading delay
   const isLoading = useLoadingDelay();
   const [nameFilter, setNameFilter] = useState<string>('');
   const [toggles, setToggle] = useSavedFlags('csmStaking:overview', { withIdentity: false });
+
 
   const headerRef = useRef([
     [t('addresses'), 'address'],
@@ -49,24 +50,25 @@ function Overview ({ }: Props): React.ReactElement<Props> {
       )),
     [nameFilter, toggles]
   );
-  
+
   return (<>
-    <img src={promotional as string} style={{ "marginRight":"auto", 'textAlign': 'center', 'display': 'block'}}></img>
+    <img src={promotional as string} style={{ "marginRight": "auto", 'textAlign': 'center', 'display': 'block' }}></img>
     <Summary />
+    <CountDown />
     <Table
-        empty={!isLoading && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
-        header={headerRef.current}
-        filter={
-          <Filtering
-            nameFilter={nameFilter}
-            setNameFilter={setNameFilter}
-            setWithIdentity={setToggle.withIdentity}
-            withIdentity={toggles.withIdentity}
-          />
-        }
-      >
-        {isLoading ? undefined : _renderRows(dataProviders)}
-      </Table>
+      empty={!isLoading && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
+      header={headerRef.current}
+      filter={
+        <Filtering
+          nameFilter={nameFilter}
+          setNameFilter={setNameFilter}
+          setWithIdentity={setToggle.withIdentity}
+          withIdentity={toggles.withIdentity}
+        />
+      }
+    >
+      {isLoading ? undefined : _renderRows(dataProviders)}
+    </Table>
   </>
   );
 }
