@@ -9,10 +9,9 @@ import { Modal, TxButton } from '@polkadot/react-components';
 import CsmGuarantee from './partials/CsmGuarantee';
 import { GuaranteeInfo } from './partials/types';
 import { useTranslation } from '@polkadot/apps/translate';
-
 interface Props {
-  className?: string;
-  accountId: string;
+  className: string,
+  accountId: string,
   onClose: () => void;
 }
 
