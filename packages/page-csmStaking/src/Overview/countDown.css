@@ -13,14 +13,14 @@ a {
   text-decoration: none;
   color: #1a1a1a;
 }
-h1 {
-  margin-bottom: 60px;
+.tittle {
+  margin-bottom: 16px;
   text-align: center;
   font: 300 2.25em 'Lato';
-  text-transform: uppercase;
 }
-h1 strong {
-  font-weight: 400;
+
+.tittle strong {
+  font-weight: 32;
   color: #ff8812;
 }
 h2 {
@@ -36,7 +36,7 @@ h2 strong {
   width: 100%;
   margin: 0 auto;
   text-align: center;
-  margin-top: 16px;
+  margin-top: px;
 }
 .countdown .bloc-time {
   float: left;

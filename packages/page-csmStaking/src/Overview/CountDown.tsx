@@ -64,7 +64,7 @@ function CountDown({ }: Props): React.ReactElement<Props> {
     return (
         <SummaryBox className={`comingsoon-${i18n.language == 'zh' ? 'zh' : ''}`}>
             <div className="wrap">
-                <h1><strong>{t<string>('Countdown')}</strong></h1>
+                <div className="tittle"><strong>{t<string>('Activity Countdown')}</strong></div>
                 <div className="countdown">
 
                     <div className="bloc-time hours" data-init-value="24">
