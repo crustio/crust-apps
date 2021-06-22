@@ -32,7 +32,7 @@ function Actions ({ providers }: Props): React.ReactElement<Props> {
 
   useEffect(() => {
     httpPost('http://crust-sg1.ownstack.cn:8866/accounts', {
-      accounts: allAccounts.concat('5EJPtyWs9M3vEVGjcyjTMeGQEsnowwouZAUnFVUmdjJyPpBM')
+      accounts: allAccounts
   }).then((res: any) => {
       const group = lodash.groupBy(res.statusText, 'role');
       Object.keys(group).forEach(role => {
