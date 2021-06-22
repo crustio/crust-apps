@@ -4,13 +4,14 @@
 /* eslint-disable */
 import { useTranslation } from '@polkadot/apps/translate';
 import type { ActionStatus } from '@polkadot/react-components/Status/types';
+import type { ActiveEraInfo } from '@polkadot/types/interfaces';
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import promotional from '../images/promotional.png';
 import Summary, { SummaryInfo } from './Summary';
 import { Table } from '@polkadot/react-components';
-import { useSavedFlags } from '@polkadot/react-hooks';
+import { useApi, useCall, useSavedFlags } from '@polkadot/react-hooks';
 import Filtering from '@polkadot/app-staking/Filtering';
 import DataProvider from './DataProvider';
 import { DataProviderState } from './types';
@@ -23,29 +24,35 @@ interface Props {
 
 function Overview({ }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
+  const { api } = useApi();
   // we have a very large list, so we use a loading delay
   const [isLoading, setIsloading] = useState<boolean>(true);
   const [nameFilter, setNameFilter] = useState<string>('');
   const [toggles, setToggle] = useSavedFlags('csmStaking:overview', { withIdentity: false });
   const [providers, setProviders] = useState<DataProviderState[]>([]);
   const [ summaryInfo, setSummaryInfo ] = useState<SummaryInfo | null>();
-
+  const activeEraInfo = useCall<ActiveEraInfo>(api.query.staking.activeEra);
+  const activeEra = activeEraInfo && (JSON.parse(JSON.stringify(activeEraInfo)).index);
+  
   useEffect(() => {
-    httpGet('http://crust-sg1.ownstack.cn:8866/overview/1800').then(res => {
-      setProviders(res?.statusText.providers)
-      setSummaryInfo({
-        calculatedRewards: res?.statusText.calculatedRewards,
-        totalEffectiveStakes: res?.statusText.totalEffectiveStakes,
-        dataPower: res?.statusText.dataPower
-      })
-      setIsloading(false)
-    }).catch(() => setIsloading(true))
+    if (activeEra) {
+      const lastEra = activeEra - 1;
+      httpGet('http://crust-sg1.ownstack.cn:8866/overview/' + lastEra).then(res => {
+        setProviders(res?.statusText.providers)
+        setSummaryInfo({
+          calculatedRewards: res?.statusText.calculatedRewards,
+          totalEffectiveStakes: res?.statusText.totalEffectiveStakes,
+          dataPower: Number(res?.statusText.dataPower * 1024) 
+        })
+        setIsloading(false)
+      }).catch(() => setIsloading(true))
+    }
   //   httpPost('http://crust-sg1.ownstack.cn:8866/accounts', {
   //     accounts: ["5EJPtyWs9M3vEVGjcyjTMeGQEsnowwouZAUnFVUmdjJyPpBM", "5F9BYd21i2p6UL4j4CGZ6kFEBqnzyBuH6Tw6rGxhZsVg3e3q"]
   // }).then((res: any) => {
   //     console.log('res', res)
   //   })
-  }, [])
+  }, [api, activeEra])
 
   const headerRef = useRef([
     [t('providers'), 'address'],

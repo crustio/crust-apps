@@ -52,7 +52,7 @@ function DataProvider({ className = '', filterName, withIdentity, info: { accoun
                 <AddressSmall value={account} />
             </td>
             <td className='number'>
-                <FormatCapacity value={storage} />
+                <FormatCapacity value={new BN(storage).muln(1024)} />
             </td>
             <td className='number'>
                 <FormatCsmBalance value={UNIT.muln(csmLimit)}/>
