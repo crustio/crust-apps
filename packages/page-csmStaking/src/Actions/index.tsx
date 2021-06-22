@@ -70,7 +70,7 @@ function Actions ({ providers }: Props): React.ReactElement<Props> {
       <Button.Group>
         <NewDataGuarantor providers={providers} />
         <NewDataProvider providers={providers} />
-        <NewBond providers={providers} />
+        <NewBond />
       </Button.Group>
       {/* <div className={'comingsoon'}/> */}
       <Table
@@ -81,6 +81,7 @@ function Actions ({ providers }: Props): React.ReactElement<Props> {
           <AccountProvider
             info={info}
             targets={accounts}
+            providers={providers}
           />
         ))}
       </Table>
@@ -93,6 +94,7 @@ function Actions ({ providers }: Props): React.ReactElement<Props> {
           <AccountGuarantor
             info={info}
             targets={accounts}
+            providers={providers}
           />
         ))}
       </Table>

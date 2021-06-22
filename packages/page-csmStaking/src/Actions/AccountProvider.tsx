@@ -23,11 +23,12 @@ interface Props {
     isDisabled?: boolean;
     info: ProviderState;
     accounts: any[];
+    providers: string[];
 }
 
 const UNIT = new BN(1_000_000_00_000);
 
-function Account({ className = '', info: { account, totalRewards, pendingRewards, guarantors }, isDisabled }: Props): React.ReactElement<Props> {
+function Account({ className = '', info: { account, totalRewards, pendingRewards, guarantors }, isDisabled, providers }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
     const { api } = useApi();
     const [isSetPrefOpen, toggleSetPref] = useToggle();
@@ -67,6 +68,7 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
                 <Guarantee
                     accountId={account}
                     onClose={toggleGuarantee}
+                    providers={providers}
                 />
             )}
             {isSetPrefOpen && account && (

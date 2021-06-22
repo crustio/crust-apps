@@ -5,7 +5,7 @@
 import type { AmountValidateState, BondInfo } from './types';
 
 import BN from 'bn.js';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import { InputAddress, InputCsmBalance, Modal } from '@polkadot/react-components';
@@ -18,7 +18,6 @@ interface Props {
   isNominating?: boolean;
   minNomination?: BN;
   onChange: (info: BondInfo) => void;
-  accountsAlreadyHasRole: string[]
 }
 
 const EMPTY_INFO = {
@@ -26,7 +25,7 @@ const EMPTY_INFO = {
   accountId: null
 };
 
-function Bond ({ className = '', onChange, accountsAlreadyHasRole }: Props): React.ReactElement<Props> {
+function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>();
@@ -35,12 +34,6 @@ function Bond ({ className = '', onChange, accountsAlreadyHasRole }: Props): Rea
   const [startBalance, setStartBalance] = useState<BN | null>(null);
   const accountBalance = useCall<any>(api.query.csm.account, [accountId]);
   const { allAccounts } = useAccounts();
-
-  // TODO: change to get from jk's api
-  const accounts = useMemo(
-    () => (allAccounts || []).filter((accountId) => !accountsAlreadyHasRole.includes(accountId)),
-    [allAccounts]
-  );
 
   useEffect((): void => {
     onChange(
@@ -71,7 +64,7 @@ function Bond ({ className = '', onChange, accountsAlreadyHasRole }: Props): Rea
     <div className={className}>
       <Modal.Columns>
         <InputAddress
-          filter={accounts}
+          filter={allAccounts}
           label={t<string>('account')}
           onChange={setAccountId}
           type='account'

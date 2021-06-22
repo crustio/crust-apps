@@ -70,7 +70,7 @@ function NewDataGuarantor ({ isInElection, providers }: Props): React.ReactEleme
         >
           <Modal.Content>
             {step === 1 && (
-              <BondPartial accountsAlreadyHasRole={providers}
+              <BondPartial
                 onChange={setBondInfo} />
             )}
             {accountId && step === 2 && (

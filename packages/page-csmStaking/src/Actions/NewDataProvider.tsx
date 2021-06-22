@@ -70,7 +70,7 @@ function NewDataprovider ({ isInElection, providers }: Props): React.ReactElemen
         >
           <Modal.Content>
             {step === 1 && (
-              <BondPartial accountsAlreadyHasRole={providers}
+              <BondPartial
                 onChange={setBondInfo} />
             )}
             {accountId && step === 2 && (

@@ -13,10 +13,9 @@ import BondPartial from './partials/Bond';
 
 interface Props {
   isInElection?: boolean;
-  providers: string[];
 }
 
-function NewBond ({ providers }: Props): React.ReactElement {
+function NewBond ({ }: Props): React.ReactElement {
   const { t } = useTranslation();
   const [isVisible, toggleVisible] = useToggle();
   const [{ accountId, bondTx }, setBondInfo] = useState<BondInfo>({});
@@ -43,7 +42,7 @@ function NewBond ({ providers }: Props): React.ReactElement {
           size='large'
         >
           <Modal.Content>
-            <BondPartial accountsAlreadyHasRole={providers}
+            <BondPartial
               onChange={setBondInfo} />
           </Modal.Content>
           <Modal.Actions onCancel={_toggle}>
