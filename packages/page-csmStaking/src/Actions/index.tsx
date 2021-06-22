@@ -22,14 +22,14 @@ import { ProviderState, GuarantorState } from './partials/types';
 interface Props {
   className?: string;
   onStatusChange: (status: ActionStatus) => void;
+  providers: string[];
 }
 
-
-function Actions ({ }: Props): React.ReactElement<Props> {
+function Actions ({ providers }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { allAccounts, hasAccounts } = useAccounts();
-  const [providers, setProviders ] = useState<ProviderState[]>([]);
-  const [guarantors, setGuarantors ] = useState<GuarantorState[]>([]);
+  const [ownProviders, setOwnProviders ] = useState<ProviderState[]>([]);
+  const [ownGuarantors, setOwnGuarantors ] = useState<GuarantorState[]>([]);
 
   useEffect(() => {
     httpPost('http://crust-sg1.ownstack.cn:8866/accounts', {
@@ -38,10 +38,10 @@ function Actions ({ }: Props): React.ReactElement<Props> {
       const group = lodash.groupBy(res.statusText, 'role');
       Object.keys(group).forEach(role => {
         if (role == 'Provider') {
-          setProviders(group[role])
+          setOwnProviders(group[role])
         }
         if (role == 'Guarantor') {
-          setGuarantors(group[role])
+          setOwnGuarantors(group[role])
         }
       })
     })
@@ -68,16 +68,16 @@ function Actions ({ }: Props): React.ReactElement<Props> {
   return (
     <div>
       <Button.Group>
-        <NewDataGuarantor />
-        <NewDataProvider />
-        <NewBond />
+        <NewDataGuarantor providers={providers} />
+        <NewDataProvider providers={providers} />
+        <NewBond providers={providers} />
       </Button.Group>
       {/* <div className={'comingsoon'}/> */}
       <Table
         empty={hasAccounts && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
         header={porviderHeaderRef.current}
       >
-        {providers?.map((info): React.ReactNode => (
+        {ownProviders?.map((info): React.ReactNode => (
           <AccountProvider
             info={info}
             targets={accounts}
@@ -89,7 +89,7 @@ function Actions ({ }: Props): React.ReactElement<Props> {
         empty={hasAccounts && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
         header={guarantorHeaderRef.current}
       >
-        {guarantors?.map((info): React.ReactNode => (
+        {ownGuarantors?.map((info): React.ReactNode => (
           <AccountGuarantor
             info={info}
             targets={accounts}

@@ -28,7 +28,6 @@ export async function httpGet(url, data, retry = MAX_RETRY) {
       },
     });
     const resultJson = await res.json();
-    console.log('resultJson', resultJson)
     switch (res.status) {
       case 200:
         res = {
