@@ -1,6 +1,7 @@
-// [object Object]
+// Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 export interface DataProviderState {
   account: string;
   csmLimit: number,

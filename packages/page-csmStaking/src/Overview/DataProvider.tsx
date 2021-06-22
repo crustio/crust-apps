@@ -14,7 +14,7 @@ import { Compact } from '@polkadot/types/codec';
 import { Codec } from '@polkadot/types/types';
 import { DataProviderState } from './types';
 import { checkVisibility } from '@polkadot/react-components/util';
-import { FormatCapacity, FormatCsmBalance ,FormatBalance } from '@polkadot/react-query';
+import { FormatCapacity, FormatCsmBalance } from '@polkadot/react-query';
 import BN from 'bn.js';
 
 interface Props {

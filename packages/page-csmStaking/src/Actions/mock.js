@@ -1,5 +1,7 @@
-// [object Object]
+// Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+
+/* eslint-disable */
 
 export const accounts = [{
   accountId: '5ETqRiniPcSWMNSGfxfpW8zBcxUFxWZ77QwbtnA5pegS3CwJ',
