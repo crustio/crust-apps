@@ -81,7 +81,6 @@ function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
         <Modal.Columns>
           <InputCsmBalance
             autoFocus
-            defaultValue={startBalance}
             help={t<string>('')}
             isError={!hasValue || !!amountError?.error}
             label={t<string>('value bonded')}

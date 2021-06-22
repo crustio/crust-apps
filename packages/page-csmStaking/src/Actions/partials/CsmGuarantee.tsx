@@ -5,9 +5,11 @@ import React, { useEffect, useState } from 'react';
 
 import { InputAddress, InputAddressMulti, Modal } from '@polkadot/react-components';
 import { useTranslation } from '@polkadot/react-components/translate';
-import { useApi } from '@polkadot/react-hooks';
+import { useApi, useCall } from '@polkadot/react-hooks';
+import type { ActiveEraInfo } from '@polkadot/types/interfaces';
 
 import { GuaranteeInfo } from './types';
+import { httpGet } from '@polkadot/app-csmStaking/http';
 
 interface Props {
   className?: string;
@@ -20,8 +22,18 @@ function CsmGuarantee ({ accountId, className = '', onChange, withSenders }: Pro
   const { t } = useTranslation();
   const { api } = useApi();
 
-  // TODO: change to get from jk's api
-  const available = ['5CD8zuY5jDFUFh2eyKcyA63LedEKhy8NckVyztJvVRdQ4PCy'];
+  const [available, setProviders] = useState<string[]>([]);
+  const activeEraInfo = useCall<ActiveEraInfo>(api.query.staking.activeEra);
+  const activeEra = activeEraInfo && (JSON.parse(JSON.stringify(activeEraInfo)).index);
+  
+  useEffect(() => {
+    if (activeEra) {
+      const lastEra = activeEra - 1;
+      httpGet('http://crust-sg1.ownstack.cn:8866/overview/' + lastEra).then(res => {
+        setProviders(res?.statusText.providers.map((e: { account: any; }) => e.account))
+      }).catch(console.error)
+    }
+  }, [api, activeEra])
 
   const [selected, setSelected] = useState<string[]>([]);
 

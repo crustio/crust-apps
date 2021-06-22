@@ -32,7 +32,9 @@ export interface Guarantee extends Codec {
     suppressed: boolean;
 }
 
-const UNIT = new BN(1_000_000_00_000);
+const UNIT = new BN(1_000_000_000_000);
+
+const Capacity_Unit = new BN(1024 * 1024);
 
 function DataProvider({ className = '', filterName, withIdentity, info: { account, storage, csmLimit, stakedCSM, guaranteeFee, effectiveCSM } }: Props): React.ReactElement<Props> | null {
     const { api } = useApi();
@@ -52,7 +54,7 @@ function DataProvider({ className = '', filterName, withIdentity, info: { accoun
                 <AddressSmall value={account} />
             </td>
             <td className='number'>
-                <FormatCapacity value={new BN(storage).muln(1024)} />
+                <FormatCapacity value={Capacity_Unit.muln(storage)} />
             </td>
             <td className='number'>
                 <FormatCsmBalance value={UNIT.muln(csmLimit)}/>

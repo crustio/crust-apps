@@ -16,11 +16,14 @@ import Filtering from '@polkadot/app-staking/Filtering';
 import DataProvider from './DataProvider';
 import { DataProviderState } from './types';
 import { httpGet } from '../http';
+import BN from 'bn.js';
 
 interface Props {
   className?: string;
   onStatusChange: (status: ActionStatus) => void;
 }
+
+const Capacity_Unit = new BN(1024 * 1024);
 
 function Overview({ }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
@@ -42,16 +45,11 @@ function Overview({ }: Props): React.ReactElement<Props> {
         setSummaryInfo({
           calculatedRewards: res?.statusText.calculatedRewards,
           totalEffectiveStakes: res?.statusText.totalEffectiveStakes,
-          dataPower: Number(res?.statusText.dataPower * 1024) 
+          dataPower: Capacity_Unit.muln(res?.statusText.dataPower) 
         })
         setIsloading(false)
       }).catch(() => setIsloading(true))
     }
-  //   httpPost('http://crust-sg1.ownstack.cn:8866/accounts', {
-  //     accounts: ["5EJPtyWs9M3vEVGjcyjTMeGQEsnowwouZAUnFVUmdjJyPpBM", "5F9BYd21i2p6UL4j4CGZ6kFEBqnzyBuH6Tw6rGxhZsVg3e3q"]
-  // }).then((res: any) => {
-  //     console.log('res', res)
-  //   })
   }, [api, activeEra])
 
   const headerRef = useRef([

@@ -37,7 +37,6 @@ function Actions ({ }: Props): React.ReactElement<Props> {
   }).then((res: any) => {
       const group = lodash.groupBy(res.statusText, 'role');
       Object.keys(group).forEach(role => {
-        console.log('role', )
         if (role == 'Provider') {
           setProviders(group[role])
         }
@@ -45,8 +44,6 @@ function Actions ({ }: Props): React.ReactElement<Props> {
           setGuarantors(group[role])
         }
       })
-
-      console.log('group', group)
     })
   }, [allAccounts])
 

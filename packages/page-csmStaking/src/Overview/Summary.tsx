@@ -18,10 +18,10 @@ interface Props {
 export interface SummaryInfo {
   calculatedRewards: number,
   totalEffectiveStakes: number,
-  dataPower: number
+  dataPower: BN
 }
 
-const UNIT = new BN(1_000_000_00_000);
+const UNIT = new BN(1_000_000_000_000);
 
 function Summary({ info }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
