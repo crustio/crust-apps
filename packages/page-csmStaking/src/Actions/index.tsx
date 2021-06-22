@@ -10,7 +10,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import NewBond from './NewBond';
 import NewDataGuarantor from './NewDataGuarantor';
-import { accounts } from './mock';
 import { useAccounts } from '@polkadot/react-hooks';
 import AccountProvider from './AccountProvider';
 import AccountGuarantor from './AccountGuarantor';
@@ -33,7 +32,7 @@ function Actions ({ providers }: Props): React.ReactElement<Props> {
 
   useEffect(() => {
     httpPost('http://crust-sg1.ownstack.cn:8866/accounts', {
-      accounts: allAccounts
+      accounts: allAccounts.concat('5EJPtyWs9M3vEVGjcyjTMeGQEsnowwouZAUnFVUmdjJyPpBM')
   }).then((res: any) => {
       const group = lodash.groupBy(res.statusText, 'role');
       Object.keys(group).forEach(role => {
@@ -80,7 +79,6 @@ function Actions ({ providers }: Props): React.ReactElement<Props> {
         {ownProviders?.map((info): React.ReactNode => (
           <AccountProvider
             info={info}
-            targets={accounts}
             providers={providers}
           />
         ))}
@@ -93,7 +91,6 @@ function Actions ({ providers }: Props): React.ReactElement<Props> {
         {ownGuarantors?.map((info): React.ReactNode => (
           <AccountGuarantor
             info={info}
-            targets={accounts}
             providers={providers}
           />
         ))}

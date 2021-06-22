@@ -13,7 +13,6 @@ import AddressMiniForStake from './AddressMiniForStake';
 
 interface Props {
   guarantors: string[];
-  account: string;
 }
 
 interface Guarantor {
@@ -21,7 +20,7 @@ interface Guarantor {
     stakes: BN;
 }
 
-function GuarantorStake ({ account, guarantors }: Props): React.ReactElement<Props> {
+function GuarantorStake ({ guarantors }: Props): React.ReactElement<Props> {
   const { api } = useApi();
   const multiQuery = useCall<any[]>(api.query.csmLocking.ledger.multi, [guarantors]);
   const [guarantorStakes, setGuarantorStakes] = useState<Guarantor[]>([]);
@@ -29,9 +28,9 @@ function GuarantorStake ({ account, guarantors }: Props): React.ReactElement<Pro
 
   useEffect(() => {
     const tmp = multiQuery && JSON.parse(JSON.stringify(multiQuery))
-    let total = BN_ZERO
-    const tmpGuarantor = [];
     if (tmp && tmp.length) {
+        let total = BN_ZERO
+        const tmpGuarantor = [];
         for (const index in guarantors) {
             const stakes = new BN(Number(tmp[index].active).toString());
             total = total.add(stakes)
@@ -44,7 +43,7 @@ function GuarantorStake ({ account, guarantors }: Props): React.ReactElement<Pro
         setGuarantorStakes(tmpGuarantor);
     }
 
-  }, [account, guarantors])
+  }, [multiQuery, guarantors])
 
   return (
     <td className='number'>

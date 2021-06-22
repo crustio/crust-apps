@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { useTranslation } from '@polkadot/apps/translate';
 import { AccountName, IdentityIcon, Label } from '@polkadot/react-components';
 import { toShortAddress } from '@polkadot/react-components/util';
-import { FormatBalance } from '@polkadot/react-query';
+import { FormatCsmBalance } from '@polkadot/react-query';
 
 interface Props {
   totalStake?: BN | BN[];
@@ -73,7 +73,7 @@ function AddressMiniForStake ({ children, className = '', iconInfo, isHighlight,
         {children}
       </div>
       <div className='ui--AddressMini-balances'>
-        <Label label={t<string>('total stake')} /><FormatBalance value={totalStake}></FormatBalance>
+        <Label label={t<string>('total stake')} /><FormatCsmBalance value={totalStake}></FormatCsmBalance>
       </div>
     </div>
   );

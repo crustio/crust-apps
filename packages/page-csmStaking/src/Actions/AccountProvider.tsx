@@ -26,7 +26,7 @@ interface Props {
     providers: string[];
 }
 
-const UNIT = new BN(1_000_000_00_000);
+const UNIT = new BN(1_000_000_000_000);
 
 function Account({ className = '', info: { account, totalRewards, pendingRewards, guarantors }, isDisabled, providers }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
@@ -86,7 +86,7 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
             <td className='address'>
                 <AddressSmall value={account} />
             </td>
-            <GuarantorStake account={account} guarantors={guarantors} />
+            <GuarantorStake guarantors={guarantors} />
             <td className='number'>
                 <FormatCsmBalance value={totalCSM} />
             </td>
