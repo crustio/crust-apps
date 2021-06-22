@@ -1,8 +1,8 @@
 name: dev-cd
 
 on:
-  push:
-    branches: [ dev ]
+  # manual trigger
+  workflow_dispatch:
 
 jobs:
   build:

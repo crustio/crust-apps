@@ -26,6 +26,7 @@ const UNIT = new BN(1_000_000_000_000);
 function Summary({ info }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
 
+  const daily = info ? 1000 / info.totalEffectiveStakes : 0;
   return info ? (
     <SummaryBox>
       <section className='media--800'>
@@ -80,7 +81,7 @@ function Summary({ info }: Props): React.ReactElement<Props> | null {
           className='media--1100'
           label={t<string>('Daily Rewards per 1K CSM')}
         >
-          { info ? <FormatBalance value={UNIT.muln(info.totalEffectiveStakes/1000 * 400)} /> : (<Spinner noLabel />)}
+          { info ? <FormatBalance value={UNIT.muln((daily > 1 ? 1 :daily) * 400)} /> : (<Spinner noLabel />)}
         </CardSummary>
       </section>
     </SummaryBox>
