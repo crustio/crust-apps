@@ -11,12 +11,13 @@ import CsmGuarantee from './partials/CsmGuarantee';
 import { GuaranteeInfo } from './partials/types';
 
 interface Props {
-  className?: string;
-  accountId: string;
+  className: string,
+  accountId: string,
   onClose: () => void;
+  providers: string[]
 }
 
-function Guarantee ({ accountId, className = '', onClose }: Props): React.ReactElement<Props> | null {
+function Guarantee ({ accountId, className = '', onClose, providers }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const [{ guaranteeTx }, setTx] = useState<GuaranteeInfo>({});
 
@@ -31,6 +32,7 @@ function Guarantee ({ accountId, className = '', onClose }: Props): React.ReactE
           accountId={accountId}
           className='nominatePartial'
           onChange={setTx}
+          providers={providers}
           withSenders
         />
       </Modal.Content>

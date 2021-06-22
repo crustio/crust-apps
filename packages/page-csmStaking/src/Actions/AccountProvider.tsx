@@ -2,37 +2,32 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /* eslint-disable */
-import type { Balance, IndividualExposure } from '@polkadot/types/interfaces';
 
-import React, { useCallback, useContext, useState } from 'react';
+import BN from 'bn.js';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { AddressSmall, Button, Menu, Popup, StatusContext } from '@polkadot/react-components';
-import { useApi, useToggle } from '@polkadot/react-hooks';
-import { Compact } from '@polkadot/types/codec';
-import { Codec } from '@polkadot/types/types';
+import { useApi, useCall, useToggle } from '@polkadot/react-hooks';
+import { BN_ZERO } from '@polkadot/util';
 import { useTranslation } from '@polkadot/apps/translate';
-import { StakerState } from './partials/types';
+import { ProviderState } from './partials/types';
 import Guarantee from './Guarantee';
 import GuaranteePref from './GuaranteePref';
 import UnbondFounds from './UnbondFounds';
-
+import { FormatCsmBalance, FormatBalance } from '@polkadot/react-query';
+import GuarantorStake from './GuarantorStake';
 
 interface Props {
     className?: string;
     isDisabled?: boolean;
-    info: StakerState;
+    info: ProviderState;
     accounts: any[];
 }
 
-export interface Guarantee extends Codec {
-    targets: IndividualExposure[];
-    total: Compact<Balance>;
-    submitted_in: number;
-    suppressed: boolean;
-}
+const UNIT = new BN(1_000_000_00_000);
 
-function Account({ className = '', info: { accountId, effectiveCsm, totalReward, predictCsm }, isDisabled }: Props): React.ReactElement<Props> {
+function Account({ className = '', info: { account, totalRewards, pendingRewards, guarantors }, isDisabled }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
     const { api } = useApi();
     const [isSetPrefOpen, toggleSetPref] = useToggle();
@@ -40,54 +35,66 @@ function Account({ className = '', info: { accountId, effectiveCsm, totalReward,
     const [isSettingsOpen, toggleSettings] = useToggle();
     const [isUnbondOpen, toggleUnbond] = useToggle();
     const { queueExtrinsic } = useContext(StatusContext);
+    const [totalCSM, setTotalCSM] = useState<BN>(BN_ZERO);
+    const query = guarantors.concat(account);
+    const multiQuery = useCall<any[]>(api.query.csmLocking.ledger.multi, [query]);
+
+    useEffect(() => {
+        const tmp = multiQuery && JSON.parse(JSON.stringify(multiQuery))
+        let total = BN_ZERO
+        if (tmp && tmp.length) {
+            for (const ledger of tmp) {
+                total = total.add(new BN(Number(ledger.active).toString()))
+            }
+            setTotalCSM(total)
+        }
+
+    }, [multiQuery])
 
     const withdrawFunds = useCallback(
         () => {
-          queueExtrinsic({
-            accountId,
-            extrinsic: api.tx.csmLocking.withdrawUnbonded()
-          });
+            queueExtrinsic({
+                accountId: account,
+                extrinsic: api.tx.csmLocking.withdrawUnbonded()
+            });
         },
-        [api, accountId, queueExtrinsic]
-      );
-
-    const [role] = useState<string>('Bonded');
+        [api, account, queueExtrinsic]
+    );
 
     return (
         <tr className={className}>
-            {isGuaranteeOpen && accountId && (
+            {isGuaranteeOpen && account && (
                 <Guarantee
-                    accountId={accountId}
+                    accountId={account}
                     onClose={toggleGuarantee}
                 />
             )}
-            {isSetPrefOpen && accountId && (
+            {isSetPrefOpen && account && (
                 <GuaranteePref
-                    accountId={accountId}
+                    accountId={account}
                     onClose={toggleSetPref}
                 />
             )}
-            {isUnbondOpen && accountId && (
+            {isUnbondOpen && account && (
                 <UnbondFounds
-                    accountId={accountId}
+                    accountId={account}
                     onClose={toggleUnbond}
                 />
             )}
             <td className='address'>
-                <AddressSmall value={accountId} />
+                <AddressSmall value={account} />
+            </td>
+            <GuarantorStake account={account} guarantors={guarantors} />
+            <td className='number'>
+                <FormatCsmBalance value={totalCSM} />
+            </td>
+            <td className='number'>
+                <FormatBalance value={UNIT.muln(totalRewards)} />
+            </td>
+            <td className='number'>
+                <FormatBalance value={UNIT.muln(pendingRewards)} />
             </td>
 
-            <td className='number'>
-                {effectiveCsm}
-            </td>
-            <td className='number'>
-                {totalReward}
-            </td>
-            <td className='number'>
-                {predictCsm}
-            </td>
-
-            <td className='number'>{t<string>('{{role}}', { replace: { role: role } })}</td>
             <td className='button'>
                 {
                     <>
@@ -98,7 +105,7 @@ function Account({ className = '', info: { accountId, effectiveCsm, totalReward,
                                         icon='certificate'
                                         isDisabled={isDisabled}
                                         key='validate'
-                                        label={t<string>('Set Pref')}
+                                        label={t<string>('Guarantee fee')}
                                         onClick={toggleSetPref}
                                     />
                                     <Button

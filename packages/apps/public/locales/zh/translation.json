@@ -1512,5 +1512,17 @@
   "Days": "天",
   "Minutes": "分",
   "Seconds": "秒",
-  "Activity Countdown": "活动倒计时"
+  "Activity Countdown": "活动倒计时",
+  "Guarantee fee": "担保费率",
+  "providers": "提供人",
+  "provider": "提供人",
+  "total CSM": "总CSM",
+  "total rewards": "总奖励",
+  "pending rewards": "待发奖励",
+  "Data Guarantor": "数据担保人",
+  "Data provider": "数据提供人",
+  "data size": "数据大小",
+  "CSM limit": "CSM上限",
+  "effective stakes": "有效质押量",
+  "addresses": "地址"
 }

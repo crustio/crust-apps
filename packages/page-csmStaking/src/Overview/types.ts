@@ -1,11 +1,12 @@
-// Copyright 2017-2021 @polkadot/react-query authors & contributors
+// Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 export interface DataProviderState {
-  accountId: string;
-  storageData: string,
-  csmLimit: string,
-  totalStake: string,
-  guaranteeFee: string
-  effectiveStake: string,
+  account: string;
+  csmLimit: number,
+  effectiveCSM: number,
+  guaranteeFee: number,
+  stakedCSM: number
+  storage: number,
 }

@@ -18,6 +18,7 @@ interface Props {
   isNominating?: boolean;
   minNomination?: BN;
   onChange: (info: BondInfo) => void;
+  accountsAlreadyHasRole: string[]
 }
 
 const EMPTY_INFO = {
@@ -25,7 +26,7 @@ const EMPTY_INFO = {
   accountId: null
 };
 
-function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
+function Bond ({ className = '', onChange, accountsAlreadyHasRole }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>();
@@ -34,9 +35,6 @@ function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
   const [startBalance, setStartBalance] = useState<BN | null>(null);
   const accountBalance = useCall<any>(api.query.csm.account, [accountId]);
   const { allAccounts } = useAccounts();
-
-  // TODO: change to get from jk's api
-  const accountsAlreadyHasRole = ['5CD8zuY5jDFUFh2eyKcyA63LedEKhy8NckVyztJvVRdQ4PCy'];
 
   // TODO: change to get from jk's api
   const accounts = useMemo(
@@ -84,7 +82,6 @@ function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
         <Modal.Columns>
           <InputCsmBalance
             autoFocus
-            defaultValue={startBalance}
             help={t<string>('')}
             isError={!hasValue || !!amountError?.error}
             label={t<string>('value bonded')}

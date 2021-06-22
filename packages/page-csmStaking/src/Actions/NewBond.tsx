@@ -11,7 +11,12 @@ import { useToggle } from '@polkadot/react-hooks';
 
 import BondPartial from './partials/Bond';
 
-function NewBond (): React.ReactElement {
+interface Props {
+  isInElection?: boolean;
+  providers: string[];
+}
+
+function NewBond ({ providers }: Props): React.ReactElement {
   const { t } = useTranslation();
   const [isVisible, toggleVisible] = useToggle();
   const [{ accountId, bondTx }, setBondInfo] = useState<BondInfo>({});
@@ -38,7 +43,8 @@ function NewBond (): React.ReactElement {
           size='large'
         >
           <Modal.Content>
-            <BondPartial onChange={setBondInfo} />
+            <BondPartial accountsAlreadyHasRole={providers}
+              onChange={setBondInfo} />
           </Modal.Content>
           <Modal.Actions onCancel={_toggle}>
             <TxButton
