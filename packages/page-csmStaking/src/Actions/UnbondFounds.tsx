@@ -4,11 +4,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import { useTranslation } from '@polkadot/apps/translate';
 import { Modal, TxButton } from '@polkadot/react-components';
 
 import { UnbondInfo } from './partials/types';
-import { useTranslation } from '@polkadot/apps/translate';
-import SetGuaranteePref from './partials/SetGuaranteePref';
 import Unbond from './partials/Unbond';
 
 interface Props {
@@ -17,7 +16,7 @@ interface Props {
   onClose: () => void;
 }
 
-function UnbondFounds ({ className = '', accountId, onClose }: Props): React.ReactElement<Props> | null {
+function UnbondFounds ({ accountId, className = '', onClose }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const [{ unbondTx }, setGuaranteePrefInfo] = useState<UnbondInfo>({});
 
@@ -29,8 +28,8 @@ function UnbondFounds ({ className = '', accountId, onClose }: Props): React.Rea
     >
       <Modal.Content>
         <Unbond
-          className='nominatePartial'
           accountId={accountId}
+          className='nominatePartial'
           onChange={setGuaranteePrefInfo}
           withSenders
         />

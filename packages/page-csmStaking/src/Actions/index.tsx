@@ -33,9 +33,8 @@ function Actions ({ }: Props): React.ReactElement<Props> {
 
   useEffect(() => {
     httpPost('http://crust-sg1.ownstack.cn:8866/accounts', {
-      accounts: ["5EJPtyWs9M3vEVGjcyjTMeGQEsnowwouZAUnFVUmdjJyPpBM", "5F9BYd21i2p6UL4j4CGZ6kFEBqnzyBuH6Tw6rGxhZsVg3e3q"].concat(allAccounts)
+      accounts: allAccounts
   }).then((res: any) => {
-      console.log('res', res)
       const group = lodash.groupBy(res.statusText, 'role');
       Object.keys(group).forEach(role => {
         console.log('role', )
@@ -53,7 +52,8 @@ function Actions ({ }: Props): React.ReactElement<Props> {
 
   const porviderHeaderRef = useRef([
     [t('providers'), 'address'],
-    [t('total csm'), 'number'],
+    [t('guarantors', 'address')],
+    [t('total CSM'), 'number'],
     [t('total rewards'), 'number'],
     [t('pending rewards'), 'number'],
     [undefined, undefined, 2]
@@ -61,7 +61,8 @@ function Actions ({ }: Props): React.ReactElement<Props> {
 
   const guarantorHeaderRef = useRef([
     [t('guarantors'), 'address'],
-    [t('total csm'), 'number'],
+    [t('provider'), 'address'],
+    [t('total CSM'), 'number'],
     [t('total rewards'), 'number'],
     [t('pending rewards'), 'number'],
     [undefined, undefined, 2]

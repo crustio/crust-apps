@@ -5,13 +5,13 @@ import type { BondInfo, SetGuaranteePrefInfo } from './partials/types';
 
 import React, { useCallback, useState } from 'react';
 
+import { useTranslation } from '@polkadot/apps/translate';
 import { BatchWarning, Button, Modal, TxButton } from '@polkadot/react-components';
 import { useApi, useToggle } from '@polkadot/react-hooks';
 import { isFunction } from '@polkadot/util';
 
 import BondPartial from './partials/Bond';
 import SetGuaranteePref from './partials/SetGuaranteePref';
-import { useTranslation } from '@polkadot/apps/translate';
 
 interface Props {
   isInElection?: boolean;
@@ -23,7 +23,7 @@ function NewDataprovider ({ isInElection }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [isVisible, toggleVisible] = useToggle();
-  const [{ bondTx, accountId }, setBondInfo] = useState<BondInfo>({});
+  const [{ accountId, bondTx }, setBondInfo] = useState<BondInfo>({});
   const [{ guaranteePrefTx }, setGuaranteePrefInfo] = useState<SetGuaranteePrefInfo>({});
   const [step, setStep] = useState(1);
   const isDisabled = isInElection || !isFunction(api.tx.utility?.batch);

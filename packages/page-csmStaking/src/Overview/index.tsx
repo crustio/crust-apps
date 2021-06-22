@@ -1,7 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
-/* eslint-disable */
 
+/* eslint-disable */
 import { useTranslation } from '@polkadot/apps/translate';
 import type { ActionStatus } from '@polkadot/react-components/Status/types';
 
@@ -9,13 +9,12 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import promotional from '../images/promotional.png';
 import Summary, { SummaryInfo } from './Summary';
-import { dataProviders } from './mock';
 import { Table } from '@polkadot/react-components';
-import { useLoadingDelay, useSavedFlags } from '@polkadot/react-hooks';
+import { useSavedFlags } from '@polkadot/react-hooks';
 import Filtering from '@polkadot/app-staking/Filtering';
 import DataProvider from './DataProvider';
 import { DataProviderState } from './types';
-import { httpGet, httpPost } from '../http';
+import { httpGet } from '../http';
 
 interface Props {
   className?: string;
@@ -33,7 +32,6 @@ function Overview({ }: Props): React.ReactElement<Props> {
 
   useEffect(() => {
     httpGet('http://crust-sg1.ownstack.cn:8866/overview/1800').then(res => {
-      console.log('res', res)
       setProviders(res?.statusText.providers)
       setSummaryInfo({
         calculatedRewards: res?.statusText.calculatedRewards,
@@ -50,9 +48,9 @@ function Overview({ }: Props): React.ReactElement<Props> {
   }, [])
 
   const headerRef = useRef([
-    [t('addresses'), 'address'],
+    [t('providers'), 'address'],
     [t('data size'), 'number'],
-    [t('csm limit'), 'number'],
+    [t('CSM limit'), 'number'],
     [t('effective stakes'), 'number'],
     [t('total stakes'), 'number'],
     [t('guarantee fee'), 'number']

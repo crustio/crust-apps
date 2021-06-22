@@ -1,16 +1,17 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { AmountValidateState, BondInfo } from './types';
 
 import BN from 'bn.js';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { useTranslation } from '@polkadot/apps/translate';
 import { InputAddress, InputCsmBalance, Modal } from '@polkadot/react-components';
 import { useAccounts, useApi, useCall } from '@polkadot/react-hooks';
 import { CsmFree } from '@polkadot/react-query';
 import { BN_ZERO } from '@polkadot/util';
-import { useTranslation } from '@polkadot/apps/translate';
 
 interface Props {
   className?: string;
@@ -24,7 +25,7 @@ const EMPTY_INFO = {
   accountId: null
 };
 
-function Bond({ className = '', onChange }: Props): React.ReactElement<Props> {
+function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>();
@@ -32,18 +33,13 @@ function Bond({ className = '', onChange }: Props): React.ReactElement<Props> {
   const [accountId, setAccountId] = useState<string | null>(null);
   const [startBalance, setStartBalance] = useState<BN | null>(null);
   const accountBalance = useCall<any>(api.query.csm.account, [accountId]);
-  const { allAccounts, hasAccounts } = useAccounts();
-  
-  // TODO: change to get from jk's api
-  const accountsAlreadyHasRole = ['5CD8zuY5jDFUFh2eyKcyA63LedEKhy8NckVyztJvVRdQ4PCy'];
+  const { allAccounts } = useAccounts();
 
   // TODO: change to get from jk's api
-  const available = ['5CD8zuY5jDFUFh2eyKcyA63LedEKhy8NckVyztJvVRdQ4PCy'];
-  const accounts = useMemo(
-    () => (allAccounts || []).filter(accountId => !accountsAlreadyHasRole.includes(accountId)),
-    [allAccounts]
-  );
-
+  // const accounts = useMemo(
+  //   () => (allAccounts || []).filter((accountId) => !accountsAlreadyHasRole.includes(accountId)),
+  //   [allAccounts]
+  // );
 
   useEffect((): void => {
     onChange(
@@ -74,8 +70,8 @@ function Bond({ className = '', onChange }: Props): React.ReactElement<Props> {
     <div className={className}>
       <Modal.Columns>
         <InputAddress
+          filter={allAccounts}
           label={t<string>('account')}
-          filter={accounts}
           onChange={setAccountId}
           type='account'
           value={accountId}
@@ -88,7 +84,6 @@ function Bond({ className = '', onChange }: Props): React.ReactElement<Props> {
             defaultValue={startBalance}
             help={t<string>('')}
             isError={!hasValue || !!amountError?.error}
-            onError={setAmountError}
             label={t<string>('value bonded')}
             labelExtra={
               <CsmFree
@@ -97,6 +92,7 @@ function Bond({ className = '', onChange }: Props): React.ReactElement<Props> {
               />
             }
             onChange={setAmount}
+            onError={setAmountError}
           />
         </Modal.Columns>
       )}

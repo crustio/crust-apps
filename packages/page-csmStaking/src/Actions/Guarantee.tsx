@@ -4,18 +4,19 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import { useTranslation } from '@polkadot/apps/translate';
 import { Modal, TxButton } from '@polkadot/react-components';
 
 import CsmGuarantee from './partials/CsmGuarantee';
 import { GuaranteeInfo } from './partials/types';
-import { useTranslation } from '@polkadot/apps/translate';
+
 interface Props {
   className: string,
   accountId: string,
   onClose: () => void;
 }
 
-function Guarantee ({ className = '', accountId, onClose }: Props): React.ReactElement<Props> | null {
+function Guarantee ({ accountId, className = '', onClose }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const [{ guaranteeTx }, setTx] = useState<GuaranteeInfo>({});
 
@@ -27,8 +28,8 @@ function Guarantee ({ className = '', accountId, onClose }: Props): React.ReactE
     >
       <Modal.Content>
         <CsmGuarantee
-          className='nominatePartial'
           accountId={accountId}
+          className='nominatePartial'
           onChange={setTx}
           withSenders
         />

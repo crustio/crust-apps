@@ -2,26 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /* eslint-disable */
-import type { DeriveBalancesAll, DeriveStakingAccount } from '@polkadot/api-derive/types';
-import type { Option } from '@polkadot/types';
-import type { ActiveEraInfo, Balance, IndividualExposure, SlashingSpans, UnappliedSlash, ValidatorId } from '@polkadot/types/interfaces';
 
 import BN from 'bn.js';
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { ApiPromise } from '@polkadot/api';
-import { AddressInfo, AddressMini, AddressSmall, Badge, Button, Menu, Popup, StakingBonded, StakingRedeemable, StakingUnbonding, StatusContext, TxButton } from '@polkadot/react-components';
-import { useApi, useCall, useToggle } from '@polkadot/react-hooks';
-import { Compact } from '@polkadot/types/codec';
-import { Codec } from '@polkadot/types/types';
-import { BN_ZERO, formatNumber, isFunction } from '@polkadot/util';
+import { AddressSmall, Button, Menu, Popup, StatusContext } from '@polkadot/react-components';
+import { useApi, useToggle } from '@polkadot/react-hooks';
+import { BN_ZERO } from '@polkadot/util';
 import { useTranslation } from '@polkadot/apps/translate';
 import { GuarantorState } from './partials/types';
 import Guarantee from './Guarantee';
 import GuaranteePref from './GuaranteePref';
 import UnbondFounds from './UnbondFounds';
-import { FormatCapacity, FormatCsmBalance ,FormatBalance } from '@polkadot/react-query';
+import { FormatCsmBalance ,FormatBalance } from '@polkadot/react-query';
 
 interface Props {
     className?: string;
@@ -32,7 +26,7 @@ interface Props {
 
 const UNIT = new BN(1_000_000_00_000);
 
-function Account({ className = '', info: { account, effectiveCsm, totalRewards, pendingRewards, role }, isDisabled, accounts }: Props): React.ReactElement<Props> {
+function Account({ className = '', info: { account, totalRewards, pendingRewards, provider }, isDisabled }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
     const { api } = useApi();
     const [isSetPrefOpen, toggleSetPref] = useToggle();
@@ -80,7 +74,9 @@ function Account({ className = '', info: { account, effectiveCsm, totalRewards, 
             <td className='address'>
                 <AddressSmall value={account} />
             </td>
-
+            <td className='address'>
+                <AddressSmall value={provider} />
+            </td>
             <td className='number'>
                 <FormatCsmBalance value={totalCSM} />
             </td>
@@ -101,7 +97,7 @@ function Account({ className = '', info: { account, effectiveCsm, totalRewards, 
                                         icon='certificate'
                                         isDisabled={isDisabled}
                                         key='validate'
-                                        label={t<string>('Set Pref')}
+                                        label={t<string>('Guarantee fee')}
                                         onClick={toggleSetPref}
                                     />
                                     <Button
