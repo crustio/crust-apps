@@ -16,6 +16,7 @@ import Guarantee from './Guarantee';
 import GuaranteePref from './GuaranteePref';
 import UnbondFounds from './UnbondFounds';
 import { FormatCsmBalance ,FormatBalance } from '@polkadot/react-query';
+import UnLockingCsms from './UnLockingCsms';
 
 interface Props {
     className?: string;
@@ -81,6 +82,9 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
             </td>
             <td className='number'>
                 <FormatCsmBalance value={totalCSM} />
+            </td>
+            <td className='number'>
+                <UnLockingCsms account={account} />
             </td>
             <td className='number'>
                 <FormatBalance value={UNIT.muln(totalRewards)} />

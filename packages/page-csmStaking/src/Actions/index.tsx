@@ -50,8 +50,10 @@ function Actions ({ providers }: Props): React.ReactElement<Props> {
     [t('providers'), 'address'],
     [t('guarantors', 'address')],
     [t('total CSM'), 'number'],
+    [t('unLocking CSM'), 'number'],
     [t('total rewards'), 'number'],
     [t('pending rewards'), 'number'],
+    [t('guarantee fee'), 'number'],
     [undefined, undefined, 2]
   ]);
 
@@ -59,6 +61,7 @@ function Actions ({ providers }: Props): React.ReactElement<Props> {
     [t('guarantors'), 'address'],
     [t('provider'), 'address'],
     [t('total CSM'), 'number'],
+    [t('unLocking CSM'), 'number'],
     [t('total rewards'), 'number'],
     [t('pending rewards'), 'number'],
     [undefined, undefined, 2]

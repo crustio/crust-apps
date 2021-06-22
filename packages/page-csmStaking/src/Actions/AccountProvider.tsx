@@ -17,6 +17,7 @@ import GuaranteePref from './GuaranteePref';
 import UnbondFounds from './UnbondFounds';
 import { FormatCsmBalance, FormatBalance } from '@polkadot/react-query';
 import GuarantorStake from './GuarantorStake';
+import UnLockingCsms from './UnLockingCsms';
 
 interface Props {
     className?: string;
@@ -28,7 +29,7 @@ interface Props {
 
 const UNIT = new BN(1_000_000_000_000);
 
-function Account({ className = '', info: { account, totalRewards, pendingRewards, guarantors }, isDisabled, providers }: Props): React.ReactElement<Props> {
+function Account({ className = '', info: { account, totalRewards, pendingRewards, guarantors, guaranteeFee }, isDisabled, providers }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
     const { api } = useApi();
     const [isSetPrefOpen, toggleSetPref] = useToggle();
@@ -91,10 +92,16 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
                 <FormatCsmBalance value={totalCSM} />
             </td>
             <td className='number'>
+                <UnLockingCsms account={account} />
+            </td>
+            <td className='number'>
                 <FormatBalance value={UNIT.muln(totalRewards)} />
             </td>
             <td className='number'>
                 <FormatBalance value={UNIT.muln(pendingRewards)} />
+            </td>
+            <td className='number'>
+                {guaranteeFee * 100 + "%"}
             </td>
 
             <td className='button'>

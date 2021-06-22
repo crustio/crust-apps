@@ -1524,5 +1524,7 @@
   "data size": "数据大小",
   "CSM limit": "CSM上限",
   "effective stakes": "有效质押量",
-  "addresses": "地址"
+  "addresses": "地址",
+  " will unLocked at block {{bn}}": " 将在第{{bn}}块解锁",
+  "unLocking CSM": "解锁中的CSM"
 }

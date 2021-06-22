@@ -78,14 +78,14 @@ function AddressCsmInfo(props: Props): React.ReactElement<Props> {
                 </React.Fragment>,
                 <React.Fragment key={1}>
                     <Label label={t<string>('free')} />
-                    <FormatCsmBalance className='result' value={new BN(Number(csm.free).toString())}>
+                    <FormatCsmBalance className='result' value={new BN(Number(csm.free).toString()).sub(new BN(Number(csm.miscFrozen).toString()))}>
                     </FormatCsmBalance>
                 </React.Fragment>,
-                <React.Fragment key={2}>
-                    <Label label={t<string>('reserved')} />
-                    <FormatCsmBalance className='result' value={new BN(Number(csm.reserved).toString())}>
-                    </FormatCsmBalance>
-                </React.Fragment>,
+                // <React.Fragment key={2}>
+                //     <Label label={t<string>('reserved')} />
+                //     <FormatCsmBalance className='result' value={new BN(Number(csm.reserved).toString())}>
+                //     </FormatCsmBalance>
+                // </React.Fragment>,
                 <React.Fragment key={3}>
                     <Label label={t<string>('miscFrozen')} />
                     <FormatCsmBalance className='result' value={new BN(Number(csm.miscFrozen).toString())}>
