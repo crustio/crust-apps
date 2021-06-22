@@ -25,12 +25,10 @@ function CsmGuarantee ({ accountId, className = '', onChange, withSenders, provi
 
   const [selected, setSelected] = useState<string[]>([]);
 
-  console.log('providers', providers)
-
   useEffect((): void => {
     onChange({
       guaranteeTx: selected && selected.length && selected[0]
-        ? api.tx.csmLocking.guarantee([selected[0]])
+        ? api.tx.csmLocking.guarantee(selected[0])
         : null
     });
   }, [api, onChange, selected]);
