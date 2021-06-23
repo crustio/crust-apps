@@ -23,7 +23,7 @@ function GuaranteePref ({ accountId, className = '', onClose }: Props): React.Re
   return (
     <Modal
       className={className}
-      header={t<string>('Guarantee')}
+      header={t<string>('Guarantee fee')}
       size='large'
     >
       <Modal.Content>
@@ -40,7 +40,7 @@ function GuaranteePref ({ accountId, className = '', onClose }: Props): React.Re
           extrinsic={guaranteePrefTx}
           icon='hand-paper'
           isDisabled={!guaranteePrefTx}
-          label={t<string>('Set pref')}
+          label={t<string>('Set guarantee fee')}
           onStart={onClose}
         />
       </Modal.Actions>

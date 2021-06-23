@@ -63,7 +63,7 @@ function SetGuaranteePref ({ className = '', accountId, onChange, withSenders }:
       )}
       <Modal.Columns hint={t<string>('The guarantee fee is deducted from all rewards before the remainder is split with guarantors.')}>
         <InputNumber
-          help={t<string>('The percentage reward (0-100) that should be applied for the validator')}
+          help={t<string>('The percentage reward (0-100) that should be applied for the provider')}
           isZeroable
           label={t<string>('reward percentage')}
           maxValue={MAX_COMM}
