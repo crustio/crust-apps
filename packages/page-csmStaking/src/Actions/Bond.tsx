@@ -40,7 +40,7 @@ function Bond ({ accountId, className = '', onClose }: Props): React.ReactElemen
           extrinsic={bondTx}
           icon='hand-paper'
           isDisabled={!bondTx}
-          label={t<string>('Guarantee')}
+          label={t<string>('Bond extra')}
           onStart={onClose}
         />
       </Modal.Actions>
