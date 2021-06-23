@@ -17,6 +17,7 @@ import GuaranteePref from './GuaranteePref';
 import UnbondFounds from './UnbondFounds';
 import { FormatCsmBalance ,FormatBalance } from '@polkadot/react-query';
 import UnLockingCsms from './UnLockingCsms';
+import Bond from './Bond';
 
 interface Props {
     className?: string;
@@ -35,6 +36,7 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
     const [isGuaranteeOpen, toggleGuarantee] = useToggle();
     const [isSettingsOpen, toggleSettings] = useToggle();
     const [isUnbondOpen, toggleUnbond] = useToggle();
+    const [isBondExtraOpen, toggleBondExtra] = useToggle();
     const { queueExtrinsic } = useContext(StatusContext);
     const [ totalCSM, setTotalCSM ] = useState<BN>(BN_ZERO);
 
@@ -74,6 +76,12 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
                     onClose={toggleUnbond}
                 />
             )}
+            {isBondExtraOpen && account && (
+                <Bond
+                    accountId={account}
+                    onClose={toggleBondExtra}
+                />
+            )}
             <td className='address'>
                 <AddressSmall value={account} />
             </td>
@@ -84,7 +92,7 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
                 <FormatCsmBalance value={totalCSM} />
             </td>
             <td className='number'>
-                <UnLockingCsms account={account} />
+                <UnLockingCsms account={account} value={account} />
             </td>
             <td className='number'>
                 <FormatBalance value={UNIT.muln(totalRewards)} />
@@ -133,6 +141,9 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
                                 text
                                 vertical
                             >
+                                <Menu.Item onClick={toggleBondExtra}>
+                                    {t<string>('Bond extra')}
+                                </Menu.Item>
                                 <Menu.Item onClick={toggleUnbond}>
                                     {t<string>('Unbond founds')}
                                 </Menu.Item>

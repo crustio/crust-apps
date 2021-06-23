@@ -1520,11 +1520,15 @@
   "total rewards": "总奖励",
   "pending rewards": "待发奖励",
   "Data Guarantor": "数据担保人",
-  "Data provider": "数据提供人",
+  "Data Provider": "数据提供人",
   "data size": "数据大小",
   "CSM limit": "CSM上限",
   "effective stakes": "有效质押量",
   "addresses": "地址",
   " will unLocked at block {{bn}}": " 将在第{{bn}}块解锁",
-  "unLocking CSM": "解锁中的CSM"
+  "unLocking CSM": "解锁中的CSM",
+  "Bond extra": "新增绑定",
+  "Unbond founds": "解除绑定资金",
+  "No funds staked yet. Bond funds and set guarantee fee to be provider": "未发现任何绑定, 绑定资金并设置担保费率成为提供人",
+  "No funds staked yet. Bond funds and guarantee a provider": "未发现任何绑定, 绑定资金并担保提供人"
 }

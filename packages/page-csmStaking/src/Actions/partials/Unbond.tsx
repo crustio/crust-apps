@@ -31,7 +31,7 @@ function Bond ({ accountId, className = '', onChange, withSenders }: Props): Rea
   const [amount, setAmount] = useState<BN | undefined>();
   const [amountError, setAmountError] = useState<AmountValidateState | null>(null);
   const [startBalance, setStartBalance] = useState<BN | null>(null);
-  const accountBalance = useCall<any>(api.query.csm.account, [accountId]);
+  const accountBalance = useCall<any>(api.query.csmLocking.ledger, [accountId]);
 
   useEffect((): void => {
     onChange(
@@ -46,8 +46,8 @@ function Bond ({ accountId, className = '', onChange, withSenders }: Props): Rea
 
   useEffect((): void => {
     accountBalance && setStartBalance(
-      accountBalance.free.gt(api.consts.balances.existentialDeposit)
-        ? accountBalance.free.sub(api.consts.balances.existentialDeposit)
+      new BN(Number(accountBalance.total).toString()) .gt(BN_ZERO)
+        ? new BN(Number(accountBalance.total).toString()).sub(new BN(Number(accountBalance.active).toString()))
         : BN_ZERO
     );
   }, [api, accountBalance]);

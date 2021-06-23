@@ -55,7 +55,7 @@ function NewDataprovider ({ isInElection, providers }: Props): React.ReactElemen
         icon='plus'
         isDisabled={isDisabled}
         key='new-data-provider'
-        label={t<string>('Data provider')}
+        label={t<string>('Data Provider')}
         onClick={_toggle}
       />
       {isVisible && (

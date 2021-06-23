@@ -15,17 +15,16 @@ import { BN_ZERO } from '@polkadot/util';
 
 interface Props {
   className?: string;
-  isNominating?: boolean;
-  minNomination?: BN;
   onChange: (info: BondInfo) => void;
+  isGuarantor?: boolean;
 }
 
-const EMPTY_INFO = {
+export const EMPTY_INFO = {
   bondTx: null,
   accountId: null
 };
 
-function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
+function Bond ({ className = '', onChange, isGuarantor }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>();
@@ -37,14 +36,14 @@ function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
 
   useEffect((): void => {
     onChange(
-      (amount && amount.gtn(0) && !amountError?.error && accountId)
+      !isGuarantor || (amount && amount.gtn(0) && !amountError?.error && accountId)
         ? {
           bondTx: api.tx.csmLocking.bond(amount),
           accountId
         }
         : EMPTY_INFO
     );
-  }, [api, amount, amountError, accountId, onChange]);
+  }, [api, amount, amountError, accountId, onChange, isGuarantor]);
 
   useEffect((): void => {
     accountBalance && setStartBalance(
@@ -58,7 +57,7 @@ function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
     setStartBalance(null);
   }, [accountId]);
 
-  const hasValue = !!amount?.gtn(0);
+  const hasValue = isGuarantor ? !!amount?.gtn(0) : true ;
 
   return (
     <div className={className}>

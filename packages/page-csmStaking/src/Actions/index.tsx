@@ -8,7 +8,6 @@ import type { ActionStatus } from '@polkadot/react-components/Status/types';
 
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import NewBond from './NewBond';
 import NewDataGuarantor from './NewDataGuarantor';
 import { useAccounts } from '@polkadot/react-hooks';
 import AccountProvider from './AccountProvider';
@@ -48,7 +47,7 @@ function Actions ({ providers }: Props): React.ReactElement<Props> {
 
   const porviderHeaderRef = useRef([
     [t('providers'), 'address'],
-    [t('guarantors', 'address')],
+    [t('guarantors'), 'number'],
     [t('total CSM'), 'number'],
     [t('unLocking CSM'), 'number'],
     [t('total rewards'), 'number'],
@@ -72,11 +71,11 @@ function Actions ({ providers }: Props): React.ReactElement<Props> {
       <Button.Group>
         <NewDataGuarantor providers={providers} />
         <NewDataProvider providers={providers} />
-        <NewBond />
+        {/* <NewBond /> */}
       </Button.Group>
       {/* <div className={'comingsoon'}/> */}
       <Table
-        empty={hasAccounts && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
+        empty={hasAccounts && t<string>('No funds staked yet. Bond funds and set guarantee fee to be provider')}
         header={porviderHeaderRef.current}
       >
         {ownProviders?.map((info): React.ReactNode => (
@@ -88,7 +87,7 @@ function Actions ({ providers }: Props): React.ReactElement<Props> {
       </Table>
 
       <Table
-        empty={hasAccounts && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
+        empty={hasAccounts && t<string>('No funds staked yet. Bond funds and guarantee a provider')}
         header={guarantorHeaderRef.current}
       >
         {ownGuarantors?.map((info): React.ReactNode => (

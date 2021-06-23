@@ -56,14 +56,16 @@ function UnLockingCsm ({ className = '', account, isHighlight, isPadded = true, 
     const tmp = csmLedger && JSON.parse(JSON.stringify(csmLedger));
     if (tmp) {
       let tmpValue = BN_ZERO;
-      setUnLockings(tmp.unlocking);
       for (const unLock of tmp.unlocking) {
         tmpValue = tmpValue.add(new BN(Number(unLock.value).toString()))
       }
+      setUnLockings(tmp.unlocking);
       setUnLockingValue(tmpValue);
     }
 
-  }, [csmLedger])
+  }, [api, csmLedger])
+
+  console.log('unLockings', unLockings)
 
   if (unLockingValue.isZero()) {
     return null;
@@ -72,7 +74,7 @@ function UnLockingCsm ({ className = '', account, isHighlight, isPadded = true, 
   return (
     <div className={`ui--AddressMini${isHighlight ? ' isHighlight' : ''}${isPadded ? ' padded' : ''}${withShrink ? ' withShrink' : ''} ${className}`}>
       <div className='ui--AddressMini-balances'>
-        <React.Fragment key={3}>
+        <React.Fragment >
           <FormatCsmBalance
             className='result'
             label={
