@@ -56,7 +56,7 @@ function GuarantorStake ({ guarantors }: Props): React.ReactElement<Props> {
             />
           }>
             {guarantorStakes.map(({account, stakes}): React.ReactNode =>               
-              <AddressMiniForStake value={account} totalStake={stakes} />
+              <AddressMiniForStake key={account} value={account} totalStake={stakes} />
             )}
           </Expander>
         </>

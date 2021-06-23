@@ -11,7 +11,7 @@ import { Route, Switch } from 'react-router';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import { Tabs } from '@polkadot/react-components';
-import { useAccounts, useApi, useCall, useIpfs } from '@polkadot/react-hooks';
+import { useApi, useCall } from '@polkadot/react-hooks';
 
 import { ProviderState } from './Actions/partials/types';
 import { SummaryInfo } from './Overview/Summary';
@@ -19,25 +19,22 @@ import Actions from './Actions';
 import { httpGet } from './http';
 import Overview from './Overview';
 
-const HIDDEN_ACC = ['vanity'];
-
 const Capacity_Unit = new BN(1024 * 1024);
 
 function CsmStakingApp ({ basePath, onStatusChange }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const { hasAccounts } = useAccounts();
-  const { isIpfs } = useIpfs();
   const { api } = useApi();
+
   const activeEraInfo = useCall<ActiveEraInfo>(api.query.staking.activeEra);
-  const activeEra = activeEraInfo && (JSON.parse(JSON.stringify(activeEraInfo)).index);
   const [providers, setProviders] = useState<ProviderState[]>([]);
   const [summaryInfo, setSummaryInfo] = useState<SummaryInfo | null>();
   const [isLoading, setIsloading] = useState<boolean>(true);
 
-  useEffect(() => {
+  const getOverviewInfo = () => {
+    const activeEra = activeEraInfo && (JSON.parse(JSON.stringify(activeEraInfo)).index);
+      
     if (activeEra) {
       const lastEra = activeEra - 1;
-
       httpGet('http://crust-sg1.ownstack.cn:8866/overview/' + lastEra).then((res) => {
         setProviders(res?.statusText.providers);
         setSummaryInfo({
@@ -48,7 +45,12 @@ function CsmStakingApp ({ basePath, onStatusChange }: Props): React.ReactElement
         setIsloading(false);
       }).catch(() => setIsloading(true));
     }
-  }, [activeEra]);
+  }
+
+  useEffect(() => {
+    setTimeout(getOverviewInfo, 1)
+    setTimeout(getOverviewInfo, 1000 * 6 * 6)
+  }, [activeEraInfo]);
 
   const itemsRef = useRef([
     {
@@ -60,7 +62,6 @@ function CsmStakingApp ({ basePath, onStatusChange }: Props): React.ReactElement
       name: 'actions',
       text: t<string>('Account actions')
     }
-
   ]);
 
   return (
@@ -68,7 +69,6 @@ function CsmStakingApp ({ basePath, onStatusChange }: Props): React.ReactElement
       <header>
         <Tabs
           basePath={basePath}
-          hidden={(hasAccounts && !isIpfs) ? undefined : HIDDEN_ACC}
           items={itemsRef.current}
         />
       </header>

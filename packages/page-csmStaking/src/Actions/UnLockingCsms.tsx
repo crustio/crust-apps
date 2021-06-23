@@ -65,8 +65,6 @@ function UnLockingCsm ({ className = '', account, isHighlight, isPadded = true, 
 
   }, [api, csmLedger])
 
-  console.log('unLockings', unLockings)
-
   if (unLockingValue.isZero()) {
     return null;
   }

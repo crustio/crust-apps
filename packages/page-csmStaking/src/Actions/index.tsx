@@ -48,9 +48,9 @@ function Actions ({ providers }: Props): React.ReactElement<Props> {
   const porviderHeaderRef = useRef([
     [t('providers'), 'address'],
     [t('guarantors'), 'number'],
-    [t('total CSM'), 'number'],
+    [t('CSM total stakes'), 'number'],
     [t('unLocking CSM'), 'number'],
-    [t('total rewards'), 'number'],
+    [t('claimed rewards'), 'number'],
     [t('pending rewards'), 'number'],
     [t('guarantee fee'), 'number'],
     [undefined, undefined, 2]
@@ -59,9 +59,9 @@ function Actions ({ providers }: Props): React.ReactElement<Props> {
   const guarantorHeaderRef = useRef([
     [t('guarantors'), 'address'],
     [t('provider'), 'address'],
-    [t('total CSM'), 'number'],
+    [t('CSM total stakes'), 'number'],
     [t('unLocking CSM'), 'number'],
-    [t('total rewards'), 'number'],
+    [t('claimed rewards'), 'number'],
     [t('pending rewards'), 'number'],
     [undefined, undefined, 2]
   ]);
@@ -80,6 +80,7 @@ function Actions ({ providers }: Props): React.ReactElement<Props> {
       >
         {ownProviders?.map((info): React.ReactNode => (
           <AccountProvider
+            key={info.account}
             info={info}
             providers={providers}
           />
@@ -92,6 +93,7 @@ function Actions ({ providers }: Props): React.ReactElement<Props> {
       >
         {ownGuarantors?.map((info): React.ReactNode => (
           <AccountGuarantor
+            key={info.account}
             info={info}
             providers={providers}
           />

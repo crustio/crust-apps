@@ -28,12 +28,11 @@ function Overview({ providers, isLoading, summaryInfo }: Props): React.ReactElem
   // we have a very large list, so we use a loading delay
   const [nameFilter, setNameFilter] = useState<string>('');
   const [toggles, setToggle] = useSavedFlags('csmStaking:overview', { withIdentity: false });
-  console.log('summaryInfo', summaryInfo)
   
   const headerRef = useRef([
     [t('providers'), 'address'],
-    [t('data size'), 'number'],
-    [t('CSM limit'), 'number'],
+    [t('data power'), 'number'],
+    [t('CSM stake limit'), 'number'],
     [t('effective stakes'), 'number'],
     [t('total stakes'), 'number'],
     [t('guarantee fee'), 'number']
@@ -43,6 +42,7 @@ function Overview({ providers, isLoading, summaryInfo }: Props): React.ReactElem
     (addresses?: DataProviderState[]): React.ReactNode[] =>
       (addresses || []).map((info): React.ReactNode => (
         <DataProvider
+          key={info.account}
           info={info}
           filterName={nameFilter}
           withIdentity={toggles.withIdentity}
