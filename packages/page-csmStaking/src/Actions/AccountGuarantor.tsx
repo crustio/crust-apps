@@ -27,7 +27,7 @@ interface Props {
     providers: string[];
 }
 
-const UNIT = new BN(1_000_000_00_000);
+const UNIT = new BN(1_000_000_000_000);
 
 function Account({ className = '', info: { account, totalRewards, pendingRewards, provider }, providers, isDisabled }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
