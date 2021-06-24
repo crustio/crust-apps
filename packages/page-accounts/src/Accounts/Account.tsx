@@ -18,7 +18,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import styled, { ThemeContext } from 'styled-components';
 
 import { ApiPromise } from '@polkadot/api';
-import { AddressInfo, AddressCsmInfo, AddressSmall, Badge, Button, ChainLock, CryptoType, Forget, Icon, IdentityIcon, LinkExternal, Menu, Popup, StatusContext } from '@polkadot/react-components';
+import { AddressCsmInfo, AddressInfo, AddressSmall, Badge, Button, ChainLock, CryptoType, Forget, Icon, IdentityIcon, LinkExternal, Menu, Popup, StatusContext } from '@polkadot/react-components';
 import { useAccountInfo, useApi, useBestNumber, useCall, useLedger, useToggle } from '@polkadot/react-hooks';
 import { FormatCandy } from '@polkadot/react-query';
 import { keyring } from '@polkadot/ui-keyring';
@@ -613,7 +613,8 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
         />
       </td>
       <td className='number'>
-        <AddressCsmInfo address={address} withBalance
+        <AddressCsmInfo address={address}
+          withBalance
           withBalanceToggle
           withExtended={false} />
       </td>

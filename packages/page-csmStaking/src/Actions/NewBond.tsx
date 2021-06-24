@@ -15,7 +15,7 @@ interface Props {
   isInElection?: boolean;
 }
 
-function NewBond ({ }: Props): React.ReactElement {
+function NewBond ({ isInElection }: Props): React.ReactElement {
   const { t } = useTranslation();
   const [isVisible, toggleVisible] = useToggle();
   const [{ accountId, bondTx }, setBondInfo] = useState<BondInfo>({});
