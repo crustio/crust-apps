@@ -7,6 +7,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { AccountName, Badge, IdentityIcon } from '@polkadot/react-components';
+import { useTranslation } from '@polkadot/apps/translate';
 
 interface Props {
   isProvider: boolean;
@@ -21,12 +22,16 @@ interface Props {
 }
 
 function ProviderSmall ({ children, className = '', defaultName, isProvider, onClickName, overrideName, toggle, value, withSidebar = true }: Props): React.ReactElement<Props> {
+  const { t } = useTranslation();
+
   return (
     <div className={`ui--AddressSmall ${className}`}>
       {!isProvider && (
         <Badge color='red'
-          icon='skull-crossbones' />
-      )}
+          icon='skull-crossbones' 
+          hover={t<string>('This provider has expired')}
+        />
+      )}     
       <IdentityIcon value={value as Uint8Array} />
       <AccountName
         className={withSidebar ? 'withSidebar' : ''}
