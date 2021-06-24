@@ -21,7 +21,30 @@ import Overview from './Overview';
 
 const Capacity_Unit = new BN(1024 * 1024);
 
-function CsmStakingApp ({ basePath, onStatusChange }: Props): React.ReactElement<Props> {
+interface OverviewInfo {
+  providers: ProviderState[];
+  summaryInfo: SummaryInfo | null;
+}
+
+const getOverviewInfo = async (era: number): Promise<OverviewInfo> => {
+  return await httpGet('http://crust-sg1.ownstack.cn:8866/overview/' + era).then((res) => {
+    return {
+      providers: res?.statusText.providers,
+      summaryInfo: {
+        calculatedRewards: res?.statusText.calculatedRewards,
+        totalEffectiveStakes: res?.statusText.totalEffectiveStakes,
+        dataPower: Capacity_Unit.mul(new BN(Number(res?.statusText.dataPower)))
+      }
+    }
+  }).catch(() => {
+    return {
+      providers: [],
+      summaryInfo: null
+    }
+  });
+}
+
+function CsmStakingApp({ basePath, onStatusChange }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
 
@@ -30,27 +53,44 @@ function CsmStakingApp ({ basePath, onStatusChange }: Props): React.ReactElement
   const [summaryInfo, setSummaryInfo] = useState<SummaryInfo | null>();
   const [isLoading, setIsloading] = useState<boolean>(true);
 
-  const getOverviewInfo = () => {
+  const fetch = () => {
     const activeEra = activeEraInfo && (JSON.parse(JSON.stringify(activeEraInfo)).index);
-      
     if (activeEra) {
       const lastEra = activeEra - 1;
-      httpGet('http://crust-sg1.ownstack.cn:8866/overview/' + lastEra).then((res) => {
-        setProviders(res?.statusText.providers);
-        setSummaryInfo({
-          calculatedRewards: res?.statusText.calculatedRewards,
-          totalEffectiveStakes: res?.statusText.totalEffectiveStakes,
-          dataPower: Capacity_Unit.mul(new BN(Number(res?.statusText.dataPower)))
-        });
+      // httpGet('http://crust-sg1.ownstack.cn:8866/overview/' + lastEra).then((res) => {
+      //   setProviders(res?.statusText.providers);
+      //   setSummaryInfo({
+      //     calculatedRewards: res?.statusText.calculatedRewards,
+      //     totalEffectiveStakes: res?.statusText.totalEffectiveStakes,
+      //     dataPower: Capacity_Unit.mul(new BN(Number(res?.statusText.dataPower)))
+      //   });
+      //   setIsloading(false);
+      // }).catch(() => setIsloading(true));
+      getOverviewInfo(lastEra).then(res => {
+        setProviders(res.providers)
+        setSummaryInfo(res.summaryInfo)
         setIsloading(false);
-      }).catch(() => setIsloading(true));
+      }).catch(() => setIsloading(true))
     }
   }
 
   useEffect(() => {
-    setTimeout(getOverviewInfo, 1)
-    setTimeout(getOverviewInfo, 1000 * 6 * 6)
+    setTimeout(fetch, 1000 * 6 * 6)
   }, [activeEraInfo]);
+
+  useEffect(() => {
+    api.query.staking.activeEra().then(
+      res => {
+        const activeEra = res && (JSON.parse(JSON.stringify(res)).index);
+        const lastEra = activeEra - 1;
+        getOverviewInfo(lastEra).then(res => {
+          setProviders(res.providers)
+          setSummaryInfo(res.summaryInfo)
+          setIsloading(false);
+        }).catch(() => setIsloading(true))
+      }
+    )
+  }, [httpGet]);
 
   const itemsRef = useRef([
     {
