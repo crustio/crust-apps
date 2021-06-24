@@ -156,7 +156,7 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
                                     {t<string>('Bond extra')}
                                 </Menu.Item>
                                 <Menu.Item onClick={toggleUnbond}>
-                                    {t<string>('Unbond founds')}
+                                    {t<string>('Unbond funds')}
                                 </Menu.Item>
                                 <Menu.Item
                                     onClick={withdrawFunds}

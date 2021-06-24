@@ -56,7 +56,6 @@ function Bond ({ className = '', onChange, isGuarantor }: Props): React.ReactEle
   useEffect((): void => {
     setStartBalance(null);
   }, [accountId]);
-
   const hasValue = isGuarantor ? !!amount?.gtn(0) : true ;
 
   return (

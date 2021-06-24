@@ -25,6 +25,7 @@ export interface GuarantorState {
   pendingRewards: number;
   role: string;
   provider: string;
+  isProvider: boolean
 }
 
 export interface ProviderState {

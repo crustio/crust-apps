@@ -18,6 +18,7 @@ import UnbondFounds from './UnbondFounds';
 import { FormatCsmBalance ,FormatBalance } from '@polkadot/react-query';
 import UnLockingCsms from './UnLockingCsms';
 import Bond from './Bond';
+import ProviderSmall from './ProviderSmall';
 
 interface Props {
     className?: string;
@@ -29,7 +30,7 @@ interface Props {
 
 const UNIT = new BN(1_000_000_000_000);
 
-function Account({ className = '', info: { account, totalRewards, pendingRewards, provider }, providers, isDisabled }: Props): React.ReactElement<Props> {
+function Account({ className = '', info: { account, totalRewards, pendingRewards, provider, isProvider }, providers, isDisabled }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
     const { api } = useApi();
     const [isSetPrefOpen, toggleSetPref] = useToggle();
@@ -86,7 +87,7 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
                 <AddressSmall value={account} />
             </td>
             <td className='address'>
-                <AddressSmall value={provider} />
+                <ProviderSmall value={provider} isProvider={isProvider} />       
             </td>
             <td className='number'>
                 <FormatCsmBalance value={totalCSM} />
@@ -145,7 +146,7 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
                                     {t<string>('Bond extra')}
                                 </Menu.Item>
                                 <Menu.Item onClick={toggleUnbond}>
-                                    {t<string>('Unbond founds')}
+                                    {t<string>('Unbond funds')}
                                 </Menu.Item>
                                 <Menu.Item
                                     onClick={withdrawFunds}

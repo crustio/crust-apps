@@ -5,7 +5,7 @@
 import type { DeriveAccountInfo } from '@polkadot/api-derive/types';
 import type { Balance, IndividualExposure } from '@polkadot/types/interfaces';
 
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 
 import { AddressSmall } from '@polkadot/react-components';
@@ -16,6 +16,7 @@ import { DataProviderState } from './types';
 import { checkVisibility } from '@polkadot/react-components/util';
 import { FormatCapacity, FormatCsmBalance } from '@polkadot/react-query';
 import BN from 'bn.js';
+import Favorite from '@polkadot/app-staking/Overview/Address/Favorite';
 
 interface Props {
     className?: string;
@@ -23,6 +24,8 @@ interface Props {
     info: DataProviderState;
     filterName: string;
     withIdentity: boolean;
+    isFavorite: boolean;
+    toggleFavorite: (address: string) => void;
 }
 
 export interface Guarantee extends Codec {
@@ -36,20 +39,33 @@ const UNIT = new BN(1_000_000_000_000);
 
 const Capacity_Unit = new BN(1024 * 1024);
 
-function DataProvider({ className = '', filterName, withIdentity, info: { account, storage, csmLimit, stakedCSM, guaranteeFee, effectiveCSM } }: Props): React.ReactElement<Props> | null {
+function DataProvider({ className = '', isFavorite, toggleFavorite, filterName, withIdentity, info: { account, storage, csmLimit, stakedCSM, guaranteeFee, effectiveCSM } }: Props): React.ReactElement<Props> | null {
     const { api } = useApi();
     const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, [account]);
     const isVisible = useMemo(
         () => accountInfo ? checkVisibility(api, account, accountInfo, filterName, withIdentity) : true,
         [api, account, filterName, withIdentity]
     );
-
+    
+    
+    const _onFavorite = useCallback(
+        () => toggleFavorite(account),
+        [account, toggleFavorite]
+    );
+    
     if (!isVisible) {
         return null;
     }
 
     return (
         <tr className={className}>
+            <td className='badge together'>
+                <Favorite
+                    address={account}
+                    isFavorite={isFavorite}
+                    toggleFavorite={_onFavorite}
+                />
+            </td>
             <td className='address'>
                 <AddressSmall value={account} />
             </td>

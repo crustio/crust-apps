@@ -1528,12 +1528,13 @@
   " will unLocked at block {{bn}}": " 将在第{{bn}}块解锁",
   "unLocking CSM": "解锁中的CSM",
   "Bond extra": "新增绑定",
-  "Unbond founds": "解除绑定资金",
   "No funds staked yet. Bond funds and set guarantee fee to be provider": "未发现任何绑定, 绑定资金并设置担保费率成为提供人",
   "No funds staked yet. Bond funds and guarantee a provider": "未发现任何绑定, 绑定资金并担保提供人",
   "Set guarantee fee": "设置担保费率",
   "The percentage reward (0-100) that should be applied for the provider": "提供人应该设置的奖励百分比(0-100)",
   "data power": "数据算力",
   "CSM total stakes": "CSM总质押量",
-  "claimed rewards": "已领取奖励"
+  "claimed rewards": "已领取奖励",
+  "CSM stake limit": "CSM质押上限",
+  "Learn more about \"Profit Data\" >>": "“数据创造价值”活动规则说明（请仔细阅读）>>"
 }
