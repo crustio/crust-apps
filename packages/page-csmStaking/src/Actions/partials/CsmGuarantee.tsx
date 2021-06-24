@@ -47,15 +47,15 @@ function CsmGuarantee ({ accountId, className = '', onChange, withSenders, provi
         </Modal.Content>
       )}
       <Modal.Content>
-        <Modal.Columns hint={t<string>('Guarantors can be selected manually from the list of all currently available validators.')}>
+        <Modal.Columns hint={t<string>('')}>
           <InputAddressMulti
             available={providers}
-            availableLabel={t<string>('candidate accounts')}
+            availableLabel={t<string>('provider accounts')}
             // defaultValue={nominating}
-            help={t<string>('Filter available candidates based on name, address or short account index.')}
+            help={t<string>('')}
             maxCount={1}
             onChange={setSelected}
-            valueLabel={t<string>('selected accounts')}
+            valueLabel={t<string>('selected account')}
           />
         </Modal.Columns>
       </Modal.Content>

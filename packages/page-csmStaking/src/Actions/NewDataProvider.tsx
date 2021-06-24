@@ -98,7 +98,7 @@ function NewDataprovider ({ isInElection, providers }: Props): React.ReactElemen
                   accountId={accountId}
                   icon='sign-in-alt'
                   isDisabled={!bondTx || !guaranteePrefTx}
-                  label={t<string>('Bond & Validate')}
+                  label={t<string>('Bond & Set guarantee fee')}
                   onStart={_toggle}
                   params={[
                     [bondTx, guaranteePrefTx]

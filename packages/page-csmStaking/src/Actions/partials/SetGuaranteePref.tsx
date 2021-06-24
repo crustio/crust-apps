@@ -53,7 +53,7 @@ function SetGuaranteePref ({ className = '', accountId, onChange, withSenders }:
   return (
     <div className={className}>
       {withSenders && (
-        <Modal.Columns hint={t<string>('The address pair. This transaction, managing preferences, will be sent from the address.')}>
+        <Modal.Columns hint={t<string>('')}>
           <InputAddress
             defaultValue={accountId}
             isDisabled
@@ -61,7 +61,7 @@ function SetGuaranteePref ({ className = '', accountId, onChange, withSenders }:
           />
         </Modal.Columns>
       )}
-      <Modal.Columns hint={t<string>('The guarantee fee is deducted from all rewards before the remainder is split with guarantors.')}>
+      <Modal.Columns hint={t<string>('')}>
         <InputNumber
           help={t<string>('The percentage reward (0-100) that should be applied for the provider')}
           isZeroable
