@@ -60,7 +60,7 @@ function sort(sortBy: ProviderSortBy, sortFromMax: boolean, providers: DataProvi
 const SORT_KEYS = ['storage', 'csmLimit', 'effectiveCSM', 'stakedCSM', 'guaranteeFee'];
 
 function Overview({ providers, isLoading, summaryInfo }: Props): React.ReactElement<Props> {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   // we have a very large list, so we use a loading delay
   // const [nameFilter, setNameFilter] = useState<string>('');
   const [, setProviders] = useState<DataProviderState[]>([]);
@@ -153,7 +153,13 @@ function Overview({ providers, isLoading, summaryInfo }: Props): React.ReactElem
 
   return (<>
 
-    <h3><span style={{ "wordWrap": "break-word", "wordBreak": "break-all" }}><span style={{ 'fontWeight': 'bold', fontSize: '16px' }}><a href='https://etherscan.io/address/0x17a9037cdfb24ffcc13697d03c3bcd4dff34732b' target="_blank">{t<string>(`Learn more about "Profit Data" >>`)}</a></span></span></h3>
+    <h3>
+      <span style={{ "wordWrap": "break-word", "wordBreak": "break-all" }}><span style={{ 'fontWeight': 'bold', fontSize: '16px' }}>
+        <a href={i18n.language == 'zh' ? 'https://mp.weixin.qq.com/s/vLnuyU5gJCRcOSv_PrLAsw' : 'https://mp.weixin.qq.com/s/vLnuyU5gJCRcOSv_PrLAsw'} target="_blank">
+          {t<string>(`Learn more about "Profit Data" >>`)}</a>
+      </span>
+      </span>
+    </h3>
     {isLoading ? <Spinner noLabel /> : <Summary isLoading={isLoading} info={summaryInfo} />}
     <Table
       empty={!isLoading && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}

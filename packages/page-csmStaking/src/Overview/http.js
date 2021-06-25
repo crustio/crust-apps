@@ -12,8 +12,6 @@ function sleep(ms){
   return new Promise((resolve)=>setTimeout(resolve,ms));
 }
 
-console.log('USERNAME, PASSWD', USERNAME, PASSWD)
-
 export async function httpGet(url, data, retry = MAX_RETRY) {
   let requireRetry;
   let res;

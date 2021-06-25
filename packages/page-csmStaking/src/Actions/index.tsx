@@ -30,7 +30,7 @@ function Actions ({ providers }: Props): React.ReactElement<Props> {
   const [ownGuarantors, setOwnGuarantors ] = useState<GuarantorState[]>([]);
 
   useEffect(() => {
-    httpPost('http://crust-sg1.ownstack.cn:8866/accounts', {
+    httpPost('https://pd-api.crust.network/accounts', {
       accounts: allAccounts
   }).then((res: any) => {
       const group = lodash.groupBy(res.statusText, 'role');
