@@ -28,7 +28,7 @@ interface OverviewInfo {
 }
 
 const getOverviewInfo = async (era: number): Promise<OverviewInfo> => {
-  return await httpGet('https://pd-api.crust.network/overview/' + era).then((res) => {
+  return await httpGet('http://crust-sg1.ownstack.cn:8866/overview/' + era).then((res) => {
     if (res.code == 200) {
       return {
         providers: lodash.filter(res?.statusText.providers, e => e.storage),
