@@ -1,7 +1,6 @@
 name: dev-cd
 
 on:
-  # manual trigger
   workflow_dispatch:
 
 jobs:
