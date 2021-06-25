@@ -155,7 +155,7 @@ function Overview({ providers, isLoading, summaryInfo }: Props): React.ReactElem
 
     <h3>
       <span style={{ "wordWrap": "break-word", "wordBreak": "break-all" }}><span style={{ 'fontWeight': 'bold', fontSize: '16px' }}>
-        <a href={i18n.language == 'zh' ? 'https://mp.weixin.qq.com/s/vLnuyU5gJCRcOSv_PrLAsw' : 'https://mp.weixin.qq.com/s/vLnuyU5gJCRcOSv_PrLAsw'} target="_blank">
+        <a href={i18n.language == 'zh' ? 'https://mp.weixin.qq.com/s/vLnuyU5gJCRcOSv_PrLAsw' : 'https://medium.com/crustnetwork/profit-data-activity-rules-3ef2c9b364c4'} target="_blank">
           {t<string>(`Learn more about "Profit Data" >>`)}</a>
       </span>
       </span>
