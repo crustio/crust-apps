@@ -12,7 +12,8 @@ import { FormatCapacity, FormatCsmBalance ,FormatBalance } from '@polkadot/react
 import BN from 'bn.js';
 
 interface Props {
-  info?: SummaryInfo
+  info?: SummaryInfo;
+  isLoading: boolean;
 }
 
 export interface SummaryInfo {
@@ -23,11 +24,11 @@ export interface SummaryInfo {
 
 const UNIT = new BN(1_000_000_000_000);
 
-function Summary({ info }: Props): React.ReactElement<Props> | null {
+function Summary({ info, isLoading }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
 
   const daily = info ? 1000 / info.totalEffectiveStakes : 0;
-  return info ? (
+  return (!isLoading) ? (
     <SummaryBox>
       <section className='media--800'>
         <CardSummary label={t<string>('Total Rewards')}>
@@ -39,7 +40,7 @@ function Summary({ info }: Props): React.ReactElement<Props> | null {
           className='media--1000'
           label={t<string>('Issued Rewards')}
         >
-          { info.calculatedRewards ?  <FormatBalance value={UNIT.muln(info.calculatedRewards)} /> : (<Spinner noLabel />)}
+          { info ?  <FormatBalance value={UNIT.muln(info.calculatedRewards)} /> : (<Spinner noLabel />)}
         </CardSummary>
       </section>
       <section>
@@ -47,7 +48,7 @@ function Summary({ info }: Props): React.ReactElement<Props> | null {
           className='media--1100'
           label={t<string>('Pending Rewards')}
         >
-          { info.calculatedRewards? <FormatBalance value={UNIT.muln(54000 - info.calculatedRewards)} /> : (<Spinner noLabel />) }
+          { info ? <FormatBalance value={UNIT.muln(54000 - info.calculatedRewards)} /> : (<Spinner noLabel />) }
         </CardSummary>
       </section>
       <section>
@@ -64,7 +65,7 @@ function Summary({ info }: Props): React.ReactElement<Props> | null {
           className='media--1100'
           label={t<string>('Data Power')}
         >
-          { info.dataPower? <FormatCapacity value={info.dataPower} />  : (<Spinner noLabel />) }
+          { info ? <FormatCapacity value={info.dataPower} />  : (<Spinner noLabel />) }
         </CardSummary>
       </section>
       <section>
@@ -73,7 +74,7 @@ function Summary({ info }: Props): React.ReactElement<Props> | null {
           className='media--1100'
           label={t<string>('Effective stake')}
         >
-          { info.totalEffectiveStakes? <FormatCsmBalance value={UNIT.muln(info.totalEffectiveStakes)} />:  (<Spinner noLabel />)}
+          { info ? <FormatCsmBalance value={UNIT.muln(info.totalEffectiveStakes)} />:  (<Spinner noLabel />)}
         </CardSummary>
       </section>
       <section>
@@ -85,7 +86,7 @@ function Summary({ info }: Props): React.ReactElement<Props> | null {
         </CardSummary>
       </section>
     </SummaryBox>
-  ) : null;
+  ) : <Spinner noLabel />;
 }
 
 export default React.memo(styled(Summary)`

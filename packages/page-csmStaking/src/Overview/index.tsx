@@ -8,7 +8,7 @@ import type { ActionStatus } from '@polkadot/react-components/Status/types';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Summary, { SummaryInfo } from './Summary';
-import { Icon, Table } from '@polkadot/react-components';
+import { Icon, Spinner, Table } from '@polkadot/react-components';
 import { useFavorites, useSavedFlags } from '@polkadot/react-hooks';
 import Filtering from '@polkadot/app-staking/Filtering';
 import DataProvider from './DataProvider';
@@ -154,7 +154,7 @@ function Overview({ providers, isLoading, summaryInfo }: Props): React.ReactElem
   return (<>
 
     <h3><span style={{ "wordWrap": "break-word", "wordBreak": "break-all" }}><span style={{ 'fontWeight': 'bold', fontSize: '16px' }}><a href='https://etherscan.io/address/0x17a9037cdfb24ffcc13697d03c3bcd4dff34732b' target="_blank">{t<string>(`Learn more about "Profit Data" >>`)}</a></span></span></h3>
-    <Summary info={summaryInfo} />
+    {isLoading ? <Spinner noLabel /> : <Summary isLoading={isLoading} info={summaryInfo} />}
     <Table
       empty={!isLoading && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
       header={header}

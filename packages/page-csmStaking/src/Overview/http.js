@@ -5,14 +5,14 @@
 import { base64Encode } from '@polkadot/util-crypto';
 const MAX_RETRY = 3;
 const RETRY_INTERVAL = 1000;
-// const USERNAME = process.env.CSM_LOCKING_USER; 
-const USERNAME = 'crustprofitdataapiadmin'; 
-// const PASSWD = process.env.CSM_LOCKING_PASSWD
-const PASSWD = '102938';
+const USERNAME = process.env.CSM_LOCKING_USER; 
+const PASSWD = process.env.CSM_LOCKING_PASSWD
 
 function sleep(ms){
   return new Promise((resolve)=>setTimeout(resolve,ms));
 }
+
+console.log('USERNAME, PASSWD', USERNAME, PASSWD)
 
 export async function httpGet(url, data, retry = MAX_RETRY) {
   let requireRetry;

@@ -13,7 +13,7 @@ import { useAccounts } from '@polkadot/react-hooks';
 import AccountProvider from './AccountProvider';
 import AccountGuarantor from './AccountGuarantor';
 import NewDataProvider from './NewDataProvider';
-import { httpPost } from '../http';
+import { httpPost } from '../Overview/http';
 import lodash from 'lodash';
 import { ProviderState, GuarantorState } from './partials/types';
 

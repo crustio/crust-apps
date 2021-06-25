@@ -16,7 +16,7 @@ import { useApi, useCall } from '@polkadot/react-hooks';
 import { ProviderState } from './Actions/partials/types';
 import { SummaryInfo } from './Overview/Summary';
 import Actions from './Actions';
-import { httpGet } from './http';
+import { httpGet } from './Overview/http';
 import Overview from './Overview';
 
 const Capacity_Unit = new BN(1024 * 1024);
@@ -28,12 +28,19 @@ interface OverviewInfo {
 
 const getOverviewInfo = async (era: number): Promise<OverviewInfo> => {
   return await httpGet('http://crust-sg1.ownstack.cn:8866/overview/' + era).then((res) => {
-    return {
-      providers: res?.statusText.providers,
-      summaryInfo: {
-        calculatedRewards: res?.statusText.calculatedRewards,
-        totalEffectiveStakes: res?.statusText.totalEffectiveStakes,
-        dataPower: Capacity_Unit.mul(new BN(Number(res?.statusText.dataPower)))
+    if (res.code == 200) {
+      return {
+        providers: res?.statusText.providers,
+        summaryInfo: {
+          calculatedRewards: res?.statusText.calculatedRewards,
+          totalEffectiveStakes: res?.statusText.totalEffectiveStakes,
+          dataPower: Capacity_Unit.mul(new BN(Number(res?.statusText.dataPower)))
+        }
+      }
+    } else {
+      return {
+        providers: [],
+        summaryInfo: null
       }
     }
   }).catch(() => {
@@ -57,15 +64,6 @@ function CsmStakingApp({ basePath, onStatusChange }: Props): React.ReactElement<
     const activeEra = activeEraInfo && (JSON.parse(JSON.stringify(activeEraInfo)).index);
     if (activeEra) {
       const lastEra = activeEra - 1;
-      // httpGet('http://crust-sg1.ownstack.cn:8866/overview/' + lastEra).then((res) => {
-      //   setProviders(res?.statusText.providers);
-      //   setSummaryInfo({
-      //     calculatedRewards: res?.statusText.calculatedRewards,
-      //     totalEffectiveStakes: res?.statusText.totalEffectiveStakes,
-      //     dataPower: Capacity_Unit.mul(new BN(Number(res?.statusText.dataPower)))
-      //   });
-      //   setIsloading(false);
-      // }).catch(() => setIsloading(true));
       getOverviewInfo(lastEra).then(res => {
         setProviders(res.providers)
         setSummaryInfo(res.summaryInfo)
@@ -114,7 +112,7 @@ function CsmStakingApp({ basePath, onStatusChange }: Props): React.ReactElement<
       </header>
       <Switch>
         <Route path={`${basePath}/actions`}>
-          <Actions providers={providers.map((e) => e.account)} />
+          <Actions providers={providers?.map((e) => e.account)} />
         </Route>
         <Route basePath={basePath}
           onStatusChange={onStatusChange}>

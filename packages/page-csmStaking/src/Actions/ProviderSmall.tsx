@@ -6,8 +6,8 @@ import type { AccountId, Address } from '@polkadot/types/interfaces';
 import React from 'react';
 import styled from 'styled-components';
 
-import { AccountName, Badge, IdentityIcon } from '@polkadot/react-components';
 import { useTranslation } from '@polkadot/apps/translate';
+import { AccountName, Badge, IdentityIcon } from '@polkadot/react-components';
 
 interface Props {
   isProvider: boolean;
@@ -28,10 +28,10 @@ function ProviderSmall ({ children, className = '', defaultName, isProvider, onC
     <div className={`ui--AddressSmall ${className}`}>
       {!isProvider && (
         <Badge color='red'
-          icon='skull-crossbones' 
           hover={t<string>('This provider has expired')}
+          icon='skull-crossbones'
         />
-      )}     
+      )}
       <IdentityIcon value={value as Uint8Array} />
       <AccountName
         className={withSidebar ? 'withSidebar' : ''}
