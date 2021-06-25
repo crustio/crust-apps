@@ -13,16 +13,17 @@ import { useTranslation } from '@polkadot/apps/translate';
 import { Tabs } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
 
-import { ProviderState } from './Actions/partials/types';
 import { SummaryInfo } from './Overview/Summary';
 import Actions from './Actions';
 import { httpGet } from './Overview/http';
 import Overview from './Overview';
+import { DataProviderState } from './Overview/types';
+import lodash from 'lodash';
 
 const Capacity_Unit = new BN(1024 * 1024);
 
 interface OverviewInfo {
-  providers: ProviderState[];
+  providers: DataProviderState[];
   summaryInfo: SummaryInfo | null;
 }
 
@@ -30,7 +31,7 @@ const getOverviewInfo = async (era: number): Promise<OverviewInfo> => {
   return await httpGet('https://pd-api.crust.network/overview/' + era).then((res) => {
     if (res.code == 200) {
       return {
-        providers: res?.statusText.providers,
+        providers: lodash.filter(res?.statusText.providers, e => e.storage),
         summaryInfo: {
           calculatedRewards: res?.statusText.calculatedRewards,
           totalEffectiveStakes: res?.statusText.totalEffectiveStakes,
@@ -56,7 +57,7 @@ function CsmStakingApp({ basePath, onStatusChange }: Props): React.ReactElement<
   const { api } = useApi();
 
   const activeEraInfo = useCall<ActiveEraInfo>(api.query.staking.activeEra);
-  const [providers, setProviders] = useState<ProviderState[]>([]);
+  const [providers, setProviders] = useState<DataProviderState[]>([]);
   const [summaryInfo, setSummaryInfo] = useState<SummaryInfo | null>();
   const [isLoading, setIsloading] = useState<boolean>(true);
 

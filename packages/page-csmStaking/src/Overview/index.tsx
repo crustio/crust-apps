@@ -66,7 +66,7 @@ function Overview({ providers, isLoading, summaryInfo }: Props): React.ReactElem
   const [, setProviders] = useState<DataProviderState[]>([]);
   const [toggles, setToggle] = useSavedFlags('csmStaking:overview', { withIdentity: false });
   const [favorites, toggleFavorite] = useFavorites(CSM_FAVS);
-  const [{ sortBy, sortFromMax }, setSortBy] = useState<SortState>({ sortBy: 'storage', sortFromMax: true });
+  const [{ sortBy, sortFromMax }, setSortBy] = useState<SortState>({ sortBy: 'storage', sortFromMax: false });
   const [sorted, setSorted] = useState<DataProviderState[] | undefined>();
   const [{ isQueryFiltered, nameFilter }, setNameFilter] = useState({ isQueryFiltered: false, nameFilter: '' });
 
