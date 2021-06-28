@@ -12,7 +12,7 @@ function sleep(ms){
   return new Promise((resolve)=>setTimeout(resolve,ms));
 }
 
-export async function httpGet(url, data, retry = MAX_RETRY) {
+export async function httpGet(url, retry = MAX_RETRY) {
   let requireRetry;
   let res;
   try {
@@ -62,7 +62,7 @@ export async function httpGet(url, data, retry = MAX_RETRY) {
   }
   if (requireRetry && retry > 0){
     await sleep(RETRY_INTERVAL);
-    res = await httpPost(url, --retry);
+    res = await httpGet(url, --retry);
   }
   return res;
 }
@@ -119,7 +119,7 @@ export async function httpPost(url, data, retry = MAX_RETRY) {
   }
   if (requireRetry && retry > 0){
     await sleep(RETRY_INTERVAL);
-    res = await httpPost(url, --retry);
+    res = await httpPost(url, data, --retry);
   }
   return res;
 }

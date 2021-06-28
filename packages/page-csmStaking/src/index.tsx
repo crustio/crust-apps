@@ -27,8 +27,8 @@ interface OverviewInfo {
   summaryInfo: SummaryInfo | null;
 }
 
-const getOverviewInfo = async (era: number): Promise<OverviewInfo> => {
-  return await httpGet('https://pd-api.crust.network/overview/' + era).then((res) => {
+const getOverviewInfo = async (overviewUrl: string, era: number): Promise<OverviewInfo> => {
+  return await httpGet(overviewUrl + era).then((res: { code: number; statusText: { providers: any; calculatedRewards: any; totalEffectiveStakes: any; dataPower: any; }; }) => {
     if (res.code == 200) {
       return {
         providers: lodash.filter(res?.statusText.providers, e => e.storage),
@@ -54,8 +54,8 @@ const getOverviewInfo = async (era: number): Promise<OverviewInfo> => {
 
 function CsmStakingApp({ basePath, onStatusChange }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const { api } = useApi();
-
+  const { api, systemChain } = useApi();
+  const overviewUrl = systemChain == 'Crust Maxwell' ? 'https://pd-api.crust.network/overview/' : 'http://crust-sg1.ownstack.cn:8866/overview/';
   const activeEraInfo = useCall<ActiveEraInfo>(api.query.staking.activeEra);
   const [providers, setProviders] = useState<DataProviderState[]>([]);
   const [summaryInfo, setSummaryInfo] = useState<SummaryInfo | null>();
@@ -65,7 +65,7 @@ function CsmStakingApp({ basePath, onStatusChange }: Props): React.ReactElement<
     const activeEra = activeEraInfo && (JSON.parse(JSON.stringify(activeEraInfo)).index);
     if (activeEra) {
       const lastEra = activeEra - 1;
-      getOverviewInfo(lastEra).then(res => {
+      getOverviewInfo(overviewUrl, lastEra).then(res => {
         setProviders(res.providers)
         setSummaryInfo(res.summaryInfo)
         setIsloading(false);
@@ -82,14 +82,14 @@ function CsmStakingApp({ basePath, onStatusChange }: Props): React.ReactElement<
       res => {
         const activeEra = res && (JSON.parse(JSON.stringify(res)).index);
         const lastEra = activeEra - 1;
-        getOverviewInfo(lastEra).then(res => {
+        getOverviewInfo(overviewUrl, lastEra).then(res => {
           setProviders(res.providers)
           setSummaryInfo(res.summaryInfo)
           setIsloading(false);
         }).catch(() => setIsloading(true))
       }
     )
-  }, [httpGet]);
+  }, [httpGet, overviewUrl]);
 
   const itemsRef = useRef([
     {
