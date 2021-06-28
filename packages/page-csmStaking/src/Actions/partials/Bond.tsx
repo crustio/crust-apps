@@ -5,7 +5,7 @@
 import type { AmountValidateState, BondInfo } from './types';
 
 import BN from 'bn.js';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import { InputAddress, InputCsmBalance, Modal } from '@polkadot/react-components';
@@ -15,17 +15,16 @@ import { BN_ZERO } from '@polkadot/util';
 
 interface Props {
   className?: string;
-  isNominating?: boolean;
-  minNomination?: BN;
   onChange: (info: BondInfo) => void;
+  isGuarantor?: boolean;
 }
 
-const EMPTY_INFO = {
+export const EMPTY_INFO = {
   bondTx: null,
   accountId: null
 };
 
-function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
+function Bond ({ className = '', onChange, isGuarantor }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>();
@@ -35,25 +34,16 @@ function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
   const accountBalance = useCall<any>(api.query.csm.account, [accountId]);
   const { allAccounts } = useAccounts();
 
-  // TODO: change to get from jk's api
-  const accountsAlreadyHasRole = ['5CD8zuY5jDFUFh2eyKcyA63LedEKhy8NckVyztJvVRdQ4PCy'];
-
-  // TODO: change to get from jk's api
-  const accounts = useMemo(
-    () => (allAccounts || []).filter((accountId) => !accountsAlreadyHasRole.includes(accountId)),
-    [allAccounts]
-  );
-
   useEffect((): void => {
     onChange(
-      (amount && amount.gtn(0) && !amountError?.error && accountId)
+      !isGuarantor || (amount && amount.gtn(0) && !amountError?.error && accountId)
         ? {
           bondTx: api.tx.csmLocking.bond(amount),
           accountId
         }
         : EMPTY_INFO
     );
-  }, [api, amount, amountError, accountId, onChange]);
+  }, [api, amount, amountError, accountId, onChange, isGuarantor]);
 
   useEffect((): void => {
     accountBalance && setStartBalance(
@@ -66,14 +56,13 @@ function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
   useEffect((): void => {
     setStartBalance(null);
   }, [accountId]);
-
-  const hasValue = !!amount?.gtn(0);
+  const hasValue = isGuarantor ? !!amount?.gtn(0) : true ;
 
   return (
     <div className={className}>
       <Modal.Columns>
         <InputAddress
-          filter={accounts}
+          filter={allAccounts}
           label={t<string>('account')}
           onChange={setAccountId}
           type='account'
@@ -84,7 +73,6 @@ function Bond ({ className = '', onChange }: Props): React.ReactElement<Props> {
         <Modal.Columns>
           <InputCsmBalance
             autoFocus
-            defaultValue={startBalance}
             help={t<string>('')}
             isError={!hasValue || !!amountError?.error}
             label={t<string>('value bonded')}

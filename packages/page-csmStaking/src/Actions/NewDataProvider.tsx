@@ -15,11 +15,12 @@ import SetGuaranteePref from './partials/SetGuaranteePref';
 
 interface Props {
   isInElection?: boolean;
+  providers: string[]
 }
 
 const NUM_STEPS = 2;
 
-function NewDataprovider ({ isInElection }: Props): React.ReactElement<Props> {
+function NewDataprovider ({ isInElection, providers }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [isVisible, toggleVisible] = useToggle();
@@ -54,7 +55,7 @@ function NewDataprovider ({ isInElection }: Props): React.ReactElement<Props> {
         icon='plus'
         isDisabled={isDisabled}
         key='new-data-provider'
-        label={t<string>('Data provider')}
+        label={t<string>('Data Provider')}
         onClick={_toggle}
       />
       {isVisible && (
@@ -69,7 +70,8 @@ function NewDataprovider ({ isInElection }: Props): React.ReactElement<Props> {
         >
           <Modal.Content>
             {step === 1 && (
-              <BondPartial onChange={setBondInfo} />
+              <BondPartial
+                onChange={setBondInfo} />
             )}
             {accountId && step === 2 && (
               <>
@@ -96,7 +98,7 @@ function NewDataprovider ({ isInElection }: Props): React.ReactElement<Props> {
                   accountId={accountId}
                   icon='sign-in-alt'
                   isDisabled={!bondTx || !guaranteePrefTx}
-                  label={t<string>('Bond & Validate')}
+                  label={t<string>('Bond & Set guarantee fee')}
                   onStart={_toggle}
                   params={[
                     [bondTx, guaranteePrefTx]

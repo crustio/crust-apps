@@ -15,11 +15,12 @@ import CsmGuarantee from './partials/CsmGuarantee';
 
 interface Props {
   isInElection?: boolean;
+  providers: string[];
 }
 
 const NUM_STEPS = 2;
 
-function NewDataGuarantor ({ isInElection }: Props): React.ReactElement<Props> {
+function NewDataGuarantor ({ isInElection, providers }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [isVisible, toggleVisible] = useToggle();
@@ -69,13 +70,16 @@ function NewDataGuarantor ({ isInElection }: Props): React.ReactElement<Props> {
         >
           <Modal.Content>
             {step === 1 && (
-              <BondPartial onChange={setBondInfo} />
+              <BondPartial
+                isGuarantor
+                onChange={setBondInfo} />
             )}
             {accountId && step === 2 && (
               <>
                 <CsmGuarantee
                   accountId={accountId}
                   onChange={setGuaranteeInfo}
+                  providers={providers}
                 />
               </>
             )}

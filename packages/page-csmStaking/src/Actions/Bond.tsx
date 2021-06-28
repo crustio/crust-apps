@@ -7,42 +7,40 @@ import styled from 'styled-components';
 import { useTranslation } from '@polkadot/apps/translate';
 import { Modal, TxButton } from '@polkadot/react-components';
 
-import CsmGuarantee from './partials/CsmGuarantee';
-import { GuaranteeInfo } from './partials/types';
+import SetBond from './partials/SetBond';
+import { BondInfo } from './partials/types';
 
 interface Props {
   className: string,
   accountId: string,
   onClose: () => void;
-  providers: string[]
 }
 
-function Guarantee ({ accountId, className = '', onClose, providers }: Props): React.ReactElement<Props> | null {
+function Bond ({ accountId, className = '', onClose }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
-  const [{ guaranteeTx }, setTx] = useState<GuaranteeInfo>({});
+  const [{ bondTx }, setBondInfo] = useState<BondInfo>({});
 
   return (
     <Modal
       className={className}
-      header={t<string>('Guarantee')}
+      header={t<string>('Bond extra')}
       size='large'
     >
       <Modal.Content>
-        <CsmGuarantee
+        <SetBond
           accountId={accountId}
           className='nominatePartial'
-          onChange={setTx}
-          providers={providers}
+          onChange={setBondInfo}
           withSenders
         />
       </Modal.Content>
       <Modal.Actions onCancel={onClose}>
         <TxButton
           accountId={accountId}
-          extrinsic={guaranteeTx}
+          extrinsic={bondTx}
           icon='hand-paper'
-          isDisabled={!guaranteeTx}
-          label={t<string>('Guarantee')}
+          isDisabled={!bondTx}
+          label={t<string>('Bond extra')}
           onStart={onClose}
         />
       </Modal.Actions>
@@ -50,7 +48,7 @@ function Guarantee ({ accountId, className = '', onClose, providers }: Props): R
   );
 }
 
-export default React.memo(styled(Guarantee)`
+export default React.memo(styled(Bond)`
   .nominatePartial {
     .ui--Static .ui--AddressMini .ui--AddressMini-info {
       max-width: 10rem;

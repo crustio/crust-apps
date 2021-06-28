@@ -9,6 +9,7 @@ import React from 'react';
 import { useApi, useCall } from '@polkadot/react-hooks';
 
 import FormatCsmBalance from './FormatCsmBalance';
+import BN from 'bn.js';
 
 interface Props {
   children?: React.ReactNode;
@@ -25,7 +26,7 @@ function CsmFree ({ children, className = '', label, params }: Props): React.Rea
     <FormatCsmBalance
       className={className}
       label={label}
-      value={allBalances?.free}
+      value={new BN(Number(allBalances?.free).toString()).sub(new BN(Number(allBalances?.feeFrozen).toString())) }
     >
       {children}
     </FormatCsmBalance>

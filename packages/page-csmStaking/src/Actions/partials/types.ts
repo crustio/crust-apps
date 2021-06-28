@@ -18,11 +18,24 @@ export interface AmountValidateState {
   warning: string | null;
 }
 
-export interface StakerState {
-  accountId: string;
-  effectiveCsm: string;
-  totalReward: string;
-  predictCsm: string
+export interface GuarantorState {
+  account: string;
+  effectiveCsm: number;
+  totalRewards: number;
+  pendingRewards: number;
+  role: string;
+  provider: string;
+  isProvider: boolean
+}
+
+export interface ProviderState {
+  account: string;
+  effectiveCsm: number;
+  totalRewards: number;
+  pendingRewards: number;
+  role: string;
+  guarantors: string[];
+  guaranteeFee: number;
 }
 
 export interface SetGuaranteePrefInfo {
