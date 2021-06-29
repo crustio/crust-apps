@@ -7,7 +7,7 @@ import BN from 'bn.js';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { AddressSmall, Button, Menu, Popup, StatusContext } from '@polkadot/react-components';
+import { Button, Menu, Popup, StatusContext } from '@polkadot/react-components';
 import { useApi, useCall, useToggle } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 import { useTranslation } from '@polkadot/apps/translate';
@@ -21,6 +21,7 @@ import UnLockingCsms from './UnLockingCsms';
 import Bond from './Bond';
 import { Capacity_Unit } from '..';
 import { formatNumber } from '@polkadot/util';
+import AddressStatusSmall from './AddressStatusSmall';
 
 interface Props {
     className?: string;
@@ -32,7 +33,7 @@ interface Props {
 
 const UNIT = new BN(1_000_000_000_000);
 
-function Account({ className = '', info: { account, totalRewards, pendingRewards, guarantors, guaranteeFee, storage, pendingFiles }, isDisabled, providers }: Props): React.ReactElement<Props> {
+function Account({ className = '', info: { account, totalRewards, pendingRewards, guarantors, guaranteeFee, storage, pendingFiles, frozenBn }, isDisabled, providers }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
     const { api } = useApi();
     const [isSetPrefOpen, toggleSetPref] = useToggle();
@@ -79,6 +80,7 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
             {isSetPrefOpen && account && (
                 <GuaranteePref
                     accountId={account}
+                    frozenBn={frozenBn}
                     onClose={toggleSetPref}
                 />
             )}
@@ -95,7 +97,7 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
                 />
             )}
             <td className='address'>
-                <AddressSmall value={account} />
+                <AddressStatusSmall value={account} frozenBn={frozenBn} />
             </td>
             <GuarantorStake guarantors={guarantors} />
             <td className='number'>

@@ -7,7 +7,7 @@ import BN from 'bn.js';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { AddressSmall, Button, Menu, Popup, StatusContext } from '@polkadot/react-components';
+import { Button, Menu, Popup, StatusContext } from '@polkadot/react-components';
 import { useApi, useToggle } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 import { useTranslation } from '@polkadot/apps/translate';
@@ -19,6 +19,7 @@ import { FormatCsmBalance ,FormatBalance } from '@polkadot/react-query';
 import UnLockingCsms from './UnLockingCsms';
 import Bond from './Bond';
 import ProviderSmall from './ProviderSmall';
+import AddressStatusSmall from './AddressStatusSmall';
 
 interface Props {
     className?: string;
@@ -30,7 +31,7 @@ interface Props {
 
 const UNIT = new BN(1_000_000_000_000);
 
-function Account({ className = '', info: { account, totalRewards, pendingRewards, provider, isProvider }, providers, isDisabled }: Props): React.ReactElement<Props> {
+function Account({ className = '', info: { account, totalRewards, pendingRewards, provider, isProvider, frozenBn }, providers, isDisabled }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
     const { api } = useApi();
     const [isSetPrefOpen, toggleSetPref] = useToggle();
@@ -69,6 +70,7 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
                 <GuaranteePref
                     accountId={account}
                     onClose={toggleSetPref}
+                    frozenBn={frozenBn}
                 />
             )}
             {isUnbondOpen && account && (
@@ -84,7 +86,7 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
                 />
             )}
             <td className='address'>
-                <AddressSmall value={account} />
+                <AddressStatusSmall value={account} frozenBn={frozenBn} />
             </td>
             <td className='address'>
                 <ProviderSmall value={provider} isProvider={isProvider} />       
@@ -111,6 +113,7 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
                                     <Button
                                         icon='certificate'
                                         isDisabled={isDisabled}
+                                        tooltip={t<string>('Withdraw these unbonded funds')}
                                         key='validate'
                                         label={t<string>('Guarantee fee')}
                                         onClick={toggleSetPref}

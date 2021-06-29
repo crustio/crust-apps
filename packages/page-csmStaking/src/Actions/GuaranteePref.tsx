@@ -12,11 +12,12 @@ import { SetGuaranteePrefInfo } from './partials/types';
 
 interface Props {
   className?: string;
+  frozenBn?: number;
   accountId: string;
   onClose: () => void;
 }
 
-function GuaranteePref ({ accountId, className = '', onClose }: Props): React.ReactElement<Props> | null {
+function GuaranteePref ({ accountId, className = '', onClose, frozenBn }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const [{ guaranteePrefTx }, setGuaranteePrefInfo] = useState<SetGuaranteePrefInfo>({});
 
@@ -31,6 +32,7 @@ function GuaranteePref ({ accountId, className = '', onClose }: Props): React.Re
           accountId={accountId}
           className='nominatePartial'
           onChange={setGuaranteePrefInfo}
+          frozenBn={frozenBn}
           withSenders
         />
       </Modal.Content>
