@@ -10,6 +10,7 @@ import { CardSummary, Spinner, SummaryBox } from '@polkadot/react-components';
 import { useTranslation } from '@polkadot/apps/translate';
 import { FormatCapacity, FormatCsmBalance ,FormatBalance } from '@polkadot/react-query';
 import BN from 'bn.js';
+import { formatNumber } from '@polkadot/util';
 
 interface Props {
   info?: SummaryInfo;
@@ -19,6 +20,8 @@ interface Props {
 export interface SummaryInfo {
   calculatedRewards: number,
   totalEffectiveStakes: number,
+  totalProviders: number,
+  totalGuarantors: number,
   dataPower: BN
 }
 
@@ -30,6 +33,14 @@ function Summary({ info, isLoading }: Props): React.ReactElement<Props> | null {
   const daily = info ? 1000 / info.totalEffectiveStakes : 0;
   return (!isLoading) ? (
     <SummaryBox>
+      <section>
+        <CardSummary label={t<string>('providers / guarantors')}>
+            {info
+              ? <>{formatNumber(info.totalProviders)}&nbsp;/&nbsp;{formatNumber(info.totalGuarantors)}</>
+              : <Spinner noLabel />
+            }
+        </CardSummary>
+      </section>
       <section className='media--800'>
         <CardSummary label={t<string>('Total Rewards')}>
           {<>{`54,000 CRU`}</>}
@@ -43,14 +54,7 @@ function Summary({ info, isLoading }: Props): React.ReactElement<Props> | null {
           { info ?  <FormatBalance value={UNIT.muln(info.calculatedRewards)} /> : (<Spinner noLabel />)}
         </CardSummary>
       </section>
-      <section>
-        <CardSummary
-          className='media--1100'
-          label={t<string>('Pending Rewards')}
-        >
-          { info ? <FormatBalance value={UNIT.muln(54000 - info.calculatedRewards)} /> : (<Spinner noLabel />) }
-        </CardSummary>
-      </section>
+
       <section>
         <CardSummary
           className='media--1100'

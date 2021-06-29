@@ -20,6 +20,7 @@ import GuarantorStake from './GuarantorStake';
 import UnLockingCsms from './UnLockingCsms';
 import Bond from './Bond';
 import { Capacity_Unit } from '..';
+import { formatNumber } from '@polkadot/util';
 
 interface Props {
     className?: string;
@@ -31,7 +32,7 @@ interface Props {
 
 const UNIT = new BN(1_000_000_000_000);
 
-function Account({ className = '', info: { account, totalRewards, pendingRewards, guarantors, guaranteeFee, storage }, isDisabled, providers }: Props): React.ReactElement<Props> {
+function Account({ className = '', info: { account, totalRewards, pendingRewards, guarantors, guaranteeFee, storage, pendingFiles }, isDisabled, providers }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
     const { api } = useApi();
     const [isSetPrefOpen, toggleSetPref] = useToggle();
@@ -99,6 +100,9 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
             <GuarantorStake guarantors={guarantors} />
             <td className='number'>
                 <FormatCapacity value={Capacity_Unit.muln(storage)} />
+            </td>
+            <td className='number'>
+                {formatNumber(pendingFiles)}
             </td>
             <td className='number'>
                 <FormatCsmBalance value={totalCSM} />

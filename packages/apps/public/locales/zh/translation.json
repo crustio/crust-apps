@@ -1540,5 +1540,7 @@
   "This provider has expired": "提供人已经失效",
   "Bond & Set guarantee fee": "绑定并设置担保费率",
   "provider accounts": "提供人账户",
-  "storage": "算力"
+  "storage": "算力",
+  "providers / guarantors": "提供人 / 担保人",
+  "pending files count": "待处理算力文件数"
 }

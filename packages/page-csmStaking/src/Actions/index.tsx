@@ -53,6 +53,7 @@ function Actions({ providers }: Props): React.ReactElement<Props> {
     [t('providers'), 'address'],
     [t('guarantors'), 'number'],
     [t('storage'), 'number'],
+    [t('pending files count'), 'number'],
     [t('CSM total stakes'), 'number'],
     [t('unLocking CSM'), 'number'],
     [t('claimed rewards'), 'number'],

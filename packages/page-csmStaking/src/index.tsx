@@ -61,7 +61,7 @@ async function transformProviderStateInfo(api: ApiPromise, provider: ProviderInf
 }
 
 const getOverviewInfo = async (overviewUrl: string, api: ApiPromise): Promise<OverviewInfo> => {
-  return await httpGet(overviewUrl).then(async (res: { code: number; statusText: { providers: any; calculatedRewards: any; totalEffectiveStakes: any; dataPower: any; }; }) => {
+  return await httpGet(overviewUrl).then(async (res: { code: number; statusText: { providers: any; calculatedRewards: any; totalProviders: any; totalGuarantors: any; dataPower: any; }; }) => {
     if (res.code == 200) {
       const filered = lodash.filter(res?.statusText.providers, e => e.storage)
       const providers = [];
@@ -76,6 +76,8 @@ const getOverviewInfo = async (overviewUrl: string, api: ApiPromise): Promise<Ov
         summaryInfo: {
           calculatedRewards: res?.statusText.calculatedRewards,
           totalEffectiveStakes,
+          totalProviders: res?.statusText.totalProviders,
+          totalGuarantors: res?.statusText.totalGuarantors,
           dataPower: Capacity_Unit.mul(new BN(Number(res?.statusText.dataPower)))
         }
       }
