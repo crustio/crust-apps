@@ -1,8 +1,7 @@
 // Copyright 2017-2021 @polkadot/react-components authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { AccountId, Address } from '@polkadot/types/interfaces';
-import type { BlockNumber } from '@polkadot/types/interfaces';
+import type { AccountId, Address, BlockNumber } from '@polkadot/types/interfaces';
 
 import React from 'react';
 import styled from 'styled-components';
@@ -30,16 +29,18 @@ function AddressStatusSmall ({ children, className = '', defaultName, frozenBn, 
 
   return (
     <div className={`ui--AddressSmall ${className}`}>
-      {(frozenBn && frozenBn > Number(bestNumberFinalized)) ? (
-        <Badge color='orange'
-          hover={t<string>('You can not set guarantee fee until block {{bn}}', {
-            replace: {
-              bn: frozenBn
-            }
-          })}
-          icon='ice-cream'
-        />
-      ): null}
+      {(frozenBn && frozenBn > Number(bestNumberFinalized))
+        ? (
+          <Badge color='orange'
+            hover={t<string>('You can not set guarantee fee until block {{bn}}', {
+              replace: {
+                bn: frozenBn
+              }
+            })}
+            icon='ice-cream'
+          />
+        )
+        : null}
       <IdentityIcon value={value as Uint8Array} />
       <AccountName
         className={withSidebar ? 'withSidebar' : ''}
