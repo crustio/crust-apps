@@ -6,7 +6,7 @@
 import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
 import { Expander } from '@polkadot/react-components';
-import { FormatBalance } from '@polkadot/react-query';
+import { FormatCsmBalance } from '@polkadot/react-query';
 import { BN_ZERO } from '@polkadot/util';
 import { useCall, useApi } from '@polkadot/react-hooks';
 import AddressMiniForStake from './AddressMiniForStake';
@@ -50,7 +50,7 @@ function GuarantorStake ({ guarantors }: Props): React.ReactElement<Props> {
       {(
         <>
           <Expander summary={
-            <FormatBalance
+            <FormatCsmBalance
               labelPost={` (${guarantors.length})`}
               value={stakeValue}
             />
