@@ -159,6 +159,11 @@ function Overview({ providers, isLoading, summaryInfo }: Props): React.ReactElem
           {t<string>(`Learn more about "Profit Data" >>`)}</a>
       </span>
       </span>
+      {/* <span style={{ "wordWrap": "break-word", "wordBreak": "break-all", float: "right" }}><span style={{ 'fontWeight': 'bold', fontSize: '16px' }}>
+        <a href={i18n.language == 'zh' ? 'https://mp.weixin.qq.com/s/pp74MQMODwID_gkrbMdHug' : 'https://mp.weixin.qq.com/s/pp74MQMODwID_gkrbMdHug'} target="_blank">
+          {t<string>(`about "Data Power" >>`)}</a>
+      </span>
+      </span> */}
     </h3>
     {isLoading ? <Spinner noLabel /> : <Summary isLoading={isLoading} info={summaryInfo} />}
     <Table

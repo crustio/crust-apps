@@ -1543,5 +1543,6 @@
   "storage": "算力",
   "providers / guarantors": "提供人 / 担保人",
   "pending files count": "待处理算力文件数",
-  "You can not set guarantee fee until block {{bn}}": "在{{bn}}块之前你无法设置担保费率"
+  "You can not set guarantee fee until block {{bn}}": "在{{bn}}块之前你无法设置担保费率",
+  "about \"Data Power\" >>": "“数据算力”说明 >>"
 }
