@@ -16,7 +16,7 @@ const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 const k = 1024;
 
 function format (value: number): React.ReactNode {
-  if (value === 0) return '0 B';
+  if (value === 0 || Number(value) === 0) return '0 B';
   const i = Math.floor(Math.log(value) / Math.log(k));
   const unitPost = sizes[i];
 

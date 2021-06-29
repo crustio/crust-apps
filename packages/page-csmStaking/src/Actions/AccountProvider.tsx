@@ -15,10 +15,11 @@ import { ProviderState } from './partials/types';
 import Guarantee from './Guarantee';
 import GuaranteePref from './GuaranteePref';
 import UnbondFounds from './UnbondFounds';
-import { FormatCsmBalance, FormatBalance } from '@polkadot/react-query';
+import { FormatCsmBalance, FormatBalance, FormatCapacity } from '@polkadot/react-query';
 import GuarantorStake from './GuarantorStake';
 import UnLockingCsms from './UnLockingCsms';
 import Bond from './Bond';
+import { Capacity_Unit } from '..';
 
 interface Props {
     className?: string;
@@ -30,7 +31,7 @@ interface Props {
 
 const UNIT = new BN(1_000_000_000_000);
 
-function Account({ className = '', info: { account, totalRewards, pendingRewards, guarantors, guaranteeFee }, isDisabled, providers }: Props): React.ReactElement<Props> {
+function Account({ className = '', info: { account, totalRewards, pendingRewards, guarantors, guaranteeFee, storage }, isDisabled, providers }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
     const { api } = useApi();
     const [isSetPrefOpen, toggleSetPref] = useToggle();
@@ -96,6 +97,9 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
                 <AddressSmall value={account} />
             </td>
             <GuarantorStake guarantors={guarantors} />
+            <td className='number'>
+                <FormatCapacity value={Capacity_Unit.muln(storage)} />
+            </td>
             <td className='number'>
                 <FormatCsmBalance value={totalCSM} />
             </td>

@@ -30,6 +30,8 @@ export interface GuarantorState {
 
 export interface ProviderState {
   account: string;
+  storage: number;
+  pendingFiles: number;
   effectiveCsm: number;
   totalRewards: number;
   pendingRewards: number;

@@ -52,6 +52,7 @@ function Actions({ providers }: Props): React.ReactElement<Props> {
   const porviderHeaderRef = useRef([
     [t('providers'), 'address'],
     [t('guarantors'), 'number'],
+    [t('storage'), 'number'],
     [t('CSM total stakes'), 'number'],
     [t('unLocking CSM'), 'number'],
     [t('claimed rewards'), 'number'],

@@ -3,7 +3,6 @@
 
 /* eslint-disable */
 import type { AppProps as Props } from '@polkadot/react-components/types';
-import type { ActiveEraInfo } from '@polkadot/types/interfaces';
 
 import BN from 'bn.js';
 import React, { useEffect, useRef, useState } from 'react';
@@ -11,7 +10,7 @@ import { Route, Switch } from 'react-router';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import { Tabs } from '@polkadot/react-components';
-import { useApi, useCall } from '@polkadot/react-hooks';
+import { useApi } from '@polkadot/react-hooks';
 
 import { SummaryInfo } from './Overview/Summary';
 import Actions from './Actions';
@@ -19,22 +18,64 @@ import { httpGet } from './Overview/http';
 import Overview from './Overview';
 import { DataProviderState } from './Overview/types';
 import lodash from 'lodash';
+import { ApiPromise } from '@polkadot/api';
+import { BN_ZERO } from '@polkadot/util';
 
-const Capacity_Unit = new BN(1024 * 1024);
+export const Capacity_Unit = new BN(1024 * 1024);
 
 interface OverviewInfo {
   providers: DataProviderState[];
   summaryInfo: SummaryInfo | null;
 }
 
-const getOverviewInfo = async (overviewUrl: string, era: number): Promise<OverviewInfo> => {
-  return await httpGet(overviewUrl + era).then((res: { code: number; statusText: { providers: any; calculatedRewards: any; totalEffectiveStakes: any; dataPower: any; }; }) => {
+interface ProviderInfo {
+  account: string;
+  storage: number;
+  guarantors: string[];
+  guaranteeFee: number;
+}
+
+async function transformProviderStateInfo(api: ApiPromise, provider: ProviderInfo): Promise<DataProviderState> {
+  const multiQuery = await api.query.csmLocking.ledger.multi(provider.guarantors.concat(provider.account))
+  const tmp = multiQuery && JSON.parse(JSON.stringify(multiQuery))
+  let total = BN_ZERO;
+
+  if (tmp && tmp.length) {
+      for (const ledger of tmp) {
+          total = total.add(new BN(Number(ledger.active).toString()))
+      }
+  }
+  const csmLimit = provider.storage * 0.01;
+  const stakedCSM = total.div(new BN(1e6)).toNumber()/1_000_000;
+  const effectiveCSM = Math.min(csmLimit, stakedCSM);
+
+  return {
+    account: provider.account,
+    csmLimit,
+    effectiveCSM,
+    stakedCSM,
+    storage: provider.storage,
+    guaranteeFee: provider.guaranteeFee,
+    isFavorite: false
+  }
+}
+
+const getOverviewInfo = async (overviewUrl: string, api: ApiPromise): Promise<OverviewInfo> => {
+  return await httpGet(overviewUrl).then(async (res: { code: number; statusText: { providers: any; calculatedRewards: any; totalEffectiveStakes: any; dataPower: any; }; }) => {
     if (res.code == 200) {
+      const filered = lodash.filter(res?.statusText.providers, e => e.storage)
+      const providers = [];
+      let totalEffectiveStakes = 0;
+      for (const provider of filered) {
+        const providerState = await transformProviderStateInfo(api, provider);
+        totalEffectiveStakes += providerState.effectiveCSM;
+        providers.push(providerState);
+      }
       return {
-        providers: lodash.filter(res?.statusText.providers, e => e.storage),
+        providers: providers,
         summaryInfo: {
           calculatedRewards: res?.statusText.calculatedRewards,
-          totalEffectiveStakes: res?.statusText.totalEffectiveStakes,
+          totalEffectiveStakes,
           dataPower: Capacity_Unit.mul(new BN(Number(res?.statusText.dataPower)))
         }
       }
@@ -56,40 +97,17 @@ function CsmStakingApp({ basePath, onStatusChange }: Props): React.ReactElement<
   const { t } = useTranslation();
   const { api, systemChain } = useApi();
   const overviewUrl = systemChain == 'Crust Maxwell' ? 'https://pd-api.crust.network/overview/' : 'http://crust-sg1.ownstack.cn:8866/overview/';
-  const activeEraInfo = useCall<ActiveEraInfo>(api.query.staking.activeEra);
   const [providers, setProviders] = useState<DataProviderState[]>([]);
   const [summaryInfo, setSummaryInfo] = useState<SummaryInfo | null>();
   const [isLoading, setIsloading] = useState<boolean>(true);
 
-  const fetch = () => {
-    const activeEra = activeEraInfo && (JSON.parse(JSON.stringify(activeEraInfo)).index);
-    if (activeEra) {
-      const lastEra = activeEra - 1;
-      getOverviewInfo(overviewUrl, lastEra).then(res => {
-        setProviders(res.providers)
-        setSummaryInfo(res.summaryInfo)
-        setIsloading(false);
-      }).catch(() => setIsloading(true))
-    }
-  }
-
   useEffect(() => {
-    setTimeout(fetch, 1000 * 6 * 6)
-  }, [activeEraInfo]);
-
-  useEffect(() => {
-    api.query.staking.activeEra().then(
-      res => {
-        const activeEra = res && (JSON.parse(JSON.stringify(res)).index);
-        const lastEra = activeEra - 1;
-        getOverviewInfo(overviewUrl, lastEra).then(res => {
-          setProviders(res.providers)
-          setSummaryInfo(res.summaryInfo)
-          setIsloading(false);
-        }).catch(() => setIsloading(true))
-      }
-    )
-  }, [httpGet, overviewUrl]);
+    getOverviewInfo(overviewUrl, api).then(res => {
+      setProviders(res.providers)
+      setSummaryInfo(res.summaryInfo)
+      setIsloading(false);
+    }).catch(() => setIsloading(true))
+  }, [api, httpGet, overviewUrl]);
 
   const itemsRef = useRef([
     {
