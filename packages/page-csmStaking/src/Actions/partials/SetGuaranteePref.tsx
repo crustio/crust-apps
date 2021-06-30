@@ -17,12 +17,11 @@ interface Props {
   accountId: string;
   onChange: (info: SetGuaranteePrefInfo) => void;
   withSenders?: boolean;
-  frozenBn?: number;
 }
 
 const COMM_MUL = new BN(1e7);
 
-function SetGuaranteePref ({ className = '', accountId, onChange, withSenders, frozenBn }: Props): React.ReactElement<Props> {
+function SetGuaranteePref ({ className = '', accountId, onChange, withSenders }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [prefs, setPrefs] = useState<BN | number>(1);
@@ -62,11 +61,7 @@ function SetGuaranteePref ({ className = '', accountId, onChange, withSenders, f
           />
         </Modal.Columns>
       )}
-      <Modal.Columns hint={ frozenBn ? t<string>('You can not set guarantee fee until block {{bn}}', {
-            replace: {
-              bn: frozenBn
-            }
-          }) : ''}>
+      <Modal.Columns hint={''}>
         <InputNumber
           help={t<string>('The percentage reward (0-100) that should be applied for the provider')}
           isZeroable

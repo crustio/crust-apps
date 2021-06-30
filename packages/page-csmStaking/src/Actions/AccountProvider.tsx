@@ -6,8 +6,9 @@
 import BN from 'bn.js';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import type { BlockNumber } from '@polkadot/types/interfaces';
 
-import { Button, Menu, Popup, StatusContext } from '@polkadot/react-components';
+import { Button, Icon, Menu, Popup, StatusContext, Tooltip } from '@polkadot/react-components';
 import { useApi, useCall, useToggle } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 import { useTranslation } from '@polkadot/apps/translate';
@@ -45,6 +46,8 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
     const [totalCSM, setTotalCSM] = useState<BN>(BN_ZERO);
     const query = guarantors.concat(account);
     const multiQuery = useCall<any[]>(api.query.csmLocking.ledger.multi, [query]);
+    const bestNumberFinalized = useCall<BlockNumber>(api.derive.chain.bestNumberFinalized);
+    const [guaranteeFeeDisable, setGuaranteeFeeDisable] = useState<boolean>(false);
 
     useEffect(() => {
         const tmp = multiQuery && JSON.parse(JSON.stringify(multiQuery))
@@ -57,6 +60,12 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
         }
 
     }, [multiQuery])
+
+    useEffect(() => {
+        if (frozenBn > Number(bestNumberFinalized)) {
+            setGuaranteeFeeDisable(true);
+        }
+    }, [frozenBn, bestNumberFinalized])
 
     const withdrawFunds = useCallback(
         () => {
@@ -126,11 +135,27 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
                 {
                     <>
                         {
-                            (
+                            ( 
                                 <Button.Group>
+                                    {guaranteeFeeDisable ?
+                                        (<><Icon
+                                            color="red"
+                                            icon='info-circle'
+                                            tooltip={`${account}-locks-trigger-set-guarantee-fee`}
+                                        />
+                                            <Tooltip
+                                                text={t<string>('You can not set guarantee fee until block {{bn}}', {
+                                                    replace: {
+                                                        bn: frozenBn
+                                                    }
+                                                })}
+                                                trigger={`${account}-locks-trigger-set-guarantee-fee`}
+                                            ></Tooltip>
+                                        </>) : null
+                                    }
                                     <Button
                                         icon='certificate'
-                                        isDisabled={isDisabled}
+                                        isDisabled={guaranteeFeeDisable}
                                         key='validate'
                                         label={t<string>('Guarantee fee')}
                                         onClick={toggleSetPref}

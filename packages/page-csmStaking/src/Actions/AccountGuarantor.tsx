@@ -6,16 +6,17 @@
 import BN from 'bn.js';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import type { BlockNumber } from '@polkadot/types/interfaces';
 
-import { Button, Menu, Popup, StatusContext } from '@polkadot/react-components';
-import { useApi, useToggle } from '@polkadot/react-hooks';
+import { Button, Icon, Menu, Popup, StatusContext, Tooltip } from '@polkadot/react-components';
+import { useApi, useCall, useToggle } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 import { useTranslation } from '@polkadot/apps/translate';
 import { GuarantorState } from './partials/types';
 import Guarantee from './Guarantee';
 import GuaranteePref from './GuaranteePref';
 import UnbondFounds from './UnbondFounds';
-import { FormatCsmBalance ,FormatBalance } from '@polkadot/react-query';
+import { FormatCsmBalance, FormatBalance } from '@polkadot/react-query';
 import UnLockingCsms from './UnLockingCsms';
 import Bond from './Bond';
 import ProviderSmall from './ProviderSmall';
@@ -40,22 +41,30 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
     const [isUnbondOpen, toggleUnbond] = useToggle();
     const [isBondExtraOpen, toggleBondExtra] = useToggle();
     const { queueExtrinsic } = useContext(StatusContext);
-    const [ totalCSM, setTotalCSM ] = useState<BN>(BN_ZERO);
+    const [totalCSM, setTotalCSM] = useState<BN>(BN_ZERO);
+    const bestNumberFinalized = useCall<BlockNumber>(api.derive.chain.bestNumberFinalized);
+    const [guaranteeFeeDisable, setGuaranteeFeeDisable] = useState<boolean>(false);
 
     useEffect(() => {
         api.query.csmLocking.ledger(account)
-        .then(res => setTotalCSM(JSON.parse(JSON.stringify(res)).active))
+            .then(res => setTotalCSM(JSON.parse(JSON.stringify(res)).active))
     }, [api, account])
+
+    useEffect(() => {
+        if (frozenBn > Number(bestNumberFinalized)) {
+            setGuaranteeFeeDisable(true);
+        }
+    }, [frozenBn, bestNumberFinalized])
 
     const withdrawFunds = useCallback(
         () => {
-          queueExtrinsic({
-            accountId: account,
-            extrinsic: api.tx.csmLocking.withdrawUnbonded()
-          });
+            queueExtrinsic({
+                accountId: account,
+                extrinsic: api.tx.csmLocking.withdrawUnbonded()
+            });
         },
         [api, account, queueExtrinsic]
-      );
+    );
 
     return (
         <tr className={className}>
@@ -89,7 +98,7 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
                 <AddressStatusSmall value={account} frozenBn={frozenBn} />
             </td>
             <td className='address'>
-                <ProviderSmall value={provider} isProvider={isProvider} />       
+                <ProviderSmall value={provider} isProvider={isProvider} />
             </td>
             <td className='number'>
                 <FormatCsmBalance value={totalCSM} />
@@ -110,14 +119,32 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
                         {
                             (
                                 <Button.Group>
+                                    {guaranteeFeeDisable ?
+                                        (<><Icon
+                                            color="red"
+                                            icon='info-circle'
+                                            tooltip={`${account}-locks-trigger-set-guarantee-fee`}
+                                        />
+
+                                            <Tooltip
+                                                text={t<string>('You can not set guarantee fee until block {{bn}}', {
+                                                    replace: {
+                                                        bn: frozenBn
+                                                    }
+                                                })}
+                                                trigger={`${account}-locks-trigger-set-guarantee-fee`}
+                                            ></Tooltip>
+                                        </>) : null
+                                    }
                                     <Button
                                         icon='certificate'
-                                        isDisabled={isDisabled}
-                                        tooltip={t<string>('Withdraw these unbonded funds')}
+                                        isDisabled={guaranteeFeeDisable}
                                         key='validate'
                                         label={t<string>('Guarantee fee')}
                                         onClick={toggleSetPref}
-                                    />
+                                    >
+
+                                    </Button>
                                     <Button
                                         icon='hand-paper'
                                         isDisabled={isDisabled}
