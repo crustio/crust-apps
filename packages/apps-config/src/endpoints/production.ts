@@ -5,6 +5,11 @@ import type { TFunction } from 'i18next';
 import type { LinkOption } from '../settings/types';
 
 import { expandEndpoints } from './util';
+export const endPoints = [
+  'wss://api.crust.network/',
+  'wss://api.decloudf.com/',
+  'wss://rpc-crust.decoo.io'
+];
 
 /* eslint-disable sort-keys */
 
@@ -20,9 +25,9 @@ export function createProduction (t: TFunction): LinkOption[] {
       info: 'crust',
       text: t('rpc.crust.network', 'Crust Maxwell', { ns: 'apps-config' }),
       providers: {
-        'Crust Network': 'wss://api.crust.network/',
-        'DCloud Foundation': 'wss://api.decloudf.com/',
-        'Decoo Technologies': 'wss://rpc-crust.decoo.io'
+        'Crust Network': endPoints[0],
+        'DCloud Foundation': endPoints[1],
+        'Decoo Technologies': endPoints[2]
       }
     }
   ]);
