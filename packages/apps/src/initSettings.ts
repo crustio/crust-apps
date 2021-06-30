@@ -6,9 +6,9 @@
 
 // import { createWsEndpoints } from '@polkadot/apps-config';
 // import { extractIpfsDetails } from '@polkadot/react-hooks/useIpfs';
-import { settings } from '@polkadot/ui-settings';
 // import { assert } from '@polkadot/util';
-import { endPoints } from '@polkadot/apps-config/endpoints/production'
+import { endPoints } from '@polkadot/apps-config/endpoints/production';
+import { settings } from '@polkadot/ui-settings';
 
 function getApiUrl (): string {
   // we split here so that both these forms are allowed
@@ -16,8 +16,8 @@ function getApiUrl (): string {
   //  - http://localhost:3000/#/explorer?rpc=wss://substrate-rpc.parity.io
   // const urlOptions = queryString.parse(location.href.split('?')[1]);
 
-
   const randomIndex = new Date().getTime() % endPoints.length;
+
   return endPoints[randomIndex];
 
   // if specified, this takes priority

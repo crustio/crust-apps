@@ -5,6 +5,7 @@ import type { TFunction } from 'i18next';
 import type { LinkOption } from '../settings/types';
 
 import { expandEndpoints } from './util';
+
 export const endPoints = [
   'wss://api.crust.network/',
   'wss://api.decloudf.com/',
