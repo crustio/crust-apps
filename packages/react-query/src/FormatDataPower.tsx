@@ -12,11 +12,11 @@ interface Props {
   labelPost?: string;
   value?: number;
 }
-const sizes = ['P', 'KP', 'MP', 'GP', 'TP', 'PP', 'EP', 'ZP', 'YP'];
+const sizes = ['BP', 'KP', 'MP', 'GP', 'TP', 'PP', 'EP', 'ZP', 'YP'];
 const k = 1024;
 
 function format (value: number): React.ReactNode {
-  if (value === 0 || Number(value) === 0) return '0 B';
+  if (value === 0 || Number(value) === 0) return '0 BP';
   const i = Math.floor(Math.log(value) / Math.log(k));
   const unitPost = sizes[i];
 
