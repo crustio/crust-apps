@@ -179,7 +179,7 @@ function Overview({ providers, isLoading, summaryInfo }: Props): React.ReactElem
         </span>
         </span>
         {remaining > 1000 ? (<section style={{'display': 'inline-block', "wordWrap": "break-word", "wordBreak": "break-all"}}>
-          <span style={{"marginRight": "5px", 'fontWeight': 'bold', fontSize: '16px'}}>{t<string>('Data Power Booster 🔥 >>')}</span>
+          <span style={{"marginRight": "5px", 'fontWeight': 'bold', fontSize: '16px'}}><a href={i18n.language == 'zh' ? 'https://mp.weixin.qq.com/s/P3kCjhPNg9UUH8eLXpvvZg' : 'https://mp.weixin.qq.com/s/P3kCjhPNg9UUH8eLXpvvZg'} target="_blank">{t<string>('Data Power Booster 🔥 >>')}</a></span>
           <BoosterCountDown />
         </section>) : null}
         <span style={{ "wordWrap": "break-word", "wordBreak": "break-all", float: "right", 'display': 'inline-block' }}><span style={{ 'fontWeight': 'bold', fontSize: '16px' }}>
