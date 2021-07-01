@@ -16,7 +16,7 @@ import { ProviderState } from './partials/types';
 import Guarantee from './Guarantee';
 import GuaranteePref from './GuaranteePref';
 import UnbondFounds from './UnbondFounds';
-import { FormatCsmBalance, FormatBalance, FormatCapacity } from '@polkadot/react-query';
+import { FormatCsmBalance, FormatBalance, FormatDataPower } from '@polkadot/react-query';
 import GuarantorStake from './GuarantorStake';
 import UnLockingCsms from './UnLockingCsms';
 import Bond from './Bond';
@@ -110,7 +110,7 @@ function Account({ className = '', info: { account, totalRewards, pendingRewards
             </td>
             <GuarantorStake guarantors={guarantors} />
             <td className='number'>
-                <FormatCapacity value={Capacity_Unit.muln(storage)} />
+                <FormatDataPower value={Capacity_Unit.muln(storage)} />
             </td>
             <td className='number'>
                 {formatNumber(pendingFiles)}
