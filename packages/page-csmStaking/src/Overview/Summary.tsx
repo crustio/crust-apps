@@ -8,7 +8,7 @@ import styled from 'styled-components';
 
 import { CardSummary, Spinner, SummaryBox } from '@polkadot/react-components';
 import { useTranslation } from '@polkadot/apps/translate';
-import { FormatCapacity, FormatCsmBalance ,FormatBalance } from '@polkadot/react-query';
+import { FormatDataPower, FormatCsmBalance ,FormatBalance } from '@polkadot/react-query';
 import BN from 'bn.js';
 import { formatNumber } from '@polkadot/util';
 
@@ -69,7 +69,7 @@ function Summary({ info, isLoading }: Props): React.ReactElement<Props> | null {
           className='media--1100'
           label={t<string>('Data Power')}
         >
-          { info ? <FormatCapacity value={info.dataPower} />  : (<Spinner noLabel />) }
+          { info ? <FormatDataPower value={info.dataPower} />  : (<Spinner noLabel />) }
         </CardSummary>
       </section>
       <section>

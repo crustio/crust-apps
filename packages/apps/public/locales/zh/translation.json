@@ -1544,5 +1544,7 @@
   "providers / guarantors": "提供人 / 担保人",
   "pending files count": "待处理算力文件数",
   "You can not set guarantee fee until block {{bn}}": "在{{bn}}块之前你无法设置担保费率",
-  "About \"Data Power\" >>": "“数据算力”说明 >>"
+  "About \"Data Power\" >>": "“数据算力”说明 >>",
+  "Data Power Booster 🔥 >>": "数据算力加速计划 🔥 >>",
+  "Activities in progress，End time countdown": "算力加速中，结束倒计时"
 }
