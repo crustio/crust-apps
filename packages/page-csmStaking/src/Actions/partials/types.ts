@@ -20,6 +20,7 @@ export interface AmountValidateState {
 
 export interface GuarantorState {
   account: string;
+  frozenBn: number;
   effectiveCsm: number;
   totalRewards: number;
   pendingRewards: number;
@@ -30,6 +31,9 @@ export interface GuarantorState {
 
 export interface ProviderState {
   account: string;
+  storage: number;
+  frozenBn: number;
+  pendingFiles: number;
   effectiveCsm: number;
   totalRewards: number;
   pendingRewards: number;

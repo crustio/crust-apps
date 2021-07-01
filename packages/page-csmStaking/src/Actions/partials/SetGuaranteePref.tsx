@@ -61,7 +61,7 @@ function SetGuaranteePref ({ className = '', accountId, onChange, withSenders }:
           />
         </Modal.Columns>
       )}
-      <Modal.Columns hint={t<string>('')}>
+      <Modal.Columns hint={''}>
         <InputNumber
           help={t<string>('The percentage reward (0-100) that should be applied for the provider')}
           isZeroable

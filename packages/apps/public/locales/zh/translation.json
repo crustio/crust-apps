@@ -1539,5 +1539,12 @@
   "Learn more about \"Profit Data\" >>": "“数据创造价值”活动规则说明（请仔细阅读）>>",
   "This provider has expired": "提供人已经失效",
   "Bond & Set guarantee fee": "绑定并设置担保费率",
-  "provider accounts": "提供人账户"
+  "provider accounts": "提供人账户",
+  "storage": "算力",
+  "providers / guarantors": "提供人 / 担保人",
+  "pending files count": "待处理算力文件数",
+  "You can not set guarantee fee until block {{bn}}": "在{{bn}}块之前你无法设置担保费率",
+  "About \"Data Power\" >>": "“数据算力”说明 >>",
+  "Data Power Booster 🔥 >>": "数据算力加速计划 🔥 >>",
+  "Activities in progress，End time countdown": "算力加速中，结束倒计时"
 }

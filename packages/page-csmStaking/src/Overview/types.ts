@@ -10,9 +10,9 @@ export interface DataProviderState extends ProviderSortRank {
 export type ProviderSortBy = keyof ProviderSortRank;
 
 interface ProviderSortRank {
-    csmLimit: number,
-    effectiveCSM: number,
-    guaranteeFee: number,
-    stakedCSM: number,
-    storage: number
+  csmLimit: number,
+  effectiveCSM: number,
+  guaranteeFee: number,
+  stakedCSM: number,
+  storage: number
 }

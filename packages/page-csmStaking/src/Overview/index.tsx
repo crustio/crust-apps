@@ -9,11 +9,13 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components';
 import Summary, { SummaryInfo } from './Summary';
 import { Icon, Spinner, Table } from '@polkadot/react-components';
-import { useFavorites, useSavedFlags } from '@polkadot/react-hooks';
+import { useApi, useCall, useFavorites, useSavedFlags } from '@polkadot/react-hooks';
 import Filtering from '@polkadot/app-staking/Filtering';
 import DataProvider from './DataProvider';
 import { DataProviderState, ProviderSortBy } from './types';
 import lodash from 'lodash';
+import BoosterCountDown from './BoosterCountDown';
+import { ActiveEraInfo } from '@polkadot/types/interfaces';
 
 interface Props {
   className?: string;
@@ -61,6 +63,7 @@ const SORT_KEYS = ['storage', 'csmLimit', 'effectiveCSM', 'stakedCSM', 'guarante
 
 function Overview({ providers, isLoading, summaryInfo }: Props): React.ReactElement<Props> {
   const { t, i18n } = useTranslation();
+  const { api } = useApi();
   // we have a very large list, so we use a loading delay
   // const [nameFilter, setNameFilter] = useState<string>('');
   const [, setProviders] = useState<DataProviderState[]>([]);
@@ -69,6 +72,11 @@ function Overview({ providers, isLoading, summaryInfo }: Props): React.ReactElem
   const [{ sortBy, sortFromMax }, setSortBy] = useState<SortState>({ sortBy: 'storage', sortFromMax: false });
   const [sorted, setSorted] = useState<DataProviderState[] | undefined>();
   const [{ isQueryFiltered, nameFilter }, setNameFilter] = useState({ isQueryFiltered: false, nameFilter: '' });
+  const endTime = Date.parse('2021-07-11 14:00');
+  const [remaining, setRemaing] = useState<number>(endTime - new Date().getTime());
+  const activeEraInfo = useCall<ActiveEraInfo>(api.query.staking.activeEra);
+
+  const activeEra = activeEraInfo && (JSON.parse(JSON.stringify(activeEraInfo)).index);
 
   const labelsRef = useRef({
     storage: t<string>('data power'),
@@ -77,6 +85,18 @@ function Overview({ providers, isLoading, summaryInfo }: Props): React.ReactElem
     stakedCSM: t<string>('total stakes'),
     guaranteeFee: t<string>('guarantee fee')
   });
+
+  useEffect(() => {
+    // let now_time = new Date().getTime();
+    // var remaining = endTime - now_time;
+    const timer = setInterval(() => {
+        if (remaining > 1000) {
+          setRemaing(remaining-1000)
+        } else {
+          clearInterval(timer)
+        }
+    }, 1000)
+}, [activeEra]);
 
   const filtered = useMemo(
     () => providers && applyFilter(providers),
@@ -152,15 +172,23 @@ function Overview({ providers, isLoading, summaryInfo }: Props): React.ReactElem
     : sorted;
 
   return (<>
-
-    <h3>
-      <span style={{ "wordWrap": "break-word", "wordBreak": "break-all" }}><span style={{ 'fontWeight': 'bold', fontSize: '16px' }}>
-        <a href={i18n.language == 'zh' ? 'https://mp.weixin.qq.com/s/vLnuyU5gJCRcOSv_PrLAsw' : 'https://medium.com/crustnetwork/profit-data-activity-rules-3ef2c9b364c4'} target="_blank">
-          {t<string>(`Learn more about "Profit Data" >>`)}</a>
-      </span>
-      </span>
-    </h3>
-    {isLoading ? <Spinner noLabel /> : <Summary isLoading={isLoading} info={summaryInfo} />}
+      <h3 style={{ "textAlign": 'center' }}>
+        <span style={{ "wordWrap": "break-word", "wordBreak": "break-all", float: "left", 'display': 'inline-block' }}><span style={{ 'fontWeight': 'bold', fontSize: '16px' }}>
+          <a href={i18n.language == 'zh' ? 'https://mp.weixin.qq.com/s/vLnuyU5gJCRcOSv_PrLAsw' : 'https://medium.com/crustnetwork/profit-data-activity-rules-3ef2c9b364c4'} target="_blank">
+            {t<string>(`Learn more about "Profit Data" >>`)}</a>
+        </span>
+        </span>
+        {remaining > 1000 ? (<section style={{'display': 'inline-block', "wordWrap": "break-word", "wordBreak": "break-all"}}>
+          <span style={{"marginRight": "5px", 'fontWeight': 'bold', fontSize: '16px'}}>{t<string>('Data Power Booster 🔥 >>')}</span>
+          <BoosterCountDown />
+        </section>) : null}
+        <span style={{ "wordWrap": "break-word", "wordBreak": "break-all", float: "right", 'display': 'inline-block' }}><span style={{ 'fontWeight': 'bold', fontSize: '16px' }}>
+          <a href={i18n.language == 'zh' ? 'https://mp.weixin.qq.com/s/pp74MQMODwID_gkrbMdHug' : 'https://medium.com/crustnetwork/profit-data-data-power-rules-adjustments-and-upgrades-9fa406c6fc34'} target="_blank">
+            {t<string>(`About "Data Power" >>`)}</a>
+        </span>
+        </span>
+      </h3>
+      {isLoading ? <Spinner noLabel /> : <Summary isLoading={isLoading} info={summaryInfo} />}
     <Table
       empty={!isLoading && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
       header={header}

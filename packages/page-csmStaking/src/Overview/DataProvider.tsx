@@ -14,7 +14,7 @@ import { Compact } from '@polkadot/types/codec';
 import { Codec } from '@polkadot/types/types';
 import { DataProviderState } from './types';
 import { checkVisibility } from '@polkadot/react-components/util';
-import { FormatCapacity, FormatCsmBalance } from '@polkadot/react-query';
+import { FormatDataPower, FormatCsmBalance } from '@polkadot/react-query';
 import BN from 'bn.js';
 import Favorite from '@polkadot/app-staking/Overview/Address/Favorite';
 
@@ -70,7 +70,7 @@ function DataProvider({ className = '', isFavorite, toggleFavorite, filterName, 
                 <AddressSmall value={account} />
             </td>
             <td className='number'>
-                <FormatCapacity value={Capacity_Unit.muln(storage)} />
+                <FormatDataPower value={Capacity_Unit.muln(storage)} />
             </td>
             <td className='number'>
                 <FormatCsmBalance value={UNIT.muln(csmLimit)}/>

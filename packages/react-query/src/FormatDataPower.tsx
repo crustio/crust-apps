@@ -12,11 +12,11 @@ interface Props {
   labelPost?: string;
   value?: number;
 }
-const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+const sizes = ['BP', 'KP', 'MP', 'GP', 'TP', 'PP', 'EP', 'ZP', 'YP'];
 const k = 1024;
 
 function format (value: number): React.ReactNode {
-  if (value === 0 || Number(value) === 0) return '0 B';
+  if (value === 0 || Number(value) === 0) return '0 BP';
   const i = Math.floor(Math.log(value) / Math.log(k));
   const unitPost = sizes[i];
 
@@ -25,7 +25,7 @@ function format (value: number): React.ReactNode {
   return <>{<span className='ui--FormatBalance-postfix'>{`${postfix || ''}`}</span>}<span className='ui--FormatBalance-unit'> {unitPost}</span></>;
 }
 
-function FormatCapacity ({ children, className = '', label, labelPost, value }: Props): React.ReactElement<Props> {
+function FormatDataPower ({ children, className = '', label, labelPost, value }: Props): React.ReactElement<Props> {
   // labelPost here looks messy, however we ensure we have one less text node
   return (
     <div className={`ui--FormatBalance ${className}`}>
@@ -38,7 +38,7 @@ function FormatCapacity ({ children, className = '', label, labelPost, value }: 
   );
 }
 
-export default React.memo(styled(FormatCapacity)`
+export default React.memo(styled(FormatDataPower)`
   display: inline-block;
   vertical-align: baseline;
   white-space: nowrap;

@@ -15,6 +15,10 @@ function getApiUrl (): string {
   //  - http://localhost:3000/#/explorer?rpc=wss://substrate-rpc.parity.io
   const urlOptions = queryString.parse(location.href.split('?')[1]);
 
+  // const randomIndex = new Date().getTime() % endPoints.length;
+
+  // return endPoints[randomIndex];
+
   // if specified, this takes priority
   if (urlOptions.rpc) {
     assert(!Array.isArray(urlOptions.rpc), 'Invalid WS endpoint specified');

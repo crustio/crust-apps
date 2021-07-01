@@ -9,7 +9,7 @@ import type { ActionStatus } from '@polkadot/react-components/Status/types';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import NewDataGuarantor from './NewDataGuarantor';
-import { useAccounts } from '@polkadot/react-hooks';
+import { useAccounts, useApi } from '@polkadot/react-hooks';
 import AccountProvider from './AccountProvider';
 import AccountGuarantor from './AccountGuarantor';
 import NewDataProvider from './NewDataProvider';
@@ -23,31 +23,37 @@ interface Props {
   providers: string[];
 }
 
-function Actions ({ providers }: Props): React.ReactElement<Props> {
+function Actions({ providers }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
+  const { systemChain } = useApi();
+  const accountsUrl = systemChain == 'Crust Maxwell' ? 'https://pd-api.crust.network/accounts' : 'http://crust-sg1.ownstack.cn:8866/accounts';
   const { allAccounts, hasAccounts } = useAccounts();
-  const [ownProviders, setOwnProviders ] = useState<ProviderState[]>([]);
-  const [ownGuarantors, setOwnGuarantors ] = useState<GuarantorState[]>([]);
+  const [ownProviders, setOwnProviders] = useState<ProviderState[]>([]);
+  const [ownGuarantors, setOwnGuarantors] = useState<GuarantorState[]>([]);
 
   useEffect(() => {
-    httpPost('https://pd-api.crust.network/accounts', {
-      accounts: allAccounts
-  }).then((res: any) => {
-      const group = lodash.groupBy(res.statusText, 'role');
-      Object.keys(group).forEach(role => {
-        if (role == 'Provider') {
-          setOwnProviders(group[role])
-        }
-        if (role == 'Guarantor') {
-          setOwnGuarantors(group[role])
-        }
+    if (allAccounts && lodash.isArray(allAccounts)) {  
+      httpPost(accountsUrl, {
+        accounts: allAccounts
+      }).then((res: any) => {
+        const group = lodash.groupBy(res.statusText, 'role');
+        Object.keys(group).forEach(role => {
+          if (role == 'Provider') {
+            setOwnProviders(group[role])
+          }
+          if (role == 'Guarantor') {
+            setOwnGuarantors(group[role])
+          }
+        })
       })
-    })
-  }, [allAccounts])
+    }
+  }, [allAccounts, accountsUrl])
 
   const porviderHeaderRef = useRef([
     [t('providers'), 'address'],
     [t('guarantors'), 'number'],
+    [t('storage'), 'number'],
+    [t('pending files count'), 'number'],
     [t('CSM total stakes'), 'number'],
     [t('unLocking CSM'), 'number'],
     [t('claimed rewards'), 'number'],
