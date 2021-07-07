@@ -20,7 +20,7 @@ function format (value: number): React.ReactNode {
   const i = Math.floor(Math.log(value) / Math.log(k));
   const unitPost = sizes[i];
 
-  const postfix = (value / Math.pow(k, i)).toPrecision(3);
+  const postfix = (value / Math.pow(k, i)).toFixed(3);
 
   return <>{<span className='ui--FormatBalance-postfix'>{`${postfix || ''}`}</span>}<span className='ui--FormatBalance-unit'> {unitPost}</span></>;
 }

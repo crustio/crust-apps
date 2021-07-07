@@ -51,7 +51,7 @@ function Summary({ info, isLoading }: Props): React.ReactElement<Props> | null {
           className='media--1000'
           label={t<string>('Issued Rewards')}
         >
-          { info ?  <FormatBalance value={UNIT.muln(info.calculatedRewards)} /> : (<Spinner noLabel />)}
+          { info ? <> {formatNumber(info.calculatedRewards)} CRU </>: (<Spinner noLabel />)}
         </CardSummary>
       </section>
 
