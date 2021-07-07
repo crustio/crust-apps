@@ -27,26 +27,31 @@ const FetchModal = ({  onClose, onConfirm }) => {
   >
     <Modal.Content>
       <div>
-        <InputAddress
-          label={t('Please choose account')}
-          isDisabled={!hasAccounts}
-          labelExtra={
-            <Available
-              label={t('transferrable')}
-              params={account}
-            />
-          }
-          defaultValue={account}
-          onChange={setAccount}
-          type='account'
-        />
-        <Dropdown
-          className='js--Dropdown'
-          label={t('Choose data source')}
-          options={options}
-          defaultValue={'Crust Storage Explorer'}
-          value={dataSource}
-        />
+        <Modal.Columns hint={t("fetchTips", "1.The Fetch function is provided by Crust Storage Explorer, which is a public service and may cause certain delay or time gap. Results shown on this page doe not necessarily reflect the latest network status.")}>
+          <InputAddress
+            label={t('Please choose account')}
+            isDisabled={!hasAccounts}
+            labelExtra={
+              <Available
+                label={t('transferrable')}
+                params={account}
+              />
+            }
+            defaultValue={account}
+            onChange={setAccount}
+            type='account'
+          />
+        </Modal.Columns>
+        <Modal.Columns hint={t("fetchTips2", "2.There will be soon a new Subscan service going live to enhance Fetch" +
+          " performance.")}>
+          <Dropdown
+            className='js--Dropdown'
+            label={t('Choose data source')}
+            options={options}
+            defaultValue={'Crust Storage Explorer'}
+            value={dataSource}
+          />
+        </Modal.Columns>
       </div>
     </Modal.Content>
     <Modal.Actions onCancel={onClose}>
