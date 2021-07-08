@@ -1,5 +1,11 @@
 /* IPFS theme.scss - Generated from https://github.com/ipfs-shipyard/ipfs-css/blob/master/theme.json */
 
+{
+  --main-color: #38393f;
+}
+
+
+
 /*color*/
 .navy,
 .navy-muted,
@@ -10,7 +16,7 @@
 .hover-navy-muted:focus,
 .hover-aqua:hover,
 .hover-aqua:focus {
-  color: #ff8812;
+  color: var(--main-color);
 }
 
 /*bg-color*/
@@ -26,7 +32,7 @@
 .hover-bg-aqua:hover,
 .hover-bg-aqua:focus,
 .bg-teal {
-  background-color: #ff8812;
+  background-color: var(--main-color);
 }
 /*svg-fill*/
 
@@ -39,7 +45,7 @@
 .fill-aqua,
 .fill-navy,
 .fill-navy-muted {
-  fill: #ff8812;
+  fill: var(--main-color);
 }
 
 .border-navy,
@@ -48,15 +54,15 @@
 .b--navy,
 .border-aqua,
 .b--aqua {
-  border-color: #ff8812;
+  border-color: var(--main-color);
 }
 
 .teal,
 .fill-teal,
 .link,
 .fill-teal-muted {
-  fill: #ff8812;
-  color: #ff8812!important;
+  fill: var(--main-color);
+  color: var(--main-color)!important;
 }
 .fill-white {
   color: #fff;

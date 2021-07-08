@@ -22,7 +22,7 @@ const styles = {
     color: '#59595A'
   },
   count: {
-    backgroundColor: '#ff8812',
+    backgroundColor: '#838D9D',
     color: '#F9FAFB',
     width: '38px',
     height: '38px'
