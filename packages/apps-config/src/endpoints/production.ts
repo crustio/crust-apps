@@ -7,7 +7,7 @@ import type { LinkOption } from '../settings/types';
 import { expandEndpoints } from './util';
 
 export const endPoints = [
-  'wss://api.crust.network/',
+  'wss://api-maxwell.crust.network',
   'wss://api.decloudf.com/',
   'wss://rpc-crust.decoo.io'
 ];
