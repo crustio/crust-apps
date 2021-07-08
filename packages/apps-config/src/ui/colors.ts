@@ -11,7 +11,7 @@ const emptyColor = '#99999';
 // alphabetical
 const chainBitCountry = '#191a2e';
 const chainCrab = '#7C30DD';
-const chainCrust = '#ff8812';
+const chainCrust = '#2E333B';
 const chainRocky = '#4dc6e1';
 const chainClover = 'linear-gradient(to right, #52ad75, #7cc773)';
 const chainChainx = '#F6C94A';
@@ -91,7 +91,7 @@ export const chainColors: Record<string, any> = [
   ['ChainX', chainChainx],
   ['Clover', chainClover],
   ['crust maxwell', chainCrust],
-  ['rocky', chainRocky],
+  ['crust rocky', chainRocky],
   ['Crust PC1', chainCrust],
   ['darwinia cc1', chainDarwinia],
   ['Darwinia Crab', chainCrab],
