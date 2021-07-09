@@ -8,11 +8,9 @@ import type { EcdsaSignature, EthereumAddress, StatementKind } from '@polkadot/t
 
 import React, { useCallback, useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { Trans } from 'react-i18next';
 import styled from 'styled-components';
 
 import { Button, Card, Columar, Input, InputAddress, Tooltip } from '@polkadot/react-components';
-import { TokenUnit } from '@polkadot/react-components/InputNumber';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { u8aToHex, u8aToString } from '@polkadot/util';
 import { decodeAddress } from '@polkadot/util-crypto';
@@ -25,6 +23,7 @@ import Warning from './Warning';
 // @ts-ignore
 import HttpStatus from './HttpStatus';
 import type { TFunction } from 'i18next';
+import Banner from '@polkadot/app-accounts/Accounts/Banner';
 
 export { default as useCounter } from '../useCounter';
 
@@ -196,11 +195,13 @@ function ClaimsMainnet (): React.ReactElement<Props> {
   return (
     <main>
       {!isOldClaimProcess && <Warning />}
-      <h1>
-        <Trans>Claim your mainnet <em>{TokenUnit.abbr}</em>18 tokens</Trans>
-      </h1>
+      
+      
       <Columar>
         <Columar.Column>
+          <Banner type='error'>
+            <p>{t<string>('The claim of CRU18 has ended. For unclaimed accounts, please wait for notification after the mainnet launch')}</p>
+          </Banner>
           <Card withBottomMargin>
             {/* <h3>{t<string>(`1. Select your {{chain}} account and enter`, {
                 replace: {

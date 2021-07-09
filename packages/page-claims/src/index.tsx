@@ -25,10 +25,10 @@ function ClaimsApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
     name: 'claims',
     text: t<string>('Claim CRU')
   }, 
-  // {
-  //   name: 'claimsMainnet',
-  //   text: t<string>('Claim CRU18')
-  // },
+  {
+    name: 'claimsMainnet',
+    text: t<string>('Claim CRU18')
+  },
    {
     name: 'maxwellCsmClaims',
     text: t<string>('Claim CSM')
