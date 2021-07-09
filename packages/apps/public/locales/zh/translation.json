@@ -1546,5 +1546,6 @@
   "You can not set guarantee fee until block {{bn}}": "在{{bn}}块之前你无法设置担保费率",
   "About \"Data Power\" >>": "“数据算力”说明 >>",
   "Data Power Booster 🔥 >>": "数据算力加速计划 🔥 >>",
-  "Activities in progress，End time countdown": "算力加速中，结束倒计时"
+  "Activities in progress，End time countdown": "算力加速中，结束倒计时",
+  "The claim of CRU18 has ended. For unclaimed accounts, please wait for notification after the mainnet launch": "CRU18认领已结束，未认领的账户请在主网启动后等待通知"
 }

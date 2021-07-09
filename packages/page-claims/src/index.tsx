@@ -24,10 +24,12 @@ function ClaimsApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
     isRoot: true,
     name: 'claims',
     text: t<string>('Claim CRU')
-  }, {
+  }, 
+  {
     name: 'claimsMainnet',
     text: t<string>('Claim CRU18')
-  }, {
+  },
+   {
     name: 'maxwellCsmClaims',
     text: t<string>('Claim CSM')
   }]);
@@ -48,7 +50,7 @@ function ClaimsApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
           <CSMClaims />
         </Route>
         <Route basePath={basePath}
-                  onStatusChange={onStatusChange}>
+            onStatusChange={onStatusChange}>
           <Claims />
         </Route>
       </Switch>
