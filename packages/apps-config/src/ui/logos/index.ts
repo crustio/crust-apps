@@ -109,7 +109,7 @@ export const chainLogos: Record<string, unknown> = [
   ['Polkadex Testnet', nodePolkadex],
   ['Phala PC1', nodePhala],
   ['ReAlis Network', nodeRealis],
-  ['Rocky', logoRocky],
+  ['Crust Rocky', logoRocky],
   ['Rococo', chainRococo],
   ['Sgc', nodeSgc],
   ['Tick', chainRococoTick],
