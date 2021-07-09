@@ -9,7 +9,7 @@ import type { Ledger } from '@polkadot/hw-ledger';
 import type { ActionStatus } from '@polkadot/react-components/Status/types';
 import type { ThemeDef } from '@polkadot/react-components/types';
 import type { Option } from '@polkadot/types';
-import type { Balance, ProxyDefinition, RecoveryConfig } from '@polkadot/types/interfaces';
+import type { ProxyDefinition, RecoveryConfig } from '@polkadot/types/interfaces';
 import type { KeyringAddress, KeyringJson$Meta } from '@polkadot/ui-keyring/types';
 import type { Delegation } from '../types';
 
@@ -18,9 +18,8 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import styled, { ThemeContext } from 'styled-components';
 
 import { ApiPromise } from '@polkadot/api';
-import { AddressCsmInfo, AddressInfo, AddressSmall, Badge, Button, ChainLock, CryptoType, Forget, Icon, IdentityIcon, LinkExternal, Menu, Popup, StatusContext } from '@polkadot/react-components';
+import { AddressInfo, AddressSmall, Badge, Button, ChainLock, CryptoType, Forget, Icon, IdentityIcon, LinkExternal, Menu, Popup, StatusContext } from '@polkadot/react-components';
 import { useAccountInfo, useApi, useBestNumber, useCall, useLedger, useToggle } from '@polkadot/react-hooks';
-import { FormatCandy } from '@polkadot/react-query';
 import { keyring } from '@polkadot/ui-keyring';
 import { BN_ZERO, formatBalance, formatNumber, isFunction } from '@polkadot/util';
 
@@ -35,12 +34,9 @@ import ProxyOverview from '../modals/ProxyOverview';
 import RecoverAccount from '../modals/RecoverAccount';
 import RecoverSetup from '../modals/RecoverSetup';
 import Transfer from '../modals/Transfer';
-import TransferCandy from '../modals/TransferCandy';
-import TransferCsm from '../modals/TransferCsm';
 import UndelegateModal from '../modals/Undelegate';
 import { useTranslation } from '../translate';
 import { createMenuGroup } from '../util';
-import PreClaimCRU18 from './PreClaimCRU18';
 import useMultisigApprovals from './useMultisigApprovals';
 import useProxies from './useProxies';
 
@@ -121,9 +117,6 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
   const [isTransferOpen, toggleTransfer] = useToggle();
   const [isDelegateOpen, toggleDelegate] = useToggle();
   const [isUndelegateOpen, toggleUndelegate] = useToggle();
-  const candyAmount = useCall<Balance>(api.api.query.candy?.balances, [address]);
-  const [isTransferCandyOpen, toggleTransferCandy] = useToggle();
-  const [isTransferCsmOpen, toggleTransferCsm] = useToggle();
 
   useEffect((): void => {
     if (balancesAll) {
@@ -534,20 +527,6 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
             senderId={address}
           />
         )}
-        {isTransferCandyOpen && (
-          <TransferCandy
-            key='modal-transfer'
-            onClose={toggleTransferCandy}
-            senderId={address}
-          />
-        )}
-        {isTransferCsmOpen && (
-          <TransferCsm
-            key='modal-transfer'
-            onClose={toggleTransferCsm}
-            senderId={address}
-          />
-        )}
         {isProxyOverviewOpen && (
           <ProxyOverview
             key='modal-proxy-overview'
@@ -612,19 +591,6 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
           withExtended={false}
         />
       </td>
-      <td className='number'>
-        <AddressCsmInfo address={address}
-          withBalance
-          withBalanceToggle
-          withExtended={false} />
-      </td>
-      <td className='number'>
-        <FormatCandy value={candyAmount} />
-      </td>
-      <td className='number'>
-        <PreClaimCRU18 value={address} />
-      </td>
-
       <td className='button'>
         {/* {isFunction(api.api.tx.balances?.transfer) && (
           <Button
@@ -634,38 +600,11 @@ function Account ({ account: { address, meta }, className = '', delegation, filt
           />
         )} */}
 
-        <Popup
-          className='my-popup'
-          on='click'
-          trigger={<Button
-            icon='paper-plane'
-            label={t<string>('Send')}
-          />}
-        >
-
-          {isFunction(api.api.tx.balances?.transfer) && (
-            <Button
-              icon='paper-plane'
-              label={t<string>('Send CRU')}
-              onClick={toggleTransfer}
-            />
-          )}
-          {isFunction(api.api.tx.csm?.transfer) && (
-            <Button
-              icon='paper-plane'
-              label={t<string>('Send CSM')}
-              onClick={toggleTransferCsm}
-            />
-          )}
-          {isFunction(api.api.tx.candy?.transfer) && (
-            <Button
-              icon='paper-plane'
-              label={t<string>('Send Candy')}
-              onClick={toggleTransferCandy}
-            />
-          )}
-
-        </Popup>
+        <Button
+          icon='paper-plane'
+          label={t<string>('Send CRU')}
+          onClick={toggleTransfer}
+        />
         <Popup
           className={`theme--${theme}`}
           isOpen={isSettingsOpen}
