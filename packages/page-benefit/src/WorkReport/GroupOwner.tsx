@@ -170,7 +170,7 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
         {api.api.tx.benefits?.cutBenefitFunds && (
           <Button
             icon='unlock'
-            label={t<string>('unlock')}
+            label={t<string>('Unlock')}
             onClick={toggleUnBond}
           />
         )}
