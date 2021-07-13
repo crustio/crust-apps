@@ -3,23 +3,23 @@
 /* eslint-disable */
 
 import type { DeriveBalancesAll } from '@polkadot/api-derive/types';
-import type { Option } from '@polkadot/types';
-import type { RecoveryConfig } from '@polkadot/types/interfaces';
 import type { KeyringAddress } from '@polkadot/ui-keyring/types';
 
 import BN from 'bn.js';
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 
 import { Delegation } from '@polkadot/app-accounts/types';
 import { useTranslation } from '@polkadot/apps/translate';
-import { AddressSmall, Badge, Button, Icon, IdentityIcon, Menu, Popup, Tooltip } from '@polkadot/react-components';
+import { AddressSmall, Button, Icon, Menu, Popup, StatusContext, Tooltip } from '@polkadot/react-components';
 import { useAccountInfo, useApi, useCall, useToggle } from '@polkadot/react-hooks';
 import { formatBalance, formatNumber } from '@polkadot/util';
 import Bond from '../modals/Bond';
-import UnBond from '../modals/UnBond';
 import { FoundsType } from '../modals/types';
 import { FormatBalance } from '@polkadot/react-query';
+import UnLockingSworkFounds from './UnLockingSworkFounds';
+import UnbondFounds from '../modals/UnbondFounds';
+import RebondFounds from '../modals/RebondFounds';
 
 interface Props {
   account: KeyringAddress;
@@ -43,22 +43,21 @@ function calcVisible (filter: string, name: string, tags: string[]): boolean {
   }, name.toLowerCase().includes(_filter));
 }
 
-const transformRecovery = {
-  transform: (opt: Option<RecoveryConfig>) => opt.unwrapOr(null)
-};
-
 function GroupOwner ({ account: { address }, className = '', filter, isFavorite, setBalance, toggleFavorite }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const api = useApi();
   const balancesAll = useCall<DeriveBalancesAll>(api.api.derive.balances.all, [address]);
-  const recoveryInfo = useCall<RecoveryConfig | null>(api.api.query.recovery?.recoverable, [address], transformRecovery);
   const merchantLedger = useCall<any>(api.api.query.market.merchantLedgers, [address]);
   const collateral = merchantLedger && JSON.parse(JSON.stringify(merchantLedger))?.collateral;
-  const reward = merchantLedger && JSON.parse(JSON.stringify(merchantLedger))?.reward;
   const { name: accName, tags } = useAccountInfo(address);
   const [isBondOpen, toggleBond] = useToggle();
   const [isUnBondOpen, toggleUnBond] = useToggle();
   const [isSettingsOpen, toggleSettings] = useToggle();
+  const [isReBondOpen, toggleReBond] = useToggle();
+  const sworkBenefitLedger = useCall<any>(api.api.query.benefits.sworkBenefits, [address]);
+  const groupInfo = useCall<any>(api.api.query.swork.groups, [address]);
+  const members = groupInfo && JSON.parse(JSON.stringify(groupInfo))?.members;
+  const { queueExtrinsic } = useContext(StatusContext);
 
   useEffect((): void => {
     if (balancesAll) {
@@ -76,6 +75,16 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
     [address, toggleFavorite]
   );
 
+  const withdrawFunds = useCallback(
+    () => {
+        queueExtrinsic({
+            accountId: address,
+            extrinsic: api.api.tx.benefits.withdrawBenefitFunds()
+        });
+    },
+    [api, address, queueExtrinsic]
+);
+
   if (!isVisible) {
     return null;
   }
@@ -89,12 +98,18 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
           foundsType={FoundsType.SWORK}
         />
       )}
-
       {isUnBondOpen && (
-        <UnBond
+        <UnbondFounds
           accountId={address}
           foundsType={FoundsType.SWORK}
           onClose={toggleUnBond}
+        />   
+      )}
+      {isReBondOpen && (
+        <RebondFounds
+          accountId={address}
+          foundsType={FoundsType.SWORK}
+          onClose={toggleReBond}
         />   
       )}
         
@@ -105,48 +120,11 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
           onClick={_onFavorite}
         />
       </td>
-      <td className='together'>
-        {recoveryInfo && (
-          <Badge
-            color='green'
-            hover={
-              <div>
-                <p>{t<string>('This account is recoverable, with the following friends:')}</p>
-                <div>
-                  {recoveryInfo.friends.map((friend, index): React.ReactNode => (
-                    <IdentityIcon
-                      key={index}
-                      value={friend}
-                    />
-                  ))}
-                </div>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>{t<string>('threshold')}</td>
-                      <td>{formatNumber(recoveryInfo.threshold)}</td>
-                    </tr>
-                    <tr>
-                      <td>{t<string>('delay')}</td>
-                      <td>{formatNumber(recoveryInfo.delayPeriod)}</td>
-                    </tr>
-                    <tr>
-                      <td>{t<string>('deposit')}</td>
-                      <td>{formatBalance(recoveryInfo.deposit)}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            }
-            icon='shield'
-          />
-        )}
-      </td>
       <td className='address'>
         <AddressSmall value={address} />
       </td>
       <td className='number together'>
-        {formatBalance(reward)}
+        {formatNumber(members?.length)}
       </td>
       <td className='number together'>
         <FormatBalance
@@ -157,7 +135,7 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
               tooltip={`${address}-groupowner-trigger`}
             />
           }
-          value={0}
+          value={sworkBenefitLedger?.active_funds}
         >
           <Tooltip
             text={
@@ -165,7 +143,7 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
                 <div>
                   <div className='faded'>{t('{{percentage}} of transaction fees will be reduced', {
                     replace: {
-                      percentage: `60%`
+                      percentage: ((sworkBenefitLedger?.active_funds / sworkBenefitLedger?.total_funds) *100).toFixed(2) + '%'
                     }
                   })}</div>
                 </div>
@@ -173,10 +151,10 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
             }
             trigger={`${address}-groupowner-trigger`}
           />
-        </FormatBalance>
+        </FormatBalance> / <FormatBalance value={sworkBenefitLedger?.total_funds} />
       </td>
       <td className='number together'>
-        {formatBalance(collateral)}
+        <UnLockingSworkFounds account={address} />
       </td>
       <td className='number together'>
         {formatBalance(collateral)}
@@ -212,10 +190,10 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
                 text
                 vertical
             >
-                <Menu.Item onClick={toggleBond}>
+                <Menu.Item onClick={toggleReBond}>
                     {t<string>('Rebond')}
                 </Menu.Item>
-                <Menu.Item onClick={toggleBond}>
+                <Menu.Item onClick={withdrawFunds}>
                     {t<string>('Withdraw unbonded funds')}
                 </Menu.Item>
             </Menu>

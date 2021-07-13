@@ -8,23 +8,31 @@ import styled from 'styled-components';
 
 import { CardSummary, Spinner, SummaryBox } from '@polkadot/react-components';
 import { useTranslation } from '@polkadot/apps/translate';
+import BN from 'bn.js';
+import { FormatBalance } from '@polkadot/react-query';
 
 interface Props {
   isLoading: boolean;
+  summaryInfo: SummaryInfo
 }
 
-function Summary({ isLoading }: Props): React.ReactElement<Props> | null {
+export interface SummaryInfo {
+    totalLockup: BN;
+    unlocking: BN;
+}
+
+function Summary({ isLoading, summaryInfo: { totalLockup, unlocking } }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   return (!isLoading) ? (
     <SummaryBox>
         <section>
             <CardSummary label={t<string>('Total lockup')}>
-            {<>{`54,000 CRU`}</>}
+                <FormatBalance value={totalLockup} />
             </CardSummary>
             <CardSummary
             label={t<string>('unlocking')}
             >
-            {<>{`54,000 CRU`}</>}
+                <FormatBalance value={unlocking} />
             </CardSummary>
         </section>
     </SummaryBox>

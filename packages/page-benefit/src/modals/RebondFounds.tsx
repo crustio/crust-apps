@@ -25,7 +25,7 @@ interface Props {
   onSuccess: () => void;
 }
 
-function UnBond ({ className = '', foundsType, onClose, onSuccess, senderId: propSenderId }: Props): React.ReactElement<Props> {
+function RebondFounds ({ className = '', foundsType, onClose, onSuccess, senderId: propSenderId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
@@ -40,7 +40,7 @@ function UnBond ({ className = '', foundsType, onClose, onSuccess, senderId: pro
       setTimeout((): void => {
         try {
           api.tx.benefits
-            .cutBenefitFunds(balances.availableBalance, foundsType)
+            .rebondBenefitFunds(balances.availableBalance, foundsType)
             .paymentInfo(senderId)
             .then(({ partialFee }): void => {
               const maxTransfer = balances.availableBalance.sub(partialFee);
@@ -64,7 +64,7 @@ function UnBond ({ className = '', foundsType, onClose, onSuccess, senderId: pro
   return (
     <Modal
       className='app--accounts-Modal'
-      header={t<string>('Bond')}
+      header={t<string>('Rebond')}
       size='large'
     >
       <Modal.Content>
@@ -108,18 +108,18 @@ function UnBond ({ className = '', foundsType, onClose, onSuccess, senderId: pro
           accountId={senderId}
           icon='paper-plane'
           isDisabled={!hasAvailable || !amount}
-          label={t<string>('Bond')}
+          label={t<string>('Rebond')}
           onStart={onClose}
           onSuccess={onSuccess}
           params={[amount, foundsType]}
-          tx={api.tx.benefits.cutBenefitFunds}
+          tx={api.tx.benefits.rebondBenefitFunds}
         />
       </Modal.Actions>
     </Modal>
   );
 }
 
-export default React.memo(styled(UnBond)`
+export default React.memo(styled(RebondFounds)`
   .balance {
     margin-bottom: 0.5rem;
     text-align: right;

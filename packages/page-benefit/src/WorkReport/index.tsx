@@ -12,12 +12,12 @@ import { SortedAccount } from '@polkadot/app-accounts/types';
 import { sortAccounts } from '@polkadot/app-accounts/util';
 import { useTranslation } from '@polkadot/apps/translate';
 import { Button, Input, Table } from '@polkadot/react-components';
-import { useAccounts, useApi, useFavorites, useLoadingDelay, useToggle } from '@polkadot/react-hooks';
+import { useAccounts, useApi, useCall, useFavorites, useLoadingDelay, useToggle } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 import Banner from '../Banner';
 import CreateGroup from '../modals/CreateGroup';
 import GroupOwner from './GroupOwner';
-import Summary from './Summary';
+import Summary, { SummaryInfo } from './Summary';
 
 interface Balances {
   accounts: Record<string, BN>;
@@ -47,11 +47,17 @@ function WorkReport ({ className = '' }: Props): React.ReactElement<Props> {
   const [ownOwners, setOwnOwners] = useState<SortedAccount[] | undefined>();
   const [isCreateOpen, toggleCreate] = useToggle();
   const [allOwners, setAllOwners] = useState<string[]>([]);
+  const [summaryInfo, setSummaryInfo] = useState<SummaryInfo>({
+    totalLockup: BN_ZERO,
+    unlocking: BN_ZERO
+  });
+
+  const multiQuery = useCall<any[]>(api.query.benefits.sworkBenefits.multi, [ownOwners?.map(e => e.account.address)]);
 
   const isLoading = useLoadingDelay();
 
   const headerRef = useRef([
-    [t('Group owner'), 'start', 3],
+    [t('Group owner'), 'start', 2],
     [t('No. of Group members')],
     [t('lockup/Total free transaction fees')],
     [t('unlocking')],
@@ -99,6 +105,25 @@ function WorkReport ({ className = '' }: Props): React.ReactElement<Props> {
       setOwnOwners(tmp);
     }
   }, [sortedAccounts, allOwners]);
+
+  useEffect(() => {
+    const tmp = multiQuery && JSON.parse(JSON.stringify(multiQuery))
+    if (tmp && tmp.length) {
+        let total = BN_ZERO;
+        let unlocking = BN_ZERO;
+        for (const legder of tmp) {
+          total = total.add(new BN(Number(legder.total_funds).toString()))
+          for (const unlockingLegder of legder.unlocking_funds) {
+            unlocking = unlocking.add(new BN(Number(unlockingLegder.value).toString()))
+          }
+        }
+        setSummaryInfo({
+          totalLockup: total,
+          unlocking
+        })
+    }
+
+  }, [multiQuery, ownOwners])
 
   useEffect((): void => {
     const sortedAccounts = sortAccounts(allAccounts, favorites);
@@ -154,7 +179,7 @@ function WorkReport ({ className = '' }: Props): React.ReactElement<Props> {
           onClick={toggleCreate}
         />
       </Button.Group>
-      <Summary isLoading={isLoading} />
+      <Summary isLoading={isLoading} summaryInfo={summaryInfo} />
       
       <Table
         empty={(!hasAccounts || (!isLoading)) && t<string>("You don't have group accounts. Some features are currently hidden and will only become available once you have group accounts.")}
