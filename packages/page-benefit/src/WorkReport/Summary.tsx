@@ -30,7 +30,7 @@ function Summary({ isLoading, summaryInfo: { totalLockup, unlocking } }: Props):
                 <FormatBalance value={totalLockup} />
             </CardSummary>
             <CardSummary
-            label={t<string>('unlocking')}
+            label={t<string>('Unlocking')}
             >
                 <FormatBalance value={unlocking} />
             </CardSummary>
