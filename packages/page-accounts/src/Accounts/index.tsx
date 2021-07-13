@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { ActionStatus } from '@polkadot/react-components/Status/types';
 import type { AccountId, ProxyDefinition, ProxyType, Voting } from '@polkadot/types/interfaces';
 import type { Delegation, SortedAccount } from '../types';
@@ -23,9 +24,9 @@ import Qr from '../modals/Qr';
 import { useTranslation } from '../translate';
 import { sortAccounts } from '../util';
 import Account from './Account';
+import AccountMainnet from './AccountMainnet';
 import BannerClaims from './BannerClaims';
 import BannerExtension from './BannerExtension';
-import AccountMainnet from './AccountMainnet';
 
 interface Balances {
   accounts: Record<string, BN>;
@@ -71,8 +72,8 @@ function Overview ({ className = '', onStatusChange }: Props): React.ReactElemen
         )
   });
 
-  const isMainnet = systemChain == 'Crust Maxwell' ? false : true;
-  
+  const isMainnet = systemChain !== 'Crust Maxwell';
+
   const isLoading = useLoadingDelay();
 
   const headerRef = !isMainnet ? useRef([
@@ -158,16 +159,16 @@ function Overview ({ className = '', onStatusChange }: Props): React.ReactElemen
     </tr>
   ) : (
     <tr>
-    <td colSpan={3} />
-    <td className='media--1400' />
-    <td colSpan={2} />
-    <td className='media--1500' />
-    <td className='number'>
-      {balanceTotal && <FormatBalance value={balanceTotal} />}
-    </td>
-    <td />
-    <td className='media--1400' />
-  </tr>
+      <td colSpan={3} />
+      <td className='media--1400' />
+      <td colSpan={2} />
+      <td className='media--1500' />
+      <td className='number'>
+        {balanceTotal && <FormatBalance value={balanceTotal} />}
+      </td>
+      <td />
+      <td className='media--1400' />
+    </tr>
   ), [balanceTotal, isMainnet]);
 
   const filter = useMemo(() => (
@@ -265,29 +266,31 @@ function Overview ({ className = '', onStatusChange }: Props): React.ReactElemen
         footer={footer}
         header={headerRef.current}
       >
-        {!isLoading && sortedAccountsWithDelegation?.map(({ account, delegation, isFavorite }, index): React.ReactNode => isMainnet ? (
-          <AccountMainnet
-            account={account}
-            delegation={delegation}
-            filter={filterOn}
-            isFavorite={isFavorite}
-            key={`${index}:${account.address}`}
-            proxy={proxies?.[index]}
-            setBalance={_setBalance}
-            toggleFavorite={toggleFavorite}
-          />
-        ) : (
-          <Account
-            account={account}
-            delegation={delegation}
-            filter={filterOn}
-            isFavorite={isFavorite}
-            key={`${index}:${account.address}`}
-            proxy={proxies?.[index]}
-            setBalance={_setBalance}
-            toggleFavorite={toggleFavorite}
-          />
-        ))}
+        {!isLoading && sortedAccountsWithDelegation?.map(({ account, delegation, isFavorite }, index): React.ReactNode => isMainnet
+          ? (
+            <AccountMainnet
+              account={account}
+              delegation={delegation}
+              filter={filterOn}
+              isFavorite={isFavorite}
+              key={`${index}:${account.address}`}
+              proxy={proxies?.[index]}
+              setBalance={_setBalance}
+              toggleFavorite={toggleFavorite}
+            />
+          )
+          : (
+            <Account
+              account={account}
+              delegation={delegation}
+              filter={filterOn}
+              isFavorite={isFavorite}
+              key={`${index}:${account.address}`}
+              proxy={proxies?.[index]}
+              setBalance={_setBalance}
+              toggleFavorite={toggleFavorite}
+            />
+          ))}
       </Table>
     </div>
   );

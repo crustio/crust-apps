@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { DeriveBalancesAll } from '@polkadot/api-derive/types';
 
 import BN from 'bn.js';
@@ -12,6 +13,7 @@ import { InputAddress, InputBalance, Modal, TxButton } from '@polkadot/react-com
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { Available } from '@polkadot/react-query';
 import { BN_ZERO, isFunction } from '@polkadot/util';
+
 import { FoundsType } from './types';
 
 interface Props {
@@ -23,7 +25,7 @@ interface Props {
   foundsType: FoundsType;
 }
 
-function Bond ({ className = '', onClose, onSuccess, senderId: propSenderId, foundsType }: Props): React.ReactElement<Props> {
+function Bond ({ className = '', foundsType, onClose, onSuccess, senderId: propSenderId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);

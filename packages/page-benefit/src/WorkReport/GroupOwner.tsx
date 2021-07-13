@@ -4,7 +4,7 @@
 
 import type { DeriveBalancesAll } from '@polkadot/api-derive/types';
 import type { Option } from '@polkadot/types';
-import type { ProxyDefinition, RecoveryConfig } from '@polkadot/types/interfaces';
+import type { RecoveryConfig } from '@polkadot/types/interfaces';
 import type { KeyringAddress } from '@polkadot/ui-keyring/types';
 
 import BN from 'bn.js';
@@ -56,10 +56,8 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
   const collateral = merchantLedger && JSON.parse(JSON.stringify(merchantLedger))?.collateral;
   const reward = merchantLedger && JSON.parse(JSON.stringify(merchantLedger))?.reward;
   const { name: accName, tags } = useAccountInfo(address);
-  const [isAddCollateralOpen, toggleAddCollateral] = useToggle();
   const [isBondOpen, toggleBond] = useToggle();
   const [isUnBondOpen, toggleUnBond] = useToggle();
-  const [isRewardMerchantOpen, toggleRewardMerchant] = useToggle();
   const [isSettingsOpen, toggleSettings] = useToggle();
 
   useEffect((): void => {
@@ -95,7 +93,7 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
       {isUnBondOpen && (
         <UnBond
           accountId={address}
-          foundsType={FoundsType.MARKET}
+          foundsType={FoundsType.SWORK}
           onClose={toggleUnBond}
         />   
       )}

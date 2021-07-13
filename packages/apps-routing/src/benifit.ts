@@ -12,7 +12,7 @@ export default function create (t: TFunction): Route {
     display: {
       needsAccounts: true,
       needsApi: [
-        `tx.benefits.addBenefitFunds`
+        'tx.benefits.addBenefitFunds'
       ]
     },
     group: 'accounts',

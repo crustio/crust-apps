@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { useTranslation } from '@polkadot/apps/translate';
-import { InputAddress, InputBalance, Modal, TxButton } from '@polkadot/react-components';
+import { InputAddress, Modal, TxButton } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { Available } from '@polkadot/react-query';
 import { BN_ZERO, isFunction } from '@polkadot/util';
@@ -24,7 +24,7 @@ interface Props {
 function CreateGroup ({ className = '', onClose, onSuccess, senderId: propSenderId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
-  const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
+  const [amount] = useState<BN | undefined>(BN_ZERO);
   const [hasAvailable] = useState(true);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [, setMaxTransfer] = useState<BN | null>(null);

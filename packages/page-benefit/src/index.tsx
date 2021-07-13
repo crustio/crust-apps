@@ -7,8 +7,9 @@ import React, { useRef } from 'react';
 import { Route, Switch } from 'react-router';
 
 import { useTranslation } from '@polkadot/apps/translate';
-import { useAccounts, useIpfs } from '@polkadot/react-hooks';
 import { Tabs } from '@polkadot/react-components';
+import { useAccounts, useIpfs } from '@polkadot/react-hooks';
+
 import WorkReport from './WorkReport';
 
 const HIDDEN_ACC = ['vanity'];
@@ -45,7 +46,7 @@ function BenifitApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pr
         </Route>
         <Route basePath={basePath}
           onStatusChange={onStatusChange}>
-            <WorkReport />
+          <WorkReport />
         </Route>
 
       </Switch>
