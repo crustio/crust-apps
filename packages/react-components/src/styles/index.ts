@@ -345,6 +345,15 @@ export default createGlobalStyle<Props & ThemeProps>(({ theme, uiHighlight }: Pr
       }
     }
 
+    &.left {
+      margin: 1.5rem 1.5rem auto 0;
+      max-width: 75rem;
+
+      &+.ui--Button-Group {
+        margin-top: 2rem;
+      }
+    }
+
     &.error {
       &:before {
         background: rgba(255, 12, 12, 0.05);

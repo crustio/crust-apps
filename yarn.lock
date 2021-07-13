@@ -2778,6 +2778,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@polkadot/apps-benefit@workspace:packages/page-benefit":
+  version: 0.0.0-use.local
+  resolution: "@polkadot/apps-benefit@workspace:packages/page-benefit"
+  languageName: unknown
+  linkType: soft
+
 "@polkadot/apps-config@^0.85.2-15, @polkadot/apps-config@workspace:packages/apps-config":
   version: 0.0.0-use.local
   resolution: "@polkadot/apps-config@workspace:packages/apps-config"

@@ -9,6 +9,7 @@ import addresses from './addresses';
 import assets from './assets';
 import bounties from './bounties';
 import calendar from './calendar';
+import benifit from './benifit';
 import claims from './claims';
 import contracts from './contracts';
 import council from './council';
@@ -64,6 +65,7 @@ export default function create (t: TFunction): Routes {
     js(t),
     settings(t),
     merchants(t),
-    splore(t)
+    splore(t),
+    benifit(t)
   ];
 }
