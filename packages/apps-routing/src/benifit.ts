@@ -4,19 +4,20 @@
 import type { TFunction } from 'i18next';
 import type { Route } from './types';
 
-import Component from '@polkadot/app-csmStaking';
+import Component from '@polkadot/apps-benefit/';
 
 export default function create (t: TFunction): Route {
   return {
     Component,
     display: {
+      needsAccounts: true,
       needsApi: [
-        'tx.csmLocking.bond'
+        'tx.benefits.addBenefitFunds'
       ]
     },
-    group: 'csmStaking',
-    icon: 'fire',
-    name: 'csmStaking',
-    text: t('nav.csmStaking', 'Profit Data', { ns: 'apps-routing' })
+    group: 'accounts',
+    icon: 'calendar',
+    name: 'benifit',
+    text: t('nav.benifit', 'Benifit', { ns: 'apps-routing' })
   };
 }

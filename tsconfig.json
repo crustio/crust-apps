@@ -18,6 +18,8 @@
       "@polkadot/apps-ipfs/*": [ "packages/apps-ipfs/src/*" ],
       "@polkadot/apps-merchants/": [ "packages/page-merchants/src/" ],
       "@polkadot/apps-merchants/*": [ "packages/page-merchants/src/*" ],
+      "@polkadot/apps-benefit/": [ "packages/page-benefit/src/" ],
+      "@polkadot/apps-benefit/*": [ "packages/page-benefit/src/*" ],
       "@polkadot/apps-routing": [ "packages/apps-routing/src" ],
       "@polkadot/apps-routing/*": [ "packages/apps-routing/src/*" ],
       "@polkadot/app-accounts": [ "packages/page-accounts/src" ],

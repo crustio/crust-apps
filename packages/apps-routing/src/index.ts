@@ -7,6 +7,7 @@ import type { Routes } from './types';
 import accounts from './accounts';
 import addresses from './addresses';
 import assets from './assets';
+import benifit from './benifit';
 import bounties from './bounties';
 import calendar from './calendar';
 import claims from './claims';
@@ -64,6 +65,7 @@ export default function create (t: TFunction): Routes {
     js(t),
     settings(t),
     merchants(t),
-    splore(t)
+    splore(t),
+    benifit(t)
   ];
 }
