@@ -8,7 +8,6 @@ import type { ActionStatus } from '@polkadot/react-components/Status/types';
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { Table } from '@polkadot/react-components';
-import { useApi } from '@polkadot/react-hooks';
 import { orders, dailyOrders } from './mock';
 import LuckyEasterOrders from './LuckyEasterOrders';
 import PreviousOrders from './PreviousOrders';
@@ -22,7 +21,6 @@ interface Props {
 
 function EasterEggsOrders ({ isLoading }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const { api } = useApi();
   // we have a very large list, so we use a loading delay
   // const [nameFilter, setNameFilter] = useState<string>('');
 
