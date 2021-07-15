@@ -20,6 +20,7 @@ import { DataProviderState } from './Overview/types';
 import lodash from 'lodash';
 import { ApiPromise } from '@polkadot/api';
 import { BN_ZERO } from '@polkadot/util';
+import EasterEggsOrders from './EasterEggsOrders';
 
 export const Capacity_Unit = new BN(1024 * 1024);
 
@@ -120,6 +121,10 @@ function CsmStakingApp({ basePath, onStatusChange }: Props): React.ReactElement<
     {
       name: 'actions',
       text: t<string>('Account actions')
+    },
+    {
+      name: 'easterEggsOrders',
+      text: t<string>('EasterEggs Orders')
     }
   ]);
 
@@ -134,6 +139,9 @@ function CsmStakingApp({ basePath, onStatusChange }: Props): React.ReactElement<
       <Switch>
         <Route path={`${basePath}/actions`}>
           <Actions providers={providers?.map((e) => e.account)} />
+        </Route>
+        <Route path={`${basePath}/easterEggsOrders`}>
+          <EasterEggsOrders />
         </Route>
         <Route basePath={basePath}
           onStatusChange={onStatusChange}>

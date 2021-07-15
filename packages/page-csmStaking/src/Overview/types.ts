@@ -16,3 +16,14 @@ interface ProviderSortRank {
   stakedCSM: number,
   storage: number
 }
+
+export interface LuckyOrder {
+  cid: string;
+  size: number;
+  topFour: string[];
+}
+
+export interface EasterEggsOrder {
+  date: number;
+  orders: LuckyOrder[];
+}
