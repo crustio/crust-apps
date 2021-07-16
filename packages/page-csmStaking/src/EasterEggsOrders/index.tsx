@@ -5,12 +5,14 @@
 import { useTranslation } from '@polkadot/apps/translate';
 import type { ActionStatus } from '@polkadot/react-components/Status/types';
 
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Table } from '@polkadot/react-components';
 import { orders, dailyOrders } from './mock';
 import LuckyEasterOrders from './LuckyEasterOrders';
 import PreviousOrders from './PreviousOrders';
+import { EasterEggsOrder } from '../Overview/types';
+import { httpGet } from './http';
 
 interface Props {
   className?: string;
@@ -23,6 +25,28 @@ function EasterEggsOrders ({ isLoading }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   // we have a very large list, so we use a loading delay
   // const [nameFilter, setNameFilter] = useState<string>('');
+  const [currentList, setCurrentList] = useState<EasterEggsOrder>({
+    date: new Date().getTime(),
+    orders: []
+  });
+
+  const [previousList, setPreviousList] = useState<EasterEggsOrder[]>([]);
+
+  useEffect(() => {
+    httpGet('http://localhost:12345/currentList').then((res: { code: number; statusText: React.SetStateAction<EasterEggsOrder>; }) => {
+      if (res.code === 200) {
+        setCurrentList(res.statusText)
+      }
+    })
+  }, []);
+
+  useEffect(() => {
+    httpGet('http://localhost:12345/previousList').then((res: { code: number; statusText: React.SetStateAction<EasterEggsOrder[]> }) => {
+      if (res.code === 200) {
+        setPreviousList(res.statusText)
+      }
+    })
+  }, [])
 
   const headerRef = useRef([
     [t('cid'), 'start'],
@@ -43,7 +67,7 @@ function EasterEggsOrders ({ isLoading }: Props): React.ReactElement<Props> {
       header={headerRef.current}
       empty={!isLoading && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
     >
-        {!isLoading && orders?.map((order): React.ReactNode => (
+        {!isLoading && currentList.orders?.map((order): React.ReactNode => (
           <LuckyEasterOrders
             info={order}
           />
@@ -57,7 +81,7 @@ function EasterEggsOrders ({ isLoading }: Props): React.ReactElement<Props> {
       header={preHeaderRef.current}
       empty={!isLoading && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
     >
-        {!isLoading && dailyOrders?.map((order): React.ReactNode => (
+        {!isLoading && previousList?.map((order): React.ReactNode => (
           <PreviousOrders
             info={order}
           />
