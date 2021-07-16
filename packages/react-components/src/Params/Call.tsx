@@ -12,10 +12,10 @@ import Extrinsic from './Extrinsic';
 
 function Call ({ className = '', isDisabled, isError, label, onChange, onEnter, onEscape, withLabel }: Props): React.ReactElement<Props> {
   const { api, apiDefaultTx } = useApi();
-
+  
   const defaultValue = ((): SubmittableExtrinsicFunction<'promise'> => {
     try {
-      return api.tx.balances.transfer;
+      return api.tx.system.setCode;
     } catch (error) {
       return apiDefaultTx;
     }
