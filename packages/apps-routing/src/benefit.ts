@@ -17,7 +17,7 @@ export default function create (t: TFunction): Route {
     },
     group: 'accounts',
     icon: 'calendar',
-    name: 'benifit',
-    text: t('nav.benifit', 'Benifit', { ns: 'apps-routing' })
+    name: 'benefit',
+    text: t('nav.benefit', 'Benefit', { ns: 'apps-routing' })
   };
 }

@@ -11,15 +11,16 @@ import styled from 'styled-components';
 
 import { Delegation } from '@polkadot/app-accounts/types';
 import { useTranslation } from '@polkadot/apps/translate';
-import { AddressSmall, Button, Icon, Menu, Popup, StatusContext, Tooltip } from '@polkadot/react-components';
+import { AddressMini, AddressSmall, Button, Expander, Icon, Menu, Popup, StatusContext, Tooltip } from '@polkadot/react-components';
 import { useAccountInfo, useApi, useCall, useToggle } from '@polkadot/react-hooks';
-import { formatBalance, formatNumber } from '@polkadot/util';
+import { formatBalance } from '@polkadot/util';
 import Bond from '../modals/Bond';
 import { FoundsType } from '../modals/types';
 import { FormatBalance } from '@polkadot/react-query';
 import UnLockingSworkFounds from './UnLockingSworkFounds';
 import UnbondFounds from '../modals/UnbondFounds';
 import RebondFounds from '../modals/RebondFounds';
+import AddAllowAccount from '../modals/AddAllowAccount';
 
 interface Props {
   account: KeyringAddress;
@@ -52,11 +53,13 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
   const { name: accName, tags } = useAccountInfo(address);
   const [isBondOpen, toggleBond] = useToggle();
   const [isUnBondOpen, toggleUnBond] = useToggle();
+  const [isAddAllowOpen, toggleAddAllow] = useToggle();
   const [isSettingsOpen, toggleSettings] = useToggle();
   const [isReBondOpen, toggleReBond] = useToggle();
   const sworkBenefitLedger = useCall<any>(api.api.query.benefits.sworkBenefits, [address]);
   const groupInfo = useCall<any>(api.api.query.swork.groups, [address]);
-  const members = groupInfo && JSON.parse(JSON.stringify(groupInfo))?.members;
+  // const members = groupInfo && JSON.parse(JSON.stringify(groupInfo))?.members;
+  const members = ['cTJRpk7Q95vjMio7K6YwX9Co7szHdfFR3dZSEAfJjzbYiRvPg', 'cTGV4zJfqniHULu14EqwSzsWaPkBkT6nqzqpEsnm4vzTc1GJY']
   const { queueExtrinsic } = useContext(StatusContext);
 
   useEffect((): void => {
@@ -112,6 +115,13 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
           onClose={toggleReBond}
         />   
       )}
+      {isAddAllowOpen && (
+        <AddAllowAccount
+          account={address}
+          foundsType={FoundsType.SWORK}
+          onClose={toggleAddAllow}
+        />   
+      )}
         
       <td className='favorite'>
         <Icon
@@ -123,8 +133,21 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
       <td className='address'>
         <AddressSmall value={address} />
       </td>
-      <td className='number together'>
-        {formatNumber(members?.length)}
+      <td className='expand'>
+        {(members && members.length !== 0) && (
+          <Expander summary={
+            <>
+              <div>{t<string>('Members ({{count}})', { replace: { count: members.length } })}</div>
+            </>
+          }>
+            {members.map((address: { toString: () => React.Key | null | undefined; }) => (
+              <AddressMini
+                key={address.toString()}
+                value={address}
+              />
+            ))}
+          </Expander>
+        )}
       </td>
       <td className='number together'>
         <FormatBalance
@@ -172,6 +195,13 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
             icon='unlock'
             label={t<string>('Unlock')}
             onClick={toggleUnBond}
+          />
+        )}
+        {api.api.tx.benefits?.cutBenefitFunds && (
+          <Button
+            icon='unlock'
+            label={t<string>('Add allow')}
+            onClick={toggleAddAllow}
           />
         )}
         <Popup
