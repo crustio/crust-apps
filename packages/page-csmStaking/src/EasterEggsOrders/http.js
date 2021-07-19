@@ -5,8 +5,8 @@
 import { base64Encode } from '@polkadot/util-crypto';
 const MAX_RETRY = 3;
 const RETRY_INTERVAL = 1000;
-const USERNAME = process.env.LUCKY_ORDER_USER; 
-const PASSWD = process.env.LUCKY_ORDER_PASSWD;
+const USERNAME = process.env.CSM_LOCKING_USER; 
+const PASSWD = process.env.CSM_LOCKING_PASSWD
 
 console.log(`USERNAME: ${USERNAME}, PASSWD: ${PASSWD}`)
 
