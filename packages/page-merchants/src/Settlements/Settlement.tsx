@@ -7,9 +7,9 @@ import type { SubmittableExtrinsic } from '@polkadot/api/types';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { useTranslation } from '@polkadot/apps/translate';
 import { Button, Input, InputAddress, Modal, TxButton } from '@polkadot/react-components';
 import { useAccounts, useApi, useTxBatch } from '@polkadot/react-hooks';
-import { useTranslation } from '@polkadot/apps/translate';
 
 type PrevProxy = [string];
 
@@ -31,7 +31,7 @@ interface NewProxyProps extends ValueProps {
 const optTxBatch = { isBatchAll: true };
 
 function createAddProxy (api: ApiPromise, cid: string): SubmittableExtrinsic<'promise'> {
-  return api.tx.market.calculateReward(cid)
+  return api.tx.market.calculateReward(cid);
 }
 
 function NewProxy ({ index, onChangeCid, onRemove, value: [cid] }: NewProxyProps): React.ReactElement<NewProxyProps> {
@@ -57,7 +57,7 @@ function NewProxy ({ index, onChangeCid, onRemove, value: [cid] }: NewProxyProps
           label={t<string>('file cid')}
           onChange={_onChangeCid}
           value={cid}
-        /> 
+        />
       </div>
       <div className='buttons-column'>
         <Button
@@ -94,7 +94,7 @@ function Settlement ({ className, onClose }: Props): React.ReactElement<Props> {
       [...added, [
         added.length
           ? added[added.length - 1][0]
-            :  ""
+          : ''
       ]]
     ),
     [api]
@@ -124,16 +124,16 @@ function Settlement ({ className, onClose }: Props): React.ReactElement<Props> {
     >
       <Modal.Content>
         <Modal.Columns >
-            <InputAddress
-                filter={allAccounts}
-                label={t<string>('account')}
-                onChange={setAccountId}
-                type='account'
-                value={accountId}
-            />
+          <InputAddress
+            filter={allAccounts}
+            label={t<string>('account')}
+            onChange={setAccountId}
+            type='account'
+            value={accountId}
+          />
         </Modal.Columns>
         <Modal.Columns >
-          
+
           {added.map((value, index) => (
             <NewProxy
               index={index}
@@ -150,7 +150,7 @@ function Settlement ({ className, onClose }: Props): React.ReactElement<Props> {
               onClick={_addProxy}
             />
           </Button.Group>
-        </Modal.Columns>     
+        </Modal.Columns>
       </Modal.Content>
       <Modal.Actions onCancel={onClose}>
         <TxButton

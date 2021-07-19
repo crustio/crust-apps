@@ -6,12 +6,12 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from '@polkadot/apps/translate';
 import { ISettlementItem } from '@polkadot/apps-merchants/Settlements/settlementList';
 import { Button, Spinner } from '@polkadot/react-components';
+import { useToggle } from '@polkadot/react-hooks';
 
 import FetchModal from './fetch-modal/FetchModal';
 import { fetchFileTobeClaimed } from './fetch';
-import SettlementList from './settlementList';
-import { useToggle } from '@polkadot/react-hooks';
 import Settlement from './Settlement';
+import SettlementList from './settlementList';
 
 const Settlements: React.FC = () => {
   const { t } = useTranslation();
@@ -63,7 +63,7 @@ const Settlements: React.FC = () => {
       : <div>
         {isSettlementOpen && <Settlement onClose={toggleSettlement} />
         }
-        <section style={{display: "inline-block"}}>
+        <section style={{ display: 'inline-block' }}>
           <Button.Group>
             <Button
               icon='download'
