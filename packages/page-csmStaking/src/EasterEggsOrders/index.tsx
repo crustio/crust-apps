@@ -32,7 +32,7 @@ function EasterEggsOrders ({ isLoading }: Props): React.ReactElement<Props> {
   const [previousList, setPreviousList] = useState<EasterEggsOrder[]>([]);
 
   useEffect(() => {
-    httpGet('http://localhost:12345/currentList').then((res: { code: number; statusText: React.SetStateAction<EasterEggsOrder>; }) => {
+    httpGet('https://lder-api.crust.network/currentList').then((res: { code: number; statusText: React.SetStateAction<EasterEggsOrder>; }) => {
       if (res.code === 200) {
         setCurrentList(res.statusText)
       }
@@ -40,7 +40,7 @@ function EasterEggsOrders ({ isLoading }: Props): React.ReactElement<Props> {
   }, []);
 
   useEffect(() => {
-    httpGet('http://localhost:12345/previousList').then((res: { code: number; statusText: React.SetStateAction<EasterEggsOrder[]> }) => {
+    httpGet('https://lder-api.crust.network/previousList').then((res: { code: number; statusText: React.SetStateAction<EasterEggsOrder[]> }) => {
       if (res.code === 200) {
         setPreviousList(res.statusText)
       }
