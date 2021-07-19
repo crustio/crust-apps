@@ -1,110 +1,45 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type BN from 'bn.js';
 import type { ApiPromise } from '@polkadot/api';
 import type { SubmittableExtrinsic } from '@polkadot/api/types';
-import type { AccountId, ProxyDefinition, ProxyType } from '@polkadot/types/interfaces';
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { BatchWarning, Button, Dropdown, InputAddress, InputBalance, MarkError, Modal, TxButton } from '@polkadot/react-components';
-import { useApi, useTxBatch } from '@polkadot/react-hooks';
-import { BN_ZERO } from '@polkadot/util';
+import { Button, Input, InputAddress, Modal, TxButton } from '@polkadot/react-components';
+import { useAccounts, useApi, useTxBatch } from '@polkadot/react-hooks';
 import { useTranslation } from '@polkadot/apps/translate';
 
-type PrevProxy = [AccountId, ProxyType];
+type PrevProxy = [string];
 
 interface Props {
   className?: string;
   onClose: () => void;
-  previousProxy?: [ProxyDefinition[], BN];
-  account: string;
 }
 
 interface ValueProps {
   index: number;
-  typeOpts: { text: string; value: number }[];
   value: PrevProxy;
 }
 
 interface NewProxyProps extends ValueProps {
-  onChangeAccount: (index: number, value: string | null) => void;
-  onChangeType: (index: number, value: number | undefined) => void;
+  onChangeCid: (index: number, value: string) => void;
   onRemove: (index: number) => void;
-  account: string;
-}
-
-interface PrevProxyProps extends ValueProps {
-  onRemove: (accountId: AccountId, type: ProxyType, index: number) => void;
 }
 
 const optTxBatch = { isBatchAll: true };
 
-const EMPTY_EXISTING: [ProxyDefinition[], BN] = [[], BN_ZERO];
-
-function createAddProxy (api: ApiPromise, account: AccountId, type: ProxyType, delay = 0): SubmittableExtrinsic<'promise'> {
-  return api.tx.proxy.addProxy.meta.args.length === 2
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore old version
-    ? api.tx.proxy.addProxy(account, type)
-    : api.tx.proxy.addProxy(account, type, delay);
+function createAddProxy (api: ApiPromise, cid: string): SubmittableExtrinsic<'promise'> {
+  return api.tx.market.calculateReward(cid)
 }
 
-function createRmProxy (api: ApiPromise, account: AccountId, type: ProxyType, delay = 0): SubmittableExtrinsic<'promise'> {
-  return api.tx.proxy.removeProxy.meta.args.length === 2
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore old version
-    ? api.tx.proxy.removeProxy(account, type)
-    : api.tx.proxy.removeProxy(account, type, delay);
-}
-
-function PrevProxy ({ index, onRemove, typeOpts, value: [accountId, type] }: PrevProxyProps): React.ReactElement<PrevProxyProps> {
+function NewProxy ({ index, onChangeCid, onRemove, value: [cid] }: NewProxyProps): React.ReactElement<NewProxyProps> {
   const { t } = useTranslation();
 
-  const _onRemove = useCallback(
-    () => onRemove(accountId, type, index),
-    [accountId, index, onRemove, type]
-  );
-
-  return (
-    <div className='proxy-container'>
-      <div className='input-column'>
-        <InputAddress
-          defaultValue={accountId}
-          isDisabled
-          label={t<string>('proxy account')}
-        />
-        <Dropdown
-          help={'Type of proxy'}
-          isDisabled
-          label={'type'}
-          options={typeOpts}
-          value={type.toNumber()}
-        />
-      </div>
-      <div className='buttons-column'>
-        <Button
-          icon='times'
-          onClick={_onRemove}
-        />
-      </div>
-    </div>
-  );
-}
-
-function NewProxy ({ index, onChangeAccount, onChangeType, onRemove, account, typeOpts, value: [accountId, type] }: NewProxyProps): React.ReactElement<NewProxyProps> {
-  const { t } = useTranslation();
-
-  const _onChangeAccount = useCallback(
-    (value: string | null) => onChangeAccount(index, value),
-    [index, onChangeAccount]
-  );
-
-  const _onChangeType = useCallback(
-    (value?: number) => onChangeType(index, value),
-    [index, onChangeType]
+  const _onChangeCid = useCallback(
+    (value: string) => onChangeCid(index, value),
+    [index, onChangeCid]
   );
 
   const _onRemove = useCallback(
@@ -118,22 +53,11 @@ function NewProxy ({ index, onChangeAccount, onChangeType, onRemove, account, ty
       key={`addedProxy-${index}`}
     >
       <div className='input-column'>
-        <InputAddress
-          label={t<string>('proxy account')}
-          onChange={_onChangeAccount}
-          type='account'
-          value={accountId}
-        />
-        {accountId.eq(account) && (
-          <MarkError content={t<string>('You should not setup proxies to act as a self-proxy.')} />
-        )}
-        <Dropdown
-          help={'Type of proxy'}
-          label={'type'}
-          onChange={_onChangeType}
-          options={typeOpts}
-          value={type.toNumber()}
-        />
+        <Input
+          label={t<string>('file cid')}
+          onChange={_onChangeCid}
+          value={cid}
+        /> 
       </div>
       <div className='buttons-column'>
         <Button
@@ -145,42 +69,35 @@ function NewProxy ({ index, onChangeAccount, onChangeType, onRemove, account, ty
   );
 }
 
-function Settlement ({ className, onClose, previousProxy: [existing] = EMPTY_EXISTING, account }: Props): React.ReactElement<Props> {
+function Settlement ({ className, onClose }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
-  const [batchPrevious, setBatchPrevious] = useState<SubmittableExtrinsic<'promise'>[]>([]);
   const [batchAdded, setBatchAdded] = useState<SubmittableExtrinsic<'promise'>[]>([]);
   const [txs, setTxs] = useState<SubmittableExtrinsic<'promise'>[] | null>(null);
-  const [previous, setPrevious] = useState<PrevProxy[]>(() => existing.map(({ delegate, proxyType }) => [delegate, proxyType]));
   const [added, setAdded] = useState<PrevProxy[]>([]);
   const extrinsics = useTxBatch(txs, optTxBatch);
-
-  const typeOpts = useRef(
-    api.createType('ProxyType').defKeys.map((text, value) => ({ text, value }))
-  );
+  const { allAccounts } = useAccounts();
+  const [accountId, setAccountId] = useState<string | null>(null);
 
   useEffect((): void => {
     setBatchAdded(
-      added.map(([newAccount, newType]) => createAddProxy(api, newAccount, newType))
+      added.map(([cid]) => createAddProxy(api, cid))
     );
   }, [api, added]);
 
   useEffect((): void => {
-    setTxs(() => [...batchPrevious, ...batchAdded]);
-  }, [batchPrevious, batchAdded]);
+    setTxs(() => [...batchAdded]);
+  }, [batchAdded]);
 
   const _addProxy = useCallback(
     () => setAdded((added) =>
       [...added, [
         added.length
           ? added[added.length - 1][0]
-          : previous.length
-            ? previous[previous.length - 1][0]
-            : api.createType('AccountId', account),
-        api.createType('ProxyType', 0)
+            :  ""
       ]]
     ),
-    [api, previous, account]
+    [api]
   );
 
   const _delProxy = useCallback(
@@ -188,109 +105,59 @@ function Settlement ({ className, onClose, previousProxy: [existing] = EMPTY_EXI
     []
   );
 
-  const _delPrev = useCallback(
-    (accountId: AccountId, type: ProxyType, index: number): void => {
-      setPrevious((previous) => previous.filter((_, i) => i !== index));
-      setBatchPrevious((previous) => [...previous, createRmProxy(api, accountId, type)]);
-    },
-    [api]
-  );
-
   const _changeProxyAccount = useCallback(
-    (index: number, address: string | null) => setAdded((prevState) => {
+    (index: number, cid: string) => setAdded((prevState) => {
       const newState = [...prevState];
 
-      newState[index][0] = api.createType('AccountId', address);
+      newState[index][0] = cid;
 
       return newState;
     }),
     [api]
   );
 
-  const _changeProxyType = useCallback(
-    (index: number, newTypeNumber: number | undefined): void =>
-      setAdded((added) => {
-        const newState = [...added];
-
-        newState[index][1] = api.createType('ProxyType', newTypeNumber);
-
-        return newState;
-      }),
-    [api]
-  );
-
-  const isSameAdd = added.some(([accountId]) => accountId.eq(account));
-
   return (
     <Modal
       className={className}
-      header={t<string>('Proxy overview')}
+      header={t<string>('Settlement overview')}
       size='large'
     >
       <Modal.Content>
-        <Modal.Columns hint={t<string>('Any account set as proxy will be able to perform actions in place of the proxied account')}>
-          <InputAddress
-            isDisabled={true}
-            label={t<string>('proxied account')}
-            type='account'
-            value={account}
-          />
-        </Modal.Columns>
-        <Modal.Columns hint={t<string>('If you add several proxy accounts for the same proxy type (e.g 2 accounts set as proxy for Governance), then any of those 2 accounts will be able to perfom governance actions on behalf of the proxied account')}>
-          {previous.map((value, index) => (
-            <PrevProxy
-              index={index}
-              key={`${value.toString()}-${index}`}
-              onRemove={_delPrev}
-              typeOpts={typeOpts.current}
-              value={value}
+        <Modal.Columns >
+            <InputAddress
+                filter={allAccounts}
+                label={t<string>('account')}
+                onChange={setAccountId}
+                type='account'
+                value={accountId}
             />
-          ))}
+        </Modal.Columns>
+        <Modal.Columns >
+          
           {added.map((value, index) => (
             <NewProxy
               index={index}
               key={`${value.toString()}-${index}`}
-              onChangeAccount={_changeProxyAccount}
-              onChangeType={_changeProxyType}
+              onChangeCid={_changeProxyAccount}
               onRemove={_delProxy}
-              account={account}
-              typeOpts={typeOpts.current}
               value={value}
             />
           ))}
           <Button.Group>
             <Button
               icon='plus'
-              label={t<string>('Add proxy')}
+              label={t<string>('Add settle')}
               onClick={_addProxy}
             />
           </Button.Group>
-        </Modal.Columns>
-        <Modal.Columns hint={t<string>('The amount that is reserved for the proxy based on the base deposit and number of proxies')}>
-          <InputBalance
-            isDisabled
-            label={t<string>('reserved balance')}
-          />
-        </Modal.Columns>
-        <Modal.Columns>
-          <BatchWarning />
-        </Modal.Columns>
+        </Modal.Columns>     
       </Modal.Content>
       <Modal.Actions onCancel={onClose}>
-        {existing.length !== 0 && (
-          <TxButton
-            accountId={account}
-            icon='trash-alt'
-            label={t<string>('Clear all')}
-            onStart={onClose}
-            tx={api.tx.proxy.removeProxies}
-          />
-        )}
         <TxButton
-          accountId={account}
+          accountId={accountId}
           extrinsic={extrinsics}
           icon='sign-in-alt'
-          isDisabled={isSameAdd || (!batchPrevious.length && !batchAdded.length)}
+          isDisabled={!batchAdded.length}
           onStart={onClose}
         />
       </Modal.Actions>

@@ -8,7 +8,6 @@ import type { ActionStatus } from '@polkadot/react-components/Status/types';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Table } from '@polkadot/react-components';
-import { orders, dailyOrders } from './mock';
 import LuckyEasterOrders from './LuckyEasterOrders';
 import PreviousOrders from './PreviousOrders';
 import { EasterEggsOrder } from '../Overview/types';
