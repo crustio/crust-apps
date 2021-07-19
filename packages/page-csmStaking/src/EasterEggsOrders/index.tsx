@@ -50,7 +50,10 @@ function EasterEggsOrders ({ isLoading }: Props): React.ReactElement<Props> {
   const headerRef = useRef([
     [t('cid'), 'start'],
     [t('size')],
-    [t('merchants')]
+    [t('merchant-1'), 'start'],
+    [t('merchant-2'), 'start'],
+    [t('merchant-3'), 'start'],
+    [t('merchant-4'), 'start']
   ]);
 
   const preHeaderRef = useRef([
@@ -64,10 +67,11 @@ function EasterEggsOrders ({ isLoading }: Props): React.ReactElement<Props> {
     </h1>
     <Table
       header={headerRef.current}
-      empty={!isLoading && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
+      empty={!isLoading && t<string>('No funds lucky orders yet.')}
     >
         {!isLoading && currentList.orders?.map((order): React.ReactNode => (
           <LuckyEasterOrders
+            key={order.cid}
             info={order}
           />
         ))}
@@ -78,10 +82,11 @@ function EasterEggsOrders ({ isLoading }: Props): React.ReactElement<Props> {
     </h1>
     <Table
       header={preHeaderRef.current}
-      empty={!isLoading && t<string>('No funds staked yet. Bond funds to validate or nominate a validator')}
+      empty={!isLoading && t<string>('No funds lucky orders yet.')}
     >
         {!isLoading && previousList?.map((order): React.ReactNode => (
           <PreviousOrders
+            key={order.date}
             info={order}
           />
         ))}

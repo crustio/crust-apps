@@ -22,6 +22,7 @@ function sanitize (value?: string): string {
 function ChainImg ({ className = '', isInline, logo, onClick, withoutHl }: Props): React.ReactElement<Props> {
   const { systemChain, systemName } = useApi();
   const [isEmpty, img] = useMemo((): [boolean, string] => {
+    console.log('logo', logo)
     const found = logo
       ? namedLogos[logo]
       : chainLogos[sanitize(systemChain)] || nodeLogos[sanitize(systemName)];

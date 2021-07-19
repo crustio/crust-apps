@@ -34,7 +34,10 @@ function PreviousOrders({ className = '', info: { date, orders } }: Props): Reac
     const headerRef = useRef([
         [t('cid'), 'start'],
         [t('size')],
-        [t('merchants')]
+        [t('merchant-1'), 'start'],
+        [t('merchant-2'), 'start'],
+        [t('merchant-3'), 'start'],
+        [t('merchant-4'), 'start']
     ]);
 
     return (
@@ -56,6 +59,7 @@ function PreviousOrders({ className = '', info: { date, orders } }: Props): Reac
                             >
                                 {orders?.map((info): React.ReactNode => (
                                     <LuckyEasterOrders
+                                        key={info.cid}
                                         info={info}
                                     />
                                 ))}

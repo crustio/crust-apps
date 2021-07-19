@@ -1557,5 +1557,15 @@
   "Increase lockup": "增加锁仓",
   "Total lockup": "总锁仓量",
   "Create group": "创建组",
-  "Group owner": "组拥有者"
+  "Group owner": "组拥有者",
+  "EasterEggs Orders": "彩蛋订单",
+  "merchant-1": "商户-1",
+  "merchant-2": "商户-2",
+  "merchant-3": "商户-3",
+  "merchant-4": "商户-4",
+  "size": "大小",
+  "date": "日期",
+  "orders": "订单",
+  "Today lucky orders": "今日幸运订单",
+  "Previous lucky orders": "以往幸运订单"
 }

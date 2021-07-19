@@ -7,12 +7,11 @@ import type { Balance, IndividualExposure } from '@polkadot/types/interfaces';
 import React from 'react';
 import styled from 'styled-components';
 
-import { AddressMini, Expander } from '@polkadot/react-components';
+import { AddressMini } from '@polkadot/react-components';
 import { Compact } from '@polkadot/types/codec';
 import { Codec } from '@polkadot/types/types';
 import { FormatCapacity } from '@polkadot/react-query';
 import { LuckyOrder } from '../Overview/types';
-import { useTranslation } from '@polkadot/apps/translate';
 
 interface Props {
     className?: string;
@@ -28,7 +27,6 @@ export interface Guarantee extends Codec {
 }
 
 function LuckyEasterOrders({ className = '', info: { size, cid, topFour } }: Props): React.ReactElement<Props> | null {
-    const { t } = useTranslation();
 
     return (
         <tr className={className}>
@@ -38,7 +36,7 @@ function LuckyEasterOrders({ className = '', info: { size, cid, topFour } }: Pro
             <td className='number'>
                 <FormatCapacity value={Number(size)} />
             </td>
-            <td className='expand'>
+            {/* <td className='number'>
                 {topFour.length !== 0 && (
                 <Expander summary={
                     <>
@@ -52,8 +50,20 @@ function LuckyEasterOrders({ className = '', info: { size, cid, topFour } }: Pro
                     />
                     ))}
                 </Expander>
-                )}
-            </td>
+                )} 
+                <AddressMini
+                    key={topFour[0].toString()}
+                    value={topFour[0]}
+                />
+            </td> */}
+            {topFour.length !== 0 && (topFour.map((address) =>  {
+                return <td className='address' key={address.toString()}> 
+                    <AddressMini
+                        key={address.toString()}
+                        value={address}
+                    />
+                </td>
+            }))}    
         </tr>
     );
 }
