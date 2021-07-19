@@ -97,7 +97,7 @@ function Settlement ({ className, onClose }: Props): React.ReactElement<Props> {
           : ''
       ]]
     ),
-    [api]
+    []
   );
 
   const _delProxy = useCallback(
@@ -113,7 +113,7 @@ function Settlement ({ className, onClose }: Props): React.ReactElement<Props> {
 
       return newState;
     }),
-    [api]
+    []
   );
 
   return (

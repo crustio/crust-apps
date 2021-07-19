@@ -43,7 +43,7 @@ function PreviousOrders({ className = '', info: { date, orders } }: Props): Reac
     return (
         <tr className={className}>
             <td className='start'>
-                {dateFormat(date, "yyyy-mm-dd hh:MM:ss")}           
+                {dateFormat(date, "yyyy-mm-dd")}           
             </td>
             <td className='expand'>
                 {orders.length !== 0 && (

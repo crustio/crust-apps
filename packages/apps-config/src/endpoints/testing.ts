@@ -3,8 +3,8 @@
 
 import type { TFunction } from 'i18next';
 import type { LinkOption } from '../settings/types';
-import { endPoints } from './production';
 
+import { endPoints } from './production';
 import { expandEndpoints } from './util';
 
 /* eslint-disable sort-keys */
