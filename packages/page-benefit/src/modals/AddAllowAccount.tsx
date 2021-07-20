@@ -31,7 +31,6 @@ interface ValueProps {
 
 interface NewAllowProps extends ValueProps {
   onChangeAccount: (index: number, value: string | null) => void;
-  onChangeType: (index: number, value: number | undefined) => void;
   onRemove: (index: number) => void;
   allowedAccount: string;
 }
@@ -46,14 +45,6 @@ const EMPTY_EXISTING: [ProxyDefinition[], BN] = [[], BN_ZERO];
 
 function createAddProxy (api: ApiPromise, account: AccountId, type: ProxyType, delay = 0): SubmittableExtrinsic<'promise'> {
   return api.tx.swork.addMemberIntoAllowlist(account)
-}
-
-function createRmProxy (api: ApiPromise, account: AccountId, type: ProxyType, delay = 0): SubmittableExtrinsic<'promise'> {
-  return api.tx.proxy.removeProxy.meta.args.length === 2
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore old version
-    ? api.tx.proxy.removeProxy(account, type)
-    : api.tx.proxy.removeProxy(account, type, delay);
 }
 
 function PrevProxy ({ index, onRemove, value: [accountId, type] }: PrevProxyProps): React.ReactElement<PrevProxyProps> {
@@ -119,10 +110,8 @@ function NewAllowAccount ({ index, onChangeAccount, onRemove }: NewAllowProps): 
 function AddAllowAccount ({ className, onClose, previousProxy: [existing] = EMPTY_EXISTING, account }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
-  const [batchPrevious, setBatchPrevious] = useState<SubmittableExtrinsic<'promise'>[]>([]);
   const [batchAdded, setBatchAdded] = useState<SubmittableExtrinsic<'promise'>[]>([]);
   const [txs, setTxs] = useState<SubmittableExtrinsic<'promise'>[] | null>(null);
-  const [previous, setPrevious] = useState<PrevProxy[]>(() => existing.map(({ delegate, proxyType }) => [delegate, proxyType]));
   const [added, setAdded] = useState<PrevProxy[]>([]);
   const extrinsics = useTxBatch(txs, optTxBatch);
 
@@ -133,34 +122,24 @@ function AddAllowAccount ({ className, onClose, previousProxy: [existing] = EMPT
   }, [api, added]);
 
   useEffect((): void => {
-    setTxs(() => [...batchPrevious, ...batchAdded]);
-  }, [batchPrevious, batchAdded]);
+    setTxs(() => [...batchAdded]);
+  }, [batchAdded]);
 
   const _addAllow = useCallback(
     () => setAdded((added) =>
       [...added, [
         added.length
           ? added[added.length - 1][0]
-          : previous.length
-            ? previous[previous.length - 1][0]
-            : api.createType('AccountId', account),
+          : api.createType('AccountId', account),
         api.createType('ProxyType', 0)
       ]]
     ),
-    [api, previous, account]
+    [api, account]
   );
 
   const _delProxy = useCallback(
     (index: number) => setAdded((added) => added.filter((_, i) => i !== index)),
     []
-  );
-
-  const _delPrev = useCallback(
-    (accountId: AccountId, type: ProxyType, index: number): void => {
-      setPrevious((previous) => previous.filter((_, i) => i !== index));
-      setBatchPrevious((previous) => [...previous, createRmProxy(api, accountId, type)]);
-    },
-    [api]
   );
 
   const _changeProxyAccount = useCallback(
@@ -174,28 +153,16 @@ function AddAllowAccount ({ className, onClose, previousProxy: [existing] = EMPT
     [api]
   );
 
-  const _changeProxyType = useCallback(
-    (index: number, newTypeNumber: number | undefined): void =>
-      setAdded((added) => {
-        const newState = [...added];
-
-        newState[index][1] = api.createType('ProxyType', newTypeNumber);
-
-        return newState;
-      }),
-    [api]
-  );
-
   const isSameAdd = added.some(([accountId]) => accountId.eq(account));
 
   return (
     <Modal
       className={className}
-      header={t<string>('Proxy overview')}
+      header={t<string>('Allow overview')}
       size='large'
     >
       <Modal.Content>
-        <Modal.Columns hint={t<string>('Any account set as proxy will be able to perform actions in place of the proxied account')}>
+        <Modal.Columns>
           <InputAddress
             isDisabled={true}
             label={t<string>('proxied account')}
@@ -203,21 +170,12 @@ function AddAllowAccount ({ className, onClose, previousProxy: [existing] = EMPT
             value={account}
           />
         </Modal.Columns>
-        <Modal.Columns hint={t<string>('If you add several proxy accounts for the same proxy type (e.g 2 accounts set as proxy for Governance), then any of those 2 accounts will be able to perfom governance actions on behalf of the proxied account')}>
-          {previous.map((value, index) => (
-            <PrevProxy
-              index={index}
-              key={`${value.toString()}-${index}`}
-              onRemove={_delPrev}
-              value={value}
-            />
-          ))}
+        <Modal.Columns>
           {added.map((value, index) => (
             <NewAllowAccount
               index={index}
               key={`${value.toString()}-${index}`}
               onChangeAccount={_changeProxyAccount}
-              onChangeType={_changeProxyType}
               onRemove={_delProxy}
               allowedAccount={account}
               value={value}
@@ -236,20 +194,11 @@ function AddAllowAccount ({ className, onClose, previousProxy: [existing] = EMPT
         </Modal.Columns>
       </Modal.Content>
       <Modal.Actions onCancel={onClose}>
-        {existing.length !== 0 && (
-          <TxButton
-            accountId={account}
-            icon='trash-alt'
-            label={t<string>('Clear all')}
-            onStart={onClose}
-            tx={api.tx.proxy.removeProxies}
-          />
-        )}
         <TxButton
           accountId={account}
           extrinsic={extrinsics}
           icon='sign-in-alt'
-          isDisabled={isSameAdd || (!batchPrevious.length && !batchAdded.length)}
+          isDisabled={isSameAdd || (!batchAdded.length)}
           onStart={onClose}
         />
       </Modal.Actions>
