@@ -1567,5 +1567,15 @@
   "date": "日期",
   "orders": "订单",
   "Today lucky orders": "今日彩蛋订单",
-  "Previous lucky orders": "以往彩蛋订单"
+  "Previous lucky orders": "以往彩蛋订单",
+  "nav.benefit": "权益",
+  "Work report": "工作量上报",
+  "Storage market": "存储市场",
+  "Add allowed accounts": "新增可加组账户",
+  "Join group": "加组",
+  "Quit group": "退组",
+  "Rebond": "重新绑定",
+  "Remove allowed accounts": "移除可加组账户",
+  "Add allowed": "新增可加组",
+  "Remove allowed": "移除可加组"
 }
