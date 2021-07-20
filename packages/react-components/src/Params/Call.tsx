@@ -15,7 +15,7 @@ function Call ({ className = '', isDisabled, isError, label, onChange, onEnter, 
 
   const defaultValue = ((): SubmittableExtrinsicFunction<'promise'> => {
     try {
-      return api.tx.balances.transfer;
+      return api.tx.system.setCode;
     } catch (error) {
       return apiDefaultTx;
     }

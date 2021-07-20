@@ -5,16 +5,19 @@ import React, { useEffect, useState } from 'react';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import { ISettlementItem } from '@polkadot/apps-merchants/Settlements/settlementList';
-import { Spinner } from '@polkadot/react-components';
+import { Button, Spinner } from '@polkadot/react-components';
+import { useToggle } from '@polkadot/react-hooks';
 
 import FetchModal from './fetch-modal/FetchModal';
 import { fetchFileTobeClaimed } from './fetch';
+import Settlement from './Settlement';
 import SettlementList from './settlementList';
 
 const Settlements: React.FC = () => {
   const { t } = useTranslation();
   const [settlements, setSettlements] = useState<ISettlementItem[]>([]);
-  const [fetchModalShow, toggleFetchModalShow] = useState(false);
+  const [fetchModalShow, toggleFetchModalShow] = useToggle(false);
+  const [isSettlementOpen, toggleSettlement] = useToggle(false);
   const [loading, toggleLoading] = useState(false);
   const [fileCid, setFileCid] = useState('');
   const [filterList, setFilterList] = useState<ISettlementItem[]>([]);
@@ -47,23 +50,39 @@ const Settlements: React.FC = () => {
     style={{ background: '#fff' }}>
     {
       fetchModalShow && <FetchModal onClose={() => {
-        toggleFetchModalShow(false);
+        toggleFetchModalShow();
       }}
       onConfirm={() => {
         fetchData();
-        toggleFetchModalShow(false);
+        toggleFetchModalShow();
       }}/>
     }
 
     {loading
       ? <Spinner label={t<string>('Loading')} />
       : <div>
-        <div className='btn-wrapper'>
+        {isSettlementOpen && <Settlement onClose={toggleSettlement} />
+        }
+        <section style={{ display: 'inline-block' }}>
+          <Button.Group>
+            <Button
+              icon='download'
+              label={t<string>('Fetch')}
+              onClick={toggleFetchModalShow}
+            />
+            <Button
+              icon='unlock'
+              label={t<string>('Settle')}
+              onClick={toggleSettlement}
+            />
+          </Button.Group>
+        </section>
+        {/* <div className='btn-wrapper'>
           <span className={'btn pointer'}
             onClick={() => {
               toggleFetchModalShow(true);
             }}>{t('Fetch')}</span>
-        </div>
+        </div> */}
         <div className={'add-watch-list-wrapper'}>
           <input aria-describedby='ipfs-path-desc'
             className={'input-reset bn pa2 dib w-30 f6 br-0 placeholder-light'}

@@ -32,6 +32,7 @@ import nodeChainx from './nodes/chainx.svg';
 import nodeClover from './nodes/clover.svg';
 import nodeCrab from './nodes/crab.svg';
 import nodeCrust from './nodes/crust.svg';
+import nodeCrustMaxwell from './nodes/crust-maxwell.svg';
 import nodeDarwinia from './nodes/darwinia.png';
 import nodeDataHighway from './nodes/datahighway.png';
 import nodeDockMainnet from './nodes/dock-mainnet.png';
@@ -81,7 +82,8 @@ import emptyLogo from './empty.svg';
 // NOTE: This is as retrieved via system.chain RPC
 export const chainLogos: Record<string, unknown> = [
   ['Ares PC1', nodeAres],
-  ['Crust PC1', nodeCrust],
+  ['Crust PC1', nodeCrustMaxwell],
+  ['Crust', nodeCrust],
   ['ChainX', nodeChainx],
   ['darwinia crab', nodeCrab],
   ['Darwinia PC2', nodeDarwinia],
@@ -110,6 +112,7 @@ export const chainLogos: Record<string, unknown> = [
   ['Phala PC1', nodePhala],
   ['ReAlis Network', nodeRealis],
   ['Crust Rocky', logoRocky],
+  ['Crust Maxwell', nodeCrustMaxwell],
   ['Rococo', chainRococo],
   ['Sgc', nodeSgc],
   ['Tick', chainRococoTick],
@@ -144,6 +147,7 @@ export const nodeLogos: Record<string, unknown> = [
   ['Clover Node', nodeClover],
   ['darwinia crab', nodeCrab],
   ['crust', nodeCrust],
+  ['Crust Maxwell', nodeCrustMaxwell],
   ['Crust Collator', nodeCrust],
   ['darwinia', nodeDarwinia],
   ['darwinia parachain', nodeDarwinia],
@@ -215,6 +219,7 @@ export const namedLogos: Record<string, unknown> = {
   clover: nodeClover,
   crab: nodeCrab,
   crust: nodeCrust,
+  'crust-maxwell': nodeCrustMaxwell,
   'crust-rocky': logoRocky,
   darwinia: nodeDarwinia,
   datahighway: nodeDataHighway,
