@@ -4,6 +4,7 @@
 import type { TFunction } from 'i18next';
 import type { LinkOption } from '../settings/types';
 
+import { endPoints } from './production';
 import { expandEndpoints } from './util';
 
 /* eslint-disable sort-keys */
@@ -18,11 +19,13 @@ export function createTesting (t: TFunction): LinkOption[] {
   return expandEndpoints(t, [
     // alphabetical based on chain name, e.g. Amber, Arcadia, Beresheet, ...
     {
-      info: 'crust',
+      info: 'crust-maxwell',
       text: t('rpc.crust.network', 'Crust Maxwell', { ns: 'apps-config' }),
       providers: {
-        'Crust Network': 'wss://api.crust.network/',
-        'DCloud Foundation': 'wss://api.decloudf.com/'
+        'Crust Network': endPoints[0],
+        'DCloud Foundation': endPoints[1],
+        'Decoo Technologies': endPoints[2],
+        Pinknode: endPoints[3]
       }
     },
     {

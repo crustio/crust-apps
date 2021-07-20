@@ -24,7 +24,7 @@ export const endPoints = [
 export function createProduction (t: TFunction): LinkOption[] {
   return expandEndpoints(t, [
     {
-      info: 'crust',
+      info: 'crust-maxwell',
       text: t('rpc.crust.network', 'Crust Maxwell', { ns: 'apps-config' }),
       providers: {
         'Crust Network': endPoints[0],
