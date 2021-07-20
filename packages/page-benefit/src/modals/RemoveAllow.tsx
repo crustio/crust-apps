@@ -184,7 +184,7 @@ function RemoveAllow ({ className, onClose, previousProxy: [existing] = EMPTY_EX
           <Button.Group>
             <Button
               icon='plus'
-              label={t<string>('Remove allow')}
+              label={t<string>('Remove allowed')}
               onClick={_addAllow}
             />
           </Button.Group>

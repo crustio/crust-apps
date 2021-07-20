@@ -31,41 +31,10 @@ interface NewAllowProps extends ValueProps {
   allowedAccount: string;
 }
 
-interface PrevProxyProps extends ValueProps {
-  onRemove: (accountId: AccountId, type: ProxyType, index: number) => void;
-}
-
 const optTxBatch = { isBatchAll: true };
 
 function createAddTx (api: ApiPromise, account: AccountId, type: ProxyType, delay = 0): SubmittableExtrinsic<'promise'> {
   return api.tx.swork.addMemberIntoAllowlist(account)
-}
-
-function PrevProxy ({ index, onRemove, value: [accountId, type] }: PrevProxyProps): React.ReactElement<PrevProxyProps> {
-  const { t } = useTranslation();
-
-  const _onRemove = useCallback(
-    () => onRemove(accountId, type, index),
-    [accountId, index, onRemove, type]
-  );
-
-  return (
-    <div className='proxy-container'>
-      <div className='input-column'>
-        <InputAddress
-          defaultValue={accountId}
-          isDisabled
-          label={t<string>('proxy account')}
-        />
-      </div>
-      <div className='buttons-column'>
-        <Button
-          icon='times'
-          onClick={_onRemove}
-        />
-      </div>
-    </div>
-  );
 }
 
 function NewAllowAccount ({ index, onChangeAccount, onRemove }: NewAllowProps): React.ReactElement<NewAllowProps> {
@@ -159,7 +128,7 @@ function AddAllowAccount ({ className, onClose, account }: Props): React.ReactEl
         <Modal.Columns>
           <InputAddress
             isDisabled={true}
-            label={t<string>('proxied account')}
+            label={t<string>('group owner account')}
             type='account'
             value={account}
           />
@@ -178,7 +147,7 @@ function AddAllowAccount ({ className, onClose, account }: Props): React.ReactEl
           <Button.Group>
             <Button
               icon='plus'
-              label={t<string>('Add allow')}
+              label={t<string>('Add allowed')}
               onClick={_addAllow}
             />
           </Button.Group>

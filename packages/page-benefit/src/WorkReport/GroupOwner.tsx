@@ -209,7 +209,7 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
         {api.api.tx.benefits?.cutBenefitFunds && (
           <Button
             icon='envelope-open-text'
-            label={t<string>('Add allow')}
+            label={t<string>('Add allowed accounts')}
             onClick={toggleAddAllow}
           />
         )}
@@ -233,7 +233,7 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
                     {t<string>('Rebond')}
                 </Menu.Item>
                 <Menu.Item onClick={toggleRemoveAllow}>
-                    {t<string>('Remove allow')}
+                    {t<string>('Remove allowed accounts')}
                 </Menu.Item>
                 <Menu.Item onClick={withdrawFunds}>
                     {t<string>('Withdraw unbonded funds')}
