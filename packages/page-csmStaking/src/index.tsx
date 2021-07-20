@@ -124,7 +124,7 @@ function CsmStakingApp({ basePath, onStatusChange }: Props): React.ReactElement<
     },
     {
       name: 'easterEggsOrders',
-      text: t<string>('EasterEggs Orders')
+      text: t<string>('Lucky Orders')
     }
   ]);
 
