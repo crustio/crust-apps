@@ -1,22 +1,26 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+import type BN from 'bn.js';
 import type { ApiPromise } from '@polkadot/api';
 import type { SubmittableExtrinsic } from '@polkadot/api/types';
-import type { AccountId, ProxyType } from '@polkadot/types/interfaces';
+import type { AccountId, ProxyDefinition, ProxyType } from '@polkadot/types/interfaces';
 
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { BatchWarning, Button, InputAddress, Modal, TxButton } from '@polkadot/react-components';
 import { useApi, useTxBatch } from '@polkadot/react-hooks';
+import { BN_ZERO } from '@polkadot/util';
 import { useTranslation } from '@polkadot/apps/translate';
+
 
 type PrevProxy = [AccountId, ProxyType];
 
 interface Props {
   className?: string;
   onClose: () => void;
+  previousProxy?: [ProxyDefinition[], BN];
   account: string;
 }
 
@@ -37,8 +41,10 @@ interface PrevProxyProps extends ValueProps {
 
 const optTxBatch = { isBatchAll: true };
 
+const EMPTY_EXISTING: [ProxyDefinition[], BN] = [[], BN_ZERO];
+
 function createAddTx (api: ApiPromise, account: AccountId, type: ProxyType, delay = 0): SubmittableExtrinsic<'promise'> {
-  return api.tx.swork.addMemberIntoAllowlist(account)
+  return api.tx.swork.removeMemberFromAllowlist(account)
 }
 
 function PrevProxy ({ index, onRemove, value: [accountId, type] }: PrevProxyProps): React.ReactElement<PrevProxyProps> {
@@ -101,7 +107,7 @@ function NewAllowAccount ({ index, onChangeAccount, onRemove }: NewAllowProps): 
   );
 }
 
-function AddAllowAccount ({ className, onClose, account }: Props): React.ReactElement<Props> {
+function RemoveAllow ({ className, onClose, previousProxy: [existing] = EMPTY_EXISTING, account }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [batchAdded, setBatchAdded] = useState<SubmittableExtrinsic<'promise'>[]>([]);
@@ -152,7 +158,7 @@ function AddAllowAccount ({ className, onClose, account }: Props): React.ReactEl
   return (
     <Modal
       className={className}
-      header={t<string>('Allow overview')}
+      header={t<string>('Remove allow overview')}
       size='large'
     >
       <Modal.Content>
@@ -178,7 +184,7 @@ function AddAllowAccount ({ className, onClose, account }: Props): React.ReactEl
           <Button.Group>
             <Button
               icon='plus'
-              label={t<string>('Add allow')}
+              label={t<string>('Remove allow')}
               onClick={_addAllow}
             />
           </Button.Group>
@@ -200,7 +206,7 @@ function AddAllowAccount ({ className, onClose, account }: Props): React.ReactEl
   );
 }
 
-export default React.memo(styled(AddAllowAccount)`
+export default React.memo(styled(RemoveAllow)`
   .proxy-container {
     display: grid;
     grid-column-gap: 0.5rem;

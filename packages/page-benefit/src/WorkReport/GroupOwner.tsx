@@ -21,6 +21,7 @@ import UnLockingSworkFounds from './UnLockingSworkFounds';
 import UnbondFounds from '../modals/UnbondFounds';
 import RebondFounds from '../modals/RebondFounds';
 import AddAllowAccount from '../modals/AddAllowAccount';
+import RemoveAllow from '../modals/RemoveAllow';
 
 interface Props {
   account: KeyringAddress;
@@ -54,12 +55,13 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
   const [isBondOpen, toggleBond] = useToggle();
   const [isUnBondOpen, toggleUnBond] = useToggle();
   const [isAddAllowOpen, toggleAddAllow] = useToggle();
+  const [isRemoveAllowOpen, toggleRemoveAllow] = useToggle();
   const [isSettingsOpen, toggleSettings] = useToggle();
   const [isReBondOpen, toggleReBond] = useToggle();
   const sworkBenefitLedger = useCall<any>(api.api.query.benefits.sworkBenefits, [address]);
   const groupInfo = useCall<any>(api.api.query.swork.groups, [address]);
-  // const members = groupInfo && JSON.parse(JSON.stringify(groupInfo))?.members;
-  const members = ['cTJRpk7Q95vjMio7K6YwX9Co7szHdfFR3dZSEAfJjzbYiRvPg', 'cTGV4zJfqniHULu14EqwSzsWaPkBkT6nqzqpEsnm4vzTc1GJY']
+  const members = groupInfo && JSON.parse(JSON.stringify(groupInfo))?.members;
+  // const members = ['cTJRpk7Q95vjMio7K6YwX9Co7szHdfFR3dZSEAfJjzbYiRvPg', 'cTGV4zJfqniHULu14EqwSzsWaPkBkT6nqzqpEsnm4vzTc1GJY'];
   const { queueExtrinsic } = useContext(StatusContext);
 
   useEffect((): void => {
@@ -122,6 +124,13 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
           onClose={toggleAddAllow}
         />   
       )}
+      {isRemoveAllowOpen && (
+        <RemoveAllow
+          account={address}
+          foundsType={FoundsType.SWORK}
+          onClose={toggleRemoveAllow}
+        />   
+      )}
         
       <td className='favorite'>
         <Icon
@@ -134,7 +143,7 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
         <AddressSmall value={address} />
       </td>
       <td className='expand'>
-        {(members && members.length !== 0) && (
+        {(members) && (
           <Expander summary={
             <>
               <div>{t<string>('Members ({{count}})', { replace: { count: members.length } })}</div>
@@ -199,7 +208,7 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
         )}
         {api.api.tx.benefits?.cutBenefitFunds && (
           <Button
-            icon='unlock'
+            icon='envelope-open-text'
             label={t<string>('Add allow')}
             onClick={toggleAddAllow}
           />
@@ -222,6 +231,9 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
             >
                 <Menu.Item onClick={toggleReBond}>
                     {t<string>('Rebond')}
+                </Menu.Item>
+                <Menu.Item onClick={toggleRemoveAllow}>
+                    {t<string>('Remove allow')}
                 </Menu.Item>
                 <Menu.Item onClick={withdrawFunds}>
                     {t<string>('Withdraw unbonded funds')}

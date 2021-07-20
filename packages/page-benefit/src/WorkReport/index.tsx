@@ -18,6 +18,8 @@ import Banner from '../Banner';
 import CreateGroup from '../modals/CreateGroup';
 import GroupOwner from './GroupOwner';
 import Summary, { SummaryInfo } from './Summary';
+import JoinGroup from '../modals/JoinGroup';
+import QuitGroup from '../modals/QuitGroup';
 
 interface Balances {
   accounts: Record<string, BN>;
@@ -46,6 +48,8 @@ function WorkReport ({ className = '' }: Props): React.ReactElement<Props> {
   const [{ sortedAccounts }, setSorted] = useState<Sorted>({ sortedAccounts: [], sortedAddresses: [] });
   const [ownOwners, setOwnOwners] = useState<SortedAccount[] | undefined>();
   const [isCreateOpen, toggleCreate] = useToggle();
+  const [isJoinGroupOpen, toggleJoinGroup] = useToggle();
+  const [isQuitGroupOpen, toggleQuitGroup] = useToggle();
   const [allOwners, setAllOwners] = useState<string[]>([]);
   const [summaryInfo, setSummaryInfo] = useState<SummaryInfo>({
     totalLockup: BN_ZERO,
@@ -165,7 +169,21 @@ function WorkReport ({ className = '' }: Props): React.ReactElement<Props> {
           onClose={toggleCreate}
           onSuccess={getGroups}
         /> 
-        )}  
+      )}  
+      {isJoinGroupOpen && (
+        <JoinGroup
+          key='modal-joinGroup'
+          onClose={toggleJoinGroup}
+          onSuccess={getGroups}
+        /> 
+      )}  
+      {isQuitGroupOpen && (
+        <QuitGroup
+          key='modal-quitGroup'
+          onClose={toggleQuitGroup}
+          onSuccess={getGroups}
+        /> 
+      )}  
       <h2>
         {t<string>('Lock CRU to reduce the transaction fees of work reporting')}
       </h2>
@@ -177,6 +195,16 @@ function WorkReport ({ className = '' }: Props): React.ReactElement<Props> {
           icon='plus'
           label={t<string>('Create group')}
           onClick={toggleCreate}
+        />
+        <Button
+          icon='users'
+          label={t<string>('Join group')}
+          onClick={toggleJoinGroup}
+        />
+        <Button
+          icon='sign-in-alt'
+          label={t<string>('Quit group')}
+          onClick={toggleQuitGroup}
         />
       </Button.Group>
       <Summary isLoading={isLoading} summaryInfo={summaryInfo} />
