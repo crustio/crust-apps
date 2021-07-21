@@ -121,7 +121,7 @@ function AddAllowAccount ({ className, onClose, account }: Props): React.ReactEl
   return (
     <Modal
       className={className}
-      header={t<string>('Allow overview')}
+      header={t<string>('Allowed overview')}
       size='large'
     >
       <Modal.Content>

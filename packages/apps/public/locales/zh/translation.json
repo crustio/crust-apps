@@ -1577,5 +1577,7 @@
   "Rebond": "重新绑定",
   "Remove allowed accounts": "移除可加组账户",
   "Add allowed": "新增可加组",
-  "Remove allowed": "移除可加组"
+  "Remove allowed": "移除可加组",
+  "Remove allowed overview": "移除可加组",
+  "Allowed overview": "新增可加组"
 }

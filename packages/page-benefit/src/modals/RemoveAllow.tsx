@@ -158,7 +158,7 @@ function RemoveAllow ({ className, onClose, previousProxy: [existing] = EMPTY_EX
   return (
     <Modal
       className={className}
-      header={t<string>('Remove allow overview')}
+      header={t<string>('Remove allowed overview')}
       size='large'
     >
       <Modal.Content>
