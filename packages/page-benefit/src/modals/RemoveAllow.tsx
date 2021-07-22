@@ -9,11 +9,10 @@ import type { AccountId, ProxyDefinition, ProxyType } from '@polkadot/types/inte
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { useTranslation } from '@polkadot/apps/translate';
 import { BatchWarning, Button, InputAddress, Modal, TxButton } from '@polkadot/react-components';
 import { useApi, useTxBatch } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
-import { useTranslation } from '@polkadot/apps/translate';
-
 
 type PrevProxy = [AccountId, ProxyType];
 
@@ -44,7 +43,7 @@ const optTxBatch = { isBatchAll: true };
 const EMPTY_EXISTING: [ProxyDefinition[], BN] = [[], BN_ZERO];
 
 function createAddTx (api: ApiPromise, account: AccountId, type: ProxyType, delay = 0): SubmittableExtrinsic<'promise'> {
-  return api.tx.swork.removeMemberFromAllowlist(account)
+  return api.tx.swork.removeMemberFromAllowlist(account);
 }
 
 function PrevProxy ({ index, onRemove, value: [accountId, type] }: PrevProxyProps): React.ReactElement<PrevProxyProps> {
@@ -75,7 +74,6 @@ function PrevProxy ({ index, onRemove, value: [accountId, type] }: PrevProxyProp
 }
 
 function NewAllowAccount ({ index, onChangeAccount, onRemove }: NewAllowProps): React.ReactElement<NewAllowProps> {
-
   const _onChangeAccount = useCallback(
     (value: string | null) => onChangeAccount(index, value),
     [index, onChangeAccount]
@@ -93,8 +91,8 @@ function NewAllowAccount ({ index, onChangeAccount, onRemove }: NewAllowProps): 
     >
       <div className='input-column'>
         <InputAddress
-            onChange={_onChangeAccount}
-            type='allPlus'
+          onChange={_onChangeAccount}
+          type='allPlus'
         />
       </div>
       <div className='buttons-column'>
@@ -173,11 +171,11 @@ function RemoveAllow ({ className, onClose, previousProxy: [existing] = EMPTY_EX
         <Modal.Columns>
           {added.map((value, index) => (
             <NewAllowAccount
+              allowedAccount={account}
               index={index}
               key={`${value.toString()}-${index}`}
               onChangeAccount={_changeProxyAccount}
               onRemove={_delProxy}
-              allowedAccount={account}
               value={value}
             />
           ))}

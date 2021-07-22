@@ -4,9 +4,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import { useTranslation } from '@polkadot/apps/translate';
 import { InputAddress, Modal, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
-import { useTranslation } from '@polkadot/apps/translate';
 
 interface Props {
   className?: string;
@@ -33,10 +33,10 @@ function JoinGroup ({ className = '', onClose, recipientId: propRecipientId, sen
             <Modal.Columns hint={t<string>('The transferred balance will be subtracted (along with fees) from the sender account.')}>
               <InputAddress
                 defaultValue={propSenderId}
-                onChange={setSenderId}
                 help={t<string>('The account you will send funds from.')}
                 isDisabled={!!propSenderId}
                 label={t<string>('send from account')}
+                onChange={setSenderId}
                 type='account'
               />
             </Modal.Columns>

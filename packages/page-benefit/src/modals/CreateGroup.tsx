@@ -23,9 +23,6 @@ interface Props {
 
 function CreateGroup ({ className = '', onClose, onSuccess, senderId: propSenderId }: Props): React.ReactElement<Props> {
   const ownStashes = useOwnStashInfos();
-
-  console.log('ownStashes', ownStashes)
-
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount] = useState<BN | undefined>(BN_ZERO);
@@ -34,11 +31,12 @@ function CreateGroup ({ className = '', onClose, onSuccess, senderId: propSender
   const [, setMaxTransfer] = useState<BN | null>(null);
   const [senderId, setSenderId] = useState<string | null>(propSenderId || null);
   const balances = useCall<DeriveBalancesAll>(api.derive.balances.all, [senderId]);
-  
+
   const stashes = useMemo(
     () => (ownStashes || []).map(({ stashId }) => stashId),
     [ownStashes]
   );
+
   useEffect((): void => {
     if (balances && balances.accountId.eq(senderId) && senderId && isFunction(api.rpc.payment?.queryInfo)) {
       setTimeout((): void => {
@@ -76,8 +74,8 @@ function CreateGroup ({ className = '', onClose, onSuccess, senderId: propSender
           <Modal.Content>
             <Modal.Columns hint={t<string>('The transferred balance will be subtracted (along with fees) from the sender account.')}>
               <InputAddress
-                filter={stashes}
                 defaultValue={propSenderId}
+                filter={stashes}
                 help={t<string>('The account you will register')}
                 isDisabled={!!propSenderId}
                 label={t<string>('send from account')}
