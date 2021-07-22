@@ -2,8 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import Phala from './phala';
+import CrustMaxwell from './crust-maxwell';
 
 // alphabetical, based on the actual displayed name
 export default {
-  'Phala PoC-3': Phala
+  'Phala PoC-3': Phala,
+  'Crust Maxwell': CrustMaxwell
 };
