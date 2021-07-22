@@ -4,12 +4,12 @@
 import type { DeriveBalancesAll } from '@polkadot/api-derive/types';
 
 import BN from 'bn.js';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import { InputAddress, Modal, TxButton } from '@polkadot/react-components';
-import { useApi, useCall } from '@polkadot/react-hooks';
+import { useApi, useCall, useOwnStashInfos } from '@polkadot/react-hooks';
 import { Available } from '@polkadot/react-query';
 import { BN_ZERO, isFunction } from '@polkadot/util';
 
@@ -22,6 +22,7 @@ interface Props {
 }
 
 function CreateGroup ({ className = '', onClose, onSuccess, senderId: propSenderId }: Props): React.ReactElement<Props> {
+  const ownStashes = useOwnStashInfos();
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount] = useState<BN | undefined>(BN_ZERO);
@@ -30,6 +31,11 @@ function CreateGroup ({ className = '', onClose, onSuccess, senderId: propSender
   const [, setMaxTransfer] = useState<BN | null>(null);
   const [senderId, setSenderId] = useState<string | null>(propSenderId || null);
   const balances = useCall<DeriveBalancesAll>(api.derive.balances.all, [senderId]);
+
+  const stashes = useMemo(
+    () => (ownStashes || []).map(({ stashId }) => stashId),
+    [ownStashes]
+  );
 
   useEffect((): void => {
     if (balances && balances.accountId.eq(senderId) && senderId && isFunction(api.rpc.payment?.queryInfo)) {
@@ -69,6 +75,7 @@ function CreateGroup ({ className = '', onClose, onSuccess, senderId: propSender
             <Modal.Columns hint={t<string>('The transferred balance will be subtracted (along with fees) from the sender account.')}>
               <InputAddress
                 defaultValue={propSenderId}
+                filter={stashes}
                 help={t<string>('The account you will register')}
                 isDisabled={!!propSenderId}
                 label={t<string>('send from account')}

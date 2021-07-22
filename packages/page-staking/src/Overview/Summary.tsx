@@ -15,6 +15,7 @@ import { formatNumber } from '@polkadot/util';
 
 import { useTranslation } from '../translate';
 import StakingRewardPot from './StakingRewardPot';
+import { useApi } from '@polkadot/react-hooks';
 
 interface Props {
   className?: string;
@@ -27,6 +28,8 @@ interface Props {
 function Summary ({ className = '', isVisible, stakingOverview, targets: { inflation: { inflation }, nominators, waitingIds } }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { lastBlockAuthors, lastBlockNumber } = useContext(BlockAuthorsContext);
+  const { systemChain } = useApi();
+  const isMaxwell = systemChain === 'Crust Maxwell';
 
   return (
     <SummaryBox className={`${className}${!isVisible ? ' staking--hidden' : ''}`}>
@@ -64,7 +67,7 @@ function Summary ({ className = '', isVisible, stakingOverview, targets: { infla
             : '-'
           }
         </CardSummary> */}
-        {(
+        {isMaxwell && (
           <CardSummary
             className='media--1100'
             label={t<string>('rewards')}
