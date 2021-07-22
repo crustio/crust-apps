@@ -63,6 +63,7 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
   const members = groupInfo && JSON.parse(JSON.stringify(groupInfo))?.members;
   // const members = ['cTJRpk7Q95vjMio7K6YwX9Co7szHdfFR3dZSEAfJjzbYiRvPg', 'cTGV4zJfqniHULu14EqwSzsWaPkBkT6nqzqpEsnm4vzTc1GJY'];
   const { queueExtrinsic } = useContext(StatusContext);
+  const percentage = ((sworkBenefitLedger?.active_funds / sworkBenefitLedger?.total_funds) *100).toFixed(2) + '%'
 
   useEffect((): void => {
     if (balancesAll) {
@@ -175,7 +176,7 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
                 <div>
                   <div className='faded'>{t('{{percentage}} of transaction fees will be reduced', {
                     replace: {
-                      percentage: ((sworkBenefitLedger?.active_funds / sworkBenefitLedger?.total_funds) *100).toFixed(2) + '%'
+                      percentage
                     }
                   })}</div>
                 </div>
