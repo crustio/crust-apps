@@ -79,7 +79,7 @@ const transformStatement = {
   transform: (option: Option<StatementKind>) => option.unwrapOr(null)
 };
 
-function Claims (): React.ReactElement<Props> {
+function Claims(): React.ReactElement<Props> {
   const [didCopy, setDidCopy] = useState(false);
   const [ethereumAddress, setEthereumAddress] = useState<string | undefined | null>(null);
   const [signature, setSignature] = useState<EcdsaSignature | null>(null);
@@ -157,44 +157,47 @@ function Claims (): React.ReactElement<Props> {
 
   const handleAccountStep = useCallback(async () => {
     setIsBusy(true);
-    const result = await httpPost("https://claim.crustcode.com/claim/" + ethereumTxHash);
 
-    setIsBusy(false);
-    setResult(result.statusText);
-    setStatus(result.status);
+    api.query.claims
+      .claimed<Option<BalanceOf>>(ethereumTxHash?.toString())
+      .then(async (claim): Promise<void> => {
+        const isClaimed = JSON.parse(JSON.stringify(claim));
 
-    if (result.code == 200) {
-      setStatusOpen(true);
-      setEthereumTxHashValid(true);
-      goToStepSign();
-    } else {
-      api.query.claims
-        .claims<Option<BalanceOf>>(ethereumTxHash?.toString())
-        .then((claim): void => {
-          const claimOpt = JSON.parse(JSON.stringify(claim));
+        if (isClaimed) {
+          setResult('AlreadyClaimed');
+          setStatus('error');
+          setStatusOpen(true);
+        } else {
+          const result = await httpPost("https://claim.crustcode.com/claim/" + ethereumTxHash);
+          setIsBusy(false);
+          setResult(result.statusText);
+          setStatus(result.status);
 
-          if (claimOpt) {
+          if (result.code == 200) {
+            setEthereumTxHashValid(true);
+            goToStepSign();
+          } else {
             api.query.claims
-              .claimed<Option<BalanceOf>>(ethereumTxHash?.toString())
-              .then((claimed): void => {
-                const isClaimed = JSON.parse(JSON.stringify(claimed));
-
-                if (isClaimed) {
-                  setStatusOpen(true);
-                } else {
-                  setStatusOpen(true);
+              .claims<Option<BalanceOf>>(ethereumTxHash?.toString())
+              .then(async (claim): Promise<void> => {
+                const claimOpt = JSON.parse(JSON.stringify(claim));
+                if (claimOpt) {
                   setResult('MintClaimSuccess');
                   setStatus('success');
                   setEthereumTxHashValid(true);
                   goToStepSign();
+                } else {
+                  setResult('MintError, Please try again');
+                  setStatus('error');
                 }
-              });
-          } else {
-            setStatusOpen(true);
+              })
+              .catch((): void => setIsBusy(false));
           }
-        })
-        .catch((): void => setIsBusy(false));
-    }
+          setStatusOpen(true);
+        }
+      })
+      .catch((): void => setIsBusy(false))
+      .finally(() =>  setIsBusy(false));
   }, [ethereumAddress, goToStepClaim, goToStepSign, isPreclaimed, isOldClaimProcess, ethereumTxHash]);
 
   const onChangeEthereumTxHash = useCallback((hex: string) => {
@@ -209,7 +212,7 @@ function Claims (): React.ReactElement<Props> {
     setEthereumTxHash(hex.trim());
   }, [ethereumTxHash]);
 
-  function convertInput (value: string): [boolean, Uint8Array] {
+  function convertInput(value: string): [boolean, Uint8Array] {
     if (value === '0x') {
       return [true, new Uint8Array([])];
     } else if (value.startsWith('0x')) {
@@ -282,15 +285,15 @@ function Claims (): React.ReactElement<Props> {
       <Columar>
         <Columar.Column>
           <Card withBottomMargin>
-            <h3><span style={{"wordWrap": "break-word", "wordBreak": "break-all"}}>{t<string>(`0. Please make sure you have the authority to make signature with the private key of the wallet account `)}<span style={{ 'fontWeight': 'bold' }}>({t<string>('address: ')}<a href='https://etherscan.io/address/0x0000000000000000000000000000000000000001' target="_blank">0x0000000000000000000000000000000000000001</a>)</span><span>{t<string>(', using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss.')}</span> <span style={{ 'fontWeight': 'bold', 'color': 'red' }}>{t<string>(` You are responsible for the consequences!`)}</span></span></h3>
+            <h3><span style={{ "wordWrap": "break-word", "wordBreak": "break-all" }}>{t<string>(`0. Please make sure you have the authority to make signature with the private key of the wallet account `)}<span style={{ 'fontWeight': 'bold' }}>({t<string>('address: ')}<a href='https://etherscan.io/address/0x0000000000000000000000000000000000000001' target="_blank">0x0000000000000000000000000000000000000001</a>)</span><span>{t<string>(', using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss.')}</span> <span style={{ 'fontWeight': 'bold', 'color': 'red' }}>{t<string>(` You are responsible for the consequences!`)}</span></span></h3>
             {/* <img style={{'marginLeft': 'auto', 'marginRight': 'auto', 'display': 'block', "width": "150px" }} src={claimPng as string} /> */}
           </Card>
           {(<Card withBottomMargin>
             <h3>{t<string>(`1. Select your {{chain}} account and enter`, {
-                replace: {
-                  chain: systemChain
-                }
-              })} <a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CRU')}</a> {t<string>('transfer tx hash')}, <span>{t<string>(`The remaining claim limit is `)}<span style={{'color': '#ff8812', 'textDecoration': 'underline', 'fontStyle': 'italic'}}>{formatBalance(claimLimit, { withUnit: 'CRU' })}</span><span>{t<string>(`, If your claim amount is greater than the claim limit, please wait for the limit update`)}</span></span> </h3>
+              replace: {
+                chain: systemChain
+              }
+            })} <a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CRU')}</a> {t<string>('transfer tx hash')}, <span>{t<string>(`The remaining claim limit is `)}<span style={{ 'color': '#ff8812', 'textDecoration': 'underline', 'fontStyle': 'italic' }}>{formatBalance(claimLimit, { withUnit: 'CRU' })}</span><span>{t<string>(`, If your claim amount is greater than the claim limit, please wait for the limit update`)}</span></span> </h3>
             <InputAddress
               defaultValue={accountId}
               help={t<string>('The account you want to claim to.')}
@@ -309,7 +312,7 @@ function Claims (): React.ReactElement<Props> {
               onChange={onChangeEthereumTxHash}
               placeholder={t<string>('0x prefixed hex, e.g. 0x1234 or ascii data')}
               value={ethereumTxHash || ''}
-            />    
+            />
             {(step === Step.Account) && (<Button.Group>
               <Button
                 icon='sign-in-alt'
@@ -321,7 +324,7 @@ function Claims (): React.ReactElement<Props> {
                 }
                 onClick={handleAccountStep}
               />
-            </Button.Group>)}   
+            </Button.Group>)}
             <HttpStatus
               isStatusOpen={statusOpen}
               message={result}
@@ -401,7 +404,7 @@ function Claims (): React.ReactElement<Props> {
           )}
         </Columar.Column>
         <Columar.Column>
-          
+
           {(step >= Step.Claim) && (
             isPreclaimed
               ? <AttestDisplay
