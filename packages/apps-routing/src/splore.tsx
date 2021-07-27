@@ -19,7 +19,10 @@ export default function create (t: TFunction): Route {
   return {
     Component,
     display: {
-      needsApi: []
+      needsApi: [
+        'tx.market.addCollateral',
+        'tx.market.cutCollateral'
+      ]
     },
     group: 'network',
     href: 'https://splorer.crust.network',

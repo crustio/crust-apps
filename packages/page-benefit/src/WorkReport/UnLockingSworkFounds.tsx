@@ -71,8 +71,6 @@ function UnLockingSworkFounds ({ className = '', account, isHighlight, isPadded 
     return null;
   }
 
-  console.log('unLockings', unLockings)
-
   return (
     <div className={`ui--AddressMini${isHighlight ? ' isHighlight' : ''}${isPadded ? ' padded' : ''}${withShrink ? ' withShrink' : ''} ${className}`}>
       <div className='ui--AddressMini-balances'>

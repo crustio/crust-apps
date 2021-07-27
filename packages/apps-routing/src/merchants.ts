@@ -11,7 +11,10 @@ export default function create (t: TFunction): Route {
     Component,
     display: {
       needsAccounts: true,
-      needsApi: []
+      needsApi: [
+        'tx.market.addCollateral',
+        'tx.market.cutCollateral'
+      ]
     },
     group: 'network',
     icon: 'users',
