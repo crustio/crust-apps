@@ -1581,7 +1581,7 @@
   "Remove allowed overview": "移除可加组",
   "Allowed overview": "新增可加组",
   "0. Burn your ": "0. 销毁你的",
-  ", transfer to address ": ", 发送转账至地址",
+  ", transfer to address ": ", 转账至地址",
   "Please make sure you have the authority to make signature with the private key of the wallet account, using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss. You are responsible for the consequences!": "请确认您使用的是带私钥签名权限的钱包(metamask, imtoken等)进行转账, 使用交易所账户发起转账(提币)交易, 均会失效, 造成资产损失.",
   ", If your claim amount is greater than the claim limit ": ", 如果你的认领数量大于认领上限 ",
   ", please wait for the limit update": ", 请等待认领上限更新",
