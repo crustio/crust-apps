@@ -27,6 +27,8 @@ import Warning from './Warning';
 import { httpPost } from './http';
 import HttpStatus from './HttpStatus';
 import { formatBalance } from '@polkadot/util';
+import Banner from '@polkadot/app-accounts/Accounts/Banner';
+import burnPng from '../images/burn_address.png';
 
 export { default as useCounter } from '../useCounter';
 
@@ -285,15 +287,24 @@ function Claims(): React.ReactElement<Props> {
       <Columar>
         <Columar.Column>
           <Card withBottomMargin>
-            <h3><span style={{ "wordWrap": "break-word", "wordBreak": "break-all" }}>{t<string>(`0. Please make sure you have the authority to make signature with the private key of the wallet account `)}<span style={{ 'fontWeight': 'bold' }}>({t<string>('address: ')}<a href='https://etherscan.io/address/0x0000000000000000000000000000000000000001' target="_blank">0x0000000000000000000000000000000000000001</a>)</span><span>{t<string>(', using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss.')}</span> <span style={{ 'fontWeight': 'bold', 'color': 'red' }}>{t<string>(` You are responsible for the consequences!`)}</span></span></h3>
-            {/* <img style={{'marginLeft': 'auto', 'marginRight': 'auto', 'display': 'block', "width": "150px" }} src={claimPng as string} /> */}
+            <h3>{t<string>('0. Burn your ')}<a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CRU')}</a>{t<string>(', transfer to address ')} <a href='https://etherscan.io/address/0x0000000000000000000000000000000000000001' target="_blank">0x0000000000000000000000000000000000000001</a></h3>
+            <Banner type='warning'>
+              <p>{t<string>('Please make sure you have the authority to make signature with the private key of the wallet account, using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss. You are responsible for the consequences!')}</p>
+            </Banner>
+            <img style={{'marginLeft': 'auto', 'marginRight': 'auto', 'display': 'block', "width": "150px" }} src={burnPng as string} />
           </Card>
           {(<Card withBottomMargin>
             <h3>{t<string>(`1. Select your {{chain}} account and enter`, {
               replace: {
                 chain: systemChain
               }
-            })} <a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CRU')}</a> {t<string>('transfer tx hash')}, <span>{t<string>(`The remaining claim limit is `)}<span style={{ 'color': '#ff8812', 'textDecoration': 'underline', 'fontStyle': 'italic' }}>{formatBalance(claimLimit, { withUnit: 'CRU' })}</span><span>{t<string>(`, If your claim amount is greater than the claim limit, please wait for the limit update`)}</span></span> </h3>
+            })} <a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CRU')}</a>
+             {t<string>('transfer tx hash')}<span>
+               {t<string>(`, If your claim amount is greater than the claim limit `)}
+               <span style={{ 'color': '#ff8812', 'textDecoration': 'underline', 'fontStyle': 'italic' }}>({formatBalance(claimLimit, { withUnit: 'CRU' })})</span>
+               {t<string>(', please wait for the limit update')}
+               </span>
+            </h3>
             <InputAddress
               defaultValue={accountId}
               help={t<string>('The account you want to claim to.')}
@@ -341,7 +352,7 @@ function Claims(): React.ReactElement<Props> {
                 <Input
                   autoFocus
                   className='full'
-                  help={t<string>('The the Ethereum address you used during the pre-sale (starting by "0x")')}
+                  help={t<string>('The the Ethereum address you burnt your ERC20 CRU in step 0 (starting by "0x")')}
                   label={t<string>('Pre-sale ethereum address')}
                   onChange={onChangeEthereumAddress}
                   value={ethereumAddress || ''}
@@ -367,7 +378,7 @@ function Claims(): React.ReactElement<Props> {
                   systemChain={systemChain}
                 />
               )}
-              <div>{t<string>('Copy the following string and sign it with the Ethereum account you used during the pre-sale in the wallet of your choice, using the string as the payload, and then paste the transaction signature object below:')}</div>
+              <div>{t<string>('Copy the following string and sign it with the Ethereum account you burnt your ERC20 CRU in step 0, using the string as the payload, and then paste the transaction signature object below:')}</div>
               <CopyToClipboard
                 onCopy={onCopy}
                 text={payload}
