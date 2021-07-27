@@ -1,7 +1,16 @@
 /* IPFS theme.scss - Generated from https://github.com/ipfs-shipyard/ipfs-css/blob/master/theme.json */
 
-{
+.maxwell {
   --main-color: #38393f;
+  --main-color-opacity: #38393F80;
+}
+.rockey {
+  --main-color: #4dc6e1;
+  --main-color-opacity: #4DC6E180;
+}
+.mainnet {
+  --main-color: #ff8812;
+  --main-color-opacity: #ff881280;
 }
 
 
@@ -68,4 +77,7 @@
   color: #fff;
 }
 
+.menu-box-shadow {
+  box-shadow: var(--main-color-opacity) 0px 1px 10px 0px!important;
+}
 

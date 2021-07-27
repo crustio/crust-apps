@@ -17,15 +17,23 @@ import DndBackend from './lib/dnd-backend';
 import App from './App';
 import getStore from './bundles';
 import i18n from './i18n';
+import {useApi} from '../../react-hooks/src';
 
 const appVersion = process.env.REACT_APP_VERSION;
 const gitRevision = process.env.REACT_APP_GIT_REV;
 
 console.log(`IPFS Web UI - v${appVersion} - https://github.com/ipfs-shipyard/ipfs-webui/commit/${gitRevision}`);
+const themeDict = {
+  "Crust": "mainnet",
+  "Crust Maxwell": "maxwell",
+  "Crust Rockey": "rockey"
+}
 
 function IpfsApp () {
   const [store, setStore] = useState(null);
   const history = useHistory();
+  const {systemChain} = useApi()
+  const theme = themeDict[systemChain] || "rockey"
 
   useEffect(() => {
     try {
@@ -51,7 +59,7 @@ function IpfsApp () {
     ? <Provider store={store}>
       <I18nextProvider i18n={i18n} >
         <DndProvider backend={DndBackend}>
-          <App />
+          <App theme={theme} />
         </DndProvider>
       </I18nextProvider>
     </Provider>
