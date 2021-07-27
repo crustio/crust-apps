@@ -6,14 +6,13 @@ import type { DeriveBalancesAll } from '@polkadot/api-derive/types';
 import type { KeyringAddress } from '@polkadot/ui-keyring/types';
 
 import BN from 'bn.js';
-import React, { useCallback, useContext, useEffect, useMemo } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 import { Delegation } from '@polkadot/app-accounts/types';
 import { useTranslation } from '@polkadot/apps/translate';
 import { AddressMini, AddressSmall, Button, Expander, Icon, Menu, Popup, StatusContext, Tooltip } from '@polkadot/react-components';
 import { useAccountInfo, useApi, useCall, useToggle } from '@polkadot/react-hooks';
-import { formatBalance } from '@polkadot/util';
 import Bond from '../modals/Bond';
 import { FoundsType } from '../modals/types';
 import { FormatBalance } from '@polkadot/react-query';
@@ -22,6 +21,7 @@ import UnbondFounds from '../modals/UnbondFounds';
 import RebondFounds from '../modals/RebondFounds';
 import AddAllowAccount from '../modals/AddAllowAccount';
 import RemoveAllow from '../modals/RemoveAllow';
+import { isFunction, BN_ZERO } from '@polkadot/util';
 
 interface Props {
   account: KeyringAddress;
@@ -47,10 +47,8 @@ function calcVisible (filter: string, name: string, tags: string[]): boolean {
 
 function GroupOwner ({ account: { address }, className = '', filter, isFavorite, setBalance, toggleFavorite }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
-  const api = useApi();
-  const balancesAll = useCall<DeriveBalancesAll>(api.api.derive.balances.all, [address]);
-  const merchantLedger = useCall<any>(api.api.query.market.merchantLedgers, [address]);
-  const collateral = merchantLedger && JSON.parse(JSON.stringify(merchantLedger))?.collateral;
+  const { api } = useApi();
+  const balancesAll = useCall<DeriveBalancesAll>(api.derive.balances.all, [address]);
   const { name: accName, tags } = useAccountInfo(address);
   const [isBondOpen, toggleBond] = useToggle();
   const [isUnBondOpen, toggleUnBond] = useToggle();
@@ -58,18 +56,37 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
   const [isRemoveAllowOpen, toggleRemoveAllow] = useToggle();
   const [isSettingsOpen, toggleSettings] = useToggle();
   const [isReBondOpen, toggleReBond] = useToggle();
-  const sworkBenefitLedger = useCall<any>(api.api.query.benefits.sworkBenefits, [address]);
-  const groupInfo = useCall<any>(api.api.query.swork.groups, [address]);
+  const sworkBenefitLedger = useCall<any>(api.query.benefits.sworkBenefits, [address]);
+  const groupInfo = useCall<any>(api.query.swork.groups, [address]);
   const members = groupInfo && JSON.parse(JSON.stringify(groupInfo))?.members;
   // const members = ['cTJRpk7Q95vjMio7K6YwX9Co7szHdfFR3dZSEAfJjzbYiRvPg', 'cTGV4zJfqniHULu14EqwSzsWaPkBkT6nqzqpEsnm4vzTc1GJY'];
   const { queueExtrinsic } = useContext(StatusContext);
-  const percentage = ((sworkBenefitLedger?.active_funds / sworkBenefitLedger?.total_funds) *100).toFixed(2) + '%'
+  const percentage = ((sworkBenefitLedger?.active_funds / sworkBenefitLedger?.total_funds) *100).toFixed(2) + '%';
+  const [reductionFee, setReductionFee] = useState<BN>(BN_ZERO);
 
   useEffect((): void => {
     if (balancesAll) {
       setBalance(address, balancesAll.freeBalance.add(balancesAll.reservedBalance));
     }
   }, [address, api, balancesAll, setBalance]);
+
+  useEffect((): void => {
+    const fromId = address || address as string;
+    const legder = sworkBenefitLedger && JSON.parse(JSON.stringify(sworkBenefitLedger))
+    if (isFunction(api.rpc.payment?.queryInfo) && legder) {
+      try {
+        api.tx.system
+          .setCode('0x11')
+          .paymentInfo(fromId)
+          .then(({ partialFee }): void => {
+            setReductionFee(partialFee.mul(new BN(Number(legder.used_fee_reduction_count))))
+          })
+          .catch(console.error);
+      } catch (error) {
+        console.error((error as Error).message);
+      }
+    }
+  }, [api, address, sworkBenefitLedger]);
 
   const isVisible = useMemo(
     () => calcVisible(filter, accName, tags),
@@ -85,7 +102,7 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
     () => {
         queueExtrinsic({
             accountId: address,
-            extrinsic: api.api.tx.benefits.withdrawBenefitFunds()
+            extrinsic: api.tx.benefits.withdrawBenefitFunds()
         });
     },
     [api, address, queueExtrinsic]
@@ -190,24 +207,24 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
         <UnLockingSworkFounds account={address} />
       </td>
       <td className='number together'>
-        {formatBalance(collateral)}
+        <FormatBalance value={reductionFee} />
       </td>
       <td className='button'>
-        {api.api.tx.benefits?.addBenefitFunds && (
+        {api.tx.benefits?.addBenefitFunds && (
           <Button
             icon='lock'
             label={t<string>('Increase lockup')}
             onClick={toggleBond}
           />
         )}
-        {api.api.tx.benefits?.cutBenefitFunds && (
+        {api.tx.benefits?.cutBenefitFunds && (
           <Button
             icon='unlock'
             label={t<string>('Unlock')}
             onClick={toggleUnBond}
           />
         )}
-        {api.api.tx.benefits?.cutBenefitFunds && (
+        {api.tx.benefits?.cutBenefitFunds && (
           <Button
             icon='envelope-open-text'
             label={t<string>('Add allowed accounts')}
