@@ -37,8 +37,7 @@ export const DropdownMenu = forwardRef((props, ref) => {
     <Menu
       arrowAlign='right'
       arrowMarginRight={arrowMarginRight || '13px'}
-      boxShadow='rgba(255, 136, 18, 0.5) 0px 1px 10px 0px'
-      className='sans-serif br2 charcoal'
+      className='sans-serif br2 charcoal menu-box-shadow'
       left={`calc(100% - ${width}px)`}
       translateX={translateX}
       translateY={translateY}

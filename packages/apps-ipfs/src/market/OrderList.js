@@ -85,7 +85,7 @@ const OrderList = ({ onAddPool, doUpdateWatchItem, doSelectedItems, onToggleBtn,
 
   const sortByIcon = (order) => {
     if (listSorting.by === order) {
-      return <span style={{ color: '#838D9D', fontSize: 18, fontWeight: 700 }}>{listSorting.asc ? ' ↑' : ' ↓'}</span>;
+      return <span className={"navy"} style={{ fontSize: 18, fontWeight: 700 }}>{listSorting.asc ? ' ↑' : ' ↓'}</span>;
     }
 
     return null;

@@ -22,7 +22,6 @@ const styles = {
     color: '#59595A'
   },
   count: {
-    backgroundColor: '#838D9D',
     color: '#F9FAFB',
     width: '38px',
     height: '38px'
@@ -119,7 +118,7 @@ class SelectedActions extends React.Component {
         <div className='flex items-center justify-between'>
           <div className='w5-l'>
             <div className='flex items-center'>
-              <div className='mr3 relative f3 fw6 flex-shrink-0 dib br-100'
+              <div className='mr3 relative f3 fw6 flex-shrink-0 dib br-100 bg-navy'
                 style={styles.count}>
                 <span className='absolute'
                   style={styles.countNumber}>{count}</span>

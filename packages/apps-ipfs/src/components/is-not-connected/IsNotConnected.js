@@ -33,8 +33,8 @@ const IsNotConnected = ({ apiUrl, connected, doUpdateIpfsApiAddress, ipfsApiAddr
   return (
     <Box className='pv3 ph4 lh-copy charcoal' style={{background: '#fff'}}>
       <div className='items-center' style={{marginBottom: '10'}}>
-        <div className='fw4 charcoal ma0 f3'
-          style={{ textTransform: 'none', color: '#838D9D', fontSize: 20, lineHeight: '48px' }}>{t('app:status.couldNotConnect')}      </div>
+        <div className='fw4 charcoal ma0 f3 navy'
+          style={{ textTransform: 'none', fontSize: 20, lineHeight: '48px' }}>{t('app:status.couldNotConnect')}      </div>
       </div>
       <div style={{ textTransform: 'none', padding: '2 0', fontSize: 14, lineHeight: '28px' }}>
           {t('app:status.couldNotConnect1')}

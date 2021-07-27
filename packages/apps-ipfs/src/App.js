@@ -63,11 +63,11 @@ export class App extends Component {
 
   //
   render () {
-    const { canDrop, connectDropTarget, doExploreUserProvidedPath, doFilesNavigateTo, ipfsReady, isOver, route: Page, routeInfo: { url }, showTooltip, t } = this.props;
+    const { theme, canDrop, connectDropTarget, doExploreUserProvidedPath, doFilesNavigateTo, ipfsReady, isOver, route: Page, routeInfo: { url }, showTooltip, t } = this.props;
 
     return connectDropTarget(
       // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-      <div className='sans-serif h-100'
+      <div className={`sans-serif h-100 ${theme}`}
         onClick={getNavHelper(this.props.doUpdateUrl)}>
         {/* Tinted overlay that appears when dragging and dropping an item */}
         { canDrop && isOver && <div className='w-100 h-100 top-0 left-0 absolute'
