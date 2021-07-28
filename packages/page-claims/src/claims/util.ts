@@ -6,7 +6,7 @@ import type { EcdsaSignature, EthereumAddress, StatementKind } from '@polkadot/t
 import secp256k1 from 'secp256k1/elliptic';
 
 import registry from '@polkadot/react-api/typeRegistry';
-import { assert, hexToU8a, stringToU8a, u8aConcat, u8aToBuffer, hexHasPrefix, hexAddPrefix, hexToString } from '@polkadot/util';
+import { assert, hexAddPrefix, hexHasPrefix, hexToString, hexToU8a, stringToU8a, u8aConcat, u8aToBuffer } from '@polkadot/util';
 import { keccakAsHex, keccakAsU8a } from '@polkadot/util-crypto';
 
 interface RecoveredSignature {
