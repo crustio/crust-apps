@@ -1585,5 +1585,6 @@
   "Please make sure you have the authority to make signature with the private key of the wallet account, using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss. You are responsible for the consequences!": "请确认您使用的是带私钥签名权限的钱包(metamask, imtoken等)进行转账, 使用交易所账户发起转账(提币)交易, 均会失效, 造成资产损失.",
   ", If your claim amount is greater than the claim limit ": ", 如果你的认领数量大于认领上限 ",
   ", please wait for the limit update": ", 请等待认领上限更新",
-  "Copy the following string and sign it with the Ethereum account you burnt your ERC20 CRU in step 0, using the string as the payload, and then paste the transaction signature object below:": "复制以下字符串，并使用您在步骤0销毁ERC20 CRU时使用的以太坊帐户在您选择的钱包中进行签名，使用该字符串作为有效负载，然后将交易签名对象粘贴到下面"
+  "Copy the following string and sign it with the Ethereum account you burnt your ERC20 CRU in step 0, using the string as the payload, and then paste the transaction signature object below:": "复制以下字符串，并使用您在步骤0销毁ERC20 CRU时使用的以太坊帐户在您选择的钱包中进行签名，使用该字符串作为有效负载，然后将交易签名对象粘贴到下面",
+  "Rebond funds": "重新绑定资金"
 }

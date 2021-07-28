@@ -17,6 +17,7 @@ import Claims from './claims';
 import ClaimsCru18 from './claimsCru18';
 import CSMClaims from './maxwellCsmClaims';
 import { useApi } from '@polkadot/react-hooks';
+import MaxwellClaims from './maxwellClaims';
 
 function ClaimsApp ({ basePath, onStatusChange }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
@@ -73,7 +74,7 @@ function ClaimsApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
         </Route>
         <Route basePath={basePath}
             onStatusChange={onStatusChange}>
-          <Claims />
+          <MaxwellClaims />
         </Route>
       </Switch>
     </main>
