@@ -36,7 +36,7 @@ const EMPTY_INFO = {
 
 function Bond ({ className = '', isNominating, minNomination, onChange }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const { api } = useApi();
+  const { api, systemChain } = useApi();
   const [amount, setAmount] = useState<BN | undefined>();
   const [amountError, setAmountError] = useState<AmountValidateState | null>(null);
   const [controllerError, setControllerError] = useState<boolean>(false);
@@ -47,6 +47,7 @@ function Bond ({ className = '', isNominating, minNomination, onChange }: Props)
   const [startBalance, setStartBalance] = useState<BN | null>(null);
   const stashBalance = useCall<DeriveBalancesAll>(api.derive.balances.all, [stashId]);
   const bondedBlocks = useUnbondDuration();
+  const isMaxwell = systemChain === 'Crust Maxwell';
 
   const options = useMemo(
     () => createDestCurr(t),
@@ -78,15 +79,17 @@ function Bond ({ className = '', isNominating, minNomination, onChange }: Props)
     onChange(
       (amount && amount.gtn(0) && !amountError?.error && !controllerError && controllerId && stashId)
         ? {
-          bondOwnTx: api.tx.staking.bond(stashId, amount, bondDest),
-          bondTx: api.tx.staking.bond(controllerId, amount, bondDest),
+          // @ts-ignore
+          bondOwnTx: isMaxwell ? api.tx.staking.bond(stashId, amount, bondDest) : api.tx.staking.bond(stashId, amount),
+          // @ts-ignore
+          bondTx: isMaxwell ? api.tx.staking.bond(controllerId, amount, bondDest) : api.tx.staking.bond(controllerId, amount),
           controllerId,
           controllerTx: api.tx.staking.setController(controllerId),
           stashId
         }
         : EMPTY_INFO
     );
-  }, [api, amount, amountError, controllerError, controllerId, destination, destAccount, stashId, onChange]);
+  }, [api, amount, amountError, controllerError, controllerId, destination, destAccount, stashId, onChange, isMaxwell]);
 
   const hasValue = !!amount?.gtn(0);
   const isAccount = destination === 'Account';
@@ -157,7 +160,7 @@ function Bond ({ className = '', isNominating, minNomination, onChange }: Props)
           )}
         </Modal.Columns>
       )}
-      <Modal.Columns hint={t<string>('Rewards (once paid) can be deposited to either the stash or controller, with different effects.')}>
+      {isMaxwell && <Modal.Columns hint={t<string>('Rewards (once paid) can be deposited to either the stash or controller, with different effects.')}>
         <Dropdown
           defaultValue={0}
           help={t<string>('The destination account for any payments as either a nominator or validator')}
@@ -175,7 +178,7 @@ function Bond ({ className = '', isNominating, minNomination, onChange }: Props)
             value={destAccount}
           />
         )}
-      </Modal.Columns>
+      </Modal.Columns>}
     </div>
   );
 }

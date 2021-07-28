@@ -34,6 +34,7 @@ import SetSessionKey from './SetSessionKey';
 import Unbond from './Unbond';
 import Validate from './Validate';
 import CutGuarantee from './CutGuarantee';
+import Rebond from './Rebond';
 
 interface Props {
   allSlashes?: [BN, UnappliedSlash[]][];
@@ -82,7 +83,7 @@ function useStashCalls (api: ApiPromise, stashId: string) {
 
 function Account ({ allSlashes, className = '', info: { controllerId, destination, hexSessionIdNext, hexSessionIdQueue, isLoading, isOwnController, isOwnStash, isStashNominating, isStashValidating, nominating, sessionIds, stakingLedger, stashId }, isDisabled, targets }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const { api } = useApi();
+  const { api, systemChain } = useApi();
   const { queueExtrinsic } = useContext(StatusContext);
   const [isBondExtraOpen, toggleBondExtra] = useToggle();
   const [isInjectOpen, toggleInject] = useToggle();
@@ -94,6 +95,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const [isSetSessionOpen, toggleSetSession] = useToggle();
   const [isSettingsOpen, toggleSettings] = useToggle();
   const [isUnbondOpen, toggleUnbond] = useToggle();
+  const [isRebondOpen, toggleRebond] = useToggle();
   const [isValidateOpen, toggleValidate] = useToggle();
   const { balancesAll, spanCount, stakingAccount } = useStashCalls(api, stashId);
   const activeEraInfo = useCall<ActiveEraInfo>(api.query.staking.activeEra);
@@ -103,6 +105,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
   const [stakeValue, setStakeValue] = useState<BN>(BN_ZERO);
   const guarantorInfo = guarantors && JSON.parse(JSON.stringify(guarantors));
   const validators = useCall<ValidatorId[]>(api.query.session.validators);
+  const isMaxwell = systemChain === 'Crust Maxwell';
 
   const [role, setRole] = useState<string>('Bonded');
 
@@ -231,6 +234,14 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
           <Unbond
             controllerId={controllerId}
             onClose={toggleUnbond}
+            stakingLedger={stakingLedger}
+            stashId={stashId}
+          />
+        )}
+        {isRebondOpen && (
+          <Rebond
+            controllerId={controllerId}
+            onClose={toggleRebond}
             stakingLedger={stakingLedger}
             stashId={stashId}
           />
@@ -372,6 +383,12 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                   {t<string>('Unbond funds')}
                 </Menu.Item>
                 <Menu.Item
+                  disabled={!isOwnController || !stakingAccount || !stakingAccount.stakingLedger || stakingAccount.stakingLedger.active.isEmpty}
+                  onClick={toggleRebond}
+                >
+                  {t<string>('Rebond funds')}
+                </Menu.Item>
+                <Menu.Item
                   disabled={!isOwnController || !stakingAccount || !stakingAccount.redeemable || !stakingAccount.redeemable.gtn(0)}
                   onClick={withdrawFunds}
                 >
@@ -383,12 +400,12 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                 >
                   {t<string>('Change controller account')}
                 </Menu.Item>
-                <Menu.Item
+                {isMaxwell && (<Menu.Item
                   disabled={!isOwnController}
                   onClick={toggleRewardDestination}
                 >
                   {t<string>('Change reward destination')}
-                </Menu.Item>
+                </Menu.Item>)}
                 <Menu.Divider />
                 {
                   (role !== 'Bonded' && role != 'Guarantor' ) ? <> 
