@@ -6,7 +6,7 @@ import type { EcdsaSignature, EthereumAddress, StatementKind } from '@polkadot/t
 import secp256k1 from 'secp256k1/elliptic';
 
 import registry from '@polkadot/react-api/typeRegistry';
-import { assert, hexAddPrefix, hexHasPrefix, hexToString, hexToU8a, stringToU8a, u8aConcat, u8aToBuffer } from '@polkadot/util';
+import { assert, hexToU8a, stringToU8a, u8aConcat, u8aToBuffer } from '@polkadot/util';
 import { keccakAsHex, keccakAsU8a } from '@polkadot/util-crypto';
 
 interface RecoveredSignature {
@@ -52,7 +52,7 @@ export function hashMessage (message: string): Buffer {
 
 // split is 65-byte signature into the r, s (combined) and recovery number (derived from v)
 export function sigToParts (_signature: string): SignatureParts {
-  const signature = hexHasPrefix(_signature) ? hexToU8a(_signature) : hexToU8a(hexAddPrefix(_signature));
+  const signature = hexToU8a(_signature);
 
   assert(signature.length === 65, `Invalid signature length, expected 65 found ${signature.length}`);
 
@@ -95,7 +95,7 @@ export function recoverFromJSON (signatureJson: string | null): RecoveredSignatu
 
     return {
       error: null,
-      ethereumAddress: registry.createType('EthereumAddress', recoverAddress(hexHasPrefix(msg) ? hexToString(msg) : msg, parts)),
+      ethereumAddress: registry.createType('EthereumAddress', recoverAddress(msg, parts)),
       signature: registry.createType('EcdsaSignature', u8aConcat(parts.signature, new Uint8Array([parts.recovery])))
     };
   } catch (error) {
