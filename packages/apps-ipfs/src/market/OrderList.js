@@ -33,7 +33,7 @@ const itemList = [{
   },
   {
     name: 'amount',
-    label: 'Order Fee',
+    label: 'action',
     width: 15,
   },
   {
