@@ -369,10 +369,7 @@ function Claims(): React.ReactElement<Props> {
                 )}
               </Card>
             )}
-          
-        </Columar.Column>
-        <Columar.Column>
-          {(step >= Step.Sign && !isPreclaimed) && (
+            {(step >= Step.Sign && !isPreclaimed) && (
               <Card>
                 <h3>{t<string>('{{step}}. Sign with your ETH address', { replace: { step: isOldClaimProcess ? '2' : '3' } })}</h3>
                 {!isOldClaimProcess && (
@@ -416,7 +413,8 @@ function Claims(): React.ReactElement<Props> {
                 )}
               </Card>
             )}
-
+        </Columar.Column>
+        <Columar.Column>
             {(step >= Step.Claim) && (
               isPreclaimed
                 ? <AttestDisplay
