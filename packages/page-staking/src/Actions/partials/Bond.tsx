@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { DeriveBalancesAll } from '@polkadot/api-derive/types';
 import type { AmountValidateState, DestinationType } from '../types';
 import type { BondInfo } from './types';
