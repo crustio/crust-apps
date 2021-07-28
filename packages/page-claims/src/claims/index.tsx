@@ -289,7 +289,7 @@ function Claims(): React.ReactElement<Props> {
           <Card withBottomMargin>
             <h3>{t<string>('0. Burn your ')}<a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CRU')}</a>{t<string>(', transfer to address ')} <a href='https://etherscan.io/address/0x0000000000000000000000000000000000000001' target="_blank">0x0000000000000000000000000000000000000001</a></h3>
             <Banner type='warning'>
-              <p>{t<string>('Please make sure you have the authority to make signature with the private key of the wallet account, using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss. You are responsible for the consequences!')}</p>
+              <p>{t<string>('Please make sure you have the authority to make signature with the private key of the wallet account, using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss, ')}<span style={{ 'fontWeight': 'bold', 'color': 'red' }}>{t<string>(`You are responsible for the consequences`)}</span></p>
             </Banner>
             <img style={{'marginLeft': 'auto', 'marginRight': 'auto', 'display': 'block', "width": "150px" }} src={burnPng as string} />
           </Card>
@@ -369,72 +369,73 @@ function Claims(): React.ReactElement<Props> {
                 )}
               </Card>
             )}
-          {(step >= Step.Sign && !isPreclaimed) && (
-            <Card>
-              <h3>{t<string>('{{step}}. Sign with your ETH address', { replace: { step: isOldClaimProcess ? '2' : '3' } })}</h3>
-              {!isOldClaimProcess && (
-                <Statement
-                  kind={statementKind}
-                  systemChain={systemChain}
-                />
-              )}
-              <div>{t<string>('Copy the following string and sign it with the Ethereum account you burnt your ERC20 CRU in step 0, using the string as the payload, and then paste the transaction signature object below:')}</div>
-              <CopyToClipboard
-                onCopy={onCopy}
-                text={payload}
-              >
-                <Payload
-                  data-for='tx-payload'
-                  data-tip
-                >
-                  {payload}
-                </Payload>
-              </CopyToClipboard>
-              <Tooltip
-                place='right'
-                text={didCopy ? t<string>('copied') : t<string>('click to copy')}
-                trigger='tx-payload'
-              />
-              <div>{t<string>('Paste the signed message into the field below. The placeholder text is there as a hint to what the message should look like:')}</div>
-              <Signature
-                onChange={onChangeSignature}
-                placeholder={`{\n  "address": "0x ...",\n  "msg": "${prefix}...",\n  "sig": "0x ...",\n  "version": "3",\n  "signer": "..."\n}`}
-                rows={10}
-              />
-              {(step === Step.Sign) && (
-                <Button.Group>
-                  <Button
-                    icon='sign-in-alt'
-                    isDisabled={!accountId || !signature}
-                    label={t<string>('Confirm claim')}
-                    onClick={goToStepClaim}
-                  />
-                </Button.Group>
-              )}
-            </Card>
-          )}
+          
         </Columar.Column>
         <Columar.Column>
+          {(step >= Step.Sign && !isPreclaimed) && (
+              <Card>
+                <h3>{t<string>('{{step}}. Sign with your ETH address', { replace: { step: isOldClaimProcess ? '2' : '3' } })}</h3>
+                {!isOldClaimProcess && (
+                  <Statement
+                    kind={statementKind}
+                    systemChain={systemChain}
+                  />
+                )}
+                <div>{t<string>('Copy the following string and sign it with the Ethereum account you burnt your ERC20 CRU in step 0, using the string as the payload, and then paste the transaction signature object below:')}</div>
+                <CopyToClipboard
+                  onCopy={onCopy}
+                  text={payload}
+                >
+                  <Payload
+                    data-for='tx-payload'
+                    data-tip
+                  >
+                    {payload}
+                  </Payload>
+                </CopyToClipboard>
+                <Tooltip
+                  place='right'
+                  text={didCopy ? t<string>('copied') : t<string>('click to copy')}
+                  trigger='tx-payload'
+                />
+                <div>{t<string>('Paste the signed message into the field below. The placeholder text is there as a hint to what the message should look like:')}</div>
+                <Signature
+                  onChange={onChangeSignature}
+                  placeholder={`{\n  "address": "0x ...",\n  "msg": "${prefix}...",\n  "sig": "0x ...",\n  "version": "3",\n  "signer": "..."\n}`}
+                  rows={10}
+                />
+                {(step === Step.Sign) && (
+                  <Button.Group>
+                    <Button
+                      icon='sign-in-alt'
+                      isDisabled={!accountId || !signature}
+                      label={t<string>('Confirm claim')}
+                      onClick={goToStepClaim}
+                    />
+                  </Button.Group>
+                )}
+              </Card>
+            )}
 
-          {(step >= Step.Claim) && (
-            isPreclaimed
-              ? <AttestDisplay
-                accountId={accountId}
-                ethereumAddress={ethereumAddress}
-                onSuccess={goToStepAccount}
-                statementKind={statementKind}
-                systemChain={systemChain}
-              />
-              : <ClaimDisplay
-                accountId={accountId}
-                ethereumAddress={ethereumAddress}
-                ethereumSignature={signature}
-                isOldClaimProcess={isOldClaimProcess}
-                onSuccess={goToStepAccount}
-                statementKind={statementKind}
-                ethereumTxHash={ethereumTxHash}
-              />
-          )}
+            {(step >= Step.Claim) && (
+              isPreclaimed
+                ? <AttestDisplay
+                  accountId={accountId}
+                  ethereumAddress={ethereumAddress}
+                  onSuccess={goToStepAccount}
+                  statementKind={statementKind}
+                  systemChain={systemChain}
+                />
+                : <ClaimDisplay
+                  accountId={accountId}
+                  ethereumAddress={ethereumAddress}
+                  ethereumSignature={signature}
+                  isOldClaimProcess={isOldClaimProcess}
+                  onSuccess={goToStepAccount}
+                  statementKind={statementKind}
+                  ethereumTxHash={ethereumTxHash}
+                />
+            )}
         </Columar.Column>
       </Columar>
     </main>
