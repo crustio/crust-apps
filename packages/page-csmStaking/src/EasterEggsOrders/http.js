@@ -8,8 +8,6 @@ const RETRY_INTERVAL = 1000;
 const USERNAME = process.env.CSM_LOCKING_USER; 
 const PASSWD = process.env.CSM_LOCKING_PASSWD
 
-console.log(`USERNAME: ${USERNAME}, PASSWD: ${PASSWD}`)
-
 function sleep(ms){
   return new Promise((resolve)=>setTimeout(resolve,ms));
 }
