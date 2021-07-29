@@ -12,7 +12,7 @@ export default {
     'Centrifuge Mainnet': 'centrifuge',
     ChainX: 'chainx',
     'Crust Maxwell': 'maxwell',
-    'Crust': 'crust',
+    Crust: 'crust',
     'Darwinia CC1': 'darwinia-cc1',
     'Darwinia Crab': 'crab',
     Edgeware: 'edgeware',
