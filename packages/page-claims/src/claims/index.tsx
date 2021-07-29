@@ -299,7 +299,7 @@ function Claims(): React.ReactElement<Props> {
                 chain: systemChain
               }
             })} <a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CRU')}</a>
-             {t<string>('transfer tx hash')}<span>
+             {t<string>(' transfer tx hash')}<span>
                {t<string>(`, If your claim amount is greater than the claim limit `)}
                <span style={{ 'color': '#ff8812', 'textDecoration': 'underline', 'fontStyle': 'italic' }}>({formatBalance(claimLimit, { withUnit: 'CRU' })})</span>
                {t<string>(', please wait for the limit update')}
