@@ -289,7 +289,7 @@ function Claims(): React.ReactElement<Props> {
           <Card withBottomMargin>
             <h3>{t<string>('0. Burn your ')}<a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CRU')}</a>{t<string>(', transfer to address ')} <a href='https://etherscan.io/address/0x0000000000000000000000000000000000000001' target="_blank">0x0000000000000000000000000000000000000001</a></h3>
             <Banner type='warning'>
-              <p>{t<string>('Please make sure you have the authority to make signature with the private key of the wallet account, using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss, ')}<span style={{ 'fontWeight': 'bold', 'color': 'red' }}>{t<string>(`You are responsible for the consequences`)}</span></p>
+              <p>{t<string>('Please make sure you have the authority to make signature with the private key of the wallet account, using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss, you are responsible for the consequences')}</p>
             </Banner>
             <img style={{'marginLeft': 'auto', 'marginRight': 'auto', 'display': 'block', "width": "150px" }} src={burnPng as string} />
           </Card>
