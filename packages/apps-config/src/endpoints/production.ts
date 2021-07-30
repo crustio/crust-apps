@@ -27,7 +27,7 @@ export function createProduction (t: TFunction): LinkOption[] {
       info: 'crust',
       text: t('rpc.crust.network', 'Crust', { ns: 'apps-config' }),
       providers: {
-        'Crust Network': 'wss://rpc.crust.network',
+        'Crust Network': 'wss://rpc.crust.network'
       }
     },
     {
