@@ -8,7 +8,6 @@ import type { BalanceOf, EcdsaSignature, EthereumAddress, StatementKind } from '
 
 import React, { useCallback, useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { Trans } from 'react-i18next';
 import styled from 'styled-components';
 
 import { Button, Card, Columar, Input, InputAddress, Tooltip } from '@polkadot/react-components';
@@ -170,7 +169,7 @@ function Claims(): React.ReactElement<Props> {
           setStatus('error');
           setStatusOpen(true);
         } else {
-          const result = await httpPost("https://claim.crustcode.com/claim/" + ethereumTxHash);
+          const result = await httpPost("https://claim.crust.network/claim/" + ethereumTxHash);
           setIsBusy(false);
           setResult(result.statusText);
           setStatus(result.status);
@@ -281,15 +280,19 @@ function Claims(): React.ReactElement<Props> {
   return (
     <main>
       {!isOldClaimProcess && <Warning />}
-      <h1>
-        <Trans>Claim your <em>{TokenUnit.abbr}</em> tokens</Trans>
-      </h1>
+      <h2>
+        {t<string>('Claim your {{token}} tokens', {
+          replace: {
+            token: TokenUnit.abbr
+          }
+        })}
+      </h2>
       <Columar>
         <Columar.Column>
           <Card withBottomMargin>
             <h3>{t<string>('0. Burn your ')}<a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CRU')}</a>{t<string>(', transfer to address ')} <a href='https://etherscan.io/address/0x0000000000000000000000000000000000000001' target="_blank">0x0000000000000000000000000000000000000001</a></h3>
             <Banner type='warning'>
-              <p>{t<string>('Please make sure you have the authority to make signature with the private key of the wallet account, using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss, ')}<span style={{ 'fontWeight': 'bold', 'color': 'red' }}>{t<string>(`You are responsible for the consequences`)}</span></p>
+              <p>{t<string>('Please make sure you have the authority to make signature with the private key of the wallet account, using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss, you are responsible for the consequences')}</p>
             </Banner>
             <img style={{'marginLeft': 'auto', 'marginRight': 'auto', 'display': 'block', "width": "150px" }} src={burnPng as string} />
           </Card>
@@ -299,7 +302,7 @@ function Claims(): React.ReactElement<Props> {
                 chain: systemChain
               }
             })} <a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CRU')}</a>
-             {t<string>('transfer tx hash')}<span>
+             {t<string>(' transfer tx hash')}<span>
                {t<string>(`, If your claim amount is greater than the claim limit `)}
                <span style={{ 'color': '#ff8812', 'textDecoration': 'underline', 'fontStyle': 'italic' }}>({formatBalance(claimLimit, { withUnit: 'CRU' })})</span>
                {t<string>(', please wait for the limit update')}
@@ -398,7 +401,7 @@ function Claims(): React.ReactElement<Props> {
                 <div>{t<string>('Paste the signed message into the field below. The placeholder text is there as a hint to what the message should look like:')}</div>
                 <Signature
                   onChange={onChangeSignature}
-                  placeholder={`{\n  "address": "0x ...",\n  "msg": "${prefix}...",\n  "sig": "0x ...",\n  "version": "3",\n  "signer": "..."\n}`}
+                  placeholder={`{\n  "address": "0x ...",\n  "msg": "0x ...",\n  "sig": "...",\n  "version": "3",\n  "signer": "..."\n}`}
                   rows={10}
                 />
                 {(step === Step.Sign) && (

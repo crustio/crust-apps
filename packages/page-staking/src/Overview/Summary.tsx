@@ -67,14 +67,19 @@ function Summary ({ className = '', isVisible, stakingOverview, targets: { infla
             : '-'
           }
         </CardSummary> */}
-        {isMaxwell && (
+        {isMaxwell ? (
           <CardSummary
             className='media--1100'
             label={t<string>('rewards')}
           >
             <StakingRewardPot />
           </CardSummary>
-        )}
+        ) : (<CardSummary
+          className='media--1100'
+          label={t<string>('rewards')}
+        >
+          {t<string>('not started yet')}
+        </CardSummary>)}
       </section>
       <section>
         <CardSummary
