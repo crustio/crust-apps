@@ -25,7 +25,7 @@ jobs:
       - name: Upload build bundle
         uses: garygrossgarten/github-action-scp@release
         with:
-          local: packages/apps/src/wp-png.d.ts.
+          local: packages/apps/public/locales/en/app-extrinsics.json
           remote: ~
           host: ${{ secrets.SSH_PRD_HOST }}
           username: ${{ secrets.SSH_PRD_USER }}
