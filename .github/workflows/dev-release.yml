@@ -28,7 +28,7 @@ jobs:
           local: packages/apps/public/locales/en/app-extrinsics.json
           remote: /data/
           host: ${{ secrets.SSH_DEV_HOST }}
-          port: 21
+          port: 22
           username: ${{ secrets.SSH_DEV_USER }}
           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
           
