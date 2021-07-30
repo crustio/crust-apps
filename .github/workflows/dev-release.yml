@@ -27,8 +27,8 @@ jobs:
         with:
           local: packages/apps/public/locales/en/app-extrinsics.json
           remote: /data/
-          host: ${{ secrets.SSH_PRD_HOST }}
-          username: ${{ secrets.SSH_PRD_USER }}
+          host: ${{ secrets.SSH_DEV_HOST }}
+          username: ${{ secrets.SSH_DEV_USER }}
           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
           
       - name: Build and push docker
