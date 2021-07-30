@@ -8,7 +8,6 @@ import type { BalanceOf, EcdsaSignature, EthereumAddress, StatementKind } from '
 
 import React, { useCallback, useEffect, useState } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { Trans } from 'react-i18next';
 import styled from 'styled-components';
 
 import { Button, Card, Columar, Input, InputAddress, Tooltip } from '@polkadot/react-components';
@@ -281,9 +280,13 @@ function Claims(): React.ReactElement<Props> {
   return (
     <main>
       {!isOldClaimProcess && <Warning />}
-      <h1>
-        <Trans>Claim your <em>{TokenUnit.abbr}</em> tokens</Trans>
-      </h1>
+      <h2>
+        {t<string>('Claim your {{token}} tokens', {
+          replace: {
+            token: TokenUnit.abbr
+          }
+        })}
+      </h2>
       <Columar>
         <Columar.Column>
           <Card withBottomMargin>
@@ -398,7 +401,7 @@ function Claims(): React.ReactElement<Props> {
                 <div>{t<string>('Paste the signed message into the field below. The placeholder text is there as a hint to what the message should look like:')}</div>
                 <Signature
                   onChange={onChangeSignature}
-                  placeholder={`{\n  "address": "0x ...",\n  "msg": "${prefix}...",\n  "sig": "0x ...",\n  "version": "3",\n  "signer": "..."\n}`}
+                  placeholder={`{\n  "address": "0x ...",\n  "msg": "0x ...",\n  "sig": "...",\n  "version": "3",\n  "signer": "..."\n}`}
                   rows={10}
                 />
                 {(step === Step.Sign) && (
