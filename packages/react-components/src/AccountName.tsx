@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/react-query authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { IconName } from '@fortawesome/fontawesome-svg-core';
 import type { DeriveAccountInfo, DeriveAccountRegistration } from '@polkadot/api-derive/types';
 import type { AccountId, AccountIndex, Address } from '@polkadot/types/interfaces';
@@ -31,7 +32,9 @@ interface Props {
 
 const KNOWN: [AccountId, string][] = [
   [registry.createType('AccountId', stringToU8a('modlpy/socie'.padEnd(32, '\0'))), 'Society'],
-  [registry.createType('AccountId', stringToU8a('modlpy/trsry'.padEnd(32, '\0'))), 'Treasury']
+  [registry.createType('AccountId', stringToU8a('modlpy/trsry'.padEnd(32, '\0'))), 'Treasury'],
+  //@ts-ignore
+  [registry.createType('AccountId', 'cTJp8A3DSBpyJth1HsyKtAqJ4KHqMUBqrJm9cXSqrDLTC9DHv'), 'Claims']
 ];
 
 const displayCache = new Map<string, React.ReactNode>();
