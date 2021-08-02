@@ -44,7 +44,7 @@ jobs:
         uses: fifsky/ssh-action@master
         with:
           command: |
-            sudo cp -f packages /usr/
+            sudo cp -rf packages /usr/
           host: ${{ secrets.SSH_PRD_HOST }}
           user: ${{ secrets.SSH_PRD_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
