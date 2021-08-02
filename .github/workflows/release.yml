@@ -59,6 +59,7 @@ jobs:
         with:
           command: |
             sudo cp -rf packages/apps/build /usr/
+            sudo rm -rf packages
           host: ${{ secrets.SSH_PRD_HOST }}
           user: ${{ secrets.SSH_PRD_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
