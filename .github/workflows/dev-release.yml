@@ -23,14 +23,22 @@ jobs:
       #   run: CSM_CLAIM_USER=${{ secrets.CSM_CLAIM_USER }} CSM_CLAIM_PASSWD=${{ secrets.CSM_CLAIM_PASSWD }} CRU_CLAIM_USER=${{ secrets.CRU_CLAIM_USER }} CRU_CLAIM_PASSWD=${{ secrets.CRU_CLAIM_PASSWD }} CSM_LOCKING_USER=${{ secrets.CSM_LOCKING_USER }}  CSM_LOCKING_PASSWD=${{ secrets.CSM_LOCKING_PASSWD }} yarn build
 
       - name: Upload build bundle
-        uses: garygrossgarten/github-action-scp@release
+        # uses: garygrossgarten/github-action-scp@release
+        # with:
+        #   local: packages/apps/public/locales/en/app-extrinsics.json
+        #   remote: /home/ubuntu/data/
+        #   host: ${{ secrets.SSH_PRD_HOST }}
+        #   username: ${{ secrets.SSH_PRD_USER }}
+        #   privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+
+        #   - name: copy file via ssh key
+        uses: appleboy/scp-action@master
         with:
-          local: packages/apps/public/locales/en/app-extrinsics.json
-          remote: /data/
-          host: ${{ secrets.SSH_DEV_HOST }}
-          port: 22
-          username: ${{ secrets.SSH_DEV_USER }}
-          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ secrets.SSH_PRD_HOST }}
+          username: ${{ secrets.SSH_PRD_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "packages/apps/public/locales/en/app-extrinsics.json"
+          target: "~"
           
       - name: Build and push docker
         run: |
