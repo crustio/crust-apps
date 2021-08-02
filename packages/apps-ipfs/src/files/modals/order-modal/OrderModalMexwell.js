@@ -3,7 +3,7 @@
 import BN from 'bn.js';
 import Fsize from 'filesize';
 import isIPFS from 'is-ipfs';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 
@@ -12,14 +12,8 @@ import { Available } from '@polkadot/react-query';
 import { formatBalance } from '@polkadot/util';
 
 import { Input, InputAddress, InputBalance, InputNumber, Modal, TxButton } from '../../../../../react-components/src';
-import { BitLengthOption } from '../../../../../react-components/src/constants';
-function parserStrToObj (str) {
-  if (!str) {
-    return null
-  } else {
-    return JSON.parse(JSON.stringify(str))
-  }
-}
+import { BitLengthOption } from "../../../../../react-components/src/constants"
+
 const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'order' }) => {
   const { hasAccounts } = useAccounts();
   const [account, setAccount] = useState(null);
@@ -29,28 +23,15 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
   const [tip, setTip] = useState(0);
   const [cidNotValid, setCidNotValid] = useState(false);
   const { api, isApiReady } = useApi();
-  const filePrice = useCall(isApiReady && api.query.market.fileByteFee) || new BN(0);
+  const filePrice = useCall(isApiReady && api.query.market.filePrice) || new BN(0);
   const fileBaseFee = useCall(isApiReady && api.query.market.fileBaseFee)
-  const fileKeysCountFee = useCall(isApiReady && api.query.market.fileKeysCountFee)
   const basePrice = fileBaseFee ? fileBaseFee.toString() : 0
   const DEFAULT_BITLENGTH = BitLengthOption.CHAIN_SPEC;
-  const currentBenefits = useCall(isApiReady && api.query.benefits.currentBenefits)
-  const marketBenefits = useCall(isApiReady && api.query.benefits.marketBenefits, [account])
-
-  const benefits = useMemo(() => {
-    const total_market_active_funds = currentBenefits ? parserStrToObj(currentBenefits).total_market_active_funds : 0
-    const active_funds = marketBenefits ? parserStrToObj(marketBenefits).active_funds : 0
-    return (1 - Math.min( active_funds / (total_market_active_funds || 1), 0.1))
-  }, [currentBenefits, marketBenefits])
 
   useEffect(() => {
-    // filePrice = basePrice + (byteFee * size + key_count_fee) * benefit + tips
-    // benefits = 1 - min(active_funds / total_market_active_funds, 0.1)
     const tipFee= new BN(tip.toString())
-    const _filePrice = filePrice?.mul(new BN(fileSize)).divn(1024*1024).add(new BN(fileKeysCountFee)).mul(new BN(benefits))
-    setPrice(formatBalance(_filePrice.add(new BN(basePrice)).add(tipFee), { decimals: 12, forceUnit: 'CRU' }));
-  }, [fileSize, filePrice, tip, basePrice, benefits]);
-  console.log(price);
+    setPrice(formatBalance(filePrice?.mul(new BN(fileSize)).divn(1024*1024).add(new BN(basePrice)).add(tipFee), { decimals: 12, forceUnit: 'CRU' }));
+  }, [fileSize, filePrice, tip, basePrice]);
   useEffect(() => {
     setCidNotValid(fileCid && !isIPFS.cid(fileCid) && !isIPFS.path(fileCid));
   }, [fileCid]);
@@ -161,7 +142,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
           });
         }}
         params={
-          [fileCid, fileSize, tip, 0]
+          [fileCid, fileSize, tip]
         }
         tx={api.tx.market.placeStorageOrder }
       />

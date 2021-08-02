@@ -7,7 +7,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 
-import OrderModal from '../files/modals/order-modal/OrderModal';
+import OrderModal from '../files/modals/order-modal';
 import PoolModal from '../files/modals/pool-modal/PoolModal';
 import FetchModal from '../files/modals/fetch-modal/FetchModal';
 import OrderList from './OrderList';

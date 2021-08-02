@@ -14,8 +14,8 @@ import dayjs from 'dayjs';
 import Cid from '@polkadot/apps-ipfs/components/cid/Cid';
 import StrokeCopy from '@polkadot/apps-ipfs/icons/StrokeCopy';
 
-import { useApi, useCall } from '../../../react-hooks/src';
-import Checkbox from '../components/checkbox/Checkbox';
+import { useApi, useCall } from '../../../../react-hooks/src';
+import Checkbox from '../../components/checkbox/Checkbox';
 import CopyButton from '@polkadot/apps-ipfs/components/copy-button';
 
 import Popup from 'reactjs-popup';

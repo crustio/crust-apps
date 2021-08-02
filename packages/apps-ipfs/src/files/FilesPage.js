@@ -9,7 +9,7 @@ import { connect } from 'redux-bundler-react';
 
 import Connected from '@polkadot/apps-ipfs/components/connected/Connected';
 import FilesExploreForm from '@polkadot/apps-ipfs/files/explore-form/FilesExploreForm';
-import OrderModal from '@polkadot/apps-ipfs/files/modals/order-modal/OrderModal';
+import OrderModal from '@polkadot/apps-ipfs/files/modals/order-modal';
 
 import withTour from '../components/tour/withTour';
 import { getJoyrideLocales } from '../helpers/i8n';
