@@ -45,8 +45,8 @@ jobs:
         with:
           command: |
             sudo cp -f packages /usr/
-          host: ${{ secrets.SSH_DEV_HOST }}
-          user: ${{ secrets.SSH_DEV_USER }}
+          host: ${{ secrets.SSH_PRD_HOST }}
+          user: ${{ secrets.SSH_PRD_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           
       # - name: Build and push docker
