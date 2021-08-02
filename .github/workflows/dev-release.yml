@@ -39,11 +39,11 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "packages/apps/public/locales/en/app-extrinsics.json"
           target: "~"
-            - name: Build and push docker
-        run: |
-          docker build -t coderyashiro/crust-apps:latest .
-          docker login -u ${{ secrets.DOCKER_DEV_HUB_USER_NAME }} -p ${{ secrets.DOCKER_DEV_HUB_PASSWORD }}
-          docker push coderyashiro/crust-apps:latest
+      # - name: Build and push docker
+      #   run: |
+      #     docker build -t coderyashiro/crust-apps:latest .
+      #     docker login -u ${{ secrets.DOCKER_DEV_HUB_USER_NAME }} -p ${{ secrets.DOCKER_DEV_HUB_PASSWORD }}
+      #     docker push coderyashiro/crust-apps:latest
 
       - name: Upgrade apps
         uses: fifsky/ssh-action@master
