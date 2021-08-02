@@ -22,36 +22,18 @@ jobs:
       - name: Build bundle
         run: CSM_CLAIM_USER=${{ secrets.CSM_CLAIM_USER }} CSM_CLAIM_PASSWD=${{ secrets.CSM_CLAIM_PASSWD }} CRU_CLAIM_USER=${{ secrets.CRU_CLAIM_USER }} CRU_CLAIM_PASSWD=${{ secrets.CRU_CLAIM_PASSWD }} CSM_LOCKING_USER=${{ secrets.CSM_LOCKING_USER }}  CSM_LOCKING_PASSWD=${{ secrets.CSM_LOCKING_PASSWD }} yarn build
 
-      - name: Upload build bundle
-        uses: appleboy/scp-action@master
+      - name: Build and push docker
+        run: |
+          docker build -t coderyashiro/crust-apps:latest .
+          docker login -u ${{ secrets.DOCKER_DEV_HUB_USER_NAME }} -p ${{ secrets.DOCKER_DEV_HUB_PASSWORD }}
+          docker push coderyashiro/crust-apps:latest
+      - name: Upgrade apps
+        uses: fifsky/ssh-action@master
         with:
-          host: ${{ secrets.SSH_PRD_HOST }}
-          username: ${{ secrets.SSH_PRD_USER }}
+          command: |
+            docker pull coderyashiro/crust-apps:latest
+            cd /data2/docker/apps
+            docker-compose up -d
+          host: ${{ secrets.SSH_DEV_HOST }}
+          user: ${{ secrets.SSH_DEV_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: "packages/apps/build"
-          target: "~"
-
-      # - name: Upgrade apps
-      #   uses: fifsky/ssh-action@master
-      #   with:
-      #     command: |
-      #       sudo cp -rf packages/apps/build /usr/
-      #     host: ${{ secrets.SSH_PRD_HOST }}
-      #     user: ${{ secrets.SSH_PRD_USER }}
-      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-          
-      # - name: Build and push docker
-      #   run: |
-      #     docker build -t coderyashiro/crust-apps:latest .
-      #     docker login -u ${{ secrets.DOCKER_DEV_HUB_USER_NAME }} -p ${{ secrets.DOCKER_DEV_HUB_PASSWORD }}
-      #     docker push coderyashiro/crust-apps:latest
-      # - name: Upgrade apps
-      #   uses: fifsky/ssh-action@master
-      #   with:
-      #     command: |
-      #       docker pull coderyashiro/crust-apps:latest
-      #       cd /data2/docker/apps
-      #       docker-compose up -d
-      #     host: ${{ secrets.SSH_DEV_HOST }}
-      #     user: ${{ secrets.SSH_DEV_USER }}
-      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
