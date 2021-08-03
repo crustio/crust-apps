@@ -1494,7 +1494,7 @@
   ", If your claim amount is greater than the claim limit, please wait for the limit update": ", 如果你的认领数量大于认领上限, 请等待认领上限更新",
   "0. Please make sure you have the authority to make signature with the private key of the wallet account ": "0. 请确认您使用的是带私钥签名权限的钱包(metamask, imtoken等)进行转账 ",
   ", using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss.": ", 使用交易所账户发起转账(提币)交易, 均会失效, 造成资产损失.",
-  " This is maxwell's claim. If you want to claim your tokens to the mainnet, please click on the upper left corner to switch to the mainnet, You are responsible for the consequences!": " 这是maxwell的claim，如果您想claim您的代币到主网，请点击左上角切换至主网，否则后果自负!",
+  " This is Maxwell's claim. If you want to claim your tokens to the mainnet, please click on the upper left corner to switch to the mainnet, You are responsible for the consequences!": " 这是Maxwell的claim，如果您想claim您的代币到主网，请点击左上角切换至主网，否则后果自负!",
   "nav.csmStaking": "数据创造价值",
   "Profit Data": "数据创造价值",
   "Total Rewards": "总奖励额",
