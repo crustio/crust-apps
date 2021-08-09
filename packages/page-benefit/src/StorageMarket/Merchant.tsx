@@ -16,11 +16,10 @@ import { useAccountInfo, useApi, useCall, useToggle } from '@polkadot/react-hook
 import Bond from '../modals/Bond';
 import { FoundsType } from '../modals/types';
 import { FormatBalance } from '@polkadot/react-query';
-import UnLockingSworkFounds from './UnLockingSworkFounds';
 import UnbondFounds from '../modals/UnbondFounds';
 import RebondFounds from '../modals/RebondFounds';
-import AddAllowAccount from '../modals/AddAllowAccount';
-import RemoveAllow from '../modals/RemoveAllow';
+import { formatBalance } from '@polkadot/util';
+import UnLockingMarketFounds from './UnLockingMarketFounds';
 
 interface Props {
   account: KeyringAddress;
@@ -55,13 +54,11 @@ function Merchant ({ account: { address }, className = '', filter, isFavorite, s
   const { name: accName, tags } = useAccountInfo(address);
   const [isBondOpen, toggleBond] = useToggle();
   const [isUnBondOpen, toggleUnBond] = useToggle();
-  const [isAddAllowOpen, toggleAddAllow] = useToggle();
-  const [isRemoveAllowOpen, toggleRemoveAllow] = useToggle();
   const [isSettingsOpen, toggleSettings] = useToggle();
   const [isReBondOpen, toggleReBond] = useToggle();
-  const sworkBenefitLedger = useCall<any>(api.query.benefits.sworkBenefits, [address]);
   const { queueExtrinsic } = useContext(StatusContext);
-  const percentage = ((sworkBenefitLedger?.active_funds / sworkBenefitLedger?.total_funds) *100).toFixed(2) + '%';
+  const percentage = ((ledgerObj?.active_funds / Number(totalLockup)) *100).toFixed(2) + '%';
+  const freeFunds = ((ledgerObj?.active_funds / Number(totalLockup)) * Number(reductionQuota));
 
   useEffect((): void => {
     if (balancesAll) {
@@ -99,38 +96,23 @@ function Merchant ({ account: { address }, className = '', filter, isFavorite, s
         <Bond
           accountId={address}
           onClose={toggleBond}
-          foundsType={FoundsType.SWORK}
+          foundsType={FoundsType.MARKET}
         />
       )}
       {isUnBondOpen && (
         <UnbondFounds
           accountId={address}
-          foundsType={FoundsType.SWORK}
+          foundsType={FoundsType.MARKET}
           onClose={toggleUnBond}
         />   
       )}
       {isReBondOpen && (
         <RebondFounds
           accountId={address}
-          foundsType={FoundsType.SWORK}
+          foundsType={FoundsType.MARKET}
           onClose={toggleReBond}
         />   
       )}
-      {isAddAllowOpen && (
-        <AddAllowAccount
-          account={address}
-          foundsType={FoundsType.SWORK}
-          onClose={toggleAddAllow}
-        />   
-      )}
-      {isRemoveAllowOpen && (
-        <RemoveAllow
-          account={address}
-          foundsType={FoundsType.SWORK}
-          onClose={toggleRemoveAllow}
-        />   
-      )}
-        
       <td className='favorite'>
         <Icon
           color={isFavorite ? 'orange' : 'gray'}
@@ -145,42 +127,35 @@ function Merchant ({ account: { address }, className = '', filter, isFavorite, s
         <FormatBalance value={marketLedger?.active_funds} />
       </td>
       <td className='number together'>
-        <UnLockingSworkFounds account={address} />
+        <UnLockingMarketFounds account={address} />
       </td>
       <td className='number together'>
         <FormatBalance value={marketLedger?.active_funds} />
       </td>
       <td className='number together'>
-        <FormatBalance
-          className='result'
-          label={
-            <Icon
-              icon='info-circle'
-              tooltip={`${address}-market-discount-trigger`}
-            />
-          }
-          value={marketLedger?.unlocking_funds}
-        >
-          <Tooltip
-            text={
-              <>
-                <div>
-                  <div className='faded'>{t('{{percentage}} of transaction fees will be reduced', {
-                    replace: {
-                      percentage
-                    }
-                  })}</div>
-                </div>
-              </>
-            }
-            trigger={`${address}-market-discount-trigger`}
-          />
-        </FormatBalance>
+        <><Icon
+            icon='info-circle'
+            tooltip={`${address}-locks-trigger-set-guarantee-fee`}
+        />
+
+            <Tooltip
+                text={t<string>('Discount Ratio = User collateral/Total collateral amount')}
+                trigger={`${address}-locks-trigger-set-guarantee-fee`}
+            ></Tooltip>
+        </>&nbsp;&nbsp;{percentage}
       </td>
-      
       <td className='number together'>
-        <FormatBalance value={new BN(Number(ledgerObj?.active_funds).toString()) } /> 
-      </td>
+        <><Icon
+            icon='info-circle'
+            tooltip={`${address}-market-discount-trigge`}
+        />
+
+            <Tooltip
+                text={t<string>('Free funds = (User collateral /Total collateral amount) * Settlement transaction fee relief pool')}
+                trigger={`${address}-market-discount-trigge`}
+            ></Tooltip>
+        </>&nbsp;&nbsp;{formatBalance(freeFunds, {withSiFull: true})}
+      </td>  
       <td className='button'>
         {api.tx.benefits?.addBenefitFunds && (
           <Button
