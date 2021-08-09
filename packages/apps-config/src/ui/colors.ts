@@ -14,7 +14,7 @@ const chainCrab = '#7C30DD';
 const chainCrust = '#ff8812';
 const chainCrustMaxwell = '#2E333B';
 
-const chainRocky = '#4dc6e1';
+const chainRocky = '#ff8812';
 const chainClover = 'linear-gradient(to right, #52ad75, #7cc773)';
 const chainChainx = '#F6C94A';
 const chainDarwinia = 'linear-gradient(-45deg, #FE3876 0%, #7C30DD 71%, #3A30DD 100%)';
