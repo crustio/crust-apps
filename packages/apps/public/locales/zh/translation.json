@@ -1588,5 +1588,17 @@
   "Copy the following string and sign it with the Ethereum account you burnt your ERC20 CRU in step 0, using the string as the payload, and then paste the transaction signature object below:": "复制以下字符串，并使用您在步骤0销毁ERC20 CRU时使用的以太坊帐户在您选择的钱包中进行签名，使用该字符串作为有效负载，然后将交易签名对象粘贴到下面",
   "Rebond funds": "重新绑定资金",
   "Claim your {{token}} tokens": "认领你的{{token}}代币",
-  "not started yet": "尚未启动"
+  "not started yet": "尚未启动",
+  "Settlement Transaction Fee Relief Pool (Current Era)": "当前Era清算手续费减免池",
+  "0.2% of Current Era Block Reward": "当前Era区块奖励的0.2%",
+  "Collateral": "保障金",
+  "Maximum Receivable Income": "单次最大可领取收益",
+  "Order Discount Ratio": "订单折扣比例",
+  "Settlement Free Funds (Current Era)": "当前Era清算免费额度",
+  "Increase Collateral": "增加保障金",
+  "Decrease Collateral": "减少保障金",
+  "Discount Ratio = User collateral/Total collateral amount": "折扣比例 = 用户保障金/总保障金",
+  "Free funds = (User collateral /Total collateral amount) * Settlement transaction fee relief pool": "减免配额 =（用户保障金/总保障金）* 减免池CRU总额",
+  "Users can obtain storage order discounts and reductions of order settlement transaction fees by locking CRU tokens as storage market collateral. As a storage merchant, the collateral is a necessary condition for receiving the storage market income. The collateal can obtain the same amount of income limit, accumulated storage market income will not increase after the  reaches the income limit, and the storage merchant needs to get income in time.": "用户可以通过锁定CRU通证作为存储市场保障金来获得存储订单折扣优惠和订单清算手续费减免优惠；作为存储商户，保障金是领取存储市场收益的必要条件，保障金可以获得同等金额的收益领取上限，存储市场收益累计到领取上限后将不会再增加，需要存储商户及时领取。",
+  "Lock CRU Tokens to obtain Storage Market Benefits": "锁定CRU通证获得存储市场权益"
 }

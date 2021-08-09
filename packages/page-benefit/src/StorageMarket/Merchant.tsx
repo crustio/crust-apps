@@ -160,14 +160,14 @@ function Merchant ({ account: { address }, className = '', filter, isFavorite, s
         {api.tx.benefits?.addBenefitFunds && (
           <Button
             icon='lock'
-            label={t<string>('Increase lockup')}
+            label={t<string>('Increase Collateral')}
             onClick={toggleBond}
           />
         )}
         {api.tx.benefits?.cutBenefitFunds && (
           <Button
             icon='unlock'
-            label={t<string>('Unlock')}
+            label={t<string>('Decrease Collateral')}
             onClick={toggleUnBond}
           />
         )}
