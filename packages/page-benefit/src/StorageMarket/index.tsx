@@ -12,14 +12,13 @@ import { SortedAccount } from '@polkadot/app-accounts/types';
 import { sortAccounts } from '@polkadot/app-accounts/util';
 import { useTranslation } from '@polkadot/apps/translate';
 import { Button, Input, Table } from '@polkadot/react-components';
-import { useAccounts, useApi, useFavorites, useLoadingDelay, useToggle } from '@polkadot/react-hooks';
+import { useAccounts, useApi, useCall, useFavorites, useLoadingDelay, useToggle } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 import Banner from '../Banner';
-import CreateGroup from '../modals/CreateGroup';
-import GroupOwner from './GroupOwner';
 import Summary from './Summary';
-import JoinGroup from '../modals/JoinGroup';
-import QuitGroup from '../modals/QuitGroup';
+import { FoundsType } from '../modals/types';
+import Bond from '../modals/Bond';
+import Merchant from './Merchant';
 
 interface Balances {
   accounts: Record<string, BN>;
@@ -38,7 +37,7 @@ interface Props {
 
 const STORE_FAVS = 'accounts:favorites';
 
-function WorkReport ({ className = '' }: Props): React.ReactElement<Props> {
+function StorageMarket ({ className = '' }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const { allAccounts, hasAccounts } = useAccounts();
@@ -46,38 +45,44 @@ function WorkReport ({ className = '' }: Props): React.ReactElement<Props> {
   const [, setBalances] = useState<Balances>({ accounts: {} });
   const [filterOn, setFilter] = useState<string>('');
   const [{ sortedAccounts }, setSorted] = useState<Sorted>({ sortedAccounts: [], sortedAddresses: [] });
-  const [ownOwners, setOwnOwners] = useState<SortedAccount[] | undefined>();
-  const [isCreateOpen, toggleCreate] = useToggle();
-  const [isJoinGroupOpen, toggleJoinGroup] = useToggle();
-  const [isQuitGroupOpen, toggleQuitGroup] = useToggle();
-  const [allOwners, setAllOwners] = useState<string[]>([]);
-  const [unlocking, setUnlocking] = useState<BN>(BN_ZERO);
+  const [ownMerchants, setOwnMerchants] = useState<SortedAccount[] | undefined>();
+  const [isBondOpen, toggleBond] = useToggle();
+  const [allMerchants, setAllMerchants] = useState<string[]>([]);
   const [totalLockup, setTotalLockup] = useState<BN>(BN_ZERO);
+  const [unlocking, setUnlocking] = useState<BN>(BN_ZERO);
+  const [reductionQuota, setReductionQuota] = useState<BN>(BN_ZERO);
+  const currentBenefits = useCall<any>(api.query.benefits.currentBenefits);
 
   const isLoading = useLoadingDelay();
 
   const headerRef = useRef([
-    [t('Group owner'), 'start', 2],
-    [t('No. of Group members')],
-    [t('Lockup/Total free transaction fees')],
+    [t('Account'), 'start', 2],
+    [t('Collateral')],
     [t('Unlocking')],
-    [t('Deduction of last Era')],
+    [t('Maximum Receivable Income')],
+    [t('Order Discount Ratio')],
+    [t('Settlement Free Funds (Current Era)')],
     []
   ]);
 
-  const getGroups = () => {
+  const getMarketBenifits = () => {
     let unsub: (() => void) | undefined;
     const fns: any[] = [
-      [api.query.swork.groups.entries]
+      [api.query.benefits.marketBenefits.entries]
     ];
-    const allOwners: string[] = [];
+    const allMerchants: string[] = [];
 
     api.combineLatest<any[]>(fns, ([groups]): void => {
       if (Array.isArray(groups)) {
-        groups.forEach(([{ args: [accountId] }]) => {
-          allOwners.push(accountId.toString());
+        let unlocking = BN_ZERO;
+        groups.forEach(([{ args: [accountId] }, value]) => {
+          allMerchants.push(accountId.toString());
+          for (const unlockingLegder of value) {
+            unlocking = unlocking.add(new BN(Number(unlockingLegder.value).toString()));
+          }
         });
-        setAllOwners(allOwners);
+        setUnlocking(unlocking);
+        setAllMerchants(allMerchants);
       }
     }).then((_unsub): void => {
       unsub = _unsub;
@@ -88,52 +93,33 @@ function WorkReport ({ className = '' }: Props): React.ReactElement<Props> {
     };
   };
 
-  const getSworkBenefits = () => {
-    let unsub: (() => void) | undefined;
-    const fns: any[] = [
-      [api.query.benefits.sworkBenefits.entries]
-    ];
-
-    api.combineLatest<any[]>(fns, ([benefits]): void => {
-      if (Array.isArray(benefits)) {
-        let unlocking = BN_ZERO;
-        let total = BN_ZERO;
-        benefits.forEach(([{ args: [_] }, value]) => {
-          total = total.add(new BN(Number(value.active_funds).toString()))
-          for (const unlockingLegder of value.unlocking_funds) {
-            unlocking = unlocking.add(new BN(Number(unlockingLegder.value).toString()));
-          }
-        });
-        setUnlocking(unlocking);
-        setTotalLockup(total)
-      }
-    }).then((_unsub): void => {
-      unsub = _unsub;
-    }).catch(console.error);
-
-    return (): void => {
-      unsub && unsub();
-    };
-  }
-
   useEffect(() => {
-    getGroups();
-    getSworkBenefits();
+    getMarketBenifits();
   }, []);
 
   useEffect(() => {
     const tmp: SortedAccount[] = [];
 
-    if (sortedAccounts && allOwners) {
+    if (sortedAccounts && allMerchants) {
       for (const myAccount of sortedAccounts) {
-        if (allOwners.includes(myAccount.account.address.toString())) {
+        if (allMerchants.includes(myAccount.account.address.toString())) {
           tmp.push(myAccount);
         }
       }
 
-      setOwnOwners(tmp);
+      setOwnMerchants(tmp);
     }
-  }, [sortedAccounts, allOwners]);
+  }, [sortedAccounts, allMerchants]);
+
+  useEffect(() => {
+    const benefit = currentBenefits && JSON.parse(JSON.stringify(currentBenefits))
+    if (benefit) {
+      // let total = BN_ZERO;
+      setTotalLockup(benefit.total_market_active_funds)
+      setReductionQuota(benefit.total_fee_reduction_quota)
+    }
+
+  }, [currentBenefits])
 
   useEffect((): void => {
     const sortedAccounts = sortAccounts(allAccounts, favorites);
@@ -146,7 +132,6 @@ function WorkReport ({ className = '' }: Props): React.ReactElement<Props> {
     (account: string, balance: BN) =>
       setBalances(({ accounts }: Balances): Balances => {
         accounts[account] = balance;
-
         return {
           accounts,
           balanceTotal: Object.values(accounts).reduce((total: BN, value: BN) => total.add(value), BN_ZERO)
@@ -169,40 +154,25 @@ function WorkReport ({ className = '' }: Props): React.ReactElement<Props> {
 
   return (
     <div className={className}>
-      {isCreateOpen && (
-        <CreateGroup
-          key='modal-transfer'
-          onClose={toggleCreate}
-          onSuccess={getGroups}
-        /> 
-      )}  
-      {isJoinGroupOpen && (
-        <JoinGroup
-          key='modal-joinGroup'
-          onClose={toggleJoinGroup}
-          onSuccess={getGroups}
-        /> 
-      )}  
-      {isQuitGroupOpen && (
-        <QuitGroup
-          key='modal-quitGroup'
-          onClose={toggleQuitGroup}
-          onSuccess={getGroups}
-        /> 
+      {isBondOpen && (
+        <Bond
+          onClose={toggleBond}
+          foundsType={FoundsType.MARKET}
+        />
       )}  
       <h2>
-        {t<string>('Lock CRU to reduce the transaction fees of work reporting')}
+        {t<string>('Lock CRU Tokens to obtain Storage Market Benefits')}
       </h2>
       <Banner type='warning'>
-        <p>{t<string>('Group Owners can reduce the transaction fees of work reporting for Group members by locking CRU. For each 3CRU locked up, the transaction fees can be reduced once for each Era. If the number of reduced transaction fees is exceeded, the transaction fee of Group members will be charged normally.')}</p>
+        <p>{t<string>('Users can obtain storage order discounts and reductions of order settlement transaction fees by locking CRU tokens as storage market collateral. As a storage merchant, the collateral is a necessary condition for receiving the storage market income. The collateal can obtain the same amount of income limit, accumulated storage market income will not increase after the  reaches the income limit, and the storage merchant needs to get income in time.')}</p>
       </Banner>
       <Button.Group>
         <Button
           icon='plus'
-          label={t<string>('Create group')}
-          onClick={toggleCreate}
+          label={t<string>('Bond')}
+          onClick={toggleBond}
         />
-        <Button
+        {/* <Button
           icon='users'
           label={t<string>('Join group')}
           onClick={toggleJoinGroup}
@@ -211,11 +181,12 @@ function WorkReport ({ className = '' }: Props): React.ReactElement<Props> {
           icon='sign-in-alt'
           label={t<string>('Quit group')}
           onClick={toggleQuitGroup}
-        />
+        /> */}
       </Button.Group>
       <Summary isLoading={isLoading} summaryInfo={{
         unlocking,
-        totalLockup
+        totalLockup,
+        reductionQuota
       }} />
       
       <Table
@@ -223,8 +194,8 @@ function WorkReport ({ className = '' }: Props): React.ReactElement<Props> {
         header={headerRef.current}
         filer={filter}
       >
-        {!isLoading && ownOwners?.map(({ account, delegation, isFavorite }, index): React.ReactNode => (
-          <GroupOwner
+        {!isLoading && ownMerchants?.map(({ account, delegation, isFavorite }): React.ReactNode => (
+          <Merchant
             account={account}
             delegation={delegation}
             filter={filterOn}
@@ -232,6 +203,8 @@ function WorkReport ({ className = '' }: Props): React.ReactElement<Props> {
             key={account.address}
             setBalance={_setBalance}
             toggleFavorite={toggleFavorite}
+            reductionQuota={reductionQuota}
+            totalLockup={totalLockup}
           />
         ))}
       </Table>
@@ -239,7 +212,7 @@ function WorkReport ({ className = '' }: Props): React.ReactElement<Props> {
   );
 }
 
-export default React.memo(styled(WorkReport)`
+export default React.memo(styled(StorageMarket)`
   .filter--tags {
     .ui--Dropdown {
       padding-left: 0;

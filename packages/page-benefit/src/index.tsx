@@ -11,6 +11,7 @@ import { Tabs } from '@polkadot/react-components';
 import { useAccounts, useIpfs } from '@polkadot/react-hooks';
 
 import WorkReport from './WorkReport';
+import StorageMarket from './StorageMarket';
 
 const HIDDEN_ACC = ['vanity'];
 
@@ -26,7 +27,7 @@ function BenifitApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pr
       text: t<string>('Work report')
     },
     {
-      name: 'marketPlace',
+      name: 'storageMarket',
       text: t<string>('Storage market')
     }
 
@@ -42,7 +43,8 @@ function BenifitApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pr
         />
       </header>
       <Switch>
-        <Route path={`${basePath}/marketPlace`}>
+        <Route path={`${basePath}/storageMarket`}>
+          <StorageMarket />
         </Route>
         <Route basePath={basePath}
           onStatusChange={onStatusChange}>
