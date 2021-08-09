@@ -26,6 +26,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
   const [fileCid, setFileCID] = useState(file ? file.cid.toString() : '');
   const [fileSize, setFileSize] = useState(file ? file.originalSize.toString() : '0');
   const [price, setPrice] = useState('0 CRU');
+  const [originPrice, setOriginPrice] = useState('0 CRU');
   const [tip, setTip] = useState(0);
   const [cidNotValid, setCidNotValid] = useState(false);
   const { api, isApiReady } = useApi();
@@ -47,13 +48,16 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
     // filePrice = (basePrice + byteFee * size + key_count_fee) * benefit + tips
     // benefits = 1 - min(active_funds / total_market_active_funds, 0.1)
     const tipFee= new BN(tip.toString())
-    const _filePrice = filePrice?.mul(new BN(fileSize)).divn(1024*1024).add(new BN(fileKeysCountFee)).add(new BN(basePrice)).mul(new BN(benefits))
-    setPrice(formatBalance(_filePrice.add(tipFee), { decimals: 12, forceUnit: 'CRU' }));
+    const _filePrice = filePrice?.mul(new BN(fileSize)).divn(1024*1024).add(new BN(fileKeysCountFee)).add(new BN(basePrice))
+    setOriginPrice(formatBalance(_filePrice.add(tipFee), { decimals: 12, forceUnit: 'CRU' }))
+    setPrice(formatBalance(_filePrice.mul(new BN(benefits)).add(tipFee), { decimals: 12, forceUnit: 'CRU' }));
   }, [fileSize, filePrice, tip, basePrice, benefits]);
-  console.log(price);
   useEffect(() => {
     setCidNotValid(fileCid && !isIPFS.cid(fileCid) && !isIPFS.path(fileCid));
   }, [fileCid]);
+  const benefitHint = useMemo(() => {
+      return benefits &&  <span className={"file-info"}>折扣优惠{100 - benefits * 100}%, 实际价格为{originPrice}</span>
+  }, [benefits, originPrice, filePrice])
 
   return <Modal
     className='order--accounts-Modal'
@@ -121,9 +125,9 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
           </Modal.Columns>
         </Modal.Content>
         <Modal.Content>
-          <Modal.Columns hint={t('priceDesc')}>
+          <Modal.Columns hint={<p>{t('priceDesc')} {benefitHint}</p>}>
             <Input
-              help={t('priceDesc')}
+              help={benefitHint}
               isDisabled
               label={t('File price')}
               maxLength={32}
