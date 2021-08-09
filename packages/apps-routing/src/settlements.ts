@@ -4,7 +4,7 @@
 import type { TFunction } from 'i18next';
 import type { Route } from './types';
 
-import Component from '@polkadot/apps-merchants/routes/merchants';
+import Component from '@polkadot/apps-merchants/routes/settlements';
 
 export default function create (t: TFunction): Route {
   return {
@@ -13,8 +13,8 @@ export default function create (t: TFunction): Route {
       needsApi: []
     },
     group: 'storage',
-    icon: 'users',
-    name: 'merchants',
-    text: t('nav.merchants', 'Merchants', { ns: 'apps-routing' })
+    icon: 'brush',
+    name: 'settlements',
+    text: t('nav.settlements', 'Settlements', { ns: 'apps-routing' })
   };
 }
