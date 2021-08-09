@@ -44,11 +44,11 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
   }, [currentBenefits, marketBenefits])
 
   useEffect(() => {
-    // filePrice = basePrice + (byteFee * size + key_count_fee) * benefit + tips
+    // filePrice = (basePrice + byteFee * size + key_count_fee) * benefit + tips
     // benefits = 1 - min(active_funds / total_market_active_funds, 0.1)
     const tipFee= new BN(tip.toString())
-    const _filePrice = filePrice?.mul(new BN(fileSize)).divn(1024*1024).add(new BN(fileKeysCountFee)).mul(new BN(benefits))
-    setPrice(formatBalance(_filePrice.add(new BN(basePrice)).add(tipFee), { decimals: 12, forceUnit: 'CRU' }));
+    const _filePrice = filePrice?.mul(new BN(fileSize)).divn(1024*1024).add(new BN(fileKeysCountFee)).add(new BN(basePrice)).mul(new BN(benefits))
+    setPrice(formatBalance(_filePrice.add(tipFee), { decimals: 12, forceUnit: 'CRU' }));
   }, [fileSize, filePrice, tip, basePrice, benefits]);
   console.log(price);
   useEffect(() => {
