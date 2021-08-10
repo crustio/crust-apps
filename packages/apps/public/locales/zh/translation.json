@@ -1588,5 +1588,8 @@
   "Copy the following string and sign it with the Ethereum account you burnt your ERC20 CRU in step 0, using the string as the payload, and then paste the transaction signature object below:": "复制以下字符串，并使用您在步骤0销毁ERC20 CRU时使用的以太坊帐户在您选择的钱包中进行签名，使用该字符串作为有效负载，然后将交易签名对象粘贴到下面",
   "Rebond funds": "重新绑定资金",
   "Claim your {{token}} tokens": "认领你的{{token}}代币",
-  "not started yet": "尚未启动"
+  "not started yet": "尚未启动",
+  "valid":  "within the expiration date",
+  "expiredWithin15Days":  "within15 days after expiration",
+  "expired15Days": "15 days after expiration"
 }

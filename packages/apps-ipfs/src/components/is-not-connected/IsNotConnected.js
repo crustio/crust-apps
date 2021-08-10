@@ -12,9 +12,9 @@ import Icon from '../../../../react-components/src/Icon';
 const ipfsDesktopMacZh = 'https://crust-data.oss-cn-shanghai.aliyuncs.com/ipfs/release/Crust_IPFS_Desktop.dmg';
 const ipfsDesktopWinZh = 'https://crust-data.oss-cn-shanghai.aliyuncs.com/ipfs/release/Crust_IPFS_Destop_setup.exe'
 const ipfsDesktopWin32Zh = 'https://crust-data.oss-cn-shanghai.aliyuncs.com/ipfs/release/Crust_IPFS_Destop_setup_win32.exe'
-const ipfsDesktopMac = 'https://github.com/decooio/ipfs-desktop/releases/latest/download/IPFS-Desktop.dmg';
-const ipfsDesktopWin = 'https://github.com/decooio/ipfs-desktop/releases/latest/download/IPFS-Desktop-Setup.exe';
-const ipfsDesktopWin32 = 'https://github.com/decooio/ipfs-desktop/releases/latest/download/IPFS-Desktop-Setup-win32.exe';
+const ipfsDesktopMac = 'https://github.com/crustio/crust-apps/releases/download/v0.74.21/IPFS.Desktop-0.15.0.dmg';
+const ipfsDesktopWin = 'https://github.com/crustio/crust-apps/releases/download/v0.74.21/IPFS.Desktop.Setup.0.15.0.exe';
+const ipfsDesktopWin32 = 'https://github.com/crustio/crust-apps/releases/download/v0.74.21/IPFS.Desktop.Setup.0.15.0-32.bits.exe';
 
 const IsNotConnected = ({ apiUrl, connected, doUpdateIpfsApiAddress, ipfsApiAddress, sameOrigin, t } ) => {
   const TABS = {
