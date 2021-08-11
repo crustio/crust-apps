@@ -169,7 +169,7 @@ function StorageMarket ({ className = '' }: Props): React.ReactElement<Props> {
       <Button.Group>
         <Button
           icon='plus'
-          label={t<string>('Bond')}
+          label={t<string>('Register')}
           onClick={toggleBond}
         />
         {/* <Button

@@ -88,7 +88,7 @@ function UnLockingSworkFounds ({ className = '', account, isHighlight, isPadded 
             <Tooltip
               text={unLockings.map(({ era, value }, index): React.ReactNode => (
                 <div key={index}>
-                  <span style={{"wordWrap": "break-word", "wordBreak": "break-all"}}><FormatBalance value={value} />{t<string>(' will unLocked after {{era}} era', { replace: { era: era - activeEra } })}</span>
+                  <span style={{"wordWrap": "break-word", "wordBreak": "break-all"}}><FormatBalance value={value} />{t<string>(' will unLocked at {{era}} era', { replace: { era: era - activeEra } })}</span>
                 </div>
               ))}
               trigger={`${value}-locks-trigger`}

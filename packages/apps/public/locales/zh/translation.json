@@ -1605,5 +1605,7 @@
   "group onwer account": "group owner账户",
   "Select a contact or paste the group owner you want to join.": "选择或者复制一个你想加组的group owner的账户",
   "The account you will quit group.": "你想要退组的账户",
-  "The account you will join group.": "你想要加组的账户"
+  "The account you will join group.": "你想要加组的账户",
+  "Total Collateral": "总保障金额",
+  " will unLocked at {{era}} era": " 将在第 {{era}} era解锁"
 }

@@ -28,7 +28,7 @@ function Summary({ isLoading, summaryInfo: { totalLockup, unlocking, reductionQu
   return (!isLoading) ? (
     <SummaryBox>
         <section>
-            <CardSummary label={t<string>('Total lockup')}>
+            <CardSummary label={t<string>('Total Collateral')}>
               <FormatBalance value={totalLockup} />
             </CardSummary>
             <CardSummary

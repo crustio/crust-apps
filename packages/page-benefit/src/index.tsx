@@ -10,8 +10,8 @@ import { useTranslation } from '@polkadot/apps/translate';
 import { Tabs } from '@polkadot/react-components';
 import { useAccounts, useIpfs } from '@polkadot/react-hooks';
 
-import WorkReport from './WorkReport';
 import StorageMarket from './StorageMarket';
+import WorkReport from './WorkReport';
 
 const HIDDEN_ACC = ['vanity'];
 
