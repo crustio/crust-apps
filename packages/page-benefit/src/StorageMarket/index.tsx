@@ -56,7 +56,7 @@ function StorageMarket ({ className = '' }: Props): React.ReactElement<Props> {
   const isLoading = useLoadingDelay();
 
   const headerRef = useRef([
-    [t('Account'), 'start', 2],
+    [t('Merchant'), 'start', 2],
     [t('Collateral')],
     [t('Unlocking')],
     [t('Maximum Receivable Income')],

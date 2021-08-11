@@ -1607,5 +1607,6 @@
   "The account you will quit group.": "你想要退组的账户",
   "The account you will join group.": "你想要加组的账户",
   "Total Collateral": "总保障金额",
-  " will unLocked at {{era}} era": " 将在第 {{era}} era解锁"
+  " will unLocked at {{era}} era": " 将在第 {{era}} era解锁",
+  "Merchant": "商户"
 }
