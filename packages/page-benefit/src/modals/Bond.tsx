@@ -19,13 +19,12 @@ import { FoundsType } from './types';
 interface Props {
   className?: string;
   onClose: () => void;
-  recipientId?: string;
-  senderId?: string;
+  accountId?: string;
   onSuccess: () => void;
   foundsType: FoundsType;
 }
 
-function Bond ({ className = '', foundsType, onClose, onSuccess, senderId: propSenderId }: Props): React.ReactElement<Props> {
+function Bond ({ className = '', foundsType, onClose, onSuccess, accountId: propSenderId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
