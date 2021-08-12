@@ -8,9 +8,9 @@ import { useApi } from '@polkadot/react-hooks';
 import { BestFinalized, BestNumber, BlockToTime, TimeNow, TotalIssuance, TotalStorage } from '@polkadot/react-query';
 import { BN_ONE } from '@polkadot/util';
 
+import ClaimPot from './ClaimPot';
 import SummarySession from './SummarySession';
 import { useTranslation } from './translate';
-import ClaimPot from './ClaimPot';
 
 function Summary (): React.ReactElement {
   const { t } = useTranslation();
