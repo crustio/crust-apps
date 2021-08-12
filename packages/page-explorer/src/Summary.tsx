@@ -8,6 +8,7 @@ import { useApi } from '@polkadot/react-hooks';
 import { BestFinalized, BestNumber, BlockToTime, TimeNow, TotalIssuance, TotalStorage } from '@polkadot/react-query';
 import { BN_ONE } from '@polkadot/util';
 
+import ClaimPot from './ClaimPot';
 import SummarySession from './SummarySession';
 import { useTranslation } from './translate';
 
@@ -33,6 +34,14 @@ function Summary (): React.ReactElement {
             label={t<string>('total issuance')}
           >
             <TotalIssuance />
+          </CardSummary>
+        )}
+        {api.query.balances && (
+          <CardSummary
+            className='media--800'
+            label={t<string>('claim pot')}
+          >
+            <ClaimPot />
           </CardSummary>
         )}
         {api.query.swork && (
