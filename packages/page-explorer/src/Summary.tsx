@@ -10,6 +10,7 @@ import { BN_ONE } from '@polkadot/util';
 
 import SummarySession from './SummarySession';
 import { useTranslation } from './translate';
+import ClaimPot from './ClaimPot';
 
 function Summary (): React.ReactElement {
   const { t } = useTranslation();
@@ -33,6 +34,14 @@ function Summary (): React.ReactElement {
             label={t<string>('total issuance')}
           >
             <TotalIssuance />
+          </CardSummary>
+        )}
+        {api.query.balances && (
+          <CardSummary
+            className='media--800'
+            label={t<string>('claim pot')}
+          >
+            <ClaimPot />
           </CardSummary>
         )}
         {api.query.swork && (
