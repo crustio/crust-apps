@@ -1608,5 +1608,6 @@
   "The account you will join group.": "你想要加组的账户",
   "Total Collateral": "总保障金额",
   " will unLocked at {{era}} era": " 将在第 {{era}} era解锁",
-  "Merchant": "商户"
+  "Merchant": "商户",
+  "claim pot": "认领池"
 }
