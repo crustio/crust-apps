@@ -157,6 +157,7 @@ function StorageMarket ({ className = '' }: Props): React.ReactElement<Props> {
       {isBondOpen && (
         <Bond
           onClose={toggleBond}
+          onSuccess={getMarketBenifits}
           foundsType={FoundsType.MARKET}
         />
       )}  

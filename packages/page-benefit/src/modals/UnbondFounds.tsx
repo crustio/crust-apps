@@ -104,7 +104,7 @@ function UnbondFounds ({ className = '', foundsType, onClose, onSuccess, account
       </Modal.Content>
       <Modal.Actions onCancel={onClose}>
         <TxButton
-          accountId={propSenderId}
+          accountId={propSenderId || senderId}
           icon='paper-plane'
           isDisabled={!hasAvailable || !amount}
           label={t<string>('Unbond')}
