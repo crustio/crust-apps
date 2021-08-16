@@ -104,7 +104,7 @@ function Bond ({ className = '', foundsType, onClose, onSuccess, accountId: prop
       </Modal.Content>
       <Modal.Actions onCancel={onClose}>
         <TxButton
-          accountId={senderId}
+          accountId={propSenderId}
           icon='paper-plane'
           isDisabled={!hasAvailable || !amount}
           label={t<string>('Bond')}

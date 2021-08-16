@@ -57,7 +57,7 @@ function Merchant ({ account: { address }, className = '', filter, isFavorite, s
   const [isSettingsOpen, toggleSettings] = useToggle();
   const [isReBondOpen, toggleReBond] = useToggle();
   const { queueExtrinsic } = useContext(StatusContext);
-  const percentage = ((Math.min((ledgerObj?.active_funds / Number(totalLockup))), 10) * 100).toFixed(2) + '%';
+  const percentage = ((Math.min((ledgerObj?.active_funds / Number(totalLockup))), 0.1) * 100).toFixed(2) + '%';
   const freeFunds = ((ledgerObj?.active_funds / Number(totalLockup)) * Number(reductionQuota));
 
   useEffect((): void => {
