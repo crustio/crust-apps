@@ -45,6 +45,8 @@ function calcVisible (filter: string, name: string, tags: string[]): boolean {
   }, name.toLowerCase().includes(_filter));
 }
 
+const UNIT = new BN(1_000_000_000_000);
+
 function GroupOwner ({ account: { address }, className = '', filter, isFavorite, setBalance, toggleFavorite }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api } = useApi();
@@ -61,7 +63,7 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
   const members = groupInfo && JSON.parse(JSON.stringify(groupInfo))?.members;
   // const members = ['cTJRpk7Q95vjMio7K6YwX9Co7szHdfFR3dZSEAfJjzbYiRvPg', 'cTGV4zJfqniHULu14EqwSzsWaPkBkT6nqzqpEsnm4vzTc1GJY'];
   const { queueExtrinsic } = useContext(StatusContext);
-  const percentage = ((sworkBenefitLedger?.active_funds / sworkBenefitLedger?.total_funds) *100).toFixed(2) + '%';
+  const percentage = members && ((sworkBenefitLedger?.active_funds / Number(UNIT.muln(members.length * 18))) * 100).toFixed(2) + '%';
   const [reductionFee, setReductionFee] = useState<BN>(BN_ZERO);
 
   useEffect((): void => {
@@ -75,8 +77,8 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
     const legder = sworkBenefitLedger && JSON.parse(JSON.stringify(sworkBenefitLedger))
     if (isFunction(api.rpc.payment?.queryInfo) && legder) {
       try {
-        api.tx.system
-          .setCode('0x11')
+        api.tx.swork
+          .reportWorks('0x11', '0x11', 0, '0x11', 0, 0, [], [], '0x11', '0x11', '0x11')
           .paymentInfo(fromId)
           .then(({ partialFee }): void => {
             setReductionFee(partialFee.mul(new BN(Number(legder.used_fee_reduction_count))))
@@ -201,7 +203,7 @@ function GroupOwner ({ account: { address }, className = '', filter, isFavorite,
             }
             trigger={`${address}-groupowner-trigger`}
           />
-        </FormatBalance> / <FormatBalance value={sworkBenefitLedger?.total_funds} />
+        </FormatBalance> / {members && <FormatBalance value={UNIT.muln(members.length * 18)} />} 
       </td>
       <td className='number together'>
         <UnLockingSworkFounds account={address} />
