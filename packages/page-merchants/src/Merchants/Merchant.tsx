@@ -152,7 +152,7 @@ function Account ({ account: { address }, className = '', filter, isFavorite, se
         {formatBalance(reward)}
       </td>
       <td className='number together'>
-        {formatBalance(new BN(Number(collateral).toString()).divRound(new BN('10')))}
+        {formatBalance(new BN(Number(collateral).toString()))}
       </td>
       <td className='number together'>
         {formatBalance(collateral)}
