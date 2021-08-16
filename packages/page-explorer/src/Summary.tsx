@@ -14,7 +14,8 @@ import { useTranslation } from './translate';
 
 function Summary (): React.ReactElement {
   const { t } = useTranslation();
-  const { api } = useApi();
+  const { api, systemChain } = useApi();
+  const isMaxwell = systemChain === 'Crust Maxwell';
 
   return (
     <SummaryBox>
@@ -36,7 +37,7 @@ function Summary (): React.ReactElement {
             <TotalIssuance />
           </CardSummary>
         )}
-        {api.query.balances && (
+        {!isMaxwell && (
           <CardSummary
             className='media--800'
             label={t<string>('claim pot')}
