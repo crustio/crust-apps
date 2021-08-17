@@ -72,12 +72,12 @@ function StorageMarket ({ className = '' }: Props): React.ReactElement<Props> {
     ];
     const allMerchants: string[] = [];
 
-    api.combineLatest<any[]>(fns, ([groups]): void => {
-      if (Array.isArray(groups)) {
+    api.combineLatest<any[]>(fns, ([ledger]): void => {
+      if (Array.isArray(ledger)) {
         let unlocking = BN_ZERO;
-        groups.forEach(([{ args: [accountId] }, value]) => {
+        ledger.forEach(([{ args: [accountId] }, value]) => {
           allMerchants.push(accountId.toString());
-          for (const unlockingLegder of value) {
+          for (const unlockingLegder of value.unlocking_funds) {
             unlocking = unlocking.add(new BN(Number(unlockingLegder.value).toString()));
           }
         });

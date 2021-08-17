@@ -91,10 +91,10 @@ function Bond ({ className = '', foundsType, onClose, onSuccess, accountId: prop
             <Modal.Columns>
               {<InputBalance
                 autoFocus
-                help={t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}
+                help={foundsType == FoundsType.MARKET ? t<string>('Type the collateral amount you want to bond. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.') : t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}
                 isError={!hasAvailable}
                 isZeroable
-                label={t<string>('amount')}
+                label={foundsType == FoundsType.MARKET ? t<string>('collateral amount') : t<string>('amount')}
                 onChange={setAmount}
               />
               }
