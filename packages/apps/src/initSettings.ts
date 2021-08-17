@@ -58,5 +58,6 @@ const apiUrl = getApiUrl();
 
 // set the default as retrieved here
 settings.set({ apiUrl });
+settings.set({ icon: 'robohash' });
 
 console.log('WS endpoint=', apiUrl);

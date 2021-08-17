@@ -31,9 +31,9 @@ function QuitGroup ({ className = '', onClose, senderId: propSenderId }: Props):
             <Modal.Columns hint={t<string>('The transferred balance will be subtracted (along with fees) from the sender account.')}>
               <InputAddress
                 defaultValue={propSenderId}
-                help={t<string>('The account you will send funds from.')}
+                help={t<string>('The account you will quit group.')}
                 isDisabled={!!propSenderId}
-                label={t<string>('send from account')}
+                label={t<string>('member account')}
                 onChange={setSenderId}
                 type='account'
               />

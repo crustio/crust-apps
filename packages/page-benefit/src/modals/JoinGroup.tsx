@@ -33,9 +33,9 @@ function JoinGroup ({ className = '', onClose, recipientId: propRecipientId, sen
             <Modal.Columns hint={t<string>('The transferred balance will be subtracted (along with fees) from the sender account.')}>
               <InputAddress
                 defaultValue={propSenderId}
-                help={t<string>('The account you will send funds from.')}
+                help={t<string>('The account you will join group.')}
                 isDisabled={!!propSenderId}
-                label={t<string>('send from account')}
+                label={t<string>('member account')}
                 onChange={setSenderId}
                 type='account'
               />
@@ -45,9 +45,9 @@ function JoinGroup ({ className = '', onClose, recipientId: propRecipientId, sen
             <Modal.Columns hint={t<string>('The beneficiary will have access to the transferred fees when the transaction is included in a block.')}>
               <InputAddress
                 defaultValue={propRecipientId}
-                help={t<string>('Select a contact or paste the address you want to send funds to.')}
+                help={t<string>('Select a contact or paste the group owner you want to join.')}
                 isDisabled={!!propRecipientId}
-                label={t<string>('send to address')}
+                label={t<string>('group onwer account')}
                 onChange={setRecipientId}
                 type='allPlus'
               />
