@@ -10,7 +10,6 @@ import { CardSummary, Icon, Spinner, SummaryBox, Tooltip } from '@polkadot/react
 import { useTranslation } from '@polkadot/apps/translate';
 import BN from 'bn.js';
 import { FormatBalance } from '@polkadot/react-query';
-import { formatBalance } from '@polkadot/util';
 
 interface Props {
   isLoading: boolean;
@@ -39,7 +38,7 @@ function Summary({ isLoading, summaryInfo: { totalLockup, unlocking, reductionQu
             <CardSummary
               label={t<string>('Settlement Transaction Fee Relief Pool (Current Era)')}
             >
-              {formatBalance(reductionQuota, { withSiFull: true })}&nbsp;&nbsp;<><Icon
+              <FormatBalance value={reductionQuota} />&nbsp;&nbsp;<><Icon
                 icon='info-circle'
                 tooltip={`summary-locks-trigger-set-fee-pool`}
               />

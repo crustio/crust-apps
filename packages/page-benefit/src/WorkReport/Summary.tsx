@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { CardSummary, Spinner, SummaryBox } from '@polkadot/react-components';
 import { useTranslation } from '@polkadot/apps/translate';
 import BN from 'bn.js';
-import { formatBalance } from '@polkadot/util';
+import { FormatBalance } from '@polkadot/react-query';
 
 interface Props {
   isLoading: boolean;
@@ -27,12 +27,12 @@ function Summary({ isLoading, summaryInfo: { totalLockup, unlocking } }: Props):
     <SummaryBox>
         <section>
             <CardSummary label={t<string>('Total lockup')}>
-              {formatBalance(totalLockup, { withSiFull: true })}
+              <FormatBalance value={totalLockup} />
             </CardSummary>
             <CardSummary
               label={t<string>('Unlocking')}
             >
-              {formatBalance(unlocking, { withSiFull: true })}
+              <FormatBalance value={unlocking} />
             </CardSummary>
         </section>
     </SummaryBox>
