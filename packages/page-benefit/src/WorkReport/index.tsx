@@ -59,7 +59,7 @@ function WorkReport ({ className = '' }: Props): React.ReactElement<Props> {
   const headerRef = useRef([
     [t('Group owner'), 'start', 2],
     [t('No. of Group members')],
-    [t('Lockup/Total free transaction fees')],
+    [t('Lockup/Recommended lock volume')],
     [t('Unlocking')],
     [t('Deduction of last Era')],
     []

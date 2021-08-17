@@ -1551,7 +1551,7 @@
   "Lock CRU to reduce the transaction fees of work reporting": "锁定CRU减免工作量上报手续费",
   "Group Owners can reduce the transaction fees of work reporting for Group members by locking CRU. For each 3CRU locked up, the transaction fees can be reduced once for each Era. If the number of reduced transaction fees is exceeded, the transaction fee of Group members will be charged normally.": "Group Owner可以通过锁定CRU为Group member减免工作量上报手续费。每锁定3CRU，每个Era可以减免一次手续费，超出减免次数后，将正常收取Group member的手续费。",
   "No. of Group members": "组成员数量",
-  "Lockup/Total free transaction fees": "已锁定/全免锁定量",
+  "Lockup/Recommended lock volume": "已锁仓/推荐锁仓量",
   "Unlocking": "解锁中",
   "Deduction of last Era": "上个Era减免",
   "Increase lockup": "增加锁定",
