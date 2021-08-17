@@ -191,7 +191,7 @@ function StorageMarket ({ className = '' }: Props): React.ReactElement<Props> {
       }} />
       
       <Table
-        empty={(!hasAccounts || (!isLoading)) && t<string>("You don't have group accounts. Some features are currently hidden and will only become available once you have group accounts.")}
+        empty={(!hasAccounts || (!isLoading)) && t<string>("You don't have merchant accounts. Some features are currently hidden and will only become available once you have merchant accounts.")}
         header={headerRef.current}
         filer={filter}
       >
