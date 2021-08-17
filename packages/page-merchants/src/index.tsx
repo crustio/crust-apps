@@ -11,9 +11,9 @@ import { HelpOverlay, Tabs } from '@polkadot/react-components';
 import { useAccounts, useApi, useIpfs } from '@polkadot/react-hooks';
 
 import basicMd from './md/basic.md';
+import MainnetMarchants from './MainnetMarchants';
 import Merchants from './Merchants';
 import Settlements from './Settlements';
-import MainnetMarchants from './MainnetMarchants';
 
 const HIDDEN_ACC = ['vanity'];
 
@@ -52,7 +52,7 @@ function MerchantsApp ({ basePath, onStatusChange }: Props): React.ReactElement<
         </Route>
         <Route basePath={basePath}
           onStatusChange={onStatusChange}>
-          { isMaxwell ? <Merchants/> : <MainnetMarchants /> } 
+          { isMaxwell ? <Merchants/> : <MainnetMarchants /> }
         </Route>
 
       </Switch>
