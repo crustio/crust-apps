@@ -857,6 +857,7 @@
   "Treasury overview": "国库概览",
   "Type here what you would like your address to contain. This tool will generate the keys and show the associated addresses that best match your search. You can use \"?\" as a wildcard for a character.": "在此处输入您希望包含的地址。此工具将生成密钥并显示与您的搜索最匹配的关联地址。你可以使用 \"?\" 做为通配符。",
   "Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.": "输入你要转移的总量。注意，你可以从右边选择单位，例如“发送 1 milli”相当于发送0.001。",
+  "Type the collateral amount you want to bond. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.": "输入你要绑定的保障金。注意，你可以从右边选择单位，例如“发送 1 milli”相当于发送0.001。",
   "Type the name of this Asset. This name will be used across all the apps. It can be edited later on.": "键入该资产的名称。此名称将在所有应用程序中使用。之后可以对其进行编辑。",
   "Type the name of your contact. This name will be used across all the apps. It can be edited later on.": "输入联系人的姓名。这个名字在本应用的所有页面内可用。之后可以编辑。",
   "Type the password chosen at the account creation. It was used to encrypt your account's private key in the backup file.": "输入在创建帐户时选择的密码。它用于在备份文件中加密你帐户的私钥。",
@@ -1609,5 +1610,6 @@
   "Total Collateral": "总保障金额",
   " will unLocked at {{era}} era": " 将在第 {{era}} era解锁",
   "Merchant": "商户",
-  "claim pot": "认领池"
+  "claim pot": "认领池",
+  "collateral amount": "保障金"
 }
