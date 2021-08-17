@@ -391,5 +391,8 @@
   "{{percentage}}% turnout": "",
   "valid":  "within the expiration date",
   "expiredWithin15Days":  "within15 days after expiration",
-  "expired15Days": "15 days after expiration"
+  "expired15Days": "15 days after expiration",
+  "StorageMarket": "StorageMarket",
+  "nav.merchants": "Merchants",
+  "nav.settlements": "Settlements"
 }

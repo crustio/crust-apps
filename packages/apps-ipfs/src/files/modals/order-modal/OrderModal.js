@@ -56,7 +56,8 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
     setCidNotValid(fileCid && !isIPFS.cid(fileCid) && !isIPFS.path(fileCid));
   }, [fileCid]);
   const benefitHint = useMemo(() => {
-      return benefits &&  <span className={"file-info"}>折扣优惠{100 - benefits * 100}%, 实际价格为{originPrice}</span>
+
+      return benefits &&  <span className={"file-info"}>{t("discount", {discount: 100 - benefits* 100, originPrice})}</span>
   }, [benefits, originPrice, filePrice])
 
   return <Modal

@@ -41,10 +41,8 @@ function createWebpack (context, mode = 'production') {
     './query.js': path.resolve(__dirname, 'src/patch/query.js'),
     './validators.js': path.resolve(__dirname, 'src/patch/validators.js'),
     './stakerRewards.js': path.resolve(__dirname, 'src/patch/stakerRewards.js'),
-    './components/StartExploringPage': path.resolve(__dirname, 'src/patch/StartExploringPage'),
     './bundles/explore': path.resolve(__dirname, 'src/patch/bundles/explore'),
     './components/StartExploringPage': path.resolve(__dirname, 'src/patch/StartExploringPage'),
-    './bundles/explore': path.resolve(__dirname, 'src/patch/bundles/explore')
   });
   const plugins = fs.existsSync(path.join(context, 'public'))
     ? new CopyWebpackPlugin({ patterns: [{ from: 'public' }] })
