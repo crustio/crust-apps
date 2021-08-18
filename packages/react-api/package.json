@@ -8,6 +8,9 @@
     "@polkadot/api": "^4.2.2-4",
     "@polkadot/extension-dapp": "^0.37.3-10",
     "@polkadot/x-rxjs": "^6.0.5",
-    "fflate": "^0.6.7"
+    "ethers": "^5.4.1",
+    "fflate": "^0.6.7",
+    "uuid": "^8.3.2",
+    "web3modal": "^1.9.3"
   }
 }

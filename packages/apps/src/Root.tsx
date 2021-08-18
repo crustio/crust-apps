@@ -8,7 +8,7 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { HashRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
-import { Api } from '@polkadot/react-api';
+import { Api, EthersProvider, Web3Provider } from '@polkadot/react-api';
 import Queue from '@polkadot/react-components/Status/Queue';
 import { BlockAuthors, Events } from '@polkadot/react-query';
 import { settings } from '@polkadot/ui-settings';
@@ -43,20 +43,25 @@ function Root ({ store }: Props): React.ReactElement<Props> {
     <Suspense fallback='...'>
       <ThemeProvider theme={theme}>
         <Queue>
-          <Api
-            store={store}
-            url={settings.apiUrl}
-          >
-            <BlockAuthors>
-              <Events>
-                <HashRouter>
-                  <WindowDimensions>
-                    <Apps />
-                  </WindowDimensions>
-                </HashRouter>
-              </Events>
-            </BlockAuthors>
-          </Api>
+          <Web3Provider>
+            <EthersProvider>
+              <Api
+                store={store}
+                url={settings.apiUrl}
+              >
+                <BlockAuthors>
+                  <Events>
+                    <HashRouter>
+                      <WindowDimensions>
+                        <Apps />
+                      </WindowDimensions>
+                    </HashRouter>
+                  </Events>
+                </BlockAuthors>
+              </Api>
+            </EthersProvider>
+
+          </Web3Provider>
         </Queue>
       </ThemeProvider>
     </Suspense>
