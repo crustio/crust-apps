@@ -69,7 +69,7 @@ i18next
       'react-query',
       'react-signer',
       'translation',
-        'app-merchants'
+      'app-merchants'
     ],
     nsSeparator: false,
     debug: false,
