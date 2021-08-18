@@ -29,7 +29,7 @@ function Icon ({ className = '', color = 'normal', icon, isSpinning, onClick, si
 
   return (
   // eslint-disable-next-line multiline-ternary
-    icon === 'ipfs' ? <span className={`icomoon icomoon-ipfs ui--Icon ${color}Color${onClick ? ' isClickable' : ''} ${className}`}/> : <FontAwesomeIcon
+      icon === 'ipfs' ? <span className={`icomoon icomoon-ipfs ui--Icon ${color}Color${onClick ? ' isClickable' : ''} ${className}`}>i</span> : <FontAwesomeIcon
       {...extraProps}
       className={`ui--Icon ${color}Color${onClick ? ' isClickable' : ''} ${className}`}
       icon={icon}

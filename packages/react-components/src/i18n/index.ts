@@ -28,7 +28,6 @@ i18next
   .use(Backend)
   .init({
     backend: {},
-    debug: false,
     detection: {
       order: ['i18nLangDetector', 'navigator']
     },
@@ -69,9 +68,11 @@ i18next
       'react-params',
       'react-query',
       'react-signer',
-      'translation'
+      'translation',
+        'app-merchants'
     ],
     nsSeparator: false,
+    debug: true,
     react: {
       wait: true
     },

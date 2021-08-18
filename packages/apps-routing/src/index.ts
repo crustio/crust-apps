@@ -18,7 +18,7 @@ import democracy from './democracy';
 import explorer from './explorer';
 import extrinsics from './extrinsics';
 import gilt from './gilt';
-import ipfsFiles from './ipfsFiles';
+import storageMarket from './storageMarket';
 import js from './js';
 import merchants from './merchants';
 import parachains from './parachains';
@@ -34,6 +34,7 @@ import sudo from './sudo';
 import techcomm from './techcomm';
 import transfer from './transfer';
 import treasury from './treasury';
+import settlements from "./settlements";
 
 export default function create (t: TFunction): Routes {
   return [
@@ -56,7 +57,7 @@ export default function create (t: TFunction): Routes {
     calendar(t),
     contracts(t),
     storage(t),
-    ipfsFiles(t),
+    storageMarket(t),
     csmStaking(t),
     extrinsics(t),
     rpc(t),
@@ -65,6 +66,7 @@ export default function create (t: TFunction): Routes {
     js(t),
     settings(t),
     merchants(t),
+    settlements(t),
     splore(t),
     benefit(t)
   ];
