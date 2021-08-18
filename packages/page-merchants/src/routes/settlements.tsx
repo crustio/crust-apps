@@ -8,17 +8,25 @@ import { Route } from 'react-router';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import { HelpOverlay, Tabs } from '@polkadot/react-components';
-import { useAccounts, useIpfs } from '@polkadot/react-hooks';
+import {useAccounts, useApi, useIpfs} from '@polkadot/react-hooks';
 
 import basicMd from '../md/basic.md';
 import Settlements from '../Settlements';
 
 const HIDDEN_ACC = ['vanity'];
 
+const themeDict: { [k: string]: string } = {
+    "Crust": "mainnet",
+    "Crust Maxwell": "maxwell",
+    "Crust Rockey": "rockey"
+}
 function MerchantsApp ({ basePath, onStatusChange }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
     const { hasAccounts } = useAccounts();
     const { isIpfs } = useIpfs();
+    const {systemChain} = useApi()
+    const theme = themeDict[systemChain]|| "rockey"
+
 
     const itemsRef = useRef([
         {
@@ -28,7 +36,7 @@ function MerchantsApp ({ basePath, onStatusChange }: Props): React.ReactElement<
     ]);
 
     return (
-        <main className='accounts--App'>
+        <main className={`accounts--App ${theme}`}>
       <HelpOverlay md={basicMd as string} />
       <header>
         <Tabs

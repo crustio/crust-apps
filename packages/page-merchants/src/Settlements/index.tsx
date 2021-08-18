@@ -1,15 +1,15 @@
 // Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
-import { useTranslation } from '@polkadot/apps/translate';
-import { ISettlementItem } from '@polkadot/apps-merchants/Settlements/settlementList';
-import { Button, Spinner } from '@polkadot/react-components';
-import { useToggle } from '@polkadot/react-hooks';
+import {useTranslation} from '@polkadot/apps/translate';
+import {EStatus, ISettlementItem} from '@polkadot/apps-merchants/Settlements/settlementList';
+import {Button, Spinner} from '@polkadot/react-components';
+import {useToggle} from '@polkadot/react-hooks';
 
 import FetchModal from './fetch-modal/FetchModal';
-import { fetchFileTobeClaimed } from './fetch';
+import {fetchFileTobeClaimed} from './fetch';
 import Settlement from './Settlement';
 import SettlementList from './settlementList';
 
@@ -32,6 +32,14 @@ const Settlements: React.FC = () => {
     }).catch((e) => {
       console.log(e);
     }).finally(() => {
+      setSettlements([{cid: "123",
+        expiredTime: 123,
+        fileSize: 122121,
+        renewReward: 123,
+        replicas: 12,
+        settlementReward: 2,
+        status: EStatus.Settlementable
+      }])
       toggleLoading(false);
     });
   };

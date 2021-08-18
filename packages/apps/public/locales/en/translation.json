@@ -392,7 +392,8 @@
   "valid":  "within the expiration date",
   "expiredWithin15Days":  "within15 days after expiration",
   "expired15Days": "15 days after expiration",
-  "StorageMarket": "Storage Market",
+  "Storage Market": "Storage Market",
   "nav.merchants": "Storage merchant",
-  "nav.settlements": "Order settlement"
+  "nav.settlements": "Order settlement",
+  "The account have enough free funds（ from fee relief pool）available to cover the transaction fees without dropping the balance below the account existential amount": "The account have enough free funds（ from fee relief pool）available to cover the transaction fees without dropping the balance below the account existential amount"
 }

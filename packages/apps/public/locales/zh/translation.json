@@ -1595,7 +1595,7 @@
   "expired15Days": "过期超过15天",
   "StorageMarket": "存储市场",
   "nav.settlements": "订单清算",
-  "discount": "折扣优惠{{discount}}%, 实际价格为{{originPrice}}"
+  "discount": "折扣优惠{{discount}}%, 实际价格为{{originPrice}}",
   "not started yet": "尚未启动",
   "Settlement Transaction Fee Relief Pool (Current Era)": "当前Era清算手续费减免池",
   "0.2% of Current Era Block Reward": "当前Era区块奖励的0.2%",
