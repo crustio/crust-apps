@@ -5,9 +5,6 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAccounts } from '@polkadot/react-hooks';
-import { Available } from '@polkadot/react-query';
-
 import { Button,
   Dropdown, InputAddress,
   Modal
