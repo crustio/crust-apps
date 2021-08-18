@@ -10,6 +10,7 @@
     "@polkadot/x-rxjs": "^6.0.5",
     "ethers": "^5.4.1",
     "fflate": "^0.6.7",
+    "react-query": "^3.17.2",
     "uuid": "^8.3.2",
     "web3modal": "^1.9.3"
   }
