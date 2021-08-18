@@ -46,7 +46,6 @@ const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggl
   let status = fileStatusEnum.PENDING;
   if (fileStatus) {
     const _fileStatus = JSON.parse(JSON.stringify(fileStatus));
-    console.log(_fileStatus);
     if (_fileStatus) {
       const { amount,
         claimed_at,

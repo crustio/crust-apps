@@ -8,12 +8,12 @@ import React, { useEffect, useState } from 'react';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import CruTooltip from '@polkadot/apps-merchants/Settlements/CruTooltip';
-import SettleModal from '@polkadot/apps-merchants/Settlements/settle-modal/SettleModal';
+import SettleModal from '@polkadot/apps-merchants/Settlements/settle-modal';
 import SettlementItem from '@polkadot/apps-merchants/Settlements/settlementItem';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { BlockNumber } from '@polkadot/types/interfaces';
 
-enum EStatus {
+export enum EStatus {
   Settlementable = 'Settlementable',
   Renewable = 'Renewable'
 }
