@@ -72,7 +72,7 @@ i18next
         'app-merchants'
     ],
     nsSeparator: false,
-    debug: true,
+    debug: false,
     react: {
       wait: true
     },

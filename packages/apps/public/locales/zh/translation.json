@@ -1618,5 +1618,8 @@
   " will unLocked at {{era}} era": " 将在第 {{era}} era解锁",
   "Merchant": "商户",
   "claim pot": "认领池",
-  "collateral amount": "保障金"
+  "collateral amount": "保障金",
+  "Storage merchant should first increase collateral in the “storage market benefits module” to qualify for the storage market rewards.": "存储商户需要先到“存储市场权益模块”中增加保障金，才能获得领取存储市场收益的资格。",
+  "Increase collateral...": "增加保障金...",
+  "How to get lucky order reward >>": "如何领取彩蛋订单奖励 >>"
 }

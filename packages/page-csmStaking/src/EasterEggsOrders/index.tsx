@@ -21,7 +21,7 @@ interface Props {
 
 
 function EasterEggsOrders ({ isLoading }: Props): React.ReactElement<Props> {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   // we have a very large list, so we use a loading delay
   // const [nameFilter, setNameFilter] = useState<string>('');
   const [currentList, setCurrentList] = useState<EasterEggsOrder>({
@@ -62,8 +62,16 @@ function EasterEggsOrders ({ isLoading }: Props): React.ReactElement<Props> {
   ]);
 
   return (<>
+    <h3 style={{ "textAlign": 'center' }}>
+      <span style={{ "wordWrap": "break-word", "wordBreak": "break-all", float: "right", 'display': 'inline-block' }}><span style={{ 'fontWeight': 'bold', fontSize: '16px' }}>
+        <a href={i18n.language == 'zh' ? 'https://www.yuque.com/qm003f/cr9w38/cldb5y' : 'https://medium.com/crustnetwork/tutorial-exit-the-maxwell-preview-network-lucky-order-rewards-78cbf3d36639'} target="_blank">
+          {t<string>(`How to get lucky order reward >>`)}</a>
+      </span>
+      
+      </span>
+    </h3>
     <h1>
-        {t<string>('Today lucky orders')}
+      {t<string>('Today lucky orders')}
     </h1>
     <Table
       header={headerRef.current}
