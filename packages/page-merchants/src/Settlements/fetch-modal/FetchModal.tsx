@@ -10,7 +10,7 @@ import {
   Modal
 } from '../../../../react-components/src';
 import {Available} from "@polkadot/react-query";
-import {useAccounts} from "@polkadot/react-hooks";
+import {useAccounts, useApi} from "@polkadot/react-hooks";
 import Checkbox from "../../../../react-components/src/Checkbox";
 
 const options = [{
@@ -25,7 +25,10 @@ const FetchModal: React.FC<Props> = ({ onClose, onConfirm }) => {
   const [dataSource] = useState('Crust Storage Explorer');
   const { hasAccounts } = useAccounts();
   const [account, setAccount] = useState<any>();
+  const [isAllOrders, setIsAllOrders] = useState(false)
   const [expireOptions, setExpireOptions] = useState<{[k:string]:boolean}>({valid: false, expiredWithin15Days: false, expired15Days: false})
+    const { systemChain } = useApi();
+    const isMaxwell = systemChain === 'Crust Maxwell';
   const checkboxList = ["valid", "expiredWithin15Days", "expired15Days"]
   const _setCheckboxOption = useCallback((item: string, value: any) => {
       setExpireOptions({
@@ -51,33 +54,44 @@ const FetchModal: React.FC<Props> = ({ onClose, onConfirm }) => {
             />
           </Modal.Columns>
         </Modal.Content>
-        <Modal.Content>
+        {
+            !isMaxwell && <>
+            <Modal.Content>
           <Modal.Columns hint={!hasAccounts && <p className='file-info' style={{padding: 0}}>{t('noAccount')}</p>}>
             <InputAddress
                 isMultiple
                 label={t('Please choose account')}
-                isDisabled={!hasAccounts}
+                isDisabled={!hasAccounts || isAllOrders}
                 labelExtra={
-                  <Available
-                      label={t('transferrable')}
-                      params={account}
-                  />
+                    <Available
+                        params={account}
+                    />
                 }
                 defaultValue={account}
                 onChange={setAccount}
                 type='account'
             />
           </Modal.Columns>
+          <Modal.Content>
+            <div style={{paddingLeft: 15}}>
+              <Checkbox value={isAllOrders}
+                        className='pv3 pl3 pr1 flex-none'
+                        label={t("All orders")}
+                        onChange={(value: any) => { setIsAllOrders(value) }} />
+            </div>
+          </Modal.Content>
         </Modal.Content>
-        <Modal.Content>
+            <Modal.Content>
             <div style={{paddingLeft: 15}}>{
                 checkboxList.map((item) => <Checkbox key={item} value={expireOptions[item]}
-                                                 className='pv3 pl3 pr1 flex-none'
-                                                 label={t(item)}
-                                                 onChange={(value: any) => { _setCheckboxOption(item, value) }} />)
+                                                     className='pv3 pl3 pr1 flex-none'
+                                                     label={t(item)}
+                                                     onChange={(value: any) => { _setCheckboxOption(item, value) }} />)
             }
             </div>
         </Modal.Content>
+            </>
+        }
     </Modal.Content>
     <Modal.Actions onCancel={onClose}>
       <Button className='tc'
