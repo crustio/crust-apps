@@ -47,8 +47,6 @@ async function transformProviderStateInfo(api: ApiPromise, provider: ProviderInf
           total = total.add(new BN(Number(ledger.active).toString()))
       }
   }
-  // const csmLimit = provider.storage * 0.01 * Math.pow(1.02, Math.min(activeEra-958, 80));
-  console.log('factor', factor)
   const csmLimit = provider.storage * 0.01 * factor;
   const stakedCSM = total.div(new BN(1e6)).toNumber()/1_000_000;
   const effectiveCSM = Math.min(csmLimit, stakedCSM);
@@ -75,7 +73,6 @@ const getOverviewInfo = async (overviewUrl: string, api: ApiPromise, factor: num
         totalEffectiveStakes += providerState.effectiveCSM;
         providers.push(providerState);
       }
-      console.log('totalEffectiveStakes', totalEffectiveStakes)
       return {
         providers: providers,
         summaryInfo: {
