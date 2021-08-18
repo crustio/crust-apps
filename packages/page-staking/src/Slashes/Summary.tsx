@@ -39,7 +39,7 @@ function Header ({ slash: { era, nominators, reporters, total, validators } }: P
         <CardSummary label={t<string>('validators')}>
           {formatNumber(validators.length)}
         </CardSummary>
-        <CardSummary label={t<string>('nominators')}>
+        <CardSummary label={t<string>('guarantors')}>
           {formatNumber(nominators.length)}
         </CardSummary>
         <CardSummary label={t<string>('reporters')}>

@@ -8,10 +8,11 @@ import {Route, Switch} from 'react-router';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import { HelpOverlay, Tabs } from '@polkadot/react-components';
-import { useAccounts, useIpfs } from '@polkadot/react-hooks';
+import {useAccounts, useApi, useIpfs} from '@polkadot/react-hooks';
 
 import basicMd from '../md/basic.md';
 import Merchants from "@polkadot/apps-merchants/Merchants";
+import MainnetMarchants from "@polkadot/apps-merchants/MainnetMarchants";
 
 const HIDDEN_ACC = ['vanity'];
 
@@ -19,6 +20,8 @@ function MerchantsApp ({ basePath, onStatusChange }: Props): React.ReactElement<
     const { t } = useTranslation();
     const { hasAccounts } = useAccounts();
     const { isIpfs } = useIpfs();
+    const { systemChain } = useApi();
+    const isMaxwell = systemChain === 'Crust Maxwell';
 
     const itemsRef = useRef([
         {
@@ -41,7 +44,7 @@ function MerchantsApp ({ basePath, onStatusChange }: Props): React.ReactElement<
       <Switch>
         <Route basePath={basePath}
                onStatusChange={onStatusChange}>
-          <Merchants/>
+            { isMaxwell ? <Merchants/> : <MainnetMarchants/>}
         </Route>
 
       </Switch>

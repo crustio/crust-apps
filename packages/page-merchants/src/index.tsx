@@ -7,34 +7,38 @@ import React, { useRef } from 'react';
 import { Route, Switch } from 'react-router';
 
 import { useTranslation } from '@polkadot/apps/translate';
-import { Tabs } from '@polkadot/react-components';
-import { useAccounts, useIpfs } from '@polkadot/react-hooks';
+import { HelpOverlay, Tabs } from '@polkadot/react-components';
+import { useAccounts, useApi, useIpfs } from '@polkadot/react-hooks';
 
-import StorageMarket from './StorageMarket';
-import WorkReport from './WorkReport';
+import basicMd from './md/basic.md';
+import MainnetMarchants from './MainnetMarchants';
+import Merchants from './Merchants';
+import Settlements from './Settlements';
 
 const HIDDEN_ACC = ['vanity'];
 
-function BenifitApp ({ basePath, onStatusChange }: Props): React.ReactElement<Props> {
+function MerchantsApp ({ basePath, onStatusChange }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { hasAccounts } = useAccounts();
   const { isIpfs } = useIpfs();
+  const { systemChain } = useApi();
+  const isMaxwell = systemChain === 'Crust Maxwell';
 
   const itemsRef = useRef([
     {
       isRoot: true,
-      name: 'reportWworks',
-      text: t<string>('Work report')
+      name: 'overview',
+      text: t<string>('My merchants')
     },
     {
-      name: 'storageMarket',
-      text: t<string>('Storage market')
+      name: 'settlements',
+      text: t<string>('Order settlement')
     }
-
   ]);
 
   return (
     <main className='accounts--App'>
+      <HelpOverlay md={basicMd as string} />
       <header>
         <Tabs
           basePath={basePath}
@@ -43,12 +47,12 @@ function BenifitApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pr
         />
       </header>
       <Switch>
-        <Route path={`${basePath}/storageMarket`}>
-          <StorageMarket />
+        <Route path={`${basePath}/settlements`}>
+          <Settlements/>
         </Route>
         <Route basePath={basePath}
           onStatusChange={onStatusChange}>
-          <WorkReport />
+          { isMaxwell ? <Merchants/> : <MainnetMarchants /> }
         </Route>
 
       </Switch>
@@ -56,4 +60,4 @@ function BenifitApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pr
   );
 }
 
-export default React.memo(BenifitApp);
+export default React.memo(MerchantsApp);

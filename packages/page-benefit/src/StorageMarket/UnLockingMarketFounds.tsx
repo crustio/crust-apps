@@ -44,18 +44,18 @@ interface UnLockingMapping {
   value: BN
 }
 
-function UnLockingSworkFounds ({ className = '', account, isHighlight, isPadded = true, value, withShrink = false }: Props): React.ReactElement<Props> | null {
+function UnLockingMarketFounds ({ className = '', account, isHighlight, isPadded = true, value, withShrink = false }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
   const { t } = useTranslation();
   const [unLockings, setUnLockings] = useState<UnLockingMapping[]>([]);
-  const sworkBenefitsLedger = useCall<any>(api.query.benefits.sworkBenefits, [account])
+  const marketBenefitsLedger = useCall<any>(api.query.benefits.marketBenefits, [account])
   const activeEraInfo = useCall<any>(api.query.staking.activeEra)
   const activeEra = activeEraInfo && JSON.parse(JSON.stringify(activeEraInfo)).index;
 
   const [unLockingValue, setUnLockingValue] = useState<BN>(BN_ZERO);
 
   useEffect(() => {
-    const tmp = sworkBenefitsLedger && JSON.parse(JSON.stringify(sworkBenefitsLedger));
+    const tmp = marketBenefitsLedger && JSON.parse(JSON.stringify(marketBenefitsLedger));
     if (tmp) {
       let tmpValue = BN_ZERO;
       for (const unLock of tmp.unlocking_funds) {
@@ -65,7 +65,7 @@ function UnLockingSworkFounds ({ className = '', account, isHighlight, isPadded 
       setUnLockingValue(tmpValue);
     }
 
-  }, [api, sworkBenefitsLedger])
+  }, [api, marketBenefitsLedger])
 
   if (unLockingValue.isZero()) {
     return null;
@@ -100,7 +100,7 @@ function UnLockingSworkFounds ({ className = '', account, isHighlight, isPadded 
   );
 }
 
-export default React.memo(styled(UnLockingSworkFounds)`
+export default React.memo(styled(UnLockingMarketFounds)`
   display: inline-block;
   padding: 0 0.25rem 0 1rem;
   text-align: left;

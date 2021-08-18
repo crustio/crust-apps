@@ -15,6 +15,6 @@ export default function create (t: TFunction): Route {
     group: 'storage',
     icon: 'users',
     name: 'merchants',
-    text: t('nav.merchants', 'Merchants', { ns: 'apps-routing' })
+    text: t('nav.merchants', 'Storage merchant', { ns: 'apps-routing' })
   };
 }

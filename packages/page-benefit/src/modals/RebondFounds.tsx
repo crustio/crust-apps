@@ -105,7 +105,7 @@ function RebondFounds ({ className = '', foundsType, onClose, onSuccess, senderI
       </Modal.Content>
       <Modal.Actions onCancel={onClose}>
         <TxButton
-          accountId={senderId}
+          accountId={propSenderId || senderId}
           icon='paper-plane'
           isDisabled={!hasAvailable || !amount}
           label={t<string>('Rebond')}
