@@ -12,12 +12,10 @@ import { SortedAccount } from '@polkadot/app-accounts/types';
 import { sortAccounts } from '@polkadot/app-accounts/util';
 import { useTranslation } from '@polkadot/apps/translate';
 import { Button, Input, Table } from '@polkadot/react-components';
-import { useAccounts, useApi, useCall, useFavorites, useLoadingDelay, useToggle } from '@polkadot/react-hooks';
+import { useAccounts, useApi, useCall, useFavorites, useLoadingDelay } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 import Banner from '../Banner';
 import Summary from './Summary';
-import { FoundsType } from '../modals/types';
-import Bond from '../modals/Bond';
 import Merchant from './Merchant';
 
 interface Balances {
@@ -46,7 +44,7 @@ function StorageMarket ({ className = '' }: Props): React.ReactElement<Props> {
   const [filterOn, setFilter] = useState<string>('');
   const [{ sortedAccounts }, setSorted] = useState<Sorted>({ sortedAccounts: [], sortedAddresses: [] });
   const [ownMerchants, setOwnMerchants] = useState<SortedAccount[] | undefined>();
-  const [isBondOpen, toggleBond] = useToggle();
+  // const [isBondOpen, toggleBond] = useToggle();
   const [allMerchants, setAllMerchants] = useState<string[]>([]);
   const [totalLockup, setTotalLockup] = useState<BN>(BN_ZERO);
   const [unlocking, setUnlocking] = useState<BN>(BN_ZERO);
@@ -56,7 +54,7 @@ function StorageMarket ({ className = '' }: Props): React.ReactElement<Props> {
   const isLoading = useLoadingDelay();
 
   const headerRef = useRef([
-    [t('Merchant'), 'start', 2],
+    [t('Account'), 'start', 2],
     [t('Collateral')],
     [t('Unlocking')],
     [t('Maximum Receivable Income')],
@@ -98,16 +96,8 @@ function StorageMarket ({ className = '' }: Props): React.ReactElement<Props> {
   }, []);
 
   useEffect(() => {
-    const tmp: SortedAccount[] = [];
-
     if (sortedAccounts && allMerchants) {
-      for (const myAccount of sortedAccounts) {
-        if (allMerchants.includes(myAccount.account.address.toString())) {
-          tmp.push(myAccount);
-        }
-      }
-
-      setOwnMerchants(tmp);
+      setOwnMerchants(sortedAccounts);
     }
   }, [sortedAccounts, allMerchants]);
 
@@ -154,13 +144,13 @@ function StorageMarket ({ className = '' }: Props): React.ReactElement<Props> {
 
   return (
     <div className={className}>
-      {isBondOpen && (
+      {/* {isBondOpen && (
         <Bond
           onClose={toggleBond}
           onSuccess={getMarketBenifits}
           foundsType={FoundsType.MARKET}
         />
-      )}  
+      )}   */}
       <h2>
         {t<string>('Lock CRU Tokens to obtain Storage Market Benefits')}
       </h2>
@@ -168,11 +158,11 @@ function StorageMarket ({ className = '' }: Props): React.ReactElement<Props> {
         <p>{t<string>('Users can obtain storage order discounts and reductions of order settlement transaction fees by locking CRU tokens as storage market collateral. As a storage merchant, the collateral is a necessary condition for receiving the storage market income. The collateal can obtain the same amount of income limit, accumulated storage market income will not increase after the  reaches the income limit, and the storage merchant needs to get income in time.')}</p>
       </Banner>
       <Button.Group>
-        <Button
+        {/* <Button
           icon='plus'
           label={t<string>('Register')}
           onClick={toggleBond}
-        />
+        /> */}
         {/* <Button
           icon='users'
           label={t<string>('Join group')}
