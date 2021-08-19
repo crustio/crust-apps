@@ -1605,7 +1605,7 @@
   "Settlement Free Funds (Current Era)": "当前Era清算免费额度",
   "Increase Collateral": "增加保障金",
   "Decrease Collateral": "减少保障金",
-  "Discount Ratio = User collateral/Total collateral amount": "折扣比例 = 用户保障金/总保障金",
+  "Discount Ratio = User collateral/Total collateral amount": "折扣比例 = 用户保障金/总保障金 \n “上限为10%”",
   "Free funds = (User collateral /Total collateral amount) * Settlement transaction fee relief pool": "减免配额 =（用户保障金/总保障金）* 减免池CRU总额",
   "Users can obtain storage order discounts and reductions of order settlement transaction fees by locking CRU tokens as storage market collateral. As a storage merchant, the collateral is a necessary condition for receiving the storage market income. The collateal can obtain the same amount of income limit, accumulated storage market income will not increase after the  reaches the income limit, and the storage merchant needs to get income in time.": "用户可以通过锁定CRU通证作为存储市场保障金来获得存储订单折扣优惠和订单清算手续费减免优惠；作为存储商户，保障金是领取存储市场收益的必要条件，保障金可以获得同等金额的收益领取上限，存储市场收益累计到领取上限后将不会再增加，需要存储商户及时领取。",
   "Lock CRU Tokens to obtain Storage Market Benefits": "锁定CRU通证获得存储市场权益",
@@ -1621,5 +1621,6 @@
   "collateral amount": "保障金",
   "Storage merchant should first increase collateral in the “storage market benefits module” to qualify for the storage market rewards.": "存储商户需要先到“存储市场权益模块”中增加保障金，才能获得领取存储市场收益的资格。",
   "Increase collateral...": "增加保障金...",
-  "How to get lucky order reward >>": "如何领取彩蛋订单奖励 >>"
+  "How to get lucky order reward >>": "如何领取彩蛋订单奖励 >>",
+  "Only accounts with collateral": "只显示有保障金的账户"
 }
