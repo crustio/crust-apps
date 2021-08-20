@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /* eslint-disable */
-import BN from 'bn.js';
 import { ethers } from 'ethers';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -13,8 +12,8 @@ import { useErc20Contract } from '@polkadot/react-api/hoc/useErc20Contract';
 import { useErc20Deposit } from '@polkadot/react-api/hoc/useErc20Deposit';
 import { useEtherAccounts } from '@polkadot/react-api/useEtherAccounts';
 import { useEthers } from '@polkadot/react-api/useEthers';
-import { Button, Card, Columar, Dropdown, InputAddress, InputNumber, Modal } from '@polkadot/react-components';
-import { BN_ZERO, u8aToHex } from '@polkadot/util';
+import { Button, Card, Columar, Dropdown, Input, InputAddress, Modal } from '@polkadot/react-components';
+import { u8aToHex } from '@polkadot/util';
 import { decodeAddress } from '@polkadot/util-crypto';
 
 import { createAccountsOpt } from './EthereumAccounts';
@@ -27,7 +26,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const [ethereumAddress, setEthereumAddress] = useState<string | undefined | null>(null);
   const { data: accounts = [] } = useEtherAccounts();
-  const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
+  const [amount, setAmount] = useState<string>('0');
   const { provider, signer } = useEthers();
   const { contract } = useErc20Contract();
   const submitDeposit = useErc20Deposit(ethereumAddress || undefined);
@@ -126,11 +125,11 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
               onChange={setReceiveId}
             />
             <h3>{t<string>('Type the amount')}</h3>
-            <InputNumber
+            <Input
+              type={"number"}
               help={t<string>('The threshold of vouches that is to be reached for the account to be recovered.')}
               label={t<string>('amount')}
               onChange={setAmount}
-
             />
             <Button.Group>
               <Button
