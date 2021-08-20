@@ -6,7 +6,7 @@ import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 import { useTranslation } from '@polkadot/apps/translate';
-import { Button, Card, Columar, Input, InputAddress, InputBalance, Modal, TxButton } from '@polkadot/react-components';
+import { Button, Card, Columar, Input, InputAddress, InputBalance, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 
@@ -32,7 +32,6 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
     <Columar>
       <Columar.Column>
         <Card withBottomMargin>
-          <Modal.Content>
             <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('From')}</span></h3>
 
             <InputAddress
@@ -72,7 +71,6 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
                 tx={api.tx.bridgeTransfer?.transferNative}
               />
             </Button.Group>
-          </Modal.Content>
         </Card>
       </Columar.Column>
 
