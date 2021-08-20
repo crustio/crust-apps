@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/react-api authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import { ethers, Signer } from 'ethers';
 import React, { createContext, useContext, useMemo } from 'react';
 
@@ -42,8 +43,6 @@ function EthersProvider ({ children }: Props): React.ReactElement<Props> | null 
     () => (provider !== undefined ? v4() : undefined),
     [provider]
   );
-
-  console.log('readystate', readystate);
 
   return (
     <EthersContext.Provider value={{ instance, provider, readystate, signer }}>

@@ -9,6 +9,7 @@ import addresses from './addresses';
 import assets from './assets';
 import benefit from './benefit';
 import bounties from './bounties';
+import bridge from './bridge';
 import calendar from './calendar';
 import claims from './claims';
 import contracts from './contracts';
@@ -35,7 +36,6 @@ import sudo from './sudo';
 import techcomm from './techcomm';
 import transfer from './transfer';
 import treasury from './treasury';
-import bridge from './bridge';
 
 export default function create (t: TFunction): Routes {
   return [

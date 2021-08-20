@@ -4,7 +4,8 @@
 import type { ThemeDef } from '@polkadot/react-components/types';
 import type { KeyringStore } from '@polkadot/ui-keyring/types';
 
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { HashRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
@@ -34,6 +35,7 @@ function createTheme ({ uiTheme }: { uiTheme: string }): ThemeDef {
 
 function Root ({ store }: Props): React.ReactElement<Props> {
   const [theme, setTheme] = useState(() => createTheme(settings));
+  const client = useRef(new QueryClient());
 
   useEffect((): void => {
     settings.on('change', (settings) => setTheme(createTheme(settings)));
@@ -43,25 +45,27 @@ function Root ({ store }: Props): React.ReactElement<Props> {
     <Suspense fallback='...'>
       <ThemeProvider theme={theme}>
         <Queue>
-          <Web3Provider>
-            <EthersProvider>
-              <Api
-                store={store}
-                url={settings.apiUrl}
-              >
-                <BlockAuthors>
-                  <Events>
-                    <HashRouter>
-                      <WindowDimensions>
-                        <Apps />
-                      </WindowDimensions>
-                    </HashRouter>
-                  </Events>
-                </BlockAuthors>
-              </Api>
-            </EthersProvider>
+          <QueryClientProvider client={client.current}>
+            <Web3Provider>
+              <EthersProvider>
+                <Api
+                  store={store}
+                  url={settings.apiUrl}
+                >
+                  <BlockAuthors>
+                    <Events>
+                      <HashRouter>
+                        <WindowDimensions>
+                          <Apps />
+                        </WindowDimensions>
+                      </HashRouter>
+                    </Events>
+                  </BlockAuthors>
+                </Api>
+              </EthersProvider>
 
-          </Web3Provider>
+            </Web3Provider>
+          </QueryClientProvider>
         </Queue>
       </ThemeProvider>
     </Suspense>

@@ -1,17 +1,18 @@
-import {
-  EthereumNetworkOptions,
-} from './lib/configuration'
+// Copyright 2017-2021 @polkadot/react-api authors & contributors
+// SPDX-License-Identifier: Apache-2.0
+
+import { EthereumNetworkOptions } from './lib/configuration';
 
 export const ethereums: Record<number, EthereumNetworkOptions> = {
-  42: {
-    bridge: '0xe5F54e020f3E4964Ba11D269Cdda602A78d09917',
-    erc20: '0x512f7a3c14b6ee86c2015bc8ac1fe97e657f75f2',
-    erc20AssetHandler: '0xDf2E83f33dB8A9CcF3a00FCe18C3F509b974353D',
+  4: {
+    bridge: '0x9B82DAF85E9dcC4409ed13970035a181fB411542',
+    erc20: '0x002f24009df0c1e9215c98cec76f18d8eaf3db0f',
+    erc20AssetHandler: '0x30BdFa99ddAe21a1Ee83e213Ff29121381DDEa54',
     erc20ResourceId:
-      '0x00000000000000000000000000000063a7e2be78898ba83824b0c0cc8dfb6001',
+      '0x000000000000000000000000000000608d1bc9a2d146ebc94667c336721b2801',
     peerChainIds: {
-      'poc4-dev': 1,
-    },
+      'Crust Rocky': 1
+    }
   },
   1: {
     bridge: '0xC84456ecA286194A201F844993C220150Cf22C63',
@@ -20,7 +21,7 @@ export const ethereums: Record<number, EthereumNetworkOptions> = {
     erc20ResourceId:
       '0x00000000000000000000000000000063a7e2be78898ba83824b0c0cc8dfb6001',
     peerChainIds: {
-      khala: 1,
-    },
-  },
-}
+      Crust: 1
+    }
+  }
+};

@@ -9,7 +9,9 @@ import { Route, Switch } from 'react-router';
 import { useTranslation } from '@polkadot/apps/translate';
 import { Tabs } from '@polkadot/react-components';
 import { useAccounts, useIpfs } from '@polkadot/react-hooks';
+
 import EthereumAssets from './EthereumAssets';
+import MainnetAssets from './MainnetAssets';
 
 const HIDDEN_ACC = ['vanity'];
 
@@ -21,14 +23,13 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
   const itemsRef = useRef([
     {
       isRoot: true,
-      name: 'Bridge',
-      text: t<string>('Bridge')
+      name: 'bridge',
+      text: t<string>('CRU to ERC20')
     },
     {
-      name: 'Bridge back',
-      text: t<string>('Bridge')
+      name: 'bridgeBack',
+      text: t<string>('ERC20 to CRU')
     }
-
   ]);
 
   return (
@@ -40,9 +41,15 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
           items={itemsRef.current}
         />
       </header>
-      <EthereumAssets></EthereumAssets>
       <Switch>
-    
+        <Route path={`${basePath}/bridgeBack`}>
+          <EthereumAssets />
+        </Route>
+        <Route basePath={basePath}
+          onStatusChange={onStatusChange}>
+          <MainnetAssets />
+        </Route>
+
       </Switch>
     </main>
   );

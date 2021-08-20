@@ -7,7 +7,7 @@ interface Option {
 }
 
 export function createAccountsOpt (accounts: string[]): Option[] {
-  return accounts.map(addr => {
-    return  { text: addr, value: 'Staked' }
+  return accounts.map((addr) => {
+    return { text: addr, value: addr };
   });
 }
