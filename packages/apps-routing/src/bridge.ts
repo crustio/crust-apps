@@ -12,8 +12,7 @@ export default function create (t: TFunction): Route {
     display: {
       needsAccounts: true,
       needsApi: [
-        'tx.benefits.addBenefitFunds',
-        'query.benefits.sworkBenefits'
+        'tx.bridgeTransfer.transferNative'
       ]
     },
     group: 'accounts',
