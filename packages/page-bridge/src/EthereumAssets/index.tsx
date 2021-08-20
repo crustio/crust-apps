@@ -121,7 +121,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
             <h3>{t<string>('Select the Crust address')}</h3>
             <InputAddress
               help={t<string>('The selected account to perform the derivation on.')}
-              label={t<string>('derive root account')}
+              label={t<string>('account')}
               onChange={setReceiveId}
             />
             <h3>{t<string>('Type the amount')}</h3>
