@@ -10,7 +10,7 @@ import { Route, Switch } from 'react-router';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import { Tabs } from '@polkadot/react-components';
-import { useApi } from '@polkadot/react-hooks';
+import { useApi, useCall } from '@polkadot/react-hooks';
 
 import { SummaryInfo } from './Overview/Summary';
 import Actions from './Actions';
@@ -21,6 +21,7 @@ import lodash from 'lodash';
 import { ApiPromise } from '@polkadot/api';
 import { BN_ZERO } from '@polkadot/util';
 import EasterEggsOrders from './EasterEggsOrders';
+import { ActiveEraInfo } from '@polkadot/types/interfaces';
 
 export const Capacity_Unit = new BN(1024 * 1024);
 
@@ -36,7 +37,7 @@ interface ProviderInfo {
   guaranteeFee: number;
 }
 
-async function transformProviderStateInfo(api: ApiPromise, provider: ProviderInfo): Promise<DataProviderState> {
+async function transformProviderStateInfo(api: ApiPromise, provider: ProviderInfo, factor: number): Promise<DataProviderState> {
   const multiQuery = await api.query.csmLocking.ledger.multi(provider.guarantors.concat(provider.account))
   const tmp = multiQuery && JSON.parse(JSON.stringify(multiQuery))
   let total = BN_ZERO;
@@ -46,7 +47,7 @@ async function transformProviderStateInfo(api: ApiPromise, provider: ProviderInf
           total = total.add(new BN(Number(ledger.active).toString()))
       }
   }
-  const csmLimit = provider.storage * 0.01;
+  const csmLimit = provider.storage * 0.01 * factor;
   const stakedCSM = total.div(new BN(1e6)).toNumber()/1_000_000;
   const effectiveCSM = Math.min(csmLimit, stakedCSM);
 
@@ -61,14 +62,14 @@ async function transformProviderStateInfo(api: ApiPromise, provider: ProviderInf
   }
 }
 
-const getOverviewInfo = async (overviewUrl: string, api: ApiPromise): Promise<OverviewInfo> => {
+const getOverviewInfo = async (overviewUrl: string, api: ApiPromise, factor: number): Promise<OverviewInfo> => {
   return await httpGet(overviewUrl).then(async (res: { code: number; statusText: { providers: any; calculatedRewards: any; totalProviders: any; totalGuarantors: any; dataPower: any; }; }) => {
     if (res.code == 200) {
       const filered = lodash.filter(res?.statusText.providers, e => e.storage)
       const providers = [];
       let totalEffectiveStakes = 0;
       for (const provider of filered) {
-        const providerState = await transformProviderStateInfo(api, provider);
+        const providerState = await transformProviderStateInfo(api, provider, factor);
         totalEffectiveStakes += providerState.effectiveCSM;
         providers.push(providerState);
       }
@@ -99,18 +100,23 @@ const getOverviewInfo = async (overviewUrl: string, api: ApiPromise): Promise<Ov
 function CsmStakingApp({ basePath, onStatusChange }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api, systemChain } = useApi();
+  const activeEraInfo = useCall<ActiveEraInfo>(api.query.staking.activeEra);
+  const activeEra = activeEraInfo && (JSON.parse(JSON.stringify(activeEraInfo)).index);
+  const increasingFactor =  Math.pow(1.02, Math.min(activeEra-958, 80));
   const overviewUrl = systemChain == 'Crust Maxwell' ? 'https://pd-api.crust.network/overview/' : 'http://crust-sg1.ownstack.cn:8866/overview/';
   const [providers, setProviders] = useState<DataProviderState[]>([]);
   const [summaryInfo, setSummaryInfo] = useState<SummaryInfo | null>();
   const [isLoading, setIsloading] = useState<boolean>(true);
 
   useEffect(() => {
-    getOverviewInfo(overviewUrl, api).then(res => {
-      setProviders(res.providers)
-      setSummaryInfo(res.summaryInfo)
-      setIsloading(false);
-    }).catch(() => setIsloading(true))
-  }, [api, httpGet, overviewUrl]);
+    if (Number(increasingFactor)) {
+      getOverviewInfo(overviewUrl, api, increasingFactor).then(res => {
+        setProviders(res.providers)
+        setSummaryInfo(res.summaryInfo)
+        setIsloading(false);
+      }).catch(() => setIsloading(true))
+    }
+  }, [api, httpGet, overviewUrl, increasingFactor]);
 
   const itemsRef = useRef([
     {

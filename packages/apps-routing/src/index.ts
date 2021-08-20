@@ -18,18 +18,19 @@ import democracy from './democracy';
 import explorer from './explorer';
 import extrinsics from './extrinsics';
 import gilt from './gilt';
-import ipfsFiles from './ipfsFiles';
 import js from './js';
 import merchants from './merchants';
 import parachains from './parachains';
 import poll from './poll';
 import rpc from './rpc';
 import settings from './settings';
+import settlements from './settlements';
 import signing from './signing';
 import society from './society';
 import splore from './splore';
 import staking from './staking';
 import storage from './storage';
+import storageMarket from './storageMarket';
 import sudo from './sudo';
 import techcomm from './techcomm';
 import transfer from './transfer';
@@ -57,7 +58,7 @@ export default function create (t: TFunction): Routes {
     calendar(t),
     contracts(t),
     storage(t),
-    ipfsFiles(t),
+    storageMarket(t),
     csmStaking(t),
     extrinsics(t),
     rpc(t),
@@ -66,6 +67,7 @@ export default function create (t: TFunction): Routes {
     js(t),
     settings(t),
     merchants(t),
+    settlements(t),
     splore(t),
     benefit(t),
     bridge(t)

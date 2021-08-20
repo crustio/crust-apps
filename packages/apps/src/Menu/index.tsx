@@ -102,7 +102,7 @@ function Menu ({ className = '' }: Props): React.ReactElement<Props> {
     governance: t('Governance'),
     network: t('Network'),
     settings: t('Settings'),
-    storage: t('ipfs'),
+    storage: t('Storage market'),
     csmStaking: t('Profit Data')
   });
 

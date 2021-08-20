@@ -17,6 +17,7 @@ import { useAccounts, useApi, useCall, useFavorites, useLoadingDelay } from '@po
 import { BN_ZERO } from '@polkadot/util';
 
 import Merchant from './Merchant';
+import Banner from '@polkadot/app-accounts/Accounts/Banner';
 
 interface Balances {
   accounts: Record<string, BN>;
@@ -165,6 +166,9 @@ function Overview ({ className = '' }: Props): React.ReactElement<Props> {
 
   return (
     <div className={className}>
+      {(!hasAccounts || (!isLoading && sortedAccountsWithDelegation)) && <Banner type="warning">
+        <p>{t<string>('Storage merchant should first increase collateral in the “storage market benefits module” to qualify for the storage market rewards.')}&nbsp;<a href='#/benefit/storageMarket'>{t<string>('Increase collateral...')}</a></p>
+      </Banner>}
       <Table
         empty={(!hasAccounts || (!isLoading && sortedAccountsWithDelegation)) && t<string>("You don't have merchant accounts. Some features are currently hidden and will only become available once you have merchant accounts.")}
         filter={filter}
