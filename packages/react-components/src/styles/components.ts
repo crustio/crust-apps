@@ -115,4 +115,8 @@ export default (_theme: ThemeDef): string => `
     z-index: 1002;
     max-width: 300px;
   }
+
+  .wrap-text {
+    white-space: pre-wrap;
+  }
 `;

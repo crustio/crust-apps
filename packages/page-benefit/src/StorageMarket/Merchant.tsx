@@ -4,6 +4,7 @@
 
 import type { DeriveBalancesAll } from '@polkadot/api-derive/types';
 import type { KeyringAddress } from '@polkadot/ui-keyring/types';
+import type { Compact } from '@polkadot/types';
 
 import BN from 'bn.js';
 import React, { useCallback, useContext, useEffect, useMemo } from 'react';
@@ -27,13 +28,23 @@ interface Props {
   totalLockup: BN;
   className?: string;
   delegation?: Delegation;
+  withCollateral?: boolean;
   filter: string;
   isFavorite: boolean;
   setBalance: (address: string, value: BN) => void;
   toggleFavorite: (address: string) => void;
 }
 
-function calcVisible (filter: string, name: string, tags: string[]): boolean {
+function calcVisible (filter: string, name: string, tags: string[], marketLedger: any, withCollateral?: boolean): boolean {
+  if (withCollateral) {
+    if (!marketLedger || !marketLedger.active_funds ) {
+      return false;
+    }
+    const collateral = marketLedger.active_funds as Compact<any>
+    if (collateral.toBn().isZero()) {
+      return false;
+    }
+  } 
   if (filter.length === 0) {
     return true;
   }
@@ -45,7 +56,7 @@ function calcVisible (filter: string, name: string, tags: string[]): boolean {
   }, name.toLowerCase().includes(_filter));
 }
 
-function Merchant ({ account: { address }, className = '', filter, isFavorite, setBalance, toggleFavorite, reductionQuota, totalLockup }: Props): React.ReactElement<Props> | null {
+function Merchant ({ account: { address }, className = '', withCollateral, filter, isFavorite, setBalance, toggleFavorite, reductionQuota, totalLockup }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api } = useApi();
   const balancesAll = useCall<DeriveBalancesAll>(api.derive.balances.all, [address]);
@@ -67,8 +78,8 @@ function Merchant ({ account: { address }, className = '', filter, isFavorite, s
   }, [address, api, balancesAll, setBalance]);
 
   const isVisible = useMemo(
-    () => calcVisible(filter, accName, tags),
-    [accName, filter, tags]
+    () => calcVisible(filter, accName, tags, marketLedger, withCollateral),
+    [accName, filter, tags, withCollateral, marketLedger]
   );
 
   const _onFavorite = useCallback(
@@ -139,6 +150,7 @@ function Merchant ({ account: { address }, className = '', filter, isFavorite, s
         />
 
             <Tooltip
+                className="wrap-text"
                 text={t<string>('Discount Ratio = User collateral/Total collateral amount')}
                 trigger={`${address}-locks-trigger-set-guarantee-fee`}
             ></Tooltip>
@@ -205,4 +217,5 @@ export default React.memo(styled(Merchant)`
     width: 100%;
     min-height: 1.5rem;
   }
+
 `);
