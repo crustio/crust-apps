@@ -33,25 +33,28 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
       <Columar.Column>
         <Card withBottomMargin>
           <Modal.Content>
-            <h3>{t<string>('Select the Crust address')}</h3>
+            <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('From')}</span></h3>
+
             <InputAddress
-              defaultValue={propSenderId}
-              help={t<string>('The account you will sign tx.')}
-              isDisabled={!!propSenderId}
-              label={t<string>('account')}
-              onChange={setSenderId}
-              type='account'
+                defaultValue={propSenderId}
+                help={t<string>('The account you will sign tx.')}
+                isDisabled={!!propSenderId}
+                label={t<string>('account')}
+                onChange={setSenderId}
+                type='account'
             />
-            <h3>{t<string>('Select the ETH address')}</h3>
+
+            <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('To')}</span></h3>
             <Input
-              autoFocus
-              className='full'
-              help={t<string>('The the Ethereum address (starting by "0x")')}
-              label={t<string>('Ethereum address')}
-              onChange={onChangeEthereumAddress}
-              value={ethereumAddress || ''}
+                autoFocus
+                className='full'
+                help={t<string>('The the Ethereum address (starting by "0x")')}
+                label={t<string>('Ethereum address')}
+                onChange={onChangeEthereumAddress}
+                value={ethereumAddress || ''}
             />
-            <h3>{t<string>('Type the amount')}</h3>
+            <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('Amount')}</span></h3>
+            
             <InputBalance
               autoFocus
               help={t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}

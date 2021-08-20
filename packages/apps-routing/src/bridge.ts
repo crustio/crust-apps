@@ -12,11 +12,11 @@ export default function create (t: TFunction): Route {
     display: {
       needsAccounts: true,
       needsApi: [
-        'tx.bridgeTransfer.transferNative'
+        // 'tx.bridgeTransfer.transferNative'
       ]
     },
     group: 'accounts',
-    icon: 'calendar',
+    icon: 'exchange-alt',
     name: 'bridge',
     text: t('nav.bridge', 'Bridge', { ns: 'apps-routing' })
   };

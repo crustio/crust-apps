@@ -17,6 +17,8 @@ import { u8aToHex } from '@polkadot/util';
 import { decodeAddress } from '@polkadot/util-crypto';
 
 import { createAccountsOpt } from './EthereumAccounts';
+import ethereumLogo from '../images/ethereum-logo-landscape-black.png';
+import logo_crust from '../images/logo_crust.svg';
 
 interface Props {
   className?: string;
@@ -60,7 +62,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
         18
       );
       const response = await submitDeposit?.(erc20Amount, recipient);
-
+      setTransferrable(true);
       console.log('response', response);
     } catch (error) {
       console.error(error);
@@ -83,7 +85,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
 
       const approveResult = await contractSigned.functions.approve?.(
         network.erc20AssetHandler,
-        ethers.utils.parseUnits('11451419810', 18)
+        ethers.utils.parseUnits(amount?.toString() || '0', 18)
       );
 
       console.log('approveResult', approveResult);
@@ -98,6 +100,8 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
     [accounts]
   );
 
+  const unitOption = [{ text: "CRU", value: "CRU" }]
+
   useEffect(() => {
     if (accounts.length) {
       setEthereumAddress(accounts[0]);
@@ -109,31 +113,53 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
       <Columar.Column>
         <Card withBottomMargin>
           <Modal.Content>
-            <h3>{t<string>('Select the ETH address')}</h3>
-            <Dropdown
-              defaultValue={ethereumAddress}
-              label={'eth account'}
-              help={t<string>('Your Ethereum account that sent the transfer transaction')}
-              onChange={setEthereumAddress}
-              options={options}
-              value={ethereumAddress}
-            />
-            <h3>{t<string>('Select the Crust address')}</h3>
-            <InputAddress
-              help={t<string>('The selected account to perform the derivation on.')}
-              label={t<string>('account')}
-              onChange={setReceiveId}
-            />
-            <h3>{t<string>('Type the amount')}</h3>
+            <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('From')}</span></h3>
+            <div>
+                <img style={{ "width": "150px", 'verticalAlign': 'middle' }} src={ethereumLogo as string} />
+
+                <div style={{ "display": "inline-block", 'verticalAlign': 'middle' }}>
+                    <Dropdown
+                        defaultValue={ethereumAddress}
+                        label={'eth account'}
+                        help={t<string>('Your Ethereum account that sent the transfer transaction')}
+                        onChange={setEthereumAddress}
+                        options={options}
+                        value={ethereumAddress}
+                    />
+                </div>
+            </div>
+            <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('To')}</span></h3>
+            <div>
+                <img style={{ "width": "150px", 'verticalAlign': 'middle' }} src={logo_crust as string} />
+                <div style={{ "display": "inline-block", 'verticalAlign': 'middle' }}>
+                    <InputAddress
+                        help={t<string>('The selected account to perform the derivation on.')}
+                        label={t<string>('account')}
+                        onChange={setReceiveId}
+                    />
+                </div>
+
+            </div>
+            
+            <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('Amount')}</span></h3>
             <Input
               type={"number"}
               help={t<string>('The threshold of vouches that is to be reached for the account to be recovered.')}
               label={t<string>('amount')}
               onChange={setAmount}
-            />
+              
+            >
+                <Dropdown
+                    defaultValue={unitOption[0].value}
+                    dropdownClassName='ui--SiDropdown'
+                    isButton
+                    options={unitOption}
+                />
+            </Input>
             <Button.Group>
               <Button
                 icon='hand-paper'
+                isDisabled={!transferrable}
                 label={t<string>('Approve')}
                 onClick={approve}
               />

@@ -24,11 +24,11 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
     {
       isRoot: true,
       name: 'bridge',
-      text: t<string>('CRU to ERC20')
+      text: t<string>('Crust to Ethereum')
     },
     {
       name: 'bridgeBack',
-      text: t<string>('ERC20 to CRU')
+      text: t<string>('Ethereum to Crust')
     }
   ]);
 
