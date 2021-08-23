@@ -119,7 +119,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
                 <div style={{ flex: 1, 'verticalAlign': 'middle' }}>
                     <Dropdown
                         defaultValue={ethereumAddress}
-                        label={'eth account'}
+                        label={t<string>('eth account')}
                         help={t<string>('Your Ethereum account that sent the transfer transaction')}
                         onChange={setEthereumAddress}
                         options={options}
@@ -132,7 +132,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
                 <img style={{ "width": "64px", "height": "64px", padding: '1px', 'verticalAlign': 'middle' }} src={logoCrust as string} />
                 <div style={{ flex: 1, 'verticalAlign': 'middle' }}>
                     <InputAddress
-                        help={t<string>('The selected account to perform the derivation on.')}
+                        help={t<string>('The selected account is used to receive tokens')}
                         label={t<string>('account')}
                         onChange={setReceiveId}
                     />
@@ -144,7 +144,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
                 <div style={{ flex: 1, 'verticalAlign': 'middle' }}>
                     <Input
                         type={"number"}
-                        help={t<string>('The threshold of vouches that is to be reached for the account to be recovered.')}
+                        help={t<string>('Type the amount you want to transfer.')}
                         label={t<string>('amount')}
                         onChange={setAmount}
                     >

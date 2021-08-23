@@ -73,7 +73,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
               <Input
                 autoFocus
                 className='full'
-                help={t<string>('The the Ethereum address (starting by "0x")')}
+                help={t<string>('The the Ethereum address')}
                 isError={!isValid}
                 label={t<string>('Ethereum address')}
                 onChange={onChangeEthereumAddress}

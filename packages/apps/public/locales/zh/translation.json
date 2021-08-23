@@ -1622,5 +1622,20 @@
   "Storage merchant should first increase collateral in the “storage market benefits module” to qualify for the storage market rewards.": "存储商户需要先到“存储市场权益模块”中增加保障金，才能获得领取存储市场收益的资格。",
   "Increase collateral...": "增加保障金...",
   "How to get lucky order reward >>": "如何领取彩蛋订单奖励 >>",
-  "Only accounts with collateral": "只显示有保障金的账户"
+  "Only accounts with collateral": "只显示有保障金的账户",
+  "The selected account is used to receive tokens": "已选择的账户用来接收代币",
+  "The account you will sign tx.": "已选择的账户用来发送交易。",
+  "Type the amount you want to transfer.": "输入你要转移的数量。",
+  "The the Ethereum address": "以太坊账户地址",
+  "From Crust": "从 Crust",
+  "To Ethereum": "到 以太坊",
+  "To Crust": "到 Crust",
+  "From Ethereum": "从 以太坊",
+  "Crust to Ethereum": "Crust到以太坊",
+  "Ethereum to Crust": "以太坊到Crust",
+  "Approve": "授权",
+  "eth account": "以太坊账户",
+  "nav.bridge": "桥",
+  "Amount": "数量",
+  "Ethereum address": "以太坊账户"
 }
