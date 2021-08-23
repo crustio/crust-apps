@@ -1637,5 +1637,7 @@
   "eth account": "以太坊账户",
   "nav.bridge": "桥",
   "Amount": "数量",
-  "Ethereum address": "以太坊账户"
+  "Ethereum address": "以太坊账户",
+  "No metamask extension found, please install it first.": "没有找到metamask插件，请先安装。",
+  "Install now...": "现在安装..."
 }
