@@ -5,19 +5,19 @@
 import type { ActionStatus } from '@polkadot/react-components/Status/types';
 
 import BN from 'bn.js';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { SortedAccount } from '@polkadot/app-accounts/types';
 import { sortAccounts } from '@polkadot/app-accounts/util';
 import { useTranslation } from '@polkadot/apps/translate';
-import { Button, Input, Table } from '@polkadot/react-components';
-import { useAccounts, useApi, useCall, useFavorites, useLoadingDelay } from '@polkadot/react-hooks';
+import { Button, Table } from '@polkadot/react-components';
+import { useAccounts, useApi, useCall, useFavorites, useLoadingDelay, useSavedFlags } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 import Banner from '../Banner';
 import Summary from './Summary';
 import Merchant from './Merchant';
-
+import Filtering from './Filtering';
 interface Balances {
   accounts: Record<string, BN>;
   balanceTotal?: BN;
@@ -41,7 +41,6 @@ function StorageMarket ({ className = '' }: Props): React.ReactElement<Props> {
   const { allAccounts, hasAccounts } = useAccounts();
   const [favorites, toggleFavorite] = useFavorites(STORE_FAVS);
   const [, setBalances] = useState<Balances>({ accounts: {} });
-  const [filterOn, setFilter] = useState<string>('');
   const [{ sortedAccounts }, setSorted] = useState<Sorted>({ sortedAccounts: [], sortedAddresses: [] });
   const [ownMerchants, setOwnMerchants] = useState<SortedAccount[] | undefined>();
   // const [isBondOpen, toggleBond] = useToggle();
@@ -50,6 +49,8 @@ function StorageMarket ({ className = '' }: Props): React.ReactElement<Props> {
   const [unlocking, setUnlocking] = useState<BN>(BN_ZERO);
   const [reductionQuota, setReductionQuota] = useState<BN>(BN_ZERO);
   const currentBenefits = useCall<any>(api.query.benefits.currentBenefits);
+  const [nameFilter, setNameFilter] = useState<string>('');
+  const [toggles, setToggle] = useSavedFlags('market:overview', { withCollateral: false });
 
   const isLoading = useLoadingDelay();
 
@@ -130,17 +131,17 @@ function StorageMarket ({ className = '' }: Props): React.ReactElement<Props> {
     []
   );
 
-  const filter = useMemo(() => (
-    <div className='filter--tags'>
-      <Input
-        autoFocus
-        isFull
-        label={t<string>('filter by name or tags')}
-        onChange={setFilter}
-        value={filterOn}
-      />
-    </div>
-  ), [filterOn, t]);
+  // const filter = useMemo(() => (
+  //   <div className='filter--tags'>
+  //     <Input
+  //       autoFocus
+  //       isFull
+  //       label={t<string>('filter by name or tags')}
+  //       onChange={setFilter}
+  //       value={filterOn}
+  //     />
+  //   </div>
+  // ), [filterOn, t]);
 
   return (
     <div className={className}>
@@ -183,14 +184,22 @@ function StorageMarket ({ className = '' }: Props): React.ReactElement<Props> {
       <Table
         empty={(!hasAccounts || (!isLoading)) && t<string>("You don't have merchant accounts. Some features are currently hidden and will only become available once you have merchant accounts.")}
         header={headerRef.current}
-        filer={filter}
+        filter={
+          <Filtering
+            nameFilter={nameFilter}
+            setNameFilter={setNameFilter}
+            setWithCollateral={setToggle.withCollateral}
+            withCollateral={toggles.withCollateral}
+          />
+        }
       >
         {!isLoading && ownMerchants?.map(({ account, delegation, isFavorite }): React.ReactNode => (
           <Merchant
             account={account}
             delegation={delegation}
-            filter={filterOn}
+            filter={nameFilter}
             isFavorite={isFavorite}
+            withCollateral={toggles.withCollateral}
             key={account.address}
             setBalance={_setBalance}
             toggleFavorite={toggleFavorite}
@@ -211,6 +220,17 @@ export default React.memo(styled(StorageMarket)`
       label {
         left: 1.55rem;
       }
+    }
+  }
+  .market--filter--optionsBar{
+    margin: 0.5rem 0 1rem;
+    text-align: center;
+    white-space: normal;
+
+    .market--filter--buttonToggle {
+      display: inline-block;
+      margin-right: 1rem;
+      margin-top: 0.5rem;
     }
   }
 `);

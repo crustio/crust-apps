@@ -200,6 +200,7 @@
   "Yes, allow nominations": "",
   "You need to sign an attestation for the following account:": "",
   "You need to sign an attestation for the following accounts:": "",
+  "Discount Ratio = User collateral/Total collateral amount": "Discount Ratio = User collateral/Total collateral amount \n \"the cap is 10%\"",
   "account type": "",
   "accounts": "",
   "activate": "",
