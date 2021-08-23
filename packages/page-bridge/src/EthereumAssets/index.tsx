@@ -17,8 +17,8 @@ import { u8aToHex } from '@polkadot/util';
 import { decodeAddress } from '@polkadot/util-crypto';
 
 import { createAccountsOpt } from './EthereumAccounts';
-import ethereumLogo from '../images/ethereum-logo-landscape-black.png';
-import logo_crust from '../images/logo_crust.svg';
+import ethereumLogo from '../images/Ethereum_logo_2014.svg';
+import logoCrust from '../images/crust.svg';
 
 interface Props {
   className?: string;
@@ -113,11 +113,10 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
       <Columar.Column>
         <Card withBottomMargin>
           <Modal.Content>
-            <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('From')}</span></h3>
-            <div>
-                <img style={{ "width": "150px", 'verticalAlign': 'middle' }} src={ethereumLogo as string} />
-
-                <div style={{ "display": "inline-block", 'verticalAlign': 'middle' }}>
+            <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('From Ethereum')}</span></h3>
+            <div style={{display: "flex", alignItems: 'center'}}>
+                <img style={{ "width": "64px", height: '64px', padding: '3px', 'verticalAlign': 'middle' }} src={ethereumLogo as string} />
+                <div style={{ flex: 1, 'verticalAlign': 'middle' }}>
                     <Dropdown
                         defaultValue={ethereumAddress}
                         label={'eth account'}
@@ -128,34 +127,37 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
                     />
                 </div>
             </div>
-            <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('To')}</span></h3>
-            <div>
-                <img style={{ "width": "150px", 'verticalAlign': 'middle' }} src={logo_crust as string} />
-                <div style={{ "display": "inline-block", 'verticalAlign': 'middle' }}>
+            <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('To Crust')}</span></h3>
+            <div style={{display: "flex"}}>
+                <img style={{ "width": "64px", "height": "64px", padding: '1px', 'verticalAlign': 'middle' }} src={logoCrust as string} />
+                <div style={{ flex: 1, 'verticalAlign': 'middle' }}>
                     <InputAddress
                         help={t<string>('The selected account to perform the derivation on.')}
                         label={t<string>('account')}
                         onChange={setReceiveId}
                     />
                 </div>
-
             </div>
-            
             <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('Amount')}</span></h3>
-            <Input
-              type={"number"}
-              help={t<string>('The threshold of vouches that is to be reached for the account to be recovered.')}
-              label={t<string>('amount')}
-              onChange={setAmount}
-              
-            >
-                <Dropdown
-                    defaultValue={unitOption[0].value}
-                    dropdownClassName='ui--SiDropdown'
-                    isButton
-                    options={unitOption}
-                />
-            </Input>
+            <div style={{display: "flex", alignItems: 'center'}}>
+                <div style={{ "width": "64px", 'verticalAlign': 'middle' }}/>
+                <div style={{ flex: 1, 'verticalAlign': 'middle' }}>
+                    <Input
+                        type={"number"}
+                        help={t<string>('The threshold of vouches that is to be reached for the account to be recovered.')}
+                        label={t<string>('amount')}
+                        onChange={setAmount}
+                    >
+                        <Dropdown
+                            defaultValue={unitOption[0].value}
+                            dropdownClassName='ui--SiDropdown'
+                            isButton
+                            options={unitOption}
+                        />
+                    </Input>
+                </div>
+            </div>
+
             <Button.Group>
               <Button
                 icon='hand-paper'

@@ -5,10 +5,14 @@ import BN from 'bn.js';
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
+import { addrToChecksum } from '@polkadot/app-claims/claims/util';
 import { useTranslation } from '@polkadot/apps/translate';
 import { Button, Card, Columar, Input, InputAddress, InputBalance, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
+
+import logoCrust from '../images/crust.svg';
+import ethereumLogo from '../images/Ethereum_logo_2014.svg';
 
 interface Props {
   className?: string;
@@ -22,55 +26,87 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
   const [hasAvailable] = useState(true);
   const [senderId, setSenderId] = useState<string | null>(propSenderId || null);
   const [ethereumAddress, setEthereumAddress] = useState<string | undefined | null>(null);
-  const onChangeEthereumAddress = useCallback((value: string) => {
-    // FIXME We surely need a better check than just a trim
-
-    setEthereumAddress(value.trim());
+  const [isValid, setIsValid] = useState(false);
+  const onChangeEthereumAddress = useCallback((hex: string) => {
+    try {
+      addrToChecksum(hex);
+      setIsValid(true);
+      setEthereumAddress(hex.trim());
+    } catch (error) {
+      console.log(error);
+      setIsValid(false);
+      setEthereumAddress(hex.trim());
+    }
   }, []);
+
+  //   const onChangeEthereumAddress = useCallback((value: string) => {
+  //     // FIXME We surely need a better check than just a trim
+
+  //     setEthereumAddress(value.trim());
+  //   }, []);
 
   return (<div className={className}>
     <Columar>
       <Columar.Column>
         <Card withBottomMargin>
-            <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('From')}</span></h3>
-
-            <InputAddress
+          <h3><span style={{ fontWeight: 'bold' }}>{t<string>('From Crust')}</span></h3>
+          <div style={{ display: 'flex' }}>
+            <img src={logoCrust as string}
+              style={{ width: '64px', height: '64px', padding: '1px', verticalAlign: 'middle' }} />
+            <div style={{ flex: 1, verticalAlign: 'middle' }}>
+              <InputAddress
                 defaultValue={propSenderId}
                 help={t<string>('The account you will sign tx.')}
                 isDisabled={!!propSenderId}
                 label={t<string>('account')}
                 onChange={setSenderId}
                 type='account'
-            />
+              />
+            </div>
+          </div>
 
-            <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('To')}</span></h3>
-            <Input
+          <h3><span style={{ fontWeight: 'bold' }}>{t<string>('To Ethereum')}</span></h3>
+          <div style={{ display: 'flex', alignItems: 'middle' }}>
+            <img src={ethereumLogo as string}
+              style={{ width: '64px', height: '64px', padding: '3px', verticalAlign: 'middle' }} />
+            <div style={{ flex: 1, verticalAlign: 'middle' }}>
+              <Input
                 autoFocus
                 className='full'
                 help={t<string>('The the Ethereum address (starting by "0x")')}
+                isError={!isValid}
                 label={t<string>('Ethereum address')}
                 onChange={onChangeEthereumAddress}
+                placeholder={t<string>('0x prefixed hex')}
                 value={ethereumAddress || ''}
-            />
-            <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('Amount')}</span></h3>
-            
-            <InputBalance
-              autoFocus
-              help={t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}
-              isError={!hasAvailable}
-              label={t<string>('amount')}
-              onChange={setAmount}
-              withMax
-            />
-            <Button.Group>
-              <TxButton
-                accountId={senderId}
-                icon='paper-plane'
-                label={t<string>('Transfer')}
-                params={[amount, ethereumAddress, 0]}
-                tx={api.tx.bridgeTransfer?.transferNative}
               />
-            </Button.Group>
+            </div>
+          </div>
+
+          <h3><span style={{ fontWeight: 'bold' }}>{t<string>('Amount')}</span></h3>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ width: '64px', verticalAlign: 'middle' }}/>
+            <div style={{ flex: 1, verticalAlign: 'middle' }}>
+              <InputBalance
+                autoFocus
+                help={t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}
+                isError={!hasAvailable}
+                label={t<string>('amount')}
+                onChange={setAmount}
+                withMax
+              />
+            </div>
+          </div>
+          <Button.Group>
+            <TxButton
+              accountId={senderId}
+              icon='paper-plane'
+              isDisabled={!isValid}
+              label={t<string>('Transfer')}
+              params={[amount, ethereumAddress, 0]}
+              tx={api.tx.bridgeTransfer?.transferNative}
+            />
+          </Button.Group>
         </Card>
       </Columar.Column>
 
