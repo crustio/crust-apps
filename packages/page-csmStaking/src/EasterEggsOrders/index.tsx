@@ -8,7 +8,6 @@ import type { ActionStatus } from '@polkadot/react-components/Status/types';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Table } from '@polkadot/react-components';
-import LuckyEasterOrders from './LuckyEasterOrders';
 import PreviousOrders from './PreviousOrders';
 import { EasterEggsOrder } from '../Overview/types';
 import { httpGet } from './http';
@@ -41,20 +40,12 @@ function EasterEggsOrders ({ isLoading }: Props): React.ReactElement<Props> {
 
   useEffect(() => {
     httpGet('https://lder-api.crust.network/previousList').then((res: { code: number; statusText: React.SetStateAction<EasterEggsOrder[]> }) => {
-      if (res.code === 200) {
-        setPreviousList(res.statusText)
+      if (res.code === 200 && currentList) {
+        const orders = [currentList]
+        setPreviousList(orders.concat(res.statusText as []))
       }
     })
-  }, [])
-
-  const headerRef = useRef([
-    [t('cid'), 'start'],
-    [t('size')],
-    [t('merchant-1'), 'start'],
-    [t('merchant-2'), 'start'],
-    [t('merchant-3'), 'start'],
-    [t('merchant-4'), 'start']
-  ]);
+  }, [currentList])
 
   const preHeaderRef = useRef([
     [t('date'), 'start'],
@@ -70,7 +61,7 @@ function EasterEggsOrders ({ isLoading }: Props): React.ReactElement<Props> {
       
       </span>
     </h3>
-    <h1>
+    {/* <h1>
       {t<string>('Today lucky orders')}
     </h1>
     <Table
@@ -84,7 +75,7 @@ function EasterEggsOrders ({ isLoading }: Props): React.ReactElement<Props> {
           />
         ))}
 
-    </Table>
+    </Table> */}
     <h1>
         {t<string>('Previous lucky orders')}
     </h1>
