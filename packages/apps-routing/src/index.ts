@@ -43,6 +43,7 @@ export default function create (t: TFunction): Routes {
     addresses(t),
     explorer(t),
     claims(t),
+    bridge(t),
     poll(t),
     transfer(t),
     staking(t),
@@ -69,7 +70,6 @@ export default function create (t: TFunction): Routes {
     merchants(t),
     settlements(t),
     splore(t),
-    benefit(t),
-    bridge(t)
+    benefit(t)
   ];
 }
