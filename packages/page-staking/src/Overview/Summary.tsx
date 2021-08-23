@@ -78,6 +78,7 @@ function Summary ({ className = '', isVisible, stakingOverview, targets: { infla
           className='media--1100'
           label={t<string>('rewards')}
         >
+          <meter id="progress3" className="progress4" max="877" value="123"></meter>
           {t<string>('not started yet')}
         </CardSummary>)}
       </section>
@@ -115,5 +116,40 @@ export default React.memo(styled(Summary)`
     .validator--Account-block-icon+.validator--Account-block-icon {
       margin-left: -1.5rem;
     }
+  }
+
+  .progress3 {
+    height: 20px;
+    width: 120px;
+    -webkit-appearance: none;
+    display: block;
+  }
+  .progress3::-webkit-progress-value {
+    background: linear-gradient(
+      -45deg, 
+      transparent 33%, 
+      rgba(0, 0, 0, .1) 33%, 
+      rgba(0,0, 0, .1) 66%, 
+      transparent 66%
+    ),
+      linear-gradient(
+        to top, 
+        rgba(255, 255, 255, .25), 
+        rgba(0, 0, 0, .25)
+      ),
+      linear-gradient(
+        to left,
+        #09c,
+        #f44);
+    border-radius: 2px; 
+    background-size: 35px 20px, 100% 100%, 100% 100%;
+  }
+
+  .progress4 {
+    display: block;    
+    font: inherit;
+    height: 20px;
+    width: 160px;
+    pointer-events: none;
   }
 `);
