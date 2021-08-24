@@ -25,6 +25,8 @@ interface Props {
   targets: SortedTargets;
 }
 
+const FINAL_ERA = 213;
+
 function Summary ({ className = '', isVisible, stakingOverview, targets: { inflation: { inflation }, nominators, waitingIds } }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { lastBlockAuthors, lastBlockNumber } = useContext(BlockAuthorsContext);
@@ -78,7 +80,7 @@ function Summary ({ className = '', isVisible, stakingOverview, targets: { infla
           className='media--1100'
           label={t<string>('rewards')}
         >
-          <meter id="progress3" className="progress4" max="877" value="123"></meter>
+          <meter id="progress" className="progress4" max={FINAL_ERA} min={110} value={stakingOverview?.activeEra.toNumber()}></meter>
           {t<string>('not started yet')}
         </CardSummary>)}
       </section>
