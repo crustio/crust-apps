@@ -30,7 +30,7 @@ export interface EthereumNetworkOptions {
   peerChainIds: Record<number | string, number>
 }
 
-export type EthereumNetworks = Record<number, EthereumNetworkOptions>
+export type EthereumNetworks = Record<string, Record<number, EthereumNetworkOptions>>
 
 export interface SubstrateNetworkOptions {
   /**

@@ -19,6 +19,7 @@ import { decodeAddress } from '@polkadot/util-crypto';
 import { createAccountsOpt } from './EthereumAccounts';
 import ethereumLogo from '../images/Ethereum_logo_2014.svg';
 import logoCrust from '../images/crust.svg';
+import { useApi } from '@polkadot/react-hooks';
 
 interface Props {
   className?: string;
@@ -34,6 +35,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
   const submitDeposit = useErc20Deposit(ethereumAddress || undefined);
   const [receiveId, setReceiveId] = useState<string | null>('' || null);
   const [transferrable, setTransferrable] = useState<boolean>(true);
+  const { systemChain: substrateName } = useApi();
 
   if (window && !window?.web3?.currentProvider?.isMetaMask) {
     return (<main>
@@ -71,7 +73,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
 
   const approve = async () => {
     try {
-      const network = ethereums[provider?.network.chainId as number];
+      const network = ethereums[substrateName][provider?.network.chainId as number];
 
       if (
         contract === undefined ||

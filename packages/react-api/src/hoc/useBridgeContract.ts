@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /* eslint-disable */
+import { useApi } from '@polkadot/react-hooks';
 import { Contract, ethers } from 'ethers';
 import { useMemo } from 'react';
 
@@ -22,11 +23,12 @@ export const useBridgeContract = (
   const { signer } = useEthers();
   const { data: network } = useEthersNetworkQuery();
   const chainId = network?.chainId;
+  const { systemChain: substrateName } = useApi();
 
   return useMemo(() => {
     const bridge =
       addressOrName ??
-      (typeof chainId === 'number' ? ethereums[chainId]?.bridge : undefined);
+      (typeof chainId === 'number' ? ethereums[substrateName][chainId]?.bridge : undefined);
 
     if (bridge === undefined || signer === undefined) {
       return {};

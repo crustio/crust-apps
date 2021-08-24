@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /* eslint-disable */
+import { useApi } from '@polkadot/react-hooks';
 import { Contract, ethers } from 'ethers';
 import { useMemo } from 'react';
 
@@ -23,11 +24,12 @@ export const useErc20Contract = (
   const { signer } = useEthers();
   const { data: network } = useEthersNetworkQuery();
   const chainId = network?.chainId;
+  const { systemChain: substrateName } = useApi();
 
   return useMemo(() => {
     const erc20 =
       addressOrName ??
-      (typeof chainId === 'number' ? ethereums[chainId]?.erc20 : undefined);
+      (typeof chainId === 'number' ? ethereums[substrateName][chainId]?.erc20 : undefined);
 
     if (erc20 === undefined || signer === undefined) {
       return {};

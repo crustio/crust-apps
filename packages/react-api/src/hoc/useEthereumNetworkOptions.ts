@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /* eslint-disable */
+import { useApi } from '@polkadot/react-hooks';
 import { useMemo } from 'react';
 
 import { ethereums } from '../config';
@@ -41,6 +42,7 @@ export const useEthereumNetworkOptions = (
   chainId?: number
 ): UseEthereumNetworkOptionsResult => {
   const { data: network } = useEthersNetworkQuery();
+  const { systemChain: substrateName } = useApi();
 
   chainId = chainId ?? network?.chainId;
 
@@ -51,7 +53,7 @@ export const useEthereumNetworkOptions = (
       };
     }
 
-    const result = ethereums[chainId];
+    const result = ethereums[substrateName][chainId];
 
     if (result !== undefined) {
       return { options: result };
