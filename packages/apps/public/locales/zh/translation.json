@@ -1623,5 +1623,7 @@
   "Increase collateral...": "增加保障金...",
   "How to get lucky order reward >>": "如何领取彩蛋订单奖励 >>",
   "Only accounts with collateral": "只显示有保障金的账户",
+  "{{era}} / 217 (765432~ Blocks)": "{{era}} / 217 (大约765432块)",
+  "rewards countdown (era)": "奖励倒计时(era)",
   "Please wait for member account to report the first work report and then join the group": "请等待member上报第一个work report后再加组"
 }
