@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import BN from 'bn.js';
+import { ethers } from 'ethers';
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { ethers } from 'ethers';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import { Button, Card, Columar, Input, InputAddress, InputBalance, TxButton } from '@polkadot/react-components';
@@ -29,13 +29,14 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
   const [isValid, setIsValid] = useState(false);
   const onChangeEthereumAddress = useCallback((hex: string) => {
     const isValidEthAddr = ethers.utils.isAddress(hex);
-    if (isValidEthAddr) { 
-        setIsValid(true);
+
+    if (isValidEthAddr) {
+      setIsValid(true);
     } else {
-        setIsValid(false);
+      setIsValid(false);
     }
+
     setEthereumAddress(hex.trim());
-    
   }, []);
 
   //   const onChangeEthereumAddress = useCallback((value: string) => {
