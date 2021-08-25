@@ -79,7 +79,7 @@ function Summary ({ className = '', isVisible, stakingOverview, targets: { infla
           </CardSummary>
         ) : (stakingOverview && (stakingOverview?.activeEra.toNumber() < 217)) && (<CardSummary
           className='media--1100'
-          label={t<string>('rewards countdown')}
+          label={t<string>('rewards countdown (era)')}
         >
           <meter id="progress" className="progress4" max={PROGRESS_END} min={PROGRESS_START} value={stakingOverview?.activeEra.toNumber()}></meter>
           <span style={{ fontSize: '18px' }}>
