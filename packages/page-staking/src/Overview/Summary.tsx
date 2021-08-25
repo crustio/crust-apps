@@ -83,8 +83,8 @@ function Summary ({ className = '', isVisible, stakingOverview, targets: { infla
         >
           <meter id="progress" className="progress4" max={PROGRESS_END} min={PROGRESS_START} value={stakingOverview?.activeEra.toNumber()}></meter>
           <span style={{ fontSize: '18px' }}>
-            {t<string>('{{era}} / 29 (765432~ Blocks)', { replace: {
-              era: stakingOverview?.activeEra.toNumber() - 188
+            {t<string>('{{era}} / 217 (765432~ Blocks)', { replace: {
+              era: stakingOverview?.activeEra.toNumber()
             }})}
           </span>
         </CardSummary>)}
