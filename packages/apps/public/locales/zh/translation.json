@@ -1642,5 +1642,6 @@
   "Install now...": "现在安装...",
   "{{era}} / 217 (765432~ Blocks)": "{{era}} / 217 (大约765432块)",
   "rewards countdown (era)": "奖励倒计时(era)",
-  "Please wait for member account to report the first work report and then join the group": "请等待member上报第一个work report后再加组"
+  "Please wait for member account to report the first work report and then join the group": "请等待member上报第一个work report后再加组",
+  "Your Ethereum account that sent the transfer transaction": "你用来发送交易的以太坊账户"
 }
