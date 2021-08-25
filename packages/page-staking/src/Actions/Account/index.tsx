@@ -383,7 +383,7 @@ function Account ({ allSlashes, className = '', info: { controllerId, destinatio
                   {t<string>('Unbond funds')}
                 </Menu.Item>
                 <Menu.Item
-                  disabled={!isOwnController || !stakingAccount || !stakingAccount.stakingLedger || stakingAccount.stakingLedger.active.isEmpty}
+                  disabled={!isOwnController || !stakingAccount || !stakingAccount.stakingLedger }
                   onClick={toggleRebond}
                 >
                   {t<string>('Rebond funds')}
