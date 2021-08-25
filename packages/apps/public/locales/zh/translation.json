@@ -1640,5 +1640,7 @@
   "Ethereum address": "以太坊账户",
   "No metamask extension found, please install it first.": "没有找到metamask插件，请先安装。",
   "Install now...": "现在安装...",
+  "{{era}} / 217 (765432~ Blocks)": "{{era}} / 217 (大约765432块)",
+  "rewards countdown (era)": "奖励倒计时(era)",
   "Please wait for member account to report the first work report and then join the group": "请等待member上报第一个work report后再加组"
 }
