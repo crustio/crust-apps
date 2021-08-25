@@ -25,7 +25,7 @@ interface Props {
   targets: SortedTargets;
 }
 
-const FINAL_ERA = 217;
+const PROGRESS_END = 217;
 const PROGRESS_START = 188;
 
 function Summary ({ className = '', isVisible, stakingOverview, targets: { inflation: { inflation }, nominators, waitingIds } }: Props): React.ReactElement<Props> {
@@ -81,7 +81,7 @@ function Summary ({ className = '', isVisible, stakingOverview, targets: { infla
           className='media--1100'
           label={t<string>('rewards countdown')}
         >
-          <meter id="progress" className="progress4" max={FINAL_ERA} min={PROGRESS_START} value={stakingOverview?.activeEra.toNumber()}></meter>
+          <meter id="progress" className="progress4" max={PROGRESS_END} min={PROGRESS_START} value={stakingOverview?.activeEra.toNumber()}></meter>
           <span style={{ fontSize: '18px' }}>
             {t<string>('{{era}} / 29 (765432~ Blocks)', { replace: {
               era: stakingOverview?.activeEra.toNumber() - 188
