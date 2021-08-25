@@ -30,12 +30,22 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
   const [ethereumAddress, setEthereumAddress] = useState<string | undefined | null>(null);
   const { data: accounts = [] } = useEtherAccounts();
   const [amount, setAmount] = useState<string>('0');
+  const [isAmountError, setIsAmountError] = useState<boolean>(true);
   const { provider, signer } = useEthers();
   const { contract } = useErc20Contract();
   const submitDeposit = useErc20Deposit(ethereumAddress || undefined);
   const [receiveId, setReceiveId] = useState<string | null>('' || null);
   const [transferrable, setTransferrable] = useState<boolean>(true);
   const { systemChain: substrateName } = useApi();
+
+  useEffect(() => {
+    if (Number(amount) <= 0) {
+        setIsAmountError(true)
+    } else {
+        setIsAmountError(false)
+    }
+
+  }, [amount])
 
   if (window && !window?.web3?.currentProvider?.isMetaMask) {
     return (<main>
@@ -121,7 +131,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
                 <div style={{ flex: 1, 'verticalAlign': 'middle' }}>
                     <Dropdown
                         defaultValue={ethereumAddress}
-                        label={t<string>('eth account')}
+                        label={t<string>('Ethereum address')}
                         help={t<string>('Your Ethereum account that sent the transfer transaction')}
                         onChange={setEthereumAddress}
                         options={options}
@@ -148,7 +158,10 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
                         type={"number"}
                         help={t<string>('Type the amount you want to transfer.')}
                         label={t<string>('amount')}
+                        isError={isAmountError}
                         onChange={setAmount}
+                        defaultValue={'0'}
+                        min={0}
                     >
                         <Dropdown
                             defaultValue={unitOption[0].value}
@@ -163,13 +176,13 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
             <Button.Group>
               <Button
                 icon='hand-paper'
-                isDisabled={!transferrable}
+                isDisabled={!transferrable || isAmountError}
                 label={t<string>('Approve')}
                 onClick={approve}
               />
               <Button
                 icon='paper-plane'
-                isDisabled={transferrable}
+                isDisabled={transferrable || isAmountError}
                 label={t<string>('Submit')}
                 onClick={submit}
               />

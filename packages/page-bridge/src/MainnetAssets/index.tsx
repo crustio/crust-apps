@@ -4,8 +4,8 @@
 import BN from 'bn.js';
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
+import { ethers } from 'ethers';
 
-import { addrToChecksum } from '@polkadot/app-claims/claims/util';
 import { useTranslation } from '@polkadot/apps/translate';
 import { Button, Card, Columar, Input, InputAddress, InputBalance, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
@@ -28,15 +28,14 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
   const [ethereumAddress, setEthereumAddress] = useState<string | undefined | null>(null);
   const [isValid, setIsValid] = useState(false);
   const onChangeEthereumAddress = useCallback((hex: string) => {
-    try {
-      addrToChecksum(hex);
-      setIsValid(true);
-      setEthereumAddress(hex.trim());
-    } catch (error) {
-      console.log(error);
-      setIsValid(false);
-      setEthereumAddress(hex.trim());
+    const isValidEthAddr = ethers.utils.isAddress(hex);
+    if (isValidEthAddr) { 
+        setIsValid(true);
+    } else {
+        setIsValid(false);
     }
+    setEthereumAddress(hex.trim());
+    
   }, []);
 
   //   const onChangeEthereumAddress = useCallback((value: string) => {
@@ -73,7 +72,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
               <Input
                 autoFocus
                 className='full'
-                help={t<string>('The the Ethereum address')}
+                help={t<string>('The Ethereum address')}
                 isError={!isValid}
                 label={t<string>('Ethereum address')}
                 onChange={onChangeEthereumAddress}
