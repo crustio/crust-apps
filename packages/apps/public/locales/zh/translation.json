@@ -1622,5 +1622,7 @@
   "Storage merchant should first increase collateral in the “storage market benefits module” to qualify for the storage market rewards.": "存储商户需要先到“存储市场权益模块”中增加保障金，才能获得领取存储市场收益的资格。",
   "Increase collateral...": "增加保障金...",
   "How to get lucky order reward >>": "如何领取彩蛋订单奖励 >>",
-  "Only accounts with collateral": "只显示有保障金的账户"
+  "Only accounts with collateral": "只显示有保障金的账户",
+  "{{era}} / 217 (765432~ Blocks)": "{{era}} / 217 (大约765432块)",
+  "rewards countdown": "奖励倒计时"
 }

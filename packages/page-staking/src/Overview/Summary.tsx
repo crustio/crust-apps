@@ -25,7 +25,8 @@ interface Props {
   targets: SortedTargets;
 }
 
-const FINAL_ERA = 213;
+const FINAL_ERA = 217;
+const PROGRESS_START = 188;
 
 function Summary ({ className = '', isVisible, stakingOverview, targets: { inflation: { inflation }, nominators, waitingIds } }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
@@ -76,12 +77,16 @@ function Summary ({ className = '', isVisible, stakingOverview, targets: { infla
           >
             <StakingRewardPot />
           </CardSummary>
-        ) : (<CardSummary
+        ) : (stakingOverview && (stakingOverview?.activeEra.toNumber() < 217)) && (<CardSummary
           className='media--1100'
-          label={t<string>('rewards')}
+          label={t<string>('rewards countdown')}
         >
-          <meter id="progress" className="progress4" max={FINAL_ERA} min={110} value={stakingOverview?.activeEra.toNumber()}></meter>
-          {t<string>('not started yet')}
+          <meter id="progress" className="progress4" max={FINAL_ERA} min={PROGRESS_START} value={stakingOverview?.activeEra.toNumber()}></meter>
+          <span style={{ fontSize: '18px' }}>
+            {t<string>('{{era}} / 29 (765432~ Blocks)', { replace: {
+              era: stakingOverview?.activeEra.toNumber() - 188
+            }})}
+          </span>
         </CardSummary>)}
       </section>
       <section>
@@ -151,7 +156,7 @@ export default React.memo(styled(Summary)`
     display: block;    
     font: inherit;
     height: 20px;
-    width: 160px;
+    width: 100%;
     pointer-events: none;
   }
 `);
