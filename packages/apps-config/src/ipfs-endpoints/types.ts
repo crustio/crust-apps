@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export interface AuthIpfsEndpoint {
-  name?: string;
-  url: string;
-  zone?: string;
+  text?: string;
+  value: string;
+  location?: string;
 }

@@ -8,6 +8,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@tableflip/react-dropdown": "^1.3.0",
+    "axios": "^0.21.1",
     "change-case": "^4.1.1",
     "cids": "^1.0.2",
     "classnames": "^2.2.6",

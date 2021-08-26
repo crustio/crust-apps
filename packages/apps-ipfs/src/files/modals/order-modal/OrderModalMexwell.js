@@ -16,6 +16,7 @@ import { BitLengthOption } from "../../../../../react-components/src/constants"
 
 const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'order' }) => {
   const { hasAccounts } = useAccounts();
+  const isForceFile = file ? file.isForce : false;
   const [account, setAccount] = useState(null);
   const [fileCid, setFileCID] = useState(file ? file.cid.toString() : '');
   const [fileSize, setFileSize] = useState(file ? file.originalSize.toString() : '0');
@@ -70,6 +71,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
               help={t('FileCidDesc')}
               label={t('File Cid')}
               onChange={setFileCID}
+              isDisabled={isForceFile}
               placeholder={t('File Cid')}
               value={fileCid}
             />
@@ -82,7 +84,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
               bitLength={DEFAULT_BITLENGTH}
               isError={false}
               help={t('fileSizeDesc')}
-              isDisabled={title === 'speed' || title === 'renew'}
+              isDisabled={title === 'speed' || title === 'renew' || isForceFile }
               label={t('fileSizeTitle')}
               onChange={setFileSize}
               value={fileSize}

@@ -23,6 +23,7 @@ function parserStrToObj (str) {
 const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'order' }) => {
   const { hasAccounts } = useAccounts();
   const [account, setAccount] = useState(null);
+  const isForceFile = file ? file.isForce : false;
   const [fileCid, setFileCID] = useState(file ? file.cid.toString() : '');
   const [fileSize, setFileSize] = useState(file ? file.originalSize.toString() : '0');
   const [price, setPrice] = useState('0 CRU');
@@ -93,6 +94,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
               autoFocus
               help={t('FileCidDesc')}
               label={t('File Cid')}
+              isDisabled={isForceFile}
               onChange={setFileCID}
               placeholder={t('File Cid')}
               value={fileCid}
@@ -106,7 +108,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
               bitLength={DEFAULT_BITLENGTH}
               isError={false}
               help={t('fileSizeDesc')}
-              isDisabled={title === 'speed' || title === 'renew'}
+              isDisabled={title === 'speed' || title === 'renew' || isForceFile }
               label={t('fileSizeTitle')}
               onChange={setFileSize}
               value={fileSize}

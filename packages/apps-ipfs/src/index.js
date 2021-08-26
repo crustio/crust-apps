@@ -17,26 +17,21 @@ import DndBackend from './lib/dnd-backend';
 import App from './App';
 import getStore from './bundles';
 import i18n from './i18n';
-import {useApi} from '../../react-hooks/src';
+import { useThemeClass } from './theme';
 
 const appVersion = process.env.REACT_APP_VERSION;
 const gitRevision = process.env.REACT_APP_GIT_REV;
 
 console.log(`IPFS Web UI - v${appVersion} - https://github.com/ipfs-shipyard/ipfs-webui/commit/${gitRevision}`);
-const themeDict = {
-  "Crust": "mainnet",
-  "Crust Maxwell": "maxwell",
-  "Crust Rockey": "rockey"
-}
 
 function IpfsApp () {
   const [store, setStore] = useState(null);
   const history = useHistory();
-  const {systemChain} = useApi()
-  const theme = themeDict[systemChain] || "rockey"
+  const theme = useThemeClass()
 
   useEffect(() => {
     try {
+      if (store !== null) return
       bundleCache.getAll().then((initialData) => {
         if (initialData && process.env.NODE_ENV !== 'production') {
           console.log('intialising store with data from cache', initialData);
@@ -53,7 +48,7 @@ function IpfsApp () {
     } catch (e) {
       console.log(e);
     }
-  }, []);
+  }, [store]);
 
   return store
     ? <Provider store={store}>
