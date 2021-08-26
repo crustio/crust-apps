@@ -28,7 +28,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
   const [ethereumAddress, setEthereumAddress] = useState<string | undefined | null>(null);
   const [isValid, setIsValid] = useState(false);
   const onChangeEthereumAddress = useCallback((hex: string) => {
-    const isValidEthAddr = ethers.utils.isAddress(hex);
+    const isValidEthAddr = hex.startsWith('0x') && ethers.utils.isAddress(hex);
 
     if (isValidEthAddr) {
       setIsValid(true);
