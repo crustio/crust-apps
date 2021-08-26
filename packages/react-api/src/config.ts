@@ -11,7 +11,7 @@ export const ethereums: Record<string, Record<number, EthereumNetworkOptions>> =
       erc20AssetHandler: '0x9D332427e6D1B91d9cf8d2fa3B41Df2012887aAB',
       erc20ResourceId: '0x000000000000000000000000000000608d1bc9a2d146ebc94667c336721b2801',
       peerChainIds: {
-        'Crust': 1
+        Crust: 1
       }
     }
   },
