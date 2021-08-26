@@ -40,7 +40,7 @@ export function createOption ({ info, isHeader, text, value }: Option, overrides
   };
 }
 
-export function createGatewayOption ({ info, isHeader, location, text, value }: Option, overrides: string[] = [], override = 'empty'): Option | React.ReactNode {
+export function createIpfsGatewayOption ({ info, isHeader, location, text, value }: Option): Option | React.ReactNode {
   if (isHeader) {
     return (
       <Dropdown.Header
