@@ -7,6 +7,7 @@ export interface Option {
   isHeader?: boolean;
   text: React.ReactNode;
   value: string | number;
+  location?: string;
 }
 
 export interface LinkOption extends Option {
