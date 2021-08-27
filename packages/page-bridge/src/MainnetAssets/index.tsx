@@ -8,7 +8,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { useTranslation } from '@polkadot/apps/translate';
-import { Button, Card, Columar, Input, InputAddress, InputBalance, MarkWarning, TxButton } from '@polkadot/react-components';
+import { Available, Button, Card, Columar, Input, InputAddress, InputBalance, MarkWarning, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { BN_ZERO, formatBalance } from '@polkadot/util';
 
@@ -60,6 +60,9 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
     <Columar>
       <Columar.Column>
         <Card withBottomMargin>
+          <Banner type='warning'>
+            <p>{t<string>('This function is an internal test stage, the assets will not be lost, but there may be a delay in the arrival of the account.')}</p>
+          </Banner>
           <h3><span style={{ fontWeight: 'bold' }}>{t<string>('From Crust')}</span></h3>
           <div style={{ display: 'flex' }}>
             <img src={logoCrust as string}
@@ -71,6 +74,12 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
                 isDisabled={!!propSenderId}
                 label={t<string>('account')}
                 onChange={setSenderId}
+                labelExtra={
+                  <Available
+                    label={t('transferrable')}
+                    params={senderId}
+                  />
+                }
                 type='account'
               />
             </div>

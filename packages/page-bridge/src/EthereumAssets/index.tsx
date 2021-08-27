@@ -12,7 +12,7 @@ import { useErc20Contract } from '@polkadot/react-api/hoc/useErc20Contract';
 import { useErc20Deposit } from '@polkadot/react-api/hoc/useErc20Deposit';
 import { useEtherAccounts } from '@polkadot/react-api/useEtherAccounts';
 import { useEthers } from '@polkadot/react-api/useEthers';
-import { Button, Card, Columar, Dropdown, Input, InputAddress, Modal } from '@polkadot/react-components';
+import { Available, Button, Card, Columar, Dropdown, Input, InputAddress, Modal } from '@polkadot/react-components';
 import { u8aToHex } from '@polkadot/util';
 import { decodeAddress } from '@polkadot/util-crypto';
 
@@ -125,6 +125,9 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
       <Columar.Column>
         <Card withBottomMargin>
           <Modal.Content>
+            <Banner type='warning'>
+              <p>{t<string>('This function is an internal test stage, the assets will not be lost, but there may be a delay in the arrival of the account.')}</p>
+            </Banner>
             <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('From Ethereum')}</span></h3>
             <div style={{display: "flex", alignItems: 'center'}}>
                 <img style={{ "width": "64px", height: '64px', padding: '3px', 'verticalAlign': 'middle' }} src={ethereumLogo as string} />
@@ -147,6 +150,12 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
                         help={t<string>('The selected account is used to receive tokens')}
                         label={t<string>('account')}
                         onChange={setReceiveId}
+                        labelExtra={
+                          <Available
+                            label={t('transferrable')}
+                            params={receiveId}
+                          />
+                        }
                     />
                 </div>
             </div>
