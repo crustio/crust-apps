@@ -40,6 +40,35 @@ export function createOption ({ info, isHeader, text, value }: Option, overrides
   };
 }
 
+export function createIpfsGatewayOption ({ info, isHeader, location, text, value }: Option): Option | React.ReactNode {
+  if (isHeader) {
+    return (
+      <Dropdown.Header
+        content={text}
+        key={text as string}
+      />
+    );
+  }
+
+  return {
+    text: (
+      <div
+        className='ui--Dropdown-item'
+        key={value}
+      >
+        <ChainImg
+          className='ui--Dropdown-icon'
+          logo={
+            info || 'default'
+          }
+        />
+        <div className='ui--Dropdown-name'>{text}&nbsp;{(location && location !== '') ? `(${location.toUpperCase()})` : ''} </div>
+      </div>
+    ),
+    value
+  };
+}
+
 export function createIdenticon ({ info, text, value }: Option, overrides: string[] = [], override = 'empty'): Option {
   const theme = info && overrides.includes(info)
     ? override as 'empty'
