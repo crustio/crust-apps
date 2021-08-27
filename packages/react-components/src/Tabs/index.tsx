@@ -22,7 +22,7 @@ interface Props {
 
 function Tabs ({ basePath, className = '', hidden, items }: Props): React.ReactElement<Props> {
   const location = useLocation();
-  const { icon, text } = React.useContext(SectionContext);
+  const { beta, icon, text } = React.useContext(SectionContext);
 
   // redirect on invalid tabs
   useEffect((): void => {
@@ -50,6 +50,7 @@ function Tabs ({ basePath, className = '', hidden, items }: Props): React.ReactE
       <div className='tabs-container'>
         {text && icon && (
           <CurrentSection
+            beta={beta}
             icon={icon}
             text={text}
           />

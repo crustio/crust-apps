@@ -38,7 +38,7 @@ function Content ({ className }: Props): React.ReactElement<Props> {
   const { api, isApiConnected, isApiReady } = useApi();
   const { queueAction } = useContext(StatusContext);
 
-  const { Component, display: { needsApi }, icon, name, text } = useMemo(
+  const { Component, beta, display: { needsApi }, icon, name, text } = useMemo(
     (): Route => {
       const app = location.pathname.slice(1) || '';
 
@@ -61,7 +61,7 @@ function Content ({ className }: Props): React.ReactElement<Props> {
           <>
             <Suspense fallback='...'>
               <ErrorBoundary trigger={name}>
-                <SectionContext.Provider value={{ icon, text }}>
+                <SectionContext.Provider value={{ beta, icon, text }}>
                   {missingApis.length
                     ? (
                       <NotFound

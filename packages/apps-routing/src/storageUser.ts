@@ -13,6 +13,7 @@ export default function create (t: <T = string>(key: string, text: string, optio
         'query.market.files'
       ]
     },
+    beta: true,
     group: 'storage',
     icon: 'user',
     name: 'storage_files',
