@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/react-api authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import BN from 'bn.js';
 import { ethers } from 'ethers';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -9,11 +10,10 @@ import styled from 'styled-components';
 import { useTranslation } from '@polkadot/apps/translate';
 import { Button, Card, Columar, Input, InputAddress, InputBalance, MarkWarning, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
-import { BN_ZERO } from '@polkadot/util';
+import { BN_ZERO, formatBalance } from '@polkadot/util';
 
 import logoCrust from '../images/crust.svg';
 import ethereumLogo from '../images/Ethereum_logo_2014.svg';
-import { formatBalance } from '@polkadot/util';
 
 interface Props {
   className?: string;
@@ -33,9 +33,10 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
   useEffect(() => {
     api.query.bridgeTransfer.bridgeFee(0).then((bridgeFee) => {
       const fee = JSON.parse(JSON.stringify(bridgeFee));
-      setBridgeFee(new BN(Number(fee[0]).toString()))
-    })
-  }, [api])
+
+      setBridgeFee(new BN(Number(fee[0]).toString()));
+    });
+  }, [api]);
   const onChangeEthereumAddress = useCallback((hex: string) => {
     const isValidEthAddr = hex.startsWith('0x') && ethers.utils.isAddress(hex);
 
