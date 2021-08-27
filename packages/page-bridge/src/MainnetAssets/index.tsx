@@ -3,16 +3,17 @@
 
 import BN from 'bn.js';
 import { ethers } from 'ethers';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { useTranslation } from '@polkadot/apps/translate';
-import { Button, Card, Columar, Input, InputAddress, InputBalance, TxButton } from '@polkadot/react-components';
+import { Button, Card, Columar, Input, InputAddress, InputBalance, MarkWarning, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 
 import logoCrust from '../images/crust.svg';
 import ethereumLogo from '../images/Ethereum_logo_2014.svg';
+import { formatBalance } from '@polkadot/util';
 
 interface Props {
   className?: string;
@@ -27,6 +28,14 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
   const [senderId, setSenderId] = useState<string | null>(propSenderId || null);
   const [ethereumAddress, setEthereumAddress] = useState<string | undefined | null>(null);
   const [isValid, setIsValid] = useState(false);
+  const [bridgeFee, setBridgeFee] = useState<BN>(BN_ZERO);
+
+  useEffect(() => {
+    api.query.bridgeTransfer.bridgeFee(0).then((bridgeFee) => {
+      const fee = JSON.parse(JSON.stringify(bridgeFee));
+      setBridgeFee(new BN(Number(fee[0]).toString()))
+    })
+  }, [api])
   const onChangeEthereumAddress = useCallback((hex: string) => {
     const isValidEthAddr = hex.startsWith('0x') && ethers.utils.isAddress(hex);
 
@@ -95,6 +104,11 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
                 onChange={setAmount}
                 withMax
               />
+              <MarkWarning content={t<string>('The transaction fee is {{fee}}', {
+                replace: {
+                  fee: formatBalance(bridgeFee)
+                }
+              })}></MarkWarning>
             </div>
           </div>
           <Button.Group>
