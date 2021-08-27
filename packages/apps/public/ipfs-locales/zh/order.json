@@ -2,7 +2,6 @@
   "actions": {
     "addOrder": "添加订单",
     "upFiles": "上传文件",
-    "SignAndUp": "签名并上传",
     "add": "添加",
     "delete": "删除",
     "search": "搜索",
@@ -22,6 +21,7 @@
     "Order Fee": "订单金额(CRU)",
     "Renew Pool Balance": "续费池(CRU)"
   },
+  "Sign And Upload": "签名并上传",
   "Period": "。",
   "Select a gateway": "选用网关",
   "File streaming and wallet authentication will be processed by the chosen gateway": "您选择的网关将会承担文件上传下载与钱包验证工作",

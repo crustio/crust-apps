@@ -191,7 +191,7 @@ export default function UpFiles ({ file, endpoint, onClose, onSuccess }) {
     }}>
       <Button isDisabled={!hasAccounts || fileSizeError}
               icon='sign-in-alt'
-              label={t('action.SignAndUp', 'Sign And Upload')}
+              label={t('Sign And Upload')}
               onClick={() => signAndUp()}
               isBusy={isBusy} />
     </Modal.Actions>

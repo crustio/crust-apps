@@ -4,7 +4,6 @@
 export * from './api';
 export * from './endpoints';
 export * from './extensions';
-export * from './ipfsGWEndpoints';
 export * from './links';
 export * from './settings';
 export * from './ui';
