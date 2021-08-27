@@ -138,18 +138,17 @@ export default function UpFiles ({ file, endpoint, onClose, onSuccess }) {
       setError(e.message);
     }
   };
-  console.info('state->', isBusy, upState);
   return <Modal
     className={`order--accounts-Modal ${theme}`}
     header={t(`actions.upFiles`, 'Upload File')}
     size='small'
   >
     <Modal.Content>
+      <div className="flex flex-column pa3">
+        <div style={{ fontWeight: 500, fontSize: '1.2rem' }}>{file.name}</div>
+        <div>{filesize(file.size)}</div>
+      </div>
       <Modal.Columns hint={!hasAccounts && <p className='file-info' style={{ padding: 0 }}>{t('noAccount')}</p>}>
-        <div className="flex flex-column pa3">
-          <div style={{ fontWeight: 500, fontSize: '1.2rem' }}>{file.name}</div>
-          <div>{filesize(file.size)}</div>
-        </div>
         {
           !upState.up &&
           <InputAddress
@@ -191,10 +190,10 @@ export default function UpFiles ({ file, endpoint, onClose, onSuccess }) {
       onClose();
     }}>
       <Button isDisabled={!hasAccounts || fileSizeError}
+              icon='sign-in-alt'
+              label={t('action.SignAndUp', 'Sign And Upload')}
               onClick={() => signAndUp()}
-              isBusy={isBusy}>
-        {t('action.SignAndUp', 'Sign And Upload')}
-      </Button>
+              isBusy={isBusy} />
     </Modal.Actions>
   </Modal>;
 }

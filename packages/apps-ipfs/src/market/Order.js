@@ -27,7 +27,10 @@ const MDropdown = styled(Dropdown)`
 `
 
 const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
-  const isStorageFiles = url === '/storage_files';
+  const [isStorageFiles, setIsStorageFiles] = useState(url === '/storage_files');
+  useEffect(() => {
+    setIsStorageFiles(url === '/storage_files' || location.hash === '#/storage_files')
+  },[url, location.hash])
   const [modalShow, toggleModal] = useState(false);
   const [showUpFiles, setShowUpFiles] = useState(false);
   const [upFile, setUpFile] = useState(null);
