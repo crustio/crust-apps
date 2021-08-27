@@ -17,6 +17,6 @@ export default function create (t: <T = string>(key: string, text: string, optio
     group: 'storage',
     icon: 'user',
     name: 'storage_files',
-    text: t<string>('nav.auth.ipfs', 'Crust cloud', { ns: 'apps-routing' })
+    text: t<string>('nav.auth.ipfs', 'Storage user', { ns: 'apps-routing' })
   };
 }
