@@ -7,4 +7,4 @@ export * from './extensions';
 export * from './links';
 export * from './settings';
 export * from './ui';
-export * from './ipfs-endpoints';
+export * from './ipfs-gateway-endpoints';

@@ -190,7 +190,7 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
       }
       <div className={'w-100 btn-wrapper flex-l'}>
         { isStorageFiles ?
-          <div className={'flex-l'} style={{ alignItems: 'center' }}>
+          <div className={'flex-l'} style={{ alignItems: 'center', width: '32rem' }}>
             <input
               type={'file'}
               style={{ display: 'none' }}
@@ -201,6 +201,7 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
               inputFile?.current?.dispatchEvent(event)
             }}>{t('actions.upFiles')}</button>
             <MDropdown
+              className={'flex-grow-1'}
               help={t('File streaming and wallet authentication will be processed by the chosen gateway') + t('Period')}
               label={t('Select a gateway')}
               options={endpoints}

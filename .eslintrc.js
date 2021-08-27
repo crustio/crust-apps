@@ -17,7 +17,7 @@ module.exports = {
     '**/node_modules/*',
     '**/apps-ipfs/*',
     '**/patch/*',
-    '**/ipfsGWEndpoints/*'
+    '**/ipfs-gateway-endpoints/*'
   ],
   parserOptions: {
     ...base.parserOptions,
