@@ -190,7 +190,13 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
           </Modal.Content>
         </Card>
       </Columar.Column>
-
+      <Columar.Column>
+        <Card>
+          <Banner type="warning">
+            <p>{t<string>('Cross-chain transfers are automatically executed by smart contracts. after the execution of the contract is completed, the funds will arrive in the account. Please wait patiently.')}&nbsp;<a target="_blank" href='https://etherscan.io/address/0x0964a01e0d0b5d6ff726ab9d60a93d188d3f505b'>{t<string>('You can check the transaction status here...')}</a></p>
+          </Banner>
+        </Card>
+      </Columar.Column>
     </Columar>
   </div>);
 }

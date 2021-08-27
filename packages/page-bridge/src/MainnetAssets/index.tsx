@@ -14,6 +14,7 @@ import { BN_ZERO, formatBalance } from '@polkadot/util';
 
 import logoCrust from '../images/crust.svg';
 import ethereumLogo from '../images/Ethereum_logo_2014.svg';
+import Banner from '@polkadot/app-accounts/Accounts/Banner';
 
 interface Props {
   className?: string;
@@ -105,11 +106,9 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
                 onChange={setAmount}
                 withMax
               />
-              <MarkWarning content={t<string>('The transaction fee is {{fee}}', {
-                replace: {
-                  fee: formatBalance(bridgeFee)
-                }
-              })}></MarkWarning>
+              <MarkWarning content={t<string>('The transaction fee is ')}>
+                <span style={{'color': '#ff8812', 'textDecoration': 'underline', 'fontStyle': 'italic'}}>{formatBalance(bridgeFee)}</span>
+              </MarkWarning>
             </div>
           </div>
           <Button.Group>
@@ -124,7 +123,13 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
           </Button.Group>
         </Card>
       </Columar.Column>
-
+      <Columar.Column>
+        <Card>
+          <Banner type="warning">
+            <p>{t<string>('Cross-chain transfers are automatically executed by smart contracts. after the execution of the contract is completed, the funds will arrive in the account. Please wait patiently.')}&nbsp;<a target="_blank" href='https://etherscan.io/address/0x0964a01e0d0b5d6ff726ab9d60a93d188d3f505b'>{t<string>('You can check the transaction status here...')}</a></p>
+          </Banner>
+        </Card>
+      </Columar.Column>
     </Columar>
   </div>);
 }
