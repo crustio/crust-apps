@@ -1,6 +1,7 @@
 {
   "actions": {
     "addOrder": "Place an order",
+    "upFiles": "Upload File",
     "add": "Add",
     "delete":"Delete",
     "search": "Search",
@@ -21,6 +22,8 @@
     "Order Fee": "Order Fee(CRU)",
     "Renew Pool Balance": "Renew Pool Balance(CRU)"
   },
+  "Period": ".",
+  "selectEndpoint": "Select Endpoint",
   "noAccount": "Need to import a valid account",
   "orderList": "File Order List",
   "orderListdesc": "Note: The order information is cached locally, switching browsers or devices will not keep displaying the original browser information ",
@@ -35,6 +38,7 @@
   "File Cid": "File CID",
   "fileSizeTitle": "File size (byte)",
   "fileSizeDesc": "If the size you fill in is smaller than the real file size, the order will fail",
+  "fileSizeError": "Do not upload files larger than 100MB!",
   "tipTitle": "Tip",
   "tipDesc": "Files would be stored by more merchants with higher tips.",
   "priceDesc": "The minimum storage price that needs to be paid for this file.",

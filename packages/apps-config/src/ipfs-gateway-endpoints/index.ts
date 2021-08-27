@@ -2,21 +2,24 @@
 // License: Apache-2.0
 
 import type { TFunction } from 'i18next';
-import type { Option } from '../settings/types';
+import type { AuthIpfsEndpoint } from './types';
 
 // Definitions here are with the following values -
 //   info: the name of a logo as defined in ../ui/logos, specifically in namedLogos
 //   text: the IPFS endpoint name
 //   value: the IPFS endpoint domain
 //   location: IPFS gateway location
-
-export function createIpfsGatewayEndpoints (t: TFunction): Option[] {
+export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
   return [
     {
-      info: 'crust', // 'default' or null
-      text: t('Crust Network'),
       value: 'https://crustwebsites.net',
+      text: t('Crust Network'),
       location: t('Singapore')
+    },
+    {
+      value: 'https://ipfs-auth.decoo.io',
+      text: t('Decoo.io'),
+      location: t('United States')
     }
   ];
 }

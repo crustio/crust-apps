@@ -1,0 +1,17 @@
+@import "~reactjs-popup/dist/index.css";
+
+.file-progress {
+  width: 100%;
+  background: unset;
+  overflow: hidden;
+  height: 1.4rem;
+  border-radius: 0.7rem;
+  border: solid 1px var(--main-color);
+}
+
+.file-progress-bar {
+  transition: width 100ms ease-in-out;
+  width: 0;
+  height: 100%;
+  background: var(--main-color);
+}

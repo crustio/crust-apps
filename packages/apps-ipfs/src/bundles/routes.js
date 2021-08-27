@@ -24,9 +24,10 @@ export default createRouteBundle({
   '/storage/market': MarketPage,
   // '/settings/analytics': AnalyticsPage,
   '/storage/settings*': SettingsPage,
-  '/storage/welcome': WelcomePage,
+  // '/storage/welcome': WelcomePage,
   // '/blank': BlankPage,
   '/storage/status*': StatusPage,
+  '/storage_files': MarketPage,
   '/storage': MarketPage,
   '': MarketPage,
   '/': MarketPage

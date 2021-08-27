@@ -93,6 +93,8 @@ const notify = {
         const type = code ? code.replace(/^(ERR_)/, '') : '';
 
         switch (type) {
+          case 'FILES_SIZE_ERROR':
+            return 'filesSizeError'
           case 'FOLDER_EXISTS':
             return 'folderExists';
           case FILES_ACTIONS.WRITE:
@@ -131,7 +133,7 @@ const notify = {
   ),
 
   doNotifyDismiss: () => ({ dispatch }) => dispatch({ type: 'NOTIFY_DISMISSED' }),
-
+  doNotifyFilesError: ({ code }) => ({ dispatch }) => dispatch({ type: 'FILES_EVENT_FAILED', payload: {error: { code }} }),
   // Dismiss the "all ok" message after 3 seconds
   reactNotifyOkDismiss: createSelector(
     'selectAppTime',

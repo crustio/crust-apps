@@ -1,7 +1,7 @@
 // Copyright 2017-2021 @polkadot/dev authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useRef } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import IpfsApp from '@polkadot/apps-ipfs/';
@@ -15,47 +15,56 @@ interface Props {
   newEvents?: KeyedEvent[];
 }
 
-const IpfsPage: React.FC<Props> = () => {
+const IpfsPage: React.FC<Props> = (p) => {
   const { api } = useApi();
   const { t } = useTranslation('apps-routing');
-  const itemsRef = useRef([
-    {
-      isRoot: true,
-      name: 'market',
-      text: t('market', 'Storage Orders')
-    },
-    {
-      name: 'status',
-      text: t('status', 'Status')
-    },
-    {
-      hasParams: true,
-      name: 'files',
-      text: t('files', 'Files')
-    },
-    {
-      name: 'explore',
-      text: t('explore', 'Explore')
-    },
-    {
-      name: 'peers',
-      text: t('peers', 'Peers')
-    },
-    {
-      name: 'settings',
-      text: t('settings', 'IPFS Setting')
-    }
-  ]);
+  const items = p.basePath === '/storage_files'
+    ? [
+      {
+        isRoot: true,
+        name: 'market',
+        text: t('market', 'Storage Orders')
+      }
+    ]
+    : [
+      {
+        isRoot: true,
+        name: 'market',
+        text: t('market', 'Storage Orders')
+      },
+      {
+        name: 'status',
+        text: t('status', 'Status')
+      },
+      {
+        hasParams: true,
+        name: 'files',
+        text: t('files', 'Files')
+      },
+      {
+        name: 'explore',
+        text: t('explore', 'Explore')
+      },
+      {
+        name: 'peers',
+        text: t('peers', 'Peers')
+      },
+      {
+        name: 'settings',
+        text: t('settings', 'IPFS Setting')
+      }
+    ];
+  // const itemsRef = useRef(items);
 
   return (
     <main>
       <header>
-        <Tabs basePath={'/storage'}
+        <Tabs basePath={p.basePath}
           hidden={api.query.babe ? undefined : []}
           isRoot
-          items={itemsRef.current} />
+          items={items}/>
       </header>
-      <IpfsApp />
+      <IpfsApp/>
     </main>
   );
 };

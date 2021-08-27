@@ -27,6 +27,7 @@ export interface Route {
   name: string;
   text: string;
   useCounter?: () => number | string | null;
+  beta?: boolean;
 }
 
 export type Routes = Route[];

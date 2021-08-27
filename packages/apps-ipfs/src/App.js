@@ -1,5 +1,6 @@
-// [object Object]
+// Copyright 2017-2021 @polkadot/apps-ipfs authors & contributors
 // SPDX-License-Identifier: Apache-2.0
+
 import { getNavHelper } from 'internal-nav-helper';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
@@ -76,7 +77,12 @@ export class App extends Component {
           style={{ minHeight: '100vh' }}>
           <div className='flex-auto-l'>
             <main className='bg-white pv3 pa3'>
-              { (ipfsReady || url === '/storage/welcome' || url.startsWith('/storage/settings') || url.startsWith('/storage/market') || url === "/storage")
+              { (ipfsReady ||
+                url === '/storage/welcome' ||
+                url.startsWith('/storage/settings') ||
+                url.startsWith('/storage/market') ||
+                url === '/storage' ||
+                url === '/storage_files')
                 ? <Page />
                 : <ComponentLoader pastDelay />
               }

@@ -14,15 +14,15 @@ import {useAccounts, useApi} from "@polkadot/react-hooks";
 import Checkbox from "../../../../react-components/src/Checkbox";
 
 const options = [{
-  text: 'Crust Storage Explorer',
-  value: 'Crust Storage Explorer'
+  text: 'Subscan Storage Explorer (Coming Soon)',
+  value: 'Subscan Storage Explorer'
 }];
 
 interface Props { onClose: () => void, onConfirm: () => void }
 
 const FetchModal: React.FC<Props> = ({ onClose, onConfirm }) => {
   const { t } = useTranslation();
-  const [dataSource] = useState('Crust Storage Explorer');
+  const [dataSource] = useState('Subscan Storage Explorer');
   const { hasAccounts } = useAccounts();
   const [account, setAccount] = useState<any>();
   const [isAllOrders, setIsAllOrders] = useState(false)
@@ -47,7 +47,6 @@ const FetchModal: React.FC<Props> = ({ onClose, onConfirm }) => {
           <Modal.Columns>
             <Dropdown
                 className='js--Dropdown'
-                defaultValue={'Crust Storage Explorer'}
                 label={t('Choose data source')}
                 options={options}
                 value={dataSource}
@@ -96,6 +95,7 @@ const FetchModal: React.FC<Props> = ({ onClose, onConfirm }) => {
     <Modal.Actions onCancel={onClose}>
       <Button className='tc'
         icon={'check'}
+        isDisabled={true}
         label={t<string>('Submit')}
         onClick={() => {
           onConfirm();

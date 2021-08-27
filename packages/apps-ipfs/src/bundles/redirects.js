@@ -27,14 +27,14 @@ export default {
         return;
       }
 
-      const withoutIpfs = ['/storage/welcome', '/storage/market', '/storage']
-      if (failed && withoutIpfs.indexOf(hash) < 0 ) {
-        return { actionCreator: 'doUpdateHash', args: ['#/storage/welcome'] };
-      }
-
-      if (lastSuccess && lastError && lastSuccess < lastError && withoutIpfs.indexOf(hash) < 0) {
-        return { actionCreator: 'doUpdateHash', args: ['#/storage/welcome'] };
-      }
+      // const withoutIpfs = ['/storage/welcome', '/storage/market', '/storage']
+      // if (failed && withoutIpfs.indexOf(hash) < 0 ) {
+      //   return { actionCreator: 'doUpdateHash', args: ['#/storage/welcome'] };
+      // }
+      //
+      // if (lastSuccess && lastError && lastSuccess < lastError && withoutIpfs.indexOf(hash) < 0) {
+      //   return { actionCreator: 'doUpdateHash', args: ['#/storage/welcome'] };
+      // }
     }
   )
 };
