@@ -12,6 +12,7 @@
   "filesEventFailed": "无法执行您的请求，请重试。",
   "couldntConnectToPeer": "无法连接到提供的节点。",
   "connectedToPeer": "成功连接到提供的节点。",
+  "filesSizeError": "文件大小不能超过100M。",
   "experimentsErrors": {
     "npmOnIpfs": "我们无法将更改应用到您的系统，请手动安装或重新安装“ipfs-npm”包。"
   },

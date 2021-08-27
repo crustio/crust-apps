@@ -1,6 +1,8 @@
 {
   "actions": {
     "addOrder": "添加订单",
+    "upFiles": "上传文件",
+    "SignAndUp": "签名并上传",
     "add": "添加",
     "delete": "删除",
     "search": "搜索",
@@ -20,6 +22,11 @@
     "Order Fee": "订单金额(CRU)",
     "Renew Pool Balance": "续费池(CRU)"
   },
+  "Period": "。",
+  "Select a gateway": "选用网关",
+  "File streaming and wallet authentication will be processed by the chosen gateway": "您选择的网关将会承担文件上传下载与钱包验证工作",
+  "United States": "美国",
+  "Singapore": "新加坡",
   "orderList": "订单列表",
   "noAccount": "需要导入一个有效账号",
   "orderListdesc": "注意：订单信息为本地缓存，切换浏览器或设备不会保留显示原浏览器信息",
@@ -30,6 +37,7 @@
   "File Cid": "文件 Cid",
   "fileSizeTitle": "文件大小",
   "fileSizeDesc": "如果您填写的大小小于文件真实大小，将会导致下单失败",
+  "fileSizeError": "文件大小不能超过100M。",
   "tipTitle": "小费",
   "tipDesc": "高额的小费可以使文件被更多商户存储",
   "priceDesc": "需要为这个文件支付的最低存储价格",
@@ -73,5 +81,4 @@
   "Renew Pool Balance": "续费池(CRU)",
   "fetchTips": "1.Fetch的搜寻结果是由Crust Storage Explorer这一公共服务提供的，难以避免存在信息的延迟或时间差。此页面显示的信息不一定能及时反应最新的网络状态。",
   "fetchTips2": "2.很快会有新的Subscan服务被推出以提升此项性能表现。"
-
 }

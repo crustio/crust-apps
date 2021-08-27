@@ -12,14 +12,15 @@ import {
   Button
 } from '../../../../../react-components/src';
 const options = [{
-  text:"Crust Storage Explorer",
-  value:"Crust Storage Explorer"
+  text:"Subscan Storage Explorer (Coming Soon)",
+  value:"Subscan Storage Explorer"
 }]
 const FetchModal = ({  onClose, onConfirm }) => {
   const {t} = useTranslation('order')
   const { hasAccounts } = useAccounts();
   const [account, setAccount] = useState(null);
-  const [dataSource] = useState('Crust Storage Explorer')
+  const [dataSource] = useState('Subscan Storage Explorer')
+  const isComingSoon = true;
   return <Modal
     className='order--accounts-Modal'
     header={t('Fetch Orders', 'Fetch Orders')}
@@ -27,7 +28,7 @@ const FetchModal = ({  onClose, onConfirm }) => {
   >
     <Modal.Content>
       <div>
-        <Modal.Columns hint={t("fetchTips", "1.The Fetch function is provided by Crust Storage Explorer, which is a public service and may cause certain delay or time gap. Results shown on this page doe not necessarily reflect the latest network status.")}>
+        <Modal.Columns hint={t("fetchTips", "1.The Fetch function is provided by Subscan Storage Explorer, which is a public service and may cause certain delay or time gap. Results shown on this page doe not necessarily reflect the latest network status.")}>
           <InputAddress
             label={t('Please choose account')}
             isDisabled={!hasAccounts}
@@ -48,14 +49,13 @@ const FetchModal = ({  onClose, onConfirm }) => {
             className='js--Dropdown'
             label={t('Choose data source')}
             options={options}
-            defaultValue={'Crust Storage Explorer'}
             value={dataSource}
           />
         </Modal.Columns>
       </div>
     </Modal.Content>
     <Modal.Actions onCancel={onClose}>
-      <Button icon={'check'} isDisabled={!account} label={t('actions.submit')} onClick={() => {
+      <Button icon={'check'} isDisabled={!account || isComingSoon} label={t('actions.submit')} onClick={() => {
         onConfirm(account)
       }} className='tc'/>
     </Modal.Actions>

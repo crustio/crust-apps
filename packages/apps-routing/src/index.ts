@@ -31,6 +31,7 @@ import splore from './splore';
 import staking from './staking';
 import storage from './storage';
 import storageMarket from './storageMarket';
+import storageUser from './storageUser';
 import sudo from './sudo';
 import techcomm from './techcomm';
 import transfer from './transfer';
@@ -56,6 +57,7 @@ export default function create (t: TFunction): Routes {
     society(t),
     calendar(t),
     contracts(t),
+    storageUser(t),
     storage(t),
     storageMarket(t),
     csmStaking(t),

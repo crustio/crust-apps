@@ -12,6 +12,7 @@
   "filesEventFailed": "Failed to process your request. Please try again.",
   "couldntConnectToPeer": "Could not connect to the provided peer.",
   "connectedToPeer": "Successfully connected to the provided peer.",
+  "filesSizeError": "Do not upload files larger than 100MB!",
   "experimentsErrors": {
     "npmOnIpfs": "We couldn't make changes to your system. Please install or uninstall 'ipfs-npm' package manually."
   },

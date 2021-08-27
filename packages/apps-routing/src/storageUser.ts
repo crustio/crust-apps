@@ -13,9 +13,10 @@ export default function create (t: <T = string>(key: string, text: string, optio
         'query.market.files'
       ]
     },
+    beta: true,
     group: 'storage',
-    icon: 'server',
-    name: 'storage',
-    text: t<string>('nav.ipfs', 'IPFS user', { ns: 'apps-routing' })
+    icon: 'user',
+    name: 'storage_files',
+    text: t<string>('nav.auth.ipfs', 'Crust cloud', { ns: 'apps-routing' })
   };
 }
