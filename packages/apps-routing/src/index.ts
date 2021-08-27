@@ -9,6 +9,7 @@ import addresses from './addresses';
 import assets from './assets';
 import benefit from './benefit';
 import bounties from './bounties';
+import bridge from './bridge';
 import calendar from './calendar';
 import claims from './claims';
 import contracts from './contracts';
@@ -43,6 +44,7 @@ export default function create (t: TFunction): Routes {
     addresses(t),
     explorer(t),
     claims(t),
+    bridge(t),
     poll(t),
     transfer(t),
     staking(t),

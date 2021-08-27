@@ -1,0 +1,11 @@
+{
+    "name": "@polkadot/apps-bridge",
+    "private": true,
+    "version": "0.74.1",
+    "main": "index.js",
+    "repository": "github:polkadot-js/apps",
+    "author": "yuhui <1161569428@qq.com>",
+    "maintainers": [],
+    "contributors": [],
+    "license": "Apache-2.0"
+}
