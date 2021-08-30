@@ -43,7 +43,7 @@ const itemList = [{
   }
 ];
 
-const OrderList = ({ onAddPool, doUpdateWatchItem, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
+const OrderList = ({ gateway, onAddPool, doUpdateWatchItem, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
   const [listSorting, setListSorting] = useState({ by: 'expireTime', asc: false });
   const [sortedList, setSortedList] = useState(watchList)
   const [editItem, setEditItem] = useState(undefined)
@@ -141,6 +141,7 @@ const OrderList = ({ onAddPool, doUpdateWatchItem, doSelectedItems, onToggleBtn,
       <div>
         {sortedList.length > 0 ? sortedList.map((item) => (
           <WatchItem
+            gateway={gateway}
             onAddPool={onAddPool}
             tableRef={tableRef}
             key={item.fileCid}
@@ -169,6 +170,7 @@ const OrderList = ({ onAddPool, doUpdateWatchItem, doSelectedItems, onToggleBtn,
 };
 
 OrderList.propTypes = {
+  gateway: propTypes.string,
   selectWatchedCidList: propTypes.array,
   onToggleBtn: propTypes.func.isRequired,
   doRemoveWatchItems: propTypes.func.isRequired,

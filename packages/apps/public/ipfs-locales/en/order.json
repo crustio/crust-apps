@@ -20,7 +20,8 @@
     "note": "Note",
     "prepaid": "prepaid",
     "Order Fee": "Order Fee(CRU)",
-    "Renew Pool Balance": "Renew Pool Balance(CRU)"
+    "Renew Pool Balance": "Renew Pool Balance(CRU)",
+    "copyLink": "Copy Download Link"
   },
   "Period": ".",
   "selectEndpoint": "Select Endpoint",
@@ -53,6 +54,7 @@
   "clipboard": "Clipboard",
   "fileCidCopied": "File CID Copied",
   "fileSizeCopied": "File Size Copied",
+  "downLinkCopied": "Download Link Copied",
   "ipfsError": "IPFS not connected",
   "tips": {
     "wikiAddress": "https://wiki.crust.network/docs/en/storageUserGuide",
