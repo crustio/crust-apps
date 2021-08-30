@@ -57,6 +57,7 @@ export default {
     anchor: 'SworkerAnchor',
     is_reported: 'bool'
   },
+  ResourceId: '[u8; 32]',
   Status: {
     _enum: ['Free', 'Reserved']
   },
