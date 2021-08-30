@@ -38,7 +38,6 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
   const DEFAULT_BITLENGTH = BitLengthOption.CHAIN_SPEC;
   const currentBenefits = useCall(isApiReady && api.query.benefits.currentBenefits)
   const marketBenefits = useCall(isApiReady && api.query.benefits.marketBenefits, [account])
-
   const benefits = useMemo(() => {
     const total_market_active_funds = currentBenefits ? parserStrToObj(currentBenefits).total_market_active_funds : 0
     const active_funds = marketBenefits ? parserStrToObj(marketBenefits).active_funds : 0
@@ -57,8 +56,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
     setCidNotValid(fileCid && !isIPFS.cid(fileCid) && !isIPFS.path(fileCid));
   }, [fileCid]);
   const benefitHint = useMemo(() => {
-
-      return benefits &&  <span className={"file-info"}>{t("discount", {discount: 100 - benefits* 100, originPrice})}</span>
+      return benefits < 1 &&  <span className={"file-info"}>{100 - benefits* 100 + t("discount") + originPrice}</span>
   }, [benefits, originPrice, filePrice])
 
   return <Modal
@@ -130,7 +128,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
         <Modal.Content>
           <Modal.Columns hint={<p>{t('priceDesc')} {benefitHint}</p>}>
             <Input
-              help={benefitHint}
+              help={t('priceDesc')}
               isDisabled
               label={t('File price')}
               maxLength={32}

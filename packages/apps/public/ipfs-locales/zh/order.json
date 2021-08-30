@@ -80,5 +80,6 @@
   "Order Fee": "订单金额(CRU)",
   "Renew Pool Balance": "续费池(CRU)",
   "fetchTips": "1.Fetch的搜寻结果是由Crust Storage Explorer这一公共服务提供的，难以避免存在信息的延迟或时间差。此页面显示的信息不一定能及时反应最新的网络状态。",
-  "fetchTips2": "2.很快会有新的Subscan服务被推出以提升此项性能表现。"
+  "fetchTips2": "2.很快会有新的Subscan服务被推出以提升此项性能表现。",
+  "discount": "%折扣优惠, 实际价格为"
 }

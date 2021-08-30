@@ -81,5 +81,6 @@
   "Order Fee": "Order Fee(CRU)",
   "Renew Pool Balance": "Renew Pool Balance(CRU)",
   "fetchTips": "1.The Fetch function is provided by Crust Storage Explorer, which is a public service and may cause certain delay or time gap. Results shown on this page doe not necessarily reflect the latest network status.",
-  "fetchTips2": "2.There will be soon a new Subscan service going live to enhance Fetch performance."
+  "fetchTips2": "2.There will be soon a new Subscan service going live to enhance Fetch performance.",
+  "discount": "discount, the actual price is "
 }
