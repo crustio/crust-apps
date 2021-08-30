@@ -7,12 +7,12 @@ import React, { useRef } from 'react';
 import { Route, Switch } from 'react-router';
 
 import { useTranslation } from '@polkadot/apps/translate';
+import { EthersProvider, Web3Provider } from '@polkadot/react-api';
 import { Tabs } from '@polkadot/react-components';
 import { useAccounts, useIpfs } from '@polkadot/react-hooks';
 
 import EthereumAssets from './EthereumAssets';
 import MainnetAssets from './MainnetAssets';
-import { EthersProvider, Web3Provider } from '@polkadot/react-api';
 
 const HIDDEN_ACC = ['vanity'];
 
