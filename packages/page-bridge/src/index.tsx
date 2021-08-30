@@ -7,6 +7,7 @@ import React, { useRef } from 'react';
 import { Route, Switch } from 'react-router';
 
 import { useTranslation } from '@polkadot/apps/translate';
+import { EthersProvider, Web3Provider } from '@polkadot/react-api';
 import { Tabs } from '@polkadot/react-components';
 import { useAccounts, useIpfs } from '@polkadot/react-hooks';
 
@@ -33,25 +34,30 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
   ]);
 
   return (
-    <main className='accounts--App'>
-      <header>
-        <Tabs
-          basePath={basePath}
-          hidden={(hasAccounts && !isIpfs) ? undefined : HIDDEN_ACC}
-          items={itemsRef.current}
-        />
-      </header>
-      <Switch>
-        <Route path={`${basePath}/bridgeBack`}>
-          <EthereumAssets />
-        </Route>
-        <Route basePath={basePath}
-          onStatusChange={onStatusChange}>
-          <MainnetAssets />
-        </Route>
+    <Web3Provider>
+      <EthersProvider>
+        <main className='accounts--App'>
+          <header>
+            <Tabs
+              basePath={basePath}
+              hidden={(hasAccounts && !isIpfs) ? undefined : HIDDEN_ACC}
+              items={itemsRef.current}
+            />
+          </header>
+          <Switch>
+            <Route path={`${basePath}/bridgeBack`}>
+              <EthereumAssets />
+            </Route>
+            <Route basePath={basePath}
+              onStatusChange={onStatusChange}>
+              <MainnetAssets />
+            </Route>
 
-      </Switch>
-    </main>
+          </Switch>
+        </main>
+      </EthersProvider>
+
+    </Web3Provider>
   );
 }
 
