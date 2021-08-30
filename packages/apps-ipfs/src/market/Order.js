@@ -31,6 +31,7 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
   useEffect(() => {
     setIsStorageFiles(url === '/storage_files' || location.hash === '#/storage_files')
   },[url, location.hash])
+
   const [modalShow, toggleModal] = useState(false);
   const [showUpFiles, setShowUpFiles] = useState(false);
   const [upFile, setUpFile] = useState(null);
@@ -43,6 +44,7 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
   const [loading, setLoading] = useState(false)
   const [fetchModalShow, toggleFetchModalShow] = useState(false)
 
+
   const inputFile = useRef()
   const {t} = useTranslation('order')
   const endpoints = useMemo(
@@ -50,6 +52,8 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
     [t]
   )
   const [currentEndpoint, setCurrentEndpoint] = useState(endpoints[0]);
+  const gateway = isStorageFiles ? currentEndpoint.value : "https://ipfs.io"
+
   const _onImportResult = useCallback(
     (message, status = 'queued') => {
       queueAction && queueAction({
@@ -241,7 +245,9 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
         onFilterWatchList={handleFilterWatchList}
       />
       {loading ? <Spinner label={t('Loading')} />
-        : <OrderList onAddPool={handleAddPool} onToggleBtn={handleToggleBtn}
+        : <OrderList
+          gateway={gateway}
+          onAddPool={handleAddPool} onToggleBtn={handleToggleBtn}
           watchList={tableData}/>
         }
     </div>

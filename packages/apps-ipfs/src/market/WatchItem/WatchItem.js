@@ -25,6 +25,7 @@ import GlyphPrepaid from '@polkadot/apps-ipfs/icons/GlyphPrepaid';
 import GlyphSpeedup from '@polkadot/apps-ipfs/icons/GlyphSpeedup';
 import GlyphRetry from '@polkadot/apps-ipfs/icons/GlyphRetry';
 import BN from 'bn.js';
+import GlyphCopy from '@polkadot/apps-ipfs/icons/GlyphCopy';
 
 const fileStatusEnum = {
   PENDING: 'PENDING',
@@ -33,7 +34,7 @@ const fileStatusEnum = {
   EXPIRE: 'EXPIRE'
 };
 
-const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggleBtn, selected, watchItem }) => {
+const WatchItem = ({ gateway, onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggleBtn, selected, watchItem }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
   const checkBoxCls = classnames({
@@ -47,19 +48,21 @@ const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggl
   if (fileStatus) {
     const _fileStatus = JSON.parse(JSON.stringify(fileStatus));
     if (_fileStatus) {
-      const { amount,
+      const {
+        amount,
         claimed_at,
         expired_at,
         file_size,
         replicas,
         prepaid,
-        reported_replica_count } = _fileStatus;
+        reported_replica_count
+      } = _fileStatus;
       watchItem.expireTime = expired_at;
       watchItem.amount = amount;
       watchItem.startTime = expired_at ? expired_at - 216000 : 0;
       watchItem.fileSize = file_size;
-      watchItem.confirmedReplicas = reported_replica_count
-      watchItem.prepaid = prepaid
+      watchItem.confirmedReplicas = reported_replica_count;
+      watchItem.prepaid = prepaid;
       if (expired_at && expired_at < bestNumber) {
         // expired
         status = fileStatusEnum.EXPIRE;
@@ -82,15 +85,16 @@ const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggl
       watchItem.fileSize = 0;
       watchItem.confirmedReplicas = 0;
       watchItem.amount = 0;
-      watchItem.prepaid = 0    }
+      watchItem.prepaid = 0;
+    }
   }
 
   watchItem.fileStatus = status;
   const readableSize = watchItem.fileSize ? filesize(watchItem.fileSize, { round: 2 }) : '-';
   const calculateExpiredTime = (expireBlock) => {
-    const durations = (expireBlock - bestNumber) * 6
-    return dayjs().add(durations, 'seconds').format('YYYY-MM-DD')
-  }
+    const durations = (expireBlock - bestNumber) * 6;
+    return dayjs().add(durations, 'seconds').format('YYYY-MM-DD');
+  };
 
   const buttonTextEnm = {
 
@@ -101,38 +105,39 @@ const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggl
 
   };
   const handleClick = () => {
-    window.open(t('tips.wikiAddress'), '_blank')
-  }
+    window.open(t('tips.wikiAddress'), '_blank');
+  };
 
   return <div
     className={'File b--light-gray relative  flex items-center bt'}
     style={{ overflow: 'hidden', height: 40 }}>
     <div className='justify-center tc flex justify-center items-center  ph2 pv1 w-5'>
-      <Checkbox aria-label={ t('checkboxLabel', { name })}
-        checked={selected}
-        className={checkBoxCls}
-        onChange={() => {
-          onSelect(watchItem.fileCid);
-        }}/>
+      <Checkbox aria-label={t('checkboxLabel', { name })}
+                checked={selected}
+                className={checkBoxCls}
+                onChange={() => {
+                  onSelect(watchItem.fileCid);
+                }}/>
     </div>
     <div className='relative tc pointer  justify-center flex items-center  ph2 pv1 w-15'>
       <div className=''>
-        <Cid value={watchItem.fileCid} />
+        <Cid value={watchItem.fileCid}/>
         <CopyButton text={watchItem.fileCid} message={t('fileCidCopied')}>
-          <StrokeCopy className='fill-aqua' style={{ width: 18 }} />
+          <StrokeCopy className='fill-aqua' style={{ width: 18 }}/>
         </CopyButton>
       </div>
     </div>
     <div className='relative tc   justify-center flex items-center  ph2 pv1 w-10'>
       <div className=''>
-        {readableSize  || '-'}
+        {readableSize || '-'}
       </div>
     </div>
 
     <div className='relative tc flex  justify-center items-center  ph2 pv1 w-20'>
       <div className=''>
         {/*(expireTime - bestNumber) / 6*/}
-        {watchItem.expireTime  ? <span>{watchItem.expireTime} / {calculateExpiredTime(watchItem.expireTime)} </span> : '-'}
+        {watchItem.expireTime ?
+          <span>{watchItem.expireTime} / {calculateExpiredTime(watchItem.expireTime)} </span> : '-'}
       </div>
     </div>
     <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
@@ -142,54 +147,79 @@ const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggl
       watchItem.fileStatus === fileStatusEnum.PENDING ?
         <Popup
           className="my-popup"
-          trigger={<abbr title='' style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</abbr>}
+          trigger={<abbr title='' style={{ textTransform: 'capitalize' }}>{t(`status.${watchItem.fileStatus}`)}</abbr>}
           position={['top left']}
           closeOnDocumentClick
           on={['hover', 'focus']}
         >
-     <Trans i18nKey="tips.tip1" t={t}>
+          <Trans i18nKey="tips.tip1" t={t}>
             <div>
-                 *The order "pending" time generally lasts from 30 minutes to 2 hours (depending on the file size). Please keep IPFS running during this period.<br/>
-* If your order is "pending" for too long, you can refer to <span className={'aqua pointer'} onClick={handleClick}>WIKI</span> for detailed solutions.
+              *The order "pending" time generally lasts from 30 minutes to 2 hours (depending on the file size). Please
+              keep IPFS running during this period.<br/>
+              * If your order is "pending" for too long, you can refer to <span className={'aqua pointer'}
+                                                                                onClick={handleClick}>WIKI</span> for
+              detailed solutions.
             </div>
           </Trans>
 
-  </Popup>
-      :
-      <div style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</div>
+        </Popup>
+        :
+        <div style={{ textTransform: 'capitalize' }}>{t(`status.${watchItem.fileStatus}`)}</div>
     }</div>
-    <div className='relative tr flex justify-center items-center  ph2 pv1 w-15'>
+    <div className='relative tr flex justify-center items-center  ph2 pv1 w-15' style={{ paddingBottom: 10 }}>
       {/*<span className='dib tc' style={{minWidth:"50%"}}>{watchItem.amount ? formatBalance(new BN(watchItem.amount.toString() || 0).divn(ratio), { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '') : '-'}</span>*/}
       <Popup
-        trigger={<span className="self-end" onClick={() => {
-          onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem)
-        }}>
-        {
-          watchItem.fileStatus === fileStatusEnum.PENDING && <GlyphSpeedup className={'custom-icon' +
-          ' custom-icon-color pointer'}/>
+        trigger={
+          <span
+            className="self-end"
+            onClick={() => {
+              onToggleBtn(buttonTextEnm[watchItem.fileStatus], watchItem);
+            }}
+          >
+            {
+              watchItem.fileStatus === fileStatusEnum.PENDING &&
+              <GlyphSpeedup className={'custom-icon custom-icon-color pointer'}/>
+            }
+            {
+              (watchItem.fileStatus === fileStatusEnum.SUCCESS || watchItem.fileStatus === fileStatusEnum.EXPIRE) &&
+              <GlyphRenew className={'custom-icon custom-icon-color pointer'}/>
+            }
+            {
+              watchItem.fileStatus === fileStatusEnum.FAILED &&
+              <GlyphRetry className={'custom-icon custom-icon-color pointer'}/>
+            }
+          </span>
         }
-          {
-            (watchItem.fileStatus === fileStatusEnum.SUCCESS || watchItem.fileStatus === fileStatusEnum.EXPIRE) && <GlyphRenew className={'custom-icon' +
-            ' custom-icon-color pointer'}/>
-          }
-          {
-            watchItem.fileStatus === fileStatusEnum.FAILED && <GlyphRetry className={'custom-icon' +
-            ' custom-icon-color pointer'}/>
-          }
-      </span>}
         on={['hover', 'focus']}
         position="right center"
         closeOnDocumentClick
       >
-          <span>{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</span>
-        </Popup>
+        <span>{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</span>
+      </Popup>
+      <Popup
+        trigger={
+          <div style={{position: 'relative', top: 6}}>
+            <CopyButton text={`${gateway}/ipfs/${watchItem.fileCid}`} message={t('downLinkCopied')}>
+              <StrokeCopy className='fill-aqua pointer' style={{ width: 28 }}/>
+            </CopyButton>
+          </div>
+        }
+        on={['hover', 'focus']}
+        position="right center"
+        closeOnDocumentClick
+      >
+        <span>{t(`actions.copyLink`)}</span>
+      </Popup>
     </div>
     <div className='relative tr flex justify-center items-center  ph2 pv1 w-15'>
-      <span  className='dib tc' style={{minWidth:"50%"}}>{formatBalance(watchItem.prepaid, { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '')|| '-'}</span>
+      <span className='dib tc' style={{ minWidth: '50%' }}>{formatBalance(watchItem.prepaid, {
+        decimals: 12,
+        forceUnit: 'CRU'
+      }).replace('CRU', '') || '-'}</span>
       <span>
           <Popup
-            trigger={<span><GlyphPrepaid  onClick={() => {
-              onAddPool(watchItem)
+            trigger={<span><GlyphPrepaid onClick={() => {
+              onAddPool(watchItem);
             }} className={'custom-icon custom-icon-color pointer'}/></span>}
             on={['hover', 'focus']}
             position="right center"
@@ -208,6 +238,7 @@ WatchItem.prototype = {
   selected: PropTypes.bool,
   onToggleBtn: PropTypes.func.isRequired,
   onAddPool: PropTypes.func.isRequired,
+  gateway: PropTypes.string,
 };
 
 export default connect(WatchItem);

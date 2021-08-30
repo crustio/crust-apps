@@ -33,7 +33,7 @@ const fileStatusEnum = {
   EXPIRE: 'EXPIRE'
 };
 
-const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggleBtn, selected, watchItem }) => {
+const WatchItem = ({ gateway, onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggleBtn, selected, watchItem }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
   const checkBoxCls = classnames({
@@ -167,7 +167,7 @@ const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggl
       :
       <div style={{textTransform: 'capitalize'}}>{t(`status.${watchItem.fileStatus}`)}</div>
     }</div>
-    <div className='relative tr flex justify-center items-center  ph2 pv1 w-15'>
+    <div className='relative tr flex justify-center items-center  ph2 pv1 w-15' style={{ paddingBottom: 10 }}>
       {/*<span className='dib tc' style={{minWidth:"50%"}}>{watchItem.amount ? formatBalance(new BN(watchItem.amount.toString() || 0).divn(ratio), { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '') : '-'}</span>*/}
       <Popup
         trigger={<span className="self-end" onClick={() => {
@@ -192,6 +192,20 @@ const WatchItem = ({onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggl
       >
           <span>{t(`actions.${buttonTextEnm[watchItem.fileStatus]}`)}</span>
         </Popup>
+      <Popup
+        trigger={
+          <div style={{position: 'relative', top: 6}}>
+            <CopyButton text={`${gateway}/ipfs/${watchItem.fileCid}`} message={t('downLinkCopied')}>
+              <StrokeCopy className='fill-aqua pointer' style={{ width: 28 }}/>
+            </CopyButton>
+          </div>
+        }
+        on={['hover', 'focus']}
+        position="right center"
+        closeOnDocumentClick
+      >
+        <span>{t(`actions.copyLink`)}</span>
+      </Popup>
     </div>
     <div className='relative tr flex justify-center items-center  ph2 pv1 w-15'>
       <span  className='dib tc' style={{minWidth:"50%"}}>{formatBalance(watchItem.prepaid, { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '')|| '-'}</span>

@@ -19,7 +19,8 @@
     "speed": "加速",
     "note": "备注",
     "Order Fee": "订单金额(CRU)",
-    "Renew Pool Balance": "续费池(CRU)"
+    "Renew Pool Balance": "续费池(CRU)",
+    "copyLink": "复制下载链接"
   },
   "Sign And Upload": "签名并上传",
   "Period": "。",
@@ -51,6 +52,7 @@
   },
   "fileCidCopied": "文件CID复制成功",
   "fileSizeCopied": "文件大小复制成功",
+  "downLinkCopied": "下载链接复制成功",
   "clipboard": "剪切板",
   "ipfsError": "IPFS未连接",
   "tips": {
