@@ -20,6 +20,32 @@ function parserStrToObj (str) {
     return JSON.parse(JSON.stringify(str))
   }
 }
+
+
+function formatBn(bn, round = 12, unit = 'CRU' ) {
+  const decimals = formatBalance.getDefaults().decimals
+  const createZero = (count) => {
+    let zeroText = ''
+    for (let i = 0; i < count; i++) {
+      zeroText += '0'
+    }
+    return zeroText;
+  }
+  const text = bn.toString()
+  const intPartMoreZero = text.length > decimals
+  const intPart = intPartMoreZero ? text.substr(0, text.length - decimals) : '0'
+  let decimalPart = intPartMoreZero ? text.substr(text.length - decimals) :
+    `${createZero(decimals - text.length)}${text}`
+  // while (decimalPart.endsWith('0')) {
+  //   decimalPart = decimalPart.substr(0, decimalPart.length - 1)
+  // }
+  // if (decimalPart === '') decimalPart = '0'
+  // if (decimalPart )
+  if (decimalPart.length > round) {
+    decimalPart = decimalPart.substr(0, round)
+  }
+  return `${intPart}.${decimalPart} ${unit}`
+}
 const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'order' }) => {
   const { hasAccounts } = useAccounts();
   const [account, setAccount] = useState(null);
@@ -49,8 +75,8 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
     // benefits = 1 - min(active_funds / total_market_active_funds, 0.1)
     const tipFee= new BN(tip.toString())
     const _filePrice = filePrice?.mul(new BN(fileSize)).divn(1024*1024).add(new BN(fileKeysCountFee)).add(new BN(basePrice))
-    setOriginPrice(formatBalance(_filePrice.add(tipFee), { decimals: 12, forceUnit: 'CRU' }))
-    setPrice(formatBalance(_filePrice.mul(new BN(benefits)).add(tipFee), { decimals: 12, forceUnit: 'CRU' }));
+    setOriginPrice(formatBn(_filePrice.add(tipFee)))
+    setPrice(formatBn(_filePrice.mul(new BN(benefits)).add(tipFee)));
   }, [fileSize, filePrice, tip, basePrice, benefits]);
   useEffect(() => {
     setCidNotValid(fileCid && !isIPFS.cid(fileCid) && !isIPFS.path(fileCid));
