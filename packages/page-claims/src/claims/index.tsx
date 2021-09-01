@@ -314,7 +314,7 @@ function Claims(): React.ReactElement<Props> {
               isDisabled={ethereumTxHashValid}
               label={t<string>('claim to account')}
               onChange={setAccountId}
-              type='all'
+              type='account'
             />
             <Input
               autoFocus
