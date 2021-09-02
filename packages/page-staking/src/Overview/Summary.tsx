@@ -16,6 +16,7 @@ import { formatNumber } from '@polkadot/util';
 import { useTranslation } from '../translate';
 import StakingRewardPot from './StakingRewardPot';
 import { useApi } from '@polkadot/react-hooks';
+import MainnetRewards from './MainnetRewards';
 
 interface Props {
   className?: string;
@@ -24,9 +25,6 @@ interface Props {
   stakingOverview?: DeriveStakingOverview;
   targets: SortedTargets;
 }
-
-const PROGRESS_END = 29;
-const PROGRESS_START = 188;
 
 function Summary ({ className = '', isVisible, stakingOverview, targets: { inflation: { inflation }, nominators, waitingIds } }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
@@ -77,16 +75,11 @@ function Summary ({ className = '', isVisible, stakingOverview, targets: { infla
           >
             <StakingRewardPot />
           </CardSummary>
-        ) : (stakingOverview && (stakingOverview?.activeEra.toNumber() < 217)) && (<CardSummary
+        ) : (<CardSummary
           className='media--1100'
-          label={t<string>('rewards countdown (era)')}
+          label={t<string>('rewards')}
         >
-          <meter id="progress" className="progress4" max={PROGRESS_END} value={stakingOverview?.activeEra.toNumber() - PROGRESS_START}></meter>
-          <span style={{ fontSize: '18px' }}>
-            {t<string>('{{era}} / 217 (765432~ Blocks)', { replace: {
-              era: stakingOverview?.activeEra.toNumber()
-            }})}
-          </span>
+          <MainnetRewards />
         </CardSummary>)}
       </section>
       <section>
