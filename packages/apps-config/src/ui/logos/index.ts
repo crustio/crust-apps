@@ -16,6 +16,7 @@ import chainRococoTrack from './chains/rococo-track.svg';
 import chainRococoTrick from './chains/rococo-trick.svg';
 import chainSnakenet from './chains/snakenet.svg';
 import chainUnique from './chains/unique.svg';
+import extensionCrustWallet from './extensions/crust-wallet.png';
 import extensionPolkadotJs from './extensions/polkadot-js.svg';
 import externalCommonwealth from './external/commonwealth.png';
 import externalPolkascan from './external/polkascan.png';
@@ -293,7 +294,8 @@ export const namedLogos: Record<string, unknown> = {
 
 // extension logos
 export const extensionLogos: Record<string, unknown> = {
-  'polkadot-js': extensionPolkadotJs
+  'polkadot-js': extensionPolkadotJs,
+  'crust wallet': extensionCrustWallet
 };
 
 // external logos, i.e. for explorers
