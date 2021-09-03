@@ -77,7 +77,7 @@ function Summary ({ className = '', isVisible, stakingOverview, targets: { infla
           </CardSummary>
         ) : (<CardSummary
           className='media--1100'
-          label={t<string>('rewards')}
+          label={t<string>('current era rewards')}
         >
           <MainnetRewards />
         </CardSummary>)}
