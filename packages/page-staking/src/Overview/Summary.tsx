@@ -10,7 +10,7 @@ import styled from 'styled-components';
 
 import SummarySession from '@polkadot/app-explorer/SummarySession';
 import { CardSummary, IdentityIcon, Spinner, SummaryBox } from '@polkadot/react-components';
-import { BlockAuthorsContext } from '@polkadot/react-query';
+import { BlockAuthorsContext, FormatBalance } from '@polkadot/react-query';
 import { formatNumber } from '@polkadot/util';
 
 import { useTranslation } from '../translate';
@@ -26,7 +26,7 @@ interface Props {
   targets: SortedTargets;
 }
 
-function Summary ({ className = '', isVisible, stakingOverview, targets: { inflation: { inflation }, nominators, waitingIds } }: Props): React.ReactElement<Props> {
+function Summary ({ className = '', isVisible, stakingOverview, targets: { inflation: { inflation }, nominators, waitingIds, totalStaked } }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { lastBlockAuthors, lastBlockNumber } = useContext(BlockAuthorsContext);
   const { systemChain } = useApi();
@@ -59,15 +59,15 @@ function Summary ({ className = '', isVisible, stakingOverview, targets: { infla
             : <Spinner noLabel />
           }
         </CardSummary>
-        {/* <CardSummary
+        <CardSummary
           className='media--1200'
-          label={t<string>('inflation')}
+          label={t<string>('total effective stake')}
         >
-          {(inflation > 0) && Number.isFinite(inflation)
-            ? <>{inflation.toFixed(1)}%</>
-            : '-'
-          }
-        </CardSummary> */}
+          <FormatBalance
+            value={totalStaked}
+            withSi
+          />
+        </CardSummary>
         {isMaxwell ? (
           <CardSummary
             className='media--1100'
