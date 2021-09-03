@@ -1651,5 +1651,6 @@
   "This function is an internal test stage, the assets will not be lost, but there may be a delay in the arrival of the account.": "此功能为内部测试阶段，资产不会受到损失，但是到账可能存在延时。",
   "0x prefixed hex": "0x 开头的地址",
   "staking payout: {{stakingRewards}}": "质押奖励: {{stakingRewards}}",
-  "market payout: {{marketPayout}}": "存储市场奖励: {{marketPayout}}"
+  "market payout: {{marketPayout}}": "存储市场奖励: {{marketPayout}}",
+  "current era rewards": "当前era奖励"
 }
