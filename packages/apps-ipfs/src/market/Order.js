@@ -25,6 +25,7 @@ const MDropdown = styled(Dropdown)`
     width: 23rem;
   }
 `
+function randomSort(a, b) { return Math.random() > 0.5 ? -1 : 1; }
 
 const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
   const [isStorageFiles, setIsStorageFiles] = useState(url === '/storage_files');
@@ -48,7 +49,7 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
   const inputFile = useRef()
   const {t} = useTranslation('order')
   const endpoints = useMemo(
-    () => createAuthIpfsEndpoints(t).map(item => ({...item, text: `${item.text}(${item.location})`})),
+    () => createAuthIpfsEndpoints(t).sort(randomSort).map(item => ({...item, text: `${item.text}(${item.location})`})),
     [t]
   )
   const [currentEndpoint, setCurrentEndpoint] = useState(endpoints[0]);
