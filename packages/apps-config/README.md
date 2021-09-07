@@ -5,6 +5,7 @@ General config for various services, including settings, external links & types.
 - [api](./src/api) - Here you can add any chain or node-type specific types configuration. When added, it means that when the UI connects to either a runtime with a spec name, or a chain with a specific name, the types will be automatically added to the API as used in the app.
 - [links](./src/links) - These are all links to external providers such as explorers. This information is used anywhere where there is an external link to determine the providers for these links.
 - [settings](./src/settings) - These are used in dropdowns, specifically under the settings page.
+- [ipfs gateways](./src/ipfs-gateway-endpoints) - Here you can add any [W3Authed IPFS gateways](https://github.com/crustio/ipfs-w3auth).
 - [ui](./src/ui) - Logos & color settings for chain and node spec specific overrides. This means that when the runtime/chain is detected, the specific logo would be used.
 
 Customization for each of these are discussed next.
