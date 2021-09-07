@@ -42,7 +42,8 @@ const MDropdown = styled(DropdownWrap)`
       }
     }
   }
-`;
+`
+function randomSort(a, b) { return Math.random() > 0.5 ? -1 : 1; }
 
 const MDevGuide = styled(DevGuide)`
   top: 0;
@@ -89,7 +90,7 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
 
   const inputFile = useRef();
   const endpoints = useMemo(
-    () => createAuthIpfsEndpoints(t).map(item => ({ ...item, text: `${item.text}(${item.location})` })),
+    () => createAuthIpfsEndpoints(t).sort(randomSort).map(item => ({...item, text: `${item.text}(${item.location})`})),
     [t]
   );
   const [currentEndpoint, setCurrentEndpoint] = useState(endpoints[0]);
@@ -272,7 +273,7 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
                 }}
                 header={
                   <div className='footer'
-                       onClick={() => window.open('https://github.com/crustio/ipfs-w3auth', '_blank')}
+                       onClick={() => window.open('https://github.com/crustio/crust-apps/tree/master/packages/apps-config/src/ipfs-gateway-endpoints', '_blank')}
                   >{t('Contribute to Web3 IPFS Gateway')}</div>
                 }
               />

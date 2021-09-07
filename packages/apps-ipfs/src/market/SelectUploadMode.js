@@ -32,17 +32,23 @@ const Card = styled.div`
   padding: 32px 40px;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   align-items: center;
   flex-shrink: 0;
 
   .card-icon {
     height: 94px;
     margin-top: 20px;
-    margin-bottom: 70px;
     object-fit: contain;
+    align-content: flex-start;
+  }
+
+  .space {
+    flex: 1;
   }
 
   .card-title {
+    flex-shrink: 0;
     font-size: 22px;
     font-weight: 500;
     color: #333333;
@@ -50,6 +56,7 @@ const Card = styled.div`
   }
 
   .card-sub {
+    flex-shrink: 0;
     font-size: 16px;
     font-weight: 400;
     width: 100%;
@@ -61,13 +68,15 @@ const Card = styled.div`
 `;
 
 function devGuide ({ className }) {
-  const { t } = useTranslation('order');
+  const { t, i18n } = useTranslation('order');
+  const devLink = i18n.language === 'zh-CN' ?
+    "https://wiki.crust.network/docs/zh-CN/buildGettingStarted" :
+    "https://wiki.crust.network/docs/en/buildGettingStarted"
   return <div
     className={className}
-    onClick={() => {
-    }}>
+    onClick={() => window.open(devLink, '_blank')}>
     <Icon icon={['far', 'user']}/>
-    {t('Developer')}
+    {t('Developer Guide')}
   </div>;
 }
 
@@ -91,6 +100,7 @@ export default function SelectUploadMode (props) {
   return <MRoot>
     <Card>
       <img className='card-icon' src={ipfsLogos.gateway}/>
+      <div className='space'/>
       <div className='card-title' style={{ marginTop: 14 }}>{t('Upload files by Gateway')}</div>
       <div className='card-sub'>{t('Gateway_Desc')}</div>
       <button className='btn' style={{ height: '3rem', padding: '5px 40px', flexShrink: 0 }} onClick={() => {
@@ -99,6 +109,7 @@ export default function SelectUploadMode (props) {
     </Card>
     <Card>
       <img className='card-icon' src={ipfsLogos.ipfs}/>
+      <div className='space'/>
       <div className='card-title'>{t('Upload files by IPFS')}</div>
       <div className='card-sub'>{t('IPFS_Desc')}</div>
       <button className='btn btn2' style={{ height: '3rem', padding: '5px 40px', flexShrink: 0 }} onClick={() => {
