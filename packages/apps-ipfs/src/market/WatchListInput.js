@@ -11,7 +11,7 @@ import { connect } from 'redux-bundler-react';
 import { useApi, useCall } from '../../../react-hooks/src';
 import Button from '../components/button/Button';
 
-const WatchListInput = ({ doAddOrder, doRemoveWatchItems, onFilterWatchList, selectedCidList, t, watchedCidList }) => {
+const WatchListInput = ({ doAddOrder, doRemoveWatchItems, onFilterWatchList, selectedCidList, t, watchedCidList, handleFileChange, handleExport, emitFetchModal }) => {
   const { api, isApiReady } = useApi();
   const [path, setPath] = useState('');
   const [inputClass, setInputClass] = useState('focus-outline');
@@ -71,6 +71,24 @@ const WatchListInput = ({ doAddOrder, doRemoveWatchItems, onFilterWatchList, sel
         </p>
         : ''
     }
+    <div style={{ marginLeft: 'auto', marginRight: '1rem' }}>
+      <input type="file" id="upload" size="60" onClick={(e) => {
+        e.target.value = null;
+      }} style={{ opacity: 0, position: 'absolute', zIndex: -1 }} onChange={handleFileChange}/>
+      <label className="btn btn2" htmlFor="upload" style={{ cursor: 'pointer' }}>
+        {t('importBtn')}
+      </label>
+      &nbsp;&nbsp;
+      <button className='btn btn2' onClick={_.throttle(() => {
+        handleExport();
+      }, 2000)
+      }>{t('exportBtn')}</button>
+      &nbsp;&nbsp;
+      <button className='btn btn2' onClick={_.throttle(() => {
+        emitFetchModal();
+      }, 2000)
+      }>{t('Fetch', 'Fetch')}</button>
+    </div>
   </div>;
 };
 

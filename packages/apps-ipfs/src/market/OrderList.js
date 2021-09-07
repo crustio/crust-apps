@@ -3,14 +3,13 @@
 // eslint-disable-next-line header/header
 import _ from 'lodash';
 import propTypes from 'prop-types';
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import { AutoSizer, List, WindowScroller } from 'react-virtualized';
 import { connect } from 'redux-bundler-react';
-import { StatusContext } from '../../../react-components/src';
 import WatchItem from '@polkadot/apps-ipfs/market/WatchItem';
 
 import Checkbox from '../components/checkbox/Checkbox';
+
 const itemList = [{
   name: 'fileSize',
   label: 'fileSize',

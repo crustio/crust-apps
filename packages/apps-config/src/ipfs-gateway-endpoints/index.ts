@@ -20,6 +20,11 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       value: 'https://ipfs-auth.decoo.io',
       text: t('Decoo.io'),
       location: t('United States')
+    },
+    {
+      value: 'https://ipfs-auth.decoo-cloud.cn',
+      text: t('Decoo.io'),
+      location: t('ShangHai')
     }
   ];
 }

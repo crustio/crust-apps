@@ -11,48 +11,89 @@ import FetchModal from '../files/modals/fetch-modal/FetchModal';
 import OrderList from './OrderList';
 import WatchListInput from './WatchListInput';
 import FileSaver from 'file-saver';
-import _ from 'lodash';
 import StatusContext from '../../../react-components/src/Status/Context';
 import { fetchInfoByAccount } from '@polkadot/apps-ipfs/helpers/fetch';
-import { Spinner, Dropdown } from '../../../react-components/src';
+import { DropdownWrap, Spinner } from '../../../react-components/src';
 import { createAuthIpfsEndpoints } from '@polkadot/apps-config';
 import UpFiles from '@polkadot/apps-ipfs/files/modals/up-files/UpFiles';
 import { useMemo } from 'react/index';
 import styled from 'styled-components';
+import SelectUploadMode, { DevGuide } from '@polkadot/apps-ipfs/market/SelectUploadMode';
 
-const MDropdown = styled(Dropdown)`
-  .ui--Dropdown {
-    width: 23rem;
+const MDropdown = styled(DropdownWrap)`
+  .menu {
+    height: 20rem;
+    max-height: unset;
+    padding-bottom: 100px;
+
+    .footer {
+      position: absolute;
+      top: calc(100% - 50px);
+      height: 50px;
+      color: #619BDE;
+      font-size: 14px;
+      text-align: center;
+      width: 100%;
+      line-height: 50px;
+      cursor: pointer;
+      border-top: solid 1px #EEEEEE;
+      &:hover {
+        color: #4a90e2;
+      }
+    }
   }
+`;
+
+const MDevGuide = styled(DevGuide)`
+  top: 0;
+  right: 30px;
 `
-
+const UP_MODES = [
+  { text: 'Upload files by IPFS', value: 'ipfs' },
+  { text: 'Upload files by Gateway', value: 'gateway' }
+];
 const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
-  const [isStorageFiles, setIsStorageFiles] = useState(url === '/storage_files');
+  const [uploadMode, setUploadMode] = useState({
+    isLoad: true,
+    mode: '',
+  });
+  const isShowSelectedMode = !uploadMode.mode;
+  // const isIpfsMode = uploadMode.mode === 'ipfs';
+  const isGatewayMode = uploadMode.mode === 'gateway';
+  const doSetUploadMode = (mode) => {
+    setUploadMode({ mode, isLoad: false });
+    window.localStorage.setItem('uploadMode', mode);
+    window.location.hash = mode === 'ipfs' ? '/storage' : '/storage_files';
+  };
   useEffect(() => {
-    setIsStorageFiles(url === '/storage_files' || location.hash === '#/storage_files')
-  },[url, location.hash])
-
+    const mode = window.localStorage.getItem('uploadMode');
+    if (mode) {
+      doSetUploadMode(mode);
+    } else {
+      setUploadMode({ ...uploadMode, isLoad: false });
+    }
+  }, [url]);
+  const { t } = useTranslation('order');
+  const upModeOptions = UP_MODES.map(item => ({ ...item, text: t(item.text)}))
   const [modalShow, toggleModal] = useState(false);
   const [showUpFiles, setShowUpFiles] = useState(false);
   const [upFile, setUpFile] = useState(null);
   const [tableData, setTableData] = useState(watchList);
   const [title, setTitle] = useState('order');
   const [fileInfo, setFileInfo] = useState(null);
-  const [filterCid, setFilterCid] = useState(undefined)
+  const [filterCid, setFilterCid] = useState(undefined);
   const { queueAction } = useContext(StatusContext);
-  const [repaidModal, togglerepaidModal] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [fetchModalShow, toggleFetchModalShow] = useState(false)
+  const [repaidModal, togglerepaidModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [fetchModalShow, toggleFetchModalShow] = useState(false);
 
-
-  const inputFile = useRef()
-  const {t} = useTranslation('order')
+  const inputFile = useRef();
   const endpoints = useMemo(
-    () => createAuthIpfsEndpoints(t).map(item => ({...item, text: `${item.text}(${item.location})`})),
+    () => createAuthIpfsEndpoints(t).map(item => ({ ...item, text: `${item.text}(${item.location})` })),
     [t]
-  )
+  );
   const [currentEndpoint, setCurrentEndpoint] = useState(endpoints[0]);
-  const gateway = isStorageFiles ? currentEndpoint.value : "https://ipfs.io"
+  const gateway = isGatewayMode ? currentEndpoint.value : 'https://ipfs.io';
 
   const _onImportResult = useCallback(
     (message, status = 'queued') => {
@@ -75,37 +116,37 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
   }, [watchList, filterCid]);
 
   const handleFilterWatchList = (fileCid) => {
-    setFilterCid(fileCid)
+    setFilterCid(fileCid);
   };
   const handleAddPool = (item) => {
     // add pool
     setFileInfo({ cid: item.fileCid, originalSize: item.fileSize, comment: item.comment, prepaid: item.prepaid });
-    togglerepaidModal(true)
-  }
+    togglerepaidModal(true);
+  };
   const handleFileChange = (e) => {
     try {
-      setLoading(true)
+      setLoading(true);
       const fileReader = new FileReader();
-      fileReader.readAsText(e.target.files[0], "UTF-8");
-      if(!(/(.json)$/i.test(e.target.value))) {
-        return _onImportResult(t('importResult.error1'), 'error')
+      fileReader.readAsText(e.target.files[0], 'UTF-8');
+      if (!(/(.json)$/i.test(e.target.value))) {
+        return _onImportResult(t('importResult.error1'), 'error');
       }
       fileReader.onload = e => {
-        const _list = JSON.parse(e.target.result)
+        const _list = JSON.parse(e.target.result);
         if (!Array.isArray(_list)) {
-          return _onImportResult(t('importResult.error2'), 'error')
+          return _onImportResult(t('importResult.error2'), 'error');
         }
         // doAddItemMulti
-        doAddOrders(_list).then(status =>{
-          _onImportResult(t('importResult.success') + status.succeed + ',  ' + t('importResult.failed') + status.invalid + ',  ' + t('importResult.duplicated') + status.duplicated)
-        })
-        setLoading(false)
-      }
-    } catch(e) {
-      setLoading(false)
+        doAddOrders(_list).then(status => {
+          _onImportResult(t('importResult.success') + status.succeed + ',  ' + t('importResult.failed') + status.invalid + ',  ' + t('importResult.duplicated') + status.duplicated);
+        });
+        setLoading(false);
+      };
+    } catch (e) {
+      setLoading(false);
 
     }
-  }
+  };
 
   const handleToggleBtn = (type, item) => {
     // renew, retry, speed.
@@ -114,42 +155,47 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
     toggleModal(true);
   };
   const emitFetchModal = () => {
-    toggleFetchModalShow(true)
-  }
+    toggleFetchModalShow(true);
+  };
 
   const handleFetch = (accountId) => {
-    toggleFetchModalShow(false)
-    setLoading(true)
-    fetchInfoByAccount(accountId).then(res =>{
+    toggleFetchModalShow(false);
+    setLoading(true);
+    fetchInfoByAccount(accountId).then(res => {
       if (res.message === 'success') {
-        let _orders = res.data ? res.data.orderedFiles : []
-        const _list =  _orders.map((item) => ({fileCid:item}))
-        doAddOrders(_list).then(status =>{
-          _onImportResult(t('importResult.success') + status.succeed + ',  ' + t('importResult.failed') + status.invalid + ',  ' + t('importResult.duplicated') + status.duplicated)
-        })
+        let _orders = res.data ? res.data.orderedFiles : [];
+        const _list = _orders.map((item) => ({ fileCid: item }));
+        doAddOrders(_list).then(status => {
+          _onImportResult(t('importResult.success') + status.succeed + ',  ' + t('importResult.failed') + status.invalid + ',  ' + t('importResult.duplicated') + status.duplicated);
+        });
       }
     }).catch(() => {
 
     }).finally(() => {
-      setLoading(false)
-    })
+      setLoading(false);
+    });
   };
 
-
-
-  const handleExport = () =>{
-    const _list = watchList.map(_item => ({fileCid: _item.fileCid, comment: _item.comment}))
+  const handleExport = () => {
+    const _list = watchList.map(_item => ({ fileCid: _item.fileCid, comment: _item.comment }));
     const blob = new Blob([JSON.stringify(_list)], { type: 'application/json; charset=utf-8' });
     FileSaver.saveAs(blob, `watchList.json`);
   };
 
   const onInputFile = (e) => {
-    if (!e.target.files || e.target.files.length === 0 || !e.target.files[0])
-      return
-    const file = e.target.files[0]
-    e.target.value = ''
-    setUpFile(file)
-    setShowUpFiles(true)
+    if (!e.target.files || e.target.files.length === 0 || !e.target.files[0]) {
+      return;
+    }
+    const file = e.target.files[0];
+    e.target.value = '';
+    setUpFile(file);
+    setShowUpFiles(true);
+  };
+  if (uploadMode.isLoad) {
+    return <Spinner label={t('Loading')}/>;
+  }
+  if (isShowSelectedMode) {
+    return <SelectUploadMode onClick={doSetUploadMode}/>;
   }
   return (
     <div className={'w-100'}>
@@ -162,7 +208,7 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
       {
         fetchModalShow &&
         <FetchModal onClose={() => {
-          toggleFetchModalShow(false)
+          toggleFetchModalShow(false);
         }} onConfirm={handleFetch}
         />
       }
@@ -181,61 +227,65 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
       {
         upFile && showUpFiles && <UpFiles
           onClose={() => {
-            setShowUpFiles(false)
-            setUpFile(null)
+            setShowUpFiles(false);
+            setUpFile(null);
           }}
           onSuccess={(res) => {
-            setShowUpFiles(false)
+            setShowUpFiles(false);
             setFileInfo({ isForce: true, cid: res.Hash, originalSize: res.Size });
-            toggleModal(true)
+            toggleModal(true);
           }}
           file={upFile}
-          endpoint={currentEndpoint} />
+          endpoint={currentEndpoint}/>
       }
       <div className={'w-100 btn-wrapper flex-l'}>
-        { isStorageFiles ?
-          <div className={'flex-l'} style={{ alignItems: 'center', width: '32rem' }}>
-            <input
-              type={'file'}
-              style={{ display: 'none' }}
-              ref={inputFile}
-              onChange={onInputFile} />
-            <button className='btn' style={{ height: '2rem' }} onClick={() => {
-              const event = new MouseEvent('click')
-              inputFile?.current?.dispatchEvent(event)
-            }}>{t('actions.upFiles')}</button>
-            <MDropdown
-              className={'flex-grow-1'}
-              help={t('File streaming and wallet authentication will be processed by the chosen gateway') + t('Period')}
-              label={t('Select a gateway')}
-              options={endpoints}
-              value={currentEndpoint.value}
-              onChange={(value) => {
-                setCurrentEndpoint(endpoints.find(item => item.value === value))
-              }}
-            />
-            {/*<DropdownSelect {...forSelectEndpoints} head={t('selectEndpoint')} options={endpoints}/>*/}
-          </div>
-          :
-          <button className='btn' onClick={() => toggleModal(true)}>{t('actions.addOrder')}</button>
-        }
-        <div style={{marginLeft: 'auto'}}>
-            <input type="file" id="upload" size="60" onClick={(e) => {
-              e.target.value = null
-            }} style={{opacity:0, position: 'absolute', zIndex:-1}} onChange={handleFileChange} />
-            <label className="btn" htmlFor="upload" style={{cursor: 'pointer'}}>
-              {t('importBtn')}
-            </label>
-            &nbsp;&nbsp;
-            <button className='btn' onClick={_.throttle(() => {
-              handleExport()
-            }, 2000)
-            }>{t('exportBtn')}</button>
-            &nbsp;&nbsp;
-            <button className='btn' onClick={_.throttle(() => {
-              emitFetchModal()
-            }, 2000)
-            }>{t('Fetch', 'Fetch')}</button>
+        <div className={'flex-l'} style={{ alignItems: 'center', width: '32rem' }}>
+          {
+            isGatewayMode ?
+              <input
+                type={'file'}
+                style={{ display: 'none' }}
+                ref={inputFile}
+                onChange={onInputFile}/>
+              :
+              <button
+                className='btn'
+                style={{ height: '3.7rem', padding: '8px 40px', }}
+                onClick={() => toggleModal(true)}>
+                {t('actions.addOrder')}
+              </button>
+          }
+          {
+            isGatewayMode && <>
+              <button className='btn' style={{ height: '3.7rem', padding: '8px 40px', }} onClick={() => {
+                const event = new MouseEvent('click');
+                inputFile?.current?.dispatchEvent(event);
+              }}>{t('actions.upFiles')}</button>
+              <MDropdown
+                className={'flex-grow-1'}
+                help={t('File streaming and wallet authentication will be processed by the chosen gateway') + t('Period')}
+                label={t('Select a gateway')}
+                options={endpoints}
+                value={currentEndpoint.value}
+                onChange={(value) => {
+                  setCurrentEndpoint(endpoints.find(item => item.value === value));
+                }}
+                header={
+                  <div className='footer'
+                       onClick={() => window.open('https://github.com/crustio/ipfs-w3auth', '_blank')}
+                  >{t('Contribute to Web3 IPFS Gateway')}</div>
+                }
+              />
+            </>
+          }
+        </div>
+        <div style={{ marginLeft: 'auto' }}>
+          <DropdownWrap
+            options={upModeOptions}
+            label={t('Switch Mode')}
+            value={uploadMode.mode}
+            onChange={doSetUploadMode}
+          />
         </div>
       </div>
       <div className={'orderList-header'}>
@@ -243,13 +293,17 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
       </div>
       <WatchListInput
         onFilterWatchList={handleFilterWatchList}
+        handleFileChange={handleFileChange}
+        handleExport={handleExport}
+        emitFetchModal={emitFetchModal}
       />
-      {loading ? <Spinner label={t('Loading')} />
+      {loading ? <Spinner label={t('Loading')}/>
         : <OrderList
           gateway={gateway}
           onAddPool={handleAddPool} onToggleBtn={handleToggleBtn}
           watchList={tableData}/>
-        }
+      }
+      { isGatewayMode && <MDevGuide/> }
     </div>
   );
 };

@@ -8,6 +8,7 @@ export default function create (t: <T = string>(key: string, text: string, optio
   return {
     Component,
     display: {
+      isHidden: true,
       needsApi: [
         'tx.market.placeStorageOrder',
         'query.market.files'

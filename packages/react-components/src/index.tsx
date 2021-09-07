@@ -33,6 +33,7 @@ export { default as CopyButton } from './CopyButton';
 export { default as CryptoType } from './CryptoType';
 export { default as Digits } from './Digits';
 export { default as Dropdown } from './Dropdown';
+export { default as DropdownWrap } from './DropdownWrap';
 export { default as EditButton } from './EditButton';
 export { default as Editor } from './Editor';
 export { default as ErrorBoundary } from './ErrorBoundary';

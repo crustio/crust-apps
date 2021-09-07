@@ -6,7 +6,7 @@
 import classnames from 'classnames';
 import filesize from 'filesize';
 import PropTypes from 'prop-types';
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 import dayjs from 'dayjs';
@@ -24,8 +24,7 @@ import GlyphRenew from '@polkadot/apps-ipfs/icons/GlyphRenew';
 import GlyphPrepaid from '@polkadot/apps-ipfs/icons/GlyphPrepaid';
 import GlyphSpeedup from '@polkadot/apps-ipfs/icons/GlyphSpeedup';
 import GlyphRetry from '@polkadot/apps-ipfs/icons/GlyphRetry';
-import BN from 'bn.js';
-import GlyphCopy from '@polkadot/apps-ipfs/icons/GlyphCopy';
+import { Icon } from '@polkadot/react-components'
 
 const fileStatusEnum = {
   PENDING: 'PENDING',
@@ -90,6 +89,7 @@ const WatchItem = ({ gateway, onAddPool, isEdit, onSelect, startEdit, confirmEdi
   }
 
   watchItem.fileStatus = status;
+  // watchItem.fileStatus = fileStatusEnum.PENDING;
   const readableSize = watchItem.fileSize ? filesize(watchItem.fileSize, { round: 2 }) : '-';
   const calculateExpiredTime = (expireBlock) => {
     const durations = (expireBlock - bestNumber) * 6;
@@ -145,24 +145,20 @@ const WatchItem = ({ gateway, onAddPool, isEdit, onSelect, startEdit, confirmEdi
     </div>
     <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-10'>{
       watchItem.fileStatus === fileStatusEnum.PENDING ?
-        <Popup
-          className="my-popup"
-          trigger={<abbr title='' style={{ textTransform: 'capitalize' }}>{t(`status.${watchItem.fileStatus}`)}</abbr>}
-          position={['top left']}
-          closeOnDocumentClick
-          on={['hover', 'focus']}
-        >
-          <Trans i18nKey="tips.tip1" t={t}>
-            <div>
-              *The order "pending" time generally lasts from 30 minutes to 2 hours (depending on the file size). Please
-              keep IPFS running during this period.<br/>
-              * If your order is "pending" for too long, you can refer to <span className={'aqua pointer'}
-                                                                                onClick={handleClick}>WIKI</span> for
-              detailed solutions.
-            </div>
-          </Trans>
-
-        </Popup>
+        <div style={{ textTransform: 'capitalize' }}>
+          {t(`status.${watchItem.fileStatus}`)}
+          <Popup
+            className="my-popup"
+            trigger={<span className="self-end" style={{ marginLeft: 5 }}>
+              <Icon icon={['far', 'question-circle']} className={'custom-icon custom-icon-color pointer'}/>
+            </span>}
+            position={['top center']}
+            closeOnDocumentClick
+            on={['hover', 'focus']}
+          >
+            <Trans i18nKey="tips.tip1" t={t} />
+          </Popup>
+        </div>
         :
         <div style={{ textTransform: 'capitalize' }}>{t(`status.${watchItem.fileStatus}`)}</div>
     }</div>
