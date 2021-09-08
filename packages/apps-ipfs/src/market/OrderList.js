@@ -111,6 +111,16 @@ const OrderList = ({ gateway, onAddPool, doUpdateWatchItem, doSelectedItems, onT
         </div>
         <div className='ph2 pv1 flex-auto db-l tc w-15 watch-list-header'>
           <button
+            aria-label={t('sortBy', { name: t('fileName') })}
+            onClick={() => {
+              changeSort('fileName');
+            }}
+          >
+            {t('fileName')}{sortByIcon('fileName')}
+          </button>
+        </div>
+        <div className='ph2 pv1 flex-auto db-l tc w-15 watch-list-header'>
+          <button
             aria-label={t('sortBy', { name: t('fileCid') })}
             onClick={() => {
               changeSort('fileCid');

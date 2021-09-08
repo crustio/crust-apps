@@ -11,7 +11,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 import dayjs from 'dayjs';
 
-import Cid from '@polkadot/apps-ipfs/components/cid/Cid';
+import Cid, { shortCid } from '@polkadot/apps-ipfs/components/cid/Cid';
 import StrokeCopy from '@polkadot/apps-ipfs/icons/StrokeCopy';
 
 import { useApi, useCall } from '../../../../react-hooks/src';
@@ -25,6 +25,7 @@ import GlyphPrepaid from '@polkadot/apps-ipfs/icons/GlyphPrepaid';
 import GlyphSpeedup from '@polkadot/apps-ipfs/icons/GlyphSpeedup';
 import GlyphRetry from '@polkadot/apps-ipfs/icons/GlyphRetry';
 import { Icon } from '@polkadot/react-components'
+import { DEF_FILE_NAME } from '@polkadot/apps-ipfs/market/config';
 
 const fileStatusEnum = {
   PENDING: 'PENDING',
@@ -87,9 +88,9 @@ const WatchItem = ({ gateway, onAddPool, isEdit, onSelect, startEdit, confirmEdi
       watchItem.prepaid = 0;
     }
   }
-
+  if (!watchItem.fileName)
+    watchItem.fileName = DEF_FILE_NAME;
   watchItem.fileStatus = status;
-  // watchItem.fileStatus = fileStatusEnum.PENDING;
   const readableSize = watchItem.fileSize ? filesize(watchItem.fileSize, { round: 2 }) : '-';
   const calculateExpiredTime = (expireBlock) => {
     const durations = (expireBlock - bestNumber) * 6;
@@ -108,6 +109,7 @@ const WatchItem = ({ gateway, onAddPool, isEdit, onSelect, startEdit, confirmEdi
     window.open(t('tips.wikiAddress'), '_blank');
   };
 
+  const shortFileName = watchItem.fileName.length > 9 ? shortCid(watchItem.fileName) : watchItem.fileName;
   return <div
     className={'File b--light-gray relative  flex items-center bt'}
     style={{ overflow: 'hidden', height: 40 }}>
@@ -118,6 +120,19 @@ const WatchItem = ({ gateway, onAddPool, isEdit, onSelect, startEdit, confirmEdi
                 onChange={() => {
                   onSelect(watchItem.fileCid);
                 }}/>
+    </div>
+    <div className='relative tc pointer  justify-center flex items-center  ph2 pv1 w-15'>
+      <div className=''>
+        <span>{shortFileName}</span>
+        {
+          watchItem.fileName !== DEF_FILE_NAME && (
+            <CopyButton text={watchItem.fileName} message={t('fileNameCopied')}>
+              <StrokeCopy className='fill-aqua' style={{ width: 18 }}/>
+            </CopyButton>
+          )
+        }
+
+      </div>
     </div>
     <div className='relative tc pointer  justify-center flex items-center  ph2 pv1 w-15'>
       <div className=''>

@@ -121,7 +121,7 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
   };
   const handleAddPool = (item) => {
     // add pool
-    setFileInfo({ cid: item.fileCid, originalSize: item.fileSize, comment: item.comment, prepaid: item.prepaid });
+    setFileInfo({ cid: item.fileCid, fileName: item.fileName, originalSize: item.fileSize, comment: item.comment, prepaid: item.prepaid });
     togglerepaidModal(true);
   };
   const handleFileChange = (e) => {
@@ -152,7 +152,7 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
   const handleToggleBtn = (type, item) => {
     // renew, retry, speed.
     setTitle(type);
-    setFileInfo({ cid: item.fileCid, originalSize: item.fileSize, comment: item.comment });
+    setFileInfo({ cid: item.fileCid, fileName: item.fileName, originalSize: item.fileSize, comment: item.comment });
     toggleModal(true);
   };
   const emitFetchModal = () => {
@@ -178,7 +178,7 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
   };
 
   const handleExport = () => {
-    const _list = watchList.map(_item => ({ fileCid: _item.fileCid, comment: _item.comment }));
+    const _list = watchList.map(_item => ({ fileCid: _item.fileCid, fileName: _item.fileName, comment: _item.comment }));
     const blob = new Blob([JSON.stringify(_list)], { type: 'application/json; charset=utf-8' });
     FileSaver.saveAs(blob, `watchList.json`);
   };
@@ -233,7 +233,7 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
           }}
           onSuccess={(res) => {
             setShowUpFiles(false);
-            setFileInfo({ isForce: true, cid: res.Hash, originalSize: res.Size });
+            setFileInfo({ isForce: true, cid: res.Hash, fileName: res.Name, originalSize: res.Size });
             toggleModal(true);
           }}
           file={upFile}

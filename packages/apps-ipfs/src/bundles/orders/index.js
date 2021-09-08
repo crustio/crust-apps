@@ -44,11 +44,12 @@ const bundle = { name: 'orders',
     resolve(status)
   })
   },
-  doAddOrder: ({ fileCid, comment }) => ({ dispatch, store }) => {
+  doAddOrder: ({ fileCid, fileName, comment }) => ({ dispatch, store }) => {
     const CidList = store.selectWatchedCidList();
 
     const watchItem = {
       fileCid,
+      fileName,
       fileSize: 0,
       startTime: 0,
       expireTime: 0,
