@@ -12,6 +12,7 @@ export { default as AddressRow } from './AddressRow';
 export { default as AddressSmall } from './AddressSmall';
 export { default as AddressToggle } from './AddressToggle';
 export { default as Available } from './Available';
+export { default as AvailableCandy } from './AvailableCandy';
 export { default as AvatarItem } from './AvatarItem';
 export { default as Badge } from './Badge';
 export { default as Balance } from './Balance';

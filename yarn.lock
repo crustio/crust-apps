@@ -3198,6 +3198,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@polkadot/apps-candy@workspace:packages/page-candy":
+  version: 0.0.0-use.local
+  resolution: "@polkadot/apps-candy@workspace:packages/page-candy"
+  languageName: unknown
+  linkType: soft
+
 "@polkadot/apps-config@^0.85.2-15, @polkadot/apps-config@workspace:packages/apps-config":
   version: 0.0.0-use.local
   resolution: "@polkadot/apps-config@workspace:packages/apps-config"
