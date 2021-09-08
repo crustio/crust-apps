@@ -62,7 +62,7 @@
     "tip2": "Please enable IPFS to use this function."
   },
   "durationLabel": "Valid for",
-  "durationDesc": "In the preview network, this order is valid for around 6 months.",
+  "durationDesc": "This order is valid for around 6 months.",
   "import": "Import",
   "export": "Export",
   "noteDesc": "Any thing about this file (The note will only be cached in your browser locally).",
