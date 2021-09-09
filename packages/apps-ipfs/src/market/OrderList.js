@@ -3,14 +3,13 @@
 // eslint-disable-next-line header/header
 import _ from 'lodash';
 import propTypes from 'prop-types';
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { withTranslation } from 'react-i18next';
-import { AutoSizer, List, WindowScroller } from 'react-virtualized';
 import { connect } from 'redux-bundler-react';
-import { StatusContext } from '../../../react-components/src';
 import WatchItem from '@polkadot/apps-ipfs/market/WatchItem';
 
 import Checkbox from '../components/checkbox/Checkbox';
+
 const itemList = [{
   name: 'fileSize',
   label: 'fileSize',
@@ -109,6 +108,16 @@ const OrderList = ({ gateway, onAddPool, doUpdateWatchItem, doSelectedItems, onT
           <Checkbox aria-label={t('selectAllEntries')}
             checked={isAllSelected()}
             onChange={toggleAll}/>
+        </div>
+        <div className='ph2 pv1 flex-auto db-l tc w-15 watch-list-header'>
+          <button
+            aria-label={t('sortBy', { name: t('fileName') })}
+            onClick={() => {
+              changeSort('fileName');
+            }}
+          >
+            {t('fileName')}{sortByIcon('fileName')}
+          </button>
         </div>
         <div className='ph2 pv1 flex-auto db-l tc w-15 watch-list-header'>
           <button

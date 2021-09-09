@@ -28,7 +28,6 @@ export default function UpFiles ({ file, endpoint, onClose, onSuccess }) {
   const [{ isInjected }, setAccountState] = useState({ isExternal: false, isHardware: false, isInjected: false });
   const [isLocked, setIsLocked] = useState(false);
   const [{ isUsable, signer }, setSigner] = useState({ isUsable: true, signer: null });
-  const [signature, setSignature] = useState('');
   const [password, setPassword] = useState('');
   const [isBusy, setBusy] = useState(false);
   const fileSizeError = file.size > 100 * 1024 * 1024;
@@ -55,7 +54,6 @@ export default function UpFiles ({ file, endpoint, onClose, onSuccess }) {
         ? false
         : (currentPair && currentPair.isLocked) || false
     );
-    setSignature('');
     setSigner({ isUsable, signer: null });
     // for injected, retrieve the signer
     if (meta.source && isInjected) {

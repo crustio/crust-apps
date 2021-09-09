@@ -21,11 +21,12 @@
     "prepaid": "prepaid",
     "Order Fee": "Order Fee(CRU)",
     "Renew Pool Balance": "Renew Pool Balance(CRU)",
-    "copyLink": "Copy Download Link"
+    "copyLink": "Copy Download Link",
+    "toUse": "Go Use"
   },
   "Period": ".",
   "selectEndpoint": "Select Endpoint",
-  "noAccount": "Need to import a valid account",
+  "noAccount": "Need to connect a plug-in wallet or import an account first.",
   "orderList": "File Order List",
   "orderListdesc": "Note: The order information is cached locally, switching browsers or devices will not keep displaying the original browser information ",
   "fileValid": "The order is not exist",
@@ -34,6 +35,7 @@
   "File size": "File Size",
   "fileSize (byte)": "File size (byte)",
   "FileCid": "File CID",
+  "fileName": "File Name",
   "FileCidDesc": "Unique identification code of the file",
   "transferrable":"transferrable",
   "File Cid": "File CID",
@@ -46,19 +48,20 @@
   "File price": "File price",
   "confirm": "Confirm",
   "status": {
-    "PENDING": "pending",
-    "SUCCESS": "success",
-    "FAILED": "failed",
-    "EXPIRE": "expired"
+    "PENDING": "Waiting",
+    "SUCCESS": "Success",
+    "FAILED": "Failed",
+    "EXPIRE": "Expired"
   },
   "clipboard": "Clipboard",
   "fileCidCopied": "File CID Copied",
+  "fileNameCopied": "File Name Copied",
   "fileSizeCopied": "File Size Copied",
   "downLinkCopied": "Download Link Copied",
   "ipfsError": "IPFS not connected",
   "tips": {
     "wikiAddress": "https://wiki.crust.network/docs/en/storageUserGuide",
-    "tip1": "<0>*The order \"pending\" time generally lasts from 30 minutes to 2 hours (depending on the file size). Please keep IPFS running during this period.<1/>* If your order is \"pending\" for too long, you can refer to <3>WIKI</3> for detailed solutions.</0>",
+    "tip1": "Please wait for a while. It takes some time for your file to get replicas in the network.",
     "tip2": "Please enable IPFS to use this function."
   },
   "durationLabel": "Valid for",
@@ -84,5 +87,7 @@
   "Renew Pool Balance": "Renew Pool Balance(CRU)",
   "fetchTips": "1.The Fetch function is provided by Crust Storage Explorer, which is a public service and may cause certain delay or time gap. Results shown on this page doe not necessarily reflect the latest network status.",
   "fetchTips2": "2.There will be soon a new Subscan service going live to enhance Fetch performance.",
-  "discount": "discount, the actual price is "
+  "discount": "discount, the actual price is ",
+  "Gateway_Desc": "For users who do NOT have a local IPFS client. After placing an on-chain order in Crust DSM, your file will be uploaded to a public IPFS gateway.",
+  "IPFS_Desc": "For users who have a local IPFS client. After placing an on-chain order in Crust DSM, Storage Merchant will directly fetch files from your IPFS client."
 }

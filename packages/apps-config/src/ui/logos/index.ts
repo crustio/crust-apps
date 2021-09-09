@@ -23,6 +23,8 @@ import externalPolkascan from './external/polkascan.png';
 import externalPolkassembly from './external/polkassembly.png';
 import externalPolkastats from './external/polkastats.png';
 import externalSubscan from './external/subscan.svg';
+import ipfsGateway from './ipfs/gateway.png';
+import ipfsLogo from './ipfs/ipfs.png';
 import nodeAcala from './nodes/acala-circle.svg';
 import nodeAres from './nodes/ares.svg';
 import nodeBifrost from './nodes/bifrost.svg';
@@ -312,8 +314,14 @@ export const emptyLogos: Record<string, unknown> = {
   empty: emptyLogo
 };
 
+// ipfs logos
+export const ipfsLogos: Record<string, unknown> = {
+  ipfs: ipfsLogo,
+  gateway: ipfsGateway
+};
+
 // preload all
-[chainLogos, extensionLogos, externalLogos, namedLogos, nodeLogos, emptyLogos].forEach((imageSet): void => {
+[chainLogos, extensionLogos, externalLogos, namedLogos, nodeLogos, emptyLogos, ipfsLogos].forEach((imageSet): void => {
   Object.values(imageSet).forEach((src): void => {
     new Image().src = src as string;
   });

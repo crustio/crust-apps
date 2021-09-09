@@ -13,10 +13,12 @@ import { formatBalance } from '@polkadot/util';
 
 import { Input, InputAddress, InputBalance, InputNumber, Modal, TxButton } from '../../../../../react-components/src';
 import { BitLengthOption } from "../../../../../react-components/src/constants"
+import { DEF_FILE_NAME } from '@polkadot/apps-ipfs/market/config';
 
 const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'order' }) => {
   const { hasAccounts } = useAccounts();
   const isForceFile = file ? file.isForce : false;
+  const fileName = file && file.fileName ? file.fileName : DEF_FILE_NAME
   const [account, setAccount] = useState(null);
   const [fileCid, setFileCID] = useState(file ? file.cid.toString() : '');
   const [fileSize, setFileSize] = useState(file ? file.originalSize.toString() : '0');
@@ -141,6 +143,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
           doAddOrder({
             fileCid,
             fileSize,
+            fileName,
           });
         }}
         params={
