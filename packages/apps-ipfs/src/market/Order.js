@@ -19,6 +19,7 @@ import UpFiles from '@polkadot/apps-ipfs/files/modals/up-files/UpFiles';
 import { useMemo } from 'react/index';
 import styled from 'styled-components';
 import SelectUploadMode, { DevGuide } from '@polkadot/apps-ipfs/market/SelectUploadMode';
+import { useApi } from '@polkadot/react-hooks';
 
 const MDropdown = styled(DropdownWrap)`
   .menu {
@@ -37,18 +38,22 @@ const MDropdown = styled(DropdownWrap)`
       line-height: 50px;
       cursor: pointer;
       border-top: solid 1px #EEEEEE;
+
       &:hover {
         color: #4a90e2;
       }
     }
   }
-`
-function randomSort(a, b) { return Math.random() > 0.5 ? -1 : 1; }
+`;
+
+function randomSort (a, b) {
+  return Math.random() > 0.5 ? -1 : 1;
+}
 
 const MDevGuide = styled(DevGuide)`
   top: 0;
   right: 30px;
-`
+`;
 const UP_MODES = [
   { text: 'Upload files by IPFS', value: 'ipfs' },
   { text: 'Upload files by Gateway', value: 'gateway' }
@@ -75,7 +80,7 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
     }
   }, [url]);
   const { t } = useTranslation('order');
-  const upModeOptions = UP_MODES.map(item => ({ ...item, text: t(item.text)}))
+  const upModeOptions = UP_MODES.map(item => ({ ...item, text: t(item.text) }));
   const [modalShow, toggleModal] = useState(false);
   const [showUpFiles, setShowUpFiles] = useState(false);
   const [upFile, setUpFile] = useState(null);
@@ -87,10 +92,14 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
   const [repaidModal, togglerepaidModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [fetchModalShow, toggleFetchModalShow] = useState(false);
-
+  const { systemChain } = useApi();
+  const disableGateway = systemChain === 'Crust Maxwell';
   const inputFile = useRef();
   const endpoints = useMemo(
-    () => createAuthIpfsEndpoints(t).sort(randomSort).map(item => ({...item, text: `${item.text}(${item.location})`})),
+    () => createAuthIpfsEndpoints(t).sort(randomSort).map(item => ({
+      ...item,
+      text: `${item.text}(${item.location})`
+    })),
     [t]
   );
   const [currentEndpoint, setCurrentEndpoint] = useState(endpoints[0]);
@@ -121,7 +130,13 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
   };
   const handleAddPool = (item) => {
     // add pool
-    setFileInfo({ cid: item.fileCid, fileName: item.fileName, originalSize: item.fileSize, comment: item.comment, prepaid: item.prepaid });
+    setFileInfo({
+      cid: item.fileCid,
+      fileName: item.fileName,
+      originalSize: item.fileSize,
+      comment: item.comment,
+      prepaid: item.prepaid
+    });
     togglerepaidModal(true);
   };
   const handleFileChange = (e) => {
@@ -178,7 +193,11 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
   };
 
   const handleExport = () => {
-    const _list = watchList.map(_item => ({ fileCid: _item.fileCid, fileName: _item.fileName, comment: _item.comment }));
+    const _list = watchList.map(_item => ({
+      fileCid: _item.fileCid,
+      fileName: _item.fileName,
+      comment: _item.comment
+    }));
     const blob = new Blob([JSON.stringify(_list)], { type: 'application/json; charset=utf-8' });
     FileSaver.saveAs(blob, `watchList.json`);
   };
@@ -258,10 +277,13 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
           }
           {
             isGatewayMode && <>
-              <button className='btn' style={{ height: '3.7rem', padding: '8px 40px', }} onClick={() => {
-                const event = new MouseEvent('click');
-                inputFile?.current?.dispatchEvent(event);
-              }}>{t('actions.upFiles')}</button>
+              <button className={`btn ${disableGateway ? 'disabled' : ''}`}
+                      disabled={disableGateway}
+                      style={{ height: '3.7rem', padding: '8px 40px', }}
+                      onClick={() => {
+                        const event = new MouseEvent('click');
+                        inputFile?.current?.dispatchEvent(event);
+                      }}>{t('actions.upFiles')}</button>
               <MDropdown
                 className={'flex-grow-1'}
                 help={t('File streaming and wallet authentication will be processed by the chosen gateway') + t('Period')}
@@ -304,7 +326,7 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
           onAddPool={handleAddPool} onToggleBtn={handleToggleBtn}
           watchList={tableData}/>
       }
-      { isGatewayMode && <MDevGuide/> }
+      {isGatewayMode && <MDevGuide/>}
     </div>
   );
 };
