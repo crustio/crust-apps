@@ -18,23 +18,29 @@ const options = [{
   value: 'Subscan Storage Explorer'
 }];
 
-interface Props { onClose: () => void, onConfirm: () => void }
+interface Props { 
+  onClose: () => void, 
+  onConfirm: () => void,
+  onChangeExpiredStatus: (value: any) => void;
+  onChangeAddress: (value: any) => void;
+}
 
-const FetchModal: React.FC<Props> = ({ onClose, onConfirm }) => {
+const FetchModal: React.FC<Props> = ({ onClose, onConfirm, onChangeExpiredStatus, onChangeAddress }) => {
   const { t } = useTranslation();
   const [dataSource] = useState('Subscan Storage Explorer');
   const { hasAccounts } = useAccounts();
-  const [account, setAccount] = useState<any>();
+  const [account] = useState<any>();
   const [isAllOrders, setIsAllOrders] = useState(false)
-  const [expireOptions, setExpireOptions] = useState<{[k:string]:boolean}>({valid: false, expiredWithin15Days: false, expired15Days: false})
-    const { systemChain } = useApi();
-    const isMaxwell = systemChain === 'Crust Maxwell';
+  const [expireOptions, setExpireOptions] = useState<{[k:string]: boolean}>({valid: false, expiredWithin15Days: false, expired15Days: false})
+  const { systemChain } = useApi();
+  const isMaxwell = systemChain === 'Crust Maxwell';
   const checkboxList = ["valid", "expiredWithin15Days", "expired15Days"]
   const _setCheckboxOption = useCallback((item: string, value: any) => {
     setExpireOptions({
       ...expireOptions,
       [item]: value
     });
+    onChangeExpiredStatus(expireOptions[item])
   }, [expireOptions]);
 
   return <Modal
@@ -67,7 +73,7 @@ const FetchModal: React.FC<Props> = ({ onClose, onConfirm }) => {
                     />
                 }
                 defaultValue={account}
-                onChange={setAccount}
+                onChangeMulti={onChangeAddress}
                 type='account'
             />
           </Modal.Columns>
@@ -95,7 +101,7 @@ const FetchModal: React.FC<Props> = ({ onClose, onConfirm }) => {
     <Modal.Actions onCancel={onClose}>
       <Button className='tc'
         icon={'check'}
-        isDisabled={true}
+        // isDisabled={true}
         label={t<string>('Submit')}
         onClick={() => {
           onConfirm();
