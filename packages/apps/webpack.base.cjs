@@ -196,6 +196,7 @@ function createWebpack (context, mode = 'production') {
           CSM_LOCKING_PASSWD: JSON.stringify(process.env.CSM_LOCKING_PASSWD),
           LUCKY_ORDER_USER: JSON.stringify(process.env.LUCKY_ORDER_USER),
           LUCKY_ORDER_PASSWD: JSON.stringify(process.env.LUCKY_ORDER_PASSWD),
+          API_KEY: JSON.stringify(process.env.API_KEY),
         }
       }),
       new webpack.optimize.SplitChunksPlugin(),

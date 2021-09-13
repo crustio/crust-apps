@@ -14,6 +14,7 @@ import basicMd from './md/basic.md';
 import MainnetMarchants from './MainnetMarchants';
 import Merchants from './Merchants';
 import Settlements from './Settlements';
+import MainnetSettlements from './MainnetSettlements';
 
 const HIDDEN_ACC = ['vanity'];
 
@@ -48,7 +49,7 @@ function MerchantsApp ({ basePath, onStatusChange }: Props): React.ReactElement<
       </header>
       <Switch>
         <Route path={`${basePath}/settlements`}>
-          <Settlements/>
+          { isMaxwell ? <Settlements/> : <MainnetSettlements /> }
         </Route>
         <Route basePath={basePath}
           onStatusChange={onStatusChange}>

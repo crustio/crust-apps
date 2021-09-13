@@ -1,0 +1,12 @@
+.content-box {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #FFF;
+  padding: 0 1rem 1rem 1rem;
+  overflow: auto;
+}
+
+.btn-wrapper {
+  padding: 10px 0;
+}

@@ -12,6 +12,7 @@ import { useAccounts, useApi, useIpfs } from '@polkadot/react-hooks';
 
 import basicMd from '../md/basic.md';
 import Settlements from '../Settlements';
+import MainnetSettlements from '../MainnetSettlements';
 
 const HIDDEN_ACC = ['vanity'];
 
@@ -26,6 +27,7 @@ function MerchantsApp ({ basePath, onStatusChange }: Props): React.ReactElement<
   const { hasAccounts } = useAccounts();
   const { isIpfs } = useIpfs();
   const { systemChain } = useApi();
+  const isMaxwell = systemChain === 'Crust Maxwell';
   const theme = themeDict[systemChain] || 'rockey';
 
   const itemsRef = useRef([
@@ -46,7 +48,7 @@ function MerchantsApp ({ basePath, onStatusChange }: Props): React.ReactElement<
         />
       </header>
       <Route path={`${basePath}`}>
-        <Settlements/>
+        { isMaxwell ? <Settlements/> : <MainnetSettlements /> }
       </Route>
     </main>
   );

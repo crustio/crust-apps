@@ -1,81 +1,40 @@
 // Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import { ISettlementItem } from '@polkadot/apps-merchants/Settlements/settlementList';
 import { Button, Spinner } from '@polkadot/react-components';
-import { useApi, useCall, useToggle } from '@polkadot/react-hooks';
-import Pagination from '@material-ui/lab/Pagination';
+import { useToggle } from '@polkadot/react-hooks';
 
 import FetchModal from './fetch-modal/FetchModal';
 import { fetchFileTobeClaimed } from './fetch';
 import Settlement from './Settlement';
 import SettlementList from './settlementList';
-import { BlockAuthorsContext } from '@polkadot/react-query';
-import _ from "lodash";
-
-const ROW = 100;
 
 const Settlements: React.FC = () => {
   const { t } = useTranslation();
-  const { api } = useApi();
   const [settlements, setSettlements] = useState<ISettlementItem[]>([]);
   const [fetchModalShow, toggleFetchModalShow] = useToggle(false);
   const [isSettlementOpen, toggleSettlement] = useToggle(false);
   const [loading, toggleLoading] = useState(false);
   const [fileCid, setFileCid] = useState('');
   const [filterList, setFilterList] = useState<ISettlementItem[]>([]);
-  const fileByteFee = useCall<any>(api.query.market.fileByteFee);
-  const fileBaseFee = useCall<any>(api.query.market.fileBaseFee);
-  const fileDuration = api.consts.market.fileDuration;
-  const renewRewardRatio = api.consts.market.renewRewardRatio;
-  const [ expiredStatus, setExpiredStatus ] = useState<number | null>(null);
-  const [ address, setAddress ] = useState<string[]>([]);
-  // const [ totalOrderCount, setTotalOrderCount ] = useState<number>(0);
-  const [ totalPageCount, setTotalPageCount ] = useState<number>(0);
-  const [ pageIndex, setPageIndex ] = useState<number>(1);
-  
-  const { lastBlockNumber } = useContext(BlockAuthorsContext);
 
   const fetchData = () => {
-    const byteFee = fileByteFee && JSON.parse(JSON.stringify(fileByteFee)) 
-    const baseFee = fileByteFee && JSON.parse(JSON.stringify(fileBaseFee)) 
-    const duration = fileByteFee && JSON.parse(JSON.stringify(fileDuration)) 
-    const rewardRatio = fileByteFee && JSON.parse(JSON.stringify(renewRewardRatio)) 
-    if (byteFee && baseFee && duration && rewardRatio) {
-      toggleLoading(true);
-      fetchFileTobeClaimed({ row: ROW, page: pageIndex -1, expired_status: expiredStatus as number, address }, {
-        filePrice: Number(fileByteFee.toString()), 
-        currentBn: Number(lastBlockNumber), 
-        renewRewardRatio: Number(renewRewardRatio) / 100000000000, 
-        fileDuration: Number(fileDuration), 
-        baseFee: Number(fileBaseFee)
-      }).then((res: any) => {
-        (res.list as ISettlementItem[]).forEach((item: ISettlementItem) => {
-          item.totalReward = item.settlementReward + item.renewReward;
-        });
-        setSettlements(res.list as ISettlementItem[]);
-        // setTotalOrderCount(res.total);
-        setTotalPageCount(Math.floor(_.divide(res.total, ROW)) + 1);
-  
-      }).catch((e) => {
-        console.log(e);
-      }).finally(() => {
-        // setSettlements([]);
-        toggleLoading(false);
+    toggleLoading(true);
+    fetchFileTobeClaimed().then((res) => {
+      (res as ISettlementItem[]).forEach((item: ISettlementItem) => {
+        item.totalReward = item.settlementReward + item.renewReward;
       });
-    }
+      setSettlements(res as ISettlementItem[]);
+    }).catch((e) => {
+      console.log(e);
+    }).finally(() => {
+      toggleLoading(false);
+    });
   };
-
-  useEffect(() => {
-    fetchData()
-  }, [pageIndex])
-
-  const data = useCallback(() => {
-    fetchData()
-  }, [fileByteFee, fileBaseFee, fileDuration, renewRewardRatio, expiredStatus, address, pageIndex])
 
   useEffect(() => {
     if (!fileCid) {
@@ -90,17 +49,14 @@ const Settlements: React.FC = () => {
   return <div className={'w-100'}
     style={{ background: '#fff' }}>
     {
-      fetchModalShow && <FetchModal 
-        onClose={() => {
-          toggleFetchModalShow();
-        }}
-        onConfirm={() => {
-          data();
-          toggleFetchModalShow();
-        }}
-        onChangeExpiredStatus={setExpiredStatus}
-        onChangeAddress={setAddress}
-    />}
+      fetchModalShow && <FetchModal onClose={() => {
+        toggleFetchModalShow();
+      }}
+      onConfirm={() => {
+        fetchData();
+        toggleFetchModalShow();
+      }}/>
+    }
 
     {loading
       ? <Spinner label={t<string>('Loading')} />
@@ -138,12 +94,7 @@ const Settlements: React.FC = () => {
             style={{ borderRadius: '3px 0 0 3px' }}
             type='text'
             value={fileCid} />
-          
-        <Pagination count={totalPageCount} siblingCount={1} page={pageIndex} color="standard"  onChange={(_: object, page: number) => {
-          setPageIndex(page)
-        }} ></Pagination >
         </div>
-
         <SettlementList
           settlementList={filterList}/></div>
     }
