@@ -40,33 +40,37 @@ const Settlements: React.FC = () => {
   const { lastBlockNumber } = useContext(BlockAuthorsContext);
 
   const fetchData = () => {
-    toggleLoading(true);
-    fetchFileTobeClaimed({ row: ROW, page: pageIndex -1, expired_status: expiredStatus as number, address }, {
-      filePrice: Number(fileByteFee.toString()), 
-      currentBn: Number(lastBlockNumber), 
-      renewRewardRatio: Number(renewRewardRatio) / 100000000000, 
-      fileDuration: Number(fileDuration), 
-      baseFee: Number(fileBaseFee)
-    }).then((res: any) => {
-      (res.list as ISettlementItem[]).forEach((item: ISettlementItem) => {
-        item.totalReward = item.settlementReward + item.renewReward;
+    const byteFee = fileByteFee && JSON.parse(JSON.stringify(fileByteFee)) 
+    const baseFee = fileByteFee && JSON.parse(JSON.stringify(fileBaseFee)) 
+    const duration = fileByteFee && JSON.parse(JSON.stringify(fileDuration)) 
+    const rewardRatio = fileByteFee && JSON.parse(JSON.stringify(renewRewardRatio)) 
+    if (byteFee && baseFee && duration && rewardRatio) {
+      toggleLoading(true);
+      fetchFileTobeClaimed({ row: ROW, page: pageIndex -1, expired_status: expiredStatus as number, address }, {
+        filePrice: Number(fileByteFee.toString()), 
+        currentBn: Number(lastBlockNumber), 
+        renewRewardRatio: Number(renewRewardRatio) / 100000000000, 
+        fileDuration: Number(fileDuration), 
+        baseFee: Number(fileBaseFee)
+      }).then((res: any) => {
+        (res.list as ISettlementItem[]).forEach((item: ISettlementItem) => {
+          item.totalReward = item.settlementReward + item.renewReward;
+        });
+        setSettlements(res.list as ISettlementItem[]);
+        // setTotalOrderCount(res.total);
+        setTotalPageCount(Math.floor(_.divide(res.total, ROW)) + 1);
+  
+      }).catch((e) => {
+        console.log(e);
+      }).finally(() => {
+        // setSettlements([]);
+        toggleLoading(false);
       });
-      setSettlements(res.list as ISettlementItem[]);
-      // setTotalOrderCount(res.total);
-      setTotalPageCount(Math.floor(_.divide(res.total, ROW)) + 1);
-
-    }).catch((e) => {
-      console.log(e);
-    }).finally(() => {
-      // setSettlements([]);
-      toggleLoading(false);
-    });
+    }
   };
 
   useEffect(() => {
-    if (fileByteFee && fileBaseFee && fileDuration && renewRewardRatio) {
-      fetchData()
-    }
+    fetchData()
   }, [pageIndex])
 
   const data = useCallback(() => {
@@ -135,7 +139,7 @@ const Settlements: React.FC = () => {
             type='text'
             value={fileCid} />
           
-        <Pagination count={totalPageCount} page={pageIndex} color="standard"  onChange={(_: object, page: number) => {
+        <Pagination count={totalPageCount} siblingCount={1} page={pageIndex} color="standard"  onChange={(_: object, page: number) => {
           setPageIndex(page)
         }} ></Pagination >
         </div>
