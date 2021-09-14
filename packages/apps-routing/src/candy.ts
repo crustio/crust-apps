@@ -18,6 +18,6 @@ export default function create (t: TFunction): Route {
     group: 'accounts',
     icon: 'candy-cane',
     name: 'candy',
-    text: t('nav.candy', 'Candy', { ns: 'apps-routing' })
+    text: t('nav.candy', 'Candy Exchange', { ns: 'apps-routing' })
   };
 }
