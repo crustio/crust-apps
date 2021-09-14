@@ -24,15 +24,14 @@ function CandyAssets ({ className = '', senderId: propSenderId }: Props): React.
   const { api } = useApi();
   const [hasAvailable] = useState(true);
   const [senderId, setSenderId] = useState<string | null>(propSenderId || null);
-  const [ ethereumAddress] = useState<string | undefined | null>(null);
   const [ candyAmount, setCandyAmount ] = useState<BN>(BN_ZERO);
 
   useEffect(() => {
     if (senderId) { 
-        api.query.system.account(senderId)
+        api.query.candy.balances(senderId)
         .then(res => {
-            const accountInfo = JSON.parse(JSON.stringify(res));
-            setCandyAmount(new BN(Number(accountInfo.data.free).toString()))
+            const candyInfo = JSON.parse(JSON.stringify(res));
+            setCandyAmount(new BN(Number(candyInfo).toString()))
         })
     }
   }, [api, senderId])
@@ -61,7 +60,7 @@ function CandyAssets ({ className = '', senderId: propSenderId }: Props): React.
           <InputCandyBalance
             autoFocus
             isDisabled
-            help={t<string>('Type the amount you will to exchange.')}
+            help={t<string>('The amount you will to exchange.')}
             isError={!hasAvailable}
             label={t<string>('amount')}
             defaultValue={candyAmount}
@@ -70,11 +69,12 @@ function CandyAssets ({ className = '', senderId: propSenderId }: Props): React.
           <Button.Group>
             <TxButton
               accountId={senderId}
+              isUnsigned
               icon='paper-plane'
               isDisabled={candyAmount?.lte(BN_ZERO)}
               label={t<string>('Exchange')}
-              params={[candyAmount, ethereumAddress, 0]}
-              tx={api.tx.bridgeTransfer?.transferNative}
+              params={[senderId]}
+              tx={api.tx.candy?.exchangeCandy}
             />
           </Button.Group>
         </Card>

@@ -9,6 +9,7 @@ import { Route, Switch } from 'react-router';
 import { useTranslation } from '@polkadot/apps/translate';
 import { Tabs } from '@polkadot/react-components';
 import { useAccounts, useIpfs } from '@polkadot/react-hooks';
+
 import CandyAssets from './CandyAssets';
 
 const HIDDEN_ACC = ['vanity'];

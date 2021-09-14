@@ -1,8 +1,7 @@
 // Copyright 2017-2021 @polkadot/react-query authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { Balance } from '@polkadot/types/interfaces';
-import type { AccountId, AccountIndex, Address } from '@polkadot/types/interfaces';
+import type { AccountId, AccountIndex, Address, Balance } from '@polkadot/types/interfaces';
 
 import React from 'react';
 
