@@ -12,6 +12,7 @@ export default function create (t: TFunction): Route {
     display: {
       needsAccounts: true,
       needsApi: [
+        'tx.candy.exchangeCandy'
       ]
     },
     group: 'accounts',
