@@ -46,6 +46,8 @@
       "@polkadot/app-extrinsics/*": [ "packages/page-extrinsics/src/*" ],
       "@polkadot/app-explorer": [ "packages/page-explorer/src" ],
       "@polkadot/app-explorer/*": [ "packages/page-explorer/src/*" ],
+      "@polkadot/app-files": [ "packages/page-files/src" ],
+      "@polkadot/app-files/*": [ "packages/page-files/src/*" ],
       "@polkadot/app-i18n": [ "packages/page-i18n/src" ],
       "@polkadot/app-i18n/*": [ "packages/page-i18n/src/*" ],
       "@polkadot/app-js": [ "packages/page-js/src" ],

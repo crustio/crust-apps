@@ -101,6 +101,7 @@ function Menu ({ className = '' }: Props): React.ReactElement<Props> {
     developer: t('Developer'),
     governance: t('Governance'),
     network: t('Network'),
+    files: t('Files'),
     settings: t('Settings'),
     storage: t('Storage market'),
     csmStaking: t('Profit Data')

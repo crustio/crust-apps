@@ -18,6 +18,7 @@ import csmStaking from './csmStaking';
 import democracy from './democracy';
 import explorer from './explorer';
 import extrinsics from './extrinsics';
+import files from './files';
 import gilt from './gilt';
 import js from './js';
 import merchants from './merchants';
@@ -68,6 +69,7 @@ export default function create (t: TFunction): Routes {
     signing(t),
     sudo(t),
     js(t),
+    files(t),
     settings(t),
     merchants(t),
     settlements(t),
