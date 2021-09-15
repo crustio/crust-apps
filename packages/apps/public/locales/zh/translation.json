@@ -1652,5 +1652,12 @@
   "0x prefixed hex": "0x 开头的地址",
   "staking payout: {{stakingRewards}}": "质押奖励: {{stakingRewards}}",
   "market payout: {{marketPayout}}": "存储市场奖励: {{marketPayout}}",
-  "current era rewards": "当前era奖励"
+  "current era rewards": "当前era奖励",
+  "Change Candy into CRU at a ratio of 1000:1": "将Candy兑换为CRU，兑换比例1000 : 1",
+  "candy": "糖果",
+  "My Candy": "我的糖果",
+  "nav.candy": "糖果兑换",
+  "Exchange": "兑换",
+  "The amount you will to exchange.": "你将要兑换的数量。",
+  "Candy Exchange": "Candy兑换"
 }

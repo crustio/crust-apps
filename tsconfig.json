@@ -22,6 +22,8 @@
       "@polkadot/apps-benefit/*": [ "packages/page-benefit/src/*" ],
       "@polkadot/apps-bridge/": [ "packages/page-bridge/src/" ],
       "@polkadot/apps-bridge/*": [ "packages/page-bridge/src/*" ],
+      "@polkadot/apps-candy/": [ "packages/page-candy/src/" ],
+      "@polkadot/apps-candy/*": [ "packages/page-candy/src/*" ],
       "@polkadot/apps-routing": [ "packages/apps-routing/src" ],
       "@polkadot/apps-routing/*": [ "packages/apps-routing/src/*" ],
       "@polkadot/app-accounts": [ "packages/page-accounts/src" ],
