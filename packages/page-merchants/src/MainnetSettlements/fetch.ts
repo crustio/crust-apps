@@ -65,8 +65,6 @@ export async function fetchFileTobeClaimed (opt: QuestOptions, { filePrice, curr
     .then((res) => res.json())
     .then((r: any) => {
       if (r.message === 'Success') {
-        console.log('fileDuration', fileDuration)
-        console.log('fileStatus', fileStatus)
         const result = [];
         let total = r.data.count;
         let tmp = r.data.list;
