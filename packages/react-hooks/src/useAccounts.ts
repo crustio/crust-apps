@@ -11,11 +11,12 @@ interface UseAccounts {
   allAccounts: string[];
   hasAccounts: boolean;
   isAccount: (address: string) => boolean;
+  isLoad: boolean
 }
 
 export function useAccounts (): UseAccounts {
   const mountedRef = useIsMountedRef();
-  const [state, setState] = useState<UseAccounts>({ allAccounts: [], hasAccounts: false, isAccount: () => false });
+  const [state, setState] = useState<UseAccounts>({ allAccounts: [], hasAccounts: false, isAccount: () => false, isLoad: true });
 
   useEffect((): () => void => {
     const subscription = keyring.accounts.subject.subscribe((accounts): void => {
@@ -24,7 +25,7 @@ export function useAccounts (): UseAccounts {
         const hasAccounts = allAccounts.length !== 0;
         const isAccount = (address: string): boolean => allAccounts.includes(address);
 
-        setState({ allAccounts, hasAccounts, isAccount });
+        setState({ allAccounts, hasAccounts, isAccount, isLoad: false });
       }
     });
 

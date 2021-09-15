@@ -1398,6 +1398,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.15.4":
+  version: 7.15.4
+  resolution: "@babel/runtime@npm:7.15.4"
+  dependencies:
+    regenerator-runtime: ^0.13.4
+  checksum: 64b6c250fd02a664f40835b7bfc3ec0b473d251bf4881b06b689b60662bf2ae17adc6fa32fb0e0de308de5d4bc383738c6030ad93d823066fb9fd7c18f552b56
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:^7.6.2":
   version: 7.15.3
   resolution: "@babel/runtime@npm:7.15.3"
@@ -3073,6 +3082,15 @@ __metadata:
     "@polkadot/react-components": ^0.85.2-15
     "@polkadot/react-params": ^0.85.2-15
     "@polkadot/react-signer": ^0.85.2-15
+  languageName: unknown
+  linkType: soft
+
+"@polkadot/app-files@workspace:packages/page-files":
+  version: 0.0.0-use.local
+  resolution: "@polkadot/app-files@workspace:packages/page-files"
+  dependencies:
+    "@babel/runtime": ^7.15.4
+    "@polkadot/react-components": ^0.85.2-15
   languageName: unknown
   linkType: soft
 
