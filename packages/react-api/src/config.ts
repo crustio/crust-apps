@@ -6,9 +6,9 @@ import { EthereumNetworkOptions } from './lib/configuration';
 export const ethereums: Record<string, Record<number, EthereumNetworkOptions>> = {
   Crust: {
     1: {
-      bridge: '0x0964A01E0d0B5d6FF726Ab9D60a93d188D3f505B',
+      bridge: '0x486Be2bE480aEd1E21Ba884b0b559fdd0EB14153',
       erc20: '0x32a7C02e79c4ea1008dD6564b35F131428673c41',
-      erc20AssetHandler: '0x9D332427e6D1B91d9cf8d2fa3B41Df2012887aAB',
+      erc20AssetHandler: '0x645A36124B537Ea30Cbba25F75599D3F1FE79Ba5',
       erc20ResourceId: '0x000000000000000000000000000000608d1bc9a2d146ebc94667c336721b2801',
       peerChainIds: {
         Crust: 1
