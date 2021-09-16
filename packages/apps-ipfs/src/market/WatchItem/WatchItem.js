@@ -24,7 +24,7 @@ import GlyphRenew from '@polkadot/apps-ipfs/icons/GlyphRenew';
 import GlyphPrepaid from '@polkadot/apps-ipfs/icons/GlyphPrepaid';
 import GlyphSpeedup from '@polkadot/apps-ipfs/icons/GlyphSpeedup';
 import GlyphRetry from '@polkadot/apps-ipfs/icons/GlyphRetry';
-import { Icon } from '@polkadot/react-components'
+import { Icon } from '@polkadot/react-components';
 import { DEF_FILE_NAME } from '@polkadot/apps-ipfs/market/config';
 
 const fileStatusEnum = {
@@ -34,7 +34,18 @@ const fileStatusEnum = {
   EXPIRE: 'EXPIRE'
 };
 
-const WatchItem = ({ gateway, onAddPool, isEdit, onSelect, startEdit, confirmEdit, onToggleBtn, selected, watchItem }) => {
+const WatchItem = ({
+                     isWatchOne,
+                     gateway,
+                     onAddPool,
+                     isEdit,
+                     onSelect,
+                     startEdit,
+                     confirmEdit,
+                     onToggleBtn,
+                     selected,
+                     watchItem
+                   }) => {
   const { api, isApiReady } = useApi();
   const { t } = useTranslation('order');
   const checkBoxCls = classnames({
@@ -88,8 +99,9 @@ const WatchItem = ({ gateway, onAddPool, isEdit, onSelect, startEdit, confirmEdi
       watchItem.prepaid = 0;
     }
   }
-  if (!watchItem.fileName)
+  if (!watchItem.fileName) {
     watchItem.fileName = DEF_FILE_NAME;
+  }
   watchItem.fileStatus = status;
   const readableSize = watchItem.fileSize ? filesize(watchItem.fileSize, { round: 2 }) : '-';
   const calculateExpiredTime = (expireBlock) => {
@@ -113,28 +125,34 @@ const WatchItem = ({ gateway, onAddPool, isEdit, onSelect, startEdit, confirmEdi
   return <div
     className={'File b--light-gray relative  flex items-center bt'}
     style={{ overflow: 'hidden', height: 40 }}>
-    <div className='justify-center tc flex justify-center items-center  ph2 pv1 w-5'>
-      <Checkbox aria-label={t('checkboxLabel', { name })}
-                checked={selected}
-                className={checkBoxCls}
-                onChange={() => {
-                  onSelect(watchItem.fileCid);
-                }}/>
-    </div>
-    <div className='relative tc pointer  justify-center flex items-center  ph2 pv1 w-15'>
-      <div className=''>
-        <span>{shortFileName}</span>
-        {
-          watchItem.fileName !== DEF_FILE_NAME && (
-            <CopyButton text={watchItem.fileName} message={t('fileNameCopied')}>
-              <StrokeCopy className='fill-aqua' style={{ width: 18 }}/>
-            </CopyButton>
-          )
-        }
-
+    {
+      !isWatchOne &&
+      <div className='justify-center tc flex flex-auto items-center  ph2 pv1 w-5'>
+        <Checkbox aria-label={t('checkboxLabel', { name })}
+                  checked={selected}
+                  className={checkBoxCls}
+                  onChange={() => {
+                    onSelect(watchItem.fileCid);
+                  }}/>
       </div>
-    </div>
-    <div className='relative tc pointer  justify-center flex items-center  ph2 pv1 w-15'>
+    }
+    {
+      !isWatchOne &&
+      <div className='relative tc pointer flex-auto  justify-center flex items-center  ph2 pv1 w-15'>
+        <div className=''>
+          <span>{shortFileName}</span>
+          {
+            watchItem.fileName !== DEF_FILE_NAME && (
+              <CopyButton text={watchItem.fileName} message={t('fileNameCopied')}>
+                <StrokeCopy className='fill-aqua' style={{ width: 18 }}/>
+              </CopyButton>
+            )
+          }
+
+        </div>
+      </div>
+    }
+    <div className='relative tc pointer  justify-center flex flex-auto items-center  ph2 pv1 w-15'>
       <div className=''>
         <Cid value={watchItem.fileCid}/>
         <CopyButton text={watchItem.fileCid} message={t('fileCidCopied')}>
@@ -142,23 +160,23 @@ const WatchItem = ({ gateway, onAddPool, isEdit, onSelect, startEdit, confirmEdi
         </CopyButton>
       </div>
     </div>
-    <div className='relative tc   justify-center flex items-center  ph2 pv1 w-10'>
+    <div className='relative tc   justify-center flex flex-auto items-center  ph2 pv1 w-10'>
       <div className=''>
         {readableSize || '-'}
       </div>
     </div>
 
-    <div className='relative tc flex  justify-center items-center  ph2 pv1 w-20'>
+    <div className='relative tc flex flex-auto  justify-center items-center  ph2 pv1 w-20'>
       <div className=''>
         {/*(expireTime - bestNumber) / 6*/}
         {watchItem.expireTime ?
           <span>{watchItem.expireTime} / {calculateExpiredTime(watchItem.expireTime)} </span> : '-'}
       </div>
     </div>
-    <div className='relative tc flex justify-center items-center  ph2 pv1 w-10'>
+    <div className='relative tc flex flex-auto justify-center items-center  ph2 pv1 w-10'>
       {watchItem.confirmedReplicas || '-'}
     </div>
-    <div className='relative tc pointer flex justify-center items-center  ph2 pv1 w-10'>{
+    <div className='relative tc pointer flex-auto flex justify-center items-center  ph2 pv1 w-10'>{
       watchItem.fileStatus === fileStatusEnum.PENDING ?
         <div style={{ textTransform: 'capitalize' }}>
           {t(`status.${watchItem.fileStatus}`)}
@@ -171,13 +189,13 @@ const WatchItem = ({ gateway, onAddPool, isEdit, onSelect, startEdit, confirmEdi
             closeOnDocumentClick
             on={['hover', 'focus']}
           >
-            <Trans i18nKey="tips.tip1" t={t} />
+            <Trans i18nKey="tips.tip1" t={t}/>
           </Popup>
         </div>
         :
         <div style={{ textTransform: 'capitalize' }}>{t(`status.${watchItem.fileStatus}`)}</div>
     }</div>
-    <div className='relative tr flex justify-center items-center  ph2 pv1 w-15' style={{ paddingBottom: 10 }}>
+    <div className='relative tr flex flex-auto justify-center items-center  ph2 pv1 w-15' style={{ paddingBottom: 10 }}>
       {/*<span className='dib tc' style={{minWidth:"50%"}}>{watchItem.amount ? formatBalance(new BN(watchItem.amount.toString() || 0).divn(ratio), { decimals: 12, forceUnit: 'CRU' }).replace('CRU', '') : '-'}</span>*/}
       <Popup
         trigger={
@@ -209,7 +227,7 @@ const WatchItem = ({ gateway, onAddPool, isEdit, onSelect, startEdit, confirmEdi
       </Popup>
       <Popup
         trigger={
-          <div style={{position: 'relative', top: 6}}>
+          <div style={{ position: 'relative', top: 6 }}>
             <CopyButton text={`${gateway}/ipfs/${watchItem.fileCid}`} message={t('downLinkCopied')}>
               <StrokeCopy className='fill-aqua pointer' style={{ width: 28 }}/>
             </CopyButton>
@@ -222,7 +240,7 @@ const WatchItem = ({ gateway, onAddPool, isEdit, onSelect, startEdit, confirmEdi
         <span>{t(`actions.copyLink`)}</span>
       </Popup>
     </div>
-    <div className='relative tr flex justify-center items-center  ph2 pv1 w-15'>
+    <div className='relative tr flex flex-auto justify-center items-center  ph2 pv1 w-15'>
       <span className='dib tc' style={{ minWidth: '50%' }}>{formatBalance(watchItem.prepaid, {
         decimals: 12,
         forceUnit: 'CRU'

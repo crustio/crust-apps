@@ -42,7 +42,7 @@ const itemList = [{
   }
 ];
 
-const OrderList = ({ gateway, onAddPool, doUpdateWatchItem, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
+const OrderList = ({ isWatchOne, gateway, onAddPool, doUpdateWatchItem, doSelectedItems, onToggleBtn, selectedCidList, t, watchList, watchedCidList }) => {
   const [listSorting, setListSorting] = useState({ by: 'expireTime', asc: false });
   const [sortedList, setSortedList] = useState(watchList)
   const [editItem, setEditItem] = useState(undefined)
@@ -104,12 +104,12 @@ const OrderList = ({ gateway, onAddPool, doUpdateWatchItem, doSelectedItems, onT
     <div>
       <header className='gray pv3 flex items-center flex-none'
         style={{ paddingRight: '1px', paddingLeft: '1px' }}>
-        <div className='ph2 pv1 flex-auto db-l tc w-5'>
+        {!isWatchOne && <div className='ph2 pv1 flex-auto db-l tc w-5'>
           <Checkbox aria-label={t('selectAllEntries')}
-            checked={isAllSelected()}
-            onChange={toggleAll}/>
-        </div>
-        <div className='ph2 pv1 flex-auto db-l tc w-15 watch-list-header'>
+                    checked={isAllSelected()}
+                    onChange={toggleAll}/>
+        </div>}
+        {!isWatchOne && <div className='ph2 pv1 flex-auto db-l tc w-15 watch-list-header'>
           <button
             aria-label={t('sortBy', { name: t('fileName') })}
             onClick={() => {
@@ -118,7 +118,7 @@ const OrderList = ({ gateway, onAddPool, doUpdateWatchItem, doSelectedItems, onT
           >
             {t('fileName')}{sortByIcon('fileName')}
           </button>
-        </div>
+        </div>}
         <div className='ph2 pv1 flex-auto db-l tc w-15 watch-list-header'>
           <button
             aria-label={t('sortBy', { name: t('fileCid') })}
@@ -150,6 +150,7 @@ const OrderList = ({ gateway, onAddPool, doUpdateWatchItem, doSelectedItems, onT
       <div>
         {sortedList.length > 0 ? sortedList.map((item) => (
           <WatchItem
+            isWatchOne={isWatchOne}
             gateway={gateway}
             onAddPool={onAddPool}
             tableRef={tableRef}

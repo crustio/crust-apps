@@ -172,9 +172,10 @@ function UploadModal (p: Props): React.ReactElement<Props> {
       setUpState({ progress: 0, up: false });
       setBusy(false);
       console.error(e);
-      setError((e as Error).message);
+      setError(t('Network Error,Please try to switch a Gateway.'));
+      // setError((e as Error).message);
     }
-  }, [user, file, password, currentPinEndpoint, currentEndpoint, onSuccess]);
+  }, [user, file, password, currentPinEndpoint, currentEndpoint, onSuccess, t]);
 
   const _onChangeGateway = useCallback((value: string) => {
     const find = endpoints.find((item) => item.value === value);
@@ -190,7 +191,7 @@ function UploadModal (p: Props): React.ReactElement<Props> {
 
   return (
     <Modal
-      header={t<string>('Upload File')}
+      header={t<string>(file.dir ? 'Upload Folder' : 'Upload File')}
       onClose={_onClose}
       open={true}
       size={'large'}
@@ -263,7 +264,7 @@ function UploadModal (p: Props): React.ReactElement<Props> {
           icon={'arrow-circle-up'}
           isBusy={isBusy}
           isDisabled={fileSizeError}
-          label={t<string>('Upload')}
+          label={t<string>('Sign and Upload')}
           onClick={_onClickUp}
         />
       </Modal.Actions>

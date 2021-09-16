@@ -58,7 +58,9 @@ const UP_MODES = [
   { text: 'Upload files by IPFS', value: 'ipfs' },
   { text: 'Upload files by Gateway', value: 'gateway' }
 ];
-const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
+const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => {
+  const isWatchOne = params.cid && params.cid.startsWith('Qm')
+  const watchList = isWatchOne ? [{ fileCid: params.cid }] : list
   const [uploadMode, setUploadMode] = useState({
     isLoad: true,
     mode: '',
@@ -69,7 +71,11 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
   const doSetUploadMode = (mode) => {
     setUploadMode({ mode, isLoad: false });
     window.localStorage.setItem('uploadMode', mode);
-    window.location.hash = mode === 'ipfs' ? '/storage' : '/storage_files';
+    const hash = window.location.hash
+    console.info('hash::', hash)
+    if (!hash.startsWith('#/storage') || hash === '#/storage' || hash === '#/storage_files'){
+      window.location.hash = mode === 'ipfs' ? '/storage' : '/storage_files';
+    }
   };
   useEffect(() => {
     const mode = window.localStorage.getItem('uploadMode');
@@ -258,70 +264,74 @@ const Order = ({ routeInfo: { url }, watchList, doAddOrders }) => {
           file={upFile}
           endpoint={currentEndpoint}/>
       }
-      <div className={'w-100 btn-wrapper flex-l'}>
-        <div className={'flex-l'} style={{ alignItems: 'center', width: '32rem' }}>
-          {
-            isGatewayMode ?
-              <input
-                type={'file'}
-                style={{ display: 'none' }}
-                ref={inputFile}
-                onChange={onInputFile}/>
-              :
-              <button
-                className='btn'
-                style={{ height: '3.7rem', padding: '8px 40px', }}
-                onClick={() => toggleModal(true)}>
-                {t('actions.addOrder')}
-              </button>
-          }
-          {
-            isGatewayMode && <>
-              <button className={`btn ${disableGateway ? 'disabled' : ''}`}
-                      disabled={disableGateway}
-                      style={{ height: '3.7rem', padding: '8px 40px', }}
-                      onClick={() => {
-                        const event = new MouseEvent('click');
-                        inputFile?.current?.dispatchEvent(event);
-                      }}>{t('actions.upFiles')}</button>
-              <MDropdown
-                className={'flex-grow-1'}
-                help={t('File streaming and wallet authentication will be processed by the chosen gateway') + t('Period')}
-                label={t('Select a gateway')}
-                options={endpoints}
-                value={currentEndpoint.value}
-                onChange={(value) => {
-                  setCurrentEndpoint(endpoints.find(item => item.value === value));
-                }}
-                header={
-                  <div className='footer'
-                       onClick={() => window.open('https://github.com/crustio/crust-apps/tree/master/packages/apps-config/src/ipfs-gateway-endpoints', '_blank')}
-                  >{t('Contribute to Web3 IPFS Gateway')}</div>
-                }
-              />
-            </>
-          }
+      {!isWatchOne && <>
+        <div className={'w-100 btn-wrapper flex-l'}>
+          <div className={'flex-l'} style={{ alignItems: 'center', width: '32rem' }}>
+            {
+              isGatewayMode ?
+                <input
+                  type={'file'}
+                  style={{ display: 'none' }}
+                  ref={inputFile}
+                  onChange={onInputFile}/>
+                :
+                <button
+                  className='btn'
+                  style={{ height: '3.7rem', padding: '8px 40px', }}
+                  onClick={() => toggleModal(true)}>
+                  {t('actions.addOrder')}
+                </button>
+            }
+            {
+              isGatewayMode && <>
+                <button className={`btn ${disableGateway ? 'disabled' : ''}`}
+                        disabled={disableGateway}
+                        style={{ height: '3.7rem', padding: '8px 40px', }}
+                        onClick={() => {
+                          const event = new MouseEvent('click');
+                          inputFile?.current?.dispatchEvent(event);
+                        }}>{t('actions.upFiles')}</button>
+                <MDropdown
+                  className={'flex-grow-1'}
+                  help={t('File streaming and wallet authentication will be processed by the chosen gateway') + t('Period')}
+                  label={t('Select a gateway')}
+                  options={endpoints}
+                  value={currentEndpoint.value}
+                  onChange={(value) => {
+                    setCurrentEndpoint(endpoints.find(item => item.value === value));
+                  }}
+                  header={
+                    <div className='footer'
+                         onClick={() => window.open('https://github.com/crustio/crust-apps/tree/master/packages/apps-config/src/ipfs-gateway-endpoints', '_blank')}
+                    >{t('Contribute to Web3 IPFS Gateway')}</div>
+                  }
+                />
+              </>
+            }
+          </div>
+          <div style={{ marginLeft: 'auto' }}>
+            <DropdownWrap
+              options={upModeOptions}
+              label={t('Switch Mode')}
+              value={uploadMode.mode}
+              onChange={doSetUploadMode}
+            />
+          </div>
         </div>
-        <div style={{ marginLeft: 'auto' }}>
-          <DropdownWrap
-            options={upModeOptions}
-            label={t('Switch Mode')}
-            value={uploadMode.mode}
-            onChange={doSetUploadMode}
-          />
+        <div className={'orderList-header'}>
+          <span className={'dib'}>{t('orderListdesc')}</span>
         </div>
-      </div>
-      <div className={'orderList-header'}>
-        <span className={'dib'}>{t('orderListdesc')}</span>
-      </div>
-      <WatchListInput
-        onFilterWatchList={handleFilterWatchList}
-        handleFileChange={handleFileChange}
-        handleExport={handleExport}
-        emitFetchModal={emitFetchModal}
-      />
+        <WatchListInput
+          onFilterWatchList={handleFilterWatchList}
+          handleFileChange={handleFileChange}
+          handleExport={handleExport}
+          emitFetchModal={emitFetchModal}
+        />
+      </>}
+
       {loading ? <Spinner label={t('Loading')}/>
         : <OrderList
+          isWatchOne={isWatchOne}
           gateway={gateway}
           onAddPool={handleAddPool} onToggleBtn={handleToggleBtn}
           watchList={tableData}/>

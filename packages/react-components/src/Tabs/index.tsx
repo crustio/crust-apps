@@ -41,9 +41,11 @@ function Tabs ({ basePath, className = '', hidden, items }: Props): React.ReactE
     }
   }, [basePath, hidden, items, location]);
 
-  const filtered = hidden
+  const oneFiltered = hidden
     ? items.filter(({ name }) => !hidden.includes(name))
     : items;
+
+  const filtered = oneFiltered.filter(({ isHidden }) => !isHidden);
 
   return (
     <header className={`ui--Tabs ${className}`}>
