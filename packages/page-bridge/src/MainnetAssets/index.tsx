@@ -23,13 +23,15 @@ interface Props {
 
 function EthereumAssets ({ className = '', senderId: propSenderId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const { api } = useApi();
+  const { api, systemChain } = useApi();
   const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
   const [hasAvailable] = useState(true);
   const [senderId, setSenderId] = useState<string | null>(propSenderId || null);
   const [ethereumAddress, setEthereumAddress] = useState<string | undefined | null>(null);
   const [isValid, setIsValid] = useState(false);
   const [bridgeFee, setBridgeFee] = useState<BN>(BN_ZERO);
+  const isMaxwell = systemChain === 'Crust Maxwell';
+  const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x0964a01e0d0b5d6ff726ab9d60a93d188d3f505b' : 'https://etherscan.io/address/0x486Be2bE480aEd1E21Ba884b0b559fdd0EB14153';
 
   useEffect(() => {
     api.query.bridgeTransfer.bridgeFee(0).then((bridgeFee) => {
@@ -135,7 +137,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
       <Columar.Column>
         <Card>
           <Banner type="warning">
-            <p>{t<string>('Cross-chain transfers are automatically executed by smart contracts. after the execution of the contract is completed, the funds will arrive in the account. Please wait patiently.')}&nbsp;<a target="_blank" href='https://etherscan.io/address/0x0964a01e0d0b5d6ff726ab9d60a93d188d3f505b'>{t<string>('You can check the transaction status here...')}</a></p>
+            <p>{t<string>('Cross-chain transfers are automatically executed by smart contracts. after the execution of the contract is completed, the funds will arrive in the account. Please wait patiently.')}&nbsp;<a target="_blank" href={bridgeTxStatusLink}>{t<string>('You can check the transaction status here...')}</a></p>
           </Banner>
         </Card>
       </Columar.Column>
