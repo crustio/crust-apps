@@ -20,6 +20,7 @@ import extensionCrustWallet from './extensions/crust-wallet.png';
 import extensionPolkadotJs from './extensions/polkadot-js.svg';
 import externalCrustFilesBox from './external/box.png';
 import externalCommonwealth from './external/commonwealth.png';
+import externalCrustPinsPin from './external/pins.png';
 import externalPolkascan from './external/polkascan.png';
 import externalPolkassembly from './external/polkassembly.png';
 import externalPolkastats from './external/polkastats.png';
@@ -308,6 +309,7 @@ export const extensionLogos: Record<string, unknown> = {
 export const externalLogos: Record<string, unknown> = {
   commonwealth: externalCommonwealth,
   crustFilesBox: externalCrustFilesBox,
+  crustPinsPin: externalCrustPinsPin,
   polkascan: externalPolkascan,
   polkassembly: externalPolkassembly,
   polkastats: externalPolkastats,

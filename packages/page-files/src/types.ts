@@ -10,7 +10,7 @@ export interface UploadRes {
 
 export interface SaveFile extends UploadRes {
   UpEndpoint: string,
-  PinEndpoint: string,
+  PinEndpoint?: string,
   Account?: string,
 }
 

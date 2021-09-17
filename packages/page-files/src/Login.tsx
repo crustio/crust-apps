@@ -89,26 +89,43 @@ function Login ({ className, user }: Props) {
     <div className={className}>
       <div className='loginPanel'>
         <div className='space1'/>
-        <div className='loginSpec'>
-          <div className='leftPanel'>
-            <div className='specTitle'>{t('Crust Files')}</div>
-            <div
-              className='specSubTitle'
-              dangerouslySetInnerHTML={{ __html: t('Enjoy storing your files in a <span>Web3</span> style. Now free.') }}>
+        {
+          user.key === 'files:login' &&
+          <div className='loginSpec'>
+            <div className='leftPanel'>
+              <div className='specTitle'>{t('Crust Files')}</div>
+              <div
+                className='specSubTitle'
+                dangerouslySetInnerHTML={{ __html: t('Enjoy storing your files in a <span>Web3</span> style. Now free.') }}>
+              </div>
+              <div className='specItem'>{`- ${t('Multi-wallet access')}`}</div>
+              <div className='specItem'>{`- ${t('Easily share links to friends')}`}</div>
+              <div className='specItem'>{`- ${t('Long-term storage with abundant IPFS replicas')}`}</div>
+              <div className='specItem'>{`- ${t('Retrieve your files anywhere, anytime')}`}</div>
+              <div
+                className='specSubTitle2'>{`${t('Crust Files is open source and welcome to contribute! Following features are coming soon:')}`}</div>
+              <div className='specItem'>{`- ${t('End-to-end file encryption')}`}</div>
+              <div className='specItem'>{`- ${t('Paid service with smart contract on Polygon and Ethereum')}`}</div>
             </div>
-            <div className='specItem'>{`- ${t('Multi-wallet access')}`}</div>
-            <div className='specItem'>{`- ${t('Easily share links to friends')}`}</div>
-            <div className='specItem'>{`- ${t('Long-term storage with abundant IPFS replicas')}`}</div>
-            <div className='specItem'>{`- ${t('Retrieve your files anywhere, anytime')}`}</div>
-            <div className='specSubTitle2'>{`${t('Crust Files is open source and welcome to contribute! Following features are coming soon:')}`}</div>
-            <div className='specItem'>{`- ${t('End-to-end file encryption')}`}</div>
-            <div className='specItem'>{`- ${t('Paid service with smart contract on Polygon and Ethereum')}`}</div>
+            <img
+              className='specIcon'
+              src={externalLogos.crustFilesBox as string}
+            />
           </div>
-          <img
-            className='specIcon'
-            src={externalLogos.crustFilesBox as string}
-          />
-        </div>
+        }
+        {
+          user.key === 'pins:login' &&
+          <div className='loginSpec'>
+            <div className='leftPanel'>
+              <div className='specTitle'>{t('Crust Pins')}</div>
+              <div className='specSubTitle'>{t('Decentralized IPFS Pin by Crust\nFor any given CID\nWith just one click.')}</div>
+            </div>
+            <img
+              className='specIcon'
+              src={externalLogos.crustPinsPin as string}
+            />
+          </div>
+        }
         <div className='signWithWallet'>
           {
             !showCrust &&
@@ -188,11 +205,13 @@ export default React.memo<Props>(styled(Login)`
   .loginSpec {
     display: flex;
     align-items: center;
+
     .leftPanel {
       display: flex;
       max-width: 555px;
       flex-direction: column;
     }
+
     .specTitle {
       font-size: 32px;
       font-weight: 600;
@@ -207,11 +226,13 @@ export default React.memo<Props>(styled(Login)`
       color: #666666;
       line-height: 33px;
       margin-bottom: 0.6rem;
+      white-space: break-spaces;
 
       span {
         color: #FF8D00;
       }
     }
+
     .specSubTitle2 {
       font-size: 24px;
       font-weight: 400;

@@ -20,8 +20,11 @@ export interface Files {
   isLoad: boolean,
 }
 
+type KEYS_FILES = 'files' | 'pins:files'
+
 export interface WrapFiles extends Files {
-  setFiles: (files: SaveFile[]) => void
+  setFiles: (files: SaveFile[]) => void,
+  key: KEYS_FILES,
 }
 
 export interface UseSign {
@@ -29,10 +32,13 @@ export interface UseSign {
   sign?: (data: string, password?: string) => Promise<string>
 }
 
-export interface LoginUser {
-  account: string,
-  pubKey?: string,
-  wallet: '' | 'metamask' | 'near'
+type KEYS = 'files:login' | 'pins:login'
+
+export class LoginUser {
+  account = '';
+  pubKey?: string;
+  wallet: '' | 'metamask' | 'near' = '';
+  key?: KEYS = 'files:login';
 }
 
 export interface WrapLoginUser extends LoginUser {
@@ -47,12 +53,12 @@ export interface WrapLoginUser extends LoginUser {
 
 const defFilesObj: Files = { files: [], isLoad: true };
 
-export function useFiles (): WrapFiles {
+export function useFiles (key: KEYS_FILES = 'files'): WrapFiles {
   const [filesObj, setFilesObj] = useState<Files>(defFilesObj);
 
   useEffect(() => {
     try {
-      const f = store.get('files', defFilesObj) as Files;
+      const f = store.get(key, defFilesObj) as Files;
 
       f.isLoad = false;
 
@@ -62,15 +68,15 @@ export function useFiles (): WrapFiles {
     } catch (e) {
       console.error(e);
     }
-  }, []);
+  }, [key]);
   const setFiles = useCallback((nFiles: SaveFile[]) => {
     const nFilesObj = { ...filesObj, files: nFiles };
 
     setFilesObj(nFilesObj);
-    store.set('files', nFilesObj);
-  }, [filesObj]);
+    store.set(key, nFilesObj);
+  }, [filesObj, key]);
 
-  return useMemo(() => ({ ...filesObj, setFiles }), [filesObj, setFiles]);
+  return useMemo(() => ({ ...filesObj, setFiles, key }), [filesObj, setFiles, key]);
 }
 
 export function useSign (account: LoginUser, metamask: Metamask, near: NearM): UseSign {
@@ -167,15 +173,17 @@ export function useSign (account: LoginUser, metamask: Metamask, near: NearM): U
       } else {
         const sign = function (data: string, password?: string): Promise<string> {
           return new Promise<string>((resolve, reject) => {
-            try {
-              if (accountIsLocked) {
-                currentPair.unlock(password);
-              }
+            setTimeout(() => {
+              try {
+                if (accountIsLocked) {
+                  currentPair.unlock(password);
+                }
 
-              resolve(u8aToHex(currentPair.sign(stringToU8a(data))));
-            } catch (e) {
-              reject(e);
-            }
+                resolve(u8aToHex(currentPair.sign(stringToU8a(data))));
+              } catch (e) {
+                reject(e);
+              }
+            }, 100);
           });
         };
 
@@ -187,9 +195,9 @@ export function useSign (account: LoginUser, metamask: Metamask, near: NearM): U
   return state;
 }
 
-const defLoginUser: LoginUser = { account: '', wallet: '' };
+const defLoginUser: LoginUser = { account: '', wallet: '', key: 'files:login' };
 
-export function useLoginUser (): WrapLoginUser {
+export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
   const [account, setAccount] = useState<LoginUser>(defLoginUser);
   const [isLoad, setIsLoad] = useState(true);
   const accounts = useAccounts();
@@ -200,7 +208,7 @@ export function useLoginUser (): WrapLoginUser {
 
   useEffect(() => {
     try {
-      const f = store.get('files:login', defLoginUser) as LoginUser;
+      const f = store.get(key, defLoginUser) as LoginUser;
 
       if (accounts.isLoad || near.isLoad) return;
 
@@ -218,6 +226,7 @@ export function useLoginUser (): WrapLoginUser {
 
         setAccount({
           account,
+          key,
           wallet: 'near',
           // eslint-disable-next-line
           pubKey: nearKeyPair.getPublicKey().toString().substr(8)
@@ -243,10 +252,10 @@ export function useLoginUser (): WrapLoginUser {
       setIsLoad(false);
       console.error(e);
     }
-  }, [accounts, metamask, near]);
+  }, [accounts, metamask, near, key]);
 
   const setLoginUser = useCallback((loginUser: LoginUser) => {
-    const nAccount = { ...loginUser };
+    const nAccount = { ...loginUser, key };
 
     setAccount((old) => {
       if (old.wallet === 'near') {
@@ -256,8 +265,8 @@ export function useLoginUser (): WrapLoginUser {
 
       return nAccount;
     });
-    store.set('files:login', nAccount);
-  }, [near]);
+    store.set(key, nAccount);
+  }, [near, key]);
 
   const logout = useCallback(() => {
     setLoginUser({ ...defLoginUser });
@@ -267,6 +276,7 @@ export function useLoginUser (): WrapLoginUser {
   return useMemo(() => {
     const wrapLoginUser: WrapLoginUser = {
       ...account,
+      key,
       isLoad: isLoadUser,
       setLoginUser,
       logout,
@@ -282,5 +292,17 @@ export function useLoginUser (): WrapLoginUser {
     }
 
     return wrapLoginUser;
-  }, [account, isLoadUser, setLoginUser, logout, uSign, metamask, near]);
+  }, [account, isLoadUser, setLoginUser, logout, uSign, metamask, near, key]);
 }
+
+export const getPerfix = (user: LoginUser): string => {
+  if (user.wallet === 'metamask') {
+    return 'eth';
+  }
+
+  if (user.wallet === 'near') {
+    return 'sol';
+  }
+
+  return 'substrate';
+};
