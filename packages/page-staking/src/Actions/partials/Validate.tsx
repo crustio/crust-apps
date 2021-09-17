@@ -77,9 +77,9 @@ function Validate ({ className = '', controllerId, onChange, stashId, withSender
       )}
       <Modal.Columns hint={t<string>('The commission is deducted from all rewards before the remainder is split with nominators.')}>
         <InputNumber
-          help={t<string>('The percentage reward (0-100) that should be applied for the validator')}
+          help={t<string>('The guarantee fee (0-100) that should be applied for the validator')}
           isZeroable
-          label={t<string>('reward commission percentage')}
+          label={t<string>('guarantee fee')}
           maxValue={MAX_COMM}
           onChange={_setCommission}
         />
