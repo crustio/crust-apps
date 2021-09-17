@@ -5,6 +5,7 @@ import React, { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
 
 import { WrapLoginUser } from '@polkadot/app-files/hooks';
+import { nearConfig } from '@polkadot/app-files/near/config';
 import { externalLogos } from '@polkadot/apps-config';
 import { InputAddress, StatusContext } from '@polkadot/react-components';
 import { useAccounts } from '@polkadot/react-hooks';
@@ -69,6 +70,21 @@ function Login ({ className, user }: Props) {
     }
   }, [user, queueAction, t]);
 
+  const _onClickNear = useCallback(() => {
+    if (!user.near.wallet) {
+      queueAction({
+        status: 'error',
+        message: t('Not Create NearConnetion'),
+        action: t('Connet Near')
+      });
+
+      return;
+    }
+
+    // eslint-disable-next-line
+    user.near.wallet.requestSignIn(nearConfig.contractName, 'Crust Files');
+  }, [user, queueAction, t]);
+
   return (
     <div className={className}>
       <div className='loginPanel'>
@@ -108,6 +124,11 @@ function Login ({ className, user }: Props) {
                   className='walletIcon'
                   onClick={_onClickMetamask}
                   src={externalLogos.walletMetamask as string}
+                />
+                <img
+                  className='walletIcon'
+                  onClick={_onClickNear}
+                  src={externalLogos.walletNear as string}
                 />
               </div>
             </>

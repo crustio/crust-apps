@@ -6,6 +6,8 @@ import store from 'store';
 
 import { Metamask } from '@polkadot/app-files/metamask/types';
 import useMetamask from '@polkadot/app-files/metamask/useMetamask';
+import { NearM } from '@polkadot/app-files/near/types';
+import { useNear } from '@polkadot/app-files/near/useNear';
 import { web3FromSource } from '@polkadot/extension-dapp';
 import { useAccounts } from '@polkadot/react-hooks';
 import { keyring } from '@polkadot/ui-keyring';
@@ -28,8 +30,9 @@ export interface UseSign {
 }
 
 export interface LoginUser {
-  account: string
-  wallet: '' | 'metamask'
+  account: string,
+  pubKey?: string,
+  wallet: '' | 'metamask' | 'near'
 }
 
 export interface WrapLoginUser extends LoginUser {
@@ -38,7 +41,8 @@ export interface WrapLoginUser extends LoginUser {
   logout: () => void
   sign?: (data: string, password?: string) => Promise<string>
   isLocked: boolean
-  metamask: Metamask
+  metamask: Metamask,
+  near: NearM,
 }
 
 const defFilesObj: Files = { files: [], isLoad: true };
@@ -69,11 +73,31 @@ export function useFiles (): WrapFiles {
   return useMemo(() => ({ ...filesObj, setFiles }), [filesObj, setFiles]);
 }
 
-export function useSign (account: LoginUser, metamask: Metamask): UseSign {
+export function useSign (account: LoginUser, metamask: Metamask, near: NearM): UseSign {
   const [state, setState] = useState<UseSign>({ isLocked: true });
 
   useEffect(() => {
     if (!account.account) return;
+
+    // eslint-disable-next-line
+    const nearKeyPair = near?.keyPair;
+
+    if (account.wallet === 'near' && near.wallet && nearKeyPair) {
+      setState((o) => ({ ...o, isLocked: false }));
+
+      const sign = function (data: string): Promise<string> {
+        const msg = Buffer.from(data);
+        // eslint-disable-next-line
+        const { signature } = nearKeyPair.sign(msg);
+        const hexSignature = Buffer.from(signature).toString('hex');
+
+        return Promise.resolve<string>(hexSignature);
+      };
+
+      setState((o) => ({ ...o, sign }));
+
+      return;
+    }
 
     if (account.wallet === 'metamask') {
       setState((o) => ({ ...o, isLocked: false }));
@@ -158,7 +182,7 @@ export function useSign (account: LoginUser, metamask: Metamask): UseSign {
         setState((o) => ({ ...o, sign }));
       }
     }
-  }, [account, metamask]);
+  }, [account, metamask, near]);
 
   return state;
 }
@@ -170,14 +194,35 @@ export function useLoginUser (): WrapLoginUser {
   const [isLoad, setIsLoad] = useState(true);
   const accounts = useAccounts();
   const metamask = useMetamask();
+  const near = useNear();
   const accountsIsLoad = accounts.isLoad;
-  const isLoadUser = isLoad || accountsIsLoad || metamask.isLoad;
+  const isLoadUser = isLoad || accountsIsLoad || metamask.isLoad || near.isLoad;
 
   useEffect(() => {
     try {
       const f = store.get('files:login', defLoginUser) as LoginUser;
 
-      if (accounts.isLoad) return;
+      if (accounts.isLoad || near.isLoad) return;
+
+      // eslint-disable-next-line
+      const nearWallet = near.wallet;
+      // eslint-disable-next-line
+      const nearKeyPair = near.keyPair;
+
+      console.info('neer::', near);
+
+      // eslint-disable-next-line
+      if (nearWallet && nearWallet.isSignedIn() && nearKeyPair) {
+        // eslint-disable-next-line
+        const account = nearWallet.getAccountId() as string;
+
+        setAccount({
+          account,
+          wallet: 'near',
+          // eslint-disable-next-line
+          pubKey: nearKeyPair.getPublicKey().toString().substr(8)
+        });
+      }
 
       if (f !== defLoginUser) {
         if (f.account && accounts.isAccount(f.account)) {
@@ -198,26 +243,44 @@ export function useLoginUser (): WrapLoginUser {
       setIsLoad(false);
       console.error(e);
     }
-  }, [accounts, metamask]);
+  }, [accounts, metamask, near]);
 
   const setLoginUser = useCallback((loginUser: LoginUser) => {
     const nAccount = { ...loginUser };
 
-    setAccount(nAccount);
+    setAccount((old) => {
+      if (old.wallet === 'near') {
+        // eslint-disable-next-line
+        near.wallet?.signOut();
+      }
+
+      return nAccount;
+    });
     store.set('files:login', nAccount);
-  }, []);
+  }, [near]);
 
   const logout = useCallback(() => {
     setLoginUser({ ...defLoginUser });
   }, [setLoginUser]);
-  const uSign = useSign(account, metamask);
+  const uSign = useSign(account, metamask, near);
 
-  return useMemo(() => ({
-    ...account,
-    isLoad: isLoadUser,
-    setLoginUser,
-    logout,
-    metamask,
-    ...uSign
-  }), [account, isLoadUser, setLoginUser, logout, uSign, metamask]);
+  return useMemo(() => {
+    const wrapLoginUser: WrapLoginUser = {
+      ...account,
+      isLoad: isLoadUser,
+      setLoginUser,
+      logout,
+      metamask,
+      near,
+      ...uSign
+    };
+
+    if (window.location.hostname === 'localhost') {
+      // eslint-disable-next-line
+      // @ts-ignore
+      window.wrapLU = wrapLoginUser;
+    }
+
+    return wrapLoginUser;
+  }, [account, isLoadUser, setLoginUser, logout, uSign, metamask, near]);
 }

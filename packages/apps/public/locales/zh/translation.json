@@ -247,7 +247,6 @@
   "File Cid": "文件CID",
   "File Settlement": "订单清算",
   "File Size": "文件大小",
-  "Files": "文件",
   "Your Files": "你的文件",
   "Filter available candidates based on name, address or short account index.": "根据姓名、地址或短帐户索引筛选可用的候选人。",
   "For approvals outstanding approvers will be shown, for hashes that should be cancelled the first approver is required.": "对于审批，将显示未完成的审批人，对于应取消的哈希，需要第一个审批人。",

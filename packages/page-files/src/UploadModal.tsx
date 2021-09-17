@@ -4,7 +4,7 @@
 import axios, { CancelTokenSource } from 'axios';
 import React, { useCallback, useMemo, useState } from 'react';
 
-import { WrapLoginUser } from '@polkadot/app-files/hooks';
+import { LoginUser, WrapLoginUser } from '@polkadot/app-files/hooks';
 import { createAuthIpfsEndpoints } from '@polkadot/apps-config';
 import { Button, Dropdown, Label, Modal, Password } from '@polkadot/react-components';
 
@@ -20,6 +20,18 @@ export interface Props {
 }
 
 const NOOP = (): void => undefined;
+
+const getPerfix = (user: LoginUser): string => {
+  if (user.wallet === 'metamask') {
+    return 'eth';
+  }
+
+  if (user.wallet === 'near') {
+    return 'sol';
+  }
+
+  return 'substrate';
+};
 
 function ShowFile (p: { file: DirFile | File }) {
   const f = p.file as DirFile;
@@ -97,9 +109,10 @@ function UploadModal (p: Props): React.ReactElement<Props> {
       // 1: sign
       setBusy(true);
 
-      const prefix = user.wallet === 'metamask' ? 'eth' : 'substrate';
-      const signature = await user.sign(`${user.account}`, password);
-      const perSignData = `${prefix}-${user.account}:${signature}`;
+      const prefix = getPerfix(user);
+      const msg = user.wallet === 'near' ? user.pubKey || '' : user.account;
+      const signature = await user.sign(msg, password);
+      const perSignData = `${prefix}-${msg}:${signature}`;
       const base64Signature = window.btoa(perSignData);
       const AuthBasic = `Basic ${base64Signature}`;
       const AuthBearer = `Bearer ${base64Signature}`;
