@@ -28,6 +28,7 @@ export default createRouteBundle({
   // '/blank': BlankPage,
   '/storage/status*': StatusPage,
   '/storage_files': MarketPage,
+  '/storage_files/status/:cid': MarketPage,
   '/storage': MarketPage,
   '': MarketPage,
   '/': MarketPage

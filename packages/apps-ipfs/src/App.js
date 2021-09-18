@@ -82,7 +82,8 @@ export class App extends Component {
                 url.startsWith('/storage/settings') ||
                 url.startsWith('/storage/market') ||
                 url === '/storage' ||
-                url === '/storage_files')
+                url === '/storage_files') ||
+                url.startsWith('/storage_files/status/Qm')
                 ? <Page />
                 : <ComponentLoader pastDelay />
               }

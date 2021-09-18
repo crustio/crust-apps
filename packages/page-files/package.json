@@ -6,6 +6,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@babel/runtime": "^7.15.4",
-    "@polkadot/react-components": "^0.85.2-15"
+    "@polkadot/react-components": "^0.85.2-15",
+    "near-api-js": "^0.42.0"
   }
 }

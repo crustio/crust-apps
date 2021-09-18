@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import IpfsApp from '@polkadot/apps-ipfs/';
 import { Tabs } from '@polkadot/react-components';
-import { useApi } from '@polkadot/react-hooks';
+// import { useApi } from '@polkadot/react-hooks';
 import { KeyedEvent } from '@polkadot/react-query/src/types';
 
 interface Props {
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const IpfsPage: React.FC<Props> = (p) => {
-  const { api } = useApi();
+  // const { api } = useApi();
   const { t } = useTranslation('apps-routing');
   const items = p.basePath === '/storage_files'
     ? [
@@ -24,6 +24,12 @@ const IpfsPage: React.FC<Props> = (p) => {
         isRoot: true,
         name: 'market',
         text: t('market', 'Storage Orders')
+      },
+      {
+        hasParams: true,
+        name: 'status',
+        text: '',
+        isHidden: true
       }
     ]
     : [
@@ -60,7 +66,7 @@ const IpfsPage: React.FC<Props> = (p) => {
     <main>
       <header>
         <Tabs basePath={p.basePath}
-          hidden={api.query.babe ? undefined : []}
+          hidden={undefined}
           isRoot
           items={items}/>
       </header>

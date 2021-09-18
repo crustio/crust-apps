@@ -20,12 +20,14 @@ import extensionCrustWallet from './extensions/crust-wallet.png';
 import extensionPolkadotJs from './extensions/polkadot-js.svg';
 import externalCrustFilesBox from './external/box.png';
 import externalCommonwealth from './external/commonwealth.png';
+import externalCrustPinsPin from './external/pins.png';
 import externalPolkascan from './external/polkascan.png';
 import externalPolkassembly from './external/polkassembly.png';
 import externalPolkastats from './external/polkastats.png';
 import externalSubscan from './external/subscan.svg';
 import externalWalletCrust from './external/wallet_crust.png';
 import externalWalletMetamask from './external/wallet_metamask.png';
+import externalWalletNear from './external/wallet_near.png';
 import ipfsGateway from './ipfs/gateway.png';
 import ipfsLogo from './ipfs/ipfs.png';
 import nodeAcala from './nodes/acala-circle.svg';
@@ -307,12 +309,14 @@ export const extensionLogos: Record<string, unknown> = {
 export const externalLogos: Record<string, unknown> = {
   commonwealth: externalCommonwealth,
   crustFilesBox: externalCrustFilesBox,
+  crustPinsPin: externalCrustPinsPin,
   polkascan: externalPolkascan,
   polkassembly: externalPolkassembly,
   polkastats: externalPolkastats,
   subscan: externalSubscan,
   walletCrust: externalWalletCrust,
-  walletMetamask: externalWalletMetamask
+  walletMetamask: externalWalletMetamask,
+  walletNear: externalWalletNear
 };
 
 // empty logos
