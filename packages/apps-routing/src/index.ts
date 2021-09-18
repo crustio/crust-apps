@@ -24,7 +24,6 @@ import gilt from './gilt';
 import js from './js';
 import merchants from './merchants';
 import parachains from './parachains';
-import pins from './pins';
 import poll from './poll';
 import rpc from './rpc';
 import settings from './settings';
@@ -72,7 +71,7 @@ export default function create (t: TFunction): Routes {
     sudo(t),
     js(t),
     files(t),
-    pins(t),
+    // pins(t),
     settings(t),
     merchants(t),
     settlements(t),
