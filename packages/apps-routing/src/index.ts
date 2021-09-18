@@ -11,6 +11,7 @@ import benefit from './benefit';
 import bounties from './bounties';
 import bridge from './bridge';
 import calendar from './calendar';
+import candy from './candy';
 import claims from './claims';
 import contracts from './contracts';
 import council from './council';
@@ -74,6 +75,7 @@ export default function create (t: TFunction): Routes {
     merchants(t),
     settlements(t),
     splore(t),
-    benefit(t)
+    benefit(t),
+    candy(t)
   ];
 }
