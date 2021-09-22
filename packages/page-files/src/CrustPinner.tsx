@@ -3,19 +3,19 @@
 
 import axios from 'axios';
 import filesize from 'filesize';
-import React, { useCallback, useContext, useState } from 'react';
+import _ from 'lodash';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { createIpfsApiEndpoints } from '@polkadot/apps-config';
 import { getPerfix, useFiles, WrapLoginUser } from '@polkadot/app-files/hooks';
 import { useAuthPinner } from '@polkadot/app-files/useAuth';
+import { createIpfsApiEndpoints } from '@polkadot/apps-config';
 import { Badge, CopyButton, Dropdown, Password, Spinner, StatusContext, Table } from '@polkadot/react-components';
 import { QueueProps } from '@polkadot/react-components/Status/types';
 
 import { Button } from './btns';
 import { useTranslation } from './translate';
 import { SaveFile } from './types';
-import _ from 'lodash';
 
 const MSpinner = styled(Spinner)`
   height: 20px;
@@ -85,64 +85,93 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
   const { queueAction } = useContext<QueueProps>(StatusContext);
   const [isBusy, setBusy] = useState(false);
   const [password, setPassword] = useState('');
-  const [cidObject, setCidObject] = useState({ cid: '', prefetchedSize: 0});
+  const [cidObject, setCidObject] = useState({ cid: '', prefetchedSize: 0 });
   const [validatingCID, setValidatingCID] = useState(false);
   const [isValidCID, setValidCID] = useState(false);
   const [CIDTips, setCIDTips] = useState({ tips: '', level: 'info' });
   const ipfsApiEndpoint = createIpfsApiEndpoints(t)[0];
 
-  const onChangeCID = useCallback<OnInputChange>(async(e) => {
-    const cid = (e.target.value ?? '').trim();
-    setCidObject({cid, prefetchedSize: 0});
-    if (_.isEmpty(cid)) {
-      setValidCID(false);
-      setCIDTips({tips: '', level: 'info'});
-      return;
-    }
+  useEffect(() => {
+    let cancelTokenSource: any;
 
-    setCIDTips(t('Checking CID...'));
-    const isValid = _.toLower(cid).startsWith('qm') && cid.length === 46;
-    if (!isValid) {
-      setValidCID(false);
-      setCIDTips({tips: t('Invalid CID'), level: 'warn'});
-      return;
-    }
+    (async function () {
+      const cid = cidObject.cid;
 
-    setCIDTips({tips: t('Valid CID. Retrieving file size...'), level: 'info'});
-
-    let fileSize = 0;
-    try {
-      setValidatingCID(true);
-      const res = await axios.request({
-        method: 'POST',
-        url: `${ipfsApiEndpoint.baseUrl}/api/v0/files/stat?arg=/ipfs/${cid}`,
-        timeout: 30000
-      });
-      fileSize = _.get(res, 'data.CumulativeSize', 0);
-
-      if (fileSize > 5 * 1024 * 1024 * 1024) {
+      if (_.isEmpty(cid)) {
         setValidCID(false);
-        setCIDTips({tips: t('File size exceeds 5GB'), level: 'warn'});
+        setCIDTips({ tips: '', level: 'info' });
+
+        return;
       }
-      else if (fileSize > 2 * 1024 * 1024 * 1024) {
+
+      setCIDTips(t('Checking CID...'));
+      const isValid = _.toLower(cid).startsWith('qm') && cid.length === 46;
+
+      if (!isValid) {
+        setValidCID(false);
+        setCIDTips({ tips: t('Invalid CID'), level: 'warn' });
+
+        return;
+      }
+
+      setCIDTips({ tips: t('Valid CID. Retrieving file size...'), level: 'info' });
+
+      let fileSize = 0;
+
+      try {
+        setValidatingCID(true);
+        cancelTokenSource = axios.CancelToken.source();
+        const res = await axios.request({
+          cancelToken: cancelTokenSource.token,
+          method: 'POST',
+          url: `${ipfsApiEndpoint.baseUrl}/api/v0/files/stat?arg=/ipfs/${cid}`,
+          timeout: 30000
+        });
+
+        fileSize = _.get(res, 'data.CumulativeSize', 0);
+
+        if (fileSize > 5 * 1024 * 1024 * 1024) {
+          setValidCID(false);
+          setCIDTips({ tips: t('File size exceeds 5GB'), level: 'warn' });
+        } else if (fileSize > 2 * 1024 * 1024 * 1024) {
+          setValidCID(true);
+          setCIDTips({ tips: t('Note: File may be oversize for full network capability and performance'), level: 'warn' });
+        } else {
+          setValidCID(true);
+          setCIDTips({ tips: `${t('File Size')}: ${fileSize} Bytes`, level: 'info' });
+        }
+
+        setCidObject({ cid, prefetchedSize: fileSize });
+        setValidatingCID(false);
+        cancelTokenSource = null;
+      } catch (error) {
+        console.error(error);
+
+        if (axios.isCancel(error)) {
+          return;
+        }
+
+        fileSize = 2 * 1024 * 1024 * 1024;
         setValidCID(true);
-        setCIDTips({tips: t('Note: File may be oversize for full network capability and performance'), level: 'warn'});
+        setCIDTips({ tips: t('Unknown File'), level: 'warn' });
+        setValidatingCID(false);
+        cancelTokenSource = null;
       }
-      else {
-        setValidCID(true);
-        setCIDTips({tips: `${t("File Size")}: ${fileSize} Bytes`, level: 'info'});
+    })();
+
+    return () => {
+      if (cancelTokenSource) {
+        cancelTokenSource.cancel('Cancel ipfs api request');
       }
-      setCidObject({cid, prefetchedSize: fileSize});
-    }
-    catch (error) {
-      console.error(error);
-      fileSize = 2 * 1024 * 1024 * 1024;
-      setValidCID(true);
-      setCIDTips({tips: t('Unknown File'), level: 'warn'});
-    }
-    finally {
-      setValidatingCID(false);
-    }
+
+      cancelTokenSource = null;
+    };
+  }, [cidObject.cid]);
+
+  const onChangeCID = useCallback<OnInputChange>(async (e) => {
+    const cid = (e.target.value ?? '').trim();
+
+    setCidObject({ cid, prefetchedSize: 0 });
   }, []);
 
   const wFiles = useFiles('pins:files');
@@ -175,8 +204,8 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
         UpEndpoint: '',
         PinEndpoint: pinner.value
       }, ...filter]);
-      setCidObject({cid:'', prefetchedSize:0});
-      setCIDTips({tips: '', level: 'info'});
+      setCidObject({ cid: '', prefetchedSize: 0 });
+      setCIDTips({ tips: '', level: 'info' });
       setBusy(false);
     } catch (e) {
       setBusy(false);
@@ -197,7 +226,6 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
             onChange={onChangeCID}
             placeholder={t('Enter CID')}
             value={cidObject.cid}
-            readOnly={validatingCID}
           />
           {CIDTips.tips && <div className='inputCIDTipsContainer'>
             {validatingCID && <MSpinner noLabel />}
@@ -396,6 +424,7 @@ export default React.memo<Props>(styled(CrustPinner)`
     }
 
     .btnPin {
+      height: 60px;
       margin-left: 1.6rem;
       font-size: 20px;
       width: 160px;
