@@ -301,7 +301,7 @@ export const getPerfix = (user: LoginUser): string => {
   }
 
   if (user.wallet === 'near') {
-    return 'sol';
+    return 'near';
   }
 
   return 'substrate';

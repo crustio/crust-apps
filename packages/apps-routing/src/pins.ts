@@ -15,6 +15,6 @@ export default function create (t: TFunction): Route {
     group: 'applications',
     icon: 'map-pin',
     name: 'pins',
-    text: t('Pin', 'Pin', { ns: 'apps-routing' })
+    text: t('Pins', 'Pins', { ns: 'apps-routing' })
   };
 }
