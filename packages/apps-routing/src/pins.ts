@@ -4,20 +4,17 @@
 import type { TFunction } from 'i18next';
 import type { Route } from './types';
 
-import Component from '@polkadot/apps-bridge/';
+import Component from '@polkadot/app-files/CrustPins';
 
 export default function create (t: TFunction): Route {
   return {
     Component,
     display: {
-      needsAccounts: true,
-      needsApi: [
-        'tx.bridgeTransfer.transferNative'
-      ]
+      needsApi: []
     },
-    group: 'accounts',
-    icon: 'exchange-alt',
-    name: 'bridge',
-    text: t('nav.bridge', 'Bridge', { ns: 'apps-routing' })
+    group: 'pins',
+    icon: 'map-pin',
+    name: 'pins',
+    text: t('Pin', 'Pin', { ns: 'apps-routing' })
   };
 }

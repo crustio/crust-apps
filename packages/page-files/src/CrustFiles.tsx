@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import FileSaver from 'file-saver';
+import filesize from 'filesize';
 import React, { useCallback, useContext, useRef, useState } from 'react';
 import styled from 'styled-components';
 
@@ -93,7 +94,7 @@ function CrustFiles ({ className, user }: Props): React.ReactElement<Props> {
 
     if (files.length > 2000) {
       queueAction({
-        action: 'Upload Folder',
+        action: t('Upload'),
         message: t('Please do not upload more than 2000 files'),
         status: 'error'
       });
@@ -103,7 +104,7 @@ function CrustFiles ({ className, user }: Props): React.ReactElement<Props> {
 
     if (files.length === 0) {
       queueAction({
-        action: 'Upload Folder',
+        action: t('Upload'),
         message: t('Please select non-empty folder'),
         status: 'error'
       });
@@ -308,13 +309,13 @@ function CrustFiles ({ className, user }: Props): React.ReactElement<Props> {
           <td
             className='end'
             colSpan={2}
-          >{`${f.Size} bytes`}</td>
+          >{filesize(Number(f.Size), { round: 2 }) }</td>
           <td
             className='end'
             colSpan={1}
           >
             <a
-              href={'https://apps.crust.network/?rpc=wss%3A%2F%2Frpc.crust.network#/storage_files'}
+              href={`${window.location.origin}/?rpc=wss%3A%2F%2Frpc.crust.network#/storage_files/status/${f.Hash}`}
               rel='noreferrer'
               target='_blank'
             >{t('View status in Crust')}</a>
@@ -324,16 +325,16 @@ function CrustFiles ({ className, user }: Props): React.ReactElement<Props> {
             colSpan={1}
           >
             <div className='actions'>
-              {!f.items && <Badge
+              <Badge
                 color='highlight'
-                hover={t<string>('Download')}
-                icon='download'
+                hover={t<string>('Open File')}
+                icon='external-link-square-alt'
                 onClick={createOnDown(f)}
-              />}
+              />
               <MCopyButton value={createUrl(f)}>
                 <Badge
                   color='highlight'
-                  hover={t<string>('Copy Link')}
+                  hover={t<string>('Copy Download Link')}
                   icon='copy'
                 />
               </MCopyButton>

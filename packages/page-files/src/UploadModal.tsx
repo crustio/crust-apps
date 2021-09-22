@@ -4,8 +4,8 @@
 import axios, { CancelTokenSource } from 'axios';
 import React, { useCallback, useMemo, useState } from 'react';
 
-import { WrapLoginUser } from '@polkadot/app-files/hooks';
-import { createAuthIpfsEndpoints } from '@polkadot/apps-config';
+import { getPerfix, WrapLoginUser } from '@polkadot/app-files/hooks';
+import { useAuthGateway, useAuthPinner } from '@polkadot/app-files/useAuth';
 import { Button, Dropdown, Label, Modal, Password } from '@polkadot/react-components';
 
 import Progress from './Progress';
@@ -41,21 +41,8 @@ function ShowFile (p: { file: DirFile | File }) {
 function UploadModal (p: Props): React.ReactElement<Props> {
   const { file, onClose = NOOP, onSuccess = NOOP, user } = p;
   const { t } = useTranslation();
-  const endpoints = useMemo(
-    () => createAuthIpfsEndpoints(t)
-      .sort(() => Math.random() > 0.5 ? -1 : 1)
-      .map((item) => ({ ...item, text: `${item.text ?? ''}(${item.location ?? ''})` })),
-    [t]
-  );
-  const [currentEndpoint, setCurrentEndpoint] = useState(endpoints[0]);
-  const pinEndpoints = useMemo(() => [
-    {
-      text: t<string>('Crust Pinner'),
-      // value: 'https://pinning-service.decoo-cloud.cn'
-      value: 'https://pin.crustcode.com'
-    }
-  ], [t]);
-  const [currentPinEndpoint, setCurrentPinEndpoint] = useState(pinEndpoints[0]);
+  const { endpoint, endpoints, onChangeEndpoint } = useAuthGateway();
+  const { onChangePinner, pinner, pins } = useAuthPinner();
   const [password, setPassword] = useState('');
   const [isBusy, setBusy] = useState(false);
   const fileSizeError = useMemo(() => {
@@ -97,9 +84,10 @@ function UploadModal (p: Props): React.ReactElement<Props> {
       // 1: sign
       setBusy(true);
 
-      const prefix = user.wallet === 'metamask' ? 'eth' : 'substrate';
-      const signature = await user.sign(`${user.account}`, password);
-      const perSignData = `${prefix}-${user.account}:${signature}`;
+      const prefix = getPerfix(user);
+      const msg = user.wallet === 'near' ? user.pubKey || '' : user.account;
+      const signature = await user.sign(msg, password);
+      const perSignData = `${prefix}-${msg}:${signature}`;
       const base64Signature = window.btoa(perSignData);
       const AuthBasic = `Basic ${base64Signature}`;
       const AuthBearer = `Bearer ${base64Signature}`;
@@ -118,7 +106,7 @@ function UploadModal (p: Props): React.ReactElement<Props> {
         }
       }
 
-      const UpEndpoint = currentEndpoint.value;
+      const UpEndpoint = endpoint.value;
       const upResult = await axios.request<UploadRes | string>({
         cancelToken: cancel.token,
         data: form,
@@ -152,7 +140,7 @@ function UploadModal (p: Props): React.ReactElement<Props> {
       setCancelUp(null);
       setUpState({ progress: 100, up: false });
       // remote pin order
-      const PinEndpoint = currentPinEndpoint.value;
+      const PinEndpoint = pinner.value;
 
       await axios.request({
         data: {
@@ -172,25 +160,14 @@ function UploadModal (p: Props): React.ReactElement<Props> {
       setUpState({ progress: 0, up: false });
       setBusy(false);
       console.error(e);
-      setError((e as Error).message);
+      setError(t('Network Error,Please try to switch a Gateway.'));
+      // setError((e as Error).message);
     }
-  }, [user, file, password, currentPinEndpoint, currentEndpoint, onSuccess]);
-
-  const _onChangeGateway = useCallback((value: string) => {
-    const find = endpoints.find((item) => item.value === value);
-
-    if (find) setCurrentEndpoint(find);
-  }, [endpoints, setCurrentEndpoint]);
-
-  const _onChangePinner = useCallback((value: string) => {
-    const find = pinEndpoints.find((item) => item.value === value);
-
-    if (find) setCurrentPinEndpoint(find);
-  }, [pinEndpoints, setCurrentPinEndpoint]);
+  }, [user, file, password, pinner, endpoint, onSuccess, t]);
 
   return (
     <Modal
-      header={t<string>('Upload File')}
+      header={t<string>(file.dir ? 'Upload Folder' : 'Upload File')}
       onClose={_onClose}
       open={true}
       size={'large'}
@@ -213,9 +190,9 @@ function UploadModal (p: Props): React.ReactElement<Props> {
             help={t<string>('File streaming and wallet authentication will be processed by the chosen gateway.')}
             isDisabled={isBusy}
             label={t<string>('Select a Web3 IPFS Gateway')}
-            onChange={_onChangeGateway}
+            onChange={onChangeEndpoint}
             options={endpoints}
-            value={currentEndpoint.value}
+            value={endpoint.value}
           />
         </Modal.Columns>
         <Modal.Columns>
@@ -223,9 +200,9 @@ function UploadModal (p: Props): React.ReactElement<Props> {
             help={t<string>('Your file will be pinned to IPFS for long-term storage.')}
             isDisabled={true}
             label={t<string>('Select a Web3 IPFS Pinner')}
-            onChange={_onChangePinner}
-            options={pinEndpoints}
-            value={currentPinEndpoint.value}
+            onChange={onChangePinner}
+            options={pins}
+            value={pinner.value}
           />
         </Modal.Columns>
         <Modal.Columns>
@@ -263,7 +240,7 @@ function UploadModal (p: Props): React.ReactElement<Props> {
           icon={'arrow-circle-up'}
           isBusy={isBusy}
           isDisabled={fileSizeError}
-          label={t<string>('Upload')}
+          label={t<string>('Sign and Upload')}
           onClick={_onClickUp}
         />
       </Modal.Actions>

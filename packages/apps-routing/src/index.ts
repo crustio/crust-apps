@@ -71,6 +71,7 @@ export default function create (t: TFunction): Routes {
     sudo(t),
     js(t),
     files(t),
+    // pins(t),
     settings(t),
     merchants(t),
     settlements(t),

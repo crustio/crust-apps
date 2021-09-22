@@ -37,6 +37,8 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
   const [receiveId, setReceiveId] = useState<string | null>('' || null);
   const [transferrable, setTransferrable] = useState<boolean>(true);
   const { systemChain: substrateName } = useApi();
+  const isMaxwell = substrateName === 'Crust Maxwell';
+  const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x0964a01e0d0b5d6ff726ab9d60a93d188d3f505b' : 'https://etherscan.io/address/0x486Be2bE480aEd1E21Ba884b0b559fdd0EB14153'
 
   useEffect(() => {
     if (Number(amount) <= 0) {
@@ -202,7 +204,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
       <Columar.Column>
         <Card>
           <Banner type="warning">
-            <p>{t<string>('Cross-chain transfers are automatically executed by smart contracts. after the execution of the contract is completed, the funds will arrive in the account. Please wait patiently.')}&nbsp;<a target="_blank" href='https://etherscan.io/address/0x0964a01e0d0b5d6ff726ab9d60a93d188d3f505b'>{t<string>('You can check the transaction status here...')}</a></p>
+            <p>{t<string>('Cross-chain transfers are automatically executed by smart contracts. after the execution of the contract is completed, the funds will arrive in the account. Please wait patiently.')}&nbsp;<a target="_blank" href={bridgeTxStatusLink}>{t<string>('You can check the transaction status here...')}</a></p>
           </Banner>
         </Card>
       </Columar.Column>
