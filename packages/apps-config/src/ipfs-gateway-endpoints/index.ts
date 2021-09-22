@@ -11,20 +11,27 @@ import type { AuthIpfsEndpoint } from './types';
 //   location: IPFS gateway location
 export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
   return [
+    // for Beta
+    // {
+    //   location: t('BETA'),
+    //   text: t('Beta'),
+    //   value: 'https://beta.ipfs-auth.decoo.io'
+    // },
+    // for prod
     {
-      value: 'https://crustwebsites.net',
+      location: t('Singapore'),
+      text: t('DCF'),
+      value: 'https://crustwebsites.net'
+    },
+    {
+      location: t('United States'),
       text: t('Crust Network'),
-      location: t('Singapore')
+      value: 'https://ipfs-gw.crust.network'
     },
     {
-      value: 'https://ipfs-auth.decoo.io',
-      text: t('Decoo.io'),
-      location: t('United States')
-    },
-    {
-      value: 'https://ipfs-auth.decoo-cloud.cn',
-      text: t('Decoo.io'),
-      location: t('ShangHai')
+      location: t('ShangHai'),
+      text: t('Crust Network'),
+      value: 'https://ipfs-gw.decloud.foundation'
     }
   ];
 }

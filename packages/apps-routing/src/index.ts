@@ -11,6 +11,7 @@ import benefit from './benefit';
 import bounties from './bounties';
 import bridge from './bridge';
 import calendar from './calendar';
+import candy from './candy';
 import claims from './claims';
 import contracts from './contracts';
 import council from './council';
@@ -18,6 +19,7 @@ import csmStaking from './csmStaking';
 import democracy from './democracy';
 import explorer from './explorer';
 import extrinsics from './extrinsics';
+import files from './files';
 import gilt from './gilt';
 import js from './js';
 import merchants from './merchants';
@@ -68,10 +70,13 @@ export default function create (t: TFunction): Routes {
     signing(t),
     sudo(t),
     js(t),
+    files(t),
+    // pins(t),
     settings(t),
     merchants(t),
     settlements(t),
     splore(t),
-    benefit(t)
+    benefit(t),
+    candy(t)
   ];
 }

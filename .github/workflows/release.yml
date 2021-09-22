@@ -89,7 +89,7 @@ jobs:
           seeds: ${{ secrets.CRUST_SEEDS }}
 
       - name: Place storage order on Crust
-        uses: crustio/ipfs-crust-action@v1.0.8
+        uses: crustio/ipfs-crust-action@v2.0.3
         timeout-minutes: 2
         with:
           cid: ${{ steps.upload.outputs.hash }}
