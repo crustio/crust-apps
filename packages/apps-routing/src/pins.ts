@@ -12,7 +12,7 @@ export default function create (t: TFunction): Route {
     display: {
       needsApi: []
     },
-    group: 'pins',
+    group: 'applications',
     icon: 'map-pin',
     name: 'pins',
     text: t('Pin', 'Pin', { ns: 'apps-routing' })
