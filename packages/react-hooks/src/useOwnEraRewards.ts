@@ -123,7 +123,7 @@ function getValRewards (api: ApiPromise, validatorEras: ValidatorWithEras[], era
             }
           });
         }
-      } else if (eraExposure?.exposure.own.unwrap().gtn(0)) {
+      } else if (eraExposure?.exposure.own.unwrap().gten(0)) {
         if (!allRewards[stashId]) {
           allRewards[stashId] = [];
         }
