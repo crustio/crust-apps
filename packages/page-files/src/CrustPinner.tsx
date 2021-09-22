@@ -1,7 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-files authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import axios from 'axios';
+import axios, { AxiosResponse, CancelTokenSource } from 'axios';
 import filesize from 'filesize';
 import _ from 'lodash';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
@@ -92,8 +92,9 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
   const ipfsApiEndpoint = createIpfsApiEndpoints(t)[0];
 
   useEffect(() => {
-    let cancelTokenSource: any;
+    let cancelTokenSource: CancelTokenSource | null;
 
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async function () {
       const cid = cidObject.cid;
 
@@ -114,20 +115,21 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
         return;
       }
 
-      setCIDTips({ tips: t('Valid CID. Retrieving file size...'), level: 'info' });
+      setCIDTips({ tips: t('Retrieving file size...'), level: 'info' });
 
       let fileSize = 0;
 
       try {
         setValidatingCID(true);
         cancelTokenSource = axios.CancelToken.source();
-        const res = await axios.request({
+        const res: AxiosResponse = await axios.request({
           cancelToken: cancelTokenSource.token,
           method: 'POST',
           url: `${ipfsApiEndpoint.baseUrl}/api/v0/files/stat?arg=/ipfs/${cid}`,
           timeout: 30000
         });
 
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         fileSize = _.get(res, 'data.CumulativeSize', 0);
 
         if (fileSize > 5 * 1024 * 1024 * 1024) {
@@ -161,14 +163,15 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
 
     return () => {
       if (cancelTokenSource) {
-        cancelTokenSource.cancel('Cancel ipfs api request');
+        cancelTokenSource.cancel('Ipfs api request cancelled');
       }
 
       cancelTokenSource = null;
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cidObject.cid]);
 
-  const onChangeCID = useCallback<OnInputChange>(async (e) => {
+  const onChangeCID = useCallback<OnInputChange>((e) => {
     const cid = (e.target.value ?? '').trim();
 
     setCidObject({ cid, prefetchedSize: 0 });
@@ -200,7 +203,7 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
       wFiles.setFiles([{
         Hash: cidObject.cid,
         Name: '',
-        Size: cidObject.prefetchedSize + '',
+        Size: cidObject.prefetchedSize.toString(),
         UpEndpoint: '',
         PinEndpoint: pinner.value
       }, ...filter]);

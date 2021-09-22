@@ -920,7 +920,7 @@
   "Validator": "验证人",
   "Validator stats": "验证人统计数据",
   "Validator/Candidate rewards": "验证人/候选人奖励",
-  "Valid CID. Retrieving file size...": "尝试获取文件大小...",
+  "Retrieving file size...": "尝试获取文件大小...",
   "Vanity generator": "地址美化",
   "Verify signature": "验证签名",
   "Verify the password entered above.": "验证上面输入的密码。",
