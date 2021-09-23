@@ -40,7 +40,7 @@ function StakingBonded ({ className = '', stakingInfo }: Props): React.ReactElem
     }>
       {guarantorInfo && <div className='ui--AddressInfo-expander'>
         <Label label={t<string>('guaranteed')} /><FormatBalance value={guarantorInfo.total}/>
-        <Label label={t<string>('unGuaranteed')} /><FormatBalance value={balance.sub(new BN(Number(guarantorInfo.total).toString()))}/>
+        <Label label={t<string>('unguaranteed')} /><FormatBalance value={balance.sub(new BN(Number(guarantorInfo.total).toString()))}/>
       </div>}
       {/* <FormatBalance value={guarantorInfo.total}/> */}
     </Expander>

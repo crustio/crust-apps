@@ -1693,5 +1693,5 @@
   "Select a Web3 IPFS Gateway": "选择Web3 IPFS网关",
   "Select a Web3 IPFS Pinner": "选择Web3 IPFS Pinner",
   "guaranteed": "担保量",
-  "unGuaranteed": "未担保量"
+  "unguaranteed": "未担保量"
 }
