@@ -129,7 +129,7 @@ const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => 
 
       target && setTableData([target]);
     }
-  }, [watchList, filterCid]);
+  }, isWatchOne ? [filterCid] : [watchList, filterCid]);
 
   const handleFilterWatchList = (fileCid) => {
     setFilterCid(fileCid);

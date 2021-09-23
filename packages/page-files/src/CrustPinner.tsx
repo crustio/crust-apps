@@ -379,7 +379,7 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
             colSpan={1}
           >
             <a
-              href={`${window.location.origin}/?rpc=wss%3A%2F%2Frpc.crust.network#/storage_files/status/${f.Hash}`}
+              href={`${window.location.origin}/#/storage_files/status/${f.Hash}`}
               rel='noreferrer'
               target='_blank'
             >{t('View status in Crust')}</a>
