@@ -1696,5 +1696,7 @@
   "My Candy": "我的Candy",
   "Change Candy into CRU at a ratio of 1000:1": "将Candy兑换为CRU，兑换比例1000 : 1",
   "Exchange": "兑换",
-  "The amount you will to exchange.": "你将兑换的数量。"
+  "The amount you will to exchange.": "你将兑换的数量。",
+  "guaranteed": "担保量",
+  "unguaranteed": "未担保量"
 }
