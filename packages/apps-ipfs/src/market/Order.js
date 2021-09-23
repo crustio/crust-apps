@@ -336,7 +336,7 @@ const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => 
           onAddPool={handleAddPool} onToggleBtn={handleToggleBtn}
           watchList={tableData}/>
       }
-      {isGatewayMode && <MDevGuide/>}
+      <MDevGuide />
     </div>
   );
 };

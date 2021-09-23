@@ -12,7 +12,7 @@ export default function create (t: TFunction): Route {
     display: {
       needsApi: []
     },
-    group: 'files',
+    group: 'applications',
     icon: 'file',
     name: 'files',
     text: t('Files', 'Files', { ns: 'apps-routing' })

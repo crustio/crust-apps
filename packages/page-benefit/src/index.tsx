@@ -28,7 +28,7 @@ function BenifitApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pr
     },
     {
       name: 'storageMarket',
-      text: t<string>('Storage market')
+      text: t<string>('Storage')
     }
 
   ]);

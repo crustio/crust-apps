@@ -9,3 +9,4 @@ export * from './settings';
 export * from './ui';
 export * from './ipfs-gateway-endpoints';
 export * from './ipfs-pinner';
+export * from './ipfs-api';

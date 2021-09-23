@@ -25,7 +25,7 @@ function PinsApp ({ basePath, className }: Props): React.ReactElement<Props> {
     {
       isRoot: true,
       name: 'crust',
-      text: t<string>('My Pinner')
+      text: t<string>('Your Pins')
     }
   ]);
   const wUser = useLoginUser('pins:login');
