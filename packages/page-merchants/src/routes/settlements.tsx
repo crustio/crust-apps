@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { AppProps as Props } from '@polkadot/react-components/types';
 
 import React, { useRef } from 'react';
@@ -10,9 +11,9 @@ import { useTranslation } from '@polkadot/apps/translate';
 import { HelpOverlay, Tabs } from '@polkadot/react-components';
 import { useAccounts, useApi, useIpfs } from '@polkadot/react-hooks';
 
+import MainnetSettlements from '../MainnetSettlements';
 import basicMd from '../md/basic.md';
 import Settlements from '../Settlements';
-import MainnetSettlements from '../MainnetSettlements';
 
 const HIDDEN_ACC = ['vanity'];
 

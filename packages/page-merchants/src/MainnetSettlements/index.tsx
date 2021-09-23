@@ -1,30 +1,31 @@
 // Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
+import Pagination from '@material-ui/lab/Pagination';
+import _ from 'lodash';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import { ISettlementItem } from '@polkadot/apps-merchants/Settlements/settlementList';
 import { Button, Spinner } from '@polkadot/react-components';
 import { useApi, useCall, useToggle } from '@polkadot/react-hooks';
-import Pagination from '@material-ui/lab/Pagination';
+import { BlockAuthorsContext } from '@polkadot/react-query';
 
 import FetchModal from './fetch-modal/FetchModal';
 import { fetchFileTobeClaimed, FileStatus } from './fetch';
 import Settlement from './Settlement';
 import SettlementList from './settlementList';
-import { BlockAuthorsContext } from '@polkadot/react-query';
-import _ from "lodash";
 
 const ROW = 100;
 
-function getSum(total: string, num: string) {
+function getSum (total: string, num: string) {
   return total + num;
 }
 
 const getNumber = (str: string) => {
-  return str.split(",").reduce(getSum);
-}
+  return str.split(',').reduce(getSum);
+};
 
 const MainnetSettlements: React.FC = () => {
   const { t } = useTranslation();
@@ -39,27 +40,28 @@ const MainnetSettlements: React.FC = () => {
   const fileBaseFee = useCall<any>(api.query.market.fileBaseFee);
   const fileDuration = api.consts.market.fileDuration;
   const renewRewardRatio = api.consts.market.renewRewardRatio;
-  const [ expiredStatus, setExpiredStatus ] = useState<FileStatus>({valid: false, expiredWithin15Days: false, expired15Days: false});
-  const [ address, setAddress ] = useState<string[]>([]);
+  const [expiredStatus, setExpiredStatus] = useState<FileStatus>({ valid: false, expiredWithin15Days: false, expired15Days: false });
+  const [address, setAddress] = useState<string[]>([]);
   // const [ totalOrderCount, setTotalOrderCount ] = useState<number>(0);
-  const [ totalPageCount, setTotalPageCount ] = useState<number>(0);
-  const [ pageIndex, setPageIndex ] = useState<number>(1);
-  
+  const [totalPageCount, setTotalPageCount] = useState<number>(0);
+  const [pageIndex, setPageIndex] = useState<number>(1);
+
   const { lastBlockNumber } = useContext(BlockAuthorsContext);
-  
+
   const fetchData = () => {
-    const byteFee = fileByteFee && JSON.parse(JSON.stringify(fileByteFee)) 
-    const baseFee = fileByteFee && JSON.parse(JSON.stringify(fileBaseFee)) 
-    const duration = fileByteFee && JSON.parse(JSON.stringify(fileDuration)) 
-    const rewardRatio = fileByteFee && JSON.parse(JSON.stringify(renewRewardRatio)) 
+    const byteFee = fileByteFee && JSON.parse(JSON.stringify(fileByteFee));
+    const baseFee = fileByteFee && JSON.parse(JSON.stringify(fileBaseFee));
+    const duration = fileByteFee && JSON.parse(JSON.stringify(fileDuration));
+    const rewardRatio = fileByteFee && JSON.parse(JSON.stringify(renewRewardRatio));
+
     if (byteFee && baseFee && duration && rewardRatio && lastBlockNumber) {
       toggleLoading(true);
-      
-      fetchFileTobeClaimed({ row: ROW, page: pageIndex -1, address}, {
-        filePrice: Number(fileByteFee.toString()), 
-        currentBn: Number(getNumber(lastBlockNumber)), 
-        renewRewardRatio: Number(renewRewardRatio) / 1000000000000, 
-        fileDuration: Number(fileDuration), 
+
+      fetchFileTobeClaimed({ row: ROW, page: pageIndex - 1, address }, {
+        filePrice: Number(fileByteFee.toString()),
+        currentBn: Number(getNumber(lastBlockNumber)),
+        renewRewardRatio: Number(renewRewardRatio) / 1000000000000,
+        fileDuration: Number(fileDuration),
         baseFee: Number(fileBaseFee)
       }, expiredStatus).then((res: any) => {
         (res.list as ISettlementItem[]).forEach((item: ISettlementItem) => {
@@ -73,17 +75,17 @@ const MainnetSettlements: React.FC = () => {
       }).finally(() => {
         // setSettlements([]);
         toggleLoading(false);
-      });      
+      });
     }
   };
 
   useEffect(() => {
-    fetchData()
-  }, [pageIndex])
+    fetchData();
+  }, [pageIndex]);
 
   const data = useCallback(() => {
-    fetchData()
-  }, [fileByteFee, fileBaseFee, fileDuration, renewRewardRatio, expiredStatus, address, pageIndex])
+    fetchData();
+  }, [fileByteFee, fileBaseFee, fileDuration, renewRewardRatio, expiredStatus, address, pageIndex]);
 
   useEffect(() => {
     if (!fileCid) {
@@ -98,7 +100,9 @@ const MainnetSettlements: React.FC = () => {
   return <div className={'w-100'}
     style={{ background: '#fff' }}>
     {
-      fetchModalShow && <FetchModal 
+      fetchModalShow && <FetchModal
+        onChangeAddress={setAddress}
+        onChangeExpiredStatus={setExpiredStatus}
         onClose={() => {
           toggleFetchModalShow();
         }}
@@ -106,9 +110,7 @@ const MainnetSettlements: React.FC = () => {
           data();
           toggleFetchModalShow();
         }}
-        onChangeExpiredStatus={setExpiredStatus}
-        onChangeAddress={setAddress}
-    />}
+      />}
 
     {loading
       ? <Spinner label={t<string>('Loading')} />
@@ -146,10 +148,14 @@ const MainnetSettlements: React.FC = () => {
             style={{ borderRadius: '3px 0 0 3px' }}
             type='text'
             value={fileCid} />
-          
-        <Pagination count={totalPageCount} siblingCount={1} page={pageIndex} color="standard"  onChange={(_: object, page: number) => {
-          setPageIndex(page)
-        }} ></Pagination >
+
+          <Pagination color='standard'
+            count={totalPageCount}
+            onChange={(_: object, page: number) => {
+              setPageIndex(page);
+            }}
+            page={pageIndex}
+            siblingCount={1} ></Pagination >
         </div>
 
         <SettlementList

@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 
 import { useTranslation } from '@polkadot/apps/translate';
