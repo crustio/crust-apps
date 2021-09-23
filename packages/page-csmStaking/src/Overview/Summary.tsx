@@ -86,7 +86,7 @@ function Summary({ info, isLoading }: Props): React.ReactElement<Props> | null {
           className='media--1100'
           label={t<string>('Daily Rewards per 1K CSM')}
         >
-          { info ? <FormatBalance value={UNIT.muln((daily > 1 ? 1 :daily) * 400)} /> : (<Spinner noLabel />)}
+          { info ? <FormatBalance value={UNIT.muln((daily > 1 ? 1 :daily) * 200)} /> : (<Spinner noLabel />)}
         </CardSummary>
       </section>
     </SummaryBox>
