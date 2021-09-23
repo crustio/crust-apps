@@ -2,16 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import axios, { AxiosResponse, CancelTokenSource } from 'axios';
+import FileSaver from 'file-saver';
 import filesize from 'filesize';
 import _ from 'lodash';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { getPerfix, useFiles, WrapLoginUser } from '@polkadot/app-files/hooks';
 import { useAuthPinner } from '@polkadot/app-files/useAuth';
 import { createIpfsApiEndpoints } from '@polkadot/apps-config';
-import { Badge, CopyButton, Dropdown, Password, Spinner, StatusContext, Table } from '@polkadot/react-components';
-import { QueueProps } from '@polkadot/react-components/Status/types';
+import { Badge, Button as RCButton, CopyButton, Dropdown, Password, Spinner, StatusContext, Table } from '@polkadot/react-components';
+import { ActionStatusBase, QueueProps } from '@polkadot/react-components/Status/types';
 
 import { Button } from './btns';
 import { useTranslation } from './translate';
@@ -78,6 +79,7 @@ export interface Props {
   user: WrapLoginUser,
 }
 
+type FunInputFile = (e: React.ChangeEvent<HTMLInputElement>) => void
 type OnInputChange = (e: React.ChangeEvent<HTMLInputElement>) => void
 
 function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
@@ -220,6 +222,67 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
     }
   }, [isValidCID, pinner, cidObject, queueAction, user, password, wFiles, t]);
 
+  const _onImportResult = useCallback<(m: string, s?: ActionStatusBase['status']) => void>(
+    (message, status = 'queued') => {
+      queueAction && queueAction({
+        action: t('Import files'),
+        message,
+        status
+      });
+    },
+  [queueAction, t]
+  );
+  const importInputRef = useRef<HTMLInputElement>(null);
+  const _clickImport = useCallback(() => {
+    if (!importInputRef.current) return;
+    importInputRef.current.click();
+  }, [importInputRef]);
+  const _onInputImportFile = useCallback<FunInputFile>((e) => {
+    try {
+      _onImportResult(t('Importing'));
+      const fileReader = new FileReader();
+      const files = e.target.files;
+
+      if (!files) return;
+      fileReader.readAsText(files[0], 'UTF-8');
+
+      if (!(/(.json)$/i.test(e.target.value))) {
+        return _onImportResult(t('File error'), 'error');
+      }
+
+      fileReader.onload = (e) => {
+        const _list = JSON.parse(e.target?.result as string) as SaveFile[];
+
+        if (!Array.isArray(_list)) {
+          return _onImportResult(t('File content error'), 'error');
+        }
+
+        const fitter: SaveFile[] = [];
+        const mapImport: { [key: string]: boolean } = {};
+
+        for (const item of _list) {
+          if (item.Hash && item.PinEndpoint) {
+            fitter.push(item);
+            mapImport[item.Hash] = true;
+          }
+        }
+
+        const filterOld = wFiles.files.filter((item) => !mapImport[item.Hash]);
+
+        wFiles.setFiles([...fitter, ...filterOld]);
+        _onImportResult(t('Import Success'), 'success');
+      };
+    } catch (e) {
+      _onImportResult(t('File content error'), 'error');
+    }
+  }, [wFiles, _onImportResult, t]);
+
+  const _export = useCallback(() => {
+    const blob = new Blob([JSON.stringify(wFiles.files)], { type: 'application/json; charset=utf-8' });
+
+    FileSaver.saveAs(blob, 'pins.json');
+  }, [wFiles]);
+
   return <main className={className}>
     <header>
       <div className='inputPanel'>
@@ -263,6 +326,24 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
           onClick={onClickPin}/>
       </div>
     </header>
+    <div className={'importExportPanel'}>
+      <input
+        onChange={_onInputImportFile}
+        ref={importInputRef}
+        style={{ display: 'none' }}
+        type={'file'}
+      />
+      <RCButton
+        icon={'file-import'}
+        label={t('Import')}
+        onClick={_clickImport}
+      />
+      <RCButton
+        icon={'file-export'}
+        label={t('Export')}
+        onClick={_export}
+      />
+    </div>
     <Table
       empty={t<string>('empty')}
       emptySpinner={t<string>('Loading')}
@@ -438,5 +519,13 @@ export default React.memo<Props>(styled(CrustPinner)`
       padding: 1rem 5rem;
       flex-shrink: 0;
     }
+  }
+
+  .importExportPanel {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 1.5rem;
   }
 `);

@@ -167,14 +167,14 @@ function CrustFiles ({ className, user }: Props): React.ReactElement<Props> {
       fileReader.readAsText(files[0], 'UTF-8');
 
       if (!(/(.json)$/i.test(e.target.value))) {
-        return _onImportResult(t('file error'), 'error');
+        return _onImportResult(t('File error'), 'error');
       }
 
       fileReader.onload = (e) => {
         const _list = JSON.parse(e.target?.result as string) as SaveFile[];
 
         if (!Array.isArray(_list)) {
-          return _onImportResult(t('file content error'), 'error');
+          return _onImportResult(t('File content error'), 'error');
         }
 
         const fitter: SaveFile[] = [];
@@ -193,7 +193,7 @@ function CrustFiles ({ className, user }: Props): React.ReactElement<Props> {
         _onImportResult(t('Import Success'), 'success');
       };
     } catch (e) {
-      _onImportResult(t('file content error'), 'error');
+      _onImportResult(t('File content error'), 'error');
     }
   }, [wFiles, _onImportResult, t]);
 
