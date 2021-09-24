@@ -220,7 +220,7 @@ const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => 
   if (uploadMode.isLoad) {
     return <Spinner label={t('Loading')}/>;
   }
-  if (isShowSelectedMode) {
+  if (!isWatchOne && isShowSelectedMode) {
     return <SelectUploadMode onClick={doSetUploadMode}/>;
   }
   return (

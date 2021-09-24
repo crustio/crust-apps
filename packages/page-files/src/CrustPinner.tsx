@@ -169,6 +169,8 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
       }
 
       cancelTokenSource = null;
+
+      setBusy(false);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cidObject.cid]);
