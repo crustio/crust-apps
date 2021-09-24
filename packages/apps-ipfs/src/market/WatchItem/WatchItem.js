@@ -103,7 +103,10 @@ const WatchItem = ({
     watchItem.fileName = DEF_FILE_NAME;
   }
   watchItem.fileStatus = status;
-  const readableSize = watchItem.fileSize ? filesize(watchItem.fileSize, { round: 2 }) : '-';
+  let readableSize = watchItem.fileSize ? filesize(watchItem.fileSize, { round: 2 }) : '-';
+  if (isWatchOne && status === fileStatusEnum.PENDING) {
+    readableSize = '-';
+  }
   const calculateExpiredTime = (expireBlock) => {
     const durations = (expireBlock - bestNumber) * 6;
     return dayjs().add(durations, 'seconds').format('YYYY-MM-DD');

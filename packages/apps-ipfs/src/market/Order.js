@@ -129,7 +129,7 @@ const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => 
 
       target && setTableData([target]);
     }
-  }, [watchList, filterCid]);
+  }, isWatchOne ? [filterCid] : [watchList, filterCid]);
 
   const handleFilterWatchList = (fileCid) => {
     setFilterCid(fileCid);
@@ -220,7 +220,7 @@ const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => 
   if (uploadMode.isLoad) {
     return <Spinner label={t('Loading')}/>;
   }
-  if (isShowSelectedMode) {
+  if (!isWatchOne && isShowSelectedMode) {
     return <SelectUploadMode onClick={doSetUploadMode}/>;
   }
   return (
@@ -336,7 +336,7 @@ const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => 
           onAddPool={handleAddPool} onToggleBtn={handleToggleBtn}
           watchList={tableData}/>
       }
-      {isGatewayMode && <MDevGuide/>}
+      <MDevGuide />
     </div>
   );
 };

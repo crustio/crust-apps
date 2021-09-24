@@ -33,10 +33,7 @@ function Btn ({ children, className, disable = false, is2, isBuzy, label, onClic
       onClick={_onClick}>
       {
         isBuzy
-          ? <Spinner
-            className='ui--Button-spinner'
-            variant='cover'
-          />
+          ? <Spinner noLabel />
           : content
       }
     </div>
@@ -51,6 +48,10 @@ export const Button = React.memo<Props>(styled(Btn)`
   font-size: 16px;
   display: flex;
   justify-content: center;
+
+  & img {
+    max-width: none;
+  }
 
   ${(p) => p.flex !== undefined && `
      flex: ${p.flex};
@@ -70,9 +71,5 @@ export const Button = React.memo<Props>(styled(Btn)`
   ${(p) => p.isBuzy && `
     cursor: default;
     color: #eeeeee !important;
-    background: gray !important;
   `};
-  .ui--Spinner.isCover {
-    bottom: 1rem;
-  }
 `);

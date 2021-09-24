@@ -1,19 +1,29 @@
 // Copyright 2017-2021 @polkadot/app-files authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import axios from 'axios';
+import axios, { AxiosResponse, CancelTokenSource } from 'axios';
+import FileSaver from 'file-saver';
 import filesize from 'filesize';
-import React, { useCallback, useContext, useState } from 'react';
+import _ from 'lodash';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { getPerfix, useFiles, WrapLoginUser } from '@polkadot/app-files/hooks';
 import { useAuthPinner } from '@polkadot/app-files/useAuth';
-import { Badge, CopyButton, Dropdown, Password, StatusContext, Table } from '@polkadot/react-components';
-import { QueueProps } from '@polkadot/react-components/Status/types';
+import { createIpfsApiEndpoints } from '@polkadot/apps-config';
+import { Badge, Button as RCButton, CopyButton, Dropdown, Password, Spinner, StatusContext, Table } from '@polkadot/react-components';
+import { ActionStatusBase, QueueProps } from '@polkadot/react-components/Status/types';
 
 import { Button } from './btns';
 import { useTranslation } from './translate';
 import { SaveFile } from './types';
+
+const MSpinner = styled(Spinner)`
+  height: 20px;
+  width: 20px;
+  margin-left: 0px;
+  margin-right: 10px;
+`;
 
 const MCopyButton = styled(CopyButton)`
   display: inline-block;
@@ -69,6 +79,7 @@ export interface Props {
   user: WrapLoginUser,
 }
 
+type FunInputFile = (e: React.ChangeEvent<HTMLInputElement>) => void
 type OnInputChange = (e: React.ChangeEvent<HTMLInputElement>) => void
 
 function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
@@ -76,14 +87,100 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
   const { queueAction } = useContext<QueueProps>(StatusContext);
   const [isBusy, setBusy] = useState(false);
   const [password, setPassword] = useState('');
-  const [CID, setCID] = useState('');
+  const [cidObject, setCidObject] = useState({ cid: '', prefetchedSize: 0 });
+  const [validatingCID, setValidatingCID] = useState(false);
   const [isValidCID, setValidCID] = useState(false);
+  const [CIDTips, setCIDTips] = useState({ tips: '', level: 'info' });
+  const ipfsApiEndpoint = createIpfsApiEndpoints(t)[0];
+
+  useEffect(() => {
+    let cancelTokenSource: CancelTokenSource | null;
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async function () {
+      const cid = cidObject.cid;
+
+      if (_.isEmpty(cid)) {
+        setValidCID(false);
+        setCIDTips({ tips: '', level: 'info' });
+
+        return;
+      }
+
+      setCIDTips(t('Checking CID...'));
+      const isValid = _.toLower(cid).startsWith('qm') && cid.length === 46;
+
+      if (!isValid) {
+        setValidCID(false);
+        setCIDTips({ tips: t('Invalid CID'), level: 'warn' });
+
+        return;
+      }
+
+      setCIDTips({ tips: t('Retrieving file size...'), level: 'info' });
+
+      let fileSize = 0;
+
+      try {
+        setValidatingCID(true);
+        cancelTokenSource = axios.CancelToken.source();
+        const res: AxiosResponse = await axios.request({
+          cancelToken: cancelTokenSource.token,
+          method: 'POST',
+          url: `${ipfsApiEndpoint.baseUrl}/api/v0/files/stat?arg=/ipfs/${cid}`,
+          timeout: 30000
+        });
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        fileSize = _.get(res, 'data.CumulativeSize', 0);
+
+        if (fileSize > 5 * 1024 * 1024 * 1024) {
+          setValidCID(false);
+          setCIDTips({ tips: t('File size exceeds 5GB'), level: 'warn' });
+        } else if (fileSize > 2 * 1024 * 1024 * 1024) {
+          setValidCID(true);
+          setCIDTips({ tips: t('Note: File may be oversize for full network capability and performance'), level: 'warn' });
+        } else {
+          setValidCID(true);
+          setCIDTips({ tips: `${t('File Size')}: ${fileSize} Bytes`, level: 'info' });
+        }
+
+        setCidObject({ cid, prefetchedSize: fileSize });
+        setValidatingCID(false);
+        cancelTokenSource = null;
+      } catch (error) {
+        console.error(error);
+
+        if (axios.isCancel(error)) {
+          return;
+        }
+
+        fileSize = 2 * 1024 * 1024 * 1024;
+        setValidCID(true);
+        setCIDTips({ tips: t('Unknown File'), level: 'warn' });
+        setValidatingCID(false);
+        cancelTokenSource = null;
+      }
+    })();
+
+    return () => {
+      if (cancelTokenSource) {
+        cancelTokenSource.cancel('Ipfs api request cancelled');
+      }
+
+      cancelTokenSource = null;
+
+      setBusy(false);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cidObject.cid]);
+
   const onChangeCID = useCallback<OnInputChange>((e) => {
     const cid = (e.target.value ?? '').trim();
 
-    setValidCID(cid.startsWith('Qm') && cid.length === 46);
-    setCID(e.target.value);
+    setCidObject({ cid, prefetchedSize: 0 });
   }, []);
+
   const wFiles = useFiles('pins:files');
   const { onChangePinner, pinner, pins } = useAuthPinner();
   const onClickPin = useCallback(async () => {
@@ -99,22 +196,23 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
 
       await axios.request({
         data: {
-          cid: CID
+          cid: cidObject.cid
         },
         headers: { Authorization: AuthBearer },
         method: 'POST',
         url: `${pinner.value}/psa/pins`
       });
-      const filter = wFiles.files.filter((item) => item.Hash !== CID);
+      const filter = wFiles.files.filter((item) => item.Hash !== cidObject.cid);
 
       wFiles.setFiles([{
-        Hash: CID,
+        Hash: cidObject.cid,
         Name: '',
-        Size: '',
+        Size: cidObject.prefetchedSize.toString(),
         UpEndpoint: '',
         PinEndpoint: pinner.value
       }, ...filter]);
-      setCID('');
+      setCidObject({ cid: '', prefetchedSize: 0 });
+      setCIDTips({ tips: '', level: 'info' });
       setBusy(false);
     } catch (e) {
       setBusy(false);
@@ -124,17 +222,86 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
         action: t('Pin')
       });
     }
-  }, [isValidCID, pinner, CID, queueAction, user, password, wFiles, t]);
+  }, [isValidCID, pinner, cidObject, queueAction, user, password, wFiles, t]);
+
+  const _onImportResult = useCallback<(m: string, s?: ActionStatusBase['status']) => void>(
+    (message, status = 'queued') => {
+      queueAction && queueAction({
+        action: t('Import files'),
+        message,
+        status
+      });
+    },
+  [queueAction, t]
+  );
+  const importInputRef = useRef<HTMLInputElement>(null);
+  const _clickImport = useCallback(() => {
+    if (!importInputRef.current) return;
+    importInputRef.current.click();
+  }, [importInputRef]);
+  const _onInputImportFile = useCallback<FunInputFile>((e) => {
+    try {
+      _onImportResult(t('Importing'));
+      const fileReader = new FileReader();
+      const files = e.target.files;
+
+      if (!files) return;
+      fileReader.readAsText(files[0], 'UTF-8');
+
+      if (!(/(.json)$/i.test(e.target.value))) {
+        return _onImportResult(t('File error'), 'error');
+      }
+
+      fileReader.onload = (e) => {
+        const _list = JSON.parse(e.target?.result as string) as SaveFile[];
+
+        if (!Array.isArray(_list)) {
+          return _onImportResult(t('File content error'), 'error');
+        }
+
+        const fitter: SaveFile[] = [];
+        const mapImport: { [key: string]: boolean } = {};
+
+        for (const item of _list) {
+          if (item.Hash && item.PinEndpoint) {
+            fitter.push(item);
+            mapImport[item.Hash] = true;
+          }
+        }
+
+        const filterOld = wFiles.files.filter((item) => !mapImport[item.Hash]);
+
+        wFiles.setFiles([...fitter, ...filterOld]);
+        _onImportResult(t('Import Success'), 'success');
+      };
+    } catch (e) {
+      _onImportResult(t('File content error'), 'error');
+    }
+  }, [wFiles, _onImportResult, t]);
+
+  const _export = useCallback(() => {
+    const blob = new Blob([JSON.stringify(wFiles.files)], { type: 'application/json; charset=utf-8' });
+
+    FileSaver.saveAs(blob, 'pins.json');
+  }, [wFiles]);
 
   return <main className={className}>
     <header>
       <div className='inputPanel'>
-        <input
-          className={'inputCID'}
-          onChange={onChangeCID}
-          placeholder={t('Enter CID')}
-          value={CID}
-        />
+        <div className='inputCIDWithTips'>
+          <input
+            className={'inputCID'}
+            onChange={onChangeCID}
+            placeholder={t('Enter CID')}
+            value={cidObject.cid}
+          />
+          {CIDTips.tips && <div className='inputCIDTipsContainer'>
+            {validatingCID && <MSpinner noLabel />}
+            <div className={`inputCIDTips ${CIDTips.level !== 'info' ? 'inputCIDTipsWarn' : ''}`}>
+              {CIDTips.tips}
+            </div>
+          </div>}
+        </div>
         <Dropdown
           help={t<string>('Your file will be pinned to IPFS for long-term storage.')}
           isDisabled={true}
@@ -148,7 +315,7 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
           <Password
             help={t<string>('The account\'s password specified at the creation of this account.')}
             isError={false}
-            label={t<string>('password')}
+            label={t<string>('Password')}
             onChange={setPassword}
             value={password}
           />
@@ -161,6 +328,24 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
           onClick={onClickPin}/>
       </div>
     </header>
+    <div className={'importExportPanel'}>
+      <input
+        onChange={_onInputImportFile}
+        ref={importInputRef}
+        style={{ display: 'none' }}
+        type={'file'}
+      />
+      <RCButton
+        icon={'file-import'}
+        label={t('Import')}
+        onClick={_clickImport}
+      />
+      <RCButton
+        icon={'file-export'}
+        label={t('Export')}
+        onClick={_export}
+      />
+    </div>
     <Table
       empty={t<string>('empty')}
       emptySpinner={t<string>('Loading')}
@@ -190,13 +375,13 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
           <td
             className='end'
             colSpan={2}
-          >{filesize(Number(f.Size), { round: 2 })}</td>
+          >{(_.isEmpty(f.Size) || Number(f.Size) === 0) ? '-' : filesize(Number(f.Size), { round: 2 })}</td>
           <td
             className='end'
             colSpan={1}
           >
             <a
-              href={`${window.location.origin}/?rpc=wss%3A%2F%2Frpc.crust.network#/storage_files/status/${f.Hash}`}
+              href={`${window.location.origin}/#/storage_files/status/${f.Hash}`}
               rel='noreferrer'
               target='_blank'
             >{t('View status in Crust')}</a>
@@ -242,20 +427,47 @@ export default React.memo<Props>(styled(CrustPinner)`
     border-radius: 2px;
     padding: 1.6rem;
     display: flex;
+    flex-direction: row;
+    align-items: flex-start;
     margin: 1.5rem;
 
-    .inputCID {
+    .inputCIDWithTips {
       flex: 2;
-      line-height: 60px;
-      border-radius: 4px;
-      border: 1px solid #CCCCCC;
-      padding-left: 1rem;
-      font-size: 18px;
-      height: 60px;
-      outline: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
 
-      &:focus {
-        border-color: #85b7d9;
+      .inputCID {
+        line-height: 60px;
+        border-radius: 4px;
+        border: 1px solid #CCCCCC;
+        padding-left: 1rem;
+        font-size: 18px;
+        height: 60px;
+        outline: none;
+
+        &:focus {
+          border-color: #85b7d9;
+        }
+      }
+
+      .inputCIDTipsContainer {
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+
+        .inputCIDTips {
+          text-align: left;
+        }
+
+        .inputCIDTipsWarn {
+          color: red;
+        }
       }
     }
 
@@ -298,6 +510,7 @@ export default React.memo<Props>(styled(CrustPinner)`
     }
 
     .btnPin {
+      height: 60px;
       margin-left: 1.6rem;
       font-size: 20px;
       width: 160px;
@@ -308,5 +521,13 @@ export default React.memo<Props>(styled(CrustPinner)`
       padding: 1rem 5rem;
       flex-shrink: 0;
     }
+  }
+
+  .importExportPanel {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 1.5rem;
   }
 `);

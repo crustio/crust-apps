@@ -18,7 +18,8 @@ module.exports = {
     '**/apps-ipfs/*',
     '**/patch/*',
     '**/ipfs-gateway-endpoints/*',
-    '**/ipfs-pinner/*'
+    '**/ipfs-pinner/*',
+    '**/ipfs-api/*'
   ],
   parserOptions: {
     ...base.parserOptions,
