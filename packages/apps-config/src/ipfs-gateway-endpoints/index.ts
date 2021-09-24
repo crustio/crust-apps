@@ -29,7 +29,7 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
     //   value: 'https://ipfs-gw.crust.network'
     // },
     {
-      location: t('ShangHai'),
+      location: t('United States'),
       text: t('Crust Network'),
       value: 'https://ipfs-gw.decloud.foundation'
     }

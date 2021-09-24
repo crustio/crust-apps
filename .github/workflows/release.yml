@@ -83,7 +83,7 @@ jobs:
 
       - name: Pin to IPFS
         id: upload
-        uses: crustio/ipfs-upload-action@v2.0.0
+        uses: crustio/ipfs-upload-action@v2.0.2
         with:
           path: './packages/apps/build'
           seeds: ${{ secrets.CRUST_SEEDS }}
