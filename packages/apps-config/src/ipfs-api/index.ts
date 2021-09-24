@@ -7,7 +7,7 @@ import type { IpfsApiEndpoint } from './types';
 export function createIpfsApiEndpoints (t: TFunction): IpfsApiEndpoint[] {
   return [
     {
-      baseUrl: 'https://ipfs-auth.decoo.io'
+      baseUrl: 'https://ipfs-gw.crust.network'
     }
   ];
 }
