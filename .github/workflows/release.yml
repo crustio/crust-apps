@@ -83,7 +83,7 @@ jobs:
 
       - name: Pin to IPFS
         id: upload
-        uses: crustio/ipfs-upload-action@v2.0.0
+        uses: crustio/ipfs-upload-action@v2.0.2
         with:
           path: './packages/apps/build'
           seeds: ${{ secrets.CRUST_SEEDS }}
@@ -134,7 +134,7 @@ jobs:
       #       The preferred URLs below are safe to use to access this specific release.
 
       #       Preferred URLs:
-      #       - https://crustwebsites.net/ipfs/${{ steps.upload.outputs.hash }}
+      #       - https://crustipfs.xyz/ipfs/${{ steps.upload.outputs.hash }}
       #       - https://${{ steps.convert_cidv0.outputs.cidv1 }}.ipfs.dweb.link/
       #       - https://${{ steps.convert_cidv0.outputs.cidv1 }}.ipfs.cf-ipfs.com/
       #       - [ipfs://${{ steps.upload.outputs.hash }}/](ipfs://${{ steps.upload.outputs.hash }}/)
