@@ -21,7 +21,7 @@ Please fork this repo, and add your gateway to `index.ts` with the following for
 
 ```typescript
 {
-    value: 'https://crustwebsites.net',
+    value: 'https://crustipfs.xyz',
     text: t('Crust Network'),
     location: t('Singapore')
 }
