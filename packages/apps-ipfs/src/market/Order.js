@@ -338,7 +338,7 @@ const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => 
             }
             {
               isGatewayMode && <>
-                <div className='uploadBtn'>
+                <div className={disableGateway ? 'uploadBtnDisabled' : 'uploadBtn'}>
                   <button
                     className={`btn ${disableGateway ? 'disabled' : ''}`}
                     disabled={disableGateway}

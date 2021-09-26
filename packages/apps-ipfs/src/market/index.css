@@ -211,12 +211,16 @@ button:focus {outline:0!important;}
   opacity: 0.25;
 }
 
-.uploadBtn {
+.uploadBtn,
+.uploadBtnDisabled {
   position: relative;
   padding: 5px 0;
 }
 .uploadBtn:hover .uploadMenu {
   display: block;
+}
+.uploadBtnDisabled:hover .uploadMenu {
+  display: none;
 }
 
 .uploadMenu {
