@@ -23,11 +23,11 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       text: t('DCF'),
       value: 'https://crustipfs.xyz'
     },
-    // {
-    //   location: t('United States'),
-    //   text: t('Crust Network'),
-    //   value: 'https://ipfs-gw.crust.network'
-    // },
+    {
+      location: t('United States'),
+      text: t('Crust Network'),
+      value: 'https://crustwebsites.net'
+    },
     {
       location: t('United States'),
       text: t('Crust Network'),
