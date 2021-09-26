@@ -2,6 +2,7 @@
   "actions": {
     "addOrder": "添加订单",
     "upFiles": "上传文件",
+    "upload": "上传",
     "add": "添加",
     "delete": "删除",
     "search": "搜索",
@@ -94,6 +95,13 @@
   "Upload files by Gateway": "使用网关上传文件",
   "Upload files by IPFS": "使用IPFS上传文件",
   "Gateway_Desc": "适合于本地没有IPFS客户端的用户。在Crust去中心化存储市场下单后，您的文件将通过IPFS公共网关上传到网络。",
-  "IPFS_Desc": "适合于本地有IPFS客户端的用户。在Crust去中心化存储市场下单后，存储商户将直接从您的IPFS客户端拉取文件。"
-
+  "IPFS_Desc": "适合于本地有IPFS客户端的用户。在Crust去中心化存储市场下单后，存储商户将直接从您的IPFS客户端拉取文件。",
+  "File": "文件",
+  "Folder": "目录",
+  "Upload File": "上传文件",
+  "Upload Folder": "上传文件夹",
+  "Do not upload files larger than 100MB!": "文件大小不能超过100M。",
+  "Please do not upload more than 2000 files": "文件数不能超过2000个。",
+  "Please select non-empty folder": "文件夹不能为空。",
+  "Please choose account": "请选择账号"
 }

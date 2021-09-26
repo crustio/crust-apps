@@ -13,7 +13,7 @@ import WatchListInput from './WatchListInput';
 import FileSaver from 'file-saver';
 import StatusContext from '../../../react-components/src/Status/Context';
 import { fetchInfoByAccount } from '@polkadot/apps-ipfs/helpers/fetch';
-import { DropdownWrap, Spinner } from '../../../react-components/src';
+import { DropdownWrap, Spinner, Button } from '../../../react-components/src';
 import { createAuthIpfsEndpoints } from '@polkadot/apps-config';
 import UpFiles from '@polkadot/apps-ipfs/files/modals/up-files/UpFiles';
 import { useMemo } from 'react/index';
@@ -58,6 +58,9 @@ const UP_MODES = [
   { text: 'Upload files by IPFS', value: 'ipfs' },
   { text: 'Upload files by Gateway', value: 'gateway' }
 ];
+
+const Noop = () => undefined;
+
 const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => {
   const isWatchOne = params.cid && params.cid.startsWith('Qm')
   const watchList = isWatchOne ? [{ fileCid: params.cid }] : list
@@ -100,7 +103,74 @@ const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => 
   const [fetchModalShow, toggleFetchModalShow] = useState(false);
   const { systemChain } = useApi();
   const disableGateway = systemChain === 'Crust Maxwell';
-  const inputFile = useRef();
+
+  const inputRef = useRef();
+  const _clickUploadFile = useCallback((dir = false) => {
+    if (!inputRef.current) return;
+    inputRef.current.webkitdirectory = dir;
+    inputRef.current.multiple = dir;
+    inputRef.current.click();
+  }, [inputRef]);
+  const onClickUpFile = useCallback(() => _clickUploadFile(false), [_clickUploadFile]);
+  const onClickUpFolder = useCallback(() => _clickUploadFile(true), [_clickUploadFile]);
+
+  const _onInputFile = useCallback((e) => {
+    const files = e.target.files;
+
+    if (!files) return;
+
+    if (files.length > 2000) {
+      queueAction({
+        action: t('actions.upload'),
+        message: t('Please do not upload more than 2000 files'),
+        status: 'error'
+      });
+      return;
+    }
+
+    if (files.length === 0) {
+      queueAction({
+        action: t('actions.upload'),
+        message: t('Please select non-empty folder'),
+        status: 'error'
+      });
+      return;
+    }
+
+    const isDirectory = e.target.webkitdirectory;
+    if (!isDirectory) {
+      setUpFile({ file: files[0] });
+      setShowUpFiles(true);
+    } else if (files.length >= 1) {
+      const dirFiles = [];
+
+      for (let index = 0; index < files.length; index++) {
+        // console.info('f:', files[index]);
+        dirFiles.push(files[index]);
+      }
+
+      console.info(dirFiles);
+
+      const [dir] = dirFiles[0].webkitRelativePath.split('/');
+
+      setUpFile({ files: dirFiles, dir });
+      setShowUpFiles(true);
+    }
+
+    e.target.value = '';
+  }, [setUpFile, setShowUpFiles, queueAction, t]);
+
+  const _onUpFileClose = useCallback(() => {
+    setShowUpFiles(false);
+    setUpFile(null);
+  }, []);
+
+  const _onUpFileSuccess = useCallback((res) => {
+    setShowUpFiles(false);
+    setFileInfo({ isForce: true, cid: res.Hash, fileName: res.Name, originalSize: res.Size });
+    toggleModal(true);
+  }, [fileInfo]);
+
   const endpoints = useMemo(
     () => createAuthIpfsEndpoints(t).sort(randomSort).map(item => ({
       ...item,
@@ -208,15 +278,6 @@ const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => 
     FileSaver.saveAs(blob, `watchList.json`);
   };
 
-  const onInputFile = (e) => {
-    if (!e.target.files || e.target.files.length === 0 || !e.target.files[0]) {
-      return;
-    }
-    const file = e.target.files[0];
-    e.target.value = '';
-    setUpFile(file);
-    setShowUpFiles(true);
-  };
   if (uploadMode.isLoad) {
     return <Spinner label={t('Loading')}/>;
   }
@@ -252,15 +313,8 @@ const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => 
           title={title}/>}
       {
         upFile && showUpFiles && <UpFiles
-          onClose={() => {
-            setShowUpFiles(false);
-            setUpFile(null);
-          }}
-          onSuccess={(res) => {
-            setShowUpFiles(false);
-            setFileInfo({ isForce: true, cid: res.Hash, fileName: res.Name, originalSize: res.Size });
-            toggleModal(true);
-          }}
+          onClose={_onUpFileClose}
+          onSuccess={_onUpFileSuccess}
           file={upFile}
           endpoint={currentEndpoint}/>
       }
@@ -272,8 +326,8 @@ const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => 
                 <input
                   type={'file'}
                   style={{ display: 'none' }}
-                  ref={inputFile}
-                  onChange={onInputFile}/>
+                  ref={inputRef}
+                  onChange={_onInputFile}/>
                 :
                 <button
                   className='btn'
@@ -284,13 +338,24 @@ const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => 
             }
             {
               isGatewayMode && <>
-                <button className={`btn ${disableGateway ? 'disabled' : ''}`}
-                        disabled={disableGateway}
-                        style={{ height: '3.7rem', padding: '8px 40px', }}
-                        onClick={() => {
-                          const event = new MouseEvent('click');
-                          inputFile?.current?.dispatchEvent(event);
-                        }}>{t('actions.upFiles')}</button>
+                <div className='uploadBtn'>
+                  <button
+                    className={`btn ${disableGateway ? 'disabled' : ''}`}
+                    disabled={disableGateway}
+                    style={{ height: '3.7rem', padding: '8px 40px', }}
+                    onClick={Noop}
+                  >{t('actions.upload')}</button>
+                  <div className='uploadMenu'>
+                    <div
+                      className='menuItem'
+                      onClick={onClickUpFile}>{t('File')}</div>
+                    <div
+                      className='menuItem'
+                      onClick={onClickUpFolder}>{t('Folder')}
+                    </div>
+                  </div>
+                </div>
+
                 <MDropdown
                   className={'flex-grow-1'}
                   help={t('File streaming and wallet authentication will be processed by the chosen gateway') + t('Period')}

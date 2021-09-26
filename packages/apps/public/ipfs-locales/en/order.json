@@ -2,6 +2,7 @@
   "actions": {
     "addOrder": "Place an order",
     "upFiles": "Upload File",
+    "upload": "Upload",
     "add": "Add",
     "delete":"Delete",
     "search": "Search",

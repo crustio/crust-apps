@@ -210,3 +210,37 @@ button:focus {outline:0!important;}
 .grayColor {
   opacity: 0.25;
 }
+
+.uploadBtn {
+  position: relative;
+  padding: 5px 0;
+}
+.uploadBtn:hover .uploadMenu {
+  display: block;
+}
+
+.uploadMenu {
+  z-index: 200;
+  display: none;
+  width: 100%;
+  background-color: white;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+  border-radius: 4px;
+  overflow: hidden;
+  line-height: 40px;
+}
+
+.uploadMenu .menuItem {
+  cursor: pointer;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.uploadMenu .menuItem:hover {
+  background-color: var(--bg-page);
+}

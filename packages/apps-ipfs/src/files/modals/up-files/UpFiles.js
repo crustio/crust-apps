@@ -1,10 +1,11 @@
 // Copyright 2017-2021 @polkadot/apps-ipfs
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Button,
   InputAddress,
+  Label,
   Modal,
   Password,
 } from '@polkadot/react-components';
@@ -18,6 +19,24 @@ import { isFunction, stringToHex, stringToU8a, u8aToHex } from '@polkadot/util';
 import axios from 'axios';
 import Progress from '../../../components/progress/Progress';
 import { useThemeClass } from '@polkadot/apps-ipfs/theme';
+import useParamDefs from '@polkadot/react-params/Param/useParamDefs';
+
+function ShowFile (p) {
+  const f = p.file;
+
+  return (
+    <div
+      style={{
+        padding: '5px 2rem',
+        backgroundColor: 'white',
+        borderRadius: '4px',
+        borderBottom: '1px solid rgba(0, 0, 0, 0.15)'
+      }}>
+      <Label label={f.webkitRelativePath || p.file.name}/>
+      <span>{`${f.size} bytes`}</span>
+    </div>
+  );
+}
 
 export default function UpFiles ({ file, endpoint, onClose, onSuccess }) {
   const theme = useThemeClass();
@@ -30,9 +49,26 @@ export default function UpFiles ({ file, endpoint, onClose, onSuccess }) {
   const [{ isUsable, signer }, setSigner] = useState({ isUsable: true, signer: null });
   const [password, setPassword] = useState('');
   const [isBusy, setBusy] = useState(false);
-  const fileSizeError = file.size > 100 * 1024 * 1024;
+  const fileSizeError = useMemo(() => {
+    const MAX = 100 * 1024 * 1024;
+
+    if (file.file) {
+      return file.file.size > MAX;
+    } else if (file.files) {
+      let sum = 0;
+
+      for (const f of file.files) {
+        sum += f.size;
+      }
+
+      return sum > MAX;
+    }
+
+    return false;
+  }, [file]);
+
   const [error, setError] = useState('');
-  const errorText = fileSizeError ? t('fileSizeError') : error;
+  const errorText = fileSizeError ? t('Do not upload files larger than 100MB!') : error;
   const [upState, setUpState] = useState({ up: false, progress: 0 });
   const [cancelUp, setCancelUp] = useState(null);
   const onAccountChange = (nAccount) => {
@@ -109,7 +145,15 @@ export default function UpFiles ({ file, endpoint, onClose, onSuccess }) {
       setCancelUp(cancel);
       setUpState({ progress: 0, up: true });
       const form = new FormData();
-      form.append('file', file, file.name);
+
+      if (file.file) {
+        form.append('file', file.file, file.file.name);
+      } else if (file.files) {
+        for (const f of file.files) {
+          form.append('file', f, f.webkitRelativePath);
+        }
+      }
+
       const upResult = await axios.request({
         method: 'post',
         url: `${endpoint.value}/api/v0/add`,
@@ -128,7 +172,19 @@ export default function UpFiles ({ file, endpoint, onClose, onSuccess }) {
       });
       setCancelUp(null);
       setUpState({ progress: 100, up: false });
-      onSuccess(upResult.data);
+
+      let upRes;
+      if (typeof upResult.data === 'string') {
+        const jsonStr = upResult.data.replaceAll('}\n{', '},{');
+        const items = JSON.parse(`[${jsonStr}]`);
+        const folder = items.length - 1;
+        upRes = items[folder];
+        delete items[folder];
+        upRes.items = items;
+      } else {
+        upRes = upResult.data;
+      }
+      onSuccess(upRes);
     } catch (e) {
       setUpState({ progress: 0, up: false });
       setBusy(false);
@@ -138,14 +194,22 @@ export default function UpFiles ({ file, endpoint, onClose, onSuccess }) {
   };
   return <Modal
     className={`order--accounts-Modal ${theme}`}
-    header={t(`actions.upFiles`, 'Upload File')}
-    size='small'
+    header={t(file.dir ? 'Upload Folder' : 'Upload File')}
+    size='large'
   >
     <Modal.Content>
-      <div className="flex flex-column pa3">
-        <div style={{ fontWeight: 500, fontSize: '1.2rem' }}>{file.name}</div>
-        <div>{filesize(file.size)}</div>
-      </div>
+      <Modal.Columns>
+        <div style={{ paddingLeft: '2rem', width: '100%', maxHeight: 300, overflow: 'auto' }}>
+          {
+            file.file && <ShowFile file={file.file}/>
+          }
+          {file.files && file.files.map((f, i) =>
+            <ShowFile
+              file={f}
+              key={`file_item:${i}`}/>
+          )}
+        </div>
+      </Modal.Columns>
       <Modal.Columns hint={!hasAccounts && <p className='file-info' style={{ padding: 0 }}>{t('noAccount')}</p>}>
         {
           !upState.up &&
