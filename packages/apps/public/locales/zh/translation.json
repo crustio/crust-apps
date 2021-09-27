@@ -1706,6 +1706,11 @@
   "Your file will be pinned to IPFS for long-term storage.": "您所选择的Pinner将负责在Crust Network创建存储订单。",
   "Select a Web3 IPFS Gateway": "选择Web3 IPFS网关",
   "Select a Web3 IPFS Pinner": "选择Web3 IPFS Pinner",
+  "nav.candy": "Candy兑换",
+  "My Candy": "我的Candy",
+  "Change Candy into CRU at a ratio of 1000:1": "将Candy兑换为CRU，兑换比例1000 : 1",
+  "Exchange": "兑换",
+  "The amount you will to exchange.": "你将兑换的数量。",
   "guaranteed": "担保量",
   "unguaranteed": "未担保量"
 }

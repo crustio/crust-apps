@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { AppProps as Props } from '@polkadot/react-components/types';
 
 import React, { useRef } from 'react';
@@ -12,6 +13,7 @@ import { useAccounts, useApi, useIpfs } from '@polkadot/react-hooks';
 
 import basicMd from './md/basic.md';
 import MainnetMarchants from './MainnetMarchants';
+import MainnetSettlements from './MainnetSettlements';
 import Merchants from './Merchants';
 import Settlements from './Settlements';
 
@@ -48,7 +50,7 @@ function MerchantsApp ({ basePath, onStatusChange }: Props): React.ReactElement<
       </header>
       <Switch>
         <Route path={`${basePath}/settlements`}>
-          <Settlements/>
+          { isMaxwell ? <Settlements/> : <MainnetSettlements /> }
         </Route>
         <Route basePath={basePath}
           onStatusChange={onStatusChange}>

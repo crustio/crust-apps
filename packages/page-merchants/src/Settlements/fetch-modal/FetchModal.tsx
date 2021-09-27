@@ -2,16 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 /* eslint-disable */
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button,
-  Dropdown, InputAddress,
-  Modal
+  Dropdown, Modal
 } from '../../../../react-components/src';
-import {Available} from "@polkadot/react-query";
-import {useAccounts, useApi} from "@polkadot/react-hooks";
-import Checkbox from "../../../../react-components/src/Checkbox";
 
 const options = [{
   text: 'Subscan Storage Explorer (Coming Soon)',
@@ -23,19 +19,6 @@ interface Props { onClose: () => void, onConfirm: () => void }
 const FetchModal: React.FC<Props> = ({ onClose, onConfirm }) => {
   const { t } = useTranslation();
   const [dataSource] = useState('Subscan Storage Explorer');
-  const { hasAccounts } = useAccounts();
-  const [account, setAccount] = useState<any>();
-  const [isAllOrders, setIsAllOrders] = useState(false)
-  const [expireOptions, setExpireOptions] = useState<{[k:string]:boolean}>({valid: false, expiredWithin15Days: false, expired15Days: false})
-    const { systemChain } = useApi();
-    const isMaxwell = systemChain === 'Crust Maxwell';
-  const checkboxList = ["valid", "expiredWithin15Days", "expired15Days"]
-  const _setCheckboxOption = useCallback((item: string, value: any) => {
-    setExpireOptions({
-      ...expireOptions,
-      [item]: value
-    });
-  }, [expireOptions]);
 
   return <Modal
     className='order--accounts-Modal'
@@ -53,49 +36,10 @@ const FetchModal: React.FC<Props> = ({ onClose, onConfirm }) => {
             />
           </Modal.Columns>
         </Modal.Content>
-        {
-            !isMaxwell && <>
-            <Modal.Content>
-          <Modal.Columns hint={!hasAccounts && <p className='file-info' style={{padding: 0}}>{t('noAccount')}</p>}>
-            <InputAddress
-                isMultiple
-                label={t('Please choose account')}
-                isDisabled={!hasAccounts || isAllOrders}
-                labelExtra={
-                    <Available
-                        params={account}
-                    />
-                }
-                defaultValue={account}
-                onChange={setAccount}
-                type='account'
-            />
-          </Modal.Columns>
-          <Modal.Content>
-            <div style={{paddingLeft: 15}}>
-              <Checkbox value={isAllOrders}
-                        className='pv3 pl3 pr1 flex-none'
-                        label={t("All orders")}
-                        onChange={(value: any) => { setIsAllOrders(value) }} />
-            </div>
-          </Modal.Content>
-        </Modal.Content>
-            <Modal.Content>
-            <div style={{paddingLeft: 15}}>{
-                checkboxList.map((item) => <Checkbox key={item} value={expireOptions[item]}
-                                                     className='pv3 pl3 pr1 flex-none'
-                                                     label={t(item)}
-                                                     onChange={(value: any) => { _setCheckboxOption(item, value) }} />)
-            }
-            </div>
-        </Modal.Content>
-            </>
-        }
     </Modal.Content>
     <Modal.Actions onCancel={onClose}>
       <Button className='tc'
         icon={'check'}
-        isDisabled={true}
         label={t<string>('Submit')}
         onClick={() => {
           onConfirm();

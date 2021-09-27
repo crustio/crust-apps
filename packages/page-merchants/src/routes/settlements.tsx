@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { AppProps as Props } from '@polkadot/react-components/types';
 
 import React, { useRef } from 'react';
@@ -10,6 +11,7 @@ import { useTranslation } from '@polkadot/apps/translate';
 import { HelpOverlay, Tabs } from '@polkadot/react-components';
 import { useAccounts, useApi, useIpfs } from '@polkadot/react-hooks';
 
+import MainnetSettlements from '../MainnetSettlements';
 import basicMd from '../md/basic.md';
 import Settlements from '../Settlements';
 
@@ -26,6 +28,7 @@ function MerchantsApp ({ basePath, onStatusChange }: Props): React.ReactElement<
   const { hasAccounts } = useAccounts();
   const { isIpfs } = useIpfs();
   const { systemChain } = useApi();
+  const isMaxwell = systemChain === 'Crust Maxwell';
   const theme = themeDict[systemChain] || 'rockey';
 
   const itemsRef = useRef([
@@ -46,7 +49,7 @@ function MerchantsApp ({ basePath, onStatusChange }: Props): React.ReactElement<
         />
       </header>
       <Route path={`${basePath}`}>
-        <Settlements/>
+        { isMaxwell ? <Settlements/> : <MainnetSettlements /> }
       </Route>
     </main>
   );
