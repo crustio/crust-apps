@@ -15,11 +15,15 @@ import { BN_ZERO, formatBalance } from '@polkadot/util';
 import logoCrust from '../images/crust.svg';
 import ethereumLogo from '../images/Ethereum_logo_2014.svg';
 import Banner from '@polkadot/app-accounts/Accounts/Banner';
+import { abi } from '../contractAbi';
 
 interface Props {
   className?: string;
   senderId?: string;
 }
+
+const contractAddress = "0x32a7C02e79c4ea1008dD6564b35F131428673c41";
+const handler = '0x645A36124B537Ea30Cbba25F75599D3F1FE79Ba5'
 
 function EthereumAssets ({ className = '', senderId: propSenderId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
@@ -32,6 +36,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
   const [bridgeFee, setBridgeFee] = useState<BN>(BN_ZERO);
   const isMaxwell = systemChain === 'Crust Maxwell';
   const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x0964a01e0d0b5d6ff726ab9d60a93d188d3f505b' : 'https://etherscan.io/address/0x486Be2bE480aEd1E21Ba884b0b559fdd0EB14153';
+  const [handlerAsset, setHandlerAsset] = useState<BN | undefined>(BN_ZERO);
 
   useEffect(() => {
     api.query.bridgeTransfer.bridgeFee(0).then((bridgeFee) => {
@@ -40,6 +45,17 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
       setBridgeFee(new BN(Number(fee[0]).toString()));
     });
   }, [api]);
+
+  useEffect(() => {
+    const provider = ethers.getDefaultProvider();
+
+    const erc20Contract = new ethers.Contract(contractAddress, abi, provider);
+
+    erc20Contract.getBalance(handler).then((res: any) => {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+      setHandlerAsset(new BN((Number(res) / 1000000.0).toString()))
+    })
+  }, [])
+
   const onChangeEthereumAddress = useCallback((hex: string) => {
     const isValidEthAddr = hex.startsWith('0x') && ethers.utils.isAddress(hex);
 
@@ -126,7 +142,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
             <TxButton
               accountId={senderId}
               icon='paper-plane'
-              isDisabled={!isValid}
+              isDisabled={!isValid || (handlerAsset && amount && handlerAsset.lte(amount)) }
               label={t<string>('Transfer')}
               params={[amount, ethereumAddress, 0]}
               tx={api.tx.bridgeTransfer?.transferNative}
