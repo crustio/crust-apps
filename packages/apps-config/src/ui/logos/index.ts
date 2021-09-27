@@ -28,6 +28,7 @@ import externalSubscan from './external/subscan.svg';
 import externalWalletCrust from './external/wallet_crust.png';
 import externalWalletMetamask from './external/wallet_metamask.png';
 import externalWalletNear from './external/wallet_near.png';
+import externalWalletFlow from './external/wallet_flow.png';
 import ipfsGateway from './ipfs/gateway.png';
 import ipfsLogo from './ipfs/ipfs.png';
 import nodeAcala from './nodes/acala-circle.svg';
@@ -316,7 +317,8 @@ export const externalLogos: Record<string, unknown> = {
   subscan: externalSubscan,
   walletCrust: externalWalletCrust,
   walletMetamask: externalWalletMetamask,
-  walletNear: externalWalletNear
+  walletNear: externalWalletNear,
+  walletFlow: externalWalletFlow
 };
 
 // empty logos

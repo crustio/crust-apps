@@ -9,6 +9,8 @@ import { nearConfig } from '@polkadot/app-files/near/config';
 import { externalLogos } from '@polkadot/apps-config';
 import { InputAddress, StatusContext } from '@polkadot/react-components';
 import { useAccounts } from '@polkadot/react-hooks';
+import _ from 'lodash';
+import * as fcl from "@onflow/fcl";
 
 import { Button } from './btns';
 import { useTranslation } from './translate';
@@ -85,6 +87,21 @@ function Login ({ className, user }: Props) {
     user.near.wallet.requestSignIn(nearConfig.contractName, 'Crust Files');
   }, [user, queueAction, t]);
 
+  const _onClickFlow = useCallback(async() => {
+    let flowUser = await fcl.currentUser().snapshot();
+
+    if (!flowUser.loggedIn) {
+      await fcl.authenticate();
+    }
+
+    flowUser = await fcl.currentUser().snapshot();
+    user.setLoginUser({
+      account: flowUser.addr,
+      wallet: 'flow'
+    });
+
+  }, [user, t]);
+
   return (
     <div className={className}>
       <div className='loginPanel'>
@@ -146,6 +163,11 @@ function Login ({ className, user }: Props) {
                   className='walletIcon'
                   onClick={_onClickNear}
                   src={externalLogos.walletNear as string}
+                />
+                <img
+                  className='walletIcon'
+                  onClick={_onClickFlow}
+                  src={externalLogos.walletFlow as string}
                 />
               </div>
             </>

@@ -2384,6 +2384,37 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@improbable-eng/grpc-web-node-http-transport@npm:^0.14.0":
+  version: 0.14.1
+  resolution: "@improbable-eng/grpc-web-node-http-transport@npm:0.14.1"
+  peerDependencies:
+    "@improbable-eng/grpc-web": ">=0.13.0"
+  checksum: 839e49859812a34ca5dfbe897b4717fefc355ab04eee1e6f8b0d1e4cd3ecc3187a0897b93090fa24347a8f4a7b446b03fa2508ae6cf5c1fc446ee335d404de32
+  languageName: node
+  linkType: hard
+
+"@improbable-eng/grpc-web@npm:^0.12.0":
+  version: 0.12.0
+  resolution: "@improbable-eng/grpc-web@npm:0.12.0"
+  dependencies:
+    browser-headers: ^0.4.0
+  peerDependencies:
+    google-protobuf: ^3.2.0
+  checksum: 9ba68b9533caaaf355d0075acc9ebfbd1529c57cc41ea8f424624f0220ea0178ab33e6101266da0f8ef849582e5b96a48c0f9f93756f6e734bf4025926028b61
+  languageName: node
+  linkType: hard
+
+"@improbable-eng/grpc-web@npm:^0.14.0":
+  version: 0.14.1
+  resolution: "@improbable-eng/grpc-web@npm:0.14.1"
+  dependencies:
+    browser-headers: ^0.4.1
+  peerDependencies:
+    google-protobuf: ^3.14.0
+  checksum: ed364ece2326c42359187e44aba014c4ed191beb2102282752935bb4392762ff2ad4e214519dd28c63ef46bf053a0c13522eca70b312100f4cd7d5a4a5de5e72
+  languageName: node
+  linkType: hard
+
 "@interlay/polkabtc-types@npm:^0.5.3":
   version: 0.5.3
   resolution: "@interlay/polkabtc-types@npm:0.5.3"
@@ -2888,6 +2919,115 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@onflow/fcl@npm:^0.0.77":
+  version: 0.0.77
+  resolution: "@onflow/fcl@npm:0.0.77"
+  dependencies:
+    "@onflow/interaction": 0.0.11
+    "@onflow/rlp": 0.0.3
+    "@onflow/sdk": ^0.0.54
+    "@onflow/types": ^0.0.4
+    "@onflow/util-actor": 0.0.2
+    "@onflow/util-address": 0.0.0
+    "@onflow/util-invariant": 0.0.0
+    "@onflow/util-template": 0.0.1
+    "@onflow/util-uid": 0.0.1
+  checksum: c62935b6bfb70b18b318f19a75a5dd3e323af5e4e57898c93d40f2807cb29287570f538ae912639f9566db7e55a82b73129a4d1e9b11c84d0a822245c79e2d5c
+  languageName: node
+  linkType: hard
+
+"@onflow/interaction@npm:0.0.11":
+  version: 0.0.11
+  resolution: "@onflow/interaction@npm:0.0.11"
+  checksum: 4bc8a962241db19517de974e4f3bf528233b345d5224d48ae5cb8bb45abd6bdc5ce6a4e1d71411c67bfa09fdb7923e8cb9cabcff5141858de93e969d983e544a
+  languageName: node
+  linkType: hard
+
+"@onflow/protobuf@npm:^0.1.8":
+  version: 0.1.8
+  resolution: "@onflow/protobuf@npm:0.1.8"
+  dependencies:
+    "@improbable-eng/grpc-web": ^0.12.0
+    google-protobuf: ^3.11.4
+  checksum: 5860ef8a489822d94fc76c1f0b0c91501560a33079f8f724886f49b3a69d3670eca4fa4139d1643dea150c5aa2ec5e4da92f239311af90db4e4f307a1043a65d
+  languageName: node
+  linkType: hard
+
+"@onflow/rlp@npm:0.0.3, @onflow/rlp@npm:^0.0.3":
+  version: 0.0.3
+  resolution: "@onflow/rlp@npm:0.0.3"
+  checksum: c0e40b54c7d83afe0669cc5ba56013ece9531a2c00261d198986324d234aab8a5c94c586ef0412f2c0e9df44b862ae7fe49036decdd215e5e2c058674bfbacf0
+  languageName: node
+  linkType: hard
+
+"@onflow/sdk@npm:^0.0.54":
+  version: 0.0.54
+  resolution: "@onflow/sdk@npm:0.0.54"
+  dependencies:
+    "@improbable-eng/grpc-web": ^0.14.0
+    "@improbable-eng/grpc-web-node-http-transport": ^0.14.0
+    "@onflow/protobuf": ^0.1.8
+    "@onflow/rlp": ^0.0.3
+    "@onflow/util-actor": 0.0.2
+    "@onflow/util-address": ^0.0.0
+    "@onflow/util-invariant": ^0.0.0
+    "@onflow/util-template": 0.0.1
+    deepmerge: ^4.2.2
+  checksum: 14e3d33c873e3f972d55ac1a8b5046f0684004922b736fc20d164ed931eaf272ab7163c18e727871f9222660b83e107c67d8a110e263525f4b361f2692d8824e
+  languageName: node
+  linkType: hard
+
+"@onflow/types@npm:^0.0.4":
+  version: 0.0.4
+  resolution: "@onflow/types@npm:0.0.4"
+  checksum: ac414a6b43165760807f22ac3bded88be8d7164d1c68038c03a2c90dfe9b2cfac5ab08251ca784eb5fbbf147ddddb866c695b5c87b46289826bcb087ccdc0ebe
+  languageName: node
+  linkType: hard
+
+"@onflow/types@npm:^0.0.5":
+  version: 0.0.5
+  resolution: "@onflow/types@npm:0.0.5"
+  checksum: fc6762d2ace828682bf35ac799f14b6e9c3b66b8137d520583f03ae40e1dbea364087039bfc006973dd2bf295f53237801d6ba8edb7174eec59b0d256cd38ef7
+  languageName: node
+  linkType: hard
+
+"@onflow/util-actor@npm:0.0.2":
+  version: 0.0.2
+  resolution: "@onflow/util-actor@npm:0.0.2"
+  dependencies:
+    queue-microtask: 1.1.2
+  checksum: 9e74e1ed96de1c37c041fc9df762aa9e1fcfaccf3e301670c3ee15df51c445e093ec3d48ad1dc5e9b206d07600492e66231c4d1eca8e99fc4dc2bcee97e03f0e
+  languageName: node
+  linkType: hard
+
+"@onflow/util-address@npm:0.0.0, @onflow/util-address@npm:^0.0.0":
+  version: 0.0.0
+  resolution: "@onflow/util-address@npm:0.0.0"
+  checksum: 6b1a097239b9dde6e07519c537ac07fbe13b0d5bbb89f00544f97f3793c0b815ef5cf3db8229d9cb2f6e98a92a3273ca93b7a86463cb190982a88a7b6c7e675c
+  languageName: node
+  linkType: hard
+
+"@onflow/util-invariant@npm:0.0.0, @onflow/util-invariant@npm:^0.0.0":
+  version: 0.0.0
+  resolution: "@onflow/util-invariant@npm:0.0.0"
+  checksum: f9b7c094a23a219a4bfa2b75f98487a199dbb69b33f92c8b0f1bc245b46ec594050890abf399a6604cb651e3612df537e2a0ab4ade5f80c6be5b3bdf3fb5e6cc
+  languageName: node
+  linkType: hard
+
+"@onflow/util-template@npm:0.0.1":
+  version: 0.0.1
+  resolution: "@onflow/util-template@npm:0.0.1"
+  checksum: d5a6d657bf07fa400f725ede43d625a1aa03bd254c49505ebf47d757fac4781c426faf5b694e9eec36b4e458c0d4d395b9f6cf2c7bfae2f81cb901cdca80bc4b
+  languageName: node
+  linkType: hard
+
+"@onflow/util-uid@npm:0.0.1":
+  version: 0.0.1
+  resolution: "@onflow/util-uid@npm:0.0.1"
+  checksum: 62fd9cf4e0382b16288babb9a3d8ac0d6e65677d079510ce7aa9d4116a86d4164f47df3452532bdcaf0e5e289cac91d2d65e171551601ea121a9bb80724e9ee9
+  languageName: node
+  linkType: hard
+
 "@open-web3/orml-type-definitions@npm:^0.8.2-9":
   version: 0.8.2-11
   resolution: "@open-web3/orml-type-definitions@npm:0.8.2-11"
@@ -3090,8 +3230,12 @@ __metadata:
   resolution: "@polkadot/app-files@workspace:packages/page-files"
   dependencies:
     "@babel/runtime": ^7.15.4
+    "@onflow/fcl": ^0.0.77
+    "@onflow/types": ^0.0.5
     "@polkadot/react-components": ^0.85.2-15
+    https-browserify: ^1.0.0
     near-api-js: ^0.42.0
+    stream-http: ^3.2.0
   languageName: unknown
   linkType: soft
 
@@ -7154,6 +7298,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"browser-headers@npm:^0.4.0, browser-headers@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "browser-headers@npm:0.4.1"
+  checksum: 268030ab33f2c7d80a9851bd9745b04299f6a82b912f40ea569a74d352381ad9c125b7999e45f90a153e08ebe27a6da9efc4f4835efd7a3f8276e81207573f5c
+  languageName: node
+  linkType: hard
+
 "browser-process-hrtime@npm:^1.0.0":
   version: 1.0.0
   resolution: "browser-process-hrtime@npm:1.0.0"
@@ -7407,6 +7558,13 @@ __metadata:
     stat-mode: ^1.0.0
     temp-file: ^3.3.7
   checksum: 9e10a87b31d9e3d53e719bbaa3803d40294ec57f19c6af4220adf2679c0029052b39ed768902fdc088ae26976b250314699807bbb4134eff724b37423525d3bc
+  languageName: node
+  linkType: hard
+
+"builtin-status-codes@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "builtin-status-codes@npm:3.0.0"
+  checksum: 8e2872a69ae05c6a24adc3b6dd4c340f077ea842fc8115ab5b4896f3ab68cf38f56438d430273efd152def59313fd8ca3a35bdad4c3e88b8bb88ba4a371b3866
   languageName: node
   linkType: hard
 
@@ -12864,6 +13022,13 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"google-protobuf@npm:^3.11.4":
+  version: 3.18.0
+  resolution: "google-protobuf@npm:3.18.0"
+  checksum: 78a8f5f0c23a02e5df4b53c60d4a64a9a4532925324a894d6e277194c0a2d912f5d4d6655fbe38d56ef6c646da64ce43c6d6ad6db4f715b25c5f22dc1bca21d6
+  languageName: node
+  linkType: hard
+
 "got@npm:^11.5.1":
   version: 11.8.1
   resolution: "got@npm:11.8.1"
@@ -13502,6 +13667,13 @@ fsevents@~2.1.2:
     quick-lru: ^5.1.1
     resolve-alpn: ^1.0.0
   checksum: 74db457c83d2cef5ea36e6a0a013a0a12b3fff575c4cabfc91c012b7335463d09ed3dba2d7e87babab4396a170df466730b1c13d92f99bbdd82b7aec99387683
+  languageName: node
+  linkType: hard
+
+"https-browserify@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "https-browserify@npm:1.0.0"
+  checksum: 9746a4ef0283691774f207039efed38e31e86732ed15bcebf1878e2e7cf4b87e8a4e5fe3cce342caba9545ce0e7e2bcf44fe08edb52284b1b53bfe026e1e8f07
   languageName: node
   linkType: hard
 
@@ -21811,6 +21983,13 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
+"queue-microtask@npm:1.1.2":
+  version: 1.1.2
+  resolution: "queue-microtask@npm:1.1.2"
+  checksum: 301f19cdbd1ae13057e18ba00c57966262dcd7d49e78200c7bf9334fa3f535ce34bcccfcb285a04f81686b57f6ac961f15740a754b40d1448227af0141b3efb8
+  languageName: node
+  linkType: hard
+
 "queue-microtask@npm:^1.1.0":
   version: 1.2.3
   resolution: "queue-microtask@npm:1.2.3"
@@ -24479,6 +24658,18 @@ fsevents@~2.1.2:
     inherits: ~2.0.4
     readable-stream: ^3.5.0
   checksum: 55fb0c30082a87f7e42f1c093ad7aee42c942864edf11ac911e6e89d5be9877ba32fd20569f6bfb489dabd71b63d3264bec349463294abc270fba42bedd6ca22
+  languageName: node
+  linkType: hard
+
+"stream-http@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "stream-http@npm:3.2.0"
+  dependencies:
+    builtin-status-codes: ^3.0.0
+    inherits: ^2.0.4
+    readable-stream: ^3.6.0
+    xtend: ^4.0.2
+  checksum: b25c176492794a7c9b06b3703f7291d44ad0352b35863f88a8cbf9128c367d654908dc63606b2166d6f24cab19d6e7264a32c0488832336f9e811527bb0b2540
   languageName: node
   linkType: hard
 

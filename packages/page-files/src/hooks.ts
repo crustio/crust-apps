@@ -3,15 +3,18 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import store from 'store';
-
+import _ from 'lodash';
 import { Metamask } from '@polkadot/app-files/metamask/types';
 import useMetamask from '@polkadot/app-files/metamask/useMetamask';
 import { NearM } from '@polkadot/app-files/near/types';
 import { useNear } from '@polkadot/app-files/near/useNear';
+import { FlowM } from '@polkadot/app-files/flow/types';
+import { useFlow } from '@polkadot/app-files/flow/useFlow';
 import { web3FromSource } from '@polkadot/extension-dapp';
 import { useAccounts } from '@polkadot/react-hooks';
 import { keyring } from '@polkadot/ui-keyring';
 import { isFunction, stringToHex, stringToU8a, u8aToHex } from '@polkadot/util';
+import * as fcl from "@onflow/fcl";
 
 import { SaveFile } from './types';
 
@@ -37,7 +40,7 @@ type KEYS = 'files:login' | 'pins:login'
 export class LoginUser {
   account = '';
   pubKey?: string;
-  wallet: '' | 'metamask' | 'near' = '';
+  wallet: '' | 'metamask' | 'near' | 'flow' = '';
   key?: KEYS = 'files:login';
 }
 
@@ -49,6 +52,7 @@ export interface WrapLoginUser extends LoginUser {
   isLocked: boolean
   metamask: Metamask,
   near: NearM,
+  flow: FlowM
 }
 
 const defFilesObj: Files = { files: [], isLoad: true };
@@ -79,7 +83,7 @@ export function useFiles (key: KEYS_FILES = 'files'): WrapFiles {
   return useMemo(() => ({ ...filesObj, setFiles, key }), [filesObj, setFiles, key]);
 }
 
-export function useSign (account: LoginUser, metamask: Metamask, near: NearM): UseSign {
+export function useSign (account: LoginUser, metamask: Metamask, near: NearM, flow: FlowM): UseSign {
   const [state, setState] = useState<UseSign>({ isLocked: true });
 
   useEffect(() => {
@@ -98,6 +102,25 @@ export function useSign (account: LoginUser, metamask: Metamask, near: NearM): U
         const hexSignature = Buffer.from(signature).toString('hex');
 
         return Promise.resolve<string>(hexSignature);
+      };
+
+      setState((o) => ({ ...o, sign }));
+
+      return;
+    }
+
+    if (account.wallet === 'flow') {
+      setState((o) => ({ ...o, isLocked: false }));
+
+      const sign = function (data: string): Promise<string> {
+        const msg = Buffer.from(data);
+        return fcl.currentUser().signUserMessage(msg.toString("hex"))
+          .then((res: any) => {
+            if (!res) {
+              return Promise.reject('Signature failed');
+            }
+            return window.btoa(JSON.stringify(res));
+          });
       };
 
       setState((o) => ({ ...o, sign }));
@@ -190,7 +213,7 @@ export function useSign (account: LoginUser, metamask: Metamask, near: NearM): U
         setState((o) => ({ ...o, sign }));
       }
     }
-  }, [account, metamask, near]);
+  }, [account, metamask, near, flow]);
 
   return state;
 }
@@ -203,14 +226,16 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
   const accounts = useAccounts();
   const metamask = useMetamask();
   const near = useNear();
+  console.log('useLoginUser.useFlow()');
+  const flow = useFlow();
   const accountsIsLoad = accounts.isLoad;
-  const isLoadUser = isLoad || accountsIsLoad || metamask.isLoad || near.isLoad;
+  const isLoadUser = isLoad || accountsIsLoad || metamask.isLoad || near.isLoad || flow.isLoad;
 
   useEffect(() => {
     try {
       const f = store.get(key, defLoginUser) as LoginUser;
 
-      if (accounts.isLoad || near.isLoad) return;
+      if (accounts.isLoad || near.isLoad || flow.isLoad) return;
 
       // eslint-disable-next-line
       const nearWallet = near.wallet;
@@ -252,7 +277,7 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
       setIsLoad(false);
       console.error(e);
     }
-  }, [accounts, metamask, near, key]);
+  }, [accounts, metamask, near, flow, key]);
 
   const setLoginUser = useCallback((loginUser: LoginUser) => {
     const nAccount = { ...loginUser, key };
@@ -266,12 +291,19 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
       return nAccount;
     });
     store.set(key, nAccount);
-  }, [near, key]);
+  }, [near, flow, key]);
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async() => {
+    if (account.wallet === 'flow') {
+      const flowUser = await fcl.currentUser().snapshot();
+      if (flowUser.loggedIn) {
+        await fcl.unauthenticate();
+      }
+    }
+
     setLoginUser({ ...defLoginUser });
-  }, [setLoginUser]);
-  const uSign = useSign(account, metamask, near);
+  }, [setLoginUser, account]);
+  const uSign = useSign(account, metamask, near, flow);
 
   return useMemo(() => {
     const wrapLoginUser: WrapLoginUser = {
@@ -282,6 +314,7 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
       logout,
       metamask,
       near,
+      flow,
       ...uSign
     };
 
@@ -292,7 +325,7 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
     }
 
     return wrapLoginUser;
-  }, [account, isLoadUser, setLoginUser, logout, uSign, metamask, near, key]);
+  }, [account, isLoadUser, setLoginUser, logout, uSign, metamask, near, flow, key]);
 }
 
 export const getPerfix = (user: LoginUser): string => {
@@ -302,6 +335,10 @@ export const getPerfix = (user: LoginUser): string => {
 
   if (user.wallet === 'near') {
     return 'near';
+  }
+
+  if (user.wallet === 'flow') {
+    return 'flow';
   }
 
   return 'substrate';
