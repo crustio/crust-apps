@@ -14,7 +14,6 @@ export function useNear (): NearM {
   useEffect(() => {
     // eslint-disable-next-line no-void
     void (async function () {
-      console.log('useNearLoginUser, useEffect');
       const keyStore = new keyStores.BrowserLocalStorageKeyStore();
       const config: NearConfig = { ...nearConfig, deps: { keyStore } };
       const nearObj = await connect(config);

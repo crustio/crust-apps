@@ -10,6 +10,8 @@ import { Metamask } from '@polkadot/app-files/metamask/types';
 import useMetamask from '@polkadot/app-files/metamask/useMetamask';
 import { NearM } from '@polkadot/app-files/near/types';
 import { useNear } from '@polkadot/app-files/near/useNear';
+import { SolanaM } from '@polkadot/app-files/solana/types';
+import { useSolana } from '@polkadot/app-files/solana/useSolana';
 import { web3FromSource } from '@polkadot/extension-dapp';
 import { useAccounts } from '@polkadot/react-hooks';
 import { keyring } from '@polkadot/ui-keyring';
@@ -42,7 +44,7 @@ type KEYS = 'files:login' | 'pins:login'
 export class LoginUser {
   account = '';
   pubKey?: string;
-  wallet: '' | 'metamask' | 'near' | 'flow' = '';
+  wallet: '' | 'metamask' | 'near' | 'flow' | 'solana' = '';
   key?: KEYS = 'files:login';
 }
 
@@ -54,7 +56,8 @@ export interface WrapLoginUser extends LoginUser {
   isLocked: boolean
   metamask: Metamask,
   near: NearM,
-  flow: FlowM
+  flow: FlowM,
+  solana: SolanaM
 }
 
 const defFilesObj: Files = { files: [], isLoad: true };
@@ -85,7 +88,7 @@ export function useFiles (key: KEYS_FILES = 'files'): WrapFiles {
   return useMemo(() => ({ ...filesObj, setFiles, key }), [filesObj, setFiles, key]);
 }
 
-export function useSign (account: LoginUser, metamask: Metamask, near: NearM, flow: FlowM): UseSign {
+export function useSign (account: LoginUser, metamask: Metamask, near: NearM, flow: FlowM, solana: SolanaM): UseSign {
   const [state, setState] = useState<UseSign>({ isLocked: true });
 
   useEffect(() => {
@@ -126,6 +129,22 @@ export function useSign (account: LoginUser, metamask: Metamask, near: NearM, fl
 
             return window.btoa(JSON.stringify(res));
           });
+      };
+
+      setState((o) => ({ ...o, sign }));
+
+      return;
+    }
+
+    if (account.wallet === 'solana') {
+      setState((o) => ({ ...o, isLocked: false }));
+
+      const sign = function (data: string): Promise<string> {
+        const encodedMessage = new TextEncoder().encode(data);
+        // eslint-disable-next-line
+        return window.solana.signMessage(encodedMessage, 'utf8')
+          // eslint-disable-next-line
+          .then((sig: any) => Buffer.from(sig.signature).toString('hex'));
       };
 
       setState((o) => ({ ...o, sign }));
@@ -218,7 +237,7 @@ export function useSign (account: LoginUser, metamask: Metamask, near: NearM, fl
         setState((o) => ({ ...o, sign }));
       }
     }
-  }, [account, metamask, near, flow]);
+  }, [account, metamask, near, flow, solana]);
 
   return state;
 }
@@ -232,14 +251,15 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
   const metamask = useMetamask();
   const near = useNear();
   const flow = useFlow();
+  const solana = useSolana();
   const accountsIsLoad = accounts.isLoad;
-  const isLoadUser = isLoad || accountsIsLoad || metamask.isLoad || near.isLoad || flow.isLoad;
+  const isLoadUser = isLoad || accountsIsLoad || metamask.isLoad || near.isLoad || flow.isLoad || solana.isLoad;
 
   useEffect(() => {
     try {
       const f = store.get(key, defLoginUser) as LoginUser;
 
-      if (accounts.isLoad || near.isLoad || flow.isLoad) return;
+      if (accounts.isLoad || near.isLoad || flow.isLoad || solana.isLoad) return;
 
       // eslint-disable-next-line
       const nearWallet = near.wallet;
@@ -281,7 +301,7 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
       setIsLoad(false);
       console.error(e);
     }
-  }, [accounts, metamask, near, flow, key]);
+  }, [accounts, metamask, near, flow, solana, key]);
 
   const setLoginUser = useCallback((loginUser: LoginUser) => {
     const nAccount = { ...loginUser, key };
@@ -307,11 +327,21 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
         // eslint-disable-next-line
         await fcl.unauthenticate();
       }
+    } else if (account.wallet === 'solana') {
+      console.log('logout', window.solana);
+
+      // eslint-disable-next-line
+      if (window.solana && window.solana.isConnected) {
+        // eslint-disable-next-line
+        window.solana.disconnect();
+        // eslint-disable-next-line
+        window.solana.on('disconnect', () => { console.log('Solana disconnected'); });
+      }
     }
 
     setLoginUser({ ...defLoginUser });
   }, [setLoginUser, account]);
-  const uSign = useSign(account, metamask, near, flow);
+  const uSign = useSign(account, metamask, near, flow, solana);
 
   return useMemo(() => {
     const wrapLoginUser: WrapLoginUser = {
@@ -323,6 +353,7 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
       metamask,
       near,
       flow,
+      solana,
       ...uSign
     };
 
@@ -333,7 +364,7 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
     }
 
     return wrapLoginUser;
-  }, [account, isLoadUser, setLoginUser, logout, uSign, metamask, near, flow, key]);
+  }, [account, isLoadUser, setLoginUser, logout, uSign, metamask, near, flow, solana, key]);
 }
 
 export const getPerfix = (user: LoginUser): string => {
@@ -347,6 +378,10 @@ export const getPerfix = (user: LoginUser): string => {
 
   if (user.wallet === 'flow') {
     return 'flow';
+  }
+
+  if (user.wallet === 'solana') {
+    return 'sol';
   }
 
   return 'substrate';
