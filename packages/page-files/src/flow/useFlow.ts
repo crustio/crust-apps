@@ -3,28 +3,21 @@
 
 import { useEffect, useState } from 'react';
 
-import * as fcl from "@onflow/fcl";
 import { FlowM } from './types';
 
+// eslint-disable-next-line
+const fcl = require('@onflow/fcl');
+
 export function useFlow (): FlowM {
-  const [flow, setFlow] = useState<FlowM>({ isLoad: true});
+  const [flow, setFlow] = useState<FlowM>({ isLoad: true });
 
   useEffect(() => {
-    void (async function () {
+    // eslint-disable-next-line
+    fcl.config()
+      .put('accessNode.api', 'https://flow-access-mainnet.portto.io')
+      .put('challenge.handshake', 'https://flow-wallet.blocto.app/authn');
 
-      fcl.config()
-        .put("env", "testnet")
-        .put("accessNode.api", "https://access-testnet.onflow.org")
-        .put("discovery.wallet", "https://flow-wallet-testnet.blocto.app/api/flow/authn")
-        // .put("env", "mainnet")
-        // .put("accessNode.api", "https://flow-access-mainnet.portto.io")
-        // .put("discovery.wallet", "https://flow-wallet.blocto.app/authn")
-        .put("challenge.scope", "email") // request for Email
-        .put("discovery.wallet.method", "HTTP/POST")
-        .put("service.OpenID.scopes", "email!");
-
-      setFlow({ isLoad: false });
-    })();
+    setFlow({ isLoad: false });
   }, []);
 
   return flow;

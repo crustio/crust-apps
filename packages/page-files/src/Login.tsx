@@ -9,11 +9,12 @@ import { nearConfig } from '@polkadot/app-files/near/config';
 import { externalLogos } from '@polkadot/apps-config';
 import { InputAddress, StatusContext } from '@polkadot/react-components';
 import { useAccounts } from '@polkadot/react-hooks';
-import _ from 'lodash';
-import * as fcl from "@onflow/fcl";
 
 import { Button } from './btns';
 import { useTranslation } from './translate';
+
+// eslint-disable-next-line
+const fcl = require('@onflow/fcl');
 
 export interface Props {
   className?: string
@@ -87,20 +88,24 @@ function Login ({ className, user }: Props) {
     user.near.wallet.requestSignIn(nearConfig.contractName, 'Crust Files');
   }, [user, queueAction, t]);
 
-  const _onClickFlow = useCallback(async() => {
+  const _onClickFlow = useCallback(async () => {
+    // eslint-disable-next-line
     let flowUser = await fcl.currentUser().snapshot();
 
+    // eslint-disable-next-line
     if (!flowUser.loggedIn) {
+      // eslint-disable-next-line
       await fcl.authenticate();
     }
 
+    // eslint-disable-next-line
     flowUser = await fcl.currentUser().snapshot();
     user.setLoginUser({
+      // eslint-disable-next-line
       account: flowUser.addr,
       wallet: 'flow'
     });
-
-  }, [user, t]);
+  }, [user]);
 
   return (
     <div className={className}>

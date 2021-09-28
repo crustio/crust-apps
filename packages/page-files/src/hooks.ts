@@ -3,20 +3,22 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import store from 'store';
-import _ from 'lodash';
+
+import { FlowM } from '@polkadot/app-files/flow/types';
+import { useFlow } from '@polkadot/app-files/flow/useFlow';
 import { Metamask } from '@polkadot/app-files/metamask/types';
 import useMetamask from '@polkadot/app-files/metamask/useMetamask';
 import { NearM } from '@polkadot/app-files/near/types';
 import { useNear } from '@polkadot/app-files/near/useNear';
-import { FlowM } from '@polkadot/app-files/flow/types';
-import { useFlow } from '@polkadot/app-files/flow/useFlow';
 import { web3FromSource } from '@polkadot/extension-dapp';
 import { useAccounts } from '@polkadot/react-hooks';
 import { keyring } from '@polkadot/ui-keyring';
 import { isFunction, stringToHex, stringToU8a, u8aToHex } from '@polkadot/util';
-import * as fcl from "@onflow/fcl";
 
 import { SaveFile } from './types';
+
+// eslint-disable-next-line
+const fcl = require('@onflow/fcl');
 
 export interface Files {
   files: SaveFile[],
@@ -114,11 +116,14 @@ export function useSign (account: LoginUser, metamask: Metamask, near: NearM, fl
 
       const sign = function (data: string): Promise<string> {
         const msg = Buffer.from(data);
-        return fcl.currentUser().signUserMessage(msg.toString("hex"))
+
+        // eslint-disable-next-line
+        return fcl.currentUser().signUserMessage(msg.toString('hex'))
           .then((res: any) => {
             if (!res) {
-              return Promise.reject('Signature failed');
+              throw new Error('Signature failed');
             }
+
             return window.btoa(JSON.stringify(res));
           });
       };
@@ -226,7 +231,6 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
   const accounts = useAccounts();
   const metamask = useMetamask();
   const near = useNear();
-  console.log('useLoginUser.useFlow()');
   const flow = useFlow();
   const accountsIsLoad = accounts.isLoad;
   const isLoadUser = isLoad || accountsIsLoad || metamask.isLoad || near.isLoad || flow.isLoad;
@@ -291,12 +295,16 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
       return nAccount;
     });
     store.set(key, nAccount);
-  }, [near, flow, key]);
+  }, [near, key]);
 
-  const logout = useCallback(async() => {
+  const logout = useCallback(async () => {
     if (account.wallet === 'flow') {
+      // eslint-disable-next-line
       const flowUser = await fcl.currentUser().snapshot();
+
+      // eslint-disable-next-line
       if (flowUser.loggedIn) {
+        // eslint-disable-next-line
         await fcl.unauthenticate();
       }
     }
