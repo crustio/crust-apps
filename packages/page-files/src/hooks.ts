@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-files authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import store from 'store';
 
@@ -125,6 +126,10 @@ export function useSign (account: LoginUser, metamask: Metamask, near: NearM, fl
           .then((res: any) => {
             if (!res) {
               throw new Error('Signature failed');
+            }
+
+            if (_.includes(res, 'Declined: User rejected signature')) {
+              throw new Error('User rejected signature');
             }
 
             return window.btoa(JSON.stringify(res));
