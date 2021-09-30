@@ -5,7 +5,8 @@ import { ElectronMainApi } from './electron-main-api';
 
 declare global {
   interface Window {
-    ElectronMain: ElectronMainApi
+    ElectronMain: ElectronMainApi,
+    solana: any
   }
 }
 

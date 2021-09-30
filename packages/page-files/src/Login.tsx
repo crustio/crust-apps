@@ -13,6 +13,9 @@ import { useAccounts } from '@polkadot/react-hooks';
 import { Button } from './btns';
 import { useTranslation } from './translate';
 
+// eslint-disable-next-line
+const fcl = require('@onflow/fcl');
+
 export interface Props {
   className?: string
   user: WrapLoginUser,
@@ -64,8 +67,8 @@ function Login ({ className, user }: Props) {
     } else {
       queueAction({
         status: 'error',
-        message: t('Need installed MetaMask'),
-        action: 'connectMetamask'
+        message: t('Need install MetaMask'),
+        action: t('Connect Metamask')
       });
     }
   }, [user, queueAction, t]);
@@ -83,6 +86,59 @@ function Login ({ className, user }: Props) {
 
     // eslint-disable-next-line
     user.near.wallet.requestSignIn(nearConfig.contractName, 'Crust Files');
+  }, [user, queueAction, t]);
+
+  const _onClickFlow = useCallback(async () => {
+    // eslint-disable-next-line
+    let flowUser = await fcl.currentUser().snapshot();
+
+    // eslint-disable-next-line
+    if (!flowUser.loggedIn) {
+      // eslint-disable-next-line
+      await fcl.authenticate();
+    }
+
+    // eslint-disable-next-line
+    flowUser = await fcl.currentUser().snapshot();
+    user.setLoginUser({
+      // eslint-disable-next-line
+      account: flowUser.addr,
+      wallet: 'flow'
+    });
+  }, [user]);
+
+  const _onClickSolana = useCallback(() => {
+    if (!user.solana.isInstalled) {
+      queueAction({
+        status: 'error',
+        message: t('Need install Phantom'),
+        action: t('Connect Phantom')
+      });
+
+      return;
+    }
+
+    // eslint-disable-next-line
+    if (window.solana.isConnected) {
+      user.setLoginUser({
+        // eslint-disable-next-line
+        account: window.solana.publicKey.toBase58(),
+        wallet: 'solana'
+      });
+
+      return;
+    }
+
+    // eslint-disable-next-line
+    window.solana.connect();
+    // eslint-disable-next-line
+    window.solana.on('connect', () => {
+      user.setLoginUser({
+        // eslint-disable-next-line
+        account: window.solana.publicKey.toBase58(),
+        wallet: 'solana'
+      });
+    });
   }, [user, queueAction, t]);
 
   return (
@@ -105,7 +161,7 @@ function Login ({ className, user }: Props) {
               <div
                 className='specSubTitle2'>{`${t('Crust Files is open source and welcome to contribute! Following features are coming soon:')}`}</div>
               <div className='specItem'>{`- ${t('End-to-end file encryption')}`}</div>
-              <div className='specItem'>{`- ${t('Paid service with smart contract on Polygon, Ethereum and Near')}`}</div>
+              <div className='specItem'>{`- ${t('Paid service with smart contract on Polygon, Ethereum, Near, Flow and Solana')}`}</div>
             </div>
             <img
               className='specIcon'
@@ -146,6 +202,16 @@ function Login ({ className, user }: Props) {
                   className='walletIcon'
                   onClick={_onClickNear}
                   src={externalLogos.walletNear as string}
+                />
+                <img
+                  className='walletIcon'
+                  onClick={_onClickFlow}
+                  src={externalLogos.walletFlow as string}
+                />
+                <img
+                  className='walletIcon'
+                  onClick={_onClickSolana}
+                  src={externalLogos.walletSolana as string}
                 />
               </div>
             </>
@@ -208,7 +274,7 @@ export default React.memo<Props>(styled(Login)`
 
     .leftPanel {
       display: flex;
-      max-width: 555px;
+      max-width: 580px;
       flex-direction: column;
     }
 
@@ -253,7 +319,7 @@ export default React.memo<Props>(styled(Login)`
       object-fit: contain;
       width: 290px;
       height: 232px;
-      margin-left: 36px;
+      margin-left: 10px;
     }
   }
 
