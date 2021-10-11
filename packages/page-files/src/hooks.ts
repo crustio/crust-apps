@@ -19,6 +19,9 @@ import { keyring } from '@polkadot/ui-keyring';
 import { isFunction, stringToHex, stringToU8a, u8aToHex } from '@polkadot/util';
 
 import { SaveFile } from './types';
+import { useElrond } from './elrond/useElrond';
+import { ElrondM } from './elrond/types';
+import { SignableMessage } from '@elrondnetwork/erdjs/out';
 
 // eslint-disable-next-line
 const fcl = require('@onflow/fcl');
@@ -45,7 +48,7 @@ type KEYS = 'files:login' | 'pins:login'
 export class LoginUser {
   account = '';
   pubKey?: string;
-  wallet: '' | 'metamask' | 'near' | 'flow' | 'solana' = '';
+  wallet: '' | 'metamask' | 'near' | 'flow' | 'elrond' | 'solana' = '';
   key?: KEYS = 'files:login';
 }
 
@@ -58,7 +61,8 @@ export interface WrapLoginUser extends LoginUser {
   metamask: Metamask,
   near: NearM,
   flow: FlowM,
-  solana: SolanaM
+  solana: SolanaM,
+  elrond: ElrondM
 }
 
 const defFilesObj: Files = { files: [], isLoad: true };
@@ -89,7 +93,7 @@ export function useFiles (key: KEYS_FILES = 'files'): WrapFiles {
   return useMemo(() => ({ ...filesObj, setFiles, key }), [filesObj, setFiles, key]);
 }
 
-export function useSign (account: LoginUser, metamask: Metamask, near: NearM, flow: FlowM, solana: SolanaM): UseSign {
+export function useSign (account: LoginUser, metamask: Metamask, near: NearM, flow: FlowM, solana: SolanaM, elrond: ElrondM): UseSign {
   const [state, setState] = useState<UseSign>({ isLocked: true });
 
   useEffect(() => {
@@ -154,6 +158,28 @@ export function useSign (account: LoginUser, metamask: Metamask, near: NearM, fl
 
       setState((o) => ({ ...o, sign }));
 
+      return;
+    }
+
+    if (account.wallet === 'elrond') {
+      // waiting for sign
+      const provider = elrond.provider
+      if (elrond.isInstalled && provider) {
+        const sign = function (data: string): Promise<string> {
+          console.log('data', data)
+          const sm = new SignableMessage({
+            // address: new Address(data),
+            message: Buffer.from('0x' + Buffer.from(data).toString('hex'), 'ascii'),
+            // signature: new Signature(Buffer.from("a".repeat(128), "hex"),),
+            // signer: "erdw-extension"
+          });
+          console.log('msg', sm)
+          return provider.signMessage(sm)
+            .then(e => { return e.toJSON().toString()})
+            .catch(err => { console.error('hhe', err); return ''; })
+        }
+        setState((o) => ({ ...o, sign }));
+      }
       return;
     }
 
@@ -257,6 +283,7 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
   const near = useNear();
   const flow = useFlow();
   const solana = useSolana();
+  const elrond = useElrond();
   const accountsIsLoad = accounts.isLoad;
   const isLoadUser = isLoad || accountsIsLoad || metamask.isLoad || near.isLoad || flow.isLoad || solana.isLoad;
 
@@ -264,7 +291,7 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
     try {
       const f = store.get(key, defLoginUser) as LoginUser;
 
-      if (accounts.isLoad || near.isLoad || flow.isLoad || solana.isLoad) return;
+      if (accounts.isLoad || near.isLoad || flow.isLoad || solana.isLoad || elrond.isLoad) return;
 
       // eslint-disable-next-line
       const nearWallet = near.wallet;
@@ -346,7 +373,7 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
 
     setLoginUser({ ...defLoginUser });
   }, [setLoginUser, account]);
-  const uSign = useSign(account, metamask, near, flow, solana);
+  const uSign = useSign(account, metamask, near, flow, solana, elrond);
 
   return useMemo(() => {
     const wrapLoginUser: WrapLoginUser = {
@@ -359,6 +386,7 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
       near,
       flow,
       solana,
+      elrond,
       ...uSign
     };
 
@@ -387,6 +415,10 @@ export const getPerfix = (user: LoginUser): string => {
 
   if (user.wallet === 'solana') {
     return 'sol';
+  }
+
+  if (user.wallet === 'elrond') {
+    return 'elrond';
   }
 
   return 'substrate';

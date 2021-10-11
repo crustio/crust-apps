@@ -9,9 +9,9 @@ import { nearConfig } from '@polkadot/app-files/near/config';
 import { externalLogos } from '@polkadot/apps-config';
 import { InputAddress, StatusContext } from '@polkadot/react-components';
 import { useAccounts } from '@polkadot/react-hooks';
-
 import { Button } from './btns';
 import { useTranslation } from './translate';
+import { ExtensionProvider } from "@elrondnetwork/erdjs";
 
 // eslint-disable-next-line
 const fcl = require('@onflow/fcl');
@@ -141,6 +141,35 @@ function Login ({ className, user }: Props) {
     });
   }, [user, queueAction, t]);
 
+  const _onClickElrond = useCallback(() => {
+    const provider = ExtensionProvider.getInstance();
+    provider
+    .init()
+    .then(async (initialised) => {
+      if (initialised) {
+        await provider.login({
+          callbackUrl: encodeURIComponent(
+            `${window.location.origin}`
+          ),
+        });
+        const { address } = provider.account;
+      
+        user.setLoginUser({
+          // eslint-disable-next-line
+          account: address,
+          wallet: 'elrond'
+        });
+      } else {
+        console.warn(
+          "Something went wrong trying to redirect to wallet login.."
+        );
+      }
+    })
+    .catch((err) => {
+      console.warn(err);
+    });
+  }, [user, queueAction, t]);
+
   return (
     <div className={className}>
       <div className='loginPanel'>
@@ -212,6 +241,11 @@ function Login ({ className, user }: Props) {
                   className='walletIcon'
                   onClick={_onClickSolana}
                   src={externalLogos.walletSolana as string}
+                />
+                <img
+                  className='walletIcon'
+                  onClick={_onClickElrond}
+                  src={externalLogos.walletElrond as string}
                 />
               </div>
             </>

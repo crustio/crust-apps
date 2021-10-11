@@ -15,6 +15,7 @@ export interface Props {
 }
 
 function shortAccount (account: string) {
+  console.log('account', account)
   if (account.length <= 8) return account;
 
   return `${account.substr(0, 4)}...${account.substr(account.length - 4, 4)}`;
