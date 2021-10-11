@@ -157,8 +157,8 @@ function Login ({ className, user }: Props) {
           const { address } = provider.account;
 
           user.setLoginUser({
-          // eslint-disable-next-line
-          account: address,
+            // eslint-disable-next-line
+            account: address,
             wallet: 'elrond'
           });
         } else {
@@ -171,11 +171,6 @@ function Login ({ className, user }: Props) {
       })
       .catch((err) => {
         console.warn(err);
-        queueAction({
-          status: 'error',
-          message: t('Something went wrong trying to redirect to wallet login..'),
-          action: t('Connect Elrond')
-        });
       });
   }, [user, queueAction, t]);
 
