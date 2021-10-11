@@ -8,6 +8,8 @@ import styled from 'styled-components';
 
 import { useFiles, WrapLoginUser } from '@polkadot/app-files/hooks';
 import UploadModal from '@polkadot/app-files/UploadModal';
+import { useAuthGateway } from '@polkadot/app-files/useAuth';
+import { AuthIpfsEndpoint } from '@polkadot/apps-config/ipfs-gateway-endpoints/types';
 import { Badge, Button, CopyButton, Icon, StatusContext, Table } from '@polkadot/react-components';
 import { ActionStatusBase, QueueProps } from '@polkadot/react-components/Status/types';
 
@@ -40,14 +42,15 @@ const ItemFile = styled.tr`
   }
 `;
 
-function createUrl (f: SaveFile) {
-  const endpoint = f.UpEndpoint || 'https://ipfs.io';
+function createUrl (f: SaveFile, endpoints: AuthIpfsEndpoint[]) {
+  const p = endpoints.find((e) => e.value === f.UpEndpoint);
+  const endpoint = (p && p.value) || endpoints[0].value;
 
   return `${endpoint}/ipfs/${f.Hash}?filename=${f.Name}`;
 }
 
-const createOnDown = (f: SaveFile) => () => {
-  window.open(createUrl(f), '_blank');
+const createOnDown = (f: SaveFile, endpoints: AuthIpfsEndpoint[]) => () => {
+  window.open(createUrl(f, endpoints), '_blank');
   // FileSaver.saveAs(createUrl(f), f.Name);
 };
 
@@ -70,6 +73,7 @@ const Noop = (): void => undefined;
 
 function CrustFiles ({ className, user }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
+  const { endpoints } = useAuthGateway();
   const { queueAction } = useContext<QueueProps>(StatusContext);
   const [showUpMode, setShowUpMode] = useState(false);
   const wFiles = useFiles();
@@ -329,9 +333,9 @@ function CrustFiles ({ className, user }: Props): React.ReactElement<Props> {
                 color='highlight'
                 hover={t<string>('Open File')}
                 icon='external-link-square-alt'
-                onClick={createOnDown(f)}
+                onClick={createOnDown(f, endpoints)}
               />
-              <MCopyButton value={createUrl(f)}>
+              <MCopyButton value={createUrl(f, endpoints)}>
                 <Badge
                   color='highlight'
                   hover={t<string>('Copy Download Link')}
