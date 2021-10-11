@@ -15,7 +15,6 @@ export function useElrond (): ElrondM {
     .init()
     .then(async (initialised) => {
       if (initialised) {
-        console.log('provider.account', provider.account)
         setElornd({ isInstalled: true, isLoad: false, provider });
       } else {
         console.warn(

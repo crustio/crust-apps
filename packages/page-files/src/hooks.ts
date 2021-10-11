@@ -21,7 +21,16 @@ import { isFunction, stringToHex, stringToU8a, u8aToHex } from '@polkadot/util';
 import { SaveFile } from './types';
 import { useElrond } from './elrond/useElrond';
 import { ElrondM } from './elrond/types';
-import { SignableMessage } from '@elrondnetwork/erdjs/out';
+import {
+  Address,
+  Transaction,
+  Balance, 
+  TransactionPayload,
+  GasPrice,
+  ChainID,
+  TransactionVersion,
+  GasLimit
+} from "@elrondnetwork/erdjs";
 
 // eslint-disable-next-line
 const fcl = require('@onflow/fcl');
@@ -164,19 +173,33 @@ export function useSign (account: LoginUser, metamask: Metamask, near: NearM, fl
     if (account.wallet === 'elrond') {
       // waiting for sign
       const provider = elrond.provider
-      if (elrond.isInstalled && provider) {
+      if (elrond.isInstalled && provider) {      
         const sign = function (data: string): Promise<string> {
-          console.log('data', data)
-          const sm = new SignableMessage({
-            // address: new Address(data),
-            message: Buffer.from('0x' + Buffer.from(data).toString('hex'), 'ascii'),
-            // signature: new Signature(Buffer.from("a".repeat(128), "hex"),),
-            // signer: "erdw-extension"
+          // Construct Transaction
+          const rawTransaction = {
+            receiver: Address.Zero().hex(),
+            data: 'Sign message for crust files',
+            value: "0.1"
+          };
+          const transaction = new Transaction({
+            value: Balance.egld(rawTransaction.value),
+            data: new TransactionPayload(rawTransaction.data),
+            receiver: new Address(rawTransaction.receiver),
+            gasLimit: new GasLimit(50000),
+            gasPrice: new GasPrice(1000000000),
+            chainID: new ChainID('D'),
+            version: new TransactionVersion(1),
           });
-          console.log('msg', sm)
-          return provider.signMessage(sm)
-            .then(e => { return e.toJSON().toString()})
-            .catch(err => { console.error('hhe', err); return ''; })
+          
+          return provider.signTransaction(transaction)
+          .then(e => { 
+            // elrond-addr-txMsg:sig
+            const signature = e.getSignature();
+            const sender = e.getSender();
+            const transMessage = transaction.serializeForSigning(new Address(sender));
+            return `elrond-${sender}-${transMessage.toString('hex')}:${signature}`
+          })
+          .catch(err => { console.error('Elrond wallet signTransaction error', err); return ''; })
         }
         setState((o) => ({ ...o, sign }));
       }
@@ -314,6 +337,16 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
         });
       }
 
+      if (elrond.provider) {
+        elrond.provider.getAddress().then(account => {
+          setAccount({
+            account,
+            key,
+            wallet: 'elrond'
+          });
+        });
+      }
+
       if (f !== defLoginUser) {
         if (f.account && accounts.isAccount(f.account)) {
           setAccount(f);
@@ -333,7 +366,7 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
       setIsLoad(false);
       console.error(e);
     }
-  }, [accounts, metamask, near, flow, solana, key]);
+  }, [accounts, metamask, near, flow, solana, key, elrond]);
 
   const setLoginUser = useCallback((loginUser: LoginUser) => {
     const nAccount = { ...loginUser, key };

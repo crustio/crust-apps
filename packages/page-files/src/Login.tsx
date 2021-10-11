@@ -149,7 +149,7 @@ function Login ({ className, user }: Props) {
       if (initialised) {
         await provider.login({
           callbackUrl: encodeURIComponent(
-            `${window.location.origin}`
+            `${window.location.origin}/#/files`
           ),
         });
         const { address } = provider.account;
@@ -160,13 +160,22 @@ function Login ({ className, user }: Props) {
           wallet: 'elrond'
         });
       } else {
-        console.warn(
-          "Something went wrong trying to redirect to wallet login.."
-        );
+        queueAction({
+          status: 'error',
+          message: t('Something went wrong trying to redirect to wallet login..'),
+          action: t('Connect Elrond')
+        });
+        return;
       }
     })
     .catch((err) => {
       console.warn(err);
+      queueAction({
+        status: 'error',
+        message: t('Something went wrong trying to redirect to wallet login..'),
+        action: t('Connect Elrond')
+      });
+      return;
     });
   }, [user, queueAction, t]);
 
