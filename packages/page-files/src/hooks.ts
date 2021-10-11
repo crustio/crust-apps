@@ -1,6 +1,14 @@
 // Copyright 2017-2021 @polkadot/app-files authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+import { Address,
+  Balance,
+  ChainID,
+  GasLimit,
+  GasPrice,
+  Transaction,
+  TransactionPayload,
+  TransactionVersion } from '@elrondnetwork/erdjs';
 import _ from 'lodash';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import store from 'store';
@@ -18,19 +26,9 @@ import { useAccounts } from '@polkadot/react-hooks';
 import { keyring } from '@polkadot/ui-keyring';
 import { isFunction, stringToHex, stringToU8a, u8aToHex } from '@polkadot/util';
 
-import { SaveFile } from './types';
-import { useElrond } from './elrond/useElrond';
 import { ElrondM } from './elrond/types';
-import {
-  Address,
-  Transaction,
-  Balance, 
-  TransactionPayload,
-  GasPrice,
-  ChainID,
-  TransactionVersion,
-  GasLimit
-} from "@elrondnetwork/erdjs";
+import { useElrond } from './elrond/useElrond';
+import { SaveFile } from './types';
 
 // eslint-disable-next-line
 const fcl = require('@onflow/fcl');
@@ -172,14 +170,15 @@ export function useSign (account: LoginUser, metamask: Metamask, near: NearM, fl
 
     if (account.wallet === 'elrond') {
       // waiting for sign
-      const provider = elrond.provider
-      if (elrond.isInstalled && provider) {      
+      const provider = elrond.provider;
+
+      if (elrond.isInstalled && provider) {
         const sign = function (data: string): Promise<string> {
           // Construct Transaction
           const rawTransaction = {
             receiver: Address.Zero().hex(),
             data: 'Sign message for crust files',
-            value: "0.1"
+            value: '0.1'
           };
           const transaction = new Transaction({
             value: Balance.egld(rawTransaction.value),
@@ -188,21 +187,29 @@ export function useSign (account: LoginUser, metamask: Metamask, near: NearM, fl
             gasLimit: new GasLimit(50000),
             gasPrice: new GasPrice(1000000000),
             chainID: new ChainID('D'),
-            version: new TransactionVersion(1),
+            version: new TransactionVersion(1)
           });
-          
+
           return provider.signTransaction(transaction)
-          .then(e => { 
+            .then((e) => {
             // elrond-addr-txMsg:sig
-            const signature = e.getSignature();
-            const sender = e.getSender();
-            const transMessage = transaction.serializeForSigning(new Address(sender));
-            return `elrond-${sender}-${transMessage.toString('hex')}:${signature}`
-          })
-          .catch(err => { console.error('Elrond wallet signTransaction error', err); return ''; })
-        }
+              const signature = e.getSignature();
+              const sender = e.getSender();
+              const transMessage = transaction.serializeForSigning(new Address(sender));
+
+              /* eslint-disable @typescript-eslint/restrict-template-expressions */
+              return `elrond-${sender}-${transMessage.toString('hex')}:${signature}`;
+            })
+            .catch((err) => {
+              console.error('Elrond wallet signTransaction error', err);
+
+              return '';
+            });
+        };
+
         setState((o) => ({ ...o, sign }));
       }
+
       return;
     }
 
@@ -291,7 +298,7 @@ export function useSign (account: LoginUser, metamask: Metamask, near: NearM, fl
         setState((o) => ({ ...o, sign }));
       }
     }
-  }, [account, metamask, near, flow, solana]);
+  }, [account, metamask, near, flow, solana, elrond]);
 
   return state;
 }
@@ -338,13 +345,13 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
       }
 
       if (elrond.provider) {
-        elrond.provider.getAddress().then(account => {
+        elrond.provider.getAddress().then((account) => {
           setAccount({
             account,
             key,
             wallet: 'elrond'
           });
-        });
+        }).catch(console.error);
       }
 
       if (f !== defLoginUser) {
@@ -430,7 +437,7 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
     }
 
     return wrapLoginUser;
-  }, [account, isLoadUser, setLoginUser, logout, uSign, metamask, near, flow, solana, key]);
+  }, [account, isLoadUser, setLoginUser, logout, uSign, metamask, near, flow, solana, key, elrond]);
 }
 
 export const getPerfix = (user: LoginUser): string => {

@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-files authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+import { ExtensionProvider } from '@elrondnetwork/erdjs';
 import React, { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
 
@@ -9,9 +10,9 @@ import { nearConfig } from '@polkadot/app-files/near/config';
 import { externalLogos } from '@polkadot/apps-config';
 import { InputAddress, StatusContext } from '@polkadot/react-components';
 import { useAccounts } from '@polkadot/react-hooks';
+
 import { Button } from './btns';
 import { useTranslation } from './translate';
-import { ExtensionProvider } from "@elrondnetwork/erdjs";
 
 // eslint-disable-next-line
 const fcl = require('@onflow/fcl');
@@ -143,40 +144,39 @@ function Login ({ className, user }: Props) {
 
   const _onClickElrond = useCallback(() => {
     const provider = ExtensionProvider.getInstance();
+
     provider
-    .init()
-    .then(async (initialised) => {
-      if (initialised) {
-        await provider.login({
-          callbackUrl: encodeURIComponent(
-            `${window.location.origin}/#/files`
-          ),
-        });
-        const { address } = provider.account;
-      
-        user.setLoginUser({
+      .init()
+      .then(async (initialised) => {
+        if (initialised) {
+          await provider.login({
+            callbackUrl: encodeURIComponent(
+              `${window.location.origin}/#/files`
+            )
+          });
+          const { address } = provider.account;
+
+          user.setLoginUser({
           // eslint-disable-next-line
           account: address,
-          wallet: 'elrond'
-        });
-      } else {
+            wallet: 'elrond'
+          });
+        } else {
+          queueAction({
+            status: 'error',
+            message: t('Something went wrong trying to redirect to wallet login..'),
+            action: t('Connect Elrond')
+          });
+        }
+      })
+      .catch((err) => {
+        console.warn(err);
         queueAction({
           status: 'error',
           message: t('Something went wrong trying to redirect to wallet login..'),
           action: t('Connect Elrond')
         });
-        return;
-      }
-    })
-    .catch((err) => {
-      console.warn(err);
-      queueAction({
-        status: 'error',
-        message: t('Something went wrong trying to redirect to wallet login..'),
-        action: t('Connect Elrond')
       });
-      return;
-    });
   }, [user, queueAction, t]);
 
   return (
