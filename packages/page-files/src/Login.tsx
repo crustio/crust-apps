@@ -228,6 +228,11 @@ function Login ({ className, user }: Props) {
                 />
                 <img
                   className='walletIcon'
+                  onClick={_onToggleWalletCrust}
+                  src={externalLogos.polkadotExt as string}
+                />
+                <img
+                  className='walletIcon'
                   onClick={_onClickMetamask}
                   src={externalLogos.walletMetamask as string}
                 />

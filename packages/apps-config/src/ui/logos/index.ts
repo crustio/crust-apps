@@ -21,6 +21,7 @@ import extensionPolkadotJs from './extensions/polkadot-js.svg';
 import externalCrustFilesBox from './external/box.png';
 import externalCommonwealth from './external/commonwealth.png';
 import externalCrustPinsPin from './external/pins.png';
+import externalPolkadotExt from './external/polkadotExt.png';
 import externalPolkascan from './external/polkascan.png';
 import externalPolkassembly from './external/polkassembly.png';
 import externalPolkastats from './external/polkastats.png';
@@ -322,7 +323,8 @@ export const externalLogos: Record<string, unknown> = {
   walletNear: externalWalletNear,
   walletFlow: externalWalletFlow,
   walletSolana: externalWalletSolana,
-  walletElrond: externalWalletElrond
+  walletElrond: externalWalletElrond,
+  polkadotExt: externalPolkadotExt
 };
 
 // empty logos
