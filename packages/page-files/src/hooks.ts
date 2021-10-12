@@ -4,7 +4,6 @@
 import { Address,
   Balance,
   ChainID,
-  ExtensionProvider,
   GasLimit,
   GasPrice,
   Transaction,
@@ -315,7 +314,6 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
   const flow = useFlow();
   const solana = useSolana();
   const elrond = useElrond();
-  const [elrondProvider, setElrondProvider] = useState<ExtensionProvider | undefined>(elrond.provider);
   const accountsIsLoad = accounts.isLoad;
   const isLoadUser = isLoad || accountsIsLoad || metamask.isLoad || near.isLoad || flow.isLoad || solana.isLoad;
 
@@ -346,14 +344,13 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
         });
       }
 
-      // const provider = elrond.provider
-      if (elrondProvider) {
-        elrondProvider.getAddress().then((account) => {
-          setAccount({
-            account,
-            key,
-            wallet: 'elrond'
-          });
+      const provider = elrond.provider;
+
+      if (provider) {
+        provider.getAddress().then((account) => {
+          if (account === f.account) {
+            setAccount(f);
+          }
         }).catch(console.error);
       }
 
@@ -376,7 +373,7 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
       setIsLoad(false);
       console.error(e);
     }
-  }, [accounts, metamask, near, flow, solana, key, elrond, elrondProvider]);
+  }, [accounts, metamask, near, flow, solana, key, elrond]);
 
   const setLoginUser = useCallback((loginUser: LoginUser) => {
     const nAccount = { ...loginUser, key };
@@ -412,8 +409,6 @@ export function useLoginUser (key: KEYS = 'files:login'): WrapLoginUser {
         // eslint-disable-next-line
         window.solana.on('disconnect', () => { console.log('Solana disconnected'); });
       }
-    } else if (account.wallet === 'elrond') {
-      setElrondProvider(undefined);
     }
 
     setLoginUser({ ...defLoginUser });
