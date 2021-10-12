@@ -21,6 +21,7 @@ import extensionPolkadotJs from './extensions/polkadot-js.svg';
 import externalCrustFilesBox from './external/box.png';
 import externalCommonwealth from './external/commonwealth.png';
 import externalCrustPinsPin from './external/pins.png';
+import externalPolkadotExt from './external/polkadotExt.png';
 import externalPolkascan from './external/polkascan.png';
 import externalPolkassembly from './external/polkassembly.png';
 import externalPolkastats from './external/polkastats.png';
@@ -31,7 +32,6 @@ import externalWalletFlow from './external/wallet_flow.png';
 import externalWalletMetamask from './external/wallet_metamask.png';
 import externalWalletNear from './external/wallet_near.png';
 import externalWalletSolana from './external/wallet_solana.png';
-import externalPolkadotExt from './external/polkadotExt.png';
 import ipfsGateway from './ipfs/gateway.png';
 import ipfsLogo from './ipfs/ipfs.png';
 import nodeAcala from './nodes/acala-circle.svg';
@@ -324,7 +324,7 @@ export const externalLogos: Record<string, unknown> = {
   walletFlow: externalWalletFlow,
   walletSolana: externalWalletSolana,
   walletElrond: externalWalletElrond,
-  polkadotExt: externalPolkadotExt,
+  polkadotExt: externalPolkadotExt
 };
 
 // empty logos
