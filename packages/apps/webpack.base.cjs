@@ -10,6 +10,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 
 const findPackages = require('../../scripts/findPackages.cjs');
+const { isEmpty } = require('lodash');
 
 function mapChunks (name, regs, inc) {
   return regs.reduce((result, test, index) => ({
@@ -138,8 +139,7 @@ function createWebpack (context, mode = 'production') {
       ]
     },
     node: {
-      __dirname: false,
-      __filename: false
+      __filename: false,
     },
     optimization: {
       minimize: mode === 'production',
@@ -217,7 +217,8 @@ function createWebpack (context, mode = 'production') {
         https: require.resolve("https-browserify"),
         http: require.resolve("stream-http"),
         os: false,
-        assert: false
+        assert: false,
+        fs: false  
       }
     }
   };

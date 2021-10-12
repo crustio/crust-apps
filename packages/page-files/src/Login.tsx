@@ -1,6 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-files authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+import { ExtensionProvider } from '@elrondnetwork/erdjs';
 import React, { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
 
@@ -141,6 +142,38 @@ function Login ({ className, user }: Props) {
     });
   }, [user, queueAction, t]);
 
+  const _onClickElrond = useCallback(() => {
+    const provider = ExtensionProvider.getInstance();
+
+    provider
+      .init()
+      .then(async (initialised) => {
+        if (initialised) {
+          await provider.login({
+            callbackUrl: encodeURIComponent(
+              `${window.location.origin}/#/files`
+            )
+          });
+          const { address } = provider.account;
+
+          user.setLoginUser({
+            // eslint-disable-next-line
+            account: address,
+            wallet: 'elrond'
+          });
+        } else {
+          queueAction({
+            status: 'error',
+            message: t('Something went wrong trying to redirect to wallet login..'),
+            action: t('Connect Elrond')
+          });
+        }
+      })
+      .catch((err) => {
+        console.warn(err);
+      });
+  }, [user, queueAction, t]);
+
   return (
     <div className={className}>
       <div className='loginPanel'>
@@ -212,6 +245,11 @@ function Login ({ className, user }: Props) {
                   className='walletIcon'
                   onClick={_onClickSolana}
                   src={externalLogos.walletSolana as string}
+                />
+                <img
+                  className='walletIcon'
+                  onClick={_onClickElrond}
+                  src={externalLogos.walletElrond as string}
                 />
               </div>
             </>

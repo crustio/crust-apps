@@ -26,6 +26,7 @@ import externalPolkassembly from './external/polkassembly.png';
 import externalPolkastats from './external/polkastats.png';
 import externalSubscan from './external/subscan.svg';
 import externalWalletCrust from './external/wallet_crust.png';
+import externalWalletElrond from './external/wallet_elrond.png';
 import externalWalletFlow from './external/wallet_flow.png';
 import externalWalletMetamask from './external/wallet_metamask.png';
 import externalWalletNear from './external/wallet_near.png';
@@ -320,7 +321,8 @@ export const externalLogos: Record<string, unknown> = {
   walletMetamask: externalWalletMetamask,
   walletNear: externalWalletNear,
   walletFlow: externalWalletFlow,
-  walletSolana: externalWalletSolana
+  walletSolana: externalWalletSolana,
+  walletElrond: externalWalletElrond
 };
 
 // empty logos
