@@ -190,7 +190,7 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
       const prefix = getPerfix(user);
       const msg = user.wallet === 'near' ? user.pubKey || '' : user.account;
       const signature = await user.sign(msg, password);
-      const perSignData = `${prefix}-${msg}:${signature}`;
+      const perSignData = user.wallet === 'elrond' ? signature : `${prefix}-${msg}:${signature}`;
       const base64Signature = window.btoa(perSignData);
       const AuthBearer = `Bearer ${base64Signature}`;
 

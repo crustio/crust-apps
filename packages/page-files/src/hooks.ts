@@ -198,7 +198,7 @@ export function useSign (account: LoginUser, metamask: Metamask, near: NearM, fl
               const transMessage = transaction.serializeForSigning(new Address(sender));
 
               /* eslint-disable @typescript-eslint/restrict-template-expressions */
-              return `elrond-${sender}-${transMessage.toString('hex')}:${signature}`;
+              return `elrond-${sender}-${transMessage.toString('hex')}:${signature.hex()}`;
             })
             .catch((err) => {
               console.error('Elrond wallet signTransaction error', err);
