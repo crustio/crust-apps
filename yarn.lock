@@ -4108,6 +4108,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@polkadot/apps-sworkerVersion@workspace:packages/page-sworkerVersion":
+  version: 0.0.0-use.local
+  resolution: "@polkadot/apps-sworkerVersion@workspace:packages/page-sworkerVersion"
+  languageName: unknown
+  linkType: soft
+
 "@polkadot/apps@workspace:packages/apps":
   version: 0.0.0-use.local
   resolution: "@polkadot/apps@workspace:packages/apps"

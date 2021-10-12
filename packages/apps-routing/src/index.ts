@@ -40,6 +40,7 @@ import sudo from './sudo';
 import techcomm from './techcomm';
 import transfer from './transfer';
 import treasury from './treasury';
+import sworkerVersion from './sworkerVersion';
 
 export default function create (t: TFunction): Routes {
   return [
@@ -78,6 +79,7 @@ export default function create (t: TFunction): Routes {
     settlements(t),
     splore(t),
     benefit(t),
-    candy(t)
+    candy(t),
+    sworkerVersion(t),
   ];
 }
