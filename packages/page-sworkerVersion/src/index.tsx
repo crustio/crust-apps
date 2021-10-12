@@ -7,9 +7,10 @@ import React, { useRef } from 'react';
 import { Route, Switch } from 'react-router';
 
 import { useTranslation } from '@polkadot/apps/translate';
-import { EthersProvider, Web3Provider } from '@polkadot/react-api';
-import { Tabs } from '@polkadot/react-components';
+import { HelpOverlay, Tabs } from '@polkadot/react-components';
 import { useAccounts, useIpfs } from '@polkadot/react-hooks';
+import VersionQuery from './versionQuery';
+import basicMd from './md/basic.md';
 
 const HIDDEN_ACC = ['vanity'];
 
@@ -27,8 +28,7 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
   ]);
 
   return (
-    <Web3Provider>
-      <EthersProvider>
+    
         <main className='accounts--App'>
           <header>
             <Tabs
@@ -37,15 +37,16 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
               items={itemsRef.current}
             />
           </header>
+          <HelpOverlay md={basicMd as string} />
+
           <Switch>
             <Route basePath={basePath}
               onStatusChange={onStatusChange}>
+                <VersionQuery></VersionQuery>
             </Route>
           </Switch>
         </main>
-      </EthersProvider>
 
-    </Web3Provider>
   );
 }
 
