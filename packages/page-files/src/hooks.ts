@@ -207,7 +207,7 @@ export function useSign (account: LoginUser, metamask: Metamask, near: NearM, fl
             });
         };
 
-        setState((o) => ({ ...o, sign }));
+        setState((o) => ({ ...o, sign, isLocked: false }));
       }
 
       return;
