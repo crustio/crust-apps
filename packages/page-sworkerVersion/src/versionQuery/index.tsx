@@ -5,6 +5,7 @@ import React, { useCallback, useState } from 'react';
 
 import { Button, InputAddressSimple } from '@polkadot/react-components';
 import { useTranslation } from '@polkadot/apps/translate';
+import VersionState from './versionState';
 
 interface Props {
   className?: string;
@@ -30,8 +31,8 @@ function VersionQuery ({ className }: Props): React.ReactElement<Props> {
       <InputAddressSimple
         className='staking--queryInput'
         defaultValue={value}
-        help={t<string>('Display overview information for the selected validator, including blocks produced.')}
-        label={t<string>('validator to query')}
+        help={t<string>('')}
+        label={t<string>('Enter the address to be queried')}
         onChange={setValidatorId}
         onEnter={_onQuery}
       >
@@ -42,7 +43,7 @@ function VersionQuery ({ className }: Props): React.ReactElement<Props> {
         />
       </InputAddressSimple>
       {
-        value && (<p>{value}</p>)
+        value && (<VersionState address={value}></VersionState>)
       }
       
     </div>
