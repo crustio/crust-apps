@@ -7,22 +7,28 @@ import styled from 'styled-components';
 
 import { AddressMini } from '@polkadot/react-components';
 
-import { MemberVersions, versionsRecord } from './versionState';
+import { MemberVersions, versionsRecord } from './VersionsState';
+import Status from './Status';
 
 interface Props {
     className?: string;
     isDisabled?: boolean;
     memberVersion: MemberVersions;
+    current: number;
 }
 
-function MemberVersionDisplay({ className = '', memberVersion: { address, version } }: Props): React.ReactElement<Props> | null {
+function MemberVersionDisplay({ className = '', memberVersion: { address, version }, current }: Props): React.ReactElement<Props> | null {
 
     return (
         <tr className={className}>
             <td className='start'>
+                <Status
+                    current={current}
+                    code={version}
+                />
                 <AddressMini value={address} />        
             </td>
-            <td className='number'>
+            <td className='start'>
                 {versionsRecord[version]}
             </td> 
         </tr>

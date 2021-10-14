@@ -8,11 +8,12 @@ import { Table } from '@polkadot/react-components';
 import { useTranslation } from '@polkadot/apps/translate';
 import { useApi } from '@polkadot/react-hooks';
 import _ from 'lodash';
-import MemberVersionDisplay from './memberVersionDisplay';
+import MemberVersionDisplay from './MemberVersion';
 
 interface Props {
     className?: string;
-    address: string
+    address: string;
+    current: number;
 }
 
 interface SworkerVersion {
@@ -37,7 +38,12 @@ export const versionsRecord: Record<string, string> = {
     '0x673dcb16fe746ba752cd915133dc9135d59d6b7b022df58de2a7af4303fcb6e0': 'Version B'
 };
 
-function VersionState ({ className = '', address }: Props): React.ReactElement<Props> {
+export const versionsStartBlockRecord: Record<string, number> = {
+    '0xe6f4e6ab58d6ba4ba2f684527354156c009e4969066427ce18735422180b38f4': 490089,
+    '0x673dcb16fe746ba752cd915133dc9135d59d6b7b022df58de2a7af4303fcb6e0': 474061
+};
+
+function VersionState ({ className = '', address, current }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
     const { api } = useApi();
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -114,13 +120,13 @@ function VersionState ({ className = '', address }: Props): React.ReactElement<P
     const ownerHeaderRef = useRef([
         [t('group owner'), 'start'],
         [t('Members')],
-        [t('Version A (Ubuntu)')],
-        [t('Version B (Ubuntu)')]
+        [t('Version A')],
+        [t('Version B')]
     ]);
 
     const memberHeaderRef = useRef([
         [t('group member'), 'start'],
-        [t('Version')],
+        [t('Version'), 'start'],
     ]);
 
     return (
@@ -140,10 +146,10 @@ function VersionState ({ className = '', address }: Props): React.ReactElement<P
                                 {addressVersionStateInfo.memberVersions.length}           
                             </td>
                             <td className='number'>
-                                {addressVersionStateInfo.versionCount && addressVersionStateInfo.versionCount['Version A']}           
+                                {addressVersionStateInfo.versionCount && addressVersionStateInfo.versionCount['Version A'] ? addressVersionStateInfo.versionCount['Version A'] : 0}           
                             </td>
                             <td className='number'>
-                                {addressVersionStateInfo.versionCount && addressVersionStateInfo.versionCount['Version B']}           
+                                {addressVersionStateInfo.versionCount && addressVersionStateInfo.versionCount['Version B'] ? addressVersionStateInfo.versionCount['Version B'] : 0}           
                             </td>
                         </tr>)}
                     </Table>
@@ -155,6 +161,7 @@ function VersionState ({ className = '', address }: Props): React.ReactElement<P
                             <MemberVersionDisplay
                                 key={mv.address}
                                 memberVersion={mv}
+                                current={current}
                             />
                         ))}
                     </Table>
@@ -168,6 +175,7 @@ function VersionState ({ className = '', address }: Props): React.ReactElement<P
                             <MemberVersionDisplay
                                 key={mv.address}
                                 memberVersion={mv}
+                                current={current}
                             />
                         ))}
                     </Table>

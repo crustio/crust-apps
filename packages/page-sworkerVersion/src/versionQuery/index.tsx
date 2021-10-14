@@ -5,13 +5,14 @@ import React, { useCallback, useState } from 'react';
 
 import { Button, InputAddressSimple } from '@polkadot/react-components';
 import { useTranslation } from '@polkadot/apps/translate';
-import VersionState from './versionState';
+import VersionsState from './VersionsState';
 
 interface Props {
   className?: string;
+  current: number;
 }
 
-function VersionQuery ({ className }: Props): React.ReactElement<Props> {
+function VersionQuery ({ className, current }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   // const { value } = useParams<{ value: string }>();
   const [value, setValue] = useState<string | null>(null);
@@ -43,7 +44,7 @@ function VersionQuery ({ className }: Props): React.ReactElement<Props> {
         />
       </InputAddressSimple>
       {
-        value && (<VersionState address={value}></VersionState>)
+        value && (<VersionsState current={current} address={value}></VersionsState>)
       }
       
     </div>

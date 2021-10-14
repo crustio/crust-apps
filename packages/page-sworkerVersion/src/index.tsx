@@ -3,29 +3,47 @@
 
 import type { AppProps as Props } from '@polkadot/react-components/types';
 
-import React, { useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Route, Switch } from 'react-router';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import { HelpOverlay, Tabs } from '@polkadot/react-components';
-import { useAccounts, useIpfs } from '@polkadot/react-hooks';
+import { useAccounts } from '@polkadot/react-hooks';
 import VersionQuery from './versionQuery';
 import basicMd from './md/basic.md';
+import Summary from './SummaryInfo';
+import { BlockAuthorsContext } from '@polkadot/react-query';
 
 const HIDDEN_ACC = ['vanity'];
+
+function getSum (total: string, num: string) {
+  return total + num;
+}
+
+const getNumber = (str: string) => {
+  return Number(str.split(',').reduce(getSum));
+};
 
 function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { hasAccounts } = useAccounts();
-  const { isIpfs } = useIpfs();
+  const { lastBlockNumber } = useContext(BlockAuthorsContext);
+  const [current, setCurrent] = useState<number>(0);
 
   const itemsRef = useRef([
     {
       isRoot: true,
-      name: 'sworkerVersions',
-      text: t<string>('Sworker versions')
+      name: 'sworkerVersion',
+      text: t<string>('Sworker version')
     }
   ]);
+
+  useEffect(() => {
+    if (lastBlockNumber) {
+      setCurrent(getNumber(lastBlockNumber))
+    }
+
+  }, [lastBlockNumber])
 
   return (
     
@@ -33,16 +51,16 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
           <header>
             <Tabs
               basePath={basePath}
-              hidden={(hasAccounts && !isIpfs) ? undefined : HIDDEN_ACC}
+              hidden={(hasAccounts) ? undefined : HIDDEN_ACC}
               items={itemsRef.current}
             />
           </header>
           <HelpOverlay md={basicMd as string} />
-
+          <Summary current={current} />
           <Switch>
             <Route basePath={basePath}
               onStatusChange={onStatusChange}>
-                <VersionQuery></VersionQuery>
+                <VersionQuery current={current} />
             </Route>
           </Switch>
         </main>
