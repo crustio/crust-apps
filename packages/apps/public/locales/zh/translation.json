@@ -1716,5 +1716,13 @@
   "Exchange": "兑换",
   "The amount you will to exchange.": "你将兑换的数量。",
   "guaranteed": "担保量",
-  "unguaranteed": "未担保量"
+  "unguaranteed": "未担保量",
+  "Current availabe sWorker": "当前可用sWorker版本",
+  "Proportion": "版本比例",
+  "Release": "发布",
+  "Progress bar": "进度条",
+  "Due date": "过期块高",
+  "nav.sworkerVersion": "sWorker版本",
+  "sWorker Version": "sWorker版本",
+  "Enter the address to be queried": "输入需要查询的地址"
 }

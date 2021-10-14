@@ -27,7 +27,7 @@ function Summary({ className, current }: Props): React.ReactElement<Props> | nul
   const versionHeaderRef = useRef([
     [t('Current availabe sWorker'), 'start'],
     [t('Proportion')],
-    [t('Realease')],
+    [t('Release')],
     [t('Due date')],
     [t('Progress bar')]
   ]);
@@ -60,7 +60,7 @@ function Summary({ className, current }: Props): React.ReactElement<Props> | nul
   return (<div className={className}>
     <Table
         header={versionHeaderRef.current}
-        empty={ !isLoading && t<string>('No funds group owner yet.')}
+        empty={ !isLoading && t<string>('No funds availabe sWorker yet.')}
     >
         {summaryInfo && summaryInfo?.map((sv): React.ReactNode => (
             <VersionInfo

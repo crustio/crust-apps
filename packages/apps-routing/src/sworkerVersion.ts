@@ -17,6 +17,6 @@ export default function create (t: TFunction): Route {
     group: 'network',
     icon: 'exchange-alt',
     name: 'sworkerVersion',
-    text: t('nav.sworkerVersion', 'Sworker Version', { ns: 'apps-routing' })
+    text: t('nav.sworkerVersion', 'sWorker Version', { ns: 'apps-routing' })
   };
 }

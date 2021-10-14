@@ -11,6 +11,7 @@ import { HelpOverlay, Tabs } from '@polkadot/react-components';
 import { useAccounts } from '@polkadot/react-hooks';
 import VersionQuery from './versionQuery';
 import basicMd from './md/basic.md';
+import basicMd_zh from './md/basic_zh.md';
 import Summary from './SummaryInfo';
 import { BlockAuthorsContext } from '@polkadot/react-query';
 
@@ -25,7 +26,7 @@ const getNumber = (str: string) => {
 };
 
 function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Props> {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { hasAccounts } = useAccounts();
   const { lastBlockNumber } = useContext(BlockAuthorsContext);
   const [current, setCurrent] = useState<number>(0);
@@ -34,7 +35,7 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
     {
       isRoot: true,
       name: 'sworkerVersion',
-      text: t<string>('Sworker version')
+      text: t<string>('sWorker Version')
     }
   ]);
 
@@ -55,7 +56,7 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
               items={itemsRef.current}
             />
           </header>
-          <HelpOverlay md={basicMd as string} />
+          <HelpOverlay md={i18n.language == 'zh' ? basicMd_zh as string : basicMd as string} />
           <Summary current={current} />
           <Switch>
             <Route basePath={basePath}
