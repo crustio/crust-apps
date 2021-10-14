@@ -81,7 +81,6 @@ const update = (state, message) => {
   switch (message.type) {
     case ACTIONS.IPFS_INIT: {
       const { task } = message;
-
       switch (task.status) {
         case 'Init': {
           return { ...state, ready: false };
@@ -215,7 +214,8 @@ const asMultiaddress = (value) => {
   if (value != null && value !== '') {
     try {
       return multiaddr(value).toString();
-    } catch (_) {}
+    } catch (_) {
+    }
   }
 
   return null;
@@ -246,7 +246,8 @@ const parseHTTPClientOptions = (input) => {
   // Try parsing and reading as json
   try {
     return readHTTPClinetOptions(JSON.parse(input));
-  } catch (_) {}
+  } catch (_) {
+  }
 
   // turn URL with inlined basic auth into client options object
   try {
@@ -264,7 +265,8 @@ const parseHTTPClientOptions = (input) => {
         }
       };
     }
-  } catch (_) { }
+  } catch (_) {
+  }
 
   return null;
 };
@@ -404,11 +406,12 @@ const actions = {
           // ipfs connection is working if can we fetch the bw stats.
           // See: https://github.com/ipfs-shipyard/ipfs-webui/issues/835#issuecomment-466966884
           try {
-            await last(ipfs.stats.bw());
+            await last(ipfs.stats.bw({ timeout: 5000 }))
           } catch (err) {
             if (!/bandwidth reporter disabled in config/.test(err)) {
               throw err;
             }
+            // return false
           }
 
           return true;
@@ -418,7 +421,6 @@ const actions = {
           providers.httpClient({ apiAddress })
         ]
       });
-
       if (!result) {
         throw Error(`Could not connect to the IPFS API (${apiAddress})`);
       } else {
@@ -542,7 +544,9 @@ const actions = {
       const value = await first(ipfs.pin.ls({ paths: [cid], type: 'recursive' }));
 
       return !!value;
-    } catch (_) { return false; }
+    } catch (_) {
+      return false;
+    }
   }
 };
 
