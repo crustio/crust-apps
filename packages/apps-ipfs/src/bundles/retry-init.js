@@ -68,12 +68,14 @@ const retryInit = {
     'selectAppTime',
     'selectInitStartedAt',
     'selectInitFailedAt',
+    'selectHash',
     /**
      * @param {number} appTime
      * @param {number|void} startedAt
      * @param {number|void} failedAt
      */
-    (appTime, startedAt, failedAt) => {
+    (appTime, startedAt, failedAt, hash) => {
+      if (hash.startsWith('/storage_files') || hash === '/storage' || hash === '/' || hash === '' || !hash.startsWith('/storage')) return false;
       if (!failedAt || failedAt < startedAt) return false;
       if (appTime - failedAt < 3000) return false;
 
