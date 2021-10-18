@@ -32,12 +32,20 @@ function Summary({ className, current }: Props): React.ReactElement<Props> | nul
     [t('Progress bar')]
   ]);
 
-  useEffect(() => {
-      const sv: SworkerVersion[] = [];
-      api.query.swork.pubKeys.entries().then(res => {
-        const pubkyes = JSON.parse(JSON.stringify(res));
-        const availabeCode = _.filter(pubkyes.map((e: any[]) => e[1]), e => {
-          return versionsRecord[e.code]
+  const getVersionSummaryInfo = () => {
+    let unsub: (() => void) | undefined;
+    const fns: any[] = [
+      [api.query.swork.pubKeys.entries]
+    ];
+    const sv: SworkerVersion[] = [];
+
+    api.combineLatest<any[]>(fns, ([pubkyes]): void => {
+      const availabeCode: any[] = []
+      if (Array.isArray(pubkyes)) {
+        pubkyes.forEach(([{ args: [_] }, value]) => {
+          if (versionsRecord[value.code]) {
+            availabeCode.push(value)
+          }
         });
         const codeGroup = _.groupBy(availabeCode, 'code');
         const total = availabeCode.length
@@ -54,7 +62,18 @@ function Summary({ className, current }: Props): React.ReactElement<Props> | nul
         });
         setSummaryInfo(sv);
         setIsLoading(false);
-      })
+      }
+    }).then((_unsub): void => {
+      unsub = _unsub;
+    }).catch(console.error);
+
+    return (): void => {
+      unsub && unsub();
+    };
+  };
+
+  useEffect(() => {
+    getVersionSummaryInfo()
   }, [])
 
   return (<div className={className}>

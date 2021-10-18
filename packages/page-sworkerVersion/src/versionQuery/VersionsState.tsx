@@ -4,7 +4,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-import { Table } from '@polkadot/react-components';
+import { Card, Columar, Table } from '@polkadot/react-components';
 import { useTranslation } from '@polkadot/apps/translate';
 import { useApi } from '@polkadot/react-hooks';
 import _ from 'lodash';
@@ -29,6 +29,7 @@ export interface MemberVersions {
 interface AddressVersionState {
     owner?: string;
     memberVersions: MemberVersions[];
+    memberVersionGroup?: [string, MemberVersions[]][];
     versions?: SworkerVersion[];
     versionCount?: Record<string, number>
 }
@@ -71,6 +72,7 @@ function VersionState ({ className = '', address, current }: Props): React.React
                             }
                         })
                         const versionGroup = _.groupBy(memberVersions, 'version');
+                        const memberVersionGroup: [string, MemberVersions[]][] = [];
                         const sworkerVersion: SworkerVersion[] = [];
                         const versionCount: Record<string, number> = {};
     
@@ -80,15 +82,16 @@ function VersionState ({ className = '', address, current }: Props): React.React
                                 version: versionsRecord[code],
                                 count: members.length
                             })
+                            memberVersionGroup.push([versionsRecord[code], members as unknown as MemberVersions[]])
                         })
 
                         setAddressVersionStateInfo({
                             owner: address,
                             memberVersions: memberVersions as unknown as MemberVersions[],
+                            memberVersionGroup,
                             versions: sworkerVersion,
                             versionCount
                         })
-                        // console.log('memberVersions', memberVersions)
     
                         setIsLoading(false)
                     })
@@ -110,7 +113,6 @@ function VersionState ({ className = '', address, current }: Props): React.React
                             memberVersions: memberVersions as unknown as MemberVersions[]
                         })
                         setIsLoading(false)
-                        console.log('res', JSON.stringify(res))
                     })
                 })
             }
@@ -118,14 +120,14 @@ function VersionState ({ className = '', address, current }: Props): React.React
     }, [api, address])
 
     const ownerHeaderRef = useRef([
-        [t('group owner'), 'start'],
+        [t('Group Owner'), 'start'],
         [t('Members')],
         [t('Version A')],
         [t('Version B')]
     ]);
 
     const memberHeaderRef = useRef([
-        [t('group member'), 'start'],
+        [t('Group Member'), 'start'],
         [t('Version'), 'start'],
     ]);
 
@@ -153,18 +155,28 @@ function VersionState ({ className = '', address, current }: Props): React.React
                             </td>
                         </tr>)}
                     </Table>
-                    <Table
-                        header={memberHeaderRef.current}
-                        empty={!isLoading && !addressVersionStateInfo && t<string>('No funds group member yet.')}
-                    >
-                        {addressVersionStateInfo && addressVersionStateInfo.memberVersions?.map((mv): React.ReactNode => (
-                            <MemberVersionDisplay
-                                key={mv.address}
-                                memberVersion={mv}
-                                current={current}
-                            />
-                        ))}
-                    </Table>
+                    <Card>
+                        <Columar>
+                            {
+                                addressVersionStateInfo && addressVersionStateInfo.memberVersionGroup?.map((e): React.ReactNode => (
+                                    <Columar.Column>
+                                        <Table
+                                            header={memberHeaderRef.current}
+                                            empty={!isLoading && !addressVersionStateInfo && t<string>('No funds group member yet.')}
+                                        >
+                                            {e[1] && e[1]?.map((mv): React.ReactNode => (
+                                                <MemberVersionDisplay
+                                                    key={mv.address}
+                                                    memberVersion={mv}
+                                                    current={current}
+                                                />
+                                            ))}
+                                        </Table>
+                                    </Columar.Column>
+                                ))
+                            }
+                        </Columar>                       
+                    </Card>
                 </>) :
                 (<>
                     <Table
@@ -186,13 +198,13 @@ function VersionState ({ className = '', address, current }: Props): React.React
 }
 
 export default React.memo(styled(VersionState)`
-.filter--tags {
-  .ui--Dropdown {
-    padding-left: 0;
+    .filter--tags {
+        .ui--Dropdown {
+            padding-left: 0;
 
-    label {
-      left: 1.55rem;
+            label {
+                left: 1.55rem;
+            }
+        }
     }
-  }
-}
 `);

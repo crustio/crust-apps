@@ -12,10 +12,12 @@ export default function create (t: TFunction): Route {
     display: {
       needsAccounts: true,
       needsApi: [
+        'tx.benefits.addBenefitFunds',
+        'query.benefits.sworkBenefits'
       ]
     },
     group: 'network',
-    icon: 'exchange-alt',
+    icon: 'book',
     name: 'sworkerVersion',
     text: t('nav.sworkerVersion', 'sWorker Version', { ns: 'apps-routing' })
   };
