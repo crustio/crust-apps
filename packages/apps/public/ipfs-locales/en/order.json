@@ -62,7 +62,7 @@
   "ipfsError": "IPFS not connected",
   "tips": {
     "wikiAddress": "https://wiki.crust.network/docs/en/storageUserGuide",
-    "tip1": "Please wait for a while. It takes some time for your file to get replicas in the network.",
+    "tip1": "The file is in the queue for the pinning action. If this status lasts too long (>2hours), please upload again.",
     "tip2": "Please enable IPFS to use this function."
   },
   "durationLabel": "Valid for",

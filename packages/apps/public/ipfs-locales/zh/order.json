@@ -62,7 +62,7 @@
   "ipfsError": "IPFS未连接",
   "tips": {
     "wikiAddress": "https://wiki.crust.network/docs/zh-CN/storageUserGuide",
-    "tip1": "请等待一会，您的文件正在网络中生成副本。",
+    "tip1": "文件正在等待上传被Pin至IPFS网络。如果此状态持续过久（＞2小时），请尝试重新上传文件。",
     "tip2": "请启动本地的IPFS来使用该功能"
   },
   "durationLabel": "订单有效期",

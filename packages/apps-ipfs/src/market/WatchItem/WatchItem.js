@@ -88,16 +88,17 @@ const WatchItem = ({
         // success
         status = fileStatusEnum.SUCCESS;
       }
-    } else {
-      status = fileStatusEnum.FAILED;
-      watchItem.expireTime = 0;
-      watchItem.status = status;
-      watchItem.startTime = 0;
-      watchItem.fileSize = 0;
-      watchItem.confirmedReplicas = 0;
-      watchItem.amount = 0;
-      watchItem.prepaid = 0;
     }
+    // else {
+      // status = fileStatusEnum.FAILED;
+      // watchItem.expireTime = 0;
+      // watchItem.status = status;
+      // watchItem.startTime = 0;
+      // watchItem.fileSize = 0;
+      // watchItem.confirmedReplicas = 0;
+      // watchItem.amount = 0;
+      // watchItem.prepaid = 0;
+    // }
   }
   if (!watchItem.fileName) {
     watchItem.fileName = DEF_FILE_NAME;
