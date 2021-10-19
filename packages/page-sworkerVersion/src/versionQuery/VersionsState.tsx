@@ -36,12 +36,12 @@ interface AddressVersionState {
 
 export const versionsRecord: Record<string, string> = {
     '0xe6f4e6ab58d6ba4ba2f684527354156c009e4969066427ce18735422180b38f4': 'Version A',
-    '0x673dcb16fe746ba752cd915133dc9135d59d6b7b022df58de2a7af4303fcb6e0': 'Version B'
+    '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 'Version B'
 };
 
 export const versionsStartBlockRecord: Record<string, number> = {
     '0xe6f4e6ab58d6ba4ba2f684527354156c009e4969066427ce18735422180b38f4': 490089,
-    '0x673dcb16fe746ba752cd915133dc9135d59d6b7b022df58de2a7af4303fcb6e0': 474061
+    '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 1382305
 };
 
 function VersionState ({ className = '', address, current }: Props): React.ReactElement<Props> {
@@ -114,7 +114,7 @@ function VersionState ({ className = '', address, current }: Props): React.React
                         })
                         setIsLoading(false)
                     })
-                })
+                }).finally(() => setIsLoading(false))
             }
         })
     }, [api, address])

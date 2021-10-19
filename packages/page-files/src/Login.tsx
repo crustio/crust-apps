@@ -194,7 +194,7 @@ function Login ({ className, user }: Props) {
               <div
                 className='specSubTitle2'>{`${t('Crust Files is open source and welcome to contribute! Following features are coming soon:')}`}</div>
               <div className='specItem'>{`- ${t('End-to-end file encryption')}`}</div>
-              <div className='specItem'>{`- ${t('Paid service with smart contract on Polygon, Ethereum, Near, Flow and Solana')}`}</div>
+              <div className='specItem'>{`- ${t('Paid service with smart contract on Polygon, Ethereum, Near, Flow, Elrond and Solana')}`}</div>
             </div>
             <img
               className='specIcon'
