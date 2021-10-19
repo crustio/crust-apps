@@ -13,7 +13,7 @@ interface Props {
   members: string[];
 }
 
-const MAX_REASON_LEN = 128;
+const MAX_REASON_LEN = 4096;
 const MIN_REASON_LEN = 5;
 
 function TipCreate ({ members }: Props): React.ReactElement<Props> {
