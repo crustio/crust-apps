@@ -9,11 +9,14 @@ import { useTranslation } from '@polkadot/apps/translate';
 import { useApi } from '@polkadot/react-hooks';
 import _ from 'lodash';
 import MemberVersionDisplay from './MemberVersion';
+import { PKInfo } from '../SummaryInfo';
 
 interface Props {
     className?: string;
     address: string;
     current: number;
+    pkInfos: PKInfo[];
+    isLoading: boolean;
 }
 
 interface SworkerVersion {
@@ -44,10 +47,10 @@ export const versionsStartBlockRecord: Record<string, number> = {
     '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 1382305
 };
 
-function VersionState ({ className = '', address, current }: Props): React.ReactElement<Props> {
+function VersionState ({ className = '', address, current, pkInfos, isLoading: summaryLoading }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
     const { api } = useApi();
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(summaryLoading);
     const [isOwner, setIsOwner] = useState<boolean>(false);
     const [addressVersionStateInfo, setAddressVersionStateInfo] = useState<AddressVersionState>();
 
@@ -57,67 +60,59 @@ function VersionState ({ className = '', address, current }: Props): React.React
             const members = groupInfo.members
             if (members && members.length) {
                 setIsOwner(true);
+                
                 api.query.swork?.identities?.multi(members).then(res => {
                     const identities = JSON.parse(JSON.stringify(res));
-                    const identitiesObj = identities.map((opt: any, index: string | number) => [members[index], opt.anchor])
-                    const queryInfo = identitiesObj.map((e: any[]) => e[1]);
-                    api.query.swork.pubKeys.multi(queryInfo).then(res => {
-                        const pubkeys = JSON.parse(JSON.stringify(res));
-                        const memberVersions = pubkeys
-                        // @ts-ignore
-                        .map((opt, index) => {
-                            return {
-                                address: members[index],
-                                version: opt.code
-                            }
-                        })
-                        const versionGroup = _.groupBy(memberVersions, 'version');
-                        const memberVersionGroup: [string, MemberVersions[]][] = [];
-                        const sworkerVersion: SworkerVersion[] = [];
-                        const versionCount: Record<string, number> = {};
-    
-                        Object.entries(versionGroup).forEach(([code, members]) => {
-                            versionCount[versionsRecord[code]] = members.length
-                            sworkerVersion.push({
-                                version: versionsRecord[code],
-                                count: members.length
-                            })
-                            memberVersionGroup.push([versionsRecord[code], members as unknown as MemberVersions[]])
-                        })
-
-                        setAddressVersionStateInfo({
-                            owner: address,
-                            memberVersions: memberVersions as unknown as MemberVersions[],
-                            memberVersionGroup,
-                            versions: sworkerVersion,
-                            versionCount
-                        })
-    
-                        setIsLoading(false)
+                    const memberVersions = identities.map((identity: { anchor: string; }, index: number) => {
+                        const pkIndex = _.findIndex(pkInfos, e => e.anchor == identity.anchor);
+                        return {
+                            address: members[index],
+                            version: pkInfos[pkIndex]?.code
+                        }
                     })
+                    const versionGroup = _.groupBy(memberVersions, 'version');
+                    const memberVersionGroup: [string, MemberVersions[]][] = [];
+                    const sworkerVersion: SworkerVersion[] = [];
+                    const versionCount: Record<string, number> = {};
+
+                    Object.entries(versionGroup).forEach(([code, members]) => {
+                        versionCount[versionsRecord[code]] = members.length
+                        sworkerVersion.push({
+                            version: versionsRecord[code],
+                            count: members.length
+                        })
+                        memberVersionGroup.push([versionsRecord[code], members as unknown as MemberVersions[]])
+                    })
+
+                    setAddressVersionStateInfo({
+                        owner: address,
+                        memberVersions: memberVersions as unknown as MemberVersions[],
+                        memberVersionGroup,
+                        versions: sworkerVersion,
+                        versionCount
+                    })
+
+                    setIsLoading(false)
                 })
             } else {
                 setIsOwner(false);
                 api.query.swork?.identities(address).then(res => {
                     const identities = JSON.parse(JSON.stringify(res));
-                    const identitiesObj = [address, identities.anchor]
-                    const queryInfo = identitiesObj[1];
-                    api.query.swork.pubKeys(queryInfo).then(res => {
-                        const pubkeys = JSON.parse(JSON.stringify(res));
-                        const memberVersions = [];
-                        memberVersions.push({
-                            address: identitiesObj[0],
-                            version: pubkeys.code
-                        })
-                        setAddressVersionStateInfo({
-                            memberVersions: memberVersions as unknown as MemberVersions[]
-                        })
-                        setIsLoading(false)
+                    const pkIndex = _.findIndex(pkInfos, e => e.anchor == identities.anchor);
+                    const memberVersions = [];
+                    memberVersions.push({
+                        address,
+                        version: pkInfos[pkIndex]?.code
                     })
+                    setAddressVersionStateInfo({
+                        memberVersions: memberVersions as unknown as MemberVersions[]
+                    })
+                    setIsLoading(false)
+                    
                 }).finally(() => setIsLoading(false))
             }
         })
-    }, [api, address])
+    }, [api, address, pkInfos])
 
     const ownerHeaderRef = useRef([
         [t('Group Owner'), 'start'],

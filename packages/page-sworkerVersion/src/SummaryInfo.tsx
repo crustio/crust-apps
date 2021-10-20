@@ -3,26 +3,28 @@
 
 /* eslint-disable */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 
 import { Table } from '@polkadot/react-components';
 import { useTranslation } from '@polkadot/apps/translate';
 import VersionInfo, { SworkerVersion } from './VersionInfo';
-import { useApi } from '@polkadot/react-hooks';
-import _ from 'lodash';
-import { versionsRecord, versionsStartBlockRecord } from './versionQuery/VersionsState';
 
 interface Props {
   className?: string;
   current: number;
+  summaryInfo: SworkerVersion[];
+  isLoading: boolean;
 }
 
-function Summary({ className, current }: Props): React.ReactElement<Props> | null {
+export interface PKInfo {
+  code: string;
+  anchor: string;
+}
+
+function Summary({ className, current, summaryInfo, isLoading }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
-  const { api } = useApi();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [summaryInfo, setSummaryInfo] = useState<SworkerVersion[]>([]);
+
   
   const versionHeaderRef = useRef([
     [t('Current availabe sWorker'), 'start'],
@@ -31,50 +33,6 @@ function Summary({ className, current }: Props): React.ReactElement<Props> | nul
     [t('Due date')],
     [t('Progress bar')]
   ]);
-
-  const getVersionSummaryInfo = () => {
-    let unsub: (() => void) | undefined;
-    const fns: any[] = [
-      [api.query.swork.pubKeys.entries]
-    ];
-    const sv: SworkerVersion[] = [];
-
-    api.combineLatest<any[]>(fns, ([pubkyes]): void => {
-      const availabeCode: any[] = []
-      if (Array.isArray(pubkyes)) {
-        pubkyes.forEach(([{ args: [_] }, value]) => {
-          if (versionsRecord[value.code]) {
-            availabeCode.push(value)
-          }
-        });
-        const codeGroup = _.groupBy(availabeCode, 'code');
-        const total = availabeCode.length
-        Object.entries(codeGroup).forEach(([code, entries]) => {
-          api.query.swork.codes(code).then(res => {
-            const codeInfo = JSON.parse(JSON.stringify(res));
-            sv.push({
-              version: code,
-              start: versionsStartBlockRecord[code],
-              end: codeInfo,
-              proportion: _.divide(entries.length, total)
-            })
-          })
-        });
-        setSummaryInfo(sv);
-        setIsLoading(false);
-      }
-    }).then((_unsub): void => {
-      unsub = _unsub;
-    }).catch(console.error);
-
-    return (): void => {
-      unsub && unsub();
-    };
-  };
-
-  useEffect(() => {
-    getVersionSummaryInfo()
-  }, [])
 
   return (<div className={className}>
     <Table

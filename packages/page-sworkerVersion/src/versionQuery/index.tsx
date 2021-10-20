@@ -6,13 +6,16 @@ import React, { useCallback, useState } from 'react';
 import { Button, InputAddressSimple } from '@polkadot/react-components';
 import { useTranslation } from '@polkadot/apps/translate';
 import VersionsState from './VersionsState';
+import { PKInfo } from '../SummaryInfo';
 
 interface Props {
   className?: string;
   current: number;
+  pkInfos: PKInfo[];
+  isLoading: boolean;
 }
 
-function VersionQuery ({ className, current }: Props): React.ReactElement<Props> {
+function VersionQuery ({ className, current, pkInfos, isLoading }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   // const { value } = useParams<{ value: string }>();
   const [value, setValue] = useState<string | null>(null);
@@ -39,12 +42,12 @@ function VersionQuery ({ className, current }: Props): React.ReactElement<Props>
       >
         <Button
           icon='play'
-          isDisabled={!validatorId}
+          isDisabled={!validatorId || isLoading}
           onClick={_onQuery}
         />
       </InputAddressSimple>
       {
-        value && (<VersionsState current={current} address={value}></VersionsState>)
+        value && (<VersionsState current={current} address={value} pkInfos={pkInfos} isLoading={isLoading}></VersionsState>)
       }
       
     </div>
