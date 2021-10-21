@@ -102,7 +102,7 @@ function CsmStakingApp({ basePath, onStatusChange }: Props): React.ReactElement<
   const { api, systemChain } = useApi();
   const activeEraInfo = useCall<ActiveEraInfo>(api.query.staking.activeEra);
   const activeEra = activeEraInfo && (JSON.parse(JSON.stringify(activeEraInfo)).index);
-  const increasingFactor =  Math.pow(1.02, Math.min(activeEra-958, 80));
+  const increasingFactor =  Math.pow(1.02, 80) * Math.pow(1.03, Math.min(activeEra-1224, 40));
   const overviewUrl = systemChain == 'Crust Maxwell' ? 'https://pd-api.crust.network/overview/' : 'http://crust-sg1.ownstack.cn:8866/overview/';
   const [providers, setProviders] = useState<DataProviderState[]>([]);
   const [summaryInfo, setSummaryInfo] = useState<SummaryInfo | null>();
