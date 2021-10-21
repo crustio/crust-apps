@@ -98,17 +98,20 @@ function VersionState ({ className = '', address, current, pkInfos, isLoading: s
                 setIsOwner(false);
                 api.query.swork?.identities(address).then(res => {
                     const identities = JSON.parse(JSON.stringify(res));
-                    const pkIndex = _.findIndex(pkInfos, e => e.anchor == identities.anchor);
-                    const memberVersions = [];
-                    memberVersions.push({
-                        address,
-                        version: pkInfos[pkIndex]?.code
-                    })
-                    setAddressVersionStateInfo({
-                        memberVersions: memberVersions as unknown as MemberVersions[]
-                    })
-                    setIsLoading(false)
-                    
+                    if (identities) {
+                        const pkIndex = _.findIndex(pkInfos, e => e.anchor == identities.anchor);
+                        const memberVersions = [];
+                        memberVersions.push({
+                            address,
+                            version: pkInfos[pkIndex]?.code
+                        })
+                        setAddressVersionStateInfo({
+                            memberVersions: memberVersions as unknown as MemberVersions[]
+                        })
+                        setIsLoading(false)
+                    } else {
+                        setAddressVersionStateInfo(undefined)
+                    }        
                 }).finally(() => setIsLoading(false))
             }
         })
