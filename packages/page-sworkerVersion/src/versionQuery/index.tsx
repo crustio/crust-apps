@@ -3,10 +3,11 @@
 
 import React, { useCallback, useState } from 'react';
 
-import { Button, InputAddressSimple } from '@polkadot/react-components';
 import { useTranslation } from '@polkadot/apps/translate';
-import VersionsState from './VersionsState';
+import { Button, InputAddressSimple } from '@polkadot/react-components';
+
 import { PKInfo } from '../SummaryInfo';
+import VersionsState from './VersionsState';
 
 interface Props {
   className?: string;
@@ -15,7 +16,7 @@ interface Props {
   isLoading: boolean;
 }
 
-function VersionQuery ({ className, current, pkInfos, isLoading }: Props): React.ReactElement<Props> {
+function VersionQuery ({ className, current, isLoading, pkInfos }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   // const { value } = useParams<{ value: string }>();
   const [value, setValue] = useState<string | null>(null);
@@ -24,7 +25,7 @@ function VersionQuery ({ className, current, pkInfos, isLoading }: Props): React
   const _onQuery = useCallback(
     (): void => {
       if (validatorId) {
-        setValue(validatorId)
+        setValue(validatorId);
       }
     },
     [validatorId]
@@ -47,9 +48,12 @@ function VersionQuery ({ className, current, pkInfos, isLoading }: Props): React
         />
       </InputAddressSimple>
       {
-        value && (<VersionsState current={current} address={value} pkInfos={pkInfos} isLoading={isLoading}></VersionsState>)
+        value && (<VersionsState address={value}
+          current={current}
+          isLoading={isLoading}
+          pkInfos={pkInfos}></VersionsState>)
       }
-      
+
     </div>
   );
 }

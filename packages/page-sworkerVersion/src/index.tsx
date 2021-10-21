@@ -1,22 +1,24 @@
 // Copyright 2017-2021 @polkadot/app-accounts authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { AppProps as Props } from '@polkadot/react-components/types';
 
+import _ from 'lodash';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Route, Switch } from 'react-router';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import { HelpOverlay, Tabs } from '@polkadot/react-components';
 import { useAccounts, useApi } from '@polkadot/react-hooks';
-import VersionQuery from './versionQuery';
+import { BlockAuthorsContext } from '@polkadot/react-query';
+
 import basicMd from './md/basic.md';
 import basicMd_zh from './md/basic_zh.md';
-import Summary, { PKInfo } from './SummaryInfo';
-import { BlockAuthorsContext } from '@polkadot/react-query';
-import { SworkerVersion } from './VersionInfo';
 import { versionsRecord, versionsStartBlockRecord } from './versionQuery/VersionsState';
-import _ from 'lodash';
+import Summary, { PKInfo } from './SummaryInfo';
+import { SworkerVersion } from './VersionInfo';
+import VersionQuery from './versionQuery';
 
 const HIDDEN_ACC = ['vanity'];
 
@@ -29,7 +31,7 @@ const getNumber = (str: string) => {
 };
 
 function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Props> {
-  const { t, i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const { hasAccounts } = useAccounts();
   const { lastBlockNumber } = useContext(BlockAuthorsContext);
   const [current, setCurrent] = useState<number>(0);
@@ -48,10 +50,9 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
 
   useEffect(() => {
     if (lastBlockNumber) {
-      setCurrent(getNumber(lastBlockNumber))
+      setCurrent(getNumber(lastBlockNumber));
     }
-
-  }, [lastBlockNumber])
+  }, [lastBlockNumber]);
 
   const getVersionSummaryInfo = () => {
     let unsub: (() => void) | undefined;
@@ -62,26 +63,30 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
     const pkInfos: PKInfo[] = [];
 
     api.combineLatest<any[]>(fns, ([pubkyes]): void => {
-      const availabeCode: any[] = []
+      const availabeCode: any[] = [];
+
       if (Array.isArray(pubkyes)) {
         pubkyes.forEach(([{ args: [_] }, value]) => {
           if (versionsRecord[value.code]) {
-            availabeCode.push(value)
+            availabeCode.push(value);
           }
-          pkInfos.push(value)
+
+          pkInfos.push(value);
         });
         const codeGroup = _.groupBy(availabeCode, 'code');
-        const total = availabeCode.length
+        const total = availabeCode.length;
+
         Object.entries(codeGroup).forEach(([code, entries]) => {
-          api.query.swork.codes(code).then(res => {
+          api.query.swork.codes(code).then((res) => {
             const codeInfo = JSON.parse(JSON.stringify(res));
+
             sv.push({
               version: code,
               start: versionsStartBlockRecord[code],
               end: codeInfo,
               proportion: _.divide(entries.length, total)
-            })
-          })
+            });
+          });
         });
         setPkInfos(pkInfos);
         setSummaryInfo(sv);
@@ -97,28 +102,32 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
   };
 
   useEffect(() => {
-    getVersionSummaryInfo()
-  }, [])
+    getVersionSummaryInfo();
+  }, []);
 
   return (
-    
-        <main className='accounts--App'>
-          <header>
-            <Tabs
-              basePath={basePath}
-              hidden={(hasAccounts) ? undefined : HIDDEN_ACC}
-              items={itemsRef.current}
-            />
-          </header>
-          <HelpOverlay md={i18n.language == 'zh' ? basicMd_zh as string : basicMd as string} />
-          <Summary current={current} summaryInfo={summaryInfo} isLoading={isLoading} />
-          <Switch>
-            <Route basePath={basePath}
-              onStatusChange={onStatusChange}>
-                <VersionQuery current={current} pkInfos={pkInfos} isLoading={isLoading} />
-            </Route>
-          </Switch>
-        </main>
+
+    <main className='accounts--App'>
+      <header>
+        <Tabs
+          basePath={basePath}
+          hidden={(hasAccounts) ? undefined : HIDDEN_ACC}
+          items={itemsRef.current}
+        />
+      </header>
+      <HelpOverlay md={i18n.language == 'zh' ? basicMd_zh as string : basicMd as string} />
+      <Summary current={current}
+        isLoading={isLoading}
+        summaryInfo={summaryInfo} />
+      <Switch>
+        <Route basePath={basePath}
+          onStatusChange={onStatusChange}>
+          <VersionQuery current={current}
+            isLoading={isLoading}
+            pkInfos={pkInfos} />
+        </Route>
+      </Switch>
+    </main>
 
   );
 }

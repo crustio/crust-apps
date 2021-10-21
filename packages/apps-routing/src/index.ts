@@ -37,10 +37,10 @@ import storage from './storage';
 import storageMarket from './storageMarket';
 import storageUser from './storageUser';
 import sudo from './sudo';
+import sworkerVersion from './sworkerVersion';
 import techcomm from './techcomm';
 import transfer from './transfer';
 import treasury from './treasury';
-import sworkerVersion from './sworkerVersion';
 
 export default function create (t: TFunction): Routes {
   return [
@@ -80,6 +80,6 @@ export default function create (t: TFunction): Routes {
     splore(t),
     benefit(t),
     candy(t),
-    sworkerVersion(t),
+    sworkerVersion(t)
   ];
 }
