@@ -1719,10 +1719,11 @@
   "unguaranteed": "未担保量",
   "Current availabe sWorker": "当前可用sWorker版本",
   "Proportion": "版本比例",
-  "Release": "发布",
+  "Release": "发布块高",
   "Progress bar": "进度条",
   "Due date": "过期块高",
   "nav.sworkerVersion": "sWorker版本",
   "sWorker Version": "sWorker版本",
-  "Enter the address to be queried": "输入需要查询的地址"
+  "Enter the address to be queried": "输入需要查询的地址",
+  "Version": "版本"
 }
