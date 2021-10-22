@@ -215,7 +215,7 @@
   "Retrieve your files anywhere, anytime": "随时随地从IPFS取回文件",
   "Crust Files is open source and welcome to contribute! Following features are coming soon:": "Crust Files代码完全开源，欢迎Contribute！新功能敬请期待:",
   "End-to-end file encryption": "端到端文件加密",
-  "Paid service with smart contract on Polygon, Ethereum, Near, Flow and Solana": "通过Polygon、以太坊、Near、Flow和Solana上的智能合约付费购买存储服务",
+  "Paid service with smart contract on Polygon, Ethereum, Near, Flow, Elrond and Solana": "通过Polygon、以太坊、Near、Flow、Elrond和Solana上的智能合约付费购买存储服务",
   "Sign-in with a Web3 wallet": "使用Web3的钱包登录",
   "Need install MetaMask": "需要安装MetaMask",
   "Need install Phantom": "需要安装Phantom",
@@ -1693,7 +1693,7 @@
   "The transaction fee is ": "交易手续费为 ",
   "Cross-chain transfers are automatically executed by smart contracts. after the execution of the contract is completed, the funds will arrive in the account. Please wait patiently.": "跨链转账是智能合约自动执行，待合约执行完成资金即到账，请耐心等待。",
   "You can check the transaction status here...": "您可以在这里查看交易状态...",
-  "This function is an internal test stage, the assets will not be lost, but there may be a delay in the arrival of the account.": "此功能为内部测试阶段，资产不会受到损失，但是到账可能存在延时。",
+  "This function is an internal test stage, the assets will not be lost, but there may be a delay (max to 48 hours) in the arrival of the account.": "此功能为内部测试阶段，资产不会受到损失，但是到账可能存在延时(最大可能48小时)。",
   "0x prefixed hex": "0x 开头的地址",
   "staking payout: {{stakingRewards}}": "质押奖励: {{stakingRewards}}",
   "market payout: {{marketPayout}}": "存储市场奖励: {{marketPayout}}",
@@ -1716,5 +1716,14 @@
   "Exchange": "兑换",
   "The amount you will to exchange.": "你将兑换的数量。",
   "guaranteed": "担保量",
-  "unguaranteed": "未担保量"
+  "unguaranteed": "未担保量",
+  "Current availabe sWorker": "当前可用sWorker版本",
+  "Proportion": "版本比例",
+  "Release": "发布块高",
+  "Progress bar": "进度条",
+  "Due date": "过期块高",
+  "nav.sworkerVersion": "sWorker版本",
+  "sWorker Version": "sWorker版本",
+  "Enter the address to be queried": "输入需要查询的地址",
+  "Version": "版本"
 }

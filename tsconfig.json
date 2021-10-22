@@ -72,6 +72,8 @@
       "@polkadot/app-storage/*": [ "packages/page-storage/src/*" ],
       "@polkadot/app-sudo": [ "packages/page-sudo/src" ],
       "@polkadot/app-sudo/*": [ "packages/page-sudo/src/*" ],
+      "@polkadot/apps-sworkerVersion/": [ "packages/page-sworkerVersion/src/" ],
+      "@polkadot/apps-sworkerVersion/*": [ "packages/page-sworkerVersion/src/*" ],
       "@polkadot/app-tech-comm": [ "packages/page-tech-comm/src" ],
       "@polkadot/app-tech-comm/*": [ "packages/page-tech-comm/src/*" ],
       "@polkadot/app-treasury": [ "packages/page-treasury/src" ],

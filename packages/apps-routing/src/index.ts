@@ -37,6 +37,7 @@ import storage from './storage';
 import storageMarket from './storageMarket';
 import storageUser from './storageUser';
 import sudo from './sudo';
+import sworkerVersion from './sworkerVersion';
 import techcomm from './techcomm';
 import transfer from './transfer';
 import treasury from './treasury';
@@ -78,6 +79,7 @@ export default function create (t: TFunction): Routes {
     settlements(t),
     splore(t),
     benefit(t),
-    candy(t)
+    candy(t),
+    sworkerVersion(t)
   ];
 }
