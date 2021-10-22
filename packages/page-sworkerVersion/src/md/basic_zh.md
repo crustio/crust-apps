@@ -27,13 +27,12 @@ Member 节点，Isolation 节点
 
 ## **2.2 升级时间**
 
-请尽快在** 1541000 blocks ~ 1742600 blocks **时间段，以及每个era的0%-60%之间进行升级操作，来避免本次升级带来的一个era收益损失。(注：其他时间升级有50%的概率损失一个era的算力和收益)
+请尽快在**1541000 blocks ~ 1742600 blocks**时间段，以及每个era的0%-60%之间进行升级操作，来避免本次升级带来的一个era收益损失。(注：其他时间升级有50%的概率损失一个era的算力和收益)
 
 ![update_time](../assets/update_time_zh.png)
 
 ##  **2.3 升级步骤**
-### **2.3.1 更新IPFS镜像**
-
+### **2.3.1 更新IPFS镜像** 
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust tools upgrade-image ipfs</div>
 <br>
@@ -44,14 +43,12 @@ Member 节点，Isolation 节点
 <br>
 
 ### **2.3.3 sWorker升级**
-此过程是一个持续的过程，耗时在100s-3600s不等，升级成功之前请切记不能关闭终端，升级成功之后程序自动退出.
+此过程是一个持续的过程，耗时在100s-10000s不等，升级成功之前请切记不能关闭终端，升级成功之后程序自动退出.
 <br>
-
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust tools sworker-ab-upgrade ff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a</div>
 <br>
 
 ## **2.3.4 升级状态检测**
-
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust version
 </div>
