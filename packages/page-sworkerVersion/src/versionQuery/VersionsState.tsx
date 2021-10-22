@@ -40,13 +40,18 @@ interface AddressVersionState {
 }
 
 export const versionsRecord: Record<string, string> = {
-  '0xe6f4e6ab58d6ba4ba2f684527354156c009e4969066427ce18735422180b38f4': 'Version A',
-  '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 'Version B'
+  '0xe6f4e6ab58d6ba4ba2f684527354156c009e4969066427ce18735422180b38f4': 'V1.0.0 : Frist Version',
+  '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 'V1.1.0 : Support IPFS CID V1'
 };
 
 export const versionsStartBlockRecord: Record<string, number> = {
   '0xe6f4e6ab58d6ba4ba2f684527354156c009e4969066427ce18735422180b38f4': 490089,
   '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 1382305
+};
+
+export const versionsReleaseRecord: Record<string, string> = {
+    '0xe6f4e6ab58d6ba4ba2f684527354156c009e4969066427ce18735422180b38f4': 'https://github.com/crustio/crust-sworker/releases/tag/v1.0.0',
+    '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 'https://github.com/crustio/crust-sworker/releases/tag/v1.1.0'
 };
 
 function VersionState ({ address, className = '', current, isLoading: summaryLoading, pkInfos }: Props): React.ReactElement<Props> {

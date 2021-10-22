@@ -9,7 +9,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Route, Switch } from 'react-router';
 
 import { useTranslation } from '@polkadot/apps/translate';
-import { HelpOverlay, Tabs } from '@polkadot/react-components';
+import { Tabs } from '@polkadot/react-components';
 import { useAccounts, useApi } from '@polkadot/react-hooks';
 import { BlockAuthorsContext } from '@polkadot/react-query';
 
@@ -19,6 +19,7 @@ import { versionsRecord, versionsStartBlockRecord } from './versionQuery/Version
 import Summary, { PKInfo } from './SummaryInfo';
 import { SworkerVersion } from './VersionInfo';
 import VersionQuery from './versionQuery';
+import SworkerHelpOverlay from '@polkadot/react-components/SworkerHelpOverlay';
 
 const HIDDEN_ACC = ['vanity'];
 
@@ -115,7 +116,7 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
           items={itemsRef.current}
         />
       </header>
-      <HelpOverlay md={i18n.language == 'zh' ? basicMd_zh as string : basicMd as string} />
+      <SworkerHelpOverlay md={i18n.language == 'zh' ? basicMd_zh as string : basicMd as string} />
       <Summary current={current}
         isLoading={isLoading}
         summaryInfo={summaryInfo} />

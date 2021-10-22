@@ -1,7 +1,7 @@
 # **版本**
 
-**Version A**: 0xe6f4e6ab58d6ba4ba2f684527354156c009e4969066427ce18735422180b38f4 <br>
-**Version B**: 0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a <br>
+**V1.0.0 : Frist Version**: 0xe6f4e6ab58d6ba4ba2f684527354156c009e4969066427ce18735422180b38f4 <br>
+**V1.1.0 : Support IPFS CID V1**: 0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a <br>
 
 ## **1. 升级对象**
 Member 节点，Isolation 节点
