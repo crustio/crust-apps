@@ -5,7 +5,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { versionsRecord } from './versionQuery/VersionsState';
+import { versionsRecord, versionsReleaseRecord } from './versionQuery/VersionsState';
 import { formatNumber } from '@polkadot/util';
 
 export interface SworkerVersion {
@@ -28,7 +28,7 @@ function VersionInfoDisplay({ className = '', sworkerVersion: { start, version, 
     return (
         (<tr className={className}>
             <td className='start'>
-                {versionsRecord[version]}           
+                <a href={versionsReleaseRecord[version]} target="_blank">{versionsRecord[version]}</a>           
             </td>
             <td className='number'>
                 {(proportion * 100).toFixed(2) + '%' }           
