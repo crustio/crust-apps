@@ -5,10 +5,10 @@ import React from 'react';
 import ReactMd from 'react-markdown';
 import styled from 'styled-components';
 
+import { useTranslation } from '@polkadot/apps/translate';
 import { useToggle } from '@polkadot/react-hooks';
 
 import Icon from './Icon';
-import { useTranslation } from '@polkadot/apps/translate';
 
 interface Props {
   className?: string;
@@ -16,13 +16,14 @@ interface Props {
 }
 
 function HelpOverlay ({ className = '', md }: Props): React.ReactElement<Props> {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const [isVisible, toggleVisible] = useToggle();
 
   return (
     <div className={`ui--HelpOverlay ${className}`}>
-      <div className='help-button' onClick={toggleVisible}>
-        <span style={{'fontSize': '1.2rem', 'marginRight': '10px'}}>{t('Upgrade Guide >>')}</span>
+      <div className='help-button'
+        onClick={toggleVisible}>
+        <span style={{ fontSize: '1.2rem', marginRight: '10px' }}>{t('Upgrade Guide >>')}</span>
       </div>
       <div className={`help-slideout ${isVisible ? 'open' : 'closed'}`}>
         <div className='help-button'>
