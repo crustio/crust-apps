@@ -1,41 +1,56 @@
-# **Versions**
+# **1 Instructions**
+This article is intended to explain the basic information and upgrade methods of each version to help you successfully complete the version upgrade of sWorker. Here are some basic questions and answers:
 
-**V1.0.0 : Frist Version**: 0xe6f4e6ab58d6ba4ba2f684527354156c009e4969066427ce18735422180b38f4 <br>
-**V1.1.0 : Support IPFS CID V1**: 0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a <br>
+Q: Why is there a new version?
+- Crust is a constantly updating and evolving network, some functions need to be deploied by updating sWorker
 
-## **1. Upgrade Target**
+Q: What impact will the old version have when it expires?
+- After the old version expires, all workloads will be invalid
+- Unable to upgrade to new version
+
+Q: What are the advantages of upgrading to the new version as soon as possible?
+- Access new functions as soon as possible to gain advantages on the network
+- Fix BUGs in time to avoid error
+- Some new versions will suspend on-chain punishment in the early stage to help everyone upgrade smoothly
+
+Q: What is the iteration cycle of sWorker version?
+- Generally from six months to one year
+
+Q: What versions are currently available?
+- <a href="https://github.com/crustio/crust-sworker/releases/tag/v1.0.0" target="_blank" >V1.0.0 : Frist Version (0xe6f4e6ab58d6ba4ba2f684527354156c009e4969066427ce18735422180b38f4)</a>
+- <a href="https://github.com/crustio/crust-sworker/releases/tag/v1.1.0" target="_blank" >V1.1.0 : Support IPFS CID V1 (0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a)</a>
+
+# **2 Upgrade guide V1.0.0 -> V1.1.0**
+
+## **2.1 Nodes**
 Member node and Isolation node
 
-## **2. Upgrade Time**
+## **2.2 Time**
 
-Please upgrade between 0%-60% of each era, and choose an appropriate number of Member nodes to upgrade in each era
+Please perform the upgrade operation as soon as possible in the time period of **1541000 blocks ~ 1742600 blocks** and between 0%-60% of each era to avoid the loss of an era's revenue caused by this upgrade. (Note: Upgrading at other times has a 50% probability of losing one era's computing power and income)
 
 ![update_time](../assets/update_time.png)
 
-##  **3. Upgrade Steps**
-### **3.1 Pull the latest IPFS image**
-
+##  **2.3 Steps**
+### **2.3.1 Upgrade IPFS image**
 <br>
-<div style="background: black; font-size: 18px; font-weight:bold; color: white">ubuntu@crust:~$ sudo crust tools upgrade-image ipfs ff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a
-</div>
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust tools upgrade-image ipfs</div>
 <br>
 
-### **3.2 Reload IPFS server**
+### **2.3.2 Restart IPFS service**
 <br>
-<div style="background: black; font-size: 18px; font-weight:bold; color: white">ubuntu@crust:~$ sudo crust reload ipfs</div>
-<br>
-
-### **3.3 Sworker server AB upgrade**
-This process is a continuous process, which takes time ranging from 100s to 3600s. Please remember not to close the terminal before the upgrade is successful. The program will exit automatically after the upgrade is successful.
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust reload ipfs</div>
 <br>
 
-<div style="background: black; font-size: 18px; font-weight:bold; color: white">ubuntu@crust:~$ sudo crust tools sworker-ab-upgrade ff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a</div>
+### **2.3.3 sWorker Upgrade**
+This process is a continuous process. Generally speaking, it takes time ranging from 100s to 10000s. Please remember not to close the terminal before the upgrade is successful. After the upgrade is successful, the program will automatically exit.
+<br>
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust tools sworker-ab-upgrade ff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a</div>
 <br>
 
-## **4. Upgrade Status Detection**
-
+### **2.3.4 Upgrade status detection**
 <br>
-<div style="background: black; font-size: 18px; font-weight:bold; color: white">ubuntu@crust:~$ sudo crust version
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust version
 </div>
 <br>
 
