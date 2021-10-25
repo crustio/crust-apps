@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import './index.css';
+import { CID } from 'multiformats/cid';
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
@@ -62,7 +63,16 @@ const UP_MODES = [
 const Noop = () => undefined;
 
 const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => {
-  const isWatchOne = params.cid && params.cid.startsWith('Qm')
+  let isWatchOne = false;
+  if (params.cid) {
+    try {
+      const cidObj = CID.parse(params.cid);
+      isWatchOne = CID.asCID(cidObj) != null;
+    } catch (error) {
+      console.log(`Invalid CID: ${error.message}`);
+    }
+  }
+
   const watchList = isWatchOne ? [{ fileCid: params.cid }] : list
   const [uploadMode, setUploadMode] = useState({
     isLoad: true,
