@@ -5,6 +5,7 @@ import axios, { AxiosResponse, CancelTokenSource } from 'axios';
 import FileSaver from 'file-saver';
 import filesize from 'filesize';
 import _ from 'lodash';
+import { CID } from 'multiformats/cid';
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
@@ -108,7 +109,16 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
       }
 
       setCIDTips(t('Checking CID...'));
-      const isValid = _.toLower(cid).startsWith('qm') && cid.length === 46;
+      let isValid = false;
+
+      try {
+        const cidObj = CID.parse(cid);
+
+        isValid = CID.asCID(cidObj) != null;
+      } catch (error) {
+        // eslint-disable-next-line
+        console.log(`Invalid CID: ${error.message}`);
+      }
 
       if (!isValid) {
         setValidCID(false);
@@ -170,6 +180,7 @@ function CrustPinner ({ className, user }: Props): React.ReactElement<Props> {
 
       cancelTokenSource = null;
 
+      setValidatingCID(false);
       setBusy(false);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps

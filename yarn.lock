@@ -3837,6 +3837,7 @@ __metadata:
     "@onflow/types": ^0.0.5
     "@polkadot/react-components": ^0.85.2-15
     https-browserify: ^1.0.0
+    multiformats: ^9.4.9
     near-api-js: ^0.42.0
     stream-http: ^3.2.0
   languageName: unknown
@@ -4065,6 +4066,7 @@ __metadata:
     money-clip: ^3.0.2
     multiaddr: ^8.1.1
     multiaddr-to-uri: ^6.0.0
+    multiformats: ^9.4.9
     p-memoize: ^4.0.1
     p-queue: ^6.6.2
     react-ace: ^9.2.1
@@ -20730,6 +20732,13 @@ fsevents@~2.3.2:
     uint8arrays: ^2.1.3
     varint: ^5.0.2
   checksum: c7172b2bf787dbba7f891a68907812a7cef8dcefbf058f683ce3e8ae91c82f7aa82c6fbcbc327f8c4fc298fec5d56b28e6f841448ed9a1027e60d213128bec92
+  languageName: node
+  linkType: hard
+
+"multiformats@npm:^9.4.9":
+  version: 9.4.9
+  resolution: "multiformats@npm:9.4.9"
+  checksum: b958f4ad1dac427d4ad14ffe88532bb0c14047510ef48a3a11798fc6bec7c190911d5634b5279b9e040883fc88a1a4caa22965b1502d684ade51a1ebc004cb48
   languageName: node
   linkType: hard
 
