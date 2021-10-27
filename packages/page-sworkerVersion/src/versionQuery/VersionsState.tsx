@@ -131,8 +131,8 @@ function VersionState ({ address, className = '', current, isLoading: summaryLoa
   const ownerHeaderRef = useRef([
     [t('Group Owner'), 'start'],
     [t('Members')],
-    [t('Version A')],
-    [t('Version B')]
+    [t('V1.0.0')],
+    [t('V1.1.0')]
   ]);
 
   const memberHeaderRef = useRef([
