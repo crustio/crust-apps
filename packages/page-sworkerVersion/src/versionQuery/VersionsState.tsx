@@ -157,10 +157,10 @@ function VersionState ({ address, className = '', current, isLoading: summaryLoa
                   {addressVersionStateInfo.memberVersions.length}
                 </td>
                 <td className='number'>
-                  {addressVersionStateInfo.versionCount && addressVersionStateInfo.versionCount['Version A'] ? addressVersionStateInfo.versionCount['Version A'] : 0}
+                  {addressVersionStateInfo.versionCount && addressVersionStateInfo.versionCount['V1.0.0 : Frist Version'] ? addressVersionStateInfo.versionCount['V1.0.0 : Frist Version'] : 0}
                 </td>
                 <td className='number'>
-                  {addressVersionStateInfo.versionCount && addressVersionStateInfo.versionCount['Version B'] ? addressVersionStateInfo.versionCount['Version B'] : 0}
+                  {addressVersionStateInfo.versionCount && addressVersionStateInfo.versionCount['V1.1.0 : Support IPFS CID V1'] ? addressVersionStateInfo.versionCount['V1.1.0 : Support IPFS CID V1'] : 0}
                 </td>
               </tr>)}
             </Table>
