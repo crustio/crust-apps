@@ -27,7 +27,7 @@ Member node and Isolation node
 
 ## **2.2 Time**
 
-Please perform the upgrade operation as soon as possible in the time period of **1541000 blocks ~ 1742600 blocks** and between 0%-60% of each era to avoid the loss of an era's revenue caused by this upgrade. (Note: Upgrading at other times has a 50% probability of losing one era's computing power and income)
+Please perform the upgrade operation as soon as possible in the time period of **1613000 blocks ~ 1814600 blocks** and between 0%-60% of each era to avoid the loss of an era's revenue caused by this upgrade. (Note: Upgrading at other times has a 50% probability of losing one era's computing power and income)
 
 ![update_time](../assets/update_time.png)
 
