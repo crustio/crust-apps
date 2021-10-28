@@ -38,7 +38,7 @@
   },
   "status": {
     "connectedToIpfs": "Connected to IPFS",
-    "connectedToIpfs1": "<0>IPFS network is ready <1>You can check your IPFS node status in this page. Go to <1>Files</1> tab to store/retrieve files. The storage order function of Crust Network is coming soon.</1></0>",
+    "connectedToIpfs1": "<0>IPFS network is ready <1>You can check your IPFS node status in this page. Go to <1>Files</1> tab to store/retrieve files.</1></0>",
     "connectingToIpfs": "Connecting to IPFS…",
     "couldNotConnect": "Please install and launch the IPFS desktop of Crust Network",
     "couldNotConnect1": "* Current version is not supported on Safari browser",
