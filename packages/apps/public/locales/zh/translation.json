@@ -1726,5 +1726,6 @@
   "sWorker Version": "sWorker版本",
   "Enter the address to be queried": "输入需要查询的地址",
   "Version": "版本",
-  "Upgrade Guide >>": "升级指南 >>"
+  "Upgrade Guide >>": "升级指南 >>",
+  "Expiration countdown": "过期倒计时"
 }
