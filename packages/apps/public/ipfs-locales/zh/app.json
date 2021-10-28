@@ -38,7 +38,7 @@
   },
   "status": {
     "connectedToIpfs": "已连接到 IPFS",
-    "connectedToIpfs1": "<0>IPFS网络已经集成到Crust网络 <1> 您可以在本页查看节点状态, 在<1>文件</1> 页存储或检索IPFS网络的文件。 Crust网络的存储市场功能即将开启，敬请期待。</1></0>",
+    "connectedToIpfs1": "<0>IPFS网络已经集成到Crust网络 <1> 您可以在本页查看节点状态, 在<1>文件</1> 页存储或检索IPFS网络的文件。</1></0>",
     "connectingToIpfs": "正在连接 IPFS",
     "couldNotConnect": "请确保您已安装并启动了与Crust网络直连的IPFS桌面版",
     "couldNotConnect1": "* 当前版本不支持在Safari浏览器上使用",
