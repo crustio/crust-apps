@@ -41,7 +41,7 @@ interface AddressVersionState {
 
 export const versionsRecord: Record<string, string> = {
   '0xe6f4e6ab58d6ba4ba2f684527354156c009e4969066427ce18735422180b38f4': 'V1.0.0 : Frist Version',
-  '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 'V1.1.0 : Support IPFS CID V1'
+  '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 'V1.1.0 : Support Metaverse'
 };
 
 export const versionsStartBlockRecord: Record<string, number> = {
@@ -160,7 +160,7 @@ function VersionState ({ address, className = '', current, isLoading: summaryLoa
                   {addressVersionStateInfo.versionCount && addressVersionStateInfo.versionCount['V1.0.0 : Frist Version'] ? addressVersionStateInfo.versionCount['V1.0.0 : Frist Version'] : 0}
                 </td>
                 <td className='number'>
-                  {addressVersionStateInfo.versionCount && addressVersionStateInfo.versionCount['V1.1.0 : Support IPFS CID V1'] ? addressVersionStateInfo.versionCount['V1.1.0 : Support IPFS CID V1'] : 0}
+                  {addressVersionStateInfo.versionCount && addressVersionStateInfo.versionCount['V1.1.0 : Support Metaverse'] ? addressVersionStateInfo.versionCount['V1.1.0 : Support Metaverse'] : 0}
                 </td>
               </tr>)}
             </Table>
