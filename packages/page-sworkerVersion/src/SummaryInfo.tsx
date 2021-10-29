@@ -31,7 +31,7 @@ function Summary({ className, current, summaryInfo, isLoading }: Props): React.R
     [t('Proportion')],
     [t('Release')],
     [t('Due date')],
-    [t('Progress bar')]
+    [t('Expiration countdown')]
   ]);
 
   return (<div className={className}>

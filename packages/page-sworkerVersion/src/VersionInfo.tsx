@@ -24,7 +24,7 @@ interface Props {
 }
 
 function VersionInfoDisplay({ className = '', sworkerVersion: { start, version, end, proportion }, current }: Props): React.ReactElement<Props> | null {
-
+    
     return (
         (<tr className={className}>
             <td className='start'>
@@ -40,7 +40,7 @@ function VersionInfoDisplay({ className = '', sworkerVersion: { start, version, 
                 {`block: ${formatNumber(end)}`}           
             </td>
             <td className='number'>
-              <meter id="progress" className="progress4" max={end - start} value={current - start}></meter>
+              <meter id="progress" className="progress4" max={end} value={end - current}></meter>
             </td>
         </tr>)
     );
@@ -51,5 +51,13 @@ export default React.memo(styled(VersionInfoDisplay)`
     display: inline-block;
     margin-right: 0.25rem;
     vertical-align: inherit;
+  }
+
+  .progress4 {
+    display: block;    
+    font: inherit;
+    height: 20px;
+    width: 100%;
+    pointer-events: none;
   }
 `);
