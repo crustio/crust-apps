@@ -44,7 +44,7 @@ Member 节点，Isolation 节点
 <br>
 
 ### **2.3.3 sWorker升级**
-此过程是一个持续的过程，耗时在100s-10000s不等，升级成功之前请切记不能关闭终端，升级成功之后程序自动退出.
+ 此过程是一个持续的过程，耗时在100s-10000s不等，<text style="color: red">**升级成功之前请切记不能关闭终端**</text>，升级成功之后程序自动退出。<text style="color: red">**强烈建议手动执行升级命令**</text>，避免出现不必要的错误，如果升级出现异常，<text style="color: red">**切记不能reload sworker服务，以防数据丢失**</text>。 
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust tools sworker-ab-upgrade ff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a</div>
 <br>

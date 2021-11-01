@@ -43,7 +43,7 @@ Please perform the upgrade operation as soon as possible in the time period of *
 <br>
 
 ### **2.3.3 sWorker Upgrade**
-This process is a continuous process. Generally speaking, it takes time ranging from 100s to 10000s. Please remember not to close the terminal before the upgrade is successful. After the upgrade is successful, the program will automatically exit.
+This process is a continuous process. Generally speaking, it takes time ranging from 100s to 10000s. <text style="color: red">**Please remember not to close the terminal before the upgrade is successful.**</text> After the upgrade is successful, the program will automatically exit.<text style="color: red">**It is strongly recommended to execute the upgrade command manually**</text> to avoid unnecessary errors. If the upgrade is abnormal, <text style="color: red">**do not restart the sworker service, which will cause data loss**</text>. 
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust tools sworker-ab-upgrade ff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a</div>
 <br>
