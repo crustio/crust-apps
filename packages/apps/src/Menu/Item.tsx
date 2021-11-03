@@ -18,19 +18,24 @@ interface Props {
 
 const DUMMY_COUNTER = () => 0;
 
-function Item ({ className = '', isLink, isToplevel, route: { Modal, href, icon, name, text, useCounter = DUMMY_COUNTER } }: Props): React.ReactElement<Props> {
+function Item ({ className = '',
+  isLink,
+  isToplevel,
+  route: { Modal, href, icon, logo, name, text, useCounter = DUMMY_COUNTER } }: Props): React.ReactElement<Props> {
   const [isModalVisible, toggleModal] = useToggle();
   const count = useCounter();
 
   return (
-    <li className={`ui--MenuItem ${className}${count ? ' withCounter' : ''} ${isLink ? 'isLink' : ''} ${isToplevel ? 'topLevel  highlight--color-contrast' : ''}`}>
+    <li
+      className={`ui--MenuItem ${className}${count ? ' withCounter' : ''} ${isLink ? 'isLink' : ''} ${isToplevel ? 'topLevel  highlight--color-contrast' : ''}`}>
       <a
         href={Modal ? undefined : (href || `#/${name}`)}
         onClick={Modal ? toggleModal : undefined}
         rel='noopener noreferrer'
         target={href ? '_blank' : undefined}
       >
-        <Icon icon={icon} />
+        {icon && <Icon icon={icon}/>}
+        {logo && <img src={logo as string}/>}
         {text}
         {!!count && (
           <Badge
@@ -40,7 +45,7 @@ function Item ({ className = '', isLink, isToplevel, route: { Modal, href, icon,
         )}
       </a>
       {Modal && isModalVisible && (
-        <Modal onClose={toggleModal} />
+        <Modal onClose={toggleModal}/>
       )}
     </li>
   );
@@ -103,6 +108,12 @@ export default React.memo(styled(Item)`
     font-weight: 400;
     font-size: 1rem;
     line-height: 1.5rem;
+  }
+
+  a > img {
+    width: 0.7rem;
+    margin-right: 0.5rem;
+    height: auto;
   }
 
   .ui--Badge {

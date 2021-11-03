@@ -9,7 +9,8 @@ import React from 'react';
 export interface ItemRoute {
   Modal?: React.ComponentType<any>;
   href?: string;
-  icon: IconName;
+  icon?: IconName;
+  logo?: unknown;
   name: string;
   text: string;
   useCounter?: () => number | string | null;

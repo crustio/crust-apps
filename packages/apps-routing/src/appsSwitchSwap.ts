@@ -4,16 +4,18 @@
 import type { TFunction } from 'i18next';
 import type { Route } from './types';
 
+import { appsLogos } from '@polkadot/apps-config';
+
 export default function create (t: TFunction): Route {
   return {
     Component: () => null,
-    href: 'https://files.crustapps.net',
+    href: 'https://switchswap.io',
     display: {
       needsApi: []
     },
     group: 'applications',
-    icon: 'file',
-    name: 'files',
-    text: t('Files', 'Files', { ns: 'apps-routing' })
+    name: 'switchswap',
+    logo: appsLogos.switchSwap,
+    text: t('SwitchSwap', 'SwitchSwap', { ns: 'apps-routing' })
   };
 }
