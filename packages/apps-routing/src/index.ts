@@ -6,6 +6,7 @@ import type { Routes } from './types';
 
 import accounts from './accounts';
 import addresses from './addresses';
+import appsSwitchSwap from './appsSwitchSwap';
 import assets from './assets';
 import benefit from './benefit';
 import bounties from './bounties';
@@ -74,6 +75,7 @@ export default function create (t: TFunction): Routes {
     js(t),
     files(t),
     pins(t),
+    appsSwitchSwap(t),
     settings(t),
     merchants(t),
     settlements(t),

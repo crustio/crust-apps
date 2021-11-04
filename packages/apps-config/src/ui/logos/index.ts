@@ -6,6 +6,7 @@
 
 // anything for a specific chain, most would probably fit into the node category (but allow for chain-specific)
 // alphabetical
+import appsSwitchSwap from './apps/switch_swap.svg';
 import chainDusty from './chains/dusty.png';
 import chainHydrate from './chains/hydrate.png';
 import chainKusama from './chains/kusama-128.gif';
@@ -338,8 +339,13 @@ export const ipfsLogos: Record<string, unknown> = {
   gateway: ipfsGateway
 };
 
+// apps logos
+export const appsLogos: Record<string, unknown> = {
+  switchSwap: appsSwitchSwap
+};
+
 // preload all
-[chainLogos, extensionLogos, externalLogos, namedLogos, nodeLogos, emptyLogos, ipfsLogos].forEach((imageSet): void => {
+[chainLogos, extensionLogos, externalLogos, namedLogos, nodeLogos, emptyLogos, ipfsLogos, appsLogos].forEach((imageSet): void => {
   Object.values(imageSet).forEach((src): void => {
     new Image().src = src as string;
   });
