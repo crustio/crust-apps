@@ -35,7 +35,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
   const [isValid, setIsValid] = useState(false);
   const [bridgeFee, setBridgeFee] = useState<BN>(BN_ZERO);
   const isMaxwell = systemChain === 'Crust Maxwell';
-  const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x0964a01e0d0b5d6ff726ab9d60a93d188d3f505b' : 'https://etherscan.io/address/0x486Be2bE480aEd1E21Ba884b0b559fdd0EB14153';
+  const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x9d332427e6d1b91d9cf8d2fa3b41df2012887aab' : 'https://etherscan.io/address/0x645a36124b537ea30cbba25f75599d3f1fe79ba5';
   const [handlerAsset, setHandlerAsset] = useState<BN | undefined>(BN_ZERO);
 
   useEffect(() => {
