@@ -1727,5 +1727,12 @@
   "Enter the address to be queried": "输入需要查询的地址",
   "Version": "版本",
   "Upgrade Guide >>": "升级指南 >>",
-  "Expiration countdown": "过期倒计时"
+  "Expiration countdown": "过期倒计时",
+  "APY of Gurantor": "担保人年化收益率",
+  "Return estimation compunding everyday": "收益估算(每日复投)",
+  "Staking time": "质押时长",
+  "Return Per 1000CRU": "每1000CRU回报",
+  "Calculated based on current rates,all figures are estimates provided for your convenience only, and by no means represent guaranteed returns": "根据最新汇率进行估算，所有数字仅为方便您而提供的估算值，不代表保证的回报。",
+  "Estimated return (1day): {{ reward }} CRU": "收益估算(1天): {{ reward }} CRU",
+  "Browse the Overview and Waiting pages, you can get the validator(candidate)'s APY": "浏览概览和等待页面，可以获取验证人(候选人)的年化收益率"
 }
