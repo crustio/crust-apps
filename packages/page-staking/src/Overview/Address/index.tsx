@@ -158,10 +158,6 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
     [api, accountInfo, address, filterName, withIdentity]
   );
 
-  // console.log('validatorCount', validatorCount)
-  // console.log('guarantee_fee', guarantee_fee)
-  // console.log('totalStaked', totalStaked)
-
   useEffect(() => {
     if (activeEra && totalStaked && guarantee_fee_pref && totalReward && validatorCount && totalEffectiveStake) {
       const stakingReward = Number(totalReward.muln(0.8))
@@ -173,13 +169,11 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
       const validatorRate = ( ownEffective / (Number(totalEffectiveStake) * 1.0));
       let apy = 0
       if (isMain) {
-        apy = rewardRate * ((stakingReward) * validatorRate + authringRewad) * 4 * guarantee_fee / 1000000000000
+        apy = ownEffective ? rewardRate * ((stakingReward) * validatorRate + authringRewad) * 4 * guarantee_fee / 1000000000000 : 0
         setGuarantorApy(Math.pow((1 + apy), 365) - 1)
-        // setGuarantorApy(apy)
       } else {
-        apy = rewardRate * (stakingReward) * (validatorRate) * 4 * guarantee_fee / 1000000000000
+        apy = ownEffective ? rewardRate * (stakingReward) * (validatorRate) * 4 * guarantee_fee / 1000000000000 : 0
         setGuarantorApy(Math.pow((1 + apy), 365) - 1)
-        // setGuarantorApy(apy)
       }
       validatorApy[address] = apy
     }

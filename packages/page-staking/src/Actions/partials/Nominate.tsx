@@ -14,6 +14,8 @@ import { useApi, useFavorites } from '@polkadot/react-hooks';
 import { STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
 import Guaranteeable from './Guaranteeable';
+import Banner from '@polkadot/app-accounts/Accounts/Banner';
+import { validatorApy } from '@polkadot/app-staking';
 
 interface Props {
   className?: string;
@@ -42,6 +44,23 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
   });
 
   const [amount, setAmount] = useState<BN | undefined>(new BN(0));
+
+  const [reward, setReward] = useState<number>(0);
+
+  const [showReward, setShowReward] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (selected && selected.length) {
+      setShowReward(true)
+      if (amount) {
+        const amountNumber = Number(amount.toString()) / 1000000000000.0
+        console.log('amountNumber', amountNumber)
+        setReward((validatorApy[selected[0]] + 1) * amountNumber - amountNumber)
+      }
+    } else {
+      setShowReward(false)
+    }
+  }, [amount, selected])
 
   useEffect((): void => {
     onChange({
@@ -99,6 +118,19 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
           withMax
         />
       </Modal.Columns>
+      <Modal.Content>
+        <Modal.Columns>
+          {showReward && (validatorApy[selected[0]] ? <Banner type='warning'>
+            <p>{t<string>('Estimated return (1day): {{ reward }} CRU', {
+              replace: {
+                reward: reward
+              }
+            })}</p>
+          </Banner> : <Banner type='error'>
+            <p>{t<string>(`Browse the Overview and Waiting pages, you can get the validator(candidate)'s APY`)}</p>
+          </Banner>)}
+        </Modal.Columns>
+      </Modal.Content>
     </div>
   );
 }
