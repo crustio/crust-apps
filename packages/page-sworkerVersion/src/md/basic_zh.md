@@ -33,23 +33,26 @@ Member 节点，Isolation 节点
 ![update_time](../assets/update_time_zh.png)
 
 ##  **2.3 升级步骤**
-### **2.3.1 更新IPFS镜像** 
+### **2.3.1 确认sworker上报工作量正常**
+通过sworker日志文件来确认近期工作量处于正常上报状态。如不正常，请优先修复后再进行升级操作。
+
+### **2.3.2 更新IPFS镜像** 
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust tools upgrade-image ipfs</div>
 <br>
 
-### **2.3.2 重启IPFS服务**
+### **2.3.3 重启IPFS服务**
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust reload ipfs</div>
 <br>
 
-### **2.3.3 sWorker升级**
+### **2.3.4 sWorker升级**
  此过程是一个持续的过程，耗时在100s-10000s不等，<text style="color: red">**升级成功之前请切记不能关闭终端**</text>，升级成功之后程序自动退出。<text style="color: red">**强烈建议手动执行升级命令**</text>，避免出现不必要的错误，如果升级出现异常，<text style="color: red">**切记不能reload sworker服务，以防数据丢失**</text>。 
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust tools sworker-ab-upgrade ff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a</div>
 <br>
 
-### **2.3.4 升级状态检测**
+### **2.3.5 升级状态检测**
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust version
 </div>

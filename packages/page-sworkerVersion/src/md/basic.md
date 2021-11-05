@@ -32,23 +32,27 @@ Please perform the upgrade operation as soon as possible in the time period of *
 ![update_time](../assets/update_time.png)
 
 ##  **2.3 Steps**
-### **2.3.1 Upgrade IPFS image**
+
+### **2.3.1 Check sworker sending work report successfully**
+Make sure that the sworker sent the work report successfully in the past hours. If not, please fix the error first before doing the upgrade steps.
+
+### **2.3.2 Upgrade IPFS image**
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust tools upgrade-image ipfs</div>
 <br>
 
-### **2.3.2 Restart IPFS service**
+### **2.3.3 Restart IPFS service**
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust reload ipfs</div>
 <br>
 
-### **2.3.3 sWorker Upgrade**
+### **2.3.4 sWorker Upgrade**
 This process is a continuous process. Generally speaking, it takes time ranging from 100s to 10000s. <text style="color: red">**Please remember not to close the terminal before the upgrade is successful.**</text> After the upgrade is successful, the program will automatically exit.<text style="color: red">**It is strongly recommended to execute the upgrade command manually**</text> to avoid unnecessary errors. If the upgrade is abnormal, <text style="color: red">**do not restart the sworker service, which will cause data loss**</text>. 
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust tools sworker-ab-upgrade ff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a</div>
 <br>
 
-### **2.3.4 Upgrade status detection**
+### **2.3.5 Upgrade status detection**
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust version
 </div>
