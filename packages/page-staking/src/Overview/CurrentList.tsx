@@ -6,7 +6,7 @@ import type { Authors } from '@polkadot/react-query/BlockAuthors';
 import type { AccountId } from '@polkadot/types/interfaces';
 import type { SortedTargets, ValidatorInfo } from '../types';
 
-import React, { useCallback, useContext, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Table } from '@polkadot/react-components';
 import { useApi, useCall, useLoadingDelay, useSavedFlags } from '@polkadot/react-hooks';
@@ -17,6 +17,8 @@ import Legend from '../Legend';
 import { useTranslation } from '../translate';
 import useNominations from '../useNominations';
 import Address from './Address';
+import BN from 'bn.js';
+import { BN_ZERO } from '@polkadot/util';
 
 interface Props {
   favorites: string[];
@@ -79,6 +81,9 @@ function CurrentList ({ favorites, hasQueries, isIntentions, stakingOverview, ta
   const nominatedBy = useNominations(isIntentions);
   const [nameFilter, setNameFilter] = useState<string>('');
   const [toggles, setToggle] = useSavedFlags('staking:overview', { withIdentity: false });
+  const [validatorCount, setValidatorCount] = useState<number>(0);
+  const [totalReward, setTotalReward] = useState<BN>(BN_ZERO);
+  const [totalEffectiveStake, setTotalEffectiveStake] = useState<BN>(BN_ZERO);
 
   // we have a very large list, so we use a loading delay
   const isLoading = useLoadingDelay();
@@ -97,8 +102,21 @@ function CurrentList ({ favorites, hasQueries, isIntentions, stakingOverview, ta
     [targets]
   );
 
+  useEffect(() => {
+    if (stakingOverview && targets) {
+      setValidatorCount(stakingOverview.validatorCount.toNumber());
+      setTotalEffectiveStake(targets.totalStaked as BN)
+      api.query.staking.erasStakingPayout(stakingOverview.activeEra.toNumber() - 1).then(res => {
+        const erasStakingPayout = JSON.parse(JSON.stringify(res));
+        const totalPayout = Number(erasStakingPayout) / 0.8;
+        setTotalReward(new BN(totalPayout))
+      })
+    }
+  }, [stakingOverview, targets])
+
   const headerWaitingRef = useRef([
     [t('intentions'), 'start', 2],
+    [t('APY of Gurantor')],
     [t('guarantors'), 1],
     [t('own effective stake')],
     [t('stake limit')],
@@ -110,6 +128,7 @@ function CurrentList ({ favorites, hasQueries, isIntentions, stakingOverview, ta
 
   const headerActiveRef = useRef([
     [t('validators'), 'start', 2],
+    [t('APY of Gurantor')],
     [t('other effective stake')],
     [t('own effective stake'), 'media--1100'],
     [t('stake limit')],
@@ -139,6 +158,9 @@ function CurrentList ({ favorites, hasQueries, isIntentions, stakingOverview, ta
           toggleFavorite={toggleFavorite}
           validatorInfo={infoMap?.[address]}
           withIdentity={toggles.withIdentity}
+          validatorCount={validatorCount}
+          totalReward={totalReward}
+          totalEffectiveStake={totalEffectiveStake}
         />
       )),
     [byAuthor, eraPoints, hasQueries, infoMap, nameFilter, nominatedBy, recentlyOnline, toggleFavorite, toggles]

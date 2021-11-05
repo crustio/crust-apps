@@ -9,10 +9,10 @@ import type { NominatedBy as NominatedByType, ValidatorInfo } from '../../types'
 import type { NominatorValue } from './types';
 
 import BN from 'bn.js';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ApiPromise } from '@polkadot/api';
-import { AddressSmall, Icon, LinkExternal } from '@polkadot/react-components';
+import { AddressSmall, Icon, LinkExternal, Tooltip } from '@polkadot/react-components';
 import { checkVisibility } from '@polkadot/react-components/util';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
@@ -22,6 +22,8 @@ import { Codec } from '@polkadot/types/types';
 import Favorite from './Favorite';
 import StakeOther from './StakeOther';
 import Status from './Status';
+import ApyInfo from './ApyInfo';
+import { validatorApy } from '@polkadot/app-staking';
 
 interface Props {
   address: string;
@@ -38,6 +40,9 @@ interface Props {
   toggleFavorite: (accountId: string) => void;
   validatorInfo?: ValidatorInfo;
   withIdentity: boolean;
+  validatorCount: number;
+  totalReward: BN;
+  totalEffectiveStake: BN;
 }
 
 interface StakingState {
@@ -46,6 +51,7 @@ interface StakingState {
   stakeTotal?: BN;
   stakeOther?: BN;
   stakeOwn?: BN;
+  guarantee_fee_pref?: number;
 }
 
 export interface Guarantee extends Codec {
@@ -70,13 +76,15 @@ function expandInfo ({ exposure, validatorPrefs }: ValidatorInfo): StakingState 
 
   // @ts-ignore
   const guarantee_fee = (validatorPrefs as ValidatorPrefs)?.guarantee_fee?.unwrap();
+  const guarantee_fee_pref = guarantee_fee?.toNumber()/1000000000.0;
 
   return {
     guarantee_fee: guarantee_fee?.toHuman(),
     nominators,
     stakeOther,
     stakeOwn,
-    stakeTotal
+    stakeTotal,
+    guarantee_fee_pref
   };
 }
 
@@ -129,14 +137,16 @@ function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
     }
   }
 
-  return { accountInfo, slashingSpans, totalStaked, stakeLimit };
+  return { accountInfo, slashingSpans, totalStaked, stakeLimit, activeEra };
 }
 
-function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, nominatedBy, points, recentlyOnline, toggleFavorite, validatorInfo, withIdentity }: Props): React.ReactElement<Props> | null {
-  const { api } = useApi();
-  const { accountInfo, stakeLimit, totalStaked } = useAddressCalls(api, address, isMain);
+const UNIT = new BN(1_000_000_000_000);
 
-  const { guarantee_fee, nominators, stakeOther, stakeOwn } = useMemo(
+function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, validatorCount, totalReward, points, recentlyOnline, toggleFavorite, validatorInfo, withIdentity, totalEffectiveStake }: Props): React.ReactElement<Props> | null {
+  const { api } = useApi();
+  const { accountInfo, stakeLimit, totalStaked, activeEra } = useAddressCalls(api, address, isMain);
+  const [guarantorApy, setGuarantorApy] = useState<number>(0);
+  const { guarantee_fee, nominators, stakeOther, stakeOwn, guarantee_fee_pref } = useMemo(
     () => validatorInfo
       ? expandInfo(validatorInfo)
       : { nominators: [] },
@@ -147,6 +157,34 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
     () => accountInfo ? checkVisibility(api, address, accountInfo, filterName, withIdentity) : true,
     [api, accountInfo, address, filterName, withIdentity]
   );
+
+  // console.log('validatorCount', validatorCount)
+  // console.log('guarantee_fee', guarantee_fee)
+  // console.log('totalStaked', totalStaked)
+
+  useEffect(() => {
+    if (activeEra && totalStaked && guarantee_fee_pref && totalReward && validatorCount && totalEffectiveStake) {
+      const stakingReward = Number(totalReward.muln(0.8))
+      const authringRewad = Number(totalReward.muln(0.2)) / validatorCount
+      const guarantorStaked = UNIT;
+      const rewardRate = Number(guarantorStaked) / (Number(totalStaked) * 1.0)
+      const ownEffective = Math.min(Number(stakeLimit), Number(totalStaked))
+      const guarantee_fee = guarantee_fee_pref == 1e-9 ? 0 : guarantee_fee_pref;
+      const validatorRate = ( ownEffective / (Number(totalEffectiveStake) * 1.0));
+      let apy = 0
+      if (isMain) {
+        apy = rewardRate * ((stakingReward) * validatorRate + authringRewad) * 4 * guarantee_fee / 1000000000000
+        setGuarantorApy(Math.pow((1 + apy), 365) - 1)
+        // setGuarantorApy(apy)
+      } else {
+        apy = rewardRate * (stakingReward) * (validatorRate) * 4 * guarantee_fee / 1000000000000
+        setGuarantorApy(Math.pow((1 + apy), 365) - 1)
+        // setGuarantorApy(apy)
+      }
+      validatorApy[address] = apy
+    }
+
+  }, [isMain, totalStaked, guarantee_fee_pref, activeEra, totalReward, validatorCount, totalEffectiveStake, stakeLimit, stakeOwn])
 
   const _onQueryStats = useCallback(
     (): void => {
@@ -179,6 +217,20 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
       </td>
       <td className='address'>
         <AddressSmall value={address} />
+      </td>
+      <td className='number'>
+        {stakeLimit && (
+          <div style={{ display: "flex", "alignItems": "center" }}>
+            <Icon
+              icon='info-circle'
+              tooltip={`summary-locks-trigger-set-fee-pool-${address}`}
+            />
+            <Tooltip
+                text={(<ApyInfo apy={validatorApy[address]} />)}
+                trigger={`summary-locks-trigger-set-fee-pool-${address}`}
+            ></Tooltip> &nbsp;&nbsp; {(guarantorApy * 100).toFixed(2) + '%'}
+          </div>
+        )}
       </td>
       {<StakeOther
         nominators={nominators}
