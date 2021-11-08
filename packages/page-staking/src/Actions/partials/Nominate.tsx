@@ -8,14 +8,14 @@ import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import Banner from '@polkadot/app-accounts/Accounts/Banner';
+import { validatorApy } from '@polkadot/app-staking';
 import { InputAddress, InputAddressMulti, InputBalance, Modal } from '@polkadot/react-components';
 import { useApi, useFavorites } from '@polkadot/react-hooks';
 
 import { STORE_FAVS_BASE } from '../../constants';
 import { useTranslation } from '../../translate';
 import Guaranteeable from './Guaranteeable';
-import Banner from '@polkadot/app-accounts/Accounts/Banner';
-import { validatorApy } from '@polkadot/app-staking';
 
 interface Props {
   className?: string;
@@ -51,16 +51,18 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
 
   useEffect(() => {
     if (selected && selected.length) {
-      setShowReward(true)
+      setShowReward(true);
+
       if (amount) {
-        const amountNumber = Number(amount.toString()) / 1000000000000.0
-        console.log('amountNumber', amountNumber)
-        setReward((validatorApy[selected[0]] + 1) * amountNumber - amountNumber)
+        const amountNumber = Number(amount.toString()) / 1000000000000.0;
+
+        console.log('amountNumber', amountNumber);
+        setReward((validatorApy[selected[0]] + 1) * amountNumber - amountNumber);
       }
     } else {
-      setShowReward(false)
+      setShowReward(false);
     }
-  }, [amount, selected])
+  }, [amount, selected]);
 
   useEffect((): void => {
     onChange({
@@ -120,15 +122,17 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
       </Modal.Columns>
       <Modal.Content>
         <Modal.Columns>
-          {showReward && (validatorApy[selected[0]] ? <Banner type='warning'>
-            <p>{t<string>('Estimated return (1day): {{ reward }} CRU', {
-              replace: {
-                reward: reward
-              }
-            })}</p>
-          </Banner> : <Banner type='error'>
-            <p>{t<string>(`Browse the Overview and Waiting pages, you can get the validator(candidate)'s APY`)}</p>
-          </Banner>)}
+          {showReward && (validatorApy[selected[0]]
+            ? <Banner type='warning'>
+              <p>{t<string>('Estimated return (1day): {{ reward }} CRU', {
+                replace: {
+                  reward: reward
+                }
+              })}</p>
+            </Banner>
+            : <Banner type='error'>
+              <p>{t<string>('Browse the Overview and Waiting pages, you can get the validator(candidate)\'s APY')}</p>
+            </Banner>)}
         </Modal.Columns>
       </Modal.Content>
     </div>
