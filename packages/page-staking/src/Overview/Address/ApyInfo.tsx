@@ -23,24 +23,24 @@ function ApyInfoDisplay({ className = '', apy}: Props): React.ReactElement<Props
             <div style={{ alignItems : "center" }}>
                 <table style={{ margin: "0 auto",  display: "table" }}>
                     <tr>       
-                        <td>{t<string>('Staking time')}</td>
-                        <td>{t<string>('Return Per 1000CRU')}</td>
+                        <td style={{ textAlign: 'center' }}>{t<string>('Staking time')}</td>
+                        <td style={{ textAlign: 'center' }}>{t<string>('Return Per 1000CRU')}</td>
                     </tr>
                     <tr>
-                        <td>{t<string>('1d')}</td>
-                        <td>{Math.pow((1 + apy), 1) * 1000 - 1000 } CRU</td>
+                        <td style={{ textAlign: 'center' }}>{t<string>('1d')}</td>
+                        <td style={{ textAlign: 'center' }}>{(Math.pow((1 + apy), 1) * 1000 - 1000).toFixed(2) } CRU</td>
                     </tr>
                     <tr>
-                        <td>{t<string>('7d')}</td>
-                        <td>{Math.pow((1 + apy), 7) * 1000 - 1000 } CRU</td>
+                        <td style={{ textAlign: 'center' }}>{t<string>('7d')}</td>
+                        <td style={{ textAlign: 'center' }}>{(Math.pow((1 + apy), 7) * 1000 - 1000).toFixed(2) } CRU</td>
                     </tr>
                     <tr>
-                        <td>{t<string>('30d')}</td>
-                        <td>{Math.pow((1 + apy), 30) * 1000 - 1000 } CRU</td>
+                        <td style={{ textAlign: 'center' }}>{t<string>('30d')}</td>
+                        <td style={{ textAlign: 'center' }}>{(Math.pow((1 + apy), 30) * 1000 - 1000).toFixed(2) } CRU</td>
                     </tr>
                     <tr>
-                        <td>{t<string>('365d')}</td>
-                        <td>{Math.pow((1 + apy), 365) * 1000 - 1000 } CRU</td>
+                        <td style={{ textAlign: 'center' }}>{t<string>('365d')}</td>
+                        <td style={{ textAlign: 'center' }}>{(Math.pow((1 + apy), 365) * 1000 - 1000).toFixed(2) } CRU</td>
                     </tr>     
                 </table>
             </div>
