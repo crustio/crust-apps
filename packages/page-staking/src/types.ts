@@ -66,6 +66,9 @@ export interface ValidatorInfo extends ValidatorInfoRank {
   stakedReturn: number;
   stakedReturnCmp: number;
   validatorPrefs?: ValidatorPrefs | ValidatorPrefsTo196;
+  totalStaked: BN;
+  stakeLimit: BN;
+  apy: number;
 }
 
 export type TargetSortBy = keyof ValidatorInfoRank;
