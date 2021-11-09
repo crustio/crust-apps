@@ -316,8 +316,6 @@ export default function useSortedTargets (favorites: string[], withLedger: boole
   const [validatorCount, setValidatorCount] = useState<number>(0);
   const [totalReward, setTotalReward] = useState<BN>(BN_ZERO);
 
-  console.log('lastEraInfo', JSON.stringify(lastEraInfo?.activeEra.toNumber()))
-
   useEffect(() => {
     if (electedInfo && waitingInfo) {
       const queryInfo = [...electedInfo.validators, ...waitingInfo.waiting];
