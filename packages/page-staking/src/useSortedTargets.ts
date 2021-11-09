@@ -219,7 +219,7 @@ function extractInfo (api: ApiPromise, allAccounts: string[], electedDerive: Der
       ? value
       : min;
   }, tmpMinNominated);
-  const validators = sortValidators(arrayFlatten([elected, waiting])).map(e => jisuanApy(totalReward, validatorCount, totalStaked, e));
+  const validators = sortValidators(arrayFlatten([elected, waiting])).map(e => calculateApy(totalReward, validatorCount, totalStaked, e));
   const commValues = validators.map(({ commissionPer }) => commissionPer).sort((a, b) => a - b);
   const midIndex = Math.floor(commValues.length / 2);
   const medianComm = commValues.length
@@ -283,7 +283,7 @@ const parseObj = (obj: any) => {
 
 const UNIT = new BN(1_000_000_000_000);
 
-const jisuanApy = (totalReward: BN, validatorCount: number, totalEffectiveStake: BN, validatorInfo: ValidatorInfo) => {
+const calculateApy = (totalReward: BN, validatorCount: number, totalEffectiveStake: BN, validatorInfo: ValidatorInfo) => {
   const stakingReward = Number(totalReward.muln(0.8))
   const authringRewad = Number(totalReward.muln(0.2)) / validatorCount
   const guarantorStaked = UNIT;
@@ -344,7 +344,7 @@ export default function useSortedTargets (favorites: string[], withLedger: boole
       setGuarantors(guarantors)
     })
     
-  }, [])
+  }, [lastEraInfo])
 
   useEffect(() => {
     if (lastEraInfo) {
