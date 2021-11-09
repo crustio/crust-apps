@@ -118,7 +118,7 @@ function CurrentList ({ favorites, hasQueries, isIntentions, stakingOverview, ta
 
   const headerWaitingRef = useRef([
     [t('intentions'), 'start', 2],
-    [t('APY of Gurantor')],
+    [t('APY of Guarantor')],
     [t('guarantors'), 1],
     [t('own effective stake')],
     [t('stake limit')],
@@ -130,7 +130,7 @@ function CurrentList ({ favorites, hasQueries, isIntentions, stakingOverview, ta
 
   const headerActiveRef = useRef([
     [t('validators'), 'start', 2],
-    [t('APY of Gurantor')],
+    [t('APY of Guarantor')],
     [t('other effective stake')],
     [t('own effective stake'), 'media--1100'],
     [t('stake limit')],

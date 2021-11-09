@@ -170,7 +170,7 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
   const [sorted, setSorted] = useState<ValidatorInfo[] | undefined>();
 
   const labelsRef = useRef({
-    apy: t<string>('APY of Gurantor'),
+    apy: t<string>('APY of Guarantor'),
     rankOverall: t<string>('total stakes')
   });
 
