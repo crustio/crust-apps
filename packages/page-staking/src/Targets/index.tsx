@@ -62,7 +62,7 @@ const CLASSES: Record<string, string> = {
 const MAX_CAP_PERCENT = 100; // 75 if only using numNominators
 const MAX_COMM_PERCENT = 20; // -1 for median
 const MAX_DAYS = 7;
-const SORT_KEYS = ['apy', 'rankBondTotal', 'rankBondOwn', 'rankBondOther', 'rankOverall'];
+const SORT_KEYS = ['apy', 'rankOverall'];
 
 function applyFilter (validators: ValidatorInfo[], medianComm: number, allIdentity: Record<string, DeriveHasIdentity>, { daysPayout, isBabe, maxPaid, withElected, withGroup, withIdentity, withPayout, withoutComm, withoutOver }: Flags, nominatedBy?: Record<string, NominatedBy[]>): ValidatorInfo[] {
   const displays: (string[])[] = [];
@@ -171,9 +171,6 @@ function Targets ({ className = '', isInElection, ownStashes, targets: { avgStak
 
   const labelsRef = useRef({
     apy: t<string>('APY of Gurantor'),
-    rankBondOther: t<string>('other effective stake'),
-    rankBondOwn: t<string>('own effective stake'),
-    rankBondTotal: t<string>('total effective stake'),
     rankOverall: t<string>('total stakes')
   });
 
