@@ -34,6 +34,8 @@ const transformElection = {
   transform: (status: ElectionStatus) => status.isOpen
 };
 
+export const validatorApy: Record<string, number> = {};
+
 function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();

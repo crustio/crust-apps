@@ -3,23 +3,22 @@
 
 /* eslint-disable */
 import type { DeriveAccountInfo } from '@polkadot/api-derive/types';
-import type { AccountId, ActiveEraInfo, Balance, Exposure, StakingLedger, UnappliedSlash } from '@polkadot/types/interfaces';
+import type { UnappliedSlash } from '@polkadot/types/interfaces';
 import type { NominatedBy, ValidatorInfo } from '../types';
 
 import BN from 'bn.js';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { AddressSmall, Badge, Checkbox, Icon } from '@polkadot/react-components';
+import { AddressSmall, Badge, Checkbox, Icon, Tooltip } from '@polkadot/react-components';
 import { checkVisibility } from '@polkadot/react-components/util';
 import { useApi, useBlockTime, useCall } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
-import { Option } from '@polkadot/types';
 import { formatNumber } from '@polkadot/util';
 
-import { Guarantee } from '../Actions/Account';
 import MaxBadge from '../MaxBadge';
 import Favorite from '../Overview/Address/Favorite';
 import { useTranslation } from '../translate';
+import ApyInfo from '../Overview/Address/ApyInfo';
 
 interface Props {
   allSlashes?: [BN, UnappliedSlash[]][];
@@ -37,57 +36,14 @@ function queryAddress (address: string): void {
   window.location.hash = `/staking/query/${address}`;
 }
 
-const parseObj = (obj: any) => {
-  return JSON.parse(JSON.stringify(obj));
-};
-
-const transformBonded = {
-  transform: (value: Option<AccountId>): string | null =>
-    value.isSome
-      ? value.unwrap().toString()
-      : null
-};
-
-const transformLedger = {
-  transform: (value: Option<StakingLedger>): Balance | null =>
-    value.isSome
-      ? value.unwrap().active.unwrap()
-      : null
-};
-
 function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSelected, nominatedBy = [], toggleFavorite, toggleSelected }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api } = useApi();
   const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, [info.accountId]);
   const [,, time] = useBlockTime(info.lastPayout);
+  const [guarantorApy, setGuarantorApy] = useState<number>(0);
 
-  const stakeLimit = useCall<BN>(api.query.staking.stakeLimit, [info.accountId]);
-
-  const activeEraInfo = useCall<ActiveEraInfo>(api.query.staking.activeEra);
-
-  const activeEra = activeEraInfo && (JSON.parse(JSON.stringify(activeEraInfo)).index);
-
-  const accountIdBonded = useCall<string | null>(api.query.staking.bonded, [info.accountId], transformBonded);
-  const controllerActive = useCall<Balance | null>(api.query.staking.ledger, [accountIdBonded], transformLedger);
-  const erasStakersStashExposure = useCall<Option<Exposure>>(api.query.staking.erasStakers, [activeEra, info.accountId]);
-  const erasStakersStash = erasStakersStashExposure && (parseObj(erasStakersStashExposure).others.map((e: { who: any; }) => e.who));
-
-  const stakersGuarantees = useCall<Guarantee[]>(api.query.staking.guarantors.multi, [erasStakersStash]);
-  let totalStaked = new BN(Number(controllerActive).toString());
-
-  if (stakersGuarantees) {
-    for (const stakersGuarantee of stakersGuarantees) {
-      if (parseObj(stakersGuarantee)) {
-        for (const target of parseObj(stakersGuarantee)?.targets) {
-          if (target.who.toString() == info.accountId?.toString()) {
-            totalStaked = totalStaked?.add(new BN(Number(target.value).toString()));
-          }
-        }
-      }
-    }
-  }
-
-  const isOverStakelimit = totalStaked.gt(new BN(Number(stakeLimit)?.toString()));
+  const isOverStakelimit = info.totalStaked.gt(new BN(Number(info.stakeLimit)?.toString()));
 
   const isVisible = useMemo(
     () => accountInfo
@@ -112,6 +68,12 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
     () => toggleSelected(info.key),
     [info.key, toggleSelected]
   );
+
+  useEffect(() => {
+    if (info) {
+      setGuarantorApy(Math.pow((1 + info.apy), 365) - 1)
+    }
+  }, [info])
 
   if (!isVisible) {
     return null;
@@ -185,14 +147,29 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
             : formatNumber(lastPayout)
         )}
       </td>
+      
       <td className='number media--1200 no-pad-right'>{numNominators || ''}</td>
       <td className='number media--1200 no-pad-left'>{nominatedBy.length || ''}</td>
       <td className='number media--1100'>{commissionPer.toFixed(2)}%</td>
+      <td className='number'>
+        {info && (
+          <div style={{ display: "flex", "alignItems": "center" }}>
+            <Icon
+              icon='info-circle'
+              tooltip={`summary-locks-trigger-set-fee-pool-${info.accountId}`}
+            />
+            <Tooltip
+                text={(<ApyInfo apy={info.apy} />)}
+                trigger={`summary-locks-trigger-set-fee-pool-${info.accountId}`}
+            ></Tooltip> &nbsp;&nbsp; {(guarantorApy * 100).toFixed(2) + '%'}
+          </div>
+        )}
+      </td>
       <td className='number together'>{!bondTotal.isZero() && <FormatBalance value={bondTotal} />}</td>
       <td className='number together media--900'>{!bondOwn.isZero() && <FormatBalance value={bondOwn} />}</td>
       <td className='number together media--1600'>{!bondOther.isZero() && <FormatBalance value={bondOther} />}</td>
-      <td className='number together'>{totalStaked && <FormatBalance value={totalStaked} />}</td>
-      <td className='number together'>{stakeLimit && <FormatBalance value={new BN(Number(stakeLimit)?.toString())} />}</td>
+      <td className='number together'>{info.totalStaked && <FormatBalance value={info.totalStaked} />}</td>
+      <td className='number together'>{info.stakeLimit && <FormatBalance value={new BN(Number(info.stakeLimit)?.toString())} />}</td>
       <td>
         {(canSelect || isSelected) && (
           <Checkbox
