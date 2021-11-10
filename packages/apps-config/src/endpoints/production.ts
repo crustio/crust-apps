@@ -8,7 +8,6 @@ import { expandEndpoints } from './util';
 
 export const endPoints = [
   'wss://api-maxwell.crust.network',
-  'wss://api.decloudf.com/',
   'wss://rpc-crust.decoo.io',
   'wss://rpc.pinknode.io/maxwell/aaa-bbb'
 ];
@@ -36,9 +35,8 @@ export function createProduction (t: TFunction): LinkOption[] {
       text: t('rpc.crust.network', 'Crust Maxwell', { ns: 'apps-config' }),
       providers: {
         'Crust Network': endPoints[0],
-        'DCloud Foundation': endPoints[1],
-        'Decoo Technologies': endPoints[2],
-        Pinknode: endPoints[3]
+        'Decoo Technologies': endPoints[1],
+        Pinknode: endPoints[2]
       }
     }
   ]);
