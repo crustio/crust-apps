@@ -36,7 +36,6 @@ export function createProduction (t: TFunction): LinkOption[] {
       text: t('rpc.crust.network', 'Crust Maxwell', { ns: 'apps-config' }),
       providers: {
         'Crust Network': endPoints[0],
-        'DCloud Foundation': endPoints[1],
         'Decoo Technologies': endPoints[2],
         Pinknode: endPoints[3]
       }
