@@ -28,7 +28,7 @@ export function createProduction (t: TFunction): LinkOption[] {
       providers: {
         'Crust Network': 'wss://rpc.crust.network',
         'Decoo Technologies': 'wss://rpc-crust-mainnet.decoo.io',
-        'DCloud Foundation': 'wss://api.decloudf.com',
+        'DCloud Foundation': 'wss://api.decloudf.com'
       }
     },
     {
