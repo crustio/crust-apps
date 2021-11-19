@@ -1734,5 +1734,6 @@
   "Return Per 1000CRU": "每1000CRU回报",
   "Calculated based on current rates,all figures are estimates provided for your convenience only, and by no means represent guaranteed returns": "根据最新汇率进行估算，所有数字仅为方便您而提供的估算值，不代表保证的回报。",
   "Estimated return (1day): {{ reward }} CRU": "收益估算(1天): {{ reward }} CRU",
-  "Browse the Overview and Waiting pages, you can get the validator(candidate)'s APY": "浏览概览和等待页面，可以获取验证人(候选人)的年化收益率"
+  "Browse the Overview and Waiting pages, you can get the validator(candidate)'s APY": "浏览概览和等待页面，可以获取验证人(候选人)的年化收益率",
+  "The transaction fees will be subtracted from the sender account.": "交易费将从选择的账户扣除."
 }
