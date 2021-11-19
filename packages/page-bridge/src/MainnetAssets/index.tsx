@@ -134,7 +134,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
                 withMax
               />
               <MarkWarning content={t<string>('The transaction fee is ')}>
-                <span style={{'color': '#ff8812', 'textDecoration': 'underline', 'fontStyle': 'italic'}}>{formatBalance(bridgeFee)}</span>
+                <span style={{'color': '#ff8812', 'textDecoration': 'underline', 'fontStyle': 'italic'}}>{formatBalance(bridgeFee)}</span>&nbsp;<span>{t<string>('(The transaction fee will be dynamically adjusted according to the Gwei of Ethereum)')}</span>
               </MarkWarning>
             </div>
           </div>
