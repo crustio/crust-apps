@@ -50,7 +50,19 @@ function JoinGroup ({ className = '', onClose, recipientId: propRecipientId, sen
       <Modal.Content>
         <div className={className}>
           <Modal.Content>
-            <Modal.Columns hint={t<string>('The transferred balance will be subtracted (along with fees) from the sender account.')}>
+            <Modal.Columns>
+              <InputAddress
+                defaultValue={propRecipientId}
+                help={t<string>('Select a contact or paste the group owner you want to join.')}
+                isDisabled={!!propRecipientId}
+                label={t<string>('group onwer account')}
+                onChange={setRecipientId}
+                type='allPlus'
+              />
+            </Modal.Columns>
+          </Modal.Content>
+          <Modal.Content>
+            <Modal.Columns hint={t<string>('The transaction fees will be subtracted from the sender account.')}>
               <InputAddress
                 defaultValue={propSenderId}
                 help={t<string>('The account you will join group.')}
@@ -60,19 +72,6 @@ function JoinGroup ({ className = '', onClose, recipientId: propRecipientId, sen
                 type='account'
               />
               {isDisable && (<MarkError content={t<string>('Please wait for member account to report the first work report and then join the group')} />)}
-            </Modal.Columns>
-          </Modal.Content>
-
-          <Modal.Content>
-            <Modal.Columns hint={t<string>('The beneficiary will have access to the transferred fees when the transaction is included in a block.')}>
-              <InputAddress
-                defaultValue={propRecipientId}
-                help={t<string>('Select a contact or paste the group owner you want to join.')}
-                isDisabled={!!propRecipientId}
-                label={t<string>('group onwer account')}
-                onChange={setRecipientId}
-                type='allPlus'
-              />
             </Modal.Columns>
           </Modal.Content>
         </div>
