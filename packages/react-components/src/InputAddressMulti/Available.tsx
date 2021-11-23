@@ -3,6 +3,8 @@
 
 import React, { useCallback } from 'react';
 
+import { SortedTargets } from '@polkadot/app-staking/types';
+
 import AddressToggle from '../AddressToggle';
 
 interface Props {
@@ -10,9 +12,10 @@ interface Props {
   filter: string;
   isHidden?: boolean;
   onSelect: (address: string) => void;
+  targets?: SortedTargets;
 }
 
-function Available ({ address, filter, isHidden, onSelect }: Props): React.ReactElement<Props> | null {
+function Available ({ address, filter, isHidden, onSelect, targets }: Props): React.ReactElement<Props> | null {
   const _onSelect = useCallback(
     () => onSelect(address),
     [address, onSelect]
@@ -28,6 +31,7 @@ function Available ({ address, filter, isHidden, onSelect }: Props): React.React
       filter={filter}
       noToggle
       onChange={_onSelect}
+      targets={targets}
     />
   );
 }

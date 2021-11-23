@@ -27,7 +27,7 @@ interface Props {
   withSenders?: boolean;
 }
 
-function Nominate ({ className = '', controllerId, onChange, stashId, targets: { nominateIds = [] }, withSenders }: Props): React.ReactElement<Props> {
+function Nominate ({ className = '', controllerId, onChange, stashId, targets: { nominateIds = [], validators }, targets, withSenders }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [favorites] = useFavorites(STORE_FAVS_BASE);
@@ -45,24 +45,31 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
 
   const [amount, setAmount] = useState<BN | undefined>(new BN(0));
 
+  const [selectedApy, setSelectedApy] = useState<number>();
+
   const [reward, setReward] = useState<number>(0);
 
   const [showReward, setShowReward] = useState<boolean>(false);
 
   useEffect(() => {
-    if (selected && selected.length) {
+    if (selected && selected.length && selectedApy !== undefined) {
       setShowReward(true);
 
       if (amount) {
         const amountNumber = Number(amount.toString()) / 1000000000000.0;
 
-        console.log('amountNumber', amountNumber);
-        setReward((validatorApy[selected[0]] + 1) * amountNumber - amountNumber);
+        setReward((selectedApy + 1) * amountNumber - amountNumber);
       }
     } else {
       setShowReward(false);
     }
-  }, [amount, selected]);
+  }, [amount, selected, selectedApy]);
+
+  useEffect(() => {
+    if (selected && selected.length && validators) {
+      setSelectedApy(validatorApy[selected[0].toString()]);
+    }
+  }, [selected, validators]);
 
   useEffect((): void => {
     onChange({
@@ -99,6 +106,7 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
             help={t<string>('Filter available candidates based on name, address or short account index.')}
             maxCount={1}
             onChange={setSelected}
+            targets={targets}
             valueLabel={t<string>('selected accounts')}
           />
         </Modal.Columns>
@@ -122,7 +130,7 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
       </Modal.Columns>
       <Modal.Content>
         <Modal.Columns>
-          {showReward && (validatorApy[selected[0]]
+          {showReward && (selectedApy !== undefined
             ? <Banner type='warning'>
               <p>{t<string>('Estimated return (1day): {{ reward }} CRU', {
                 replace: {

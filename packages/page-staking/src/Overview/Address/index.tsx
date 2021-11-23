@@ -5,7 +5,7 @@
 import type { DeriveAccountInfo, DeriveHeartbeatAuthor } from '@polkadot/api-derive/types';
 import type { Option } from '@polkadot/types';
 import type { AccountId, ActiveEraInfo, Balance, Exposure, IndividualExposure, SlashingSpans, StakingLedger, ValidatorPrefs } from '@polkadot/types/interfaces';
-import type { NominatedBy as NominatedByType, ValidatorInfo } from '../../types';
+import type { NominatedBy as NominatedByType, SortedTargets, ValidatorInfo } from '../../types';
 import type { NominatorValue } from './types';
 
 import BN from 'bn.js';
@@ -40,9 +40,7 @@ interface Props {
   toggleFavorite: (accountId: string) => void;
   validatorInfo?: ValidatorInfo;
   withIdentity: boolean;
-  validatorCount: number;
-  totalReward: BN;
-  totalEffectiveStake: BN;
+  targets: SortedTargets
 }
 
 interface StakingState {
@@ -140,9 +138,7 @@ function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
   return { accountInfo, slashingSpans, totalStaked, stakeLimit, activeEra };
 }
 
-const UNIT = new BN(1_000_000_000_000);
-
-function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, validatorCount, totalReward, points, recentlyOnline, toggleFavorite, validatorInfo, withIdentity, totalEffectiveStake }: Props): React.ReactElement<Props> | null {
+function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, points, recentlyOnline, toggleFavorite, validatorInfo, withIdentity, targets }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
   const { accountInfo, stakeLimit, totalStaked, activeEra } = useAddressCalls(api, address, isMain);
   const [guarantorApy, setGuarantorApy] = useState<number>(0);
@@ -159,26 +155,12 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
   );
 
   useEffect(() => {
-    if (activeEra && totalStaked && guarantee_fee_pref && totalReward && validatorCount && totalEffectiveStake) {
-      const stakingReward = Number(totalReward.muln(0.8))
-      const authringRewad = Number(totalReward.muln(0.2)) / validatorCount
-      const guarantorStaked = UNIT;
-      const rewardRate = Number(guarantorStaked) / (Number(totalStaked) * 1.0)
-      const ownEffective = Math.min(Number(stakeLimit), Number(totalStaked))
-      const guarantee_fee = guarantee_fee_pref == 1e-9 ? 0 : guarantee_fee_pref;
-      const validatorRate = ( ownEffective / (Number(totalEffectiveStake) * 1.0));
-      let apy = 0
-      if (isMain) {
-        apy = ownEffective ? rewardRate * ((stakingReward) * validatorRate + authringRewad) * 4 * guarantee_fee / 1000000000000 : 0
-        setGuarantorApy(Math.pow((1 + apy), 365) - 1)
-      } else {
-        apy = ownEffective ? rewardRate * (stakingReward) * (validatorRate) * 4 * guarantee_fee / 1000000000000 : 0
-        setGuarantorApy(Math.pow((1 + apy), 365) - 1)
-      }
-      validatorApy[address] = apy
+    if (activeEra && totalStaked && guarantee_fee_pref && targets && targets.validators) {
+      const apy = validatorApy[address];
+      setGuarantorApy(Math.pow((1 + apy), 365) - 1)
     }
 
-  }, [isMain, totalStaked, guarantee_fee_pref, activeEra, totalReward, validatorCount, totalEffectiveStake, stakeLimit, stakeOwn])
+  }, [address, isMain, totalStaked, guarantee_fee_pref, activeEra, stakeLimit, stakeOwn, targets])
 
   const _onQueryStats = useCallback(
     (): void => {

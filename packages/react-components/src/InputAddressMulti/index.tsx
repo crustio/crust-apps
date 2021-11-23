@@ -4,6 +4,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import { SortedTargets } from '@polkadot/app-staking/types';
 import { useDebounce, useLoadingDelay } from '@polkadot/react-hooks';
 
 import Input from '../Input';
@@ -21,9 +22,10 @@ interface Props {
   maxCount: number;
   onChange: (values: string[]) => void;
   valueLabel: React.ReactNode;
+  targets?: SortedTargets;
 }
 
-function InputAddressMulti ({ available, availableLabel, className = '', defaultValue, maxCount, onChange, valueLabel }: Props): React.ReactElement<Props> {
+function InputAddressMulti ({ available, availableLabel, className = '', defaultValue, maxCount, onChange, targets, valueLabel }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const [_filter, setFilter] = useState<string>('');
   const [selected, setSelected] = useState<string[]>([]);
@@ -97,6 +99,7 @@ function InputAddressMulti ({ available, availableLabel, className = '', default
                     isHidden={selected?.includes(address)}
                     key={address}
                     onSelect={_onSelect}
+                    targets={targets}
                   />
                 ))
               )

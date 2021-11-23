@@ -26,7 +26,7 @@ interface Props {
   withSenders?: boolean;
 }
 
-function CutGuarantee ({ className = '', controllerId, onChange, stashId, targets: { nominateIds = [] }, withSenders }: Props): React.ReactElement<Props> {
+function CutGuarantee ({ className = '', controllerId, onChange, stashId, targets, withSenders }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const cutGuaranteeable = <span className='label'>{t<string>('cutGuaranteeable')}</span>;
@@ -93,6 +93,7 @@ function CutGuarantee ({ className = '', controllerId, onChange, stashId, target
             // defaultValue={nominating}
             help={t<string>('Filter available candidates based on name, address or short account index.')}
             maxCount={1}
+            targets={targets}
             onChange={setSelected}
             valueLabel={t<string>('selected account')}
           />

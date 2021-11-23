@@ -7,13 +7,11 @@ import type { Authors } from '@polkadot/react-query/BlockAuthors';
 import type { AccountId } from '@polkadot/types/interfaces';
 import type { SortedTargets, ValidatorInfo } from '../types';
 
-import BN from 'bn.js';
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useContext, useMemo, useRef, useState } from 'react';
 
 import { Table } from '@polkadot/react-components';
 import { useApi, useCall, useLoadingDelay, useSavedFlags } from '@polkadot/react-hooks';
 import { BlockAuthorsContext } from '@polkadot/react-query';
-import { BN_ZERO } from '@polkadot/util';
 
 import Filtering from '../Filtering';
 import Legend from '../Legend';
@@ -82,9 +80,6 @@ function CurrentList ({ favorites, hasQueries, isIntentions, stakingOverview, ta
   const nominatedBy = useNominations(isIntentions);
   const [nameFilter, setNameFilter] = useState<string>('');
   const [toggles, setToggle] = useSavedFlags('staking:overview', { withIdentity: false });
-  const [validatorCount, setValidatorCount] = useState<number>(0);
-  const [totalReward, setTotalReward] = useState<BN>(BN_ZERO);
-  const [totalEffectiveStake, setTotalEffectiveStake] = useState<BN>(BN_ZERO);
 
   // we have a very large list, so we use a loading delay
   const isLoading = useLoadingDelay();
@@ -102,19 +97,6 @@ function CurrentList ({ favorites, hasQueries, isIntentions, stakingOverview, ta
     }, {}),
     [targets]
   );
-
-  useEffect(() => {
-    if (stakingOverview && targets) {
-      setValidatorCount(stakingOverview.validatorCount.toNumber());
-      setTotalEffectiveStake(targets.totalStaked as BN);
-      api.query.staking.erasStakingPayout(stakingOverview.activeEra.toNumber() - 1).then((res) => {
-        const erasStakingPayout = JSON.parse(JSON.stringify(res));
-        const totalPayout = Number(erasStakingPayout) / 0.8;
-
-        setTotalReward(new BN(totalPayout));
-      });
-    }
-  }, [api, stakingOverview, targets]);
 
   const headerWaitingRef = useRef([
     [t('intentions'), 'start', 2],
@@ -158,14 +140,12 @@ function CurrentList ({ favorites, hasQueries, isIntentions, stakingOverview, ta
           points={eraPoints[address]}
           recentlyOnline={recentlyOnline?.[address]}
           toggleFavorite={toggleFavorite}
-          totalEffectiveStake={totalEffectiveStake}
-          totalReward={totalReward}
-          validatorCount={validatorCount}
           validatorInfo={infoMap?.[address]}
           withIdentity={toggles.withIdentity}
+          targets={targets}
         />
       )),
-    [byAuthor, eraPoints, hasQueries, infoMap, nameFilter, nominatedBy, recentlyOnline, toggleFavorite, toggles, totalEffectiveStake, totalReward, validatorCount]
+    [byAuthor, eraPoints, hasQueries, infoMap, nameFilter, nominatedBy, recentlyOnline, toggleFavorite, toggles, targets]
   );
 
   return isIntentions
