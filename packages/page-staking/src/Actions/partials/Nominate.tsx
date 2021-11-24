@@ -56,7 +56,6 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
       if (amount) {
         const amountNumber = Number(amount.toString()) / 1000000000000.0;
 
-        console.log('amountNumber', amountNumber);
         setReward((validatorApy[selected[0]] + 1) * amountNumber - amountNumber);
       }
     } else {
@@ -100,6 +99,7 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
             maxCount={1}
             onChange={setSelected}
             valueLabel={t<string>('selected accounts')}
+            withApy={true}
           />
         </Modal.Columns>
       </Modal.Content>
@@ -122,7 +122,7 @@ function Nominate ({ className = '', controllerId, onChange, stashId, targets: {
       </Modal.Columns>
       <Modal.Content>
         <Modal.Columns>
-          {showReward && (validatorApy[selected[0]]
+          {showReward && (validatorApy[selected[0]] !== undefined
             ? <Banner type='warning'>
               <p>{t<string>('Estimated return (1day): {{ reward }} CRU', {
                 replace: {

@@ -6,6 +6,7 @@ import type { DeriveAccountInfo } from '@polkadot/api-derive/types';
 import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 
+import { validatorApy } from '@polkadot/app-staking';
 import { useApi, useCall } from '@polkadot/react-hooks';
 
 import AddressMini from './AddressMini';
@@ -20,9 +21,20 @@ interface Props {
   noToggle?: boolean;
   onChange?: (isChecked: boolean) => void;
   value?: boolean;
+  withApy?: boolean;
 }
 
-function AddressToggle ({ address, className = '', filter, isHidden, noToggle, onChange, value }: Props): React.ReactElement<Props> | null {
+const getApy = (address: string) => {
+  if (validatorApy[address.toString()] !== undefined) {
+    const apy = Math.pow((1 + validatorApy[address.toString()]), 365) - 1;
+
+    return (apy * 100).toFixed(2) + '%';
+  } else {
+    return undefined;
+  }
+};
+
+function AddressToggle ({ address, className = '', filter, isHidden, noToggle, onChange, value, withApy }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
   const info = useCall<DeriveAccountInfo>(api.derive.accounts.info, [address]);
 
@@ -36,6 +48,11 @@ function AddressToggle ({ address, className = '', filter, isHidden, noToggle, o
     [onChange, value]
   );
 
+  const apy = useMemo(
+    () => withApy ? getApy(address) : undefined,
+    [address, withApy]
+  );
+
   return (
     <div
       className={`ui--AddressToggle ${className}${(value || noToggle) ? ' isAye' : ' isNay'}${isHidden || !isVisible ? ' isHidden' : ''}`}
@@ -46,6 +63,7 @@ function AddressToggle ({ address, className = '', filter, isHidden, noToggle, o
         value={address}
         withSidebar={false}
       />
+      {withApy && apy}
       {!noToggle && (
         <div className='ui--AddressToggle-toggle'>
           <Toggle

@@ -21,9 +21,10 @@ interface Props {
   maxCount: number;
   onChange: (values: string[]) => void;
   valueLabel: React.ReactNode;
+  withApy?: boolean;
 }
 
-function InputAddressMulti ({ available, availableLabel, className = '', defaultValue, maxCount, onChange, valueLabel }: Props): React.ReactElement<Props> {
+function InputAddressMulti ({ available, availableLabel, className = '', defaultValue, maxCount, onChange, valueLabel, withApy }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const [_filter, setFilter] = useState<string>('');
   const [selected, setSelected] = useState<string[]>([]);
@@ -97,6 +98,7 @@ function InputAddressMulti ({ available, availableLabel, className = '', default
                     isHidden={selected?.includes(address)}
                     key={address}
                     onSelect={_onSelect}
+                    withApy={withApy}
                   />
                 ))
               )

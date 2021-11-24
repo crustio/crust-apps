@@ -141,7 +141,7 @@ function extractSingle (api: ApiPromise, allAccounts: string[], derive: DeriveSt
       bondShare: 0,
       bondTotal,
       // @ts-ignore
-      commissionPer: Number(validatorPrefs.guarantee_fee) / 10_000_000,
+      commissionPer: Math.floor(Number(validatorPrefs.guarantee_fee) / 10000000),
       exposure,
       isActive: !skipRewards,
       isBlocking: !!(validatorPrefs.blocked && validatorPrefs.blocked.isTrue),
@@ -289,8 +289,7 @@ const calculateApy = (totalReward: BN, validatorCount: number, totalEffectiveSta
   const guarantorStaked = UNIT;
   const rewardRate = Number(guarantorStaked) / (Number(validatorInfo.totalStaked) * 1.0)
   const ownEffective = Math.min(Number(validatorInfo.stakeLimit), Number(validatorInfo.totalStaked))
-  const guarantee_fee_pref = validatorInfo.commissionPer / 100;
-  const guarantee_fee = guarantee_fee_pref == 1e-9 ? 0 : guarantee_fee_pref;
+  const guarantee_fee = validatorInfo.commissionPer / 100.0;
   const validatorRate = ( ownEffective / (Number(totalEffectiveStake) * 1.0));
   let apy = 0
   if (validatorInfo.isElected) {
