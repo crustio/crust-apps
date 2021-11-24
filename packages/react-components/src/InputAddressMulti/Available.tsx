@@ -10,9 +10,10 @@ interface Props {
   filter: string;
   isHidden?: boolean;
   onSelect: (address: string) => void;
+  withApy?: boolean;
 }
 
-function Available ({ address, filter, isHidden, onSelect }: Props): React.ReactElement<Props> | null {
+function Available ({ address, filter, isHidden, onSelect, withApy }: Props): React.ReactElement<Props> | null {
   const _onSelect = useCallback(
     () => onSelect(address),
     [address, onSelect]
@@ -28,6 +29,7 @@ function Available ({ address, filter, isHidden, onSelect }: Props): React.React
       filter={filter}
       noToggle
       onChange={_onSelect}
+      withApy={withApy}
     />
   );
 }
