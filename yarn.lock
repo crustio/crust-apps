@@ -1582,9 +1582,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@elrondnetwork/erdjs@npm:8.0.1-alpha.5":
-  version: 8.0.1-alpha.5
-  resolution: "@elrondnetwork/erdjs@npm:8.0.1-alpha.5"
+"@elrondnetwork/erdjs@npm:^8.0.1-alpha.13":
+  version: 8.0.1-alpha.13
+  resolution: "@elrondnetwork/erdjs@npm:8.0.1-alpha.13"
   dependencies:
     "@babel/runtime": 7.11.2
     "@elrondnetwork/bls-wasm": 0.3.3
@@ -1608,7 +1608,7 @@ __metadata:
     scryptsy: 2.1.0
     tweetnacl: 1.0.3
     uuid: 8.3.2
-  checksum: b98d860732c5583a1531457607004c172ebf0dafe4ff52f359ceb32ea91e557035a67479670d3fe343cc7f6c4ed42edace6da618b15da0805fde64f7e650c569
+  checksum: 50a3d6991020f2726ce8c2f599037bf016e05cba748c5a22c107debfefca0830f85e33d34b37651bdbfc6ba51184b8d7c9e53b1efd9236a273ae817399542d8d
   languageName: node
   linkType: hard
 
@@ -3320,10 +3320,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/openapi-types@npm:^11.0.0":
-  version: 11.0.0
-  resolution: "@octokit/openapi-types@npm:11.0.0"
-  checksum: ee641d393df7f0b2bed56eaec4e4ce677389d06c3b11ea766cd020b54008572254e9f40148c542ff5a99c6043268edba9828d3525250df943d4acd4e05da5379
+"@octokit/openapi-types@npm:^11.2.0":
+  version: 11.2.0
+  resolution: "@octokit/openapi-types@npm:11.2.0"
+  checksum: 8fc9390afc59cb171e1eb5e7c816e14189d4e916f9ae580a0d2e288e7c2c8d2c3ce277f1e0782b2ae49f4f14f94854d8caa6f3283256cc25a84d991eadb3d763
   languageName: node
   linkType: hard
 
@@ -3513,11 +3513,11 @@ __metadata:
   linkType: hard
 
 "@octokit/types@npm:^6.16.1":
-  version: 6.32.0
-  resolution: "@octokit/types@npm:6.32.0"
+  version: 6.34.0
+  resolution: "@octokit/types@npm:6.34.0"
   dependencies:
-    "@octokit/openapi-types": ^11.0.0
-  checksum: f8347f69829fde8642477c26fed912c93bae0b22b0903ad905dfc9969d6220f7984949155db292d9cf54fb60e9ea5fb75ca8e512b4cda78296c2e5e349571ecf
+    "@octokit/openapi-types": ^11.2.0
+  checksum: d797eb0d3c685e69281274ef92ce260dabd0af6f16ccf658eb93d6079658cffcaf46405f86b43d7b6ba48d742ee664502406dc52620e51a3b71ec1da4e444165
   languageName: node
   linkType: hard
 
@@ -3832,7 +3832,7 @@ __metadata:
   resolution: "@polkadot/app-files@workspace:packages/page-files"
   dependencies:
     "@babel/runtime": ^7.15.4
-    "@elrondnetwork/erdjs": 8.0.1-alpha.5
+    "@elrondnetwork/erdjs": ^8.0.1-alpha.13
     "@onflow/fcl": ^0.0.77
     "@onflow/types": ^0.0.5
     "@polkadot/react-components": ^0.85.2-15
@@ -7800,9 +7800,9 @@ __metadata:
   linkType: hard
 
 "big-integer@npm:^1.6.17":
-  version: 1.6.49
-  resolution: "big-integer@npm:1.6.49"
-  checksum: 44f944a37a9bfd7ce604831b01280f26e81ee44f675dfcef4e88413c56bd1be9e4f98c55392a37b363ef5d7ea12de53b1d47a03a2555f9aa26cc779d4caaca82
+  version: 1.6.51
+  resolution: "big-integer@npm:1.6.51"
+  checksum: 5f04a0e1ecd60592b8491a00350145069fc9d632cc226a2c0d943c8132e758f93a4fdb18f8a5eabe4503f7673d2a0e5703394e12b6206fe5c1230925f5a399c3
   languageName: node
   linkType: hard
 
@@ -7851,7 +7851,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bindings@npm:^1.3.0, bindings@npm:^1.4.0, bindings@npm:^1.5.0":
+"bindings@npm:^1.3.0, bindings@npm:^1.5.0":
   version: 1.5.0
   resolution: "bindings@npm:1.5.0"
   dependencies:
@@ -13429,8 +13429,8 @@ __metadata:
   linkType: hard
 
 "flow-typed@npm:^3.2.1":
-  version: 3.3.1
-  resolution: "flow-typed@npm:3.3.1"
+  version: 3.4.0
+  resolution: "flow-typed@npm:3.4.0"
   dependencies:
     "@octokit/rest": ^16.43.1
     colors: ^1.4.0
@@ -13444,19 +13444,18 @@ __metadata:
     rimraf: ^3.0.2
     semver: 7.3.2
     table: ^5.4.6
-    through: ^2.3.8
     unzipper: ^0.10.8
     which: ^2.0.2
     yargs: ^15.1.0
   bin:
     flow-typed: dist/cli.js
-  checksum: 533ee1905e2f2fdeb4b719ddf666090813d30cafecf5cd4a1cfa7a7b236046bf59698a2b63198665f0cb18c070fba730631efdccec99b6b741cb0ac869445dac
+  checksum: 90f172f30e250935dc444b53427b595212fe45104b269accb19e92b36c621ea6355ed0e465acb5f1e0a5b794af9a5f54effd167c92cab0b916b8d3cc87be2da5
   languageName: node
   linkType: hard
 
 "flowgen@npm:^1.10.0":
-  version: 1.15.0
-  resolution: "flowgen@npm:1.15.0"
+  version: 1.16.0
+  resolution: "flowgen@npm:1.16.0"
   dependencies:
     "@babel/code-frame": ^7.10.4
     "@babel/highlight": ^7.10.4
@@ -13468,7 +13467,7 @@ __metadata:
     typescript-compiler: ^1.4.1-2
   bin:
     flowgen: lib/cli/index.js
-  checksum: cac678f52e1695aa514306bef88bf8fecceca59fd53fc79f7f187d3d8428fbaf902798086cf7d08628c32fd0bf042022d18bea3f84c3e8227388084df4e0279f
+  checksum: e599719640d2876a5e640cffea7bffb920fb42a3046d0d40aac0bd2867b50614d78beb48ba7605c47b6debb0b29a69c9bc88b04f204db1a7284480c57e45280b
   languageName: node
   linkType: hard
 
@@ -21144,15 +21143,6 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"node-addon-api@npm:3.0.2":
-  version: 3.0.2
-  resolution: "node-addon-api@npm:3.0.2"
-  dependencies:
-    node-gyp: latest
-  checksum: 7f401e4ad9ed75cea9ba8590da8048b37e99531e8d8b46b941e6c951ca1cf8e0db29f31ddf25d3e87c13cb6653c06e0db72c05ef50eff9db3529cd929ae69747
-  languageName: node
-  linkType: hard
-
 "node-addon-api@npm:^1.6.3":
   version: 1.7.2
   resolution: "node-addon-api@npm:1.7.2"
@@ -21177,6 +21167,15 @@ fsevents@~2.3.2:
   dependencies:
     node-gyp: latest
   checksum: 9b5c1f5f24acb9255fd47914b0f0b80c76d735b7b91611366cd30217f8ead5fafcd1cfeb65e467612b40420b6ad3faf1e7fa3666bd4e15a2bdf1762748f3fa8a
+  languageName: node
+  linkType: hard
+
+"node-addon-api@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "node-addon-api@npm:4.2.0"
+  dependencies:
+    node-gyp: latest
+  checksum: e0911dd01efed65c0a70db660570225904bf24d77b17801be42ecea01c8aaa9423c511b78fd89ce84b09149a7a4ed115bf9a84ff9ee6b779a1f68eefeef3972c
   languageName: node
   linkType: hard
 
@@ -21209,6 +21208,17 @@ fsevents@~2.3.2:
     node-gyp-build-optional: optional.js
     node-gyp-build-test: build-test.js
   checksum: 8512c25498b1605dbe9d2605cac7f8996d18c35097b3079b232674b0f3b8f1559be6f531ec3a00a94f90a0a69ccc452edb62f8f6dfff8caa3abe4b729cc21b06
+  languageName: node
+  linkType: hard
+
+"node-gyp-build@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "node-gyp-build@npm:4.3.0"
+  bin:
+    node-gyp-build: bin.js
+    node-gyp-build-optional: optional.js
+    node-gyp-build-test: build-test.js
+  checksum: 4d52eeecc8e4f3bf8d49dc0b2fd2c5bb4be33f529492f02ddf2a6e8d82501c83880bdcdd8be1f4117edf201419bf42f7ed281f9958bf6debf2c12f2ba1b3a925
   languageName: node
   linkType: hard
 
@@ -22927,7 +22937,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"prebuild-install@npm:^5.3.3, prebuild-install@npm:^5.3.5":
+"prebuild-install@npm:^5.3.5":
   version: 5.3.6
   resolution: "prebuild-install@npm:5.3.6"
   dependencies:
@@ -23038,11 +23048,11 @@ fsevents@~2.3.2:
   linkType: hard
 
 "prettier@npm:^2.1.1":
-  version: 2.4.1
-  resolution: "prettier@npm:2.4.1"
+  version: 2.5.0
+  resolution: "prettier@npm:2.5.0"
   bin:
     prettier: bin-prettier.js
-  checksum: d72ebe33441651cdb334d05d8d180bedbb6f8ca9db47163719b9763f3f471d27b9dc86b9f2c9383773681ff836eb5951acd1809871077c9313609f7b7e05554e
+  checksum: 4f2da53948fc6b5cb85030bc033cc8a9d40ba3c3904e038ab1e9f5acbf68c71606a77157d880bcc41bb69362fedeac76f0aa8570588db2b4c7d3816c3ce3e173
   languageName: node
   linkType: hard
 
@@ -27121,7 +27131,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"through@npm:^2.3.6, through@npm:^2.3.8, through@npm:~2.3.4":
+"through@npm:^2.3.6, through@npm:~2.3.4":
   version: 2.3.8
   resolution: "through@npm:2.3.8"
   checksum: 918d9151680b5355990011eb8c4b02e8cb8cf6e9fb6ea3d3e5a1faa688343789e261634ae35de4ea9167ab029d1e7bac6af2fe61b843931768d405fdc3e8897c
@@ -28188,14 +28198,13 @@ fsevents@~2.3.2:
   linkType: hard
 
 "usb@npm:^1.7.0":
-  version: 1.7.2
-  resolution: "usb@npm:1.7.2"
+  version: 1.9.1
+  resolution: "usb@npm:1.9.1"
   dependencies:
-    bindings: ^1.4.0
-    node-addon-api: 3.0.2
+    node-addon-api: ^4.2.0
     node-gyp: latest
-    prebuild-install: ^5.3.3
-  checksum: 2658521d9c46947f7c7f1c243cfa5fa8aef1e4785cbec73870872739e43a892d8e879cf36ff407f8fb6a11af9920c85392083f2d5224c6dec30288b6ae649442
+    node-gyp-build: ^4.3.0
+  checksum: b8dd47f5fb54b358e08edce205ab2754eb34db4d59f5144e19bb70cb17893d1db4ea8426f008f8fc7f8f477b0456cf9f8ee8bba1c5b1912de7b168d8c8ae870b
   languageName: node
   linkType: hard
 
