@@ -97,7 +97,7 @@ function getValRewards (api: ApiPromise, validatorEras: ValidatorWithEras[], era
     eras.forEach((era): void => {
       const eraPoints = erasPoints.find((p) => p.era.eq(era));
       const eraRewards = erasRewards.find((r) => r.era.eq(era));
-      const eraExposure = eraStashExposure.find((e) => e.era.eq(era) && e.stashId === stashId.toString());
+      // const eraExposure = eraStashExposure.find((e) => e.era.eq(era) && e.stashId === stashId.toString());
 
       if (eraPoints?.eraPoints.gt(BN_ZERO) && eraPoints?.validators[stashId] && eraRewards) {
         const reward = eraPoints.validators[stashId].mul(eraRewards.eraReward).div(eraPoints.eraPoints);
@@ -123,25 +123,26 @@ function getValRewards (api: ApiPromise, validatorEras: ValidatorWithEras[], era
             }
           });
         }
-      } else if (eraExposure?.exposure.total.unwrap().gtn(0)) {
-        if (!allRewards[stashId]) {
-          allRewards[stashId] = [];
-        }
+      } 
+      // else if (eraExposure?.exposure.total.unwrap().gtn(0)) {
+      //   if (!allRewards[stashId]) {
+      //     allRewards[stashId] = [];
+      //   }
 
-        allRewards[stashId].push({
-          era,
-          eraReward: api.createType('Balance', 1),
-          isEmpty: false,
-          isValidator: true,
-          nominating: [],
-          validators: {
-            [stashId]: {
-              total: api.createType('Balance', 1),
-              value: api.createType('Balance', 1)
-            }
-          }
-        });
-      }
+      //   allRewards[stashId].push({
+      //     era,
+      //     eraReward: api.createType('Balance', 1),
+      //     isEmpty: false,
+      //     isValidator: true,
+      //     nominating: [],
+      //     validators: {
+      //       [stashId]: {
+      //         total: api.createType('Balance', 1),
+      //         value: api.createType('Balance', 1)
+      //       }
+      //     }
+      //   });
+      // }
     });
   });
 
