@@ -142,7 +142,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
             <TxButton
               accountId={senderId}
               icon='paper-plane'
-              isDisabled={true || !isValid || (handlerAsset && amount && handlerAsset.lte(amount)) }
+              isDisabled={!isValid || (handlerAsset && amount && handlerAsset.lte(amount)) || true }
               label={t<string>('Transfer')}
               params={[amount, ethereumAddress, 0]}
               tx={api.tx.bridgeTransfer?.transferNative}

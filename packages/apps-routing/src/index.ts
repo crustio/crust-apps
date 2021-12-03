@@ -13,7 +13,7 @@ import bounties from './bounties';
 import bridge from './bridge';
 import calendar from './calendar';
 import candy from './candy';
-import claims from './claims';
+// import claims from './claims';
 import contracts from './contracts';
 import council from './council';
 import csmStaking from './csmStaking';
@@ -48,7 +48,7 @@ export default function create (t: TFunction): Routes {
     accounts(t),
     addresses(t),
     explorer(t),
-    claims(t),
+    // claims(t),
     bridge(t),
     poll(t),
     transfer(t),
