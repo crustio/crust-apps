@@ -1694,7 +1694,6 @@
   "Cross-chain transfers are automatically executed by smart contracts. after the execution of the contract is completed, the funds will arrive in the account. Please wait patiently.": "跨链转账是智能合约自动执行，待合约执行完成资金即到账，请耐心等待。",
   "You can check the transaction status here...": "您可以在这里查看交易状态...",
   "This function is an internal test stage, the assets will not be lost, but there may be a delay (max to 48 hours) in the arrival of the account.": "此功能为内部测试阶段，资产不会受到损失，但是到账可能存在延时(最大可能48小时)。",
-  "Bridge is temporarily suspended due to network fluctuations in large scope of geographic locations in Asia Pacific. Blockchain service was being unstable, but major problems have been fixed. We will bring Bridge back online ASAP once all problems are fixed. Please keep being informed and thanks for your patience.": "由于亚太地区网络波动，桥功能已暂停。主要问题已经定位并解决，但服务仍不够稳定。我们正全力解决问题，并将在第一时间恢复桥功能，敬请留意我们的后续通知，感谢您的理解和配合。",
   "0x prefixed hex": "0x 开头的地址",
   "staking payout: {{stakingRewards}}": "质押奖励: {{stakingRewards}}",
   "market payout: {{marketPayout}}": "存储市场奖励: {{marketPayout}}",
