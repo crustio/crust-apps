@@ -90,14 +90,14 @@ function getRewards ([[stashIds], available]: [[string[]], DeriveStakerReward[][
   };
 }
 
-function getValRewards (api: ApiPromise, validatorEras: ValidatorWithEras[], erasPoints: DeriveEraPoints[], erasRewards: DeriveEraRewards[], eraStashExposure: EraStashExposure[]): State {
+function getValRewards (api: ApiPromise, validatorEras: ValidatorWithEras[], erasPoints: DeriveEraPoints[], erasRewards: DeriveEraRewards[], eraStashExposure: EraStashExposure[], isMaxwell?: boolean): State {
   const allRewards: Record<string, DeriveStakerReward[]> = {};
 
   validatorEras.forEach(({ eras, stashId }): void => {
     eras.forEach((era): void => {
       const eraPoints = erasPoints.find((p) => p.era.eq(era));
       const eraRewards = erasRewards.find((r) => r.era.eq(era));
-      // const eraExposure = eraStashExposure.find((e) => e.era.eq(era) && e.stashId === stashId.toString());
+      const eraExposure = eraStashExposure.find((e) => e.era.eq(era) && e.stashId === stashId.toString());
 
       if (eraPoints?.eraPoints.gt(BN_ZERO) && eraPoints?.validators[stashId] && eraRewards) {
         const reward = eraPoints.validators[stashId].mul(eraRewards.eraReward).div(eraPoints.eraPoints);
@@ -123,26 +123,25 @@ function getValRewards (api: ApiPromise, validatorEras: ValidatorWithEras[], era
             }
           });
         }
-      } 
-      // else if (eraExposure?.exposure.total.unwrap().gtn(0)) {
-      //   if (!allRewards[stashId]) {
-      //     allRewards[stashId] = [];
-      //   }
+      } else if (isMaxwell && eraExposure?.exposure.total.unwrap().gtn(0)) {
+        if (!allRewards[stashId]) {
+          allRewards[stashId] = [];
+        }
 
-      //   allRewards[stashId].push({
-      //     era,
-      //     eraReward: api.createType('Balance', 1),
-      //     isEmpty: false,
-      //     isValidator: true,
-      //     nominating: [],
-      //     validators: {
-      //       [stashId]: {
-      //         total: api.createType('Balance', 1),
-      //         value: api.createType('Balance', 1)
-      //       }
-      //     }
-      //   });
-      // }
+        allRewards[stashId].push({
+          era,
+          eraReward: api.createType('Balance', 1),
+          isEmpty: false,
+          isValidator: true,
+          nominating: [],
+          validators: {
+            [stashId]: {
+              total: api.createType('Balance', 1),
+              value: api.createType('Balance', 1)
+            }
+          }
+        });
+      }
     });
   });
 
@@ -154,7 +153,7 @@ function getValRewards (api: ApiPromise, validatorEras: ValidatorWithEras[], era
 }
 
 export function useOwnEraRewards (maxEras?: number, ownValidators?: StakerState[]): State {
-  const { api } = useApi();
+  const { api, systemChain } = useApi();
   const mountedRef = useIsMountedRef();
   const stashIds = useOwnStashIds();
   const allEras = useCall<EraIndex[]>(api.derive.staking?.erasHistoric);
@@ -168,6 +167,7 @@ export function useOwnEraRewards (maxEras?: number, ownValidators?: StakerState[
   const allValidators = stakingOverview && waitingInfo && [...waitingInfo.waiting, ...stakingOverview.nextElected];
   const stakingAccounts = useCall<DeriveStakingAccount[]>(allValidators && api.derive.staking.accounts, [allValidators]);
   const [eraStashExposure, setEraStashExposure] = useState<EraStashExposure[]>([]);
+  const isMaxwell = systemChain === 'Crust Maxwell';
 
   useEffect(() => {
     let unsub: (() => void) | undefined;
@@ -256,9 +256,9 @@ export function useOwnEraRewards (maxEras?: number, ownValidators?: StakerState[
 
   useEffect((): void => {
     mountedRef && erasPoints && erasRewards && ownValidators && eraStashExposure && setState(
-      getValRewards(api, validatorEras, erasPoints, erasRewards, eraStashExposure)
+      getValRewards(api, validatorEras, erasPoints, erasRewards, eraStashExposure, isMaxwell)
     );
-  }, [api, erasPoints, erasRewards, mountedRef, ownValidators, validatorEras, eraStashExposure]);
+  }, [api, erasPoints, erasRewards, mountedRef, ownValidators, validatorEras, eraStashExposure, isMaxwell]);
 
   return state;
 }
