@@ -38,50 +38,53 @@ interface EraStashExposure {
   exposure: Exposure;
 }
 
-function getRewards ([[stashIds], available]: [[string[]], DeriveStakerReward[][]], stakingAccounts: DeriveStakingAccount[]): State {
+function getRewards ([[stashIds], available]: [[string[]], DeriveStakerReward[][]], stakingAccounts: DeriveStakingAccount[], isMaxwell?: boolean): State {
   const allRewards: Record<string, DeriveStakerReward[]> = {};
   const electedIds = stakingAccounts.map((e) => e.accountId.toString());
 
-  for (const [index, a] of available.entries()) {
-    const tmpEra: string[] = [];
-
-    for (const eraReward of a) {
-      const tmpNominating: string[] = [];
-
-      for (const e in eraReward.nominating) {
-        const sa = stakingAccounts.find(({ accountId }) => accountId.eq(eraReward.nominating[e].validatorId));
-
-        if (sa?.stakingLedger.claimedRewards.includes(eraReward.era)) {
-          tmpNominating.push(sa?.accountId.toString());
+  if (isMaxwell) {  
+    for (const [index, a] of available.entries()) {
+      const tmpEra: string[] = [];
+  
+      for (const eraReward of a) {
+        const tmpNominating: string[] = [];
+  
+        for (const e in eraReward.nominating) {
+          const sa = stakingAccounts.find(({ accountId }) => accountId.eq(eraReward.nominating[e].validatorId));
+  
+          if (sa?.stakingLedger.claimedRewards.includes(eraReward.era)) {
+            tmpNominating.push(sa?.accountId.toString());
+          }
+        }
+  
+        const tmp = eraReward.nominating.filter((e) => !tmpNominating.includes(e.validatorId) && electedIds.includes(e.validatorId));
+  
+        eraReward.nominating = tmp;
+        const tmpValidators: Record<string, DeriveStakerRewardValidator> = {};
+  
+        Object.entries(eraReward.validators).forEach(([validatorId, { total, value }]): void => {
+          if (!tmpNominating.includes(validatorId) && electedIds.includes(validatorId)) {
+            tmpValidators[validatorId] = {
+              total: total,
+              value
+            };
+          }
+        });
+        eraReward.validators = tmpValidators;
+  
+        if (eraReward.nominating.length == 0) {
+          tmpEra.push(eraReward.era.toString());
         }
       }
-
-      const tmp = eraReward.nominating.filter((e) => !tmpNominating.includes(e.validatorId) && electedIds.includes(e.validatorId));
-
-      eraReward.nominating = tmp;
-      const tmpValidators: Record<string, DeriveStakerRewardValidator> = {};
-
-      Object.entries(eraReward.validators).forEach(([validatorId, { total, value }]): void => {
-        if (!tmpNominating.includes(validatorId) && electedIds.includes(validatorId)) {
-          tmpValidators[validatorId] = {
-            total: total,
-            value
-          };
-        }
-      });
-      eraReward.validators = tmpValidators;
-
-      if (eraReward.nominating.length == 0) {
-        tmpEra.push(eraReward.era.toString());
-      }
+  
+      available[index] = a.filter((e) => !tmpEra.includes(e.era.toString()));
     }
 
-    available[index] = a.filter((e) => !tmpEra.includes(e.era.toString()));
-  }
+    stashIds.forEach((stashId, index): void => {
+      allRewards[stashId] = available[index].filter(({ eraReward }) => !eraReward.isZero());
+    });
 
-  stashIds.forEach((stashId, index): void => {
-    allRewards[stashId] = available[index].filter(({ eraReward }) => !eraReward.isZero());
-  });
+  } 
 
   return {
     allRewards,
@@ -99,7 +102,7 @@ function getValRewards (api: ApiPromise, validatorEras: ValidatorWithEras[], era
       const eraRewards = erasRewards.find((r) => r.era.eq(era));
       const eraExposure = eraStashExposure.find((e) => e.era.eq(era) && e.stashId === stashId.toString());
 
-      if (eraPoints?.eraPoints.gt(BN_ZERO) && eraPoints?.validators[stashId] && eraRewards) {
+      if (isMaxwell && eraPoints?.eraPoints.gt(BN_ZERO) && eraPoints?.validators[stashId] && eraRewards) {
         const reward = eraPoints.validators[stashId].mul(eraRewards.eraReward).div(eraPoints.eraPoints);
 
         if (!reward.isZero()) {
@@ -250,9 +253,9 @@ export function useOwnEraRewards (maxEras?: number, ownValidators?: StakerState[
 
   useEffect((): void => {
     mountedRef.current && stakerRewards && !ownValidators && stakingAccounts && setState(
-      getRewards(stakerRewards, stakingAccounts)
+      getRewards(stakerRewards, stakingAccounts, isMaxwell)
     );
-  }, [mountedRef, ownValidators, stakerRewards, stakingAccounts]);
+  }, [mountedRef, ownValidators, stakerRewards, stakingAccounts, isMaxwell]);
 
   useEffect((): void => {
     mountedRef && erasPoints && erasRewards && ownValidators && eraStashExposure && setState(
