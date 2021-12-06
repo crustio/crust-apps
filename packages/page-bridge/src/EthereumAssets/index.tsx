@@ -128,7 +128,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
         <Card withBottomMargin>
           <Modal.Content>
             <Banner type='warning'>
-              <p>{t<string>('Bridge is temporarily suspended due to network fluctuations in large scope of geographic locations in Asia Pacific. Blockchain service was being unstable, but major problems have been fixed. We will bring Bridge back online ASAP once all problems are fixed. Please keep being informed and thanks for your patience.')}</p>
+              <p>{t<string>('This function is an internal test stage, the assets will not be lost, but there may be a delay (max to 48 hours) in the arrival of the account.')}</p>
             </Banner>
             <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('From Ethereum')}</span></h3>
             <div style={{display: "flex", alignItems: 'center'}}>
@@ -187,13 +187,13 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
             <Button.Group>
               <Button
                 icon='hand-paper'
-                isDisabled={true || !transferrable || isAmountError}
+                isDisabled={!transferrable || isAmountError}
                 label={t<string>('Approve')}
                 onClick={approve}
               />
               <Button
                 icon='paper-plane'
-                isDisabled={true || transferrable || isAmountError}
+                isDisabled={transferrable || isAmountError}
                 label={t<string>('Submit')}
                 onClick={submit}
               />
