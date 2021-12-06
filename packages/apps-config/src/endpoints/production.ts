@@ -8,8 +8,8 @@ import { expandEndpoints } from './util';
 
 export const mainnetEndPoints = [
   'wss://rpc.crust.network',
-  'wss://rpc-crust-mainnet.decoo.io',
-  'wss://api.decloudf.com'
+  // 'wss://rpc-crust-mainnet.decoo.io',
+  // 'wss://api.decloudf.com'
 ];
 
 export const maxwellEndPoints = [
