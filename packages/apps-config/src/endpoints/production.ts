@@ -33,8 +33,8 @@ export function createProduction (t: TFunction): LinkOption[] {
       text: t('rpc.crust.network', 'Crust', { ns: 'apps-config' }),
       providers: {
         'Crust Network': mainnetEndPoints[0],
-        'Decoo Technologies': mainnetEndPoints[1],
-        'DCloud Foundation': mainnetEndPoints[2]
+        // 'Decoo Technologies': mainnetEndPoints[1],
+        // 'DCloud Foundation': mainnetEndPoints[2]
       }
     },
     {
