@@ -23,7 +23,7 @@
 
 ## **升级对象**
 
-工作量上报正常的Member 节点，Isolation 节点
+<text style="color: red">工作量上报正常的Member 节点，Isolation 节点</text>
 
 # **3 升级指南 V1.0.0 -> V1.1.0**
 
@@ -95,7 +95,7 @@
 </div>
 <br>
 
-![sworker_version](../assets/version_v1.1.1.png)
+![sworker_version](../assets/version_v1.1.1_zh.png)
 
 # **4 升级指南 V1.1.0 -> V1.1.1**
 
@@ -112,5 +112,5 @@
 </div>
 <br>
 
-![sworker_version](../assets/version_v1.1.1.png)
+![sworker_version](../assets/version_v1.1.1_zh.png)
 

@@ -24,7 +24,7 @@ Q: What versions are currently available?
 
 ## **Nodes**
 
-Member and isolation with normal workload reporting
+<text style="color: red">Member and Isolation with normal workload reporting</text>
 
 # **2 Upgrade guide V1.0.0 -> V1.1.0**
 
@@ -98,7 +98,7 @@ This process is a continuous process. Generally speaking, it takes time ranging 
 </div>
 <br>
 
-![sworker_version](../assets/version_v1.1.1.png)
+![sworker_version](../assets/version_v1.1.1_en.png)
 
 # **4 Upgrade guide V1.1.0 -> V1.1.1**
 
@@ -114,4 +114,4 @@ This process is a continuous process. Generally speaking, it takes time ranging 
 </div>
 <br>
 
-![sworker_version](../assets/version_v1.1.1.png)
+![sworker_version](../assets/version_v1.1.1_en.png)
