@@ -40,18 +40,21 @@ interface AddressVersionState {
 }
 
 export const versionsRecord: Record<string, string> = {
-  '0xe6f4e6ab58d6ba4ba2f684527354156c009e4969066427ce18735422180b38f4': 'V1.0.0 : Frist Version',
-  '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 'V1.1.0 : Support Metaverse'
+  '0xe6f4e6ab58d6ba4ba2f684527354156c009e4969066427ce18735422180b38f4': 'V1.0.0 : First Version',
+  '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 'V1.1.0 : Support Metaverse',
+  '0xa61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503': 'V1.1.1 : Protect Diskdrop'
 };
 
 export const versionsStartBlockRecord: Record<string, number> = {
   '0xe6f4e6ab58d6ba4ba2f684527354156c009e4969066427ce18735422180b38f4': 490089,
-  '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 1382305
+  '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 1382305,
+  '0xa61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503': 2143559
 };
 
 export const versionsReleaseRecord: Record<string, string> = {
     '0xe6f4e6ab58d6ba4ba2f684527354156c009e4969066427ce18735422180b38f4': 'https://github.com/crustio/crust-sworker/releases/tag/v1.0.0',
-    '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 'https://github.com/crustio/crust-sworker/releases/tag/v1.1.0'
+    '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 'https://github.com/crustio/crust-sworker/releases/tag/v1.1.0',
+    '0xa61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503': 'https://github.com/crustio/crust-sworker/releases/tag/v1.1.1'
 };
 
 function VersionState ({ address, className = '', current, isLoading: summaryLoading, pkInfos }: Props): React.ReactElement<Props> {
@@ -132,7 +135,8 @@ function VersionState ({ address, className = '', current, isLoading: summaryLoa
     [t('Group Owner'), 'start'],
     [t('Members')],
     [t('V1.0.0')],
-    [t('V1.1.0')]
+    [t('V1.1.0')],
+    [t('V1.1.1')]
   ]);
 
   const memberHeaderRef = useRef([
@@ -157,10 +161,13 @@ function VersionState ({ address, className = '', current, isLoading: summaryLoa
                   {addressVersionStateInfo.memberVersions.length}
                 </td>
                 <td className='number'>
-                  {addressVersionStateInfo.versionCount && addressVersionStateInfo.versionCount['V1.0.0 : Frist Version'] ? addressVersionStateInfo.versionCount['V1.0.0 : Frist Version'] : 0}
+                  {addressVersionStateInfo.versionCount && addressVersionStateInfo.versionCount['V1.0.0 : First Version'] ? addressVersionStateInfo.versionCount['V1.0.0 : First Version'] : 0}
                 </td>
                 <td className='number'>
                   {addressVersionStateInfo.versionCount && addressVersionStateInfo.versionCount['V1.1.0 : Support Metaverse'] ? addressVersionStateInfo.versionCount['V1.1.0 : Support Metaverse'] : 0}
+                </td>
+                <td className='number'>
+                  {addressVersionStateInfo.versionCount && addressVersionStateInfo.versionCount['V1.1.1 : Protect Diskdrop'] ? addressVersionStateInfo.versionCount['V1.1.1 : Protect Diskdrop'] : 0}
                 </td>
               </tr>)}
             </Table>
