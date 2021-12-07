@@ -80,7 +80,10 @@ function getRewards ([[stashIds], available]: [[string[]], DeriveStakerReward[][
   }
 
   stashIds.forEach((stashId, index): void => {
-    allRewards[stashId] = available[index].filter(({ eraReward }) => !eraReward.isZero());
+    allRewards[stashId] = available[index].filter(({ eraReward, era }) => {
+      const currentRewardStatus = eraStakingPayouts.find(eraStakingPayout => eraStakingPayout.era == era.toNumber())
+      return !eraReward.isZero() && currentRewardStatus?.hasReward
+    });
   });
 
   return {
@@ -217,7 +220,7 @@ export function useOwnEraRewards (maxEras?: number, ownValidators?: StakerState[
     let unsub: (() => void) | undefined;
 
     if (filteredEras && mountedRef.current) {
-      const query: number[] = [584];
+      const query: number[] = [];
       filteredEras.forEach((era) => query.push(era.toNumber()));
 
       const fns: any[] = [
@@ -288,8 +291,6 @@ export function useOwnEraRewards (maxEras?: number, ownValidators?: StakerState[
       setFiltered({ filteredEras, validatorEras });
     }
   }, [allEras, maxEras, ownValidators]);
-
-  console.log('eraStakingPayouts', eraStakingPayouts)
 
   useEffect((): void => {
     mountedRef.current && stakerRewards && !ownValidators && stakingAccounts && eraStakingPayouts && setState(
