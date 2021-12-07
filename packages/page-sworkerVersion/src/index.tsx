@@ -62,32 +62,45 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
     ];
     const sv: SworkerVersion[] = [];
     const pkInfos: PKInfo[] = [];
-
+    Object.keys(versionsRecord).forEach( key => {
+      api.query.swork.codes(key).then((res) => {
+        const codeInfo = JSON.parse(JSON.stringify(res));
+        sv.push({
+          version: key,
+          start: versionsStartBlockRecord[key],
+          end: codeInfo,
+          proportion: 0
+        })
+      });
+    })
     api.combineLatest<any[]>(fns, ([pubkyes]): void => {
       const availabeCode: any[] = [];
-
       if (Array.isArray(pubkyes)) {
         pubkyes.forEach(([{ args: [_] }, value]) => {
           if (versionsRecord[value.code]) {
             availabeCode.push(value);
           }
-
           pkInfos.push(value);
         });
         const codeGroup = _.groupBy(availabeCode, 'code');
         const total = availabeCode.length;
 
         Object.entries(codeGroup).forEach(([code, entries]) => {
-          api.query.swork.codes(code).then((res) => {
-            const codeInfo = JSON.parse(JSON.stringify(res));
+          // api.query.swork.codes(code).then((res) => {
+          //   const codeInfo = JSON.parse(JSON.stringify(res));
 
-            sv.push({
-              version: code,
-              start: versionsStartBlockRecord[code],
-              end: codeInfo,
-              proportion: _.divide(entries.length, total)
-            });
-          });
+          //   sv.push({
+          //     version: code,
+          //     start: versionsStartBlockRecord[code],
+          //     end: codeInfo,
+          //     proportion: _.divide(entries.length, total)
+          //   });
+          // });
+          const currentInfo = sv.find((e) => e.version == code);
+          if (currentInfo) {
+            currentInfo.proportion = _.divide(entries.length, total)
+          }
+
         });
         setPkInfos(pkInfos);
         setSummaryInfo(sv);
