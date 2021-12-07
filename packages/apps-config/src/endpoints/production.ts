@@ -7,7 +7,7 @@ import type { LinkOption } from '../settings/types';
 import { expandEndpoints } from './util';
 
 export const mainnetEndPoints = [
-  'wss://rpc.crust.network',
+  'wss://rpc.crust.network'
   // 'wss://rpc-crust-mainnet.decoo.io',
   // 'wss://api.decloudf.com'
 ];
@@ -32,7 +32,7 @@ export function createProduction (t: TFunction): LinkOption[] {
       info: 'crust',
       text: t('rpc.crust.network', 'Crust', { ns: 'apps-config' }),
       providers: {
-        'Crust Network': mainnetEndPoints[0],
+        'Crust Network': mainnetEndPoints[0]
         // 'Decoo Technologies': mainnetEndPoints[1],
         // 'DCloud Foundation': mainnetEndPoints[2]
       }
