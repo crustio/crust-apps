@@ -39,22 +39,35 @@
 
 ##  **2.2 升级步骤**
 ### **2.2.1 确认sworker上报工作量正常**
+
 通过sworker日志文件来确认近期工作量处于正常上报状态。如不正常，请优先修复后再进行升级操作。
+通过命令查询工作量是否上报成功
+<br>
+
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust logs --tail 100 sworker</div>
+<br>
+
+![workreport_status](../assets/workreport_status_zh.png)
 
 ### **2.2.2 更新IPFS镜像** 
 <br>
+
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust tools upgrade-image ipfs</div>
 <br>
 
 ### **2.2.3 重启IPFS服务**
+
 <br>
+
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust reload ipfs</div>
 <br>
 
 ### **2.2.4 sWorker升级**
- 此过程是一个持续的过程，耗时在100s-10000s不等，<text style="color: red">**升级成功之前请切记不能关闭终端**</text>，升级成功之后程序自动退出。<text style="color: red">**强烈建议手动执行升级命令**</text>，避免出现不必要的错误，如果升级出现异常，<text style="color: red">**切记不能reload sworker服务，以防数据丢失**</text>。 
 <br>
-<div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust tools sworker-ab-upgrade a61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503</div>
+
+ 升级过程是一个后台进程，耗时在100s-10000s不等，<text style="color: red">**强烈建议手动执行升级命令**</text>，避免出现不必要的错误，如果升级出现异常，<text style="color: red">**切记不能reload sworker服务，以防数据丢失**</text>。 
+
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">nohup sudo crust tools sworker-ab-upgrade a61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503 > upgrade.log 2>&1 &</div>
 <br>
 
 ### **2.2.5 升级状态检测**
@@ -67,14 +80,33 @@
 
 # **3 升级指南 V1.1.0 -> V1.1.1**
 
-## **3.1 sWorker升级**
+##  **3.1 升级步骤**
 
- 此过程是一个持续的过程，耗时在100s-10000s不等，<text style="color: red">**升级成功之前请切记不能关闭终端**</text>，升级成功之后程序自动退出。<text style="color: red">**强烈建议手动执行升级命令**</text>，避免出现不必要的错误，如果升级出现异常，<text style="color: red">**切记不能reload sworker服务，以防数据丢失**</text>。 
+### **3.1.1 确认sworker上报工作量正常**
+通过sworker日志文件来确认近期工作量处于正常上报状态。如不正常，请优先修复后再进行升级操作。
+通过命令查询工作量是否上报成功
 <br>
-<div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust tools sworker-ab-upgrade a61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503</div>
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust logs --tail 100 sworker</div>
 <br>
 
-## **3.2 sWorker升级**
+![workreport_status](../assets/workreport_status_zh.png)
+
+### **3.1.2 sWorker升级**
+<br>
+
+ 升级过程是一个后台进程，耗时在100s-10000s不等，<text style="color: red">**强烈建议手动执行升级命令**</text>，避免出现不必要的错误，如果升级出现异常，<text style="color: red">**切记不能reload sworker服务，以防数据丢失**</text>。 
+<br>
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">nohup sudo crust tools sworker-ab-upgrade a61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503 > upgrade.log 2>&1 &</div>
+<br>
+
+### **3.1.3 查看升级状态**
+<br>
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">tail 100 upgrade.log -f</div>
+<br>
+
+![upgrade_status](../assets/upgrade_status_zh.png)
+
+## **3.2 升级状态检测**
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust version
 </div>
