@@ -17,7 +17,7 @@ interface Props {
 
 function HelpOverlay ({ className = '', md }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const [isVisible, toggleVisible] = useToggle();
+  const [isVisible, toggleVisible] = useToggle(true);
 
   return (
     <div className={`ui--HelpOverlay ${className}`}>
