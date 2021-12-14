@@ -64,7 +64,7 @@ Use the following command to check whether the workload is reported successfully
 ### **2.2.4 sWorker Upgrade**
 This process is a continuous process. Generally speaking, it takes time ranging from 100s to 10000s. <text style="color: red">**Please remember not to close the terminal before the upgrade is successful.**</text> After the upgrade is successful, the program will automatically exit.<text style="color: red">**It is strongly recommended to execute the upgrade command manually**</text> to avoid unnecessary errors. If the upgrade is abnormal, <text style="color: red">**do not restart the sworker service, which will cause data loss**</text>. 
 <br>
-<div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust tools sworker-ab-upgrade a61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503</div>
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">nohup sudo crust tools sworker-ab-upgrade a61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503 > upgrade.log 2>&1 &</div>
 <br>
 
 ### **2.2.5 Upgrade status detection**
