@@ -7,5 +7,11 @@
     "author": "yuhui <1161569428@qq.com>",
     "maintainers": [],
     "contributors": [],
-    "license": "Apache-2.0"
+    "license": "Apache-2.0",
+    "dependencies": {
+        "memory-cache": "^0.2.0"
+    },
+    "devDependencies": {
+        "@types/memory-cache": "^0.2.1"
+    }
 }

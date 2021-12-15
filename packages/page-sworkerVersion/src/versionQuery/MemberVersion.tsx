@@ -5,10 +5,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { AddressMini } from '@polkadot/react-components';
+import { AddressMini, Button } from '@polkadot/react-components';
 
 import { MemberVersions, versionsRecord } from './VersionsState';
 import Status from './Status';
+import { useTranslation } from '@polkadot/apps/translate';
 
 interface Props {
     className?: string;
@@ -18,6 +19,7 @@ interface Props {
 }
 
 function MemberVersionDisplay({ className = '', memberVersion: { address, version }, current }: Props): React.ReactElement<Props> | null {
+    const { t } = useTranslation();
 
     return (
         <tr className={className}>
@@ -30,6 +32,12 @@ function MemberVersionDisplay({ className = '', memberVersion: { address, versio
             </td>
             <td className='start'>
                 {versionsRecord[version]}
+                <Button.Group>
+                    <Button
+                        icon='paper-plane'
+                        label={t<string>('Claim reward')}
+                    />
+                </Button.Group>
             </td> 
         </tr>
     );
