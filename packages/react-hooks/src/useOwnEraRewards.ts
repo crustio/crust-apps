@@ -103,7 +103,7 @@ function getValRewards (api: ApiPromise, validatorEras: ValidatorWithEras[], era
       const eraExposure = eraStashExposure.find((e) => e.era.eq(era) && e.stashId === stashId.toString());
       const eraStakingPayout = eraStakingPayouts.find((e) => e.era == era.toNumber());
 
-      if (eraStakingPayout && eraPoints?.eraPoints.gt(BN_ZERO) && eraPoints?.validators[stashId] && eraRewards) {
+      if (eraStakingPayout && eraStakingPayout.hasReward && eraPoints?.eraPoints.gt(BN_ZERO) && eraPoints?.validators[stashId] && eraRewards) {
         const reward = eraPoints.validators[stashId].mul(eraRewards.eraReward).div(eraPoints.eraPoints);
 
         if (!reward.isZero()) {
@@ -127,7 +127,7 @@ function getValRewards (api: ApiPromise, validatorEras: ValidatorWithEras[], era
             }
           });
         }
-      } else if (eraStakingPayout && eraExposure?.exposure.total.unwrap().gtn(0)) {
+      } else if (eraStakingPayout && eraStakingPayout.hasReward && eraExposure?.exposure.total.unwrap().gtn(0)) {
         if (!allRewards[stashId]) {
           allRewards[stashId] = [];
         }
