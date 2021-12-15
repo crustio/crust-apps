@@ -67,15 +67,14 @@ The upgrade process is a background process, which takes time ranging from 1000s
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">nohup sudo crust tools sworker-ab-upgrade a61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503 > upgrade.log 2>&1 &</div>
 <br>
 
-### **2.2.5 upgrade status detection**
 
+## **2.3 Upgrade status detection**
+<br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">tail 100 upgrade.log -f</div>
 <br>
 
 ![sworker_version](../assets/upgrade_status.png)
 
-### **2.2.6 Sworker version**
-<br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust version
 </div>
 <br>
@@ -103,15 +102,13 @@ The upgrade process is a background process, which takes time ranging from 1000s
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">nohup sudo crust tools sworker-ab-upgrade a61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503 > upgrade.log 2>&1 &</div>
 <br>
 
-### **3.1.3 upgrade status detection**
-
+## **3.2 Upgrade status detection**
+<br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">tail 100 upgrade.log -f</div>
 <br>
 
 ![sworker_version](../assets/upgrade_status.png)
 
-## **3.2 Sworker version**
-<br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust version
 </div>
 <br>
