@@ -70,15 +70,14 @@
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">nohup sudo crust tools sworker-ab-upgrade a61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503 > upgrade.log 2>&1 &</div>
 <br>
 
-### **2.2.5 查看升级状态**
+
+## **2.3 升级状态检测**
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">tail 100 upgrade.log -f</div>
 <br>
 
 ![upgrade_status](../assets/upgrade_status_zh.png)
 
-### **2.2.6 升级状态检测**
-<br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust version
 </div>
 <br>
@@ -106,15 +105,13 @@
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">nohup sudo crust tools sworker-ab-upgrade a61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503 > upgrade.log 2>&1 &</div>
 <br>
 
-### **3.1.3 查看升级状态**
+## **3.2 升级状态检测**
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">tail 100 upgrade.log -f</div>
 <br>
 
 ![upgrade_status](../assets/upgrade_status_zh.png)
 
-## **3.2 升级状态检测**
-<br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust version
 </div>
 <br>
