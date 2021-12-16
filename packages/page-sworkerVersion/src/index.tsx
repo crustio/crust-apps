@@ -134,7 +134,7 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
 
   return (
 
-    <main className='accounts--App'>
+    <main>
       <header>
         <Tabs
           basePath={basePath}

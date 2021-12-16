@@ -8,6 +8,7 @@ import { Button, InputAddressSimple } from '@polkadot/react-components';
 
 import { PKInfo } from '../SummaryInfo';
 import VersionsState from './VersionsState';
+import HttpStatus from './HttpStatus';
 
 interface Props {
   className?: string;
@@ -21,6 +22,9 @@ function VersionQuery ({ className, current, isLoading, pkInfos }: Props): React
   // const { value } = useParams<{ value: string }>();
   const [value, setValue] = useState<string | null>(null);
   const [validatorId, setValidatorId] = useState<string | null>(value || null);
+  const [statusOpen, setStatusOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>('');
+  const [status, setStatus] = useState<string>('');
 
   const _onQuery = useCallback(
     (): void => {
@@ -33,6 +37,12 @@ function VersionQuery ({ className, current, isLoading, pkInfos }: Props): React
 
   return (
     <div className={className}>
+      <HttpStatus
+        isStatusOpen={statusOpen}
+        message={message}
+        setStatusOpen={setStatusOpen}
+        status={status}
+      />
       <InputAddressSimple
         className='staking--queryInput'
         defaultValue={value}
@@ -49,9 +59,14 @@ function VersionQuery ({ className, current, isLoading, pkInfos }: Props): React
       </InputAddressSimple>
       {
         value && (<VersionsState address={value}
-          current={current}
-          isLoading={isLoading}
-          pkInfos={pkInfos}></VersionsState>)
+            current={current}
+            isLoading={isLoading}
+            pkInfos={pkInfos}
+            setMessage={setMessage}
+            setStatus={setStatus}
+            setStatusOpen={setStatusOpen}
+          >
+          </VersionsState>)
       }
 
     </div>

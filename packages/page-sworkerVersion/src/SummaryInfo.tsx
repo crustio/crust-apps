@@ -24,7 +24,7 @@ export interface PKInfo {
 }
 
 function Summary({ className, current, summaryInfo, isLoading }: Props): React.ReactElement<Props> | null {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   
   const versionHeaderRef = useRef([
@@ -37,7 +37,7 @@ function Summary({ className, current, summaryInfo, isLoading }: Props): React.R
 
   return (<div className={className}>
     <Banner type='warning'>
-      <p>{t<string>(i18n.language == 'zh' ? '请一定要按照升级指南步骤进行sWorker的升级操作' : 'Please be sure to follow the steps in the upgrade guide to upgrade sWorker' )}</p>
+      <p>{t<string>('Please be sure to follow the steps in the upgrade guide to upgrade sWorker')}</p>
     </Banner>
     <Table
         header={versionHeaderRef.current}
