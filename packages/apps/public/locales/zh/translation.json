@@ -1738,5 +1738,6 @@
   "Browse the Overview and Waiting pages, you can get the validator(candidate)'s APY": "浏览概览和等待页面，可以获取验证人(候选人)的年化收益率",
   "The transaction fees will be subtracted from the sender account.": "交易费将从选择的账户扣除.",
   "(The transaction fee will be dynamically adjusted according to the Gwei of Ethereum)": "(手续费会根据以太坊Gwei动态调整)",
-  "Please be sure to follow the steps in the upgrade guide to upgrade sWorker": "请一定要按照升级指南步骤进行sWorker的升级操作"
+  "Please be sure to follow the steps in the upgrade guide to upgrade sWorker": "请一定要按照升级指南步骤进行sWorker的升级操作",
+  "Claim reward": "领取奖励"
 }

@@ -76,14 +76,14 @@ export async function httpGet(url, retry = MAX_RETRY) {
         res = {
           code: 200,
           status: 'success',
-          statusText: resultJson
+          statusText: resultJson.status
         };
         break;
       case 400:
         res = {
           code: 400,
           status: 'error',
-          statusText: resultJson
+          statusText: resultJson.status
         };
         break;
       case 409:
@@ -91,7 +91,7 @@ export async function httpGet(url, retry = MAX_RETRY) {
         res = {
           code: 409,
           status: 'error',
-          statusText: 'Network is busy'
+          statusText: resultJson.status
         };
         break;
       default:
@@ -102,7 +102,7 @@ export async function httpGet(url, retry = MAX_RETRY) {
     res = {
       code: 400,
       status: 'error',
-      statusText: 'ERR_CONNECTION_REFUSED'
+      statusText: false
     };
   }
   if (requireRetry && retry > 0){

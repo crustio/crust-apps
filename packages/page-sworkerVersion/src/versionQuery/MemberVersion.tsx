@@ -33,7 +33,7 @@ function MemberVersionDisplay({ className = '', memberVersion: { address, versio
         if (Reward_Code == version) {
             httpGet('http://43.155.116.196:8848/api/addressRewarded/' + address).then((res: any) => {
                 if (res.code == 200) {
-                    setCanClaimed(res.statusText.status)
+                    setCanClaimed(res.statusText)
                 }
             })
         }
@@ -51,7 +51,7 @@ function MemberVersionDisplay({ className = '', memberVersion: { address, versio
             setStatus(result.status);
             setStatusOpen(true)
             const claimedResult = await httpGet('http://43.155.116.196:8848/api/addressRewarded/' + address);
-            setCanClaimed(claimedResult.statusText.status)
+            setCanClaimed(claimedResult.statusText)
         } catch (error) {
             setIsBusy(false);
         }
