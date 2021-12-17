@@ -31,8 +31,7 @@ function MemberVersionDisplay({ className = '', memberVersion: { address, versio
 
     useEffect(() => {
         if (Reward_Code == version) {
-            httpGet('http://localhost:7865/api/addressRewarded/' + address).then((res: any) => {
-                console.log('res', res)
+            httpGet('http://43.155.116.196:8848/api/addressRewarded/' + address).then((res: any) => {
                 if (res.code == 200) {
                     setCanClaimed(res.statusText.status)
                 }
@@ -43,7 +42,7 @@ function MemberVersionDisplay({ className = '', memberVersion: { address, versio
     const handleAccountStep = useCallback(async () => {
         try {
             setIsBusy(true);
-            const result = await httpPost("http://localhost:7865/api/claimReward", JSON.stringify({
+            const result = await httpPost("http://43.155.116.196:8848/api/claimReward", JSON.stringify({
                 address
             }));    
 
@@ -51,7 +50,7 @@ function MemberVersionDisplay({ className = '', memberVersion: { address, versio
             setMessage(result.statusText);
             setStatus(result.status);
             setStatusOpen(true)
-            const claimedResult = await httpGet('http://localhost:7865/api/addressRewarded/' + address);
+            const claimedResult = await httpGet('http://43.155.116.196:8848/api/addressRewarded/' + address);
             setCanClaimed(claimedResult.statusText.status)
         } catch (error) {
             setIsBusy(false);
