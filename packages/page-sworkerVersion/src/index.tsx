@@ -67,7 +67,6 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
       setSummaryInfo(summaryInfoCachedBody);
       setIsLoading(false);   
     } else {
-      let unsub: (() => void) | undefined;
       const fns: any[] = [
         [api.query.swork.pubKeys.entries]
       ];
@@ -119,7 +118,7 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
           setIsLoading(false);
         }
       }).then((_unsub): void => {
-        unsub = _unsub;
+        
       }).catch(console.error);
   
       // return (): void => {

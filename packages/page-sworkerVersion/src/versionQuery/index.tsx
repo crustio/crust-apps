@@ -7,8 +7,8 @@ import { useTranslation } from '@polkadot/apps/translate';
 import { Button, InputAddressSimple } from '@polkadot/react-components';
 
 import { PKInfo } from '../SummaryInfo';
-import VersionsState from './VersionsState';
 import HttpStatus from './HttpStatus';
+import VersionsState from './VersionsState';
 
 interface Props {
   className?: string;
@@ -59,14 +59,14 @@ function VersionQuery ({ className, current, isLoading, pkInfos }: Props): React
       </InputAddressSimple>
       {
         value && (<VersionsState address={value}
-            current={current}
-            isLoading={isLoading}
-            pkInfos={pkInfos}
-            setMessage={setMessage}
-            setStatus={setStatus}
-            setStatusOpen={setStatusOpen}
-          >
-          </VersionsState>)
+          current={current}
+          isLoading={isLoading}
+          pkInfos={pkInfos}
+          setMessage={setMessage}
+          setStatus={setStatus}
+          setStatusOpen={setStatusOpen}
+        >
+        </VersionsState>)
       }
 
     </div>
