@@ -27,7 +27,7 @@ interface Props {
 function MemberVersionDisplay({ className = '', memberVersion: { address, version }, current, setMessage, setStatus, setStatusOpen }: Props): React.ReactElement<Props> | null {
     const { t } = useTranslation();
     const [isBusy, setIsBusy] = useState<boolean>(false);
-    const [canClaimed, setCanClaimed] = useState<boolean>(true);
+    const [canClaimed, setCanClaimed] = useState<boolean>(false);
 
     useEffect(() => {
         if (Reward_Code == version) {
