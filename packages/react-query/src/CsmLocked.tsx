@@ -20,13 +20,13 @@ interface Props {
 
 function CsmLocked ({ children, className = '', label, params }: Props): React.ReactElement<Props> {
   const { api } = useApi();
-  const allBalances = useCall<any>(api.query.csm.account, [params]);
+  const ledger = useCall<any>(api.query.csmLocking.ledger, [params]);
 
   return (
     <FormatCsmBalance
       className={className}
       label={label}
-      value={new BN(Number(allBalances?.feeFrozen).toString())}
+      value={new BN(Number(ledger?.active).toString())}
     >
       {children}
     </FormatCsmBalance>
