@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from '@polkadot/apps/translate';
 import { InputAddress, InputCsmBalance, Modal } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
-import { CsmFree } from '@polkadot/react-query';
+import { CsmLocked } from '@polkadot/react-query';
 import { BN_ZERO } from '@polkadot/util';
 
 interface Props {
@@ -76,7 +76,7 @@ function Bond ({ accountId, className = '', onChange, withSenders }: Props): Rea
             isError={!hasValue || !!amountError?.error}
             label={t<string>('value unbonded')}
             labelExtra={
-              <CsmFree
+              <CsmLocked
                 label={<span className='label'>{t<string>('balance')}</span>}
                 params={accountId}
               />
