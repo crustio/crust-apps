@@ -127,9 +127,12 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
       <Columar.Column>
         <Card withBottomMargin>
           <Modal.Content>
-            <Banner type='warning'>
-              <p>{t<string>('This function is an internal test stage, the assets will not be lost, but there may be a delay (max to 48 hours) in the arrival of the account.')}</p>
+            <Banner type='error'>
+              <p>{t<string>('The bridge is under maintainance right now and will come back in hours. Please wait for a while and check it later.')}</p>
             </Banner>
+            {/* <Banner type='warning'>
+              <p>{t<string>('This function is an internal test stage, the assets will not be lost, but there may be a delay (max to 48 hours) in the arrival of the account.')}</p>
+            </Banner> */}
             <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('From Ethereum')}</span></h3>
             <div style={{display: "flex", alignItems: 'center'}}>
                 <img style={{ "width": "64px", height: '64px', padding: '3px', 'verticalAlign': 'middle' }} src={ethereumLogo as string} />
@@ -187,7 +190,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
             <Button.Group>
               <Button
                 icon='hand-paper'
-                isDisabled={!transferrable || isAmountError}
+                isDisabled={true || !transferrable || isAmountError}
                 label={t<string>('Approve')}
                 onClick={approve}
               />

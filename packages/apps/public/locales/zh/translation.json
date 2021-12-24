@@ -1737,5 +1737,6 @@
   "Estimated return (1day): {{ reward }} CRU": "收益估算(1天): {{ reward }} CRU",
   "Browse the Overview and Waiting pages, you can get the validator(candidate)'s APY": "浏览概览和等待页面，可以获取验证人(候选人)的年化收益率",
   "The transaction fees will be subtracted from the sender account.": "交易费将从选择的账户扣除.",
-  "(The transaction fee will be dynamically adjusted according to the Gwei of Ethereum)": "(手续费会根据以太坊Gwei动态调整)"
+  "(The transaction fee will be dynamically adjusted according to the Gwei of Ethereum)": "(手续费会根据以太坊Gwei动态调整)",
+  "The bridge is under maintainance right now and will come back in hours. Please wait for a while and check it later.": "桥服务正在维护, 请等待一段时间后重试."
 }
