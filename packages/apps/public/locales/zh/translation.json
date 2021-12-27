@@ -1739,5 +1739,11 @@
   "The transaction fees will be subtracted from the sender account.": "交易费将从选择的账户扣除.",
   "(The transaction fee will be dynamically adjusted according to the Gwei of Ethereum)": "(手续费会根据以太坊Gwei动态调整)",
   "Please be sure to follow the steps in the upgrade guide to upgrade sWorker": "请一定要按照升级指南步骤进行sWorker的升级操作",
-  "Claim reward": "领取奖励"
+  "Claim reward": "领取奖励",
+  "Already claimed reward": "已领取奖励",
+  "Upgrade to latest code": "请升级至最新版",
+  "Tx failed": "交易出错", 
+  "Storage not enough": "算力不足", 
+  "No identities": "未入网", 
+  "Unreported workload": "没有上报工作量"
 }

@@ -12,8 +12,6 @@ import Status from './Status';
 import { useTranslation } from '@polkadot/apps/translate';
 import { httpGet, httpPost } from './http';
 
-const Reward_Code = '0xa61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503';
-
 interface Props {
     className?: string;
     isDisabled?: boolean;
@@ -24,25 +22,27 @@ interface Props {
     setStatusOpen: (isOpen: boolean) => void;
 }
 
+const Claim_Status = ["Already claimed reward", "Success", "Upgrade to latest code", "Tx failed", "Storage not enough", "No identities", "Unreported workload"];
+
 function MemberVersionDisplay({ className = '', memberVersion: { address, version }, current, setMessage, setStatus, setStatusOpen }: Props): React.ReactElement<Props> | null {
     const { t } = useTranslation();
     const [isBusy, setIsBusy] = useState<boolean>(false);
     const [canClaimed, setCanClaimed] = useState<boolean>(false);
+    const [cliamedLable, setCliamedLable] = useState<string>('Claim reward');
 
     useEffect(() => {
-        if (Reward_Code == version) {
-            httpGet('http://43.155.116.196:8848/api/addressRewarded/' + address).then((res: any) => {
-                if (res.code == 200) {
-                    setCanClaimed(res.statusText)
-                }
-            })
-        }
+        httpGet('http://localhost:8848/api/addressRewarded/' + address).then((res: any) => {
+            if (res.code == 200) {
+                setCanClaimed(res.statusText)
+                setCliamedLable(Claim_Status[res.statusCode])
+            }
+        })
     }, [address, version])
 
     const handleAccountStep = useCallback(async () => {
         try {
             setIsBusy(true);
-            const result = await httpPost("http://43.155.116.196:8848/api/claimReward", JSON.stringify({
+            const result = await httpPost("http://localhost:8848/api/claimReward", JSON.stringify({
                 address
             }));    
 
@@ -50,8 +50,9 @@ function MemberVersionDisplay({ className = '', memberVersion: { address, versio
             setMessage(result.statusText);
             setStatus(result.status);
             setStatusOpen(true)
-            const claimedResult = await httpGet('http://43.155.116.196:8848/api/addressRewarded/' + address);
+            const claimedResult = await httpGet('http://localhost:8848/api/addressRewarded/' + address);
             setCanClaimed(claimedResult.statusText)
+            setCliamedLable(Claim_Status[claimedResult.statusCode])
         } catch (error) {
             setIsBusy(false);
         }
@@ -69,10 +70,10 @@ function MemberVersionDisplay({ className = '', memberVersion: { address, versio
                 </td>
                 <td className='start'>
                     {versionsRecord[version]}&nbsp;&nbsp;
-                    {canClaimed && (<Button.Group>
+                    {(<Button.Group>
                         <Button
                             icon='paper-plane'
-                            label={t<string>('Claim reward')}
+                            label={t<string>(cliamedLable)}
                             isDisabled={!canClaimed}
                             onClick={handleAccountStep}
                             isBusy={isBusy}

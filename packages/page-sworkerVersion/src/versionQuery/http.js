@@ -76,14 +76,16 @@ export async function httpGet(url, retry = MAX_RETRY) {
         res = {
           code: 200,
           status: 'success',
-          statusText: resultJson.status
+          statusText: resultJson.status,
+          statusCode: resultJson.code
         };
         break;
       case 400:
         res = {
           code: 400,
           status: 'error',
-          statusText: resultJson.status
+          statusText: resultJson.status,
+          statusCode: resultJson.code
         };
         break;
       case 409:
@@ -91,7 +93,8 @@ export async function httpGet(url, retry = MAX_RETRY) {
         res = {
           code: 409,
           status: 'error',
-          statusText: resultJson.status
+          statusText: resultJson.status,
+          statusCode: resultJson.code
         };
         break;
       default:
@@ -102,7 +105,8 @@ export async function httpGet(url, retry = MAX_RETRY) {
     res = {
       code: 400,
       status: 'error',
-      statusText: false
+      statusText: false,
+      statusCode: 0
     };
   }
   if (requireRetry && retry > 0){
