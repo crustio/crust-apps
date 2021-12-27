@@ -60,7 +60,7 @@ function Summary({ info, isLoading }: Props): React.ReactElement<Props> | null {
           className='media--1100'
           label={t<string>('Daily Rewards')}
         >
-          {<>{`200 CRU`}</>}
+          {<>{`0 CRU`}</>}
         </CardSummary>
       </section>
       <section>

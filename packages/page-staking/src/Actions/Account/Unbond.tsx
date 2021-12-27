@@ -63,7 +63,7 @@ function Unbond ({ className = '', controllerId, onClose, stakingLedger, stashId
           >
             <Toggle
               isOverlay
-              label={t<string>('all bonded')}
+              label={t<string>('all unbonded')}
               onChange={setWithMax}
               value={withMax}
             />
