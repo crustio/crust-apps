@@ -28,7 +28,7 @@ function Summary({ className, current, summaryInfo, isLoading }: Props): React.R
 
   
   const versionHeaderRef = useRef([
-    [t('Current availabe sWorker'), 'start'],
+    [t('Current available sWorker'), 'start'],
     [t('Proportion')],
     [t('Release')],
     [t('Due date')],
@@ -41,7 +41,7 @@ function Summary({ className, current, summaryInfo, isLoading }: Props): React.R
     </Banner>
     <Table
         header={versionHeaderRef.current}
-        empty={ !isLoading && t<string>('No funds availabe sWorker yet.')}
+        empty={ !isLoading && t<string>('No funds available sWorker yet.')}
     >
         {summaryInfo && summaryInfo?.map((sv): React.ReactNode => (
             <VersionInfo
