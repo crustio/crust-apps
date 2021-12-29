@@ -22,19 +22,19 @@ interface Props {
     setStatusOpen: (isOpen: boolean) => void;
 }
 
-const Claim_Status = ["Already claimed reward", "Success", "Upgrade to latest code", "Tx failed", "Storage not enough", "No identities", "Unreported workload"];
+const Claim_Status = ["Already claimed reward", "Claim reward", "Upgrade to latest code", "Tx failed", "Storage not enough", "No identities", "Unreported workload"];
 
 function MemberVersionDisplay({ className = '', memberVersion: { address, version }, current, setMessage, setStatus, setStatusOpen }: Props): React.ReactElement<Props> | null {
     const { t } = useTranslation();
     const [isBusy, setIsBusy] = useState<boolean>(false);
     const [canClaimed, setCanClaimed] = useState<boolean>(false);
-    const [cliamedLable, setCliamedLable] = useState<string>('Claim reward');
+    const [cliamedLabel, setCliamedLabel] = useState<string>('Claim reward');
 
     useEffect(() => {
-        httpGet('http://localhost:8848/api/addressRewarded/' + address).then((res: any) => {
+        httpGet('https://api-sur.crust.network/api/addressRewarded/' + address).then((res: any) => {
             if (res.code == 200) {
                 setCanClaimed(res.statusText)
-                setCliamedLable(Claim_Status[res.statusCode])
+                setCliamedLabel(Claim_Status[res.statusCode])
             }
         })
     }, [address, version])
@@ -42,7 +42,7 @@ function MemberVersionDisplay({ className = '', memberVersion: { address, versio
     const handleAccountStep = useCallback(async () => {
         try {
             setIsBusy(true);
-            const result = await httpPost("http://localhost:8848/api/claimReward", JSON.stringify({
+            const result = await httpPost("https://api-sur.crust.network/api/claimReward", JSON.stringify({
                 address
             }));    
 
@@ -50,9 +50,9 @@ function MemberVersionDisplay({ className = '', memberVersion: { address, versio
             setMessage(result.statusText);
             setStatus(result.status);
             setStatusOpen(true)
-            const claimedResult = await httpGet('http://localhost:8848/api/addressRewarded/' + address);
+            const claimedResult = await httpGet('https://api-sur.crust.network/api/addressRewarded/' + address);
             setCanClaimed(claimedResult.statusText)
-            setCliamedLable(Claim_Status[claimedResult.statusCode])
+            setCliamedLabel(Claim_Status[claimedResult.statusCode])
         } catch (error) {
             setIsBusy(false);
         }
@@ -73,7 +73,7 @@ function MemberVersionDisplay({ className = '', memberVersion: { address, versio
                     {(<Button.Group>
                         <Button
                             icon='paper-plane'
-                            label={t<string>(cliamedLable)}
+                            label={t<string>(cliamedLabel)}
                             isDisabled={!canClaimed}
                             onClick={handleAccountStep}
                             isBusy={isBusy}
