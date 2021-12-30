@@ -53,8 +53,6 @@ function MemberVersionDisplay({ className = '', memberVersion: { address, versio
             if (result.resultStatus) {
                 setCanClaimed(false);
                 setCliamedLabel(Claim_Status[0])
-            } else {
-                setCliamedLabel(Claim_Status[result.statusCode])
             }
         } catch (error) {
             setIsBusy(false);
