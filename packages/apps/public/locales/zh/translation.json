@@ -1741,7 +1741,7 @@
   "Please be sure to follow the steps in the upgrade guide to upgrade sWorker": "请一定要按照升级指南步骤进行sWorker的升级操作",
   "Claim reward": "领取奖励",
   "Already claimed reward": "已领取奖励",
-  "Upgrade to latest code": "请升级至最新版",
+  "Upgrade to latest version": "请升级至最新版",
   "Tx failed": "交易出错", 
   "Storage not enough": "算力不足", 
   "No identities": "未入网", 

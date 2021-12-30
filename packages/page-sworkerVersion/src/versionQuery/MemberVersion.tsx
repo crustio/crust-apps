@@ -22,7 +22,7 @@ interface Props {
     setStatusOpen: (isOpen: boolean) => void;
 }
 
-const Claim_Status = ["Already claimed reward", "Claim reward", "Upgrade to latest code", "Tx failed", "Storage not enough", "No identities", "Unreported workload"];
+const Claim_Status = ["Already claimed reward", "Claim reward", "Upgrade to latest version", "Tx failed", "Storage not enough", "No identities", "Unreported workload"];
 
 function MemberVersionDisplay({ className = '', memberVersion: { address, version }, current, setMessage, setStatus, setStatusOpen }: Props): React.ReactElement<Props> | null {
     const { t } = useTranslation();
