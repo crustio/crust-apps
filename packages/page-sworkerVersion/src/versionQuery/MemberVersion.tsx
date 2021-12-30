@@ -49,10 +49,13 @@ function MemberVersionDisplay({ className = '', memberVersion: { address, versio
             setIsBusy(false);
             setMessage(result.statusText);
             setStatus(result.status);
-            setStatusOpen(true)
-            const claimedResult = await httpGet('https://api-sur.crust.network/api/addressRewarded/' + address);
-            setCanClaimed(claimedResult.statusText)
-            setCliamedLabel(Claim_Status[claimedResult.statusCode])
+            setStatusOpen(true);
+            if (result.resultStatus) {
+                setCanClaimed(false);
+                setCliamedLabel(Claim_Status[0])
+            } else {
+                setCliamedLabel(Claim_Status[result.statusCode])
+            }
         } catch (error) {
             setIsBusy(false);
         }

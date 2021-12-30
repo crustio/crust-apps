@@ -31,7 +31,8 @@ export async function httpPost(url, data, retry = MAX_RETRY) {
           code: 200,
           status: 'success',
           statusText: resultJson.message,
-          statusCode: resultJson.code
+          statusCode: resultJson.code,
+          resultStatus: resultJson.status
         };
         break;
       case 400:
@@ -39,7 +40,8 @@ export async function httpPost(url, data, retry = MAX_RETRY) {
           code: 400,
           status: 'error',
           statusText: resultJson.message,
-          statusCode: resultJson.code
+          statusCode: resultJson.code,
+          resultStatus: resultJson.status
         };
         break;
       default:
@@ -51,7 +53,8 @@ export async function httpPost(url, data, retry = MAX_RETRY) {
       code: 400,
       status: 'error',
       statusText: 'ERR_CONNECTION_REFUSED',
-      statusCode: 0
+      statusCode: 0,
+      resultStatus: false
     };
   }
   if (requireRetry && retry > 0){
