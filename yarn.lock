@@ -4113,6 +4113,9 @@ __metadata:
 "@polkadot/apps-sworkerVersion@workspace:packages/page-sworkerVersion":
   version: 0.0.0-use.local
   resolution: "@polkadot/apps-sworkerVersion@workspace:packages/page-sworkerVersion"
+  dependencies:
+    "@types/memory-cache": ^0.2.1
+    memory-cache: ^0.2.0
   languageName: unknown
   linkType: soft
 
@@ -5558,6 +5561,13 @@ __metadata:
   dependencies:
     "@types/unist": "*"
   checksum: d271df999e2b7144ef96a79bff75f22573d06d6c26ead8e190f59d4578da0b10af7c707f1453449bae6ba5c2dccfae8becf9f7a84a4bb30bc2a43fbc49607754
+  languageName: node
+  linkType: hard
+
+"@types/memory-cache@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "@types/memory-cache@npm:0.2.1"
+  checksum: 84a16f00cde7234ac4bfc6e12d8dd50c3ad9e6d211f50a53d0100ee115062f9e30182480bc7c1d862dafdfdfec949f8748055633d8616880bf28da1183f91dfe
   languageName: node
   linkType: hard
 
@@ -20025,6 +20035,13 @@ fsevents@~2.3.2:
   version: 5.1.1
   resolution: "memoize-one@npm:5.1.1"
   checksum: e7c4a9cceca71334bf09c38818c375a280dc6e8ec03a92701c16199763269ce756b7b0b370f4b464c071045349fb7b3e4a3cc7460a3f46a277f394d8634a6eb5
+  languageName: node
+  linkType: hard
+
+"memory-cache@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "memory-cache@npm:0.2.0"
+  checksum: 6c74a924497a8d91f137f9694053f30b237f4ca6f3ca8744afda7f578c6f14b95e42145b82f39b46bad4e5f05b4e8c87a85132d73b3b72957fc75b2fa77183af
   languageName: node
   linkType: hard
 
