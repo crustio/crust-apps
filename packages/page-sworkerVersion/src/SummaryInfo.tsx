@@ -24,11 +24,11 @@ export interface PKInfo {
 }
 
 function Summary({ className, current, summaryInfo, isLoading }: Props): React.ReactElement<Props> | null {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   
   const versionHeaderRef = useRef([
-    [t('Current availabe sWorker'), 'start'],
+    [t('Current available sWorker'), 'start'],
     [t('Proportion')],
     [t('Release')],
     [t('Due date')],
@@ -37,11 +37,11 @@ function Summary({ className, current, summaryInfo, isLoading }: Props): React.R
 
   return (<div className={className}>
     <Banner type='warning'>
-      <p>{t<string>(i18n.language == 'zh' ? '请一定要按照升级指南步骤进行sWorker的升级操作' : 'Please be sure to follow the steps in the upgrade guide to upgrade sWorker' )}</p>
+      <p>{t<string>('Please be sure to follow the steps in the upgrade guide to upgrade sWorker')}</p>
     </Banner>
     <Table
         header={versionHeaderRef.current}
-        empty={ !isLoading && t<string>('No funds availabe sWorker yet.')}
+        empty={ !isLoading && t<string>('No funds available sWorker yet.')}
     >
         {summaryInfo && summaryInfo?.map((sv): React.ReactNode => (
             <VersionInfo

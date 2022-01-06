@@ -20,8 +20,10 @@ import Summary, { PKInfo } from './SummaryInfo';
 import { SworkerVersion } from './VersionInfo';
 import VersionQuery from './versionQuery';
 import SworkerHelpOverlay from '@polkadot/react-components/SworkerHelpOverlay';
+import mcache from "memory-cache";
 
 const HIDDEN_ACC = ['vanity'];
+const cacheDuration = 60 * 30;
 
 function getSum (total: string, num: string) {
   return total + num;
@@ -56,63 +58,73 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
   }, [lastBlockNumber]);
 
   const getVersionSummaryInfo = () => {
-    let unsub: (() => void) | undefined;
-    const fns: any[] = [
-      [api.query.swork.pubKeys.entries]
-    ];
-    const sv: SworkerVersion[] = [];
-    const pkInfos: PKInfo[] = [];
-    Object.keys(versionsRecord).forEach( key => {
-      api.query.swork.codes(key).then((res) => {
-        const codeInfo = JSON.parse(JSON.stringify(res));
-        sv.push({
-          version: key,
-          start: versionsStartBlockRecord[key],
-          end: codeInfo,
-          proportion: 0
-        })
-      });
-    })
-    api.combineLatest<any[]>(fns, ([pubkyes]): void => {
-      const availabeCode: any[] = [];
-      if (Array.isArray(pubkyes)) {
-        pubkyes.forEach(([{ args: [_] }, value]) => {
-          if (versionsRecord[value.code]) {
-            availabeCode.push(value);
-          }
-          pkInfos.push(value);
+    let pkInfoKey = '_pkInfo_key_';
+    let summaryInfoKey = '_summaryInfo_key_';
+    let pkInfoCachedBody = mcache.get(pkInfoKey);
+    let summaryInfoCachedBody = mcache.get(summaryInfoKey);
+    if (pkInfoCachedBody && summaryInfoCachedBody) { 
+      setPkInfos(pkInfoCachedBody);
+      setSummaryInfo(summaryInfoCachedBody);
+      setIsLoading(false);   
+    } else {
+      const fns: any[] = [
+        [api.query.swork.pubKeys.entries]
+      ];
+      const sv: SworkerVersion[] = [];
+      const pkInfos: PKInfo[] = [];
+      Object.keys(versionsRecord).forEach( key => {
+        api.query.swork.codes(key).then((res) => {
+          const codeInfo = JSON.parse(JSON.stringify(res));
+          sv.push({
+            version: key,
+            start: versionsStartBlockRecord[key],
+            end: codeInfo,
+            proportion: 0
+          })
         });
-        const codeGroup = _.groupBy(availabeCode, 'code');
-        const total = availabeCode.length;
-
-        Object.entries(codeGroup).forEach(([code, entries]) => {
-          // api.query.swork.codes(code).then((res) => {
-          //   const codeInfo = JSON.parse(JSON.stringify(res));
-
-          //   sv.push({
-          //     version: code,
-          //     start: versionsStartBlockRecord[code],
-          //     end: codeInfo,
-          //     proportion: _.divide(entries.length, total)
-          //   });
-          // });
-          const currentInfo = sv.find((e) => e.version == code);
-          if (currentInfo) {
-            currentInfo.proportion = _.divide(entries.length, total)
-          }
-
-        });
-        setPkInfos(pkInfos);
-        setSummaryInfo(sv);
-        setIsLoading(false);
-      }
-    }).then((_unsub): void => {
-      unsub = _unsub;
-    }).catch(console.error);
-
-    return (): void => {
-      unsub && unsub();
-    };
+      })
+      api.combineLatest<any[]>(fns, ([pubkyes]): void => {
+        const availabeCode: any[] = [];
+        if (Array.isArray(pubkyes)) {
+          pubkyes.forEach(([{ args: [_] }, value]) => {
+            if (versionsRecord[value.code]) {
+              availabeCode.push(value);
+            }
+            pkInfos.push(value);
+          });
+          const codeGroup = _.groupBy(availabeCode, 'code');
+          const total = availabeCode.length;
+  
+          Object.entries(codeGroup).forEach(([code, entries]) => {
+            // api.query.swork.codes(code).then((res) => {
+            //   const codeInfo = JSON.parse(JSON.stringify(res));
+  
+            //   sv.push({
+            //     version: code,
+            //     start: versionsStartBlockRecord[code],
+            //     end: codeInfo,
+            //     proportion: _.divide(entries.length, total)
+            //   });
+            // });
+            const currentInfo = sv.find((e) => e.version == code);
+            if (currentInfo) {
+              currentInfo.proportion = _.divide(entries.length, total)
+            }
+          });
+          mcache.put(pkInfoKey, pkInfos, cacheDuration * 1000);
+          mcache.put(summaryInfoKey, sv, cacheDuration * 1000);
+          setPkInfos(pkInfos);
+          setSummaryInfo(sv);
+          setIsLoading(false);
+        }
+      }).then((_unsub): void => {
+        
+      }).catch(console.error);
+  
+      // return (): void => {
+      //   unsub && unsub();
+      // };
+    }
   };
 
   useEffect(() => {
@@ -121,7 +133,7 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
 
   return (
 
-    <main className='accounts--App'>
+    <main>
       <header>
         <Tabs
           basePath={basePath}

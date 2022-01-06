@@ -19,6 +19,9 @@ interface Props {
   current: number;
   pkInfos: PKInfo[];
   isLoading: boolean;
+  setMessage: (message: string) => void;
+  setStatus: (status: string) => void;
+  setStatusOpen: (isOpen: boolean) => void;
 }
 
 interface SworkerVersion {
@@ -57,7 +60,7 @@ export const versionsReleaseRecord: Record<string, string> = {
     '0xa61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503': 'https://github.com/crustio/crust-sworker/releases/tag/v1.1.1'
 };
 
-function VersionState ({ address, className = '', current, isLoading: summaryLoading, pkInfos }: Props): React.ReactElement<Props> {
+function VersionState ({ address, className = '', current, isLoading: summaryLoading, pkInfos, setMessage, setStatus, setStatusOpen }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [isLoading, setIsLoading] = useState<boolean>(summaryLoading);
@@ -186,6 +189,9 @@ function VersionState ({ address, className = '', current, isLoading: summaryLoa
                             current={current}
                             key={mv.address}
                             memberVersion={mv}
+                            setMessage={setMessage}
+                            setStatus={setStatus}
+                            setStatusOpen={setStatusOpen}
                           />
                         ))}
                       </Table>
@@ -205,6 +211,9 @@ function VersionState ({ address, className = '', current, isLoading: summaryLoa
                   current={current}
                   key={mv.address}
                   memberVersion={mv}
+                  setMessage={setMessage}
+                  setStatus={setStatus}
+                  setStatusOpen={setStatusOpen}
                 />
               ))}
             </Table>
