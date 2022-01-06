@@ -38,7 +38,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
   const [transferrable, setTransferrable] = useState<boolean>(true);
   const { systemChain: substrateName } = useApi();
   const isMaxwell = substrateName === 'Crust Maxwell';
-  const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x9d332427e6d1b91d9cf8d2fa3b41df2012887aab' : 'https://etherscan.io/address/0x645a36124b537ea30cbba25f75599d3f1fe79ba5'
+  const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x9d332427e6d1b91d9cf8d2fa3b41df2012887aab' : 'https://etherscan.io/address/0x18FCb27e4712AC11B8BecE851DAF96ba8ba34720'
 
   useEffect(() => {
     if (Number(amount) <= 0) {

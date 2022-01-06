@@ -23,7 +23,7 @@ interface Props {
 }
 
 const contractAddress = "0x32a7C02e79c4ea1008dD6564b35F131428673c41";
-const handler = '0x645A36124B537Ea30Cbba25F75599D3F1FE79Ba5'
+const handler = '0x18FCb27e4712AC11B8BecE851DAF96ba8ba34720'
 
 function EthereumAssets ({ className = '', senderId: propSenderId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
@@ -35,7 +35,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
   const [isValid, setIsValid] = useState(false);
   const [bridgeFee, setBridgeFee] = useState<BN>(BN_ZERO);
   const isMaxwell = systemChain === 'Crust Maxwell';
-  const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x9d332427e6d1b91d9cf8d2fa3b41df2012887aab' : 'https://etherscan.io/address/0x645a36124b537ea30cbba25f75599d3f1fe79ba5';
+  const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x9d332427e6d1b91d9cf8d2fa3b41df2012887aab' : 'https://etherscan.io/address/0x18FCb27e4712AC11B8BecE851DAF96ba8ba34720';
   const [handlerAsset, setHandlerAsset] = useState<BN | undefined>(BN_ZERO);
 
   useEffect(() => {
