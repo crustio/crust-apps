@@ -23,7 +23,7 @@ interface Props {
 }
 
 const contractAddress = "0x32a7C02e79c4ea1008dD6564b35F131428673c41";
-const handler = '0x645A36124B537Ea30Cbba25F75599D3F1FE79Ba5'
+const handler = '0x18FCb27e4712AC11B8BecE851DAF96ba8ba34720'
 
 function EthereumAssets ({ className = '', senderId: propSenderId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
@@ -35,11 +35,11 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
   const [isValid, setIsValid] = useState(false);
   const [bridgeFee, setBridgeFee] = useState<BN>(BN_ZERO);
   const isMaxwell = systemChain === 'Crust Maxwell';
-  const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x9d332427e6d1b91d9cf8d2fa3b41df2012887aab' : 'https://etherscan.io/address/0x645a36124b537ea30cbba25f75599d3f1fe79ba5';
+  const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x9d332427e6d1b91d9cf8d2fa3b41df2012887aab' : 'https://etherscan.io/address/0x18FCb27e4712AC11B8BecE851DAF96ba8ba34720';
   const [handlerAsset, setHandlerAsset] = useState<BN | undefined>(BN_ZERO);
 
   useEffect(() => {
-    api.query.bridgeTransfer.bridgeFee(0).then((bridgeFee) => {
+    api.query.bridgeTransfer.bridgeFee(2).then((bridgeFee) => {
       const fee = JSON.parse(JSON.stringify(bridgeFee));
 
       setBridgeFee(new BN(Number(fee[0]).toString()));
@@ -78,12 +78,9 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
     <Columar>
       <Columar.Column>
         <Card withBottomMargin>
-          <Banner type='error'>
-            <p>{t<string>('The bridge is under maintainance right now and will come back in hours. Please wait for a while and check it later.')}</p>
-          </Banner>
-          {/* <Banner type='warning'>
+          <Banner type='warning'>
             <p>{t<string>('This function is an internal test stage, the assets will not be lost, but there may be a delay (max to 48 hours) in the arrival of the account.')}</p>
-          </Banner> */}
+          </Banner>
           <h3><span style={{ fontWeight: 'bold' }}>{t<string>('From Crust')}</span></h3>
           <div style={{ display: 'flex' }}>
             <img src={logoCrust as string}
@@ -145,9 +142,9 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
             <TxButton
               accountId={senderId}
               icon='paper-plane'
-              isDisabled={!isValid || (handlerAsset && amount && handlerAsset.lte(amount)) || true }
+              isDisabled={!isValid || (handlerAsset && amount && handlerAsset.lte(amount))}
               label={t<string>('Transfer')}
-              params={[amount, ethereumAddress, 0]}
+              params={[amount, ethereumAddress, 2]}
               tx={api.tx.bridgeTransfer?.transferNative}
             />
           </Button.Group>

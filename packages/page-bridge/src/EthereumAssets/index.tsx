@@ -38,7 +38,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
   const [transferrable, setTransferrable] = useState<boolean>(true);
   const { systemChain: substrateName } = useApi();
   const isMaxwell = substrateName === 'Crust Maxwell';
-  const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x9d332427e6d1b91d9cf8d2fa3b41df2012887aab' : 'https://etherscan.io/address/0x645a36124b537ea30cbba25f75599d3f1fe79ba5'
+  const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x9d332427e6d1b91d9cf8d2fa3b41df2012887aab' : 'https://etherscan.io/address/0x18FCb27e4712AC11B8BecE851DAF96ba8ba34720'
 
   useEffect(() => {
     if (Number(amount) <= 0) {
@@ -127,12 +127,9 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
       <Columar.Column>
         <Card withBottomMargin>
           <Modal.Content>
-            <Banner type='error'>
-              <p>{t<string>('The bridge is under maintainance right now and will come back in hours. Please wait for a while and check it later.')}</p>
-            </Banner>
-            {/* <Banner type='warning'>
+            <Banner type='warning'>
               <p>{t<string>('This function is an internal test stage, the assets will not be lost, but there may be a delay (max to 48 hours) in the arrival of the account.')}</p>
-            </Banner> */}
+            </Banner>
             <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('From Ethereum')}</span></h3>
             <div style={{display: "flex", alignItems: 'center'}}>
                 <img style={{ "width": "64px", height: '64px', padding: '3px', 'verticalAlign': 'middle' }} src={ethereumLogo as string} />
@@ -190,7 +187,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
             <Button.Group>
               <Button
                 icon='hand-paper'
-                isDisabled={true || !transferrable || isAmountError}
+                isDisabled={!transferrable || isAmountError}
                 label={t<string>('Approve')}
                 onClick={approve}
               />
