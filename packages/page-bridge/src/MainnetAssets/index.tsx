@@ -78,12 +78,9 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
     <Columar>
       <Columar.Column>
         <Card withBottomMargin>
-          <Banner type='error'>
-            <p>{t<string>('The bridge is under maintainance right now and will come back in hours. Please wait for a while and check it later.')}</p>
-          </Banner>
-          {/* <Banner type='warning'>
+          <Banner type='warning'>
             <p>{t<string>('This function is an internal test stage, the assets will not be lost, but there may be a delay (max to 48 hours) in the arrival of the account.')}</p>
-          </Banner> */}
+          </Banner>
           <h3><span style={{ fontWeight: 'bold' }}>{t<string>('From Crust')}</span></h3>
           <div style={{ display: 'flex' }}>
             <img src={logoCrust as string}
@@ -145,9 +142,9 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
             <TxButton
               accountId={senderId}
               icon='paper-plane'
-              isDisabled={!isValid || (handlerAsset && amount && handlerAsset.lte(amount)) || true }
+              isDisabled={!isValid || (handlerAsset && amount && handlerAsset.lte(amount))}
               label={t<string>('Transfer')}
-              params={[amount, ethereumAddress, 0]}
+              params={[amount, ethereumAddress, 2]}
               tx={api.tx.bridgeTransfer?.transferNative}
             />
           </Button.Group>
