@@ -39,7 +39,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
   const [handlerAsset, setHandlerAsset] = useState<BN | undefined>(BN_ZERO);
 
   useEffect(() => {
-    api.query.bridgeTransfer.bridgeFee(0).then((bridgeFee) => {
+    api.query.bridgeTransfer.bridgeFee(2).then((bridgeFee) => {
       const fee = JSON.parse(JSON.stringify(bridgeFee));
 
       setBridgeFee(new BN(Number(fee[0]).toString()));
