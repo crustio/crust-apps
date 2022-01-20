@@ -1,7 +1,8 @@
-// Copyright 2017-2021 @polkadot/app-staking authors & contributors
+// Copyright 2017-2022 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import BN from 'bn.js';
+import type { BN } from '@polkadot/util';
+
 import React, { useMemo } from 'react';
 
 import { Badge, Icon } from '@polkadot/react-components';
@@ -12,17 +13,18 @@ import MaxBadge from '../../MaxBadge';
 interface Props {
   isElected: boolean;
   isMain?: boolean;
+  isPara?: boolean;
+  isRelay?: boolean;
   nominators?: { nominatorId: string }[];
   onlineCount?: false | BN;
   onlineMessage?: boolean;
-  stakeLimit: BN;
-  totalStake: BN;
 }
 
-function Status ({ isElected, isMain, nominators = [], onlineCount, onlineMessage, stakeLimit, totalStake }: Props): React.ReactElement<Props> {
+const NO_NOMS: { nominatorId: string }[] = [];
+
+function Status ({ isElected, isMain, isPara, isRelay, nominators = NO_NOMS, onlineCount, onlineMessage }: Props): React.ReactElement<Props> {
   const { allAccounts } = useAccounts();
   const blockCount = onlineCount && onlineCount.toNumber();
-  const isOver = totalStake.gt(stakeLimit);
 
   const isNominating = useMemo(
     () => nominators.some(({ nominatorId }) => allAccounts.includes(nominatorId)),
@@ -40,6 +42,16 @@ function Status ({ isElected, isMain, nominators = [], onlineCount, onlineMessag
         )
         : <Badge color='transparent' />
       }
+      {isRelay && (
+        isPara
+          ? (
+            <Badge
+              color='purple'
+              icon='vector-square'
+            />
+          )
+          : <Badge color='transparent' />
+      )}
       {isElected
         ? (
           <Badge
@@ -58,10 +70,6 @@ function Status ({ isElected, isMain, nominators = [], onlineCount, onlineMessag
             />
           )
           : <Badge color='transparent' />
-      )}
-      {isOver && (
-        <Badge color='red'
-          icon='balance-scale-right' />
       )}
       <MaxBadge numNominators={nominators.length} />
     </>

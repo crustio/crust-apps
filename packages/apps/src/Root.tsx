@@ -1,11 +1,10 @@
-// Copyright 2017-2021 @polkadot/apps authors & contributors
+// Copyright 2017-2022 @polkadot/apps authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { ThemeDef } from '@polkadot/react-components/types';
 import type { KeyringStore } from '@polkadot/ui-keyring/types';
 
-import React, { Suspense, useEffect, useRef, useState } from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import React, { Suspense, useEffect, useState } from 'react';
 import { HashRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
@@ -19,6 +18,7 @@ import { darkTheme, lightTheme } from './themes';
 import WindowDimensions from './WindowDimensions';
 
 interface Props {
+  isElectron: boolean;
   store?: KeyringStore;
 }
 
@@ -33,9 +33,8 @@ function createTheme ({ uiTheme }: { uiTheme: string }): ThemeDef {
     : lightTheme;
 }
 
-function Root ({ store }: Props): React.ReactElement<Props> {
+function Root ({ isElectron, store }: Props): React.ReactElement<Props> {
   const [theme, setTheme] = useState(() => createTheme(settings));
-  const client = useRef(new QueryClient());
 
   useEffect((): void => {
     settings.on('change', (settings) => setTheme(createTheme(settings)));
@@ -45,22 +44,21 @@ function Root ({ store }: Props): React.ReactElement<Props> {
     <Suspense fallback='...'>
       <ThemeProvider theme={theme}>
         <Queue>
-          <QueryClientProvider client={client.current}>
-            <Api
-              store={store}
-              url={settings.apiUrl}
-            >
-              <BlockAuthors>
-                <Events>
-                  <HashRouter>
-                    <WindowDimensions>
-                      <Apps />
-                    </WindowDimensions>
-                  </HashRouter>
-                </Events>
-              </BlockAuthors>
-            </Api>
-          </QueryClientProvider>
+          <Api
+            apiUrl={settings.apiUrl}
+            isElectron={isElectron}
+            store={store}
+          >
+            <BlockAuthors>
+              <Events>
+                <HashRouter>
+                  <WindowDimensions>
+                    <Apps />
+                  </WindowDimensions>
+                </HashRouter>
+              </Events>
+            </BlockAuthors>
+          </Api>
         </Queue>
       </ThemeProvider>
     </Suspense>

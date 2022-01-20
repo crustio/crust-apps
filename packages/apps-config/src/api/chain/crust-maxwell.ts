@@ -1,4 +1,4 @@
-// Copyright 2017-2021 @polkadot/apps-config authors & contributors
+// Copyright 2017-2022 @polkadot/apps-config authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 // structs need to be in order
@@ -57,7 +57,6 @@ export default {
     anchor: 'SworkerAnchor',
     is_reported: 'bool'
   },
-  ResourceId: '[u8; 32]',
   Status: {
     _enum: ['Free', 'Reserved']
   },

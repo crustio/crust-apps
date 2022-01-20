@@ -1,16 +1,14 @@
-// Copyright 2017-2021 @polkadot/app-staking authors & contributors
+// Copyright 2017-2022 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-/* eslint-disable */
 import type { DeriveStakerPrefs } from '@polkadot/api-derive/types';
 import type { ChartInfo, LineDataEntry, Props } from './types';
 
-import BN from 'bn.js';
 import React, { useMemo, useRef } from 'react';
 
 import { Chart, Spinner } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
-import { BN_BILLION } from '@polkadot/util';
+import { BN, BN_BILLION } from '@polkadot/util';
 
 import { useTranslation } from '../translate';
 
@@ -25,8 +23,7 @@ function extractPrefs (prefs: DeriveStakerPrefs[] = []): ChartInfo {
   let total = 0;
 
   prefs.forEach(({ era, validatorPrefs }): void => {
-    // @ts-ignore
-    const comm = validatorPrefs.guarantee_fee.unwrap().mul(MULT).div(BN_BILLION).toNumber() / 100;
+    const comm = validatorPrefs.commission.unwrap().mul(MULT).div(BN_BILLION).toNumber() / 100;
 
     total += comm;
     labels.push(era.toHuman());
@@ -57,13 +54,13 @@ function ChartPrefs ({ validatorId }: Props): React.ReactElement<Props> {
   );
 
   const legendsRef = useRef([
-    t<string>('guarantee fee'),
+    t<string>('commission'),
     t<string>('average')
   ]);
 
   return (
     <div className='staking--Chart'>
-      <h1>{t<string>('guarantee fee')}</h1>
+      <h1>{t<string>('commission')}</h1>
       {labels.length
         ? (
           <Chart.Line

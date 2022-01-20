@@ -1,91 +1,69 @@
-// Copyright 2017-2021 @polkadot/app-staking authors & contributors
+// Copyright 2017-2022 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import type { AccountId, StakingLedger } from '@polkadot/types/interfaces';
+import type { DeriveStakingAccount } from '@polkadot/api-derive/types';
 
-import BN from 'bn.js';
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useMemo, useState } from 'react';
 
-import { InputAddress, InputBalance, Modal, Static, Toggle, TxButton } from '@polkadot/react-components';
+import { InputBalance, Modal, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
-import { BlockToTime } from '@polkadot/react-query';
+import { BN, BN_ZERO } from '@polkadot/util';
 
 import { useTranslation } from '../../translate';
-import useUnbondDuration from '../useUnbondDuration';
+import SenderInfo from '../partials/SenderInfo';
 
 interface Props {
-  className?: string;
-  controllerId?: AccountId | null;
+  controllerId: string | null;
   onClose: () => void;
-  stakingLedger?: StakingLedger;
+  stakingInfo?: DeriveStakingAccount;
   stashId: string;
 }
 
-function Rebond ({ className = '', controllerId, onClose, stakingLedger, stashId }: Props): React.ReactElement<Props> {
+// TODO we should check that the bonded amoutn, after the operation is >= ED
+function Rebond ({ controllerId, onClose, stakingInfo, stashId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
-  const bondedBlocks = useUnbondDuration();
-  const [maxBalance] = useState<BN | null>(() => stakingLedger?.total.unwrap().sub(stakingLedger?.active.unwrap()) || null);
-  const [maxUnbond, setMaxUnbond] = useState<BN | null>(null);
-  const [withMax, setWithMax] = useState(false);
+  const [maxAdditional, setMaxAdditional] = useState<BN | undefined>();
+
+  const startBalance = useMemo(
+    () => stakingInfo && stakingInfo.unlocking
+      ? stakingInfo.unlocking.reduce((total, { value }) => total.iadd(value), new BN(0))
+      : BN_ZERO,
+    [stakingInfo]
+  );
 
   return (
     <Modal
-      className={`staking--Unbond ${className}`}
-      header={t<string>('Rebond funds')}
+      header= {t<string>('Bond more funds')}
+      onClose={onClose}
       size='large'
     >
       <Modal.Content>
-        <Modal.Columns hint={t<string>('The stash and controller pair, here the controller will be used to send the transaction.')}>
-          <InputAddress
-            defaultValue={stashId}
-            isDisabled
-            label={t<string>('stash account')}
-          />
-          <InputAddress
-            defaultValue={controllerId}
-            isDisabled
-            label={t<string>('controller account')}
-          />
-        </Modal.Columns>
-        <Modal.Columns hint={t<string>('The funds will only be available for withdrawal after the unbonding period, however will not be part of the staked amount after the next validator election. You can follow the unlock countdown in the UI.')}>
-          <InputBalance
-            autoFocus
-            defaultValue={maxBalance}
-            help={t<string>('The amount of funds to unbond, this is adjusted using the bonded funds on the stash account.')}
-            isDisabled={withMax}
-            key={`unbondAmount-${withMax.toString()}`}
-            label={t<string>('unbond amount')}
-            maxValue={maxBalance}
-            onChange={setMaxUnbond}
-            withMax
-          >
-            <Toggle
-              isOverlay
-              label={t<string>('all bonded')}
-              onChange={setWithMax}
-              value={withMax}
+        <SenderInfo
+          controllerId={controllerId}
+          stashId={stashId}
+        />
+        {startBalance && (
+          <Modal.Columns hint={t<string>('The amount the is to be rebonded from the value currently unlocking, i.e. previously unbonded')}>
+            <InputBalance
+              autoFocus
+              defaultValue={startBalance}
+              help={t<string>('Amount to add to the currently bonded funds. This is adjusted using the funds currently unlocking.')}
+              isError={!maxAdditional || maxAdditional.eqn(0) || maxAdditional.gt(startBalance)}
+              label={t<string>('rebonded amount')}
+              onChange={setMaxAdditional}
             />
-          </InputBalance>
-          {bondedBlocks?.gtn(0) && (
-            <Static
-              help={t<string>('The bonding duration for any staked funds. After this period needs to be withdrawn.')}
-              label={t<string>('on-chain bonding duration')}
-            >
-              <BlockToTime value={bondedBlocks} />
-            </Static>
-          )}
-        </Modal.Columns>
+          </Modal.Columns>
+        )}
       </Modal.Content>
-      <Modal.Actions onCancel={onClose}>
+      <Modal.Actions>
         <TxButton
           accountId={controllerId}
-          icon='lock'
-          isDisabled={!((withMax ? maxBalance : maxUnbond)?.gtn(0))}
+          icon='sign-in-alt'
+          isDisabled={!maxAdditional || maxAdditional.isZero() || !startBalance || maxAdditional.gt(startBalance)}
           label={t<string>('Rebond')}
           onStart={onClose}
-          params={[withMax ? maxBalance : maxUnbond]}
+          params={[maxAdditional]}
           tx={api.tx.staking.rebond}
         />
       </Modal.Actions>
@@ -93,12 +71,4 @@ function Rebond ({ className = '', controllerId, onClose, stakingLedger, stashId
   );
 }
 
-export default React.memo(styled(Rebond)`
-  .staking--Unbond--max > div {
-    justify-content: flex-end;
-
-    & .column {
-      flex: 0;
-    }
-  }
-`);
+export default React.memo(Rebond);

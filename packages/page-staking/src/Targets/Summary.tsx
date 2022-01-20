@@ -1,11 +1,11 @@
-// Copyright 2017-2021 @polkadot/app-staking authors & contributors
+// Copyright 2017-2022 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { DeriveSessionIndexes } from '@polkadot/api-derive/types';
 import type { Option } from '@polkadot/types';
 import type { Balance } from '@polkadot/types/interfaces';
+import type { BN } from '@polkadot/util';
 
-import BN from 'bn.js';
 import React, { useMemo } from 'react';
 
 import { CardSummary, SummaryBox } from '@polkadot/react-components';
@@ -19,6 +19,7 @@ interface Props {
   avgStaked?: BN;
   lowStaked?: BN;
   minNominated?: BN;
+  minNominatorBond?: BN;
   numNominators?: number;
   numValidators?: number;
   stakedReturn: number;
@@ -34,7 +35,7 @@ const transformEra = {
   transform: ({ activeEra }: DeriveSessionIndexes) => activeEra.gt(BN_ZERO) ? activeEra.sub(BN_ONE) : undefined
 };
 
-function Summary ({ avgStaked, lowStaked, minNominated, numNominators, numValidators, totalIssuance, totalStaked }: Props): React.ReactElement<Props> {
+function Summary ({ avgStaked, lowStaked, minNominated, minNominatorBond, stakedReturn, totalIssuance, totalStaked }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const lastEra = useCall<BN | undefined>(api.derive.session.indexes, undefined, transformEra);
@@ -67,28 +68,23 @@ function Summary ({ avgStaked, lowStaked, minNominated, numNominators, numValida
       <section className='media--800'>
         {totalIssuance && totalStaked?.gt(BN_ZERO) && (
           <CardSummary
-            label={t<string>('total effective stake / totalIssuance')}
+            label={t<string>('total staked')}
             progress={progressStake}
           >
             <FormatBalance
               value={totalStaked}
               withSi
             />
-             &nbsp;/&nbsp;
-            <FormatBalance
-              value={totalIssuance}
-              withSi
-            />
           </CardSummary>
         )}
       </section>
-      {/* <section className='media--800'>
+      <section className='media--800'>
         {totalIssuance && (stakedReturn > 0) && Number.isFinite(stakedReturn) && (
           <CardSummary label={t<string>('returns')}>
             {stakedReturn.toFixed(1)}%
           </CardSummary>
         )}
-      </section> */}
+      </section>
       <section className='media--1000'>
         {avgStaked?.gtn(0) && lowStaked?.gtn(0) && (
           <CardSummary
@@ -108,24 +104,29 @@ function Summary ({ avgStaked, lowStaked, minNominated, numNominators, numValida
           </CardSummary>
         )}
       </section>
-      {numValidators && numNominators && (
-        <CardSummary
-          className='media--1600'
-          label={`${t<string>('guarantors')} / ${t<string>('validators')}`}
-        >
-          {numNominators}&nbsp;/&nbsp;{numValidators}
-        </CardSummary>
-      )}
       <section className='media--1600'>
         {minNominated?.gt(BN_ZERO) && (
           <CardSummary
             className='media--1600'
-            label={t<string>('min guaranteed')}
+            label={
+              minNominatorBond
+                ? t<string>('min nominated / threshold')
+                : t<string>('min nominated')}
           >
             <FormatBalance
               value={minNominated}
+              withCurrency={!minNominatorBond}
               withSi
             />
+            {minNominatorBond && (
+              <>
+                &nbsp;/&nbsp;
+                <FormatBalance
+                  value={minNominatorBond}
+                  withSi
+                />
+              </>
+            )}
           </CardSummary>
         )}
       </section>

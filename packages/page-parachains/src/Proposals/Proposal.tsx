@@ -1,4 +1,4 @@
-// Copyright 2017-2021 @polkadot/app-parachains authors & contributors
+// Copyright 2017-2022 @polkadot/app-parachains authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { ParaId } from '@polkadot/types/interfaces';
@@ -68,7 +68,7 @@ function Proposal ({ approvedIds, id, scheduled }: Props): React.ReactElement<Pr
           />
         )}
       </td>
-      <td className='badge together'><ParaLink id={id} /></td>
+      <td className='badge'><ParaLink id={id} /></td>
       <td className='start together'>{proposal.proposal?.name.toUtf8()}</td>
       <td className='address'>
         {proposal.proposal?.validators && (

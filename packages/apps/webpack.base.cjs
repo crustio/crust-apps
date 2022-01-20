@@ -1,7 +1,7 @@
-// Copyright 2017-2021 @polkadot/apps authors & contributors
+// Copyright 2017-2022 @polkadot/apps authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-/* eslint-disable */
+/* eslint-disable camelcase */
 
 const fs = require('fs');
 const path = require('path');
@@ -10,7 +10,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 
 const findPackages = require('../../scripts/findPackages.cjs');
-const { isEmpty } = require('lodash');
 
 function mapChunks (name, regs, inc) {
   return regs.reduce((result, test, index) => ({
@@ -25,26 +24,12 @@ function mapChunks (name, regs, inc) {
 }
 
 function createWebpack (context, mode = 'production') {
-  const isProd = mode === 'production';
   const pkgJson = require(path.join(context, 'package.json'));
   const alias = findPackages().reduce((alias, { dir, name }) => {
     alias[name] = path.resolve(context, `../${dir}/src`);
 
     return alias;
-  }, {
-    './erasExposure.js': path.resolve(__dirname, 'src/patch/erasExposure.js'),
-    './erasRewards.js': path.resolve(__dirname, 'src/patch/erasRewards.js'),
-    './erasRewards.mjs': path.resolve(__dirname, 'src/patch/erasRewards.mjs'),
-    './filterEras.mjs': path.resolve(__dirname, 'src/patch/filterEras.mjs'),
-    './ownExposure.js': path.resolve(__dirname, 'src/patch/ownExposure.js'),
-    './ownSlashes.js': path.resolve(__dirname, 'src/patch/ownSlashes.js'),
-    './query.mjs': path.resolve(__dirname, 'src/patch/query.mjs'),
-    './query.js': path.resolve(__dirname, 'src/patch/query.js'),
-    './validators.js': path.resolve(__dirname, 'src/patch/validators.js'),
-    './stakerRewards.js': path.resolve(__dirname, 'src/patch/stakerRewards.js'),
-    './bundles/explore': path.resolve(__dirname, 'src/patch/bundles/explore'),
-    './components/StartExploringPage': path.resolve(__dirname, 'src/patch/StartExploringPage'),
-  });
+  }, {});
   const plugins = fs.existsSync(path.join(context, 'public'))
     ? new CopyWebpackPlugin({ patterns: [{ from: 'public' }] })
     : [];
@@ -56,29 +41,10 @@ function createWebpack (context, mode = 'production') {
     module: {
       rules: [
         {
-
-          exclude: /(node_modules)/,
-          test: /\.css$/,
-          use: [
-            isProd
-              ? MiniCssExtractPlugin.loader
-              : require.resolve('style-loader'),
-            {
-              loader: require.resolve('css-loader'),
-              options: {
-                importLoaders: 1
-              }
-            }
-          ]
-
-        },
-        {
           include: /node_modules/,
           test: /\.css$/,
           use: [
-            isProd
-              ? MiniCssExtractPlugin.loader
-              : require.resolve('style-loader'),
+            MiniCssExtractPlugin.loader,
             require.resolve('css-loader')
           ]
         },
@@ -116,7 +82,7 @@ function createWebpack (context, mode = 'production') {
         },
         {
           exclude: [/semantic-ui-css/],
-          test: [/\.eot$/, /\.ttf$/, /\.svg$/, /\.otf$/, /\.woff$/, /\.woff2$/],
+          test: [/\.eot$/, /\.ttf$/, /\.svg$/, /\.woff$/, /\.woff2$/],
           use: [
             {
               loader: require.resolve('file-loader'),
@@ -139,7 +105,8 @@ function createWebpack (context, mode = 'production') {
       ]
     },
     node: {
-      __filename: false,
+      __dirname: true,
+      __filename: false
     },
     optimization: {
       minimize: mode === 'production',
@@ -182,21 +149,15 @@ function createWebpack (context, mode = 'production') {
         Buffer: ['buffer', 'Buffer'],
         process: 'process/browser.js'
       }),
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+      new webpack.IgnorePlugin({
+        contextRegExp: /moment$/,
+        resourceRegExp: /^\.\/locale$/
+      }),
       new webpack.DefinePlugin({
         'process.env': {
-          NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+          NODE_ENV: JSON.stringify(mode),
           VERSION: JSON.stringify(pkgJson.version),
-          WS_URL: JSON.stringify(process.env.WS_URL),
-          CRU_CLAIM_USER: JSON.stringify(process.env.CRU_CLAIM_USER),
-          CRU_CLAIM_PASSWD: JSON.stringify(process.env.CRU_CLAIM_PASSWD),
-          CSM_CLAIM_USER: JSON.stringify(process.env.CSM_CLAIM_USER),
-          CSM_CLAIM_PASSWD: JSON.stringify(process.env.CSM_CLAIM_PASSWD),
-          CSM_LOCKING_USER: JSON.stringify(process.env.CSM_LOCKING_USER),
-          CSM_LOCKING_PASSWD: JSON.stringify(process.env.CSM_LOCKING_PASSWD),
-          LUCKY_ORDER_USER: JSON.stringify(process.env.LUCKY_ORDER_USER),
-          LUCKY_ORDER_PASSWD: JSON.stringify(process.env.LUCKY_ORDER_PASSWD),
-          API_KEY: JSON.stringify(process.env.API_KEY),
+          WS_URL: JSON.stringify(process.env.WS_URL)
         }
       }),
       new webpack.optimize.SplitChunksPlugin(),
@@ -211,14 +172,13 @@ function createWebpack (context, mode = 'production') {
       },
       extensions: ['.js', '.jsx', '.mjs', '.ts', '.tsx'],
       fallback: {
+        assert: require.resolve('assert/'),
         crypto: require.resolve('crypto-browserify'),
+        http: require.resolve('stream-http'),
+        https: require.resolve('https-browserify'),
+        os: require.resolve('os-browserify/browser'),
         path: require.resolve('path-browserify'),
-        stream: require.resolve('stream-browserify'),
-        https: require.resolve("https-browserify"),
-        http: require.resolve("stream-http"),
-        os: false,
-        assert: false,
-        fs: false  
+        stream: require.resolve('stream-browserify')
       }
     }
   };

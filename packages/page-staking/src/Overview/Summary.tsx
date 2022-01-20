@@ -1,22 +1,17 @@
-// Copyright 2017-2021 @polkadot/app-staking authors & contributors
+// Copyright 2017-2022 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-/* eslint-disable */
 import type { DeriveStakingOverview } from '@polkadot/api-derive/types';
 import type { SortedTargets } from '../types';
 
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import SummarySession from '@polkadot/app-explorer/SummarySession';
-import { CardSummary, IdentityIcon, Spinner, SummaryBox } from '@polkadot/react-components';
-import { BlockAuthorsContext, FormatBalance } from '@polkadot/react-query';
+import { CardSummary, Spinner, SummaryBox } from '@polkadot/react-components';
 import { formatNumber } from '@polkadot/util';
 
 import { useTranslation } from '../translate';
-import StakingRewardPot from './StakingRewardPot';
-import { useApi } from '@polkadot/react-hooks';
-import MainnetRewards from './MainnetRewards';
 
 interface Props {
   className?: string;
@@ -26,11 +21,8 @@ interface Props {
   targets: SortedTargets;
 }
 
-function Summary ({ className = '', isVisible, stakingOverview, targets: { inflation: { inflation }, nominators, waitingIds, totalStaked } }: Props): React.ReactElement<Props> {
+function Summary ({ className = '', isVisible, stakingOverview, targets: { counterForNominators, inflation: { idealStake, inflation, stakedFraction }, nominators, waitingIds } }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const { lastBlockAuthors, lastBlockNumber } = useContext(BlockAuthorsContext);
-  const { systemChain } = useApi();
-  const isMaxwell = systemChain === 'Crust Maxwell';
 
   return (
     <SummaryBox className={`${className}${!isVisible ? ' staking--hidden' : ''}`}>
@@ -42,7 +34,7 @@ function Summary ({ className = '', isVisible, stakingOverview, targets: { infla
           }
         </CardSummary>
         <CardSummary
-          className='media--1000'
+          className='media--900'
           label={t<string>('waiting')}
         >
           {waitingIds
@@ -51,51 +43,51 @@ function Summary ({ className = '', isVisible, stakingOverview, targets: { infla
           }
         </CardSummary>
         <CardSummary
-          className='media--1100'
-          label={t<string>('guarantors')}
+          className='media--1000'
+          label={
+            counterForNominators
+              ? t<string>('active / nominators')
+              : t<string>('nominators')
+          }
         >
           {nominators
-            ? formatNumber(nominators.length)
+            ? (
+              <>
+                {formatNumber(nominators.length)}
+                {counterForNominators && (
+                  <>&nbsp;/&nbsp;{formatNumber(counterForNominators)}</>
+                )}
+              </>
+            )
             : <Spinner noLabel />
           }
         </CardSummary>
-        <CardSummary
-          className='media--1200'
-          label={t<string>('total effective stake')}
-        >
-          <FormatBalance
-            value={totalStaked}
-            withSi
-          />
-        </CardSummary>
-        {isMaxwell ? (
-          <CardSummary
-            className='media--1100'
-            label={t<string>('rewards')}
-          >
-            <StakingRewardPot />
-          </CardSummary>
-        ) : (<CardSummary
-          className='media--1100'
-          label={t<string>('current era rewards')}
-        >
-          <MainnetRewards />
-        </CardSummary>)}
       </section>
       <section>
-        <CardSummary
-          className='validator--Summary-authors'
-          label={t<string>('last block')}
-        >
-          {lastBlockAuthors?.map((author): React.ReactNode => (
-            <IdentityIcon
-              className='validator--Account-block-icon'
-              key={author}
-              value={author}
-            />
-          ))}
-          {lastBlockNumber}
-        </CardSummary>
+        {(idealStake > 0) && Number.isFinite(idealStake) && (
+          <CardSummary
+            className='media--1400'
+            label={t<string>('ideal staked')}
+          >
+            <>{(idealStake * 100).toFixed(1)}%</>
+          </CardSummary>
+        )}
+        {(stakedFraction > 0) && (
+          <CardSummary
+            className='media--1300'
+            label={t<string>('staked')}
+          >
+            <>{(stakedFraction * 100).toFixed(1)}%</>
+          </CardSummary>
+        )}
+        {(inflation > 0) && Number.isFinite(inflation) && (
+          <CardSummary
+            className='media--1200'
+            label={t<string>('inflation')}
+          >
+            <>{inflation.toFixed(1)}%</>
+          </CardSummary>
+        )}
       </section>
       <section>
         <SummarySession />
@@ -116,40 +108,5 @@ export default React.memo(styled(Summary)`
     .validator--Account-block-icon+.validator--Account-block-icon {
       margin-left: -1.5rem;
     }
-  }
-
-  .progress3 {
-    height: 20px;
-    width: 120px;
-    -webkit-appearance: none;
-    display: block;
-  }
-  .progress3::-webkit-progress-value {
-    background: linear-gradient(
-      -45deg, 
-      transparent 33%, 
-      rgba(0, 0, 0, .1) 33%, 
-      rgba(0,0, 0, .1) 66%, 
-      transparent 66%
-    ),
-      linear-gradient(
-        to top, 
-        rgba(255, 255, 255, .25), 
-        rgba(0, 0, 0, .25)
-      ),
-      linear-gradient(
-        to left,
-        #09c,
-        #f44);
-    border-radius: 2px; 
-    background-size: 35px 20px, 100% 100%, 100% 100%;
-  }
-
-  .progress4 {
-    display: block;    
-    font: inherit;
-    height: 20px;
-    width: 100%;
-    pointer-events: none;
   }
 `);

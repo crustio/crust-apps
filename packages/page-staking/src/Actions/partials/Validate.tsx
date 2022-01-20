@@ -1,15 +1,13 @@
-// Copyright 2017-2021 @polkadot/app-staking authors & contributors
+// Copyright 2017-2022 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-/* eslint-disable */
 import type { ValidateInfo } from './types';
 
-import BN from 'bn.js';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { Dropdown, InputAddress, InputNumber, Modal } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
-import { BN_HUNDRED as MAX_COMM, isFunction } from '@polkadot/util';
+import { BN, BN_HUNDRED as MAX_COMM, isFunction } from '@polkadot/util';
 
 import { useTranslation } from '../../translate';
 
@@ -18,12 +16,13 @@ interface Props {
   controllerId: string;
   onChange: (info: ValidateInfo) => void;
   stashId: string;
+  withFocus?: boolean;
   withSenders?: boolean;
 }
 
 const COMM_MUL = new BN(1e7);
 
-function Validate ({ className = '', controllerId, onChange, stashId, withSenders }: Props): React.ReactElement<Props> {
+function Validate ({ className = '', controllerId, onChange, stashId, withFocus, withSenders }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [commission, setCommission] = useState<BN | number>(1);
@@ -38,11 +37,8 @@ function Validate ({ className = '', controllerId, onChange, stashId, withSender
     try {
       onChange({
         validateTx: api.tx.staking.validate({
-          // @ts-ignore
-          guarantee_fee: new BN(commission).isZero()
-          // small non-zero set to avoid isEmpty
-            ? '0'
-            : (new BN(commission).toNumber() > 1000000000) ? '1000000000' : new BN(commission).toNumber().toString()
+          blocked: !allowNoms,
+          commission
         })
       });
     } catch {
@@ -77,9 +73,10 @@ function Validate ({ className = '', controllerId, onChange, stashId, withSender
       )}
       <Modal.Columns hint={t<string>('The commission is deducted from all rewards before the remainder is split with nominators.')}>
         <InputNumber
-          help={t<string>('The guarantee fee (0-100) that should be applied for the validator')}
+          autoFocus={withFocus}
+          help={t<string>('The percentage reward (0-100) that should be applied for the validator')}
           isZeroable
-          label={t<string>('guarantee fee')}
+          label={t<string>('reward commission percentage')}
           maxValue={MAX_COMM}
           onChange={_setCommission}
         />

@@ -1,4 +1,4 @@
-// Copyright 2017-2020 @polkadot/react-components authors & contributors
+// Copyright 2017-2022 @polkadot/react-components authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import { IconName } from '@fortawesome/fontawesome-svg-core';
@@ -8,18 +8,16 @@ import styled from 'styled-components';
 import Icon from '../Icon';
 
 interface Props {
-  beta?: boolean;
   className?: string;
   icon: IconName;
   text: string;
 }
 
-function CurrentSection ({ beta, className = '', icon, text }: Props): React.ReactElement<Props> {
+function CurrentSection ({ className = '', icon, text }: Props): React.ReactElement<Props> {
   return (
     <div className={`${className} active-tab`}>
       <Icon icon={icon} />
       <span>{text}</span>
-      { beta && <span className={'beta'}>beta</span> }
     </div>
   );
 }
@@ -34,16 +32,11 @@ export default React.memo(styled(CurrentSection)`
   display: flex;
   align-items: center;
   color: var(--color-text);
+
   .ui--Icon {
     margin-right: 0.85rem;
     max-width: 1rem;
     max-height: 1rem;
-  }
-
-  .beta {
-    margin: 0.5rem;
-    font-size: 0.6rem;
-    align-self: flex-start;
   }
 
   @media only screen and (max-width: 900px) {

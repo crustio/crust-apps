@@ -1,4 +1,4 @@
-// Copyright 2017-2021 @polkadot/apps authors & contributors
+// Copyright 2017-2022 @polkadot/apps authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import queryString from 'query-string';
@@ -9,15 +9,19 @@ import { extractIpfsDetails } from '@polkadot/react-hooks/useIpfs';
 import { settings } from '@polkadot/ui-settings';
 import { assert } from '@polkadot/util';
 
+function networkOrUrl (apiUrl: string): void {
+  if (apiUrl.startsWith('light://')) {
+    console.log('Light endpoint=', apiUrl.replace('light://', ''));
+  } else {
+    console.log('WS endpoint=', apiUrl);
+  }
+}
+
 function getApiUrl (): string {
   // we split here so that both these forms are allowed
   //  - http://localhost:3000/?rpc=wss://substrate-rpc.parity.io/#/explorer
   //  - http://localhost:3000/#/explorer?rpc=wss://substrate-rpc.parity.io
   const urlOptions = queryString.parse(location.href.split('?')[1]);
-
-  // const randomIndex = new Date().getTime() % endPoints.length;
-
-  // return endPoints[randomIndex];
 
   // if specified, this takes priority
   if (urlOptions.rpc) {
@@ -26,7 +30,7 @@ function getApiUrl (): string {
     // https://polkadot.js.org/apps/?rpc=ws://127.0.0.1:9944#/explorer;
     const url = decodeURIComponent(urlOptions.rpc.split('#')[0]);
 
-    assert(url.startsWith('ws://') || url.startsWith('wss://'), 'Non-prefixed ws/wss url');
+    assert(url.startsWith('ws://') || url.startsWith('wss://') || url.startsWith('light://'), 'Non-prefixed ws/wss/light url');
 
     return url;
   }
@@ -39,7 +43,7 @@ function getApiUrl (): string {
     const option = endpoints.find(({ dnslink }) => dnslink === ipnsChain);
 
     if (option) {
-      return option.value as string;
+      return option.value;
     }
   }
 
@@ -50,14 +54,14 @@ function getApiUrl (): string {
   return [stored.apiUrl, process.env.WS_URL].includes(settings.apiUrl)
     ? settings.apiUrl // keep as-is
     : fallbackUrl
-      ? fallbackUrl.value as string // grab the fallback
+      ? fallbackUrl.value // grab the fallback
       : 'ws://127.0.0.1:9944'; // nothing found, go local
 }
 
+// There cannot be a Substrate Connect light client default (expect only jrpc EndpointType)
 const apiUrl = getApiUrl();
 
 // set the default as retrieved here
 settings.set({ apiUrl });
-settings.set({ icon: 'robohash' });
 
-console.log('WS endpoint=', apiUrl);
+networkOrUrl(apiUrl);

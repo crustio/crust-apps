@@ -1,4 +1,4 @@
-// Copyright 2017-2021 @polkadot/app-staking authors & contributors
+// Copyright 2017-2022 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
@@ -13,7 +13,7 @@ function ActionsBanner (): React.ReactElement<null> | null {
   return (
     <MarkWarning
       className='warning centered'
-      content={t<string>('Use the account actions to create a new validator/guarantor stash and bond it to participate in staking. Do not send funds directly via a transfer to a validator.')}
+      content={t<string>('Use the account actions to create a new validator/nominator stash and bond it to participate in staking. Do not send funds directly via a transfer to a validator.')}
     />
   );
 }

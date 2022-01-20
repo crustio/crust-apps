@@ -1,17 +1,17 @@
-// Copyright 2017-2021 @polkadot/react-hooks authors & contributors
+// Copyright 2017-2022 @polkadot/react-hooks authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-/* eslint-disable */
-import type { DeriveStakingAccount, DeriveStakingOverview, DeriveStakingWaiting } from '@polkadot/api-derive/types';
+import type { CombinatorFunction } from '@polkadot/api/promise/Combinator';
+import type { DeriveStakingAccount } from '@polkadot/api-derive/types';
 import type { AccountId, ValidatorPrefs } from '@polkadot/types/interfaces';
 import type { Codec, ITuple } from '@polkadot/types/types';
 import type { StakerState } from './types';
 
 import { useEffect, useMemo, useState } from 'react';
 
-import { useCall } from '@polkadot/react-hooks/useCall';
 import { u8aConcat, u8aToHex } from '@polkadot/util';
 
+import { createNamedHook } from './createNamedHook';
 import { useAccounts } from './useAccounts';
 import { useApi } from './useApi';
 import { useIsMountedRef } from './useIsMountedRef';
@@ -26,11 +26,17 @@ function toIdString (id?: AccountId | null): string | null {
     : null;
 }
 
-function getStakerState (stashId: string, allAccounts: string[], validators: string[], [isOwnStash, { controllerId: _controllerId, exposure, nextSessionIds, nominators, rewardDestination, sessionIds, stakingLedger, validatorPrefs }, validateInfo]: [boolean, DeriveStakingAccount, ValidatorInfo]): StakerState {
+function getStakerState (stashId: string, allAccounts: string[], [isOwnStash, { controllerId: _controllerId, exposure, nextSessionIds: _nextSessionIds, nominators, rewardDestination, sessionIds: _sessionIds, stakingLedger, validatorPrefs }, validateInfo]: [boolean, DeriveStakingAccount, ValidatorInfo]): StakerState {
   const isStashNominating = !!(nominators?.length);
-  const isStashValidating = validators.indexOf(stashId) !== -1;
-  const nextConcat = u8aConcat(...nextSessionIds.map((id): Uint8Array => id.toU8a()));
-  const currConcat = u8aConcat(...sessionIds.map((id): Uint8Array => id.toU8a()));
+  const isStashValidating = !(Array.isArray(validateInfo) ? validateInfo[1].isEmpty : validateInfo.isEmpty);
+  const nextSessionIds = _nextSessionIds instanceof Map
+    ? [..._nextSessionIds.values()]
+    : _nextSessionIds;
+  const nextConcat = u8aConcat(...nextSessionIds.map((id) => id.toU8a()));
+  const sessionIds = _sessionIds instanceof Map
+    ? [..._sessionIds.values()]
+    : _sessionIds;
+  const currConcat = u8aConcat(...sessionIds.map((id) => id.toU8a()));
   const controllerId = toIdString(_controllerId);
 
   return {
@@ -57,24 +63,12 @@ function getStakerState (stashId: string, allAccounts: string[], validators: str
   };
 }
 
-export function useOwnStashInfos (): StakerState[] | undefined {
+function useOwnStashInfosImpl (): StakerState[] | undefined {
   const { api } = useApi();
   const { allAccounts } = useAccounts();
   const mountedRef = useIsMountedRef();
   const ownStashes = useOwnStashes();
   const [queried, setQueried] = useState<Queried | undefined>();
-  const stakingOverview = useCall<DeriveStakingOverview>(api.derive.staking.overview);
-  const waitingInfo = useCall<DeriveStakingWaiting>(api.derive.staking.waitingInfo);
-  const [validators, setValidators] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (stakingOverview && waitingInfo) {
-      const overview = JSON.parse(JSON.stringify(stakingOverview));
-      const waiting = JSON.parse(JSON.stringify(waitingInfo));
-
-      setValidators([...waiting.waiting, ...overview.nextElected]);
-    }
-  }, [stakingOverview, waitingInfo]);
 
   useEffect((): () => void => {
     let unsub: (() => void) | undefined;
@@ -82,10 +76,10 @@ export function useOwnStashInfos (): StakerState[] | undefined {
     if (ownStashes) {
       if (ownStashes.length) {
         const stashIds = ownStashes.map(([stashId]) => stashId);
-        const fns: any[] = [
+        const fns = [
           [api.derive.staking.accounts, stashIds],
           [api.query.staking.validators.multi, stashIds]
-        ];
+        ] as unknown as CombinatorFunction[];
 
         api.combineLatest<[DeriveStakingAccount[], ValidatorInfo[]]>(fns, ([accounts, validators]): void => {
           mountedRef.current && ownStashes.length === accounts.length && ownStashes.length === validators.length && setQueried(
@@ -94,8 +88,8 @@ export function useOwnStashInfos (): StakerState[] | undefined {
               [stashId]: [isOwnStash, accounts[index], validators[index]]
             }), {})
           );
-        }).then((_unsub): void => {
-          unsub = _unsub;
+        }).then((u): void => {
+          unsub = u;
         }).catch(console.error);
       } else {
         mountedRef.current && setQueried({});
@@ -108,11 +102,13 @@ export function useOwnStashInfos (): StakerState[] | undefined {
   }, [api, mountedRef, ownStashes]);
 
   return useMemo(
-    () => ownStashes && queried && ownStashes.length === Object.keys(queried).length && validators
+    () => ownStashes && queried && ownStashes.length === Object.keys(queried).length
       ? ownStashes
         .filter(([stashId]) => queried[stashId])
-        .map(([stashId]) => getStakerState(stashId, allAccounts, validators, queried[stashId]))
+        .map(([stashId]) => getStakerState(stashId, allAccounts, queried[stashId]))
       : undefined,
-    [allAccounts, ownStashes, queried, validators]
+    [allAccounts, ownStashes, queried]
   );
 }
+
+export const useOwnStashInfos = createNamedHook('useOwnStashInfos', useOwnStashInfosImpl);
