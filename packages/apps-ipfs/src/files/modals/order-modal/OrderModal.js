@@ -105,8 +105,13 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
         accountId: account,
         extrinsic: api.tx.market.addPrepaid(fileCid, prepaid)
       });
+      doAddOrder({
+        fileCid,
+        fileSize,
+        fileName,
+      })
     },
-    [api, account, queueExtrinsic, prepaid, fileCid]
+    [api, account, queueExtrinsic, prepaid, fileCid, fileSize, fileName]
   );
 
   const timeOption = [{ text: "Year", value: "Year" }]
@@ -252,18 +257,22 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
         onStart={() => {
           onClose();
         }}
-        onSuccess={() => {
-          doAddOrder({
-            fileCid,
-            fileSize,
-            fileName,
-          });
-        }}
+        // onSuccess={() => {
+        //   doAddOrder({
+        //     fileCid,
+        //     fileSize,
+        //     fileName,
+        //   });
+        // }}
         params={
           [fileCid, fileSize, tip, 0]
         }
         tx={api.tx.market.placeStorageOrder }
-        onSuccess={withAddPrepaid}
+        onSuccess={isAddPrepaid ? withAddPrepaid : () => doAddOrder({
+          fileCid,
+          fileSize,
+          fileName,
+        })}
       />
     </Modal.Actions>
   </Modal>;
