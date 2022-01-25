@@ -34,6 +34,8 @@
   "Seattle": "西雅图",
   "orderList": "订单列表",
   "noAccount": "请先连接插件钱包或导入账户。",
+  "prepaidDesc": "The file validity will be renewed every 6 months automatically. The more gurantee fee you pay, the longer the file will be valid",
+  "storeTimeDesc": "Calculated based on current storage price, validity period is estimates provided for your convenience only. The storage price will change according to the price adjustment mechanism. If the storage price changes, the file validity period will also change. ",
   "orderListdesc": "注意：订单信息为本地缓存，切换浏览器或设备不会保留显示原浏览器信息",
   "FileCidDesc": "文件CID的解释：文件的唯一标识编码",
   "fileCidValid": "文件CID不正确!",
