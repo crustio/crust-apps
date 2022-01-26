@@ -162,7 +162,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
           <Modal.Columns>
             <Toggle
               className='typeToggle'
-              label={t('Long term storage')}
+              label={t('LongTermStorage')}
               onChange={setIsAddPrepaid}
               value={isAddPrepaid}
             />
@@ -171,21 +171,21 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
         {isAddPrepaid && (
         <Modal.Content>
           <Modal.Columns>
-            <p>{t('The storage will be completed through two transactions')}</p>
+            <p>{t('twoStepTx')}</p>
           </Modal.Columns>
           <Modal.Columns hint={t('prepaidDesc')}>
             <InputBalance
               autoFocus
               defaultValue={prepaid}
-              label={t('Gurantee fee for the file storage')}
+              label={t('fileGuarantee')}
               onChange={setPrepaid}
               onlyCru
             />
           </Modal.Columns>
-          <Modal.Columns hint={t('storeTimeDesc')}>
+          <Modal.Columns hint={<>{t('storeTimeDesc')}<a href='https://wiki.crust.network/docs/en/DSM#2-price-mechanism' target='_blank'>{t('learnMore')}</a></>}>
             <Input
               isDisabled
-              label={t('Estimate validity period ')}
+              label={t('estimateTime')}
               value={storeTime}
               onChange={setStoreTime}
             >
