@@ -3,7 +3,7 @@
 import BN from 'bn.js';
 import Fsize from 'filesize';
 import isIPFS from 'is-ipfs';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
 
@@ -11,7 +11,7 @@ import { useAccounts, useApi, useCall } from '@polkadot/react-hooks';
 import { Available } from '@polkadot/react-query';
 import { formatBalance } from '@polkadot/util';
 
-import { Input, InputAddress, InputBalance, InputNumber, Modal, TxButton } from '../../../../../react-components/src';
+import { Input, InputAddress, InputBalance, InputNumber, Modal, TxButton, StatusContext, Toggle, Dropdown } from '@polkadot/react-components';
 import { BitLengthOption } from "../../../../../react-components/src/constants"
 import { DEF_FILE_NAME } from '@polkadot/apps-ipfs/market/config';
 
@@ -30,14 +30,44 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
   const fileBaseFee = useCall(isApiReady && api.query.market.fileBaseFee)
   const basePrice = fileBaseFee ? fileBaseFee.toString() : 0
   const DEFAULT_BITLENGTH = BitLengthOption.CHAIN_SPEC;
+  const [priceNumber, setPriceNumber] = useState(0);
+  const { queueExtrinsic } = useContext(StatusContext);
 
   useEffect(() => {
     const tipFee= new BN(tip.toString())
-    setPrice(formatBalance(filePrice?.mul(new BN(fileSize)).divn(1024*1024).add(new BN(basePrice)).add(tipFee), { decimals: 12, forceUnit: 'CRU' }));
+    const priceBN = filePrice?.mul(new BN(fileSize)).divn(1024*1024).add(new BN(basePrice)).add(tipFee);
+    setPrice(formatBalance(priceBN, { decimals: 12, forceUnit: 'CRU' }));
+    setPriceNumber(Number(priceBN));
   }, [fileSize, filePrice, tip, basePrice]);
   useEffect(() => {
     setCidNotValid(fileCid && !isIPFS.cid(fileCid) && !isIPFS.path(fileCid));
   }, [fileCid]);
+
+  const [isAddPrepaid, setIsAddPrepaid] = useState(false);
+  const [storeTime, setStoreTime] = useState(0);
+  const [prepaid, setPrepaid] = useState(0);
+
+  useEffect(() => {
+    const storeTime = (Number(prepaid) / priceNumber / 2).toFixed(2)
+    setStoreTime(storeTime) 
+  }, [prepaid, priceNumber])
+
+  const withAddPrepaid = useCallback(
+    () => {
+      queueExtrinsic({
+        accountId: account,
+        extrinsic: api.tx.market.addPrepaid(fileCid, prepaid)
+      });
+      doAddOrder({
+        fileCid,
+        fileSize,
+        fileName,
+      })
+    },
+    [api, account, queueExtrinsic, prepaid, fileCid, fileSize, fileName]
+  );
+
+  const timeOption = [{ text: "Year", value: "Year" }]
 
   return <Modal
     className='order--accounts-Modal'
@@ -128,28 +158,74 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
             />
           </Modal.Columns>
         </Modal.Content>
+        <Modal.Content>
+          <Modal.Columns>
+            <Toggle
+              className='typeToggle'
+              label={t('Long term storage')}
+              onChange={setIsAddPrepaid}
+              value={isAddPrepaid}
+            />
+          </Modal.Columns>
+        </Modal.Content>
+        {isAddPrepaid && (
+        <Modal.Content>
+          <Modal.Columns>
+            <p>{t('The storage will be completed through two transactions')}</p>
+          </Modal.Columns>
+          <Modal.Columns hint={t('prepaidDesc')}>
+            <InputBalance
+              autoFocus
+              defaultValue={prepaid}
+              label={t('Gurantee fee for the file storage')}
+              onChange={setPrepaid}
+              onlyCru
+            />
+          </Modal.Columns>
+          <Modal.Columns hint={t('storeTimeDesc')}>
+            <Input
+              isDisabled
+              label={t('Estimate validity period ')}
+              value={storeTime}
+              onChange={setStoreTime}
+            >
+              <Dropdown
+                defaultValue={timeOption[0].value}
+                dropdownClassName='ui--SiDropdown'
+                isButton
+                options={timeOption}
+              />
+            </Input>
+          </Modal.Columns>
+        </Modal.Content>
+        )}
       </div>
     </Modal.Content>
     <Modal.Actions onCancel={onClose}>
       <TxButton
         accountId={account}
         icon='paper-plane'
-        isDisabled={!fileCid || !fileSize || !account || !tip || cidNotValid}
+        isDisabled={!fileCid || !fileSize || !account || !tip || cidNotValid || (isAddPrepaid && !Number(prepaid))}
         label={t('confirm')}
         onStart={() => {
           onClose();
         }}
-        onSuccess={() => {
-          doAddOrder({
-            fileCid,
-            fileSize,
-            fileName,
-          });
-        }}
+        // onSuccess={() => {
+        //   doAddOrder({
+        //     fileCid,
+        //     fileSize,
+        //     fileName,
+        //   });
+        // }}
         params={
           [fileCid, fileSize, tip]
         }
         tx={api.tx.market.placeStorageOrder }
+        onSuccess={isAddPrepaid ? withAddPrepaid : () => doAddOrder({
+          fileCid,
+          fileSize,
+          fileName,
+        })}
       />
     </Modal.Actions>
   </Modal>;
