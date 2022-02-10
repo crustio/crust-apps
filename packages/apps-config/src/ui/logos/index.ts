@@ -138,6 +138,7 @@ import nodeQuartz from './nodes/quartz.png';
 import nodeRealis from './nodes/realis.png';
 import nodeRiochain from './nodes/riochain.svg';
 import nodeRobonomics from './nodes/robonomics.svg';
+import logoRocky from './nodes/rocky.svg';
 import nodeSakura from './nodes/sakura.svg';
 import nodeShadow from './nodes/shadow.svg';
 import nodeShell from './nodes/shell.svg';
@@ -167,6 +168,7 @@ import nodeZeitgeist from './nodes/zeitgeist.png';
 import nodeZenlink from './nodes/zenlink.svg';
 import nodeZero from './nodes/zero.svg';
 import emptyLogo from './empty.svg';
+
 // last-resort fallback, just something empty
 
 // Alphabetical overrides based on the actual matched chain name
@@ -535,7 +537,8 @@ export const namedLogos: Record<string, unknown> = {
   crab: nodeCrab,
   'crown-sterling': chainCrownSterling,
   crust: nodeCrust,
-  'Crust Maxwell': nodeCrustMaxwell,
+  'crust-maxwell': nodeCrustMaxwell,
+  'crust-rocky': logoRocky,
   crustParachain: nodeCrustParachain,
   darwinia: nodeDarwinia,
   datahighway: nodeDataHighway,

@@ -1,6 +1,7 @@
 // Copyright 2017-2022 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { DeriveBalancesAll } from '@polkadot/api-derive/types';
 import type { BN } from '@polkadot/util';
 import type { AmountValidateState, DestinationType } from '../types';
@@ -74,15 +75,13 @@ function Bond ({ className = '', isNominating, minNominated, minNominatorBond, m
   }, [stashId]);
 
   useEffect((): void => {
-    const bondDest = destination === 'Account'
-      ? { Account: destAccount }
-      : destination;
-
     onChange(
       (amount && amount.gtn(0) && !amountError?.error && !controllerError && controllerId && stashId)
         ? {
-          bondOwnTx: api.tx.staking.bond(stashId, amount, bondDest),
-          bondTx: api.tx.staking.bond(controllerId, amount, bondDest),
+          // @ts-ignore
+          bondOwnTx: api.tx.staking.bond(stashId, amount),
+          // @ts-ignore
+          bondTx: api.tx.staking.bond(controllerId, amount),
           controllerId,
           controllerTx: api.tx.staking.setController(controllerId),
           stashId

@@ -11,7 +11,7 @@ export default function create (t: TFunction): Route {
     Component,
     display: {
       needsApi: [
-        ['tx.staking.bond']
+        ['tx.staking.bond', 'query.staking.erasRewardPoints']
       ]
     },
     group: 'network',

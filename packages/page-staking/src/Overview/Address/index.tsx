@@ -1,6 +1,7 @@
 // Copyright 2017-2022 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { DeriveHeartbeatAuthor } from '@polkadot/api-derive/types';
 import type { Option } from '@polkadot/types';
 import type { SlashingSpans, ValidatorPrefs } from '@polkadot/types/interfaces';
@@ -41,11 +42,12 @@ interface Props {
 }
 
 interface StakingState {
-  commission?: string;
+  guarantee_fee?: string;
   nominators: NominatorValue[];
   stakeTotal?: BN;
   stakeOther?: BN;
   stakeOwn?: BN;
+  guarantee_fee_pref?: number;
 }
 
 function expandInfo ({ exposure, validatorPrefs }: ValidatorInfo): StakingState {
@@ -61,14 +63,17 @@ function expandInfo ({ exposure, validatorPrefs }: ValidatorInfo): StakingState 
     stakeOther = stakeTotal.sub(stakeOwn);
   }
 
-  const commission = (validatorPrefs as ValidatorPrefs)?.commission?.unwrap();
+  // @ts-ignore
+  const guarantee_fee = (validatorPrefs as ValidatorPrefs)?.guarantee_fee?.unwrap();
+  const guarantee_fee_pref = guarantee_fee?.toNumber() / 1000000000.0;
 
   return {
-    commission: commission?.toHuman(),
+    guarantee_fee: guarantee_fee?.toHuman(),
     nominators,
     stakeOther,
     stakeOwn,
-    stakeTotal
+    stakeTotal,
+    guarantee_fee_pref
   };
 }
 
@@ -88,7 +93,7 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
   const { api } = useApi();
   const { accountInfo, slashingSpans } = useAddressCalls(api, address, isMain);
 
-  const { commission, nominators, stakeOther, stakeOwn } = useMemo(
+  const { guarantee_fee, nominators, stakeOther, stakeOwn } = useMemo(
     () => validatorInfo
       ? expandInfo(validatorInfo)
       : { nominators: [] },
@@ -152,7 +157,7 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
         </td>
       )}
       <td className='number'>
-        {commission}
+        {guarantee_fee}
       </td>
       {isMain && (
         <>

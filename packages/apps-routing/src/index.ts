@@ -24,7 +24,7 @@ import rpc from './rpc';
 import settings from './settings';
 import signing from './signing';
 import society from './society';
-import staking from './staking';
+// import staking from './staking';
 import storage from './storage';
 import sudo from './sudo';
 import techcomm from './techcomm';
@@ -41,7 +41,7 @@ export default function create (t: TFunction): Routes {
     poll(t),
     transfer(t),
     teleport(t),
-    staking(t),
+    // staking(t),
     democracy(t),
     council(t),
     treasury(t),

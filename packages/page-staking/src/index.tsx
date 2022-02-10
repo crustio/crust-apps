@@ -46,7 +46,8 @@ function StakingApp ({ basePath, className = '' }: Props): React.ReactElement<Pr
   const { pathname } = useLocation();
   const [withLedger, setWithLedger] = useState(false);
   const [favorites, toggleFavorite] = useFavorites(STORE_FAVS_BASE);
-  const stakingOverview = useCall<DeriveStakingOverview>(api.derive.staking.overview);
+  const stakingOverview = useCall<DeriveStakingOverview>(api.derive.staking?.overview);
+
   const [isInElection, paraValidators] = useCallMulti<[boolean, Record<string, boolean>]>([
     api.query.staking.eraElectionStatus,
     api.query.session.validators,

@@ -1,6 +1,7 @@
 // Copyright 2017-2022 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
+/* eslint-disable */
 import type { ApiPromise } from '@polkadot/api';
 import type { DeriveSessionInfo, DeriveStakingElected, DeriveStakingWaiting } from '@polkadot/api-derive/types';
 import type { Inflation } from '@polkadot/react-hooks/types';
@@ -134,7 +135,8 @@ function extractSingle (api: ApiPromise, allAccounts: string[], derive: DeriveSt
       bondOwn,
       bondShare: 0,
       bondTotal,
-      commissionPer: validatorPrefs.commission.unwrap().toNumber() / 10_000_000,
+      // @ts-ignore
+      commissionPer: Math.floor(Number(validatorPrefs.guarantee_fee) / 10000000),
       exposure,
       isActive: !skipRewards,
       isBlocking: !!(validatorPrefs.blocked && validatorPrefs.blocked.isTrue),
@@ -284,8 +286,8 @@ function useSortedTargetsImpl (favorites: string[], withLedger: boolean): Sorted
     api.query.staking.minValidatorBond,
     api.query.balances?.totalIssuance
   ], transformMulti);
-  const electedInfo = useCall<DeriveStakingElected>(api.derive.staking.electedInfo, [{ ...DEFAULT_FLAGS_ELECTED, withLedger }]);
-  const waitingInfo = useCall<DeriveStakingWaiting>(api.derive.staking.waitingInfo, [{ ...DEFAULT_FLAGS_WAITING, withLedger }]);
+  const electedInfo = useCall<DeriveStakingElected>(api.derive.staking?.electedInfo, [{ ...DEFAULT_FLAGS_ELECTED, withLedger }]);
+  const waitingInfo = useCall<DeriveStakingWaiting>(api.derive.staking?.waitingInfo, [{ ...DEFAULT_FLAGS_WAITING, withLedger }]);
   const lastEraInfo = useCall<LastEra>(api.derive.session.info, undefined, transformEra);
 
   const baseInfo = useMemo(
