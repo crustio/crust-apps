@@ -1,0 +1,39 @@
+name: shadow-dev-cd
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+          always-auth: true
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Build bundle
+        run: CSM_CLAIM_USER=${{ secrets.CSM_CLAIM_USER }} CSM_CLAIM_PASSWD=${{ secrets.CSM_CLAIM_PASSWD }} CRU_CLAIM_USER=${{ secrets.CRU_CLAIM_USER }} CRU_CLAIM_PASSWD=${{ secrets.CRU_CLAIM_PASSWD }} CSM_LOCKING_USER=${{ secrets.CSM_LOCKING_USER }}  CSM_LOCKING_PASSWD=${{ secrets.CSM_LOCKING_PASSWD }} API_KEY=${{ secrets.API_KEY }} yarn build
+
+      - name: Build and push docker
+        run: |
+          docker build -t coderyashiro/crust-shadow-apps:latest .
+          docker login -u ${{ secrets.DOCKER_DEV_HUB_USER_NAME }} -p ${{ secrets.DOCKER_DEV_HUB_PASSWORD }}
+          docker push coderyashiro/crust-shadow-apps:latest
+      - name: Upgrade apps
+        uses: fifsky/ssh-action@master
+        with:
+          command: |
+            docker pull coderyashiro/crust-shadow-apps:latest
+            cd /data2/docker/crust-shadow-apps
+            docker-compose up -d
+          host: ${{ secrets.SSH_DEV_HOST }}
+          user: ${{ secrets.SSH_DEV_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
