@@ -33,6 +33,8 @@ interface UrlState {
 }
 
 const STORAGE_AFFINITIES = 'network:affinities';
+const shadow_apiUrl = 'ws://117.186.47.106:29944';
+const directUrl= 'http://101.132.117.183:28866/';
 
 function isValidUrl (url: string): boolean {
   return (
@@ -214,12 +216,17 @@ function Endpoints ({ className = '', offset, onClose }: Props): React.ReactElem
 
   const _onApply = useCallback(
     (): void => {
-      settings.set({ ...(settings.get()), apiUrl });
-
-      window.location.assign(`${window.location.origin}${window.location.pathname}?rpc=${encodeURIComponent(apiUrl)}${window.location.hash}`);
-      // window.location.reload();
-
-      onClose();
+      if (apiUrl.startsWith(`wss://crust-shadow`)) {
+        window.location.href = `${directUrl}?rpc=${encodeURIComponent(shadow_apiUrl)}${window.location.hash}`
+        onClose();
+      } else {
+        settings.set({ ...(settings.get()), apiUrl });
+  
+        window.location.assign(`${window.location.origin}${window.location.pathname}?rpc=${encodeURIComponent(apiUrl)}${window.location.hash}`);
+        // window.location.reload();
+  
+        onClose();
+      }
     },
     [apiUrl, onClose]
   );
