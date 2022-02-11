@@ -35,6 +35,7 @@ const STORAGE_AFFINITIES = 'network:affinities';
 const maxwellApiUrl = 'wss://api-maxwell.crust.network';
 const mainnetApiUrl = 'wss://rpc.crust.network';
 const rockyApiUrl = 'wss://rpc-rocky.crust.network';
+const directUrl= 'http://101.132.117.183:18866/';
 
 function isValidUrl (url: string): boolean {
   return (
@@ -223,13 +224,13 @@ function Endpoints ({ className = '', offset, onClose }: Props): React.ReactElem
   const _onApply = useCallback(
     (): void => {
       if (apiUrl.startsWith('wss://crust-maxwell')) {
-        window.location.href = `${'https://apps.crust.network/'}?rpc=${encodeURIComponent(maxwellApiUrl)}${window.location.hash}`;
+        window.location.href = `${directUrl}?rpc=${encodeURIComponent(maxwellApiUrl)}${window.location.hash}`;
         onClose();
       } else if (apiUrl.startsWith('wss://crust-main')) {
-        window.location.href = `${'https://apps.crust.network/'}?rpc=${encodeURIComponent(mainnetApiUrl)}${window.location.hash}`;
+        window.location.href = `${directUrl}?rpc=${encodeURIComponent(mainnetApiUrl)}${window.location.hash}`;
         onClose();
       } else if (apiUrl.startsWith('wss://rpc-rocky')) {
-        window.location.href = `${'https://apps.crust.network/'}?rpc=${encodeURIComponent(rockyApiUrl)}${window.location.hash}`;
+        window.location.href = `${directUrl}?rpc=${encodeURIComponent(rockyApiUrl)}${window.location.hash}`;
         onClose();
       } else {
         settings.set({ ...(settings.get()), apiUrl });
