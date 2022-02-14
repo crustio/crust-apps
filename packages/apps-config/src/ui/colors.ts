@@ -32,6 +32,7 @@ const chainComposableFinance = '#861660';
 const chainCrab = '#7C30DD';
 const chainCrownSterling = '#13264b';
 const chainCrust = '#ff8812';
+const crustShadow = '#ff8812';
 const chainCrustMaxwell = '#2E333B';
 const chainClover = 'linear-gradient(to right, #52ad75, #7cc773)';
 const chainChainx = '#F6C94A';
@@ -235,6 +236,7 @@ export const chainColors: Record<string, string> = Object.entries({
   crust: chainCrust,
   'crust maxwell': chainCrustMaxwell,
   'Crust PC1': chainCrust,
+  'crust shadow': crustShadow,
   'darwinia cc1': chainDarwinia,
   'Darwinia Crab': chainCrab,
   'Darwinia Crab Redirect': chainCrab,
@@ -392,6 +394,7 @@ export const nodeColors = Object.entries({
   Coinversation: nodeCoinversation,
   'Competitors Club': nodeCompetitorsClub,
   'Crown Sterling': nodeCrownSterling,
+  'Crust Collator': crustShadow,
   'DOTMog Node': nodeDotMog,
   'edgeware node': nodeEdgeware,
   Efinity: nodeEfinity,

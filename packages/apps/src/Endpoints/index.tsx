@@ -35,7 +35,7 @@ const STORAGE_AFFINITIES = 'network:affinities';
 const maxwellApiUrl = 'wss://api-maxwell.crust.network';
 const mainnetApiUrl = 'wss://rpc.crust.network';
 const rockyApiUrl = 'wss://rpc-rocky.crust.network';
-const directUrl= 'http://101.132.117.183:18866/';
+const directUrl = 'http://101.132.117.183:18866/';
 
 function isValidUrl (url: string): boolean {
   return (
