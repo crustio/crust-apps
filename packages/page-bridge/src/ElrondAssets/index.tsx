@@ -26,16 +26,15 @@ const handler = '0x18FCb27e4712AC11B8BecE851DAF96ba8ba34720'
 
 function EthereumAssets ({ className = '', senderId: propSenderId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const { api, systemChain } = useApi();
+  const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
   const [hasAvailable] = useState(true);
   const [senderId, setSenderId] = useState<string | null>(propSenderId || null);
   const [elrondAddress, setElrondAddress] = useState<string | undefined | null>(null);
   const [isValid, setIsValid] = useState(false);
   const [bridgeFee, setBridgeFee] = useState<BN>(BN_ZERO);
-  const isMaxwell = systemChain === 'Crust Maxwell';
   // const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x9d332427e6d1b91d9cf8d2fa3b41df2012887aab' : 'https://etherscan.io/address/0x18FCb27e4712AC11B8BecE851DAF96ba8ba34720';
-  const whitePot = isMaxwell ? 0 : 2
+  const whitePot = 100
   const [handlerAsset, setHandlerAsset] = useState<BN | undefined>(BN_ZERO);
 
   useEffect(() => {
@@ -144,8 +143,8 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
               icon='paper-plane'
               isDisabled={!isValid || (handlerAsset && amount && handlerAsset.lte(amount))}
               label={t<string>('Transfer')}
-              params={[amount, elrondAddress, whitePot]}
-              tx={api.tx.bridgeTransfer?.transferNative}
+              params={[amount, elrondAddress]}
+              tx={api.tx.bridgeTransfer?.transferToElrond}
             />
           </Button.Group>
         </Card>

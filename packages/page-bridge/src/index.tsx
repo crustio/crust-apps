@@ -14,17 +14,16 @@ import { useAccounts, useApi, useIpfs } from '@polkadot/react-hooks';
 import EthereumAssets from './EthereumAssets';
 import MainnetAssets from './MainnetAssets';
 import ElrondAssets from './ElrondAssets';
+import { isFunction } from '@polkadot/util';
 
 const HIDDEN_ACC = ['vanity'];
 
 function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const { systemChain } = useApi();
+  const { api } = useApi();
   const { hasAccounts } = useAccounts();
   const { isIpfs } = useIpfs();
-  const isMainnet = systemChain === 'Crust';
-
-  const itemsRef = isMainnet ? useRef([
+  const itemsRef = isFunction(api.tx.bridgeTransfer?.transferToElrond) ? useRef([
     {
       isRoot: true,
       name: 'bridge',
@@ -65,7 +64,7 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
             <Route path={`${basePath}/bridgeBack`}>
               <EthereumAssets />
             </Route>
-            {isMainnet && <Route path={`${basePath}/bridgeToElrond`}>
+            {isFunction(api.tx.bridgeTransfer?.transferToElrond) && <Route path={`${basePath}/bridgeToElrond`}>
               <ElrondAssets />
             </Route>}
             <Route basePath={basePath}

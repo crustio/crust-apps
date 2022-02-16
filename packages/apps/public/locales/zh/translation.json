@@ -1750,5 +1750,7 @@
   "To Elrond": "到 Elrond",
   "Crust to Elrond": "Crust到Elrond",
   "Elrond address": "Elrond地址",
-  "erd prefixed hex": "erd开头hex"
+  "erd prefixed hex": "erd开头hex",
+  "Approve Permanent": "永久授权",
+  "Approve Once": "单次授权"
 }
