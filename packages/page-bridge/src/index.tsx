@@ -9,19 +9,36 @@ import { Route, Switch } from 'react-router';
 import { useTranslation } from '@polkadot/apps/translate';
 import { EthersProvider, Web3Provider } from '@polkadot/react-api';
 import { Tabs } from '@polkadot/react-components';
-import { useAccounts, useIpfs } from '@polkadot/react-hooks';
+import { useAccounts, useApi, useIpfs } from '@polkadot/react-hooks';
 
 import EthereumAssets from './EthereumAssets';
 import MainnetAssets from './MainnetAssets';
+import ElrondAssets from './ElrondAssets';
 
 const HIDDEN_ACC = ['vanity'];
 
 function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
+  const { systemChain } = useApi();
   const { hasAccounts } = useAccounts();
   const { isIpfs } = useIpfs();
+  const isMainnet = systemChain === 'Crust';
 
-  const itemsRef = useRef([
+  const itemsRef = isMainnet ? useRef([
+    {
+      isRoot: true,
+      name: 'bridge',
+      text: t<string>('Crust to Ethereum')
+    },
+    {
+      name: 'bridgeBack',
+      text: t<string>('Ethereum to Crust')
+    },
+    {
+      name: 'bridgeToElrond',
+      text: t<string>('Crust to Elrond')
+    }
+  ]) : useRef([
     {
       isRoot: true,
       name: 'bridge',
@@ -48,6 +65,9 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
             <Route path={`${basePath}/bridgeBack`}>
               <EthereumAssets />
             </Route>
+            {isMainnet && <Route path={`${basePath}/bridgeToElrond`}>
+              <ElrondAssets />
+            </Route>}
             <Route basePath={basePath}
               onStatusChange={onStatusChange}>
               <MainnetAssets />
