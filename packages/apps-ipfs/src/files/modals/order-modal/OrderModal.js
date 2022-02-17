@@ -81,7 +81,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
     const priceBN = _filePrice.mul(new BN(benefits)).add(tipFee)
     setOriginPrice(formatBn(_filePrice.add(tipFee)))
     setPrice(formatBn(priceBN));
-    setPriceNumber(Number(priceBN));
+    setPriceNumber(Number(_filePrice));
   }, [fileSize, filePrice, tip, basePrice, benefits]);
   useEffect(() => {
     setCidNotValid(fileCid && !isIPFS.cid(fileCid) && !isIPFS.path(fileCid));
@@ -224,7 +224,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
             <InputBalance
               autoFocus
               defaultValue={prepaid}
-              label={t('fileGurantee')}
+              label={t('fileGuarantee')}
               onChange={setPrepaid}
               onlyCru
             />
