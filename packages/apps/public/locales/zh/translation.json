@@ -1746,7 +1746,7 @@
   "Storage not enough": "算力不足", 
   "No identities": "未入网", 
   "Unreported workload": "没有上报工作量",
-  "This function is an internal test stage, the assets will not be lost, the arrival time is every Wednesday. after the function is improved, it will be changed to real-time.": "此功能为内部测试阶段，资产不会受到损失，到账时间为每周三，功能完善后会改为实时。",
+  "This function is in a beta version, the bridge asset will be released every Wednesday. after this function is stable, it will be changed to real-time.": "此功能为内部测试阶段，资产不会受到损失，到账时间为每周三，功能完善后会改为实时。",
   "To Elrond": "到 Elrond",
   "Crust to Elrond": "Crust到Elrond",
   "Elrond address": "Elrond地址",

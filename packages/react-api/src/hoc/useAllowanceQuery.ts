@@ -1,10 +1,17 @@
-import { useEffect, useMemo, useState } from 'react';
+// Copyright 2017-2021 @polkadot/react-api authors & contributors
+// SPDX-License-Identifier: Apache-2.0
+
+/* eslint-disable */
+
 import { ethers } from 'ethers';
-import { useEthers } from '../useEthers';
-import { useEthersNetworkQuery } from './useEthersNetworkQuery';
-import { useErc20Contract } from './useErc20Contract';
-import { ethereums } from '../config';
+import { useEffect, useMemo, useState } from 'react';
+
 import { useApi } from '@polkadot/react-hooks';
+
+import { ethereums } from '../config';
+import { useEthers } from '../useEthers';
+import { useErc20Contract } from './useErc20Contract';
+import { useEthersNetworkQuery } from './useEthersNetworkQuery';
 
 export const useAllowanceQuery = (address?: string) => {
   const { contract } = useErc20Contract();
@@ -22,10 +29,11 @@ export const useAllowanceQuery = (address?: string) => {
 
   useEffect(() => {
     const erc20AssetHandler = (typeof chainId === 'number' ? ethereums[substrateName][chainId]?.erc20AssetHandler : undefined);
-    if (bridge && address && erc20AssetHandler) {
-        bridge.allowance(address, erc20AssetHandler).then((res: any) => setAllowance(Number(ethers.utils.formatEther(res))));
-    }
-  }, [bridge, network, address])
 
-  return { allowance }
+    if (bridge && address && erc20AssetHandler) {
+      bridge.allowance(address, erc20AssetHandler).then((res: any) => setAllowance(Number(ethers.utils.formatEther(res))));
+    }
+  }, [bridge, network, address]);
+
+  return { allowance };
 };

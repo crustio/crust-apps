@@ -78,7 +78,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
       <Columar.Column>
         <Card withBottomMargin>
           <Banner type='warning'>
-            <p>{t<string>('This function is an internal test stage, the assets will not be lost, the arrival time is every Wednesday. after the function is improved, it will be changed to real-time.')}</p>
+            <p>{t<string>('This function is in a beta version, the bridge asset will be released every Wednesday. after this function is stable, it will be changed to real-time.')}</p>
           </Banner>
           <h3><span style={{ fontWeight: 'bold' }}>{t<string>('From Crust')}</span></h3>
           <div style={{ display: 'flex' }}>
