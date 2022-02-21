@@ -16,6 +16,7 @@ import { isFunction } from '@polkadot/util';
 import ElrondAssets from './ElrondAssets';
 import EthereumAssets from './EthereumAssets';
 import MainnetAssets from './MainnetAssets';
+import ShadowAssets from './ShadowAssets';
 
 const HIDDEN_ACC = ['vanity'];
 
@@ -49,6 +50,10 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
       {
         name: 'bridgeBack',
         text: t<string>('Ethereum to Crust')
+      },
+      {
+        name: 'bridgeToShadow',
+        text: t<string>('Maxwell to Shadow')
       }
     ]);
 
@@ -69,6 +74,9 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
             </Route>
             {isFunction(api.tx.bridgeTransfer?.transferToElrond) && <Route path={`${basePath}/bridgeToElrond`}>
               <ElrondAssets />
+            </Route>}
+            {isFunction(api.tx.csm?.forceTransfer) && <Route path={`${basePath}/bridgeToShadow`}>
+              <ShadowAssets />
             </Route>}
             <Route basePath={basePath}
               onStatusChange={onStatusChange}>
