@@ -35,9 +35,10 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
 
   useEffect(() => {
     const tipFee= new BN(tip.toString())
-    const priceBN = filePrice?.mul(new BN(fileSize)).divn(1024*1024).add(new BN(basePrice)).add(tipFee);
+    const filePriceBN = filePrice?.mul(new BN(fileSize)).divn(1024*1024).add(new BN(basePrice));
+    const priceBN = filePriceBN.add(tipFee);
     setPrice(formatBalance(priceBN, { decimals: 12, forceUnit: 'CRU' }));
-    setPriceNumber(Number(priceBN));
+    setPriceNumber(Number(filePriceBN));
   }, [fileSize, filePrice, tip, basePrice]);
   useEffect(() => {
     setCidNotValid(fileCid && !isIPFS.cid(fileCid) && !isIPFS.path(fileCid));

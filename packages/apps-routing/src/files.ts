@@ -7,7 +7,7 @@ import type { Route } from './types';
 export default function create (t: TFunction): Route {
   return {
     Component: () => null,
-    href: 'https://files.crustapps.net',
+    href: 'https://crustfiles.io',
     display: {
       needsApi: []
     },

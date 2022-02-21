@@ -32,7 +32,7 @@
   "LongTermStorage": "Long term storage",
   "estimateTime": "Estimate validity period",
   "twoStepTx": "The storage will be completed through two transactions",
-  "fileGurantee": "Gurantee fee for the file storage",
+  "fileGuarantee": "Gurantee fee for the file storage",
   "learnMore": "Learn more about the price adjustment mechanism>>>>",
   "orderListdesc": "Note: The order information is cached locally, switching browsers or devices will not keep displaying the original browser information ",
   "prepaidDesc": "The file validity will be renewed every 6 months automatically. The more gurantee fee you pay, the longer the file will be valid",

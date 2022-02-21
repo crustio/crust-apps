@@ -20,6 +20,8 @@ import { createAccountsOpt } from './EthereumAccounts';
 import ethereumLogo from '../images/Ethereum_logo_2014.svg';
 import logoCrust from '../images/crust.svg';
 import { useApi } from '@polkadot/react-hooks';
+import { useAllowanceQuery } from '@polkadot/react-api/hoc/useAllowanceQuery';
+import styled from 'styled-components';
 
 interface Props {
   className?: string;
@@ -35,19 +37,28 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
   const { contract } = useErc20Contract();
   const submitDeposit = useErc20Deposit(ethereumAddress || undefined);
   const [receiveId, setReceiveId] = useState<string | null>('' || null);
-  const [transferrable, setTransferrable] = useState<boolean>(true);
   const { systemChain: substrateName } = useApi();
   const isMaxwell = substrateName === 'Crust Maxwell';
+  const { allowance } = useAllowanceQuery(ethereumAddress || undefined);
   const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x9d332427e6d1b91d9cf8d2fa3b41df2012887aab' : 'https://etherscan.io/address/0x18FCb27e4712AC11B8BecE851DAF96ba8ba34720'
+  const [ shouldApprove, setShouldApprove ] = useState<boolean>(false);
 
   useEffect(() => {
     if (Number(amount) <= 0) {
-        setIsAmountError(true)
+      setIsAmountError(true)
     } else {
-        setIsAmountError(false)
+      setIsAmountError(false)
     }
 
   }, [amount])
+
+  useEffect(() => {
+    if (allowance && allowance >= Number(amount)) {
+      setShouldApprove(false)
+    } else {
+      setShouldApprove(true)
+    }
+  }, [allowance, amount])
 
   if (window && !window?.web3?.currentProvider?.isMetaMask) {
     return (<main>
@@ -76,14 +87,38 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
         18
       );
       const response = await submitDeposit?.(erc20Amount, recipient);
-      setTransferrable(true);
       console.log('response', response);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const approve = async () => {
+  const approvePermanent = async () => {
+    try {
+      const network = ethereums[substrateName][provider?.network.chainId as number];
+
+      if (
+        contract === undefined ||
+            network === undefined ||
+            signer === undefined
+      ) {
+        return;
+      }
+
+      const contractSigned = contract.connect(signer);
+
+      const approveResult = await contractSigned.functions.approve?.(
+        network.erc20AssetHandler,
+        ethers.utils.parseUnits('20000000', 18)
+      );
+
+      console.log('approveResult', approveResult);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const approveOnce = async () => {
     try {
       const network = ethereums[substrateName][provider?.network.chainId as number];
 
@@ -103,7 +138,6 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
       );
 
       console.log('approveResult', approveResult);
-      setTransferrable(false);
     } catch (e) {
       console.error(e);
     }
@@ -184,20 +218,32 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
                 </div>
             </div>
 
+            
             <Button.Group>
-              <Button
-                icon='hand-paper'
-                isDisabled={!transferrable || isAmountError}
-                label={t<string>('Approve')}
-                onClick={approve}
-              />
+              {shouldApprove && (
+                <>
+                  <Button
+                    icon='hand-paper'
+                    isDisabled={isAmountError}
+                    label={t<string>('Approve Permanent')}
+                    onClick={approvePermanent}
+                  />
+                  <Button
+                    icon='hand-paper'
+                    isDisabled={isAmountError}
+                    label={t<string>('Approve Once')}
+                    onClick={approveOnce}
+                  /> 
+                </>
+              )}
               <Button
                 icon='paper-plane'
-                isDisabled={transferrable || isAmountError}
+                isDisabled={isAmountError || shouldApprove}
                 label={t<string>('Submit')}
                 onClick={submit}
               />
             </Button.Group>
+              
           </Modal.Content>
         </Card>
       </Columar.Column>
@@ -212,4 +258,26 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
   </div>);
 }
 
-export default React.memo(EthereumAssets);
+export default React.memo(styled(EthereumAssets)`
+  .balance {
+    margin-bottom: 0.5rem;
+    text-align: right;
+    padding-right: 1rem;
+
+    .label {
+      opacity: 0.7;
+    }
+  }
+
+  label.with-help {
+    flex-basis: 10rem;
+  }
+
+  .typeToggle {
+    text-align: right;
+  }
+
+  .typeToggle+.typeToggle {
+    margin-top: 0.375rem;
+  }
+`);
