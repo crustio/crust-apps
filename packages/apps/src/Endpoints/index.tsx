@@ -33,8 +33,8 @@ interface UrlState {
 }
 
 const STORAGE_AFFINITIES = 'network:affinities';
-const shadow_apiUrl = 'ws://117.186.47.106:29944';
-const directUrl= 'http://101.132.117.183:28866/';
+const shadow_apiUrl = 'wss://rpc-shadow.crust.network';
+const directUrl= 'https://shadow-apps.crust.network';
 
 function isValidUrl (url: string): boolean {
   return (
