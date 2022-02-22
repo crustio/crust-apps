@@ -39,7 +39,7 @@ export function createProduction (t: TFunction, firstOnly: boolean, withSort: bo
       info: 'shadow',
       text: t('rpc.crust.network', 'Crust Shadow', { ns: 'apps-config' }),
       providers: {
-        'Crust Network': 'ws://117.186.47.106:29944'
+        'Crust Network': 'wss://rpc-shadow.crust.network'
       }
     }
   ], firstOnly, withSort);
