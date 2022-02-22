@@ -32,6 +32,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
   const [senderId, setSenderId] = useState<string | null>(propSenderId || null);
   const [elrondAddress, setElrondAddress] = useState<string | undefined | null>(null);
   const [isValid, setIsValid] = useState(false);
+  const [amountError, setAmountError] = useState(false);
   const [bridgeFee, setBridgeFee] = useState<BN>(BN_ZERO);
   // const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x9d332427e6d1b91d9cf8d2fa3b41df2012887aab' : 'https://etherscan.io/address/0x18FCb27e4712AC11B8BecE851DAF96ba8ba34720';
   const whitePot = 100
@@ -67,6 +68,16 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
     setElrondAddress(hex.trim());
   }, []);
 
+  useEffect(() => {
+    if (amount) {
+      if (amount.gte(new BN(5_000_000_000_000_000))) {
+        setAmountError(true);
+      } else {
+        setAmountError(false);
+      }
+    }
+  }, [amount])
+
   //   const onChangeElrondAddress = useCallback((value: string) => {
   //     // FIXME We surely need a better check than just a trim
 
@@ -78,7 +89,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
       <Columar.Column>
         <Card withBottomMargin>
           <Banner type='warning'>
-            <p>{t<string>('This function is in a beta version, the bridge asset will be released every Wednesday. after this function is stable, it will be changed to real-time.')}</p>
+            <p>{t<string>('This function is an internal test stage, the assets will not be lost, but there may be a delay (max to 48 hours) in the arrival of the account.')}</p>
           </Banner>
           <h3><span style={{ fontWeight: 'bold' }}>{t<string>('From Crust')}</span></h3>
           <div style={{ display: 'flex' }}>
@@ -141,7 +152,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
             <TxButton
               accountId={senderId}
               icon='paper-plane'
-              isDisabled={!isValid || (handlerAsset && amount && handlerAsset.lte(amount))}
+              isDisabled={!isValid || (handlerAsset && amount && handlerAsset.lte(amount)) || amountError}
               label={t<string>('Transfer')}
               params={[amount, elrondAddress]}
               tx={api.tx.bridgeTransfer?.transferToElrond}
