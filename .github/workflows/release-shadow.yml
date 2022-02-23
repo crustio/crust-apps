@@ -1,4 +1,4 @@
-name: Release-shadow
+name: release-shadow
 on:
   # manual trigger
   workflow_dispatch:
