@@ -75,7 +75,7 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
             {isFunction(api.tx.bridgeTransfer?.transferToElrond) && <Route path={`${basePath}/bridgeToElrond`}>
               <ElrondAssets />
             </Route>}
-            {isFunction(api.tx.csm?.forceTransfer) && <Route path={`${basePath}/bridgeToShadow`}>
+            {isFunction(api.tx.bridgeTransfer?.transferCsmNative) && <Route path={`${basePath}/bridgeToShadow`}>
               <ShadowAssets />
             </Route>}
             <Route basePath={basePath}

@@ -3,69 +3,47 @@
 
 /* eslint-disable */
 import BN from 'bn.js';
-import { ethers } from 'ethers';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { useTranslation } from '@polkadot/apps/translate';
-import { Available, Button, Card, Columar, Input, InputAddress, InputBalance, MarkWarning, TxButton } from '@polkadot/react-components';
+import { Button, Card, Columar, InputAddress, InputCsmBalance, MarkWarning, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { BN_ZERO, formatBalance } from '@polkadot/util';
 import logoCrust from '../images/crust.svg';
 import Banner from '@polkadot/app-accounts/Accounts/Banner';
-import { abi } from '../contractAbi';
 import { namedLogos } from '@polkadot/apps-config/ui/logos'
+import AvailableCsm from '@polkadot/react-components/AvailableCsm';
 
 interface Props {
   className?: string;
   senderId?: string;
 }
 
-const contractAddress = "0x32a7C02e79c4ea1008dD6564b35F131428673c41";
-const handler = '0x18FCb27e4712AC11B8BecE851DAF96ba8ba34720'
-
 function ShadowAssets ({ className = '', senderId: propSenderId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
-  const [hasAvailable] = useState(true);
   const [senderId, setSenderId] = useState<string | null>(propSenderId || null);
-  const [elrondAddress, setElrondAddress] = useState<string | undefined | null>(null);
-  const [isValid, setIsValid] = useState(false);
   const [bridgeFee, setBridgeFee] = useState<BN>(BN_ZERO);
-  // const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x9d332427e6d1b91d9cf8d2fa3b41df2012887aab' : 'https://etherscan.io/address/0x18FCb27e4712AC11B8BecE851DAF96ba8ba34720';
-  const whitePot = 100
-  const [handlerAsset, setHandlerAsset] = useState<BN | undefined>(BN_ZERO);
+  const whitePot = 3
+  const [receiveId, setReceiveId] = useState<string | null>('' || null);
+  const [isAmountError, setIsAmountError] = useState<boolean>(true);
 
   useEffect(() => {
     api.query.bridgeTransfer.bridgeFee(whitePot).then((bridgeFee) => {
       const fee = JSON.parse(JSON.stringify(bridgeFee));
-
       setBridgeFee(new BN(Number(fee[0]).toString()));
     });
   }, [api]);
 
   useEffect(() => {
-    const provider = ethers.getDefaultProvider();
-
-    const erc20Contract = new ethers.Contract(contractAddress, abi, provider);
-
-    erc20Contract.getBalance(handler).then((res: any) => {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
-      setHandlerAsset(new BN((Number(res) / 1000000.0).toString()))
-    })
-  }, [])
-
-  const onChangeElrondAddress = useCallback((hex: string) => {
-    const isValidEthAddr = hex.startsWith('erd');
-
-    if (isValidEthAddr) {
-      setIsValid(true);
+    if (Number(amount) <= 0) {
+      setIsAmountError(true)
     } else {
-      setIsValid(false);
+      setIsAmountError(false)
     }
-
-    setElrondAddress(hex.trim());
-  }, []);
+  }, [amount])
 
   //   const onChangeElrondAddress = useCallback((value: string) => {
   //     // FIXME We surely need a better check than just a trim
@@ -92,7 +70,7 @@ function ShadowAssets ({ className = '', senderId: propSenderId }: Props): React
                 label={t<string>('account')}
                 onChange={setSenderId}
                 labelExtra={
-                  <Available
+                  <AvailableCsm
                     label={t('transferrable')}
                     params={senderId}
                   />
@@ -102,21 +80,22 @@ function ShadowAssets ({ className = '', senderId: propSenderId }: Props): React
             </div>
           </div>
 
-          <h3><span style={{ fontWeight: 'bold' }}>{t<string>('To Elrond')}</span></h3>
+          <h3><span style={{ fontWeight: 'bold' }}>{t<string>('To Shadow')}</span></h3>
           <div style={{ display: 'flex', alignItems: 'middle' }}>
             <img src={namedLogos.shadow as string}
               style={{ width: '64px', height: '64px', padding: '3px', verticalAlign: 'middle' }} />
             <div style={{ flex: 1, verticalAlign: 'middle' }}>
-              <Input
-                autoFocus
-                className='full'
-                help={t<string>('The Elrond address')}
-                isError={!isValid}
-                label={t<string>('Elrond address')}
-                onChange={onChangeElrondAddress}
-                placeholder={t<string>('erd prefixed hex')}
-                value={elrondAddress || ''}
-              />
+                <InputAddress
+                    help={t<string>('The selected account is used to receive tokens')}
+                    label={t<string>('account')}
+                    onChange={setReceiveId}
+                    labelExtra={
+                        <AvailableCsm
+                          label={t('transferrable')}
+                          params={receiveId}
+                        />
+                    }
+                />
             </div>
           </div>
 
@@ -124,10 +103,9 @@ function ShadowAssets ({ className = '', senderId: propSenderId }: Props): React
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <div style={{ width: '64px', verticalAlign: 'middle' }}/>
             <div style={{ flex: 1, verticalAlign: 'middle' }}>
-              <InputBalance
+              <InputCsmBalance
                 autoFocus
                 help={t<string>('Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.')}
-                isError={!hasAvailable}
                 label={t<string>('amount')}
                 onChange={setAmount}
                 withMax
@@ -141,10 +119,10 @@ function ShadowAssets ({ className = '', senderId: propSenderId }: Props): React
             <TxButton
               accountId={senderId}
               icon='paper-plane'
-              isDisabled={!isValid || (handlerAsset && amount && handlerAsset.lte(amount))}
+              isDisabled={ isAmountError }
               label={t<string>('Transfer')}
-              params={[amount, elrondAddress]}
-              tx={api.tx.bridgeTransfer?.transferToElrond}
+              params={[amount, receiveId, 3]}
+              tx={api.tx.bridgeTransfer?.transferCsmNative}
             />
           </Button.Group>
         </Card>

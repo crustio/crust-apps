@@ -28,7 +28,7 @@ export const useAllowanceQuery = (address?: string) => {
   }, [contract, provider]);
 
   useEffect(() => {
-    const erc20AssetHandler = (typeof chainId === 'number' ? ethereums[substrateName][chainId]?.erc20AssetHandler : undefined);
+    const erc20AssetHandler = ((typeof chainId === 'number' && ethereums[substrateName] !== undefined) ? ethereums[substrateName][chainId]?.erc20AssetHandler : undefined);
 
     if (bridge && address && erc20AssetHandler) {
       bridge.allowance(address, erc20AssetHandler).then((res: any) => setAllowance(Number(ethers.utils.formatEther(res))));
