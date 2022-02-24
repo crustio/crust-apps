@@ -9,7 +9,7 @@ import styled from 'styled-components';
 import { useTranslation } from '@polkadot/apps/translate';
 import { Button, Card, Columar, Input, InputAddress, InputCsmBalance, MarkWarning, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
-import { BN_ZERO, formatBalance } from '@polkadot/util';
+import { BN_ZERO } from '@polkadot/util';
 import logoCrust from '../images/crust.svg';
 import Banner from '@polkadot/app-accounts/Accounts/Banner';
 import { namedLogos } from '@polkadot/apps-config/ui/logos'
@@ -36,18 +36,9 @@ function ShadowAssets ({ className = '', senderId: propSenderId }: Props): React
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
   const [senderId, setSenderId] = useState<string | null>(propSenderId || null);
-  const [bridgeFee, setBridgeFee] = useState<BN>(BN_ZERO);
-  const whitePot = 3
   const [receiveId, setReceiveId] = useState<string | null>('' || null);
   const [isAmountError, setIsAmountError] = useState<boolean>(true);
   const [isValid, setIsValid] = useState(false);
-
-  useEffect(() => {
-    api.query.bridgeTransfer.bridgeFee(whitePot).then((bridgeFee) => {
-      const fee = JSON.parse(JSON.stringify(bridgeFee));
-      setBridgeFee(new BN(Number(fee[0]).toString()));
-    });
-  }, [api]);
 
   useEffect(() => {
     if (Number(amount) <= 0) {
@@ -126,8 +117,7 @@ function ShadowAssets ({ className = '', senderId: propSenderId }: Props): React
                 onChange={setAmount}
                 withMax
               />
-              <MarkWarning content={t<string>('The transaction fee is ')}>
-                <span style={{'color': '#ff8812', 'textDecoration': 'underline', 'fontStyle': 'italic'}}>{formatBalance(bridgeFee)}</span>&nbsp;
+              <MarkWarning content={t<string>('Please reserve a small amount of CRU as transaction fee')}>
               </MarkWarning>
             </div>
           </div>
