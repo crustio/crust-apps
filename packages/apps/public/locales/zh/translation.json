@@ -1752,5 +1752,10 @@
   "Elrond address": "Elrond地址",
   "erd prefixed hex": "erd开头hex",
   "Approve Permanent": "永久授权",
-  "Approve Once": "单次授权"
+  "Approve Once": "单次授权",
+  "cT prefixed address": "cT开头地址",
+  "Shadow address": "Shadow地址",
+  "The Shadow address": "Shadow地址",
+  "To Shadow": "到 Shadow",
+  "Maxwell to Shadow": "Maxwell 到 Shadow"
 }

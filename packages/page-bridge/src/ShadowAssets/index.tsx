@@ -3,21 +3,32 @@
 
 /* eslint-disable */
 import BN from 'bn.js';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { useTranslation } from '@polkadot/apps/translate';
-import { Button, Card, Columar, InputAddress, InputCsmBalance, MarkWarning, TxButton } from '@polkadot/react-components';
+import { Button, Card, Columar, Input, InputAddress, InputCsmBalance, MarkWarning, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { BN_ZERO, formatBalance } from '@polkadot/util';
 import logoCrust from '../images/crust.svg';
 import Banner from '@polkadot/app-accounts/Accounts/Banner';
 import { namedLogos } from '@polkadot/apps-config/ui/logos'
 import AvailableCsm from '@polkadot/react-components/AvailableCsm';
+import { Keyring } from '@polkadot/api';
 
 interface Props {
   className?: string;
   senderId?: string;
+}
+
+const keyring = new Keyring();
+
+const getMainnetAddr = (addr: string) => {
+    try {
+        return keyring.encodeAddress(keyring.decodeAddress(addr), 66)
+    } catch (error) {
+        return null;
+    }
 }
 
 function ShadowAssets ({ className = '', senderId: propSenderId }: Props): React.ReactElement<Props> {
@@ -29,6 +40,7 @@ function ShadowAssets ({ className = '', senderId: propSenderId }: Props): React
   const whitePot = 3
   const [receiveId, setReceiveId] = useState<string | null>('' || null);
   const [isAmountError, setIsAmountError] = useState<boolean>(true);
+  const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
     api.query.bridgeTransfer.bridgeFee(whitePot).then((bridgeFee) => {
@@ -45,11 +57,16 @@ function ShadowAssets ({ className = '', senderId: propSenderId }: Props): React
     }
   }, [amount])
 
-  //   const onChangeElrondAddress = useCallback((value: string) => {
-  //     // FIXME We surely need a better check than just a trim
+  const onChangeShadowAddress = useCallback((address: string) => {
+    const isValidShadowAddr = getMainnetAddr(address);
+    if (isValidShadowAddr !== null) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
 
-  //     setElrondAddress(value.trim());
-  //   }, []);
+    setReceiveId(address.trim());
+  }, []);
 
   return (<div className={className}>
     <Columar>
@@ -85,16 +102,15 @@ function ShadowAssets ({ className = '', senderId: propSenderId }: Props): React
             <img src={namedLogos.shadow as string}
               style={{ width: '64px', height: '64px', padding: '3px', verticalAlign: 'middle' }} />
             <div style={{ flex: 1, verticalAlign: 'middle' }}>
-                <InputAddress
-                    help={t<string>('The selected account is used to receive tokens')}
-                    label={t<string>('account')}
-                    onChange={setReceiveId}
-                    labelExtra={
-                        <AvailableCsm
-                          label={t('transferrable')}
-                          params={receiveId}
-                        />
-                    }
+                <Input
+                    autoFocus
+                    className='full'
+                    help={t<string>('The Shadow address')}
+                    isError={!isValid}
+                    label={t<string>('Shadow address')}
+                    onChange={onChangeShadowAddress}
+                    placeholder={t<string>('cT prefixed address')}
+                    value={receiveId || ''}
                 />
             </div>
           </div>
@@ -119,7 +135,7 @@ function ShadowAssets ({ className = '', senderId: propSenderId }: Props): React
             <TxButton
               accountId={senderId}
               icon='paper-plane'
-              isDisabled={ isAmountError }
+              isDisabled={ isAmountError || !isValid }
               label={t<string>('Transfer')}
               params={[amount, receiveId, 3]}
               tx={api.tx.bridgeTransfer?.transferCsmNative}
