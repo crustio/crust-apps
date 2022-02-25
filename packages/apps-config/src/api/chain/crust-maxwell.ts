@@ -22,23 +22,23 @@ export default {
     used_fee_reduction_count: 'u32',
     refreshed_at: 'EraIndex'
   },
-  BridgeChainId: "u8",
-  ChainId: "u8",
-  ResourceId: "[u8; 32]",
-  DepositNonce: "u64",
-  CsmBalanceOf: "BalanceOf",
-  CsmBalance: "BalanceOf",
+  BridgeChainId: 'u8',
+  ChainId: 'u8',
+  ResourceId: '[u8; 32]',
+  DepositNonce: 'u64',
+  CsmBalanceOf: 'BalanceOf',
+  CsmBalance: 'BalanceOf',
   ProposalVotes: {
-    "votes_for": "Vec<AccountId>",
-    "votes_against": "Vec<AccountId>",
-    "status": "enum",
-    "expiry": "BlockNumber"
+    votes_for: 'Vec<AccountId>',
+    votes_against: 'Vec<AccountId>',
+    status: 'enum',
+    expiry: 'BlockNumber'
   },
   Erc721Token: {
-    "id": "TokenId",
-    "metadata": "Vec<u8>"
+    id: 'TokenId',
+    metadata: 'Vec<u8>'
   },
-  TokenId: "U256",
+  TokenId: 'U256',
   ETHAddress: 'Vec<u8>',
   EthereumTxHash: 'H256',
   CSMLedger: {
@@ -115,4 +115,4 @@ export default {
     reported_srd_root: 'MerkleRoot',
     reported_files_root: 'MerkleRoot'
   }
-}
+};
