@@ -9,7 +9,7 @@ import addresses from './addresses';
 import assets from './assets';
 import bounties from './bounties';
 // import calendar from './calendar';
-// import claims from './claims';
+import claims from './claims';
 import contracts from './contracts';
 import council from './council';
 import democracy from './democracy';
@@ -37,7 +37,7 @@ export default function create (t: TFunction): Routes {
     accounts(t),
     addresses(t),
     explorer(t),
-    // claims(t),
+    claims(t),
     poll(t),
     transfer(t),
     teleport(t),
