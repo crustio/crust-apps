@@ -64,7 +64,7 @@ function ShadowAssets ({ className = '', senderId: propSenderId }: Props): React
       <Columar.Column>
         <Card withBottomMargin>
           <Banner type='warning'>
-            <p>{t<string>('This function is an internal test stage, the assets will not be lost, but there may be a delay (max to 48 hours) in the arrival of the account.')}</p>
+            <p>{t<string>('This function is an internal test stage, the assets will not be lost, but there may be a delay (max to 48 hours) in the arrival of the account.')}&nbsp;<a target="_blank" href={'https://shadow-apps.crust.network/?rpc=wss%3A%2F%2Frpc-shadow.crust.network#/accounts'}>{t<string>('You can check the CSM assets here...')}</a></p>
           </Banner>
           <h3><span style={{ fontWeight: 'bold' }}>{t<string>('From Crust')}</span></h3>
           <div style={{ display: 'flex' }}>

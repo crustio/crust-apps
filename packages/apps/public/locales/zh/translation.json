@@ -1758,5 +1758,9 @@
   "The Shadow address": "Shadow地址",
   "To Shadow": "到 Shadow",
   "Maxwell to Shadow": "Maxwell到Shadow",
-  "Please reserve a small amount of CRU as transaction fee": "请预留少量CRU作为交易手续费"
+  "Please reserve a small amount of CRU as transaction fee": "请预留少量CRU作为交易手续费",
+  "You can check the CSM assets here...": "你可以在这里查看CSM资产...",
+  "Since the mainnet democracy go live, users who have not yet claimed CRU18 can claim CRU18 ": "由于主网民主模块正式上线，请尚未认领CRU18的用户在",
+  "before the block height #4,866,666 of mainnet,": "主网4,866,666块高之前进行认领,",
+  "For the claiming tutorial, please refer to": "认领教程请参考"
 }

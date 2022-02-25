@@ -95,7 +95,7 @@ function ClaimsMainnet (): React.ReactElement<Props> {
   const [step, setStep] = useState<Step>(Step.Account);
   const [accountId, setAccountId] = useState<string | null>(null);
   const { api, systemChain } = useApi();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [statusOpen, setStatusOpen] = useState<boolean>(false);
   const [result] = useState<string>('');
   const [status] = useState<string>('');
@@ -199,8 +199,15 @@ function ClaimsMainnet (): React.ReactElement<Props> {
       
       <Columar>
         <Columar.Column>
-          <Banner type='error'>
-            <p>{t<string>('The claim of CRU18 has ended. For unclaimed accounts, please wait for notification after the mainnet launch')}</p>
+          <Banner type='warning'>
+            <p>
+              <span style={{ "wordWrap": "break-word", "wordBreak": "break-all"  }}>
+                <span>{t<string>('Since the mainnet democracy go live, users who have not yet claimed CRU18 can claim CRU18 ')}</span>
+                <span style={{ 'fontWeight': 'bold' }}>{t<string>('before the block height #4,866,666 of mainnet,')}&nbsp;</span>
+                <span>{t<string>('For the claiming tutorial, please refer to')}&nbsp;</span>
+                <a href={ i18n.language == 'zh' ? "https://wiki-maxwell.crust.network/docs/zh-CN/claimCRU18" : 'https://wiki-maxwell.crust.network/docs/en/claimCRU18'} target="_blank">[Maxwell Wiki]</a> 
+              </span>
+            </p>
           </Banner>
           <Card withBottomMargin>
             {/* <h3>{t<string>(`1. Select your {{chain}} account and enter`, {
