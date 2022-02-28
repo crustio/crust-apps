@@ -76,6 +76,7 @@ import nodeRealis from './nodes/realis.png';
 import nodeRobonomics from './nodes/robonomics.svg';
 import logoRocky from './nodes/rocky.svg';
 import nodeSgc from './nodes/sgc.svg';
+import nodeShadow from './nodes/shadow.svg';
 import nodeSora from './nodes/sora-substrate.svg';
 import nodeStafi from './nodes/stafi.png';
 import nodeSubDAO from './nodes/subdao.png';
@@ -291,6 +292,7 @@ export const namedLogos: Record<string, unknown> = {
   rococoTrustBase: nodeTrustBase,
   rococoZenlink: nodeZenlink,
   sgc: nodeSgc,
+  shadow: nodeShadow,
   snakenet: chainSnakenet,
   'sora-substrate': nodeSora,
   stafi: nodeStafi,

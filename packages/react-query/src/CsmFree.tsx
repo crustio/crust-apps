@@ -26,7 +26,7 @@ function CsmFree ({ children, className = '', label, params }: Props): React.Rea
     <FormatCsmBalance
       className={className}
       label={label}
-      value={new BN(Number(allBalances?.free).toString()).sub(new BN(Number(allBalances?.feeFrozen).toString())) }
+      value={new BN((allBalances?.free)?.toString()).sub(new BN((allBalances?.feeFrozen)?.toString())) }
     >
       {children}
     </FormatCsmBalance>

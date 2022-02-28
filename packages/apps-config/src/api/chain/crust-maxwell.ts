@@ -22,8 +22,23 @@ export default {
     used_fee_reduction_count: 'u32',
     refreshed_at: 'EraIndex'
   },
-  CsmBalance: 'Balance',
-  CsmBalanceOf: 'Balance',
+  BridgeChainId: 'u8',
+  ChainId: 'u8',
+  ResourceId: '[u8; 32]',
+  DepositNonce: 'u64',
+  CsmBalanceOf: 'BalanceOf',
+  CsmBalance: 'BalanceOf',
+  ProposalVotes: {
+    votes_for: 'Vec<AccountId>',
+    votes_against: 'Vec<AccountId>',
+    status: 'enum',
+    expiry: 'BlockNumber'
+  },
+  Erc721Token: {
+    id: 'TokenId',
+    metadata: 'Vec<u8>'
+  },
+  TokenId: 'U256',
   ETHAddress: 'Vec<u8>',
   EthereumTxHash: 'H256',
   CSMLedger: {
@@ -57,7 +72,6 @@ export default {
     anchor: 'SworkerAnchor',
     is_reported: 'bool'
   },
-  ResourceId: '[u8; 32]',
   Status: {
     _enum: ['Free', 'Reserved']
   },

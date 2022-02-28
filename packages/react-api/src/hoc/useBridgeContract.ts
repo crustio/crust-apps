@@ -28,7 +28,7 @@ export const useBridgeContract = (
   return useMemo(() => {
     const bridge =
       addressOrName ??
-      (typeof chainId === 'number' ? ethereums[substrateName][chainId]?.bridge : undefined);
+      ((typeof chainId === 'number' && ethereums[substrateName] !== undefined) ? ethereums[substrateName][chainId]?.bridge : undefined);
 
     if (bridge === undefined || signer === undefined) {
       return {};

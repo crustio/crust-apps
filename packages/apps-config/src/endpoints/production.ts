@@ -47,6 +47,13 @@ export function createProduction (t: TFunction): LinkOption[] {
         'Decoo Technologies': maxwellEndPoints[1],
         Pinknode: maxwellEndPoints[2]
       }
+    },
+    {
+      info: 'shadow',
+      text: t('rpc.crust.network', 'Crust Shadow', { ns: 'apps-config' }),
+      providers: {
+        'Crust Network': 'wss://crust-shadow'
+      }
     }
   ]);
 }

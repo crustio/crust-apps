@@ -53,7 +53,7 @@ export const useEthereumNetworkOptions = (
       };
     }
 
-    const result = ethereums[substrateName][chainId];
+    const result = ethereums[substrateName]?.[chainId];
 
     if (result !== undefined) {
       return { options: result };

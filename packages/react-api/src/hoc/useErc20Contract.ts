@@ -29,7 +29,7 @@ export const useErc20Contract = (
   return useMemo(() => {
     const erc20 =
       addressOrName ??
-      (typeof chainId === 'number' ? ethereums[substrateName][chainId]?.erc20 : undefined);
+      ((typeof chainId === 'number' && ethereums[substrateName] !== undefined) ? ethereums[substrateName][chainId]?.erc20 : undefined);
 
     if (erc20 === undefined || signer === undefined) {
       return {};
