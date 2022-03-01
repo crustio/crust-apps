@@ -17,6 +17,7 @@ import ElrondAssets from './ElrondAssets';
 import EthereumAssets from './EthereumAssets';
 import MainnetAssets from './MainnetAssets';
 import ShadowAssets from './ShadowAssets';
+import ElrondBackAssets from './ElrondBackAssets';
 
 const HIDDEN_ACC = ['vanity'];
 
@@ -39,6 +40,10 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
       {
         name: 'bridgeToElrond',
         text: t<string>('Crust to Elrond')
+      },
+      {
+        name: 'elrondToCrust',
+        text: t<string>('Elrond to Crust')
       }
     ])
     : useRef([
@@ -74,6 +79,9 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
             </Route>
             {isFunction(api.tx.bridgeTransfer?.transferToElrond) && <Route path={`${basePath}/bridgeToElrond`}>
               <ElrondAssets />
+            </Route>}
+            {isFunction(api.tx.bridgeTransfer?.transferToElrond) && <Route path={`${basePath}/elrondToCrust`}>
+              <ElrondBackAssets />
             </Route>}
             {isFunction(api.tx.bridgeTransfer?.transferCsmNative) && <Route path={`${basePath}/bridgeToShadow`}>
               <ShadowAssets />

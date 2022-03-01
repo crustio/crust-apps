@@ -33,6 +33,28 @@ function createTheme ({ uiTheme }: { uiTheme: string }): ThemeDef {
     : lightTheme;
 }
 
+export function getQueryStringArgs() {
+  console.log('window.location.search', window.location.search)
+  const qs = window.location.search.length > 0 ? window.location.search.substring(1) : "";
+  let args: any = {};
+  const items = qs.length ? qs.split('&') : [];
+  const length = items.length;
+  for (let i = 0; i < length; i ++) {
+    const item = items[i].split('=');
+    const name = decodeURIComponent(item[0]);
+    const value = decodeURIComponent(item[1]);
+    if (name.length) {
+      if (name == 'address') {
+        args['elrondAddress'] = value
+      } else {
+        args[name] = value
+      }
+    } 
+  }
+
+  return args;
+}
+
 function Root ({ store }: Props): React.ReactElement<Props> {
   const [theme, setTheme] = useState(() => createTheme(settings));
   const client = useRef(new QueryClient());
@@ -40,6 +62,19 @@ function Root ({ store }: Props): React.ReactElement<Props> {
   useEffect((): void => {
     settings.on('change', (settings) => setTheme(createTheme(settings)));
   }, []);
+
+  const args = getQueryStringArgs();
+
+  console.log('args1', JSON.stringify(args))
+
+  if (args.elrondAddress) {
+    let params = '?';
+    Object.keys(args).forEach(e => {
+      params += e + `=` + args[e] + `&`
+    })
+    window.location.assign(`${window.location.origin}${window.location.pathname}${params}/#/bridge/elrondToCrust`);
+    // window.location.reload();
+  }
 
   return (
     <Suspense fallback='...'>
