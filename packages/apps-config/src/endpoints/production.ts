@@ -21,7 +21,8 @@ export function createProduction (t: TFunction, firstOnly: boolean, withSort: bo
       info: 'crust',
       text: t('rpc.prod.crust', 'Crust Network', { ns: 'apps-config' }),
       providers: {
-        'Crust Network': 'wss://crust-mainnet.crust.network',
+        OnFinality: 'wss://crust-main-onFinality.crust.network',
+        'Crust Network': 'wss://crust-main.crust.network',
         'Decoo Technologies': 'wss://crust-main-decoo.crust.network',
         'DCloud Foundation': 'wss://crust-main-dcf.crust.network'
       }
