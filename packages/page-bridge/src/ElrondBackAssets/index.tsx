@@ -15,6 +15,7 @@ import { Keyring } from '@polkadot/api';
 import { u8aToHex } from '@polkadot/util';
 import { getQueryStringArgs } from '@polkadot/apps/Root';
 import { BN_ZERO } from '@polkadot/util';
+import { useApi } from '@polkadot/react-hooks';
 
 const keyring = new Keyring();
 
@@ -28,6 +29,7 @@ interface Props {
 
 function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
+  const { api } = useApi();
   const [amount, setAmount] = useState<BN>(BN_ZERO);
   const [isAmountError, setIsAmountError] = useState<boolean>(true);
   const [receiveId, setReceiveId] = useState<string | null>('' || null);
@@ -50,12 +52,12 @@ function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props>
   }, [args])
 
   useEffect(() => {
-    if (Number(amount) <= 0) {
+    if (!amount.gt(api.consts.balances.existentialDeposit)) {
       setIsAmountError(true)
     } else {
       setIsAmountError(false)
     }
-  }, [amount])
+  }, [api, amount])
 
   const submit = async () => {
     try {
