@@ -20,8 +20,8 @@ import { useApi } from '@polkadot/react-hooks';
 const keyring = new Keyring();
 
 const ElrondBridgePoolAddress = 'erd1jjnl4q4s3mqducpsg72edqtu8zyq8jtxvfx2fumpa36hp4rd8q9q9yxpgn';
-const CRUIdentifier = '4646462d623032616632'
-const ElrondExplorerAddress = 'https://testnet-explorer.elrond.com/transactions/'
+const CRUIdentifier = '4352552d613566346161'
+const ElrondExplorerAddress = 'https://explorer.elrond.com/transactions/'
 
 interface Props {
   className?: string;
@@ -74,7 +74,7 @@ function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props>
       const payloadAmount = amountHex.length % 2 == 0 ? amountHex : '0' + amountHex
       const dest = u8aToHex(keyring.decodeAddress(receiveId as string)).substring(2);
       const bridgeBackData = `ESDTTransfer@${CRUIdentifier}@${payloadAmount}@${dest}`
-      window.location.href = `https://testnet-wallet.elrond.com/hook/transaction?receiver=${ElrondBridgePoolAddress}&value=0&gasLimit=500000&data=${bridgeBackData}&callbackUrl=${callBackUrl}`
+      window.location.href = `https://wallet.elrond.com/hook/transaction?receiver=${ElrondBridgePoolAddress}&value=0&gasLimit=500000&data=${bridgeBackData}&callbackUrl=${callBackUrl}`
     } catch (error) {
       console.error(error);
     }
