@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 
 import Banner from '@polkadot/app-accounts/Accounts/Banner';
 import { useTranslation } from '@polkadot/apps/translate';
-import { Available, Button, Card, Columar, InputAddress, InputBalance, MarkWarning, Modal } from '@polkadot/react-components';
+import { Available, Button, Card, Columar, InputAddress, InputBalance, Modal } from '@polkadot/react-components';
 
 import logoCrust from '../images/crust.svg';
 import styled from 'styled-components';
@@ -27,6 +27,14 @@ interface Props {
   className?: string;
 }
 
+function plusStr (str: string) {
+  if (str && str.length > 20) {
+    return str.substring(0, 3) + `...` + str.substring(str.length - 4);
+  } else {
+    return str
+  }
+}
+
 function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
@@ -45,7 +53,7 @@ function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props>
   useEffect(() => {
     if (args) {
       setElrondAddress(args.elrondAddress)
-      setElrondTxHash(args.txHash)
+      setElrondTxHash(plusStr(args.txHash))
       setElrondStatus(args.status)
       setElrondTxQueryUrl(ElrondExplorerAddress+args.txHash)
     }
@@ -93,7 +101,7 @@ function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props>
                   />
                 </div>
             </div> */}
-            <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('Destination address')}</span></h3>
+            <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('Receive Account')}</span></h3>
             <div style={{display: "flex"}}>
                 <img style={{ "width": "64px", "height": "64px", padding: '1px', 'verticalAlign': 'middle' }} src={logoCrust as string} />
                 <div style={{ flex: 1, 'verticalAlign': 'middle' }}>
@@ -125,19 +133,22 @@ function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props>
                     >
                     </InputBalance>
                     {
-                      (elrondAddress && elrondTxStatus && elrondTxStatus == 'success' && elrondTxHash) && <MarkWarning content={t<string>(`Your elrond bridge transfer succeed.`)}>&nbsp;
-                      <span>{t<string>(`you can check you elrond transaction with elrond txHash`)}</span>&nbsp;
-                      <a href={elrondTxQueryUrl} target="_blank" style={{'color': '#ff8812', 'fontStyle': 'italic', 'textDecoration': 'underline' }}>{t<string>(`{{ elrondTxHash }}`, {
-                        replace: {
-                          elrondTxHash
-                        }
-                      })}</a>&nbsp;
-                      </MarkWarning>
+                      (elrondAddress && elrondTxStatus && elrondTxStatus == 'success' && elrondTxHash) && 
+                      <Banner type="success">
+                        <span style={{ "wordWrap": "break-word", "wordBreak": "break-all", }}>{t<string>(`Your cross-chain asset transaction`)}</span>&nbsp;
+                        <a href={elrondTxQueryUrl} target="_blank" style={{'color': '#ff8812', 'fontStyle': 'italic', 'textDecoration': 'underline' }}>{t<string>(`{{ elrondTxHash }}`, {
+                          replace: {
+                            elrondTxHash
+                          }
+                        })}</a>&nbsp;
+                        <span>{t<string>(`has been successfully sent. Please wait a few minutes to check your assets on Crust Mainnet-side`)}</span>&nbsp;
+                      </Banner>
                     }
                     {
-                      (elrondAddress && elrondTxStatus && elrondTxStatus == 'cancelled') && <MarkWarning content={t<string>(`Your elrond bridge transfer has been cancelled.`)}>&nbsp;
-                      {/* <span style={{'color': '#ff8812', 'fontStyle': 'italic'}}>{t<string>(``)}</span>&nbsp; */}
-                      </MarkWarning>
+                      (elrondAddress && elrondTxStatus && elrondTxStatus == 'cancelled') &&
+                      <Banner type='error'>
+                        <p>{t<string>('Bridging failed, please try it again.')}</p>
+                      </Banner>
                     }
                 </div>
             </div>

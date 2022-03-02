@@ -1764,5 +1764,8 @@
   "before the block height #4,866,666 of mainnet,": "主网4,866,666块高之前进行认领,",
   "For the claiming tutorial, please refer to": "认领教程请参考",
   "Destination address": "目标地址",
-  "Elrond to Crust": "Elrond到Crust"
+  "Elrond to Crust": "Elrond到Crust",
+  "Your cross-chain asset transaction": "你的跨链资产转账",
+  "has been successfully sent. Please wait a few minutes to check your assets on Crust Mainnet-side": "已经成功发送. 请耐心等待几分钟后在Crust主网上确认你的资产",
+  "Bridging failed, please try it again.": "跨链失败, 请重试."
 }

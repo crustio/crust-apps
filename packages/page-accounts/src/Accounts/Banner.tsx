@@ -7,7 +7,7 @@ import styled from 'styled-components';
 interface Props {
   children: React.ReactNode;
   className?: string;
-  type: 'warning' | 'error';
+  type: 'warning' | 'error' | 'success';
 }
 
 function Banner ({ children, className = '', type }: Props): React.ReactElement<Props> | null {
