@@ -125,7 +125,7 @@ function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props>
                     >
                     </InputBalance>
                     {
-                      (elrondAddress && elrondTxStatus && elrondTxStatus == 'success' && elrondTxHash) && <MarkWarning content={t<string>(`Your elrond bridge transfer succed.`)}>&nbsp;
+                      (elrondAddress && elrondTxStatus && elrondTxStatus == 'success' && elrondTxHash) && <MarkWarning content={t<string>(`Your elrond bridge transfer succeed.`)}>&nbsp;
                       <span>{t<string>(`you can check you elrond transaction with elrond txHash`)}</span>&nbsp;
                       <a href={elrondTxQueryUrl} target="_blank" style={{'color': '#ff8812', 'fontStyle': 'italic', 'textDecoration': 'underline' }}>{t<string>(`{{ elrondTxHash }}`, {
                         replace: {
