@@ -400,10 +400,10 @@ export default createGlobalStyle<Props & ThemeProps>(({ theme, uiHighlight }: Pr
 
     &.success {
       &:before {
-        background: rgba(0, 255, 0, 0.1);
+        background: rgba(0, 255, 0, 0.05);
       }
 
-      border-color: rgba(0, 255, 0, 0.5);
+      border-color: rgba(0, 255, 0, 255);
     }
   }
 
