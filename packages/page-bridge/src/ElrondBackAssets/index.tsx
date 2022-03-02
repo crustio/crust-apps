@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 
 import Banner from '@polkadot/app-accounts/Accounts/Banner';
 import { useTranslation } from '@polkadot/apps/translate';
-import { Available, Button, Card, Columar, Dropdown, Input, InputAddress, MarkWarning, Modal } from '@polkadot/react-components';
+import { Available, Button, Card, Columar, InputAddress, InputBalance, MarkWarning, Modal } from '@polkadot/react-components';
 
 import logoCrust from '../images/crust.svg';
 import styled from 'styled-components';
@@ -14,6 +14,7 @@ import BN from 'bn.js';
 import { Keyring } from '@polkadot/api';
 import { u8aToHex } from '@polkadot/util';
 import { getQueryStringArgs } from '@polkadot/apps/Root';
+import { BN_ZERO } from '@polkadot/util';
 
 const keyring = new Keyring();
 
@@ -27,13 +28,15 @@ interface Props {
 
 function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const [amount, setAmount] = useState<string>('0');
+  const [amount, setAmount] = useState<BN>(BN_ZERO);
   const [isAmountError, setIsAmountError] = useState<boolean>(true);
   const [receiveId, setReceiveId] = useState<string | null>('' || null);
   const [elrondAddress, setElrondAddress] = useState<string | null>();
   const [elrondTxHash, setElrondTxHash] = useState<string | null>();
   const [elrondTxStatus, setElrondStatus] = useState<string | null>();
   const [elrondTxQueryUrl, setElrondTxQueryUrl] = useState<string>(ElrondExplorerAddress);
+  // `/#/bridge/elrondToCrust`
+  const callBackUrl = window.location.origin + window.location.pathname + window.location.hash
 
   const args = getQueryStringArgs();
 
@@ -56,18 +59,16 @@ function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props>
 
   const submit = async () => {
     try {
-      const elrondSideAmount = Number(amount).toString() + `000000000000000000`;
-      const amountHex = new BN(elrondSideAmount).toString(16);
+      const elrondSideAmount = amount.mul(new BN(1_000_000));
+      const amountHex = elrondSideAmount.toString(16);
       const payloadAmount = amountHex.length % 2 == 0 ? amountHex : '0' + amountHex
       const dest = u8aToHex(keyring.decodeAddress(receiveId as string)).substring(2);
       const bridgeBackData = `ESDTTransfer@${CRUIdentifier}@${payloadAmount}@${dest}`
-      window.location.href = `https://testnet-wallet.elrond.com/hook/transaction?receiver=${ElrondBridgePoolAddress}&value=0&gasLimit=500000&data=${bridgeBackData}&callbackUrl=${window.location.origin}${window.location.pathname}${window.location.hash}`
+      window.location.href = `https://testnet-wallet.elrond.com/hook/transaction?receiver=${ElrondBridgePoolAddress}&value=0&gasLimit=500000&data=${bridgeBackData}&callbackUrl=${callBackUrl}`
     } catch (error) {
       console.error(error);
     }
   };
-
-  const unitOption = [{ text: "CRU", value: "CRU" }]
 
   return (<div className={className}>
     <Columar>
@@ -111,7 +112,7 @@ function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props>
             <div style={{display: "flex", alignItems: 'center'}}>
                 <div style={{ "width": "64px", 'verticalAlign': 'middle' }}/>
                 <div style={{ flex: 1, 'verticalAlign': 'middle' }}>
-                    <Input
+                    <InputBalance
                         type={"number"}
                         help={t<string>('Type the amount you want to transfer.')}
                         label={t<string>('amount')}
@@ -120,13 +121,7 @@ function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props>
                         defaultValue={'0'}
                         min={0}
                     >
-                        <Dropdown
-                            defaultValue={unitOption[0].value}
-                            dropdownClassName='ui--SiDropdown'
-                            isButton
-                            options={unitOption}
-                        />
-                    </Input>
+                    </InputBalance>
                     {
                       (elrondAddress && elrondTxStatus && elrondTxStatus == 'success' && elrondTxHash) && <MarkWarning content={t<string>(`Your elrond bridge transfer succed.`)}>&nbsp;
                       <span>{t<string>(`you can check you elrond transaction with elrond txHash`)}</span>&nbsp;

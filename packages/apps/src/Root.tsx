@@ -34,7 +34,6 @@ function createTheme ({ uiTheme }: { uiTheme: string }): ThemeDef {
 }
 
 export function getQueryStringArgs() {
-  console.log('window.location.search', window.location.search)
   const qs = window.location.search.length > 0 ? window.location.search.substring(1) : "";
   let args: any = {};
   const items = qs.length ? qs.split('&') : [];
@@ -64,8 +63,6 @@ function Root ({ store }: Props): React.ReactElement<Props> {
   }, []);
 
   const args = getQueryStringArgs();
-
-  console.log('args1', JSON.stringify(args))
 
   if (args.elrondAddress) {
     let params = '?';
