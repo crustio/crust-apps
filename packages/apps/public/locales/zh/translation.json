@@ -1767,5 +1767,6 @@
   "Elrond to Crust": "Elrond到Crust",
   "Your cross-chain asset transaction": "你的跨链资产转账",
   "has been successfully sent. Please wait a few minutes to check your assets on Crust Mainnet-side": "已经成功发送. 请耐心等待几分钟后在Crust主网上确认你的资产",
-  "Bridging failed, please try it again.": "跨链失败, 请重试."
+  "Bridging failed, please try it again.": "跨链失败, 请重试.",
+  "Receive Account": "收款账户"
 }
