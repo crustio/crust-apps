@@ -323,6 +323,26 @@ export default createGlobalStyle<Props & ThemeProps>(({ theme, uiHighlight }: Pr
       }
     }
 
+    &.success {
+      border-left-width: 0.25rem;
+      line-height: 1.5;
+      margin-left: 2.25rem;
+      padding: 0.75rem 1rem;
+      position: relative;
+      z-index: 5;
+
+      &:before {
+        border-radius: 0.25rem;
+        bottom: 0;
+        content: ' ';
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: -1;
+      }
+    }
+
     &.mark {
       margin: 0.5rem 0 0.5rem 2.25rem;
       padding: 0.5rem 1rem !important;
@@ -376,6 +396,14 @@ export default createGlobalStyle<Props & ThemeProps>(({ theme, uiHighlight }: Pr
       }
 
       border-color: rgba(255, 196, 12, 1);
+    }
+
+    &.success {
+      &:before {
+        background: rgba(0, 255, 0, 0.05);
+      }
+
+      border-color: rgba(0, 255, 0, 255);
     }
   }
 

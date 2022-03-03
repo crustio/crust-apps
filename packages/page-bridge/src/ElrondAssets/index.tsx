@@ -24,7 +24,7 @@ interface Props {
 const contractAddress = "0x32a7C02e79c4ea1008dD6564b35F131428673c41";
 const handler = '0x18FCb27e4712AC11B8BecE851DAF96ba8ba34720'
 
-function EthereumAssets ({ className = '', senderId: propSenderId }: Props): React.ReactElement<Props> {
+function ElrondAssets ({ className = '', senderId: propSenderId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
@@ -171,7 +171,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
   </div>);
 }
 
-export default React.memo(styled(EthereumAssets)`
+export default React.memo(styled(ElrondAssets)`
   .filter--tags {
     .ui--Dropdown {
       padding-left: 0;
