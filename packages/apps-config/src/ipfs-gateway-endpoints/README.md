@@ -1,3 +1,7 @@
+# Existing gateway
+
+You can view existing gateways [here](./index.ts)
+
 # IPFS Public Gateway Endpoints
 
 Here you can contribute your IPFS W3Auth gateway to Crust Apps, it will show like below:
