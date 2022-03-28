@@ -21,6 +21,7 @@ import { useMemo } from 'react/index';
 import styled from 'styled-components';
 import SelectUploadMode, { DevGuide } from '@polkadot/apps-ipfs/market/SelectUploadMode';
 import { useApi } from '@polkadot/react-hooks';
+import { LabelHelp } from '@polkadot/react-components';
 
 const MDropdown = styled(DropdownWrap)`
   .menu {
@@ -184,7 +185,8 @@ const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => 
   const endpoints = useMemo(
     () => createAuthIpfsEndpoints(t).sort(randomSort).map(item => ({
       ...item,
-      text: `${item.text}(${item.location})`
+      label: <LabelHelp help={item.value} />,
+      text: `${item.text}(${item.location})`,
     })),
     [t]
   );
