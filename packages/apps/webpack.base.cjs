@@ -157,7 +157,9 @@ function createWebpack (context, mode = 'production') {
         'process.env': {
           NODE_ENV: JSON.stringify(mode),
           VERSION: JSON.stringify(pkgJson.version),
-          WS_URL: JSON.stringify(process.env.WS_URL)
+          WS_URL: JSON.stringify(process.env.WS_URL),
+          CSM_CLAIM_USER: JSON.stringify(process.env.CSM_CLAIM_USER),
+          CSM_CLAIM_PASSWD: JSON.stringify(process.env.CSM_CLAIM_PASSWD),
         }
       }),
       new webpack.optimize.SplitChunksPlugin(),

@@ -169,7 +169,7 @@ function Claims(): React.ReactElement<Props> {
           setStatus('error');
           setStatusOpen(true);
         } else {
-          const result = await httpPost("https://claim.crust.network/claim/" + ethereumTxHash);
+          const result = await httpPost("http://localhost:8888/claim/" + ethereumTxHash);
           setIsBusy(false);
           setResult(result.statusText);
           setStatus(result.status);
@@ -290,7 +290,7 @@ function Claims(): React.ReactElement<Props> {
       <Columar>
         <Columar.Column>
           <Card withBottomMargin>
-            <h3>{t<string>('0. Burn your ')}<a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CRU')}</a>{t<string>(', transfer to address ')} <a href='https://etherscan.io/address/0x0000000000000000000000000000000000000001' target="_blank">0x0000000000000000000000000000000000000001</a></h3>
+            <h3>{t<string>('0. Burn your ')}<a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CSM')}</a>{t<string>(', transfer to address ')} <a href='https://etherscan.io/address/0x0000000000000000000000000000000000000001' target="_blank">0x0000000000000000000000000000000000000001</a></h3>
             <Banner type='warning'>
               <p>{t<string>('Please make sure you have the authority to make signature with the private key of the wallet account, using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss, you are responsible for the consequences')}</p>
             </Banner>
@@ -301,7 +301,7 @@ function Claims(): React.ReactElement<Props> {
               replace: {
                 chain: systemChain
               }
-            })} <a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CRU')}</a>
+            })} <a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CSM')}</a>
              {t<string>(' transfer tx hash')}<span>
                {t<string>(`, If your claim amount is greater than the claim limit `)}
                <span style={{ 'color': '#ff8812', 'textDecoration': 'underline', 'fontStyle': 'italic' }}>({formatBalance(claimLimit, { withUnit: 'CRU' })})</span>
@@ -355,7 +355,7 @@ function Claims(): React.ReactElement<Props> {
                 <Input
                   autoFocus
                   className='full'
-                  help={t<string>('The the Ethereum address you burnt your ERC20 CRU in step 0 (starting by "0x")')}
+                  help={t<string>('The the Ethereum address you burnt your ERC20 CSM in step 0 (starting by "0x")')}
                   label={t<string>('Pre-sale ethereum address')}
                   onChange={onChangeEthereumAddress}
                   value={ethereumAddress || ''}
@@ -381,7 +381,7 @@ function Claims(): React.ReactElement<Props> {
                     systemChain={systemChain}
                   />
                 )}
-                <div>{t<string>('Copy the following string and sign it with the Ethereum account you burnt your ERC20 CRU in step 0, using the string as the payload, and then paste the transaction signature object below:')}</div>
+                <div>{t<string>('Copy the following string and sign it with the Ethereum account you burnt your ERC20 CSM in step 0, using the string as the payload, and then paste the transaction signature object below:')}</div>
                 <CopyToClipboard
                   onCopy={onCopy}
                   text={payload}
