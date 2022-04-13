@@ -290,7 +290,7 @@ function Claims(): React.ReactElement<Props> {
       <Columar>
         <Columar.Column>
           <Card withBottomMargin>
-            <h3>{t<string>('0. Burn your ')}<a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CSM')}</a>{t<string>(', transfer to address ')} <a href='https://etherscan.io/address/0x0000000000000000000000000000000000000001' target="_blank">0x0000000000000000000000000000000000000001</a></h3>
+            <h3>{t<string>('0. Burn your ')}<a href='https://etherscan.io/token/0x2620638eda99f9e7e902ea24a285456ee9438861'>{t('ERC20 CSM')}</a>{t<string>(', transfer to address ')} <a href='https://etherscan.io/address/0x0000000000000000000000000000000000000001' target="_blank">0x0000000000000000000000000000000000000001</a></h3>
             <Banner type='warning'>
               <p>{t<string>('Please make sure you have the authority to make signature with the private key of the wallet account, using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss, you are responsible for the consequences')}</p>
             </Banner>
@@ -301,7 +301,7 @@ function Claims(): React.ReactElement<Props> {
               replace: {
                 chain: systemChain
               }
-            })} <a href='https://etherscan.io/token/0x32a7C02e79c4ea1008dD6564b35F131428673c41'>{t('ERC20 CSM')}</a>
+            })} <a href='https://etherscan.io/token/0x2620638eda99f9e7e902ea24a285456ee9438861'>{t('ERC20 CSM')}</a>
              {t<string>(' transfer tx hash')}<span>
                {t<string>(`, If your claim amount is greater than the claim limit `)}
                <span style={{ 'color': '#ff8812', 'textDecoration': 'underline', 'fontStyle': 'italic' }}>({formatBalance(claimLimit, { withUnit: 'CRU' })})</span>
