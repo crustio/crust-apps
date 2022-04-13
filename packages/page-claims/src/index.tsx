@@ -169,7 +169,7 @@ function Claims(): React.ReactElement<Props> {
           setStatus('error');
           setStatusOpen(true);
         } else {
-          const result = await httpPost("http://localhost:8888/claim/" + ethereumTxHash);
+          const result = await httpPost("http://101.132.117.183:8888/claim/" + ethereumTxHash);
           setIsBusy(false);
           setResult(result.statusText);
           setStatus(result.status);
