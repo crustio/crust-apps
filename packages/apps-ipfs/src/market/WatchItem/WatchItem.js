@@ -52,13 +52,14 @@ const WatchItem = ({
   const checkBoxCls = classnames({
     'o-1': selected
   }, ['pl2 w2']);
-  const fileStatus = isFunction(api.query.market.filesV2) ? useCall(isApiReady && api.query?.market && api.query?.market.filesV2, [watchItem.fileCid]) : useCall(isApiReady && api.query?.market && api.query?.market.files, [watchItem.fileCid]);
+  const fileStatusV1 = useCall(isApiReady && api.query?.market && api.query?.market.files, [watchItem.fileCid]);
+  const fileStatusV2 = isFunction(api.query.market.filesV2) ? useCall(isApiReady && api.query?.market && api.query?.market.filesV2, [watchItem.fileCid]) : useCall(isApiReady && api.query?.market && api.query?.market.files, [watchItem.fileCid]);
 
   let bestNumber = useCall(isApiReady && api.derive.chain.bestNumber);
   bestNumber = bestNumber && JSON.parse(JSON.stringify(bestNumber));
   let status = fileStatusEnum.PENDING;
-  if (fileStatus) {
-    const _fileStatus = JSON.parse(JSON.stringify(fileStatus));
+  if (fileStatusV1) {
+    const _fileStatus = JSON.parse(JSON.stringify(fileStatusV1));
     if (_fileStatus) {
       const {
         amount,
@@ -100,6 +101,39 @@ const WatchItem = ({
       // watchItem.amount = 0;
       // watchItem.prepaid = 0;
     // }
+  } else if (fileStatusV2) {
+    const _fileStatus = JSON.parse(JSON.stringify(fileStatusV2));
+    if (_fileStatus) {
+      const {
+        amount,
+        claimed_at,
+        expired_at,
+        file_size,
+        replicas,
+        prepaid,
+        reported_replica_count
+      } = _fileStatus;
+      watchItem.expireTime = expired_at;
+      watchItem.amount = amount;
+      watchItem.startTime = expired_at ? expired_at - 216000 : 0;
+      watchItem.fileSize = file_size;
+      watchItem.confirmedReplicas = reported_replica_count;
+      watchItem.prepaid = prepaid;
+      if (expired_at && expired_at < bestNumber) {
+        // expired
+        status = fileStatusEnum.EXPIRE;
+      }
+
+      if (!expired_at && expired_at > bestNumber && reported_replica_count < 1) {
+        // pending
+        status = fileStatusEnum.PENDING;
+      }
+
+      if (expired_at && expired_at > bestNumber && reported_replica_count > 0) {
+        // success
+        status = fileStatusEnum.SUCCESS;
+      }
+    }
   }
   if (!watchItem.fileName) {
     watchItem.fileName = DEF_FILE_NAME;
