@@ -51,7 +51,7 @@ const WatchItem = ({
   const checkBoxCls = classnames({
     'o-1': selected
   }, ['pl2 w2']);
-  const fileStatus = useCall(isApiReady && api.query?.market && api.query?.market.files, [watchItem.fileCid]);
+  const fileStatus = isFunction(api.query.market.filesV2) ? useCall(isApiReady && api.query?.market && api.query?.market.filesV2, [watchItem.fileCid]) : useCall(isApiReady && api.query?.market && api.query?.market.files, [watchItem.fileCid]);
 
   let bestNumber = useCall(isApiReady && api.derive.chain.bestNumber);
   bestNumber = bestNumber && JSON.parse(JSON.stringify(bestNumber));

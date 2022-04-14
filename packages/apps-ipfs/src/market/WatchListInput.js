@@ -17,7 +17,7 @@ const WatchListInput = ({ doAddOrder, doRemoveWatchItems, onFilterWatchList, sel
   const [inputClass, setInputClass] = useState('focus-outline');
   const [isPathWatched, toggleWatched] = useState(undefined);
   const watchedCidListStr = watchedCidList.join('-');
-  const fileStatus = JSON.stringify(useCall(isApiReady && api.query?.market && api.query?.market.files, [path]));
+  const fileStatus = isFunction(api.query.market.filesV2) ? JSON.stringify(useCall(isApiReady && api.query?.market && api.query?.market.filesV2, [path])) : JSON.stringify(useCall(isApiReady && api.query?.market && api.query?.market.files, [path]));
 
   useEffect(() => {
     toggleWatched(undefined);
