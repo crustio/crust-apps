@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 
 import Cid, { shortCid } from '@polkadot/apps-ipfs/components/cid/Cid';
 import StrokeCopy from '@polkadot/apps-ipfs/icons/StrokeCopy';
+import { isFunction } from '@polkadot/util';
 
 import { useApi, useCall } from '../../../../react-hooks/src';
 import Checkbox from '../../components/checkbox/Checkbox';

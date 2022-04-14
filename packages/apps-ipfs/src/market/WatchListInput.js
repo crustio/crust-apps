@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
+import { isFunction } from '@polkadot/util';
 
 import { useApi, useCall } from '../../../react-hooks/src';
 import Button from '../components/button/Button';

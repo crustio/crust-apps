@@ -26,7 +26,7 @@ import GlyphSpeedup from '@polkadot/apps-ipfs/icons/GlyphSpeedup';
 import GlyphRetry from '@polkadot/apps-ipfs/icons/GlyphRetry';
 import BN from 'bn.js';
 import { DEF_FILE_NAME } from '@polkadot/apps-ipfs/market/config';
-import { isFunction } from 'lodash';
+import { isFunction } from '@polkadot/util';
 
 const fileStatusEnum = {
   PENDING: 'PENDING',
