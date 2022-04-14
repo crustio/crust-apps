@@ -58,7 +58,7 @@ const WatchItem = ({
   let bestNumber = useCall(isApiReady && api.derive.chain.bestNumber);
   bestNumber = bestNumber && JSON.parse(JSON.stringify(bestNumber));
   let status = fileStatusEnum.PENDING;
-  if (fileStatusV1) {
+  if (fileStatusV1 && JSON.parse(JSON.stringify(fileStatusV1))) {
     const _fileStatus = JSON.parse(JSON.stringify(fileStatusV1));
     if (_fileStatus) {
       const {
@@ -101,7 +101,7 @@ const WatchItem = ({
       // watchItem.amount = 0;
       // watchItem.prepaid = 0;
     // }
-  } else if (fileStatusV2) {
+  } else if (fileStatusV2 && JSON.parse(JSON.stringify(fileStatusV2))) {
     const _fileStatus = JSON.parse(JSON.stringify(fileStatusV2));
     if (_fileStatus) {
       const {
