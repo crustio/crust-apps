@@ -26,6 +26,7 @@ import GlyphSpeedup from '@polkadot/apps-ipfs/icons/GlyphSpeedup';
 import GlyphRetry from '@polkadot/apps-ipfs/icons/GlyphRetry';
 import BN from 'bn.js';
 import { DEF_FILE_NAME } from '@polkadot/apps-ipfs/market/config';
+import { isFunction } from '@polkadot/util';
 
 const fileStatusEnum = {
   PENDING: 'PENDING',
@@ -40,7 +41,7 @@ const WatchItem = ({ gateway, onAddPool, isEdit, onSelect, startEdit, confirmEdi
   const checkBoxCls = classnames({
     'o-1': selected
   }, ['pl2 w2']);
-  const fileStatus = useCall(isApiReady && api.query?.market && api.query?.market.files, [watchItem.fileCid]);
+  const fileStatus = isFunction(api.query.market.filesV2) ? useCall(isApiReady && api.query?.market && api.query?.market.filesV2, [watchItem.fileCid]) : useCall(isApiReady && api.query?.market && api.query?.market.files, [watchItem.fileCid]);
 
   let bestNumber = useCall(isApiReady && api.derive.chain.bestNumber);
   const trash1 = useCall(isApiReady && api.query?.market.transh1, [watchItem.fileCid]);

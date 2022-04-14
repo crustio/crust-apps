@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'redux-bundler-react';
+import { isFunction } from '@polkadot/util';
 
 import { useApi, useCall } from '../../../react-hooks/src';
 import Button from '../components/button/Button';
@@ -17,7 +18,8 @@ const WatchListInput = ({ doAddOrder, doRemoveWatchItems, onFilterWatchList, sel
   const [inputClass, setInputClass] = useState('focus-outline');
   const [isPathWatched, toggleWatched] = useState(undefined);
   const watchedCidListStr = watchedCidList.join('-');
-  const fileStatus = JSON.stringify(useCall(isApiReady && api.query?.market && api.query?.market.files, [path]));
+  const fileStatusV1 = JSON.stringify(useCall(isApiReady && api.query?.market && api.query?.market.files, [path]));
+  const fileStatusV2 = isFunction(api.query.market.filesV2) ? JSON.stringify(useCall(isApiReady && api.query?.market && api.query?.market.filesV2, [path])) : JSON.stringify(useCall(isApiReady && api.query?.market && api.query?.market.files, [path]));
 
   useEffect(() => {
     toggleWatched(undefined);
@@ -55,7 +57,7 @@ const WatchListInput = ({ doAddOrder, doRemoveWatchItems, onFilterWatchList, sel
       type='text'
       value={path} />
     <Button className='input-btn'
-      disabled={isPathWatched || isPathWatched === undefined || !fileStatus || fileStatus === 'null' }
+      disabled={isPathWatched || isPathWatched === undefined || ((!fileStatusV1 || fileStatusV1 === 'null') && (!fileStatusV2 || fileStatusV2 === 'null')) }
       onClick={() => {
         doAddOrder({ fileCid: path });
       }}>+&nbsp;{t('actions.add')}</Button>
@@ -65,7 +67,7 @@ const WatchListInput = ({ doAddOrder, doRemoveWatchItems, onFilterWatchList, sel
         doRemoveWatchItems(selectedCidList);
       }}>{t('actions.delete')}</Button>
     {
-      path && (!fileStatus || fileStatus === 'null')
+      path && ((!fileStatusV1 || fileStatusV1 === 'null') && (!fileStatusV2 || fileStatusV2 === 'null'))
         ? <p className='file-info'>
           {t('fileValid')}
         </p>

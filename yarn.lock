@@ -1483,12 +1483,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@crustio/type-definitions@npm:1.2.0":
-  version: 1.2.0
-  resolution: "@crustio/type-definitions@npm:1.2.0"
+"@crustio/type-definitions@npm:1.3.0":
+  version: 1.3.0
+  resolution: "@crustio/type-definitions@npm:1.3.0"
   dependencies:
-    "@open-web3/orml-type-definitions": ^0.8.2-9
-  checksum: 3b55a8df9fada3ebfdcce077630a2561002aea909a28ccd3445514230f9e5a827574b406b1e49960f2314298de5bc3d13edead5853b94bf77bf382abaecd54c2
+    "@open-web3/orml-type-definitions": ^0.9.4-7
+  checksum: 7be96d73ad6c6ebe914dcacbb524745f97a3e023ad32ed9b28775ac0d3511feffad86c6ffcdd0ef57e1a6422e70458ee19d08ce0134aed6e2197d799dcac7f17
   languageName: node
   linkType: hard
 
@@ -3644,6 +3644,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@open-web3/orml-type-definitions@npm:^0.9.4-7":
+  version: 0.9.4-38
+  resolution: "@open-web3/orml-type-definitions@npm:0.9.4-38"
+  dependencies:
+    lodash.merge: ^4.6.2
+  checksum: 74986b651cb627ecfd7830f5a1e5ee4a0466553c6871a97ce7e61794b5434d7822780ad82196692634908615dc1be60aa368c7fd717167e69d25024ae2c2bcad
+  languageName: node
+  linkType: hard
+
 "@pinata/sdk@npm:^1.1.13":
   version: 1.1.13
   resolution: "@pinata/sdk@npm:1.1.13"
@@ -3993,7 +4002,7 @@ __metadata:
   dependencies:
     "@acala-network/type-definitions": ^0.7.1
     "@babel/runtime": ^7.13.10
-    "@crustio/type-definitions": 1.2.0
+    "@crustio/type-definitions": 1.3.0
     "@darwinia/types": ^1.1.0-alpha.1
     "@edgeware/node-types": ^3.3.2
     "@interlay/polkabtc-types": ^0.5.3
@@ -19534,7 +19543,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"lodash.merge@npm:4.6.2":
+"lodash.merge@npm:4.6.2, lodash.merge@npm:^4.6.2":
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
   checksum: 4e2bb42a87a148991458d7c384bc197e96f7115e9536fc8e2c86ae9e99ce1c1f693ff15eb85761952535f48d72253aed8e673d9f32dde3e671cd91e3fde220a7
