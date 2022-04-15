@@ -35,8 +35,8 @@ export function createProduction (t: TFunction): LinkOption[] {
       providers: {
         OnFinality: mainnetEndPoints[0],
         'Crust Network': mainnetEndPoints[1],
-        'Decoo Technologies': mainnetEndPoints[2],
-        'DCloud Foundation': mainnetEndPoints[3]
+        'Decoo Technologies': mainnetEndPoints[2]
+        // 'DCloud Foundation': mainnetEndPoints[3]
       }
     },
     {
@@ -44,8 +44,8 @@ export function createProduction (t: TFunction): LinkOption[] {
       text: t('rpc.crust.network', 'Crust Maxwell', { ns: 'apps-config' }),
       providers: {
         'Crust Network': maxwellEndPoints[0],
-        'Decoo Technologies': maxwellEndPoints[1],
-        Pinknode: maxwellEndPoints[2]
+        'Decoo Technologies': maxwellEndPoints[1]
+        // Pinknode: maxwellEndPoints[2]
       }
     },
     {
