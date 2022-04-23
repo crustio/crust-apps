@@ -9,8 +9,7 @@ export default function create (t: <T = string>(key: string, text: string, optio
     Component,
     display: {
       needsApi: [
-        'tx.market.placeStorageOrder',
-        'query.market.files'
+        'tx.market.placeStorageOrder'
       ]
     },
     beta: true,
