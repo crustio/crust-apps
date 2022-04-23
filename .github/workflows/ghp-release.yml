@@ -1,0 +1,29 @@
+name: githubpages deployment
+
+on:
+  push:
+    branches:
+      - master
+
+
+jobs:
+  build:
+    if: github.repository == 'crustio/crust-apps'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run install
+        run: yarn install --immutable | grep -v 'YN0013'
+
+      - name: Build
+        run: CSM_CLAIM_USER=${{ secrets.CSM_CLAIM_USER }} CSM_CLAIM_PASSWD=${{ secrets.CSM_CLAIM_PASSWD }} CRU_CLAIM_USER=${{ secrets.CRU_CLAIM_USER }} CRU_CLAIM_PASSWD=${{ secrets.CRU_CLAIM_PASSWD }} CSM_LOCKING_USER=${{ secrets.CSM_LOCKING_USER }}  CSM_LOCKING_PASSWD=${{ secrets.CSM_LOCKING_PASSWD }} API_KEY=${{ secrets.API_KEY }} NODE_ENV=production yarn build:www
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.5
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: packages/apps/build # The folder the action should deploy.
+          target-folder: docs # The folder the action deploy to.
+
