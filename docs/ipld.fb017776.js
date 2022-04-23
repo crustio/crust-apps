@@ -1,0 +1,1 @@
+(("undefined"!=typeof self?self:this).webpackChunk_polkadot_apps=("undefined"!=typeof self?self:this).webpackChunk_polkadot_apps||[]).push([[967],{765920:()=>{},251956:()=>{},244943:()=>{},472464:()=>{}}]);
