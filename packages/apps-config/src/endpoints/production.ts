@@ -35,8 +35,8 @@ export function createProduction (t: TFunction): LinkOption[] {
       providers: {
         OnFinality: mainnetEndPoints[0],
         'Crust Network': mainnetEndPoints[1],
-        'Decoo Technologies': mainnetEndPoints[2]
-        // 'DCloud Foundation': mainnetEndPoints[3]
+        'Decoo Technologies': mainnetEndPoints[2],
+        'DCloud Foundation': mainnetEndPoints[3]
       }
     },
     {
