@@ -11,7 +11,7 @@ export default function create (t: <T = string>(key: string, text: string, optio
       isHidden: true,
       needsApi: [
         'tx.market.placeStorageOrder',
-        'query.market.files'
+        'query.market.filesV2'
       ]
     },
     group: 'storage',
