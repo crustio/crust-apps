@@ -27,6 +27,7 @@ import { httpPost } from './http';
 import HttpStatus from './HttpStatus';
 import claimPng from '../images/claim-addr.png';
 import { formatBalance } from '@polkadot/util';
+import Banner from '@polkadot/app-accounts/Accounts/Banner';
 
 export { default as useCounter } from '../useCounter';
 
@@ -277,6 +278,21 @@ function CSMClaims (): React.ReactElement<Props> {
   return (
     <main>
       {!isOldClaimProcess && <Warning />}
+      <Columar>
+        <Columar.Column>
+          <Banner type='warning'>
+            <p>
+              <span style={{ "wordWrap": "break-word", "wordBreak": "break-all"  }}>
+                <span>{t<string>('According to the original plan, Maxwell network is about to enter the end of its life and will close the claim function. Please go to the ')}
+                <span><a href='https://apps.crust.network/?rpc=wss%3A%2F%2Fcrust.api.onfinality.io%2Fpublic-ws#/explorer'>{t<string>('main network ')}</a></span><span>{t<string>('or')}</span>
+                <span><a href='https://shadow-apps.crust.network/?rpc=wss%3A%2F%2Frpc2-shadow.crust.network#/explorer'>{t<string>('shadow network ')}</a></span>
+                <span>{t<string>('to claim CRU or CSM')}</span>
+                </span>
+              </span>
+            </p>
+          </Banner>
+        </Columar.Column>
+      </Columar>
       <h1>
         <Trans>Claim your <em>CSM</em> tokens</Trans>
       </h1>
@@ -317,7 +333,7 @@ function CSMClaims (): React.ReactElement<Props> {
               <Button
                 icon='sign-in-alt'
                 isBusy={isBusy}
-                isDisabled={preclaimEthereumAddress === PRECLAIMS_LOADING || ethereumTxHash === null || ethereumTxHash === '' || !isValid}
+                isDisabled={true || preclaimEthereumAddress === PRECLAIMS_LOADING || ethereumTxHash === null || ethereumTxHash === '' || !isValid}
                 label={preclaimEthereumAddress === PRECLAIMS_LOADING
                   ? t<string>('Loading')
                   : t<string>('Continue')
