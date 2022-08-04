@@ -38,10 +38,10 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       text: t('️⚡ Thunder Gateway'),
       value: 'https://gw.crustapps.net'
     },
-    // {
-    //   location: t('Beijing'),
-    //   text: t('️Deklod'),
-    //   value: 'https://ipfs-gw.dkskcloud.com'
-    // }
+    {
+      location: t('Beijing'),
+      text: t('️Deklod'),
+      value: 'https://ipfs-gw.dkskcloud.com'
+    }
   ];
 }
