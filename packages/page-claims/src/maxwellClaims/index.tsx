@@ -283,7 +283,7 @@ function MaxwellClaims (): React.ReactElement<Props> {
           <Banner type='warning'>
             <p>
               <span style={{ "wordWrap": "break-word", "wordBreak": "break-all"  }}>
-                <span>{t<string>('According to the original plan, Maxwell network is about to enter the end of its life and will close the claim function. Please go to the ')}
+                <span>{t<string>('According to the original plan, Maxwell network is about to enter the end of its life and already closed the claim function. Please go to the ')}
                 <span><a href='https://apps.crust.network/?rpc=wss%3A%2F%2Fcrust.api.onfinality.io%2Fpublic-ws#/explorer'>{t<string>('main network ')}</a></span><span>{t<string>('or')}</span>
                 <span><a href='https://shadow-apps.crust.network/?rpc=wss%3A%2F%2Frpc2-shadow.crust.network#/explorer'>{t<string>('shadow network ')}</a></span>
                 <span>{t<string>('to claim CRU or CSM')}</span>

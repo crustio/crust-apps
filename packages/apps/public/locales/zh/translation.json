@@ -1769,7 +1769,7 @@
   "has been successfully sent. Please wait a few minutes to check your assets on Crust Mainnet-side": "已经成功发送. 请耐心等待几分钟后在Crust主网上确认你的资产",
   "Bridging failed, please try it again.": "跨链失败, 请重试.",
   "Receive Account": "收款账户",
-  "According to the original plan, Maxwell network is about to enter the end of its life and will close the claim function. Please go to the ": "Maxwell网络按照原定计划即将步入其生命末期，即将关闭claim功能，请到",
+  "According to the original plan, Maxwell network is about to enter the end of its life and already closed the claim function. Please go to the ": "Maxwell网络按照原定计划即将步入其生命末期，已经关闭claim功能，请到",
   "main network ": "主网",
   "shadow network ": "shadow网络",
   "to claim CRU or CSM": "进行认领相关操作"
