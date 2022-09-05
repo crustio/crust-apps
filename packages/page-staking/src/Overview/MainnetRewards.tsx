@@ -28,7 +28,7 @@ function MainnetReward ({ children, className = '', label }: Props): React.React
 
   const activeEra = activeEraInfo && (JSON.parse(JSON.stringify(activeEraInfo)).index);
   const marketPayout = useCall<any>(api.query.staking.erasMarketPayout, [activeEra]);
-  const stakingRewards = new BN(3422.3134898087887).mul(UNIT)
+  const stakingRewards = new BN(3011.635871031734).mul(UNIT)
   const total = marketPayout && stakingRewards.add(new BN(Number(marketPayout).toString()))
 
   return (
