@@ -19,7 +19,7 @@ import { useApi } from '@polkadot/react-hooks';
 
 const keyring = new Keyring();
 
-const ElrondBridgePoolAddress = 'erd1jjnl4q4s3mqducpsg72edqtu8zyq8jtxvfx2fumpa36hp4rd8q9q9yxpgn';
+const ElrondBridgePoolAddress = 'erd1drg6ndpqv3wvn0pu90al2magq7cwzar72sa6x0aws9wu9caz8wds99hqxt';
 const CRUIdentifier = '4352552d613566346161'
 const ElrondExplorerAddress = 'https://explorer.elrond.com/transactions/'
 
