@@ -9,7 +9,8 @@ export default {
   chains: {
     Kusama: 'kusama',
     'Kusama CC3': 'kusama',
-    Polkadot: 'polkadot'
+    Polkadot: 'polkadot',
+    Crust: 'crust'
   },
   create: (chain: string, path: string, data: BN | number | string): string =>
     `https://${chain}.polkassembly.io/${path}/${data.toString()}`,
