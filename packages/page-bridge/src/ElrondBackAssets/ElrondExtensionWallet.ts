@@ -19,12 +19,13 @@ export class ElrondExtensionWallet {
 
   async signTransactions (data: any) {
     try {
-      if (this.address.length == 0) {
+      if (this.address.length === 0) {
         await this.provider.init();
         this.address = await this.provider.login();
       }
-      let addressOfAccount = new Address(this.address)
-      let accountOnNetwork = await networkProvider.getAccount(addressOfAccount);
+
+      const addressOfAccount = new Address(this.address);
+      const accountOnNetwork = await networkProvider.getAccount(addressOfAccount);
 
       const tx = new Transaction({
         value: '0',
