@@ -1,7 +1,7 @@
 // Copyright 2017-2021 @polkadot/app-files authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import { ExtensionProvider } from '@elrondnetwork/erdjs';
+import { ExtensionProvider } from '@elrondnetwork/erdjs-extension-provider';
 import React, { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
 
