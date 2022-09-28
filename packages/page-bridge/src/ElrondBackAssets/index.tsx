@@ -16,10 +16,11 @@ import { u8aToHex } from '@polkadot/util';
 import { getQueryStringArgs } from '@polkadot/apps/Root';
 import { BN_ZERO } from '@polkadot/util';
 import { useApi } from '@polkadot/react-hooks';
+import { ElrondExtensionWallet } from './ElrondExtensionWallet';
+import HttpStatus from '@polkadot/app-claims/claims/HttpStatus';
 
 const keyring = new Keyring();
 
-const ElrondBridgePoolAddress = 'erd1drg6ndpqv3wvn0pu90al2magq7cwzar72sa6x0aws9wu9caz8wds99hqxt';
 const CRUIdentifier = '4352552d613566346161'
 const ElrondExplorerAddress = 'https://explorer.elrond.com/transactions/'
 
@@ -45,8 +46,12 @@ function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props>
   const [elrondTxHash, setElrondTxHash] = useState<string | null>();
   const [elrondTxStatus, setElrondStatus] = useState<string | null>();
   const [elrondTxQueryUrl, setElrondTxQueryUrl] = useState<string>(ElrondExplorerAddress);
+  const elrondExtensionWallet = new ElrondExtensionWallet();
+  const [statusOpen, setStatusOpen] = useState<boolean>(false);
+  const [result, setResult] = useState<string>('');
+  const [status, setStatus] = useState<string>('');
   // `/#/bridge/elrondToCrust`
-  const callBackUrl = window.location.origin + window.location.pathname + window.location.hash
+  // const callBackUrl = window.location.origin + window.location.pathname + window.location.hash
 
   const args = getQueryStringArgs();
 
@@ -74,8 +79,22 @@ function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props>
       const payloadAmount = amountHex.length % 2 == 0 ? amountHex : '0' + amountHex
       const dest = u8aToHex(keyring.decodeAddress(receiveId as string)).substring(2);
       const bridgeBackData = `ESDTTransfer@${CRUIdentifier}@${payloadAmount}@${dest}`
-      window.location.href = `https://wallet.elrond.com/hook/transaction?receiver=${ElrondBridgePoolAddress}&value=0&gasLimit=500000&data=${bridgeBackData}&callbackUrl=${callBackUrl}`
+      const result = await elrondExtensionWallet.signTransactions(bridgeBackData);
+      if (result) {
+        setResult('Success');
+        setStatus('success');
+        setStatusOpen(true);
+      } else {
+        setResult('Please install Maiar DeFi Wallet extension first');
+        setStatus('error');
+        setStatusOpen(true);
+      }
+      
+      // window.location.href = `https://wallet.elrond.com/hook/transaction?receiver=${ElrondBridgePoolAddress}&value=0&gasLimit=500000&data=${bridgeBackData}&callbackUrl=${callBackUrl}`
     } catch (error) {
+      setResult('Something error');
+      setStatus('error');
+      setStatusOpen(true);
       console.error(error);
     }
   };
@@ -83,6 +102,12 @@ function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props>
   return (<div className={className}>
     <Columar>
       <Columar.Column>
+        <HttpStatus
+          isStatusOpen={statusOpen}
+          message={result}
+          setStatusOpen={setStatusOpen}
+          status={status}
+        />
         <Card withBottomMargin>
           <Modal.Content>
             <Banner type='warning'>
@@ -100,7 +125,15 @@ function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props>
                     placeholder={t<string>('erd prefixed hex')}
                   />
                 </div>
+                
             </div> */}
+            <Banner type='warning'>
+              <p>{t<string>('If you do not have Maiar DeFi Wallet extension installed, please install it first.')}&nbsp;<a
+                href='https://getmaiar.com/defi'
+                rel='noopener noreferrer'
+                target='_blank'
+              >{t<string>('Install now...')}</a></p>
+            </Banner>
             <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('Receive Account')}</span></h3>
             <div style={{display: "flex"}}>
                 <img style={{ "width": "64px", "height": "64px", padding: '1px', 'verticalAlign': 'middle' }} src={logoCrust as string} />
