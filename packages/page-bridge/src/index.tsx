@@ -9,7 +9,10 @@ import { Route, Switch } from 'react-router';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import { Tabs } from '@polkadot/react-components';
-import { useAccounts, useApi, useIpfs } from '@polkadot/react-hooks';
+import { useAccounts, useIpfs } from '@polkadot/react-hooks';
+import ParachainAssets from './ParachainAssets';
+import CrustAssets from './CrustAssets';
+import MainnetApi from '@polkadot/react-api/MainnetApi';
 
 const HIDDEN_ACC = ['vanity'];
 
@@ -40,9 +43,11 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
           </header>
           <Switch>
             <Route path={`${basePath}/bridgeBack`}>
+              <ParachainAssets />
             </Route>
             <Route basePath={basePath}
               onStatusChange={onStatusChange}>
+                <CrustAssets />
             </Route>
 
           </Switch>

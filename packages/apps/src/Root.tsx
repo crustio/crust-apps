@@ -16,6 +16,7 @@ import { settings } from '@polkadot/ui-settings';
 import Apps from './Apps';
 import { darkTheme, lightTheme } from './themes';
 import WindowDimensions from './WindowDimensions';
+import MainnetApi from '@polkadot/react-api/MainnetApi';
 
 interface Props {
   isElectron: boolean;
@@ -49,15 +50,21 @@ function Root ({ isElectron, store }: Props): React.ReactElement<Props> {
             isElectron={isElectron}
             store={store}
           >
-            <BlockAuthors>
-              <Events>
-                <HashRouter>
-                  <WindowDimensions>
-                    <Apps />
-                  </WindowDimensions>
-                </HashRouter>
-              </Events>
-            </BlockAuthors>
+            <MainnetApi 
+              apiUrl={'wss://crust.api.onfinality.io/public-ws'}
+              isElectron={isElectron}
+              store={store}
+            >
+              <BlockAuthors>
+                <Events>
+                  <HashRouter>
+                    <WindowDimensions>
+                      <Apps />
+                    </WindowDimensions>
+                  </HashRouter>
+                </Events>
+              </BlockAuthors>
+            </MainnetApi>
           </Api>
         </Queue>
       </ThemeProvider>
