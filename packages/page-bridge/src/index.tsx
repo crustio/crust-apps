@@ -12,7 +12,6 @@ import { Tabs } from '@polkadot/react-components';
 import { useAccounts, useIpfs } from '@polkadot/react-hooks';
 import ParachainAssets from './ParachainAssets';
 import CrustAssets from './CrustAssets';
-import MainnetApi from '@polkadot/react-api/MainnetApi';
 
 const HIDDEN_ACC = ['vanity'];
 

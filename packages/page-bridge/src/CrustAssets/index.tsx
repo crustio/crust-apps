@@ -8,7 +8,6 @@ import styled from 'styled-components';
 
 import { useTranslation } from '@polkadot/apps/translate';
 import { Button, Card, Columar, Input, InputAddress, InputBalance, MarkWarning, TxButton } from '@polkadot/react-components';
-import { useApi } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 import logoCrust from '../images/crust.svg';
 import Banner from '@polkadot/app-accounts/Accounts/Banner';
