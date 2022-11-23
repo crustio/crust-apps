@@ -1,24 +1,21 @@
-// Copyright 2017-2021 @polkadot/app-staking authors & contributors
+// Copyright 2017-2022 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-/* eslint-disable */
-import type { DeriveAccountInfo } from '@polkadot/api-derive/types';
 import type { UnappliedSlash } from '@polkadot/types/interfaces';
+import type { BN } from '@polkadot/util';
 import type { NominatedBy, ValidatorInfo } from '../types';
 
-import BN from 'bn.js';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
-import { AddressSmall, Badge, Checkbox, Icon, Tooltip } from '@polkadot/react-components';
+import { AddressSmall, Badge, Checkbox, Icon } from '@polkadot/react-components';
 import { checkVisibility } from '@polkadot/react-components/util';
-import { useApi, useBlockTime, useCall } from '@polkadot/react-hooks';
+import { useApi, useBlockTime, useDeriveAccountInfo } from '@polkadot/react-hooks';
 import { FormatBalance } from '@polkadot/react-query';
 import { formatNumber } from '@polkadot/util';
 
 import MaxBadge from '../MaxBadge';
 import Favorite from '../Overview/Address/Favorite';
 import { useTranslation } from '../translate';
-import ApyInfo from '../Overview/Address/ApyInfo';
 
 interface Props {
   allSlashes?: [BN, UnappliedSlash[]][];
@@ -39,11 +36,8 @@ function queryAddress (address: string): void {
 function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSelected, nominatedBy = [], toggleFavorite, toggleSelected }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api } = useApi();
-  const accountInfo = useCall<DeriveAccountInfo>(api.derive.accounts.info, [info.accountId]);
+  const accountInfo = useDeriveAccountInfo(info.accountId);
   const [,, time] = useBlockTime(info.lastPayout);
-  const [guarantorApy, setGuarantorApy] = useState<number>(0);
-
-  const isOverStakelimit = info.totalStaked.gt(new BN(Number(info.stakeLimit)?.toString()));
 
   const isVisible = useMemo(
     () => accountInfo
@@ -69,17 +63,11 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
     [info.key, toggleSelected]
   );
 
-  useEffect(() => {
-    if (info) {
-      setGuarantorApy(Math.pow((1 + info.apy), 365) - 1)
-    }
-  }, [info])
-
   if (!isVisible) {
     return null;
   }
 
-  const { accountId, commissionPer, isElected, isFavorite, key, lastPayout, numNominators, rankOverall } = info;
+  const { accountId, bondOther, bondOwn, bondTotal, commissionPer, isBlocking, isElected, isFavorite, key, lastPayout, numNominators, rankOverall, stakedReturnCmp } = info;
 
   return (
     <tr>
@@ -108,12 +96,12 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
           : <Badge color='transparent' />
         }
         <MaxBadge numNominators={numNominators || nominatedBy.length} />
-        {/* {isBlocking && (
+        {isBlocking && (
           <Badge
             color='red'
             icon='user-slash'
           />
-        )} */}
+        )}
         {slashes.length !== 0 && (
           <Badge
             color='red'
@@ -123,12 +111,6 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
               }
             })}
             icon='skull-crossbones'
-          />
-        )}
-        {isOverStakelimit && (
-          <Badge
-            color='red'
-            icon='balance-scale-right'
           />
         )}
       </td>
@@ -147,28 +129,15 @@ function Validator ({ allSlashes, canSelect, filterName, info, isNominated, isSe
             : formatNumber(lastPayout)
         )}
       </td>
-      
       <td className='number media--1200 no-pad-right'>{numNominators || ''}</td>
       <td className='number media--1200 no-pad-left'>{nominatedBy.length || ''}</td>
       <td className='number media--1100'>{commissionPer.toFixed(2)}%</td>
-      <td className='number'>
-        {info && (
-          <div style={{ display: "flex", "alignItems": "center" }}>
-            <Icon
-              icon='info-circle'
-              tooltip={`summary-locks-trigger-set-fee-pool-${info.accountId}`}
-            />
-            <Tooltip
-                text={(<ApyInfo apy={info.apy} />)}
-                trigger={`summary-locks-trigger-set-fee-pool-${info.accountId}`}
-            ></Tooltip> &nbsp;&nbsp; {(guarantorApy * 100).toFixed(2) + '%'}
-          </div>
-        )}
-      </td>
-      <td className='number together'>{info.totalStaked && <FormatBalance value={info.totalStaked} />}</td>
-      <td className='number together'>{info.stakeLimit && <FormatBalance value={new BN(Number(info.stakeLimit)?.toString())} />}</td>
+      <td className='number together'>{!bondTotal.isZero() && <FormatBalance value={bondTotal} />}</td>
+      <td className='number together media--900'>{!bondOwn.isZero() && <FormatBalance value={bondOwn} />}</td>
+      <td className='number together media--1600'>{!bondOther.isZero() && <FormatBalance value={bondOther} />}</td>
+      <td className='number together'>{(stakedReturnCmp > 0) && <>{stakedReturnCmp.toFixed(2)}%</>}</td>
       <td>
-        {(canSelect || isSelected) && (
+        {!isBlocking && (canSelect || isSelected) && (
           <Checkbox
             onChange={_toggleSelected}
             value={isSelected}

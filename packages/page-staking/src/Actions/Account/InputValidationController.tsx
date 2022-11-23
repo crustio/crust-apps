@@ -1,4 +1,4 @@
-// Copyright 2017-2021 @polkadot/app-staking authors & contributors
+// Copyright 2017-2022 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { DeriveBalancesAll } from '@polkadot/api-derive/types';
@@ -43,7 +43,7 @@ function ValidateController ({ accountId, controllerId, defaultController, onErr
   const { api } = useApi();
   const bondedId = useCall<string | null>(controllerId ? api.query.staking.bonded : null, [controllerId], transformBonded);
   const stashId = useCall<string | null>(controllerId ? api.query.staking.ledger : null, [controllerId], transformStash);
-  const allBalances = useCall<DeriveBalancesAll>(controllerId ? api.derive.balances.all : null, [controllerId]);
+  const allBalances = useCall<DeriveBalancesAll>(controllerId ? api.derive.balances?.all : null, [controllerId]);
   const [{ error, isFatal }, setError] = useState<ErrorState>({ error: null, isFatal: false });
 
   useEffect((): void => {

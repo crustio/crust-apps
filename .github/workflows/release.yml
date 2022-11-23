@@ -1,11 +1,10 @@
 name: Release
 on:
-  push:
-    branches:
-      - master
+  schedule:
+    - cron:  '0 12 * * 1-4' # every day 12:00 UTC Monday-Thursday
+
   # manual trigger
   workflow_dispatch:
-
 
 jobs:
   bump_version:
@@ -64,3 +63,86 @@ jobs:
           host: ${{ secrets.SSH_PRD_HOST }}
           user: ${{ secrets.SSH_PRD_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # - name: Build and push docker
+      #   run: |
+      #     docker build -t crustio/crust-apps:latest .
+      #     docker login -u ${{ secrets.DOCKER_HUB_USER_NAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+      #     docker push crustio/crust-apps:latest
+
+      # - name: Update apps.crust.network
+      #   uses: fifsky/ssh-action@master
+      #   with:
+      #     command: |
+      #       docker pull crustio/crust-apps:latest
+      #       cd /opt/compose
+      #       docker-compose up -d crust-apps
+      #     host: ${{ secrets.SSH_HOST }}
+      #     user: ${{ secrets.SSH_USER }}
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Pin to IPFS
+        id: upload
+        uses: crustio/ipfs-upload-action@v2.0.2
+        with:
+          path: './packages/apps/build'
+          seeds: ${{ secrets.CRUST_SEEDS }}
+
+      - name: Place storage order on Crust
+        uses: crustio/ipfs-crust-action@v2.0.3
+        timeout-minutes: 2
+        with:
+          cid: ${{ steps.upload.outputs.hash }}
+          seeds: ${{ secrets.CRUST_SEEDS }}
+
+#       - name: Convert CIDv0 to CIDv1
+#         id: convert_cidv0
+#         uses: uniswap/convert-cidv0-cidv1@v1.0.0
+#         with:
+#           cidv0: ${{ steps.upload.outputs.hash }}
+
+      - name: Update DNS with new IPFS hash
+        env:
+          CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
+          RECORD_DOMAIN: 'crustapps.net'
+          RECORD_NAME: '_dnslink'
+          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+        uses: textileio/cloudflare-update-dnslink@0fe7b7a1ffc865db3a4da9773f0f987447ad5848
+        with:
+          cid: ${{ steps.upload.outputs.hash }}
+
+      # - name: Create GitHub Release
+      #   id: create_release
+      #   uses: actions/create-release@v1.1.0
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     tag_name: ${{ needs.bump_version.outputs.new_tag }}
+      #     release_name: Release ${{ needs.bump_version.outputs.new_tag }}
+      #     body: |
+      #       IPFS hash of the deployment:
+      #         - CIDv0: `${{ steps.upload.outputs.hash }}`
+      #         - CIDv1: `${{ steps.convert_cidv0.outputs.cidv1 }}`
+            
+      #       Crust Apps contains both centralized and decentralized version of each release, you can access [apps.crust.network](https://apps.crust.network) 
+      #       or the Cloudflare IPFS gateway [crustapps.net](https://crustapps.net).
+
+      #       You can also access the Crust Apps directly from an IPFS gateway.
+      #       The Crust Apps uses [`localStorage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) to store your settings.
+      #       **Beware** that other sites you access via the _same_ IPFS gateway can read and modify your settings on the Crust Apps without your permission.
+      #       You can avoid this issue by using a subdomain IPFS gateway, or our alias to the latest release at [crustapps.net](https://crustapps.net).
+      #       The preferred URLs below are safe to use to access this specific release.
+
+      #       Preferred URLs:
+      #       - https://crustipfs.xyz/ipfs/${{ steps.upload.outputs.hash }}
+      #       - https://${{ steps.convert_cidv0.outputs.cidv1 }}.ipfs.dweb.link/
+      #       - https://${{ steps.convert_cidv0.outputs.cidv1 }}.ipfs.cf-ipfs.com/
+      #       - [ipfs://${{ steps.upload.outputs.hash }}/](ipfs://${{ steps.upload.outputs.hash }}/)
+
+      #       Other IPFS gateways:
+      #       - https://cloudflare-ipfs.com/ipfs/${{ steps.upload.outputs.hash }}/
+      #       - https://ipfs.infura.io/ipfs/${{ steps.upload.outputs.hash }}/
+      #       - https://ipfs.io/ipfs/${{ steps.upload.outputs.hash }}/
+      #       - https://dweb.link/ipfs/${{ steps.upload.outputs.hash }}/
+
+      #       ${{ needs.bump_version.outputs.changelog }}

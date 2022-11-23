@@ -1,9 +1,9 @@
-// Copyright 2017-2021 @polkadot/react-components authors & contributors
+// Copyright 2017-2022 @polkadot/react-components authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { UInt } from '@polkadot/types';
+import type { BN } from '@polkadot/util';
 
-import BN from 'bn.js';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -23,7 +23,7 @@ interface RotateProps {
 
 function DivClip ({ angle, type }: RotateProps): React.ReactElement<RotateProps> {
   return (
-    <div className={`clip1 ${type}`}>
+    <div className={`clip ${type}`}>
       <div
         className='highlight--bg'
         style={{ transform: `rotate(${angle}deg)` }}
@@ -85,7 +85,7 @@ export default React.memo(styled(Progress)`
   }
 
   .background,
-  .clip1 {
+  .clip {
     bottom: 0;
     left: 0;
     position: absolute;
@@ -95,35 +95,6 @@ export default React.memo(styled(Progress)`
 
   .background {
     opacity: 0.125;
-  }
-
-  .clip1 {
-    div {
-      border-radius: 100%;
-      bottom: 0;
-      left: 0;
-      position: absolute;
-      right: 0;
-      transform: rotate(0);
-      top: 0;
-      zoom: 1;
-    }
-  }
-
-  .clip1.first {
-    clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
-
-    div {
-      clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
-    }
-  }
-
-  .clip1.second {
-    clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
-
-    div {
-      clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
-    }
   }
 
   .inner {
@@ -143,6 +114,35 @@ export default React.memo(styled(Progress)`
       line-height: 1;
       font-size: 1.1rem;
       text-shadow: 0 0 2px #f5f3f1;
+    }
+  }
+
+  .clip {
+    div {
+      border-radius: 100%;
+      bottom: 0;
+      left: 0;
+      position: absolute;
+      right: 0;
+      transform: rotate(0);
+      top: 0;
+      zoom: 1;
+    }
+  }
+
+  .clip.first {
+    clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+
+    div {
+      clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+    }
+  }
+
+  .clip.second {
+    clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+
+    div {
+      clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
     }
   }
 `);

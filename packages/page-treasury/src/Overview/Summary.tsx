@@ -1,7 +1,8 @@
-// Copyright 2017-2021 @polkadot/app-treasury authors & contributors
+// Copyright 2017-2022 @polkadot/app-treasury authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import BN from 'bn.js';
+import type { BN } from '@polkadot/util';
+
 import React from 'react';
 
 import { CardSummary, SummaryBox } from '@polkadot/react-components';

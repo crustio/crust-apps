@@ -4,7 +4,7 @@
 import type { TFunction } from 'i18next';
 import type { Route } from './types';
 
-import Component from '@polkadot/apps-bridge/';
+import Component from '@polkadot/app-bridge';
 
 export default function create (t: TFunction): Route {
   return {
@@ -12,7 +12,7 @@ export default function create (t: TFunction): Route {
     display: {
       needsAccounts: true,
       needsApi: [
-        'tx.bridgeTransfer.transferNative'
+        // 'tx.bridgeTransfer.transferNative'
       ]
     },
     group: 'accounts',

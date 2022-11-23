@@ -1,10 +1,14 @@
-// Copyright 2017-2021 @polkadot/app-settings authors & contributors
+// Copyright 2017-2022 @polkadot/app-settings authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import usePolkadotPreclaims from './claims/usePolkadotPreclaims';
+import { createNamedHook } from '@polkadot/react-hooks';
 
-export default function useCounter (): number {
+import usePolkadotPreclaims from './usePolkadotPreclaims';
+
+function useCounterImpl (): number {
   const needAttest = usePolkadotPreclaims();
 
   return needAttest.length;
 }
+
+export default createNamedHook('useCounter', useCounterImpl);

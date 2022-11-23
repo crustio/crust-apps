@@ -1,11 +1,13 @@
 {
-    "name": "@polkadot/apps-bridge",
+    "license": "Apache-2.0",
+    "name": "@polkadot/app-bridge",
     "private": true,
-    "version": "0.74.1",
-    "main": "index.js",
-    "repository": "github:polkadot-js/apps",
-    "author": "yuhui <1161569428@qq.com>",
-    "maintainers": [],
-    "contributors": [],
-    "license": "Apache-2.0"
+    "repository": {
+        "directory": "packages/page-bridge",
+        "type": "git",
+        "url": "https://github.com/polkadot-js/apps.git"
+    },
+    "sideEffects": false,
+    "type": "module",
+    "version": "0.102.2-8"
 }

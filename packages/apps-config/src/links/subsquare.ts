@@ -1,13 +1,16 @@
 // Copyright 2017-2022 @polkadot/apps-config authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import BN from 'bn.js';
+import type { BN } from '@polkadot/util';
 
 import { externalLogos } from '../ui/logos';
 
 export default {
   chains: {
-    Crust: 'crust'
+    Acala: 'acala',
+    Bifrost: 'bifrost',
+    Karura: 'karura',
+    Khala: 'khala'
   },
   create: (chain: string, path: string, data: BN | number | string): string =>
     `https://${chain}.subsquare.io/${path}/${data.toString()}`,

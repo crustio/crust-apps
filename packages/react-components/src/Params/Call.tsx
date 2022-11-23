@@ -1,4 +1,4 @@
-// Copyright 2017-2021 @polkadot/app-extrinsics authors & contributors
+// Copyright 2017-2022 @polkadot/app-extrinsics authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { SubmittableExtrinsicFunction } from '@polkadot/api/types';
@@ -15,7 +15,7 @@ function Call ({ className = '', isDisabled, isError, label, onChange, onEnter, 
 
   const defaultValue = ((): SubmittableExtrinsicFunction<'promise'> => {
     try {
-      return api.tx.system.setCode;
+      return api.tx.balances.transfer;
     } catch (error) {
       return apiDefaultTx;
     }

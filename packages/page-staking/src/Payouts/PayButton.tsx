@@ -1,4 +1,4 @@
-// Copyright 2017-2021 @polkadot/app-staking authors & contributors
+// Copyright 2017-2022 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { SubmittableExtrinsic } from '@polkadot/api/types';
@@ -10,7 +10,7 @@ import styled from 'styled-components';
 
 import { ApiPromise } from '@polkadot/api';
 import { AddressMini, Button, InputAddress, Modal, Static, TxButton } from '@polkadot/react-components';
-import { useAccounts, useApi, useToggle } from '@polkadot/react-hooks';
+import { useApi, useToggle, useTxBatch } from '@polkadot/react-hooks';
 
 import { useTranslation } from '../translate';
 
@@ -26,75 +26,47 @@ interface SinglePayout {
   validatorId: string;
 }
 
-function createBatches (api: ApiPromise, payouts: SinglePayout[]): SubmittableExtrinsic<'promise'>[] {
+function createStream (api: ApiPromise, payouts: SinglePayout[]): SubmittableExtrinsic<'promise'>[] {
   return payouts
     .sort((a, b) => a.era.cmp(b.era))
-    .reduce((batches: SubmittableExtrinsic<'promise'>[][], { era, validatorId }): SubmittableExtrinsic<'promise'>[][] => {
-      const tx = api.tx.staking.rewardStakers(validatorId, era);
-      const batch = batches[batches.length - 1];
-
-      batch.push(tx);
-
-      return batches;
-    }, [[]])
-    .map((batch) =>
-      batch.length === 1
-        ? batch[0]
-        : api.tx.utility.batch(batch)
+    .map(({ era, validatorId }) =>
+      api.tx.staking.payoutStakers(validatorId, era)
     );
 }
 
 function createExtrinsics (api: ApiPromise, payout: PayoutValidator | PayoutValidator[]): SubmittableExtrinsic<'promise'>[] | null {
-  if (Array.isArray(payout)) {
-    if (payout.length === 1) {
-      return createExtrinsics(api, payout[0]);
-    }
+  if (!Array.isArray(payout)) {
+    const { eras, validatorId } = payout;
 
-    return createBatches(api, payout.reduce((payouts: SinglePayout[], { eras, validatorId }): SinglePayout[] => {
-      eras.forEach(({ era }): void => {
-        payouts.push({ era, validatorId });
-      });
-
-      return payouts;
-    }, []));
+    return eras.length === 1
+      ? [api.tx.staking.payoutStakers(validatorId, eras[0].era)]
+      : createStream(api, eras.map((era): SinglePayout => ({ era: era.era, validatorId })));
+  } else if (payout.length === 1) {
+    return createExtrinsics(api, payout[0]);
   }
 
-  const { eras, validatorId } = payout;
+  return createStream(api, payout.reduce((payouts: SinglePayout[], { eras, validatorId }): SinglePayout[] => {
+    eras.forEach(({ era }): void => {
+      payouts.push({ era, validatorId });
+    });
 
-  return eras.length === 1
-    ? [api.tx.staking.rewardStakers(validatorId, eras[0].era)]
-    : createBatches(api, eras.map((era): SinglePayout => ({ era: era.era, validatorId })));
+    return payouts;
+  }, []));
 }
 
 function PayButton ({ className, isAll, isDisabled, payout }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
-  const { allAccounts } = useAccounts();
   const [isVisible, togglePayout] = useToggle();
   const [accountId, setAccount] = useState<string | null>(null);
-  const [extrinsics, setExtrinsics] = useState<SubmittableExtrinsic<'promise'>[] | null>(null);
+  const [txs, setTxs] = useState<SubmittableExtrinsic<'promise'>[] | null>(null);
+  const extrinsics = useTxBatch(txs, { batchSize: 36 * 64 / (api.consts.staking.maxNominatorRewardedPerValidator?.toNumber() || 64) });
 
   useEffect((): void => {
-    if (api.tx.utility && allAccounts.length && payout && (!Array.isArray(payout) || payout.length !== 0)) {
-      const { eras, validatorId } = Array.isArray(payout)
-        ? payout[0]
-        : payout;
-
-      api.tx.staking
-        .rewardStakers(validatorId, eras[0].era)
-        .paymentInfo(allAccounts[0])
-        .then()
-        .catch(console.error);
-    } else {
-      // at 64 payouts we can fit in 36 (as per tests)
-    }
-  }, [allAccounts, api, payout]);
-
-  useEffect((): void => {
-    api.tx.utility && payout && setExtrinsics(
+    payout && setTxs(
       () => createExtrinsics(api, payout)
     );
-  }, [api, payout, isDisabled]);
+  }, [api, payout]);
 
   const isPayoutEmpty = !payout || (Array.isArray(payout) && payout.length === 0);
 
@@ -104,6 +76,7 @@ function PayButton ({ className, isAll, isDisabled, payout }: Props): React.Reac
         <Modal
           className={className}
           header={t<string>('Payout all stakers')}
+          onClose={togglePayout}
           size='large'
         >
           <Modal.Content>
@@ -115,12 +88,14 @@ function PayButton ({ className, isAll, isDisabled, payout }: Props): React.Reac
                 value={accountId}
               />
             </Modal.Columns>
-            <Modal.Columns hint={
-              <>
-                <p>{t<string>('All the listed validators and all their nominators will receive their rewards.')}</p>
-                <p>{t<string>('The UI puts a limit of 40 payouts at a time, where each payout is a single validator for a single era.')}</p>
-              </>
-            }>
+            <Modal.Columns
+              hint={
+                <>
+                  <p>{t<string>('All the listed validators and all their nominators will receive their rewards.')}</p>
+                  <p>{t<string>('The UI puts a limit of 40 payouts at a time, where each payout is a single validator for a single era.')}</p>
+                </>
+              }
+            >
               {Array.isArray(payout)
                 ? (
                   <Static
@@ -146,12 +121,12 @@ function PayButton ({ className, isAll, isDisabled, payout }: Props): React.Reac
               }
             </Modal.Columns>
           </Modal.Content>
-          <Modal.Actions onCancel={togglePayout}>
+          <Modal.Actions>
             <TxButton
               accountId={accountId}
               extrinsic={extrinsics}
               icon='credit-card'
-              isDisabled={!extrinsics || !accountId}
+              isDisabled={!extrinsics || !extrinsics.length || !accountId}
               label={t<string>('Payout')}
               onStart={togglePayout}
             />

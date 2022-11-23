@@ -1,4 +1,4 @@
-// Copyright 2017-2021 @polkadot/apps-config authors & contributors
+// Copyright 2017-2022 @polkadot/apps-config authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 // structs need to be in order
@@ -22,23 +22,8 @@ export default {
     used_fee_reduction_count: 'u32',
     refreshed_at: 'EraIndex'
   },
-  BridgeChainId: 'u8',
-  ChainId: 'u8',
-  ResourceId: '[u8; 32]',
-  DepositNonce: 'u64',
-  CsmBalanceOf: 'BalanceOf',
-  CsmBalance: 'BalanceOf',
-  ProposalVotes: {
-    votes_for: 'Vec<AccountId>',
-    votes_against: 'Vec<AccountId>',
-    status: 'enum',
-    expiry: 'BlockNumber'
-  },
-  Erc721Token: {
-    id: 'TokenId',
-    metadata: 'Vec<u8>'
-  },
-  TokenId: 'U256',
+  CsmBalance: 'Balance',
+  CsmBalanceOf: 'Balance',
   ETHAddress: 'Vec<u8>',
   EthereumTxHash: 'H256',
   CSMLedger: {

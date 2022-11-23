@@ -1,4 +1,4 @@
-// Copyright 2017-2021 @polkadot/app-staking authors & contributors
+// Copyright 2017-2022 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { Slash } from './types';
@@ -41,7 +41,7 @@ function Row ({ index, isSelected, onSelect, slash: { isMine, slash: { others, o
       </td>
       <td className='expand all'>
         {!!others.length && (
-          <Expander summary={t<string>('Guarantors ({{count}})', { replace: { count: formatNumber(others.length) } })}>
+          <Expander summary={t<string>('Nominators ({{count}})', { replace: { count: formatNumber(others.length) } })}>
             {others.map(([accountId, balance], index): React.ReactNode => (
               <AddressMini
                 balance={balance}

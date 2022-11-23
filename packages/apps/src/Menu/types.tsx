@@ -1,4 +1,4 @@
-// Copyright 2017-2021 @polkadot/apps authors & contributors
+// Copyright 2017-2022 @polkadot/apps authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { IconName } from '@fortawesome/fontawesome-svg-core';
@@ -9,8 +9,7 @@ import React from 'react';
 export interface ItemRoute {
   Modal?: React.ComponentType<any>;
   href?: string;
-  icon?: IconName;
-  logo?: unknown;
+  icon: IconName;
   name: string;
   text: string;
   useCounter?: () => number | string | null;

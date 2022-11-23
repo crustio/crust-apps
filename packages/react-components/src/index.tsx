@@ -1,4 +1,4 @@
-// Copyright 2017-2021 @polkadot/react-components authors & contributors
+// Copyright 2017-2022 @polkadot/react-components authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 export * from '@polkadot/react-qr';
@@ -6,13 +6,11 @@ export * from '@polkadot/react-qr';
 export { default as AccountIndex } from './AccountIndex';
 export { default as AccountName } from './AccountName';
 export { default as AddressInfo } from './AddressInfo';
-export { default as AddressCsmInfo } from './AddressCsmInfo';
 export { default as AddressMini } from './AddressMini';
 export { default as AddressRow } from './AddressRow';
 export { default as AddressSmall } from './AddressSmall';
 export { default as AddressToggle } from './AddressToggle';
 export { default as Available } from './Available';
-export { default as AvailableCandy } from './AvailableCandy';
 export { default as AvatarItem } from './AvatarItem';
 export { default as Badge } from './Badge';
 export { default as Balance } from './Balance';
@@ -34,7 +32,6 @@ export { default as CopyButton } from './CopyButton';
 export { default as CryptoType } from './CryptoType';
 export { default as Digits } from './Digits';
 export { default as Dropdown } from './Dropdown';
-export { default as DropdownWrap } from './DropdownWrap';
 export { default as EditButton } from './EditButton';
 export { default as Editor } from './Editor';
 export { default as ErrorBoundary } from './ErrorBoundary';
@@ -42,6 +39,7 @@ export { default as Event } from './Event';
 export { default as Expander } from './Expander';
 export { default as Extrinsic } from './Extrinsic';
 export { default as FilterOverlay } from './FilterOverlay';
+export { default as Flag } from './Flag';
 export { default as Forget } from './Forget';
 export { default as HelpOverlay } from './HelpOverlay';
 export { default as Icon } from './Icon';
@@ -89,7 +87,7 @@ export { default as Static } from './Static';
 export { default as Status, StatusContext } from './Status';
 export { default as SummaryBox } from './SummaryBox';
 export { default as Table } from './Table';
-export { default as Tabs, SectionContext } from './Tabs';
+export { default as Tabs, TabsContext } from './Tabs';
 export { default as Tag } from './Tag';
 export { default as Tags } from './Tags';
 export { default as Toggle } from './Toggle';
@@ -99,9 +97,8 @@ export { default as TxButton } from './TxButton';
 export { default as VoteAccount } from './VoteAccount';
 export { default as VoteValue } from './VoteValue';
 export { default as TextArea } from './TextArea';
+export { default as ExpandButton } from './ExpandButton';
+export { default as SortDropdown } from './SortDropdown';
+export { default as FilterInput } from './FilterInput';
 
 export { default as media } from './media';
-export { default as InputCandyBalance } from './InputCandyBalance';
-export { default as InputCsmBalance } from './InputCsmBalance';
-export { default as InpuCandyNumber } from './InputCandyNumber';
-export { default as InputCsmNumber } from './InputCsmNumber';

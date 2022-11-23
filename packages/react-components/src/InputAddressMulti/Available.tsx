@@ -1,4 +1,4 @@
-// Copyright 2017-2021 @polkadot/react-components authors & contributors
+// Copyright 2017-2022 @polkadot/react-components authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useCallback } from 'react';
@@ -10,10 +10,9 @@ interface Props {
   filter: string;
   isHidden?: boolean;
   onSelect: (address: string) => void;
-  withApy?: boolean;
 }
 
-function Available ({ address, filter, isHidden, onSelect, withApy }: Props): React.ReactElement<Props> | null {
+function Available ({ address, filter, isHidden, onSelect }: Props): React.ReactElement<Props> | null {
   const _onSelect = useCallback(
     () => onSelect(address),
     [address, onSelect]
@@ -29,7 +28,6 @@ function Available ({ address, filter, isHidden, onSelect, withApy }: Props): Re
       filter={filter}
       noToggle
       onChange={_onSelect}
-      withApy={withApy}
     />
   );
 }

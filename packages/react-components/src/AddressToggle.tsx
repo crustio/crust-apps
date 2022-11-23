@@ -1,13 +1,10 @@
-// Copyright 2017-2021 @polkadot/react-components authors & contributors
+// Copyright 2017-2022 @polkadot/react-components authors & contributors
 // SPDX-License-Identifier: Apache-2.0
-
-import type { DeriveAccountInfo } from '@polkadot/api-derive/types';
 
 import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 
-import { validatorApy } from '@polkadot/app-staking';
-import { useApi, useCall } from '@polkadot/react-hooks';
+import { useApi, useDeriveAccountInfo } from '@polkadot/react-hooks';
 
 import AddressMini from './AddressMini';
 import Toggle from './Toggle';
@@ -21,22 +18,11 @@ interface Props {
   noToggle?: boolean;
   onChange?: (isChecked: boolean) => void;
   value?: boolean;
-  withApy?: boolean;
 }
 
-const getApy = (address: string) => {
-  if (validatorApy[address.toString()] !== undefined) {
-    const apy = Math.pow((1 + validatorApy[address.toString()]), 365) - 1;
-
-    return (apy * 100).toFixed(2) + '%';
-  } else {
-    return undefined;
-  }
-};
-
-function AddressToggle ({ address, className = '', filter, isHidden, noToggle, onChange, value, withApy }: Props): React.ReactElement<Props> | null {
+function AddressToggle ({ address, className = '', filter, isHidden, noToggle, onChange, value }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  const info = useCall<DeriveAccountInfo>(api.derive.accounts.info, [address]);
+  const info = useDeriveAccountInfo(address);
 
   const isVisible = useMemo(
     () => info ? checkVisibility(api, address, info, filter, false) : true,
@@ -46,11 +32,6 @@ function AddressToggle ({ address, className = '', filter, isHidden, noToggle, o
   const _onClick = useCallback(
     () => onChange && onChange(!value),
     [onChange, value]
-  );
-
-  const apy = useMemo(
-    () => withApy ? getApy(address) : undefined,
-    [address, withApy]
   );
 
   return (
@@ -63,7 +44,6 @@ function AddressToggle ({ address, className = '', filter, isHidden, noToggle, o
         value={address}
         withSidebar={false}
       />
-      {withApy && apy}
       {!noToggle && (
         <div className='ui--AddressToggle-toggle'>
           <Toggle

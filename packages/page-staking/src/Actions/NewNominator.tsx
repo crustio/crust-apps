@@ -1,4 +1,4 @@
-// Copyright 2017-2021 @polkadot/app-staking authors & contributors
+// Copyright 2017-2022 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { SortedTargets } from '../types';
@@ -57,24 +57,26 @@ function NewNominator ({ isInElection, targets }: Props): React.ReactElement<Pro
         icon='plus'
         isDisabled={isDisabled || !targets.validators?.length}
         key='new-nominator'
-        label={t<string>('Guarantor')}
+        label={t<string>('Nominator')}
         onClick={_toggle}
       />
       {isVisible && (
         <Modal
-          header={t<string>('Setup Guarantor {{step}}/{{NUM_STEPS}}', {
+          header={t<string>('Setup Nominator {{step}}/{{NUM_STEPS}}', {
             replace: {
               NUM_STEPS,
               step
             }
           })}
+          onClose={_toggle}
           size='large'
         >
           <Modal.Content>
             {step === 1 && (
               <BondPartial
                 isNominating
-                minNomination={targets.minNominated}
+                minNominated={targets.minNominated}
+                minNominatorBond={targets.minNominatorBond}
                 onChange={setBondInfo}
               />
             )}
@@ -91,7 +93,7 @@ function NewNominator ({ isInElection, targets }: Props): React.ReactElement<Pro
               <BatchWarning />
             </Modal.Columns>
           </Modal.Content>
-          <Modal.Actions onCancel={_toggle}>
+          <Modal.Actions>
             <Button
               icon='step-backward'
               isDisabled={step === 1}
@@ -104,7 +106,7 @@ function NewNominator ({ isInElection, targets }: Props): React.ReactElement<Pro
                   accountId={stashId}
                   icon='sign-in-alt'
                   isDisabled={!bondTx || !nominateTx || !stashId || !controllerId}
-                  label={t<string>('Bond & Guarantee')}
+                  label={t<string>('Bond & Nominate')}
                   onStart={_toggle}
                   params={[
                     stashId === controllerId

@@ -1,4 +1,4 @@
-// Copyright 2017-2021 @polkadot/app-settings authors & contributors
+// Copyright 2017-2022 @polkadot/app-settings authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
 import type { Option } from '@polkadot/apps-config/settings/types';
@@ -9,7 +9,7 @@ import React from 'react';
 import { ChainImg, Dropdown, IdentityIcon } from '@polkadot/react-components';
 import { settings } from '@polkadot/ui-settings';
 
-export function createOption ({ info, isHeader, text, value }: Option, overrides: string[] = [], override = 'empty'): Option | React.ReactNode {
+export function createOption ({ info, isHeader, text, value }: Option, overrides: string[] = [], override = 'empty', extra?: string): Option | React.ReactNode {
   if (isHeader) {
     return (
       <Dropdown.Header
@@ -33,36 +33,7 @@ export function createOption ({ info, isHeader, text, value }: Option, overrides
               : info
           }
         />
-        <div className='ui--Dropdown-name'>{text}</div>
-      </div>
-    ),
-    value
-  };
-}
-
-export function createIpfsGatewayOption ({ info, isHeader, location, text, value }: Option): Option | React.ReactNode {
-  if (isHeader) {
-    return (
-      <Dropdown.Header
-        content={text}
-        key={text as string}
-      />
-    );
-  }
-
-  return {
-    text: (
-      <div
-        className='ui--Dropdown-item'
-        key={value}
-      >
-        <ChainImg
-          className='ui--Dropdown-icon'
-          logo={
-            info || 'default'
-          }
-        />
-        <div className='ui--Dropdown-name'>{text}&nbsp;{(location && location !== '') ? `(${location.toUpperCase()})` : ''} </div>
+        <div className='ui--Dropdown-name'>{text}{extra}</div>
       </div>
     ),
     value

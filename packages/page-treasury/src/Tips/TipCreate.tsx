@@ -1,7 +1,8 @@
-// Copyright 2017-2021 @polkadot/app-treasury authors & contributors
+// Copyright 2017-2022 @polkadot/app-treasury authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-import BN from 'bn.js';
+import type { BN } from '@polkadot/util';
+
 import React, { useEffect, useState } from 'react';
 
 import { Button, Input, InputAddress, InputBalance, Modal, TxButton } from '@polkadot/react-components';
@@ -13,7 +14,7 @@ interface Props {
   members: string[];
 }
 
-const MAX_REASON_LEN = 4096;
+const MAX_REASON_LEN = 128;
 const MIN_REASON_LEN = 5;
 
 function TipCreate ({ members }: Props): React.ReactElement<Props> {
@@ -42,6 +43,7 @@ function TipCreate ({ members }: Props): React.ReactElement<Props> {
       {isOpen && (
         <Modal
           header={t<string>('Submit tip request')}
+          onClose={toggleOpen}
           size='large'
         >
           <Modal.Content>
@@ -82,7 +84,7 @@ function TipCreate ({ members }: Props): React.ReactElement<Props> {
               </Modal.Columns>
             )}
           </Modal.Content>
-          <Modal.Actions onCancel={toggleOpen}>
+          <Modal.Actions>
             <TxButton
               accountId={accountId}
               icon='plus'
