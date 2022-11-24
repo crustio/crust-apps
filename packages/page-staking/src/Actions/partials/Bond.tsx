@@ -1,7 +1,6 @@
 // Copyright 2017-2022 @polkadot/app-staking authors & contributors
 // SPDX-License-Identifier: Apache-2.0
 
-/* eslint-disable */
 import type { DeriveBalancesAll } from '@polkadot/api-derive/types';
 import type { BN } from '@polkadot/util';
 import type { AmountValidateState, DestinationType } from '../types';
@@ -75,13 +74,15 @@ function Bond ({ className = '', isNominating, minNominated, minNominatorBond, m
   }, [stashId]);
 
   useEffect((): void => {
+    const bondDest = destination === 'Account'
+      ? { Account: destAccount }
+      : destination;
+
     onChange(
       (amount && amount.gtn(0) && !amountError?.error && !controllerError && controllerId && stashId)
         ? {
-          // @ts-ignore
-          bondOwnTx: api.tx.staking.bond(stashId, amount),
-          // @ts-ignore
-          bondTx: api.tx.staking.bond(controllerId, amount),
+          bondOwnTx: api.tx.staking.bond(stashId, amount, bondDest),
+          bondTx: api.tx.staking.bond(controllerId, amount, bondDest),
           controllerId,
           controllerTx: api.tx.staking.setController(controllerId),
           stashId
@@ -127,7 +128,7 @@ function Bond ({ className = '', isNominating, minNominated, minNominatorBond, m
         <Modal.Columns
           hint={
             <>
-              <p>{t<string>('The amount placed at-stake should not be your full available available amount to allow for transaction fees.')}</p>
+              <p>{t<string>('The amount placed at-stake should not be your full available amount to allow for transaction fees.')}</p>
               <p>{t<string>('Once bonded, it will need to be unlocked/withdrawn and will be locked for at least the bonding duration.')}</p>
             </>
           }

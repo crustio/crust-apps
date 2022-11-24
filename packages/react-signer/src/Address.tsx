@@ -5,7 +5,7 @@ import type { SubmittableExtrinsic } from '@polkadot/api/types';
 import type { QueueTx } from '@polkadot/react-components/Status/types';
 import type { Option, Vec } from '@polkadot/types';
 import type { AccountId, BalanceOf, Call, Multisig } from '@polkadot/types/interfaces';
-import type { NodeRuntimeProxyType, PalletProxyProxyDefinition } from '@polkadot/types/lookup';
+import type { KitchensinkRuntimeProxyType, PalletProxyProxyDefinition } from '@polkadot/types/lookup';
 import type { ITuple } from '@polkadot/types/types';
 import type { BN } from '@polkadot/util';
 import type { AddressFlags, AddressProxy } from './types';
@@ -45,7 +45,7 @@ interface PasswordState {
 interface ProxyState {
   address: string;
   isProxied: boolean;
-  proxies: [string, BN, NodeRuntimeProxyType][];
+  proxies: [string, BN, KitchensinkRuntimeProxyType][];
   proxiesFilter: string[];
 }
 
@@ -59,13 +59,27 @@ function findCall (tx: Call | SubmittableExtrinsic<'promise'>): { method: string
   }
 }
 
-function filterProxies (allAccounts: string[], tx: Call | SubmittableExtrinsic<'promise'>, proxies: [string, BN, NodeRuntimeProxyType][]): string[] {
+function filterProxies (allAccounts: string[], tx: Call | SubmittableExtrinsic<'promise'>, proxies: [string, BN, KitchensinkRuntimeProxyType][]): string[] {
+  // get the call info
+  const { method, section } = findCall(tx);
+
   // check an array of calls to all have proxies as the address
   const checkCalls = (address: string, txs: Call[]): boolean =>
     !txs.some((tx) => !filterProxies(allAccounts, tx, proxies).includes(address));
 
-  // get the call info
-  const { method, section } = findCall(tx);
+  // inspect nested calls, e.g. batch, ensuring that the proxy address
+  // is applicable to the containing calls
+  const checkNested = (address: string): boolean =>
+    section === 'utility' && (
+      (
+        ['batch', 'batchAll'].includes(method) &&
+        checkCalls(address, tx.args[0] as Vec<Call>)
+      ) ||
+      (
+        ['asLimitedSub'].includes(method) &&
+        checkCalls(address, [tx.args[0] as Call])
+      )
+    );
 
   return proxies
     .filter(([address, delay, proxy]): boolean => {
@@ -77,21 +91,43 @@ function filterProxies (allAccounts: string[], tx: Call | SubmittableExtrinsic<'
       switch (proxy.toString()) {
         case 'Any':
           return true;
+
         case 'Governance':
-          return ['council', 'democracy', 'elections', 'electionsPhragmen', 'phragmenElection', 'poll', 'society', 'technicalCommittee', 'tips', 'treasury'].includes(section);
+          return checkNested(address) || (
+            ['council', 'democracy', 'elections', 'electionsPhragmen', 'phragmenElection', 'poll', 'society', 'technicalCommittee', 'tips', 'treasury'].includes(section)
+          );
+
         case 'IdentityJudgement':
-          return section === 'identity' && method === 'provideJudgement';
+          return checkNested(address) || (
+            section === 'identity' &&
+            method === 'provideJudgement'
+          );
+
         case 'NonTransfer':
-          return !(section === 'balances' || (section === 'indices' && method === 'transfer') || (section === 'vesting' && method === 'vestedTransfer'));
+          return !(
+            section === 'balances' ||
+            (
+              section === 'indices' &&
+              method === 'transfer'
+            ) ||
+            (
+              section === 'vesting' &&
+              method === 'vestedTransfer'
+            )
+          );
+
         case 'Staking':
-          return section === 'staking' ||
-            (section === 'utility' && (
-              (method === 'batch' && checkCalls(address, tx.args[0] as Vec<Call>)) ||
-              (method === 'asLimitedSub' && checkCalls(address, [tx.args[0] as Call]))
-            ));
+          return checkNested(address) || (
+            section === 'staking'
+          );
+
         case 'SudoBalances':
-          return (section === 'sudo' && (method === 'sudo' && findCall(tx.args[0] as Call).section === 'balances')) ||
-            (section === 'utility' && (method === 'batch' && checkCalls(address, tx.args[0] as Vec<Call>)));
+          return checkNested(address) || (
+            section === 'sudo' &&
+            method === 'sudo' &&
+            findCall(tx.args[0] as Call).section === 'balances'
+          );
+
         default:
           // any unknown proxy types apply to all - leave it to the user to filter
           return true;
@@ -131,10 +167,10 @@ async function queryForMultisig (api: ApiPromise, requestAddress: string, proxyA
 async function queryForProxy (api: ApiPromise, allAccounts: string[], address: string, tx: SubmittableExtrinsic<'promise'>): Promise<ProxyState | null> {
   if (isFunction(api.query.proxy?.proxies)) {
     const { isProxied } = extractExternal(address);
-    const [_proxies] = await api.query.proxy.proxies<ITuple<[Vec<ITuple<[AccountId, NodeRuntimeProxyType]> | PalletProxyProxyDefinition>, BalanceOf]>>(address);
+    const [_proxies] = await api.query.proxy.proxies<ITuple<[Vec<ITuple<[AccountId, KitchensinkRuntimeProxyType]> | PalletProxyProxyDefinition>, BalanceOf]>>(address);
     const proxies = api.tx.proxy.addProxy.meta.args.length === 3
-      ? (_proxies as PalletProxyProxyDefinition[]).map(({ delay, delegate, proxyType }): [string, BN, NodeRuntimeProxyType] => [delegate.toString(), delay, proxyType])
-      : (_proxies as [AccountId, NodeRuntimeProxyType][]).map(([delegate, proxyType]): [string, BN, NodeRuntimeProxyType] => [delegate.toString(), BN_ZERO, proxyType]);
+      ? (_proxies as PalletProxyProxyDefinition[]).map(({ delay, delegate, proxyType }): [string, BN, KitchensinkRuntimeProxyType] => [delegate.toString(), delay, proxyType])
+      : (_proxies as [AccountId, KitchensinkRuntimeProxyType][]).map(([delegate, proxyType]): [string, BN, KitchensinkRuntimeProxyType] => [delegate.toString(), BN_ZERO, proxyType]);
     const proxiesFilter = filterProxies(allAccounts, tx, proxies);
 
     if (proxiesFilter.length) {

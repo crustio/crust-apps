@@ -7,27 +7,29 @@ import type { UseWeight } from './types';
 
 import { useCallback, useMemo, useState } from 'react';
 
-import { createNamedHook, useApi, useBlockTime } from '@polkadot/react-hooks';
+import { createNamedHook, useApi, useBlockInterval } from '@polkadot/react-hooks';
+import { convertWeight } from '@polkadot/react-hooks/useWeight';
 import { BN_MILLION, BN_TEN, BN_ZERO } from '@polkadot/util';
 
 function useWeightImpl (): UseWeight {
   const { api } = useApi();
-  const [blockTime] = useBlockTime();
+  const blockTime = useBlockInterval();
   const [megaGas, _setMegaGas] = useState<BN>(
-    (api.consts.system.blockWeights
-      ? api.consts.system.blockWeights.maxBlock
-      : api.consts.system.maximumBlockWeight as Weight
-    ).div(BN_MILLION).div(BN_TEN)
+    convertWeight(
+      api.consts.system.blockWeights
+        ? api.consts.system.blockWeights.maxBlock
+        : api.consts.system.maximumBlockWeight as Weight
+    ).v1Weight.div(BN_MILLION).div(BN_TEN)
   );
   const [isEmpty, setIsEmpty] = useState(false);
 
   const setMegaGas = useCallback(
-    (value?: BN | undefined) => _setMegaGas(value || (
-      (api.consts.system.blockWeights
-        ? api.consts.system.blockWeights.maxBlock
-        : api.consts.system.maximumBlockWeight as Weight
-      ).div(BN_MILLION).div(BN_TEN)
-    )),
+    (value?: BN | undefined) =>
+      _setMegaGas(value || convertWeight(
+        api.consts.system.blockWeights
+          ? api.consts.system.blockWeights.maxBlock
+          : api.consts.system.maximumBlockWeight as Weight
+      ).v1Weight.div(BN_MILLION).div(BN_TEN)),
     [api]
   );
 
@@ -39,12 +41,12 @@ function useWeightImpl (): UseWeight {
 
     if (megaGas) {
       weight = megaGas.mul(BN_MILLION);
-      executionTime = weight.muln(blockTime).div(
+      executionTime = weight.mul(blockTime).div(convertWeight(
         api.consts.system.blockWeights
           ? api.consts.system.blockWeights.maxBlock
           : api.consts.system.maximumBlockWeight as Weight
-      ).toNumber();
-      percentage = (executionTime / blockTime) * 100;
+      ).v1Weight).toNumber();
+      percentage = (executionTime / blockTime.toNumber()) * 100;
 
       // execution is 2s of 6s blocks, i.e. 1/3
       executionTime = executionTime / 3000;

@@ -28,13 +28,13 @@ interface Props {
 function createExternals (t: TFunction): ItemRoute[] {
   return [
     {
-      href: 'https://github.com/crustio/crust-apps',
+      href: 'https://github.com/polkadot-js/apps',
       icon: 'code-branch',
       name: 'github',
       text: t<string>('nav.github', 'GitHub', { ns: 'apps-routing' })
     },
     {
-      href: 'https://wiki.crust.network',
+      href: 'https://wiki.polkadot.network',
       icon: 'book',
       name: 'wiki',
       text: t<string>('nav.wiki', 'Wiki', { ns: 'apps-routing' })
@@ -42,7 +42,7 @@ function createExternals (t: TFunction): ItemRoute[] {
   ];
 }
 
-function checkVisible ({ api, isApiConnected, isApiReady }: ApiProps, allowTeleport: boolean, hasAccounts: boolean, hasSudo: boolean, { isHidden, needsAccounts, needsApi, needsApiInstances, needsSudo, needsTeleport }: Route['display']): boolean {
+function checkVisible ({ api, isApiConnected, isApiReady, isDevelopment: isApiDevelopment }: ApiProps, allowTeleport: boolean, hasAccounts: boolean, hasSudo: boolean, { isDevelopment, isHidden, needsAccounts, needsApi, needsApiCheck, needsApiInstances, needsSudo, needsTeleport }: Route['display']): boolean {
   if (isHidden) {
     return false;
   } else if (needsAccounts && !hasAccounts) {
@@ -55,9 +55,11 @@ function checkVisible ({ api, isApiConnected, isApiReady }: ApiProps, allowTelep
     return false;
   } else if (needsTeleport && !allowTeleport) {
     return false;
+  } else if (!isApiDevelopment && isDevelopment) {
+    return false;
   }
 
-  return findMissingApis(api, needsApi, needsApiInstances).length === 0;
+  return findMissingApis(api, needsApi, needsApiInstances, needsApiCheck).length === 0;
 }
 
 function extractGroups (routing: Routes, groupNames: Record<string, string>, apiProps: ApiProps, allowTeleport: boolean, hasAccounts: boolean, hasSudo: boolean): Group[] {
@@ -99,6 +101,7 @@ function Menu ({ className = '' }: Props): React.ReactElement<Props> {
   const groupRef = useRef({
     accounts: t('Accounts'),
     developer: t('Developer'),
+    files: t('Files'),
     governance: t('Governance'),
     network: t('Network'),
     settings: t('Settings')

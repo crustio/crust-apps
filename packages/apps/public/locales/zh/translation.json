@@ -395,7 +395,7 @@
   "Positive number greater than or equal to {{nextFreeId}}": "大于或等于{{nextFreeId}}的正数",
   "Potential dispatch of referendum {{id}} (if passed)": "公投{{id}}的潜在调度(如果通过)",
   "Pre-sale ethereum address": "预售以太坊地址",
-  "Prefix indicates the ss58 address format in this network, it is a number between 0 ~ 255 that describes the precise format of the bytes of the address": "地址前缀用0~255的数来来表示SS58地址的编码格式",
+  "Prefix indicates the ss58 address format in this network, it is a 16 bit unsigned integer that describes the precise format of the bytes of the address": "地址前缀用0~255的数来来表示SS58地址的编码格式",
   "Preimage": "原像",
   "Preparing QR for signing": "准备 QR 签名",
   "Present the QR code containing the signature to the UI. Once scanned it will be submitted for on-chain processing and execution.": "将包含签名的二维码呈现给 UI。一旦扫描，它将提交到链上处理和执行。",
@@ -507,6 +507,7 @@
   "Show address on hardware device": "在硬件设备上显示地址",
   "Sign (no submission)": "签名（不提交）",
   "Sign and Submit": "签名并提交",
+  "Sign and Upload": "签名并上传",
   "Sign for multisig": "多重签名",
   "Sign message": "签名消息",
   "Sign via Qr": "通过 Qr 签名",
@@ -1379,14 +1380,5 @@
   "{{step}}. Sign with your ETH address": "{{step}}. 用你的以太坊地址签名",
   "{{threshold}}, not passing": "{{threshold}},没有通过",
   "{{threshold}}, passing": "{{threshold}}, 通过",
-  "{{value}}x voting balance, locked for {{lock}}x enactment ({{period}} days)": "{{value}}x投票余额，锁定 {{lock}}x 执行 ({{period}} days)",
-  "0. Burn your ": "0. 销毁你的",
-  ", transfer to address ": ", 转账至地址",
-  "Please make sure you have the authority to make signature with the private key of the wallet account, using an exchange account to sent a transfer (withdrawal) transaction will be invalidated and cause asset loss, you are responsible for the consequences": "请确认您使用的是带私钥签名权限的钱包(metamask, imtoken等)进行转账, 使用交易所账户发起转账(提币)交易, 均会失效, 造成资产损失, 后果自负",
-  ", If your claim amount is greater than the claim limit ": ", 如果你的认领数量大于认领上限 ",
-  ", please wait for the limit update": ", 请等待认领上限更新",
-  "Copy the following string and sign it with the Ethereum account you burnt your ERC20 CRU in step 0, using the string as the payload, and then paste the transaction signature object below:": "复制以下字符串，并使用您在步骤0销毁ERC20 CRU时使用的以太坊帐户在您选择的钱包中进行签名，使用该字符串作为有效负载，然后将交易签名对象粘贴到下面",
-  "1. Select your {{chain}} account and enter": "1. 选择你的{{chain}}账户并输入以太坊",
-  " transfer tx hash": " 转账交易的哈希值",
-  "Ethereum tx hash": "以太坊转账交易哈希"
+  "{{value}}x voting balance, locked for {{lock}}x duration ({{period}} days)": "{{value}}x投票余额，锁定 {{lock}}x 执行 ({{period}} days)"
 }

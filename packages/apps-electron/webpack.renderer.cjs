@@ -17,9 +17,17 @@ module.exports = merge(
   {
     plugins: [
       // It must be placed before HtmlWebpackPlugin
-      new CopyWebpackPlugin({ patterns: [{ from: '../apps/public' }] }),
+      new CopyWebpackPlugin({
+        patterns: [{
+          from: '../apps/public',
+          globOptions: {
+            dot: true,
+            ignore: ['**/index.html']
+          }
+        }]
+      }),
       new HtmlWebpackPlugin({
-        PAGE_TITLE: 'Crust Apps',
+        PAGE_TITLE: 'Polkadot/Substrate Portal',
         inject: true,
         template: path.join(context, '../apps/public/index.html')
       })

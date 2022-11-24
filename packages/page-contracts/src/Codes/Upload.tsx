@@ -37,8 +37,6 @@ function Upload ({ onClose }: Props): React.ReactElement {
   const { abiName, contractAbi, errorText, isAbiError, isAbiSupplied, isAbiValid, onChangeAbi, onRemoveAbi } = useAbi();
   const weight = useWeight();
 
-  const hasStorageDeposit = api.tx.contracts.instantiate.meta.args.length === 6;
-
   const code = useMemo(
     () => isAbiValid && isWasmValid && wasm && contractAbi
       ? new CodePromise(api, contractAbi, wasm)
@@ -92,7 +90,7 @@ function Upload ({ onClose }: Props): React.ReactElement {
         ? code.tx[contractAbi.constructors[constructorIndex].method]({
           gasLimit: weight.weight,
           storageDepositLimit: null,
-          value
+          value: contractAbi?.constructors[constructorIndex].isPayable ? value : undefined
         }, ...params)
         : null;
     } catch (e) {
@@ -200,14 +198,17 @@ function Upload ({ onClose }: Props): React.ReactElement {
               params={contractAbi.constructors[constructorIndex].args}
               registry={contractAbi.registry}
             />
-            <InputBalance
-              help={t<string>('The balance to transfer from the `origin` to the newly created contract.')}
-              isError={!isValueValid}
-              isZeroable={hasStorageDeposit}
-              label={t<string>('value')}
-              onChange={setValue}
-              value={value}
-            />
+            {contractAbi.constructors[constructorIndex].isPayable && (
+              <InputBalance
+                help={t<string>('The balance to transfer from the `origin` to the newly created contract.')}
+                isError={!isValueValid}
+                isZeroable
+                label={t<string>('value')}
+                onChange={setValue}
+                value={value}
+              />
+            )
+            }
             <InputMegaGas
               help={t<string>('The maximum amount of gas that can be used by this deployment, if the code requires more, the deployment will fail')}
               weight={weight}

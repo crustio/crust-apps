@@ -76,11 +76,8 @@ function useOwnStashInfosImpl (): StakerState[] | undefined {
     if (ownStashes) {
       if (ownStashes.length) {
         const stashIds = ownStashes.map(([stashId]) => stashId);
-
-        console.log('api.derive.staking', api.derive.staking);
-        console.log('api.derive', api.derive);
         const fns = [
-          [api.derive.staking?.accounts, stashIds],
+          [api.derive.staking.accounts, stashIds],
           [api.query.staking.validators.multi, stashIds]
         ] as unknown as CombinatorFunction[];
 

@@ -32,10 +32,6 @@ interface UrlState {
 }
 
 const STORAGE_AFFINITIES = 'network:affinities';
-const maxwellApiUrl = 'wss://api-maxwell.crust.network';
-const mainnetApiUrl = 'wss://rpc.crust.network';
-const rockyApiUrl = 'wss://rpc-rocky.crust.network';
-const directUrl = 'https://apps.crust.network/';
 
 function isValidUrl (url: string): boolean {
   return (
@@ -56,12 +52,14 @@ function combineEndpoints (endpoints: LinkOption[]): Group[] {
 
       if (prev.networks[prev.networks.length - 1] && e.text === prev.networks[prev.networks.length - 1].name) {
         prev.networks[prev.networks.length - 1].providers.push(prov);
-      } else {
+      } else if (!e.isUnreachable) {
         prev.networks.push({
           icon: e.info,
           isChild: e.isChild,
-          isUnreachable: e.isUnreachable,
+          isRelay: !!e.genesisHash,
           name: e.text as string,
+          nameRelay: e.textRelay as string,
+          paraId: e.paraId,
           providers: [prov]
         });
       }
@@ -180,7 +178,9 @@ function Endpoints ({ className = '', offset, onClose }: Props): React.ReactElem
 
   const _removeApiEndpoint = useCallback(
     (): void => {
-      if (!isSavedCustomEndpoint) return;
+      if (!isSavedCustomEndpoint) {
+        return;
+      }
 
       const newStoredCurstomEndpoints = storedCustomEndpoints.filter((url) => url !== apiUrl);
 
@@ -223,21 +223,10 @@ function Endpoints ({ className = '', offset, onClose }: Props): React.ReactElem
 
   const _onApply = useCallback(
     (): void => {
-      if (apiUrl.startsWith('wss://crust-maxwell')) {
-        window.location.href = `${directUrl}?rpc=${encodeURIComponent(maxwellApiUrl)}${window.location.hash}`;
-        onClose();
-      } else if (apiUrl.startsWith('wss://crust-main')) {
-        window.location.href = `${directUrl}?rpc=${encodeURIComponent(mainnetApiUrl)}${window.location.hash}`;
-        onClose();
-      } else if (apiUrl.startsWith('wss://rpc-rocky')) {
-        window.location.href = `${directUrl}?rpc=${encodeURIComponent(rockyApiUrl)}${window.location.hash}`;
-        onClose();
-      } else {
-        settings.set({ ...(settings.get()), apiUrl });
-        window.location.assign(`${window.location.origin}${window.location.pathname}?rpc=${encodeURIComponent(apiUrl)}${window.location.hash}`);
-        // window.location.reload();
-        onClose();
-      }
+      settings.set({ ...(settings.get()), apiUrl });
+      window.location.assign(`${window.location.origin}${window.location.pathname}?rpc=${encodeURIComponent(apiUrl)}${window.location.hash}`);
+      // window.location.reload();
+      onClose();
     },
     [apiUrl, onClose]
   );
