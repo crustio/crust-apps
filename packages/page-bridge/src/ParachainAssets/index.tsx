@@ -120,7 +120,7 @@ function ParachainAssets ({ className = '', senderId: propSenderId }: Props): Re
               isDisabled={ isAmountError || !isValid }
               label={t<string>('Transfer')}
               params={[amount, receiveId, 3]}
-              tx={api.tx.bridgeTransfer?.transferCsmNative}
+              tx={api.tx.bridgeTransfer?.transferNative}
             />
           </Button.Group>
         </Card>
