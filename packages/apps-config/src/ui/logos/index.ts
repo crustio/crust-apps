@@ -90,6 +90,7 @@ import externalStatescan from './external/statescan.svg';
 import externalSubId from './external/subid.svg';
 import externalSubscan from './external/subscan.png';
 import externalSubsquare from './external/subsquare.svg';
+import logoRocky from './nodes/rocky.svg';
 import nodeAjuna from './nodes/ajuna.png';
 import nodeApron from './nodes/apron.png';
 import nodeArctic from './nodes/arctic.png';
@@ -722,7 +723,8 @@ export const namedLogos: Record<string, unknown> = {
   crust: nodeCrust,
   'Crust Maxwell': nodeCrustMaxwell,
   'Crust Testnet': nodeCrustParachain,
-  crustParachain: nodeCrustParachain,
+  crustParachain: nodeCrust,
+  'crust-rocky': logoRocky,
   'Dali Testnet (Rococo Relay)': chainRococoDali,
   DaliTestnet: nodeDaliTestnet,
   darwinia: nodeDarwinia,
