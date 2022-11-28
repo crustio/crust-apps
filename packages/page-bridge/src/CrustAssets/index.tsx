@@ -39,11 +39,7 @@ function CrustAssets ({ className = '', senderId: propSenderId }: Props): React.
   const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
-    api.query.staking.activeEra().then(res => {
-        console.log('active era', JSON.stringify(res))
-    }) 
-  })
-  useEffect(() => {
+
     if (Number(amount) <= 0) {
       setIsAmountError(true)
     } else {
@@ -124,8 +120,8 @@ function CrustAssets ({ className = '', senderId: propSenderId }: Props): React.
               icon='paper-plane'
               isDisabled={ isAmountError }
               label={t<string>('Transfer')}
-              params={[receiveId, amount]}
-              tx={api.tx.balances?.transfer}
+              params={[amount, receiveId]}
+              tx={api.tx.bridgeTransfer.transferToPolkadotParachain}
             />
           </Button.Group>
         </Card>

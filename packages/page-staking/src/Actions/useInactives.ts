@@ -94,7 +94,7 @@ function useInactivesImpl (stashId: string, nominees?: string[]): Inactives {
     if (mountedRef.current && nominees && nominees.length && indexes) {
       api
         .queryMulti(
-          [[api.query.staking.nominators, stashId] as QueryableStorageMultiArg<'promise'>]
+          [[api.query.staking.guarantors, stashId] as QueryableStorageMultiArg<'promise'>]
             .concat(
               api.query.staking.erasStakers
                 ? nominees.map((id) => [api.query.staking.erasStakers, [indexes.activeEra, id]])

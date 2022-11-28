@@ -5,9 +5,9 @@ import type { TFunction } from '../types';
 import type { LinkOption } from './types';
 
 import { defaultT } from '../util';
-import { createCustom, createDev, createOwn } from './development';
-import { prodChains, prodRelayKusama, prodRelayPolkadot } from './production';
-import { testChains, testRelayRococo, testRelayWestend } from './testing';
+import { createDev, createOwn } from './development';
+import { prodChains } from './production';
+import { testChains } from './testing';
 import { expandEndpoints } from './util';
 
 export { CUSTOM_ENDPOINT_KEY } from './development';

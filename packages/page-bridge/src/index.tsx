@@ -46,7 +46,7 @@ function BridgeApp ({ basePath, onStatusChange }: Props): React.ReactElement<Pro
             </Route>
             <Route basePath={basePath}
               onStatusChange={onStatusChange}>
-                <CrustAssets />
+              <CrustAssets />
             </Route>
 
           </Switch>
