@@ -119,7 +119,7 @@ function ParachainAssets ({ className = '', senderId: propSenderId }: Props): Re
               icon='paper-plane'
               isDisabled={ isAmountError || !isValid }
               label={t<string>('Transfer')}
-              params={[amount, receiveId, 3]}
+              params={[amount, receiveId, 0]}
               tx={api.tx.bridgeTransfer?.transferNative}
             />
           </Button.Group>
