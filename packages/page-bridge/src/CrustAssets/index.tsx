@@ -89,9 +89,9 @@ function CrustAssets ({ className = '', senderId: propSenderId }: Props): React.
                 <Input
                     autoFocus
                     className='full'
-                    help={t<string>('The Shadow address')}
+                    help={t<string>('The Crust parachain address')}
                     isError={!isValid}
-                    label={t<string>('Shadow address')}
+                    label={t<string>('Crust parachain address')}
                     onChange={onChangeShadowAddress}
                     placeholder={t<string>('cT prefixed address')}
                     value={receiveId || ''}

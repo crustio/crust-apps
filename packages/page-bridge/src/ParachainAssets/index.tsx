@@ -88,9 +88,9 @@ function ParachainAssets ({ className = '', senderId: propSenderId }: Props): Re
                 <Input
                     autoFocus
                     className='full'
-                    help={t<string>('The Shadow address')}
+                    help={t<string>('The Crust mainnet address')}
                     isError={!isValid}
-                    label={t<string>('Shadow address')}
+                    label={t<string>('Crust mainnet address')}
                     onChange={onChangeShadowAddress}
                     placeholder={t<string>('cT prefixed address')}
                     value={receiveId || ''}
