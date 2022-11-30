@@ -1,4 +1,4 @@
-name: shadow-dev-cd
+name: parachain-dev-cd
 
 on:
   workflow_dispatch:
