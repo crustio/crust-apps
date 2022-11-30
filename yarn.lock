@@ -1528,25 +1528,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@electron/get@npm:^1.0.1":
-  version: 1.12.2
-  resolution: "@electron/get@npm:1.12.2"
+"@electron/get@npm:^1.13.0":
+  version: 1.14.1
+  resolution: "@electron/get@npm:1.14.1"
   dependencies:
     debug: ^4.1.1
     env-paths: ^2.2.0
     fs-extra: ^8.1.0
-    global-agent: ^2.0.2
+    global-agent: ^3.0.0
     global-tunnel-ng: ^2.7.1
     got: ^9.6.0
     progress: ^2.0.3
-    sanitize-filename: ^1.6.2
+    semver: ^6.2.0
     sumchecker: ^3.0.1
   dependenciesMeta:
     global-agent:
       optional: true
     global-tunnel-ng:
       optional: true
-  checksum: 0d79fdb38fabb7467c7219d86142ccaf21329ecdf3c394371dbc3cc37e54026ac654e30339b50535289a0592294330f330d2cd9f3a315da403230bd9a0bdbb07
+  checksum: 603cfffd7f911d1d6ce35bf16f88768594b8ec3a1ecf393d229a8863e9c73b86b6102c75baaae84e358fc40d4aec1558318798215c47324571ec691199cce58a
   languageName: node
   linkType: hard
 
@@ -5382,17 +5382,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^12.0.12":
-  version: 12.19.11
-  resolution: "@types/node@npm:12.19.11"
-  checksum: 2c42159419adafb03179f89ac22770b74350b0e904a6e52ac9a3d4734fcc81c6b7d183573fbffe10f450c8926837b7fd66951ae1ddfda2d6c25669511e7785c8
-  languageName: node
-  linkType: hard
-
 "@types/node@npm:^13.7.0":
   version: 13.13.48
   resolution: "@types/node@npm:13.13.48"
   checksum: 9ccf1d1e21b6b5c33bf003e211fe6af8d4255fede5e81c717a5768ce49eba84addcf68d299573179d58274630cd552ff5e124e0db2c55c0a358120e07b0e54ec
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^16.11.26":
+  version: 16.18.3
+  resolution: "@types/node@npm:16.18.3"
+  checksum: 49b71b337b25b17ee80f248c6020f0052c3a75fb99f85acdc7002a2a474f237e958bebfc929fc63d18aef7f94997a84b08e087b5021f865b5af7e53b61371907
   languageName: node
   linkType: hard
 
@@ -9203,13 +9203,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^3.6.5":
-  version: 3.8.1
-  resolution: "core-js@npm:3.8.1"
-  checksum: e9364ce130241b65f73e0be84721f3cd704b5db77709476e2d6c1e4b56e58e3af9b46e6b51bd019865083d2d55b38a8e0888e862f75e65332c37820cb0d3c58e
-  languageName: node
-  linkType: hard
-
 "core-util-is@npm:1.0.2, core-util-is@npm:~1.0.0":
   version: 1.0.2
   resolution: "core-util-is@npm:1.0.2"
@@ -11178,16 +11171,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:^11.2.0":
-  version: 11.2.0
-  resolution: "electron@npm:11.2.0"
+"electron@npm:^18.3.7":
+  version: 18.3.15
+  resolution: "electron@npm:18.3.15"
   dependencies:
-    "@electron/get": ^1.0.1
-    "@types/node": ^12.0.12
+    "@electron/get": ^1.13.0
+    "@types/node": ^16.11.26
     extract-zip: ^1.0.3
   bin:
     electron: cli.js
-  checksum: e537ec1348f8e2600bcd97e766aba4560cdc6b6a2263e227481786c3cf0e688bbaee4a05b19ea7c92fe7d7232cbc241055ddddf6ac7bb9b80738f19f0cd6019e
+  checksum: 8533466bb7f3f5026063b5ccf2dce9ed6e8949475e2c9cc18e1a3dc067e0b09ce02ba03a36b911c77c391206e3929760284d7af0e52f15cff3a20f2780b52e1c
   languageName: node
   linkType: hard
 
@@ -13401,18 +13394,17 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"global-agent@npm:^2.0.2":
-  version: 2.1.12
-  resolution: "global-agent@npm:2.1.12"
+"global-agent@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "global-agent@npm:3.0.0"
   dependencies:
     boolean: ^3.0.1
-    core-js: ^3.6.5
     es6-error: ^4.1.1
     matcher: ^3.0.0
     roarr: ^2.15.3
     semver: ^7.3.2
     serialize-error: ^7.0.1
-  checksum: ee616a998d61d6dd0d7c37a00d91d37f40c556969ac6fc37ae44741fd04f4c9ae63c558f63646b49d6bbf428d4266903a7eb61d9e10af63bbc408e577bf15b06
+  checksum: bdb023256a346e411a1a9dc71e9f168fae99a89a965d5e4f7adbc97395f7d6a4659ca24733db179e1af41d18ad512ee6ef13d401179cb18cc21a78be1f5ad6f0
   languageName: node
   linkType: hard
 
@@ -21893,7 +21885,7 @@ fsevents@~2.1.2:
     dayjs: ^1.10.4
     devtron: ^1.4.0
     dnslink-cloudflare: ^3.0.0
-    electron: ^11.2.0
+    electron: ^18.3.7
     electron-builder: ^22.10.5
     electron-builder-notarize: ^1.2.0
     file-loader: ^6.2.0
@@ -24266,7 +24258,7 @@ fsevents@~2.1.2:
   languageName: node
   linkType: hard
 
-"sanitize-filename@npm:^1.6.2, sanitize-filename@npm:^1.6.3":
+"sanitize-filename@npm:^1.6.3":
   version: 1.6.3
   resolution: "sanitize-filename@npm:1.6.3"
   dependencies:
