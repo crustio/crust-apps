@@ -68,7 +68,7 @@ function calcSlashEras (slashes: [BN, UnappliedSlash[]][], ownStashes: StakerSta
       slash.slash.others.forEach(([accountId]): void => {
         const nominatorId = accountId.toString();
 
-        if (slashEra && !slashEra.guarantors.includes(nominatorId)) {
+        if (slashEra && !slashEra.nominators.includes(nominatorId)) {
           slashEra.nominators.push(nominatorId);
         }
       });

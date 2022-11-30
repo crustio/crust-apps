@@ -1,0 +1,22 @@
+{
+  "Amount": "Amount",
+  "Crust mainnet address": "Crust mainnet address",
+  "Crust parachain address": "Crust parachain address",
+  "Crust to Parachain": "Crust to Parachain",
+  "From Crust": "From Crust",
+  "From Parachain": "From Parachain",
+  "Parachain to Crust": "Parachain to Crust",
+  "Please reserve a small amount of CRU as transaction fee": "Please reserve a small amount of CRU as transaction fee",
+  "The Crust mainnet address": "The Crust mainnet address",
+  "The Crust parachain address": "The Crust parachain address",
+  "The account you will sign tx.": "The account you will sign tx.",
+  "This function is an internal test stage, the assets will not be lost, but there may be a delay (max to 48 hours) in the arrival of the account.": "This function is an internal test stage, the assets will not be lost, but there may be a delay (max to 48 hours) in the arrival of the account.",
+  "To Crust": "To Crust",
+  "To Parachain": "To Parachain",
+  "Transfer": "Transfer",
+  "Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.": "Type the amount you want to transfer. Note that you can select the unit on the right e.g sending 1 milli is equivalent to sending 0.001.",
+  "You can check the CSM assets here...": "You can check the CSM assets here...",
+  "account": "account",
+  "amount": "amount",
+  "cT prefixed address": "cT prefixed address"
+}
