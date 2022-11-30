@@ -24,15 +24,15 @@ jobs:
 
       - name: Build and push docker
         run: |
-          docker build -t coderyashiro/crust-shadow-apps:latest .
+          docker build -t coderyashiro/crust-para-apps:latest .
           docker login -u ${{ secrets.DOCKER_DEV_HUB_USER_NAME }} -p ${{ secrets.DOCKER_DEV_HUB_PASSWORD }}
-          docker push coderyashiro/crust-shadow-apps:latest
+          docker push coderyashiro/crust-para-apps:latest
       - name: Upgrade apps
         uses: fifsky/ssh-action@master
         with:
           command: |
-            docker pull coderyashiro/crust-shadow-apps:latest
-            cd /home/data/crust/docker/crust-shadow-apps
+            docker pull coderyashiro/crust-para-apps:latest
+            cd /home/data/crust/docker/crust-para-apps
             docker-compose up -d
           host: ${{ secrets.SSH_DEV_HOST }}
           user: ${{ secrets.SSH_DEV_USER }}
