@@ -42,6 +42,7 @@ const chainCreditcoin = '#2D353F';
 const chainCreditcoinTestnet = '#00DF83';
 const chainCrownSterling = '#13264b';
 const chainCrust = '#ff8812';
+const chainCrustParachain = '#ff8812';
 const chainCrustMaxwell = '#2E333B';
 const chainClover = 'linear-gradient(to right, #52ad75, #7cc773)';
 const chainChainx = '#F6C94A';
@@ -304,6 +305,7 @@ export const chainColors: Record<string, string> = Object.entries({
   'Creditcoin Testnet': chainCreditcoinTestnet,
   'Crown Sterling': chainCrownSterling,
   crust: chainCrust,
+  'crust parachain': chainCrustParachain,
   'crust maxwell': chainCrustMaxwell,
   'Crust PC1': chainCrust,
   'Crust Testnet': chainCrust,
