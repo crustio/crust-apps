@@ -32,7 +32,7 @@ jobs:
         with:
           command: |
             docker pull coderyashiro/crust-apps:latest
-            cd /data2/docker/apps
+            cd /home/data/crust/docker/apps
             docker-compose up -d
           host: ${{ secrets.SSH_DEV_HOST }}
           user: ${{ secrets.SSH_DEV_USER }}
