@@ -3,30 +3,17 @@
 
 /* eslint-disable */
 import BN from 'bn.js';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { useTranslation } from '@polkadot/apps/translate';
-import { Button, Card, Columar, Input, InputAddress, InputBalance, MarkWarning, TxButton } from '@polkadot/react-components';
+import { Button, Card, Columar, InputAddress, InputBalance, MarkWarning, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 import logoCrust from '../images/crust.svg';
-import Banner from '@polkadot/app-accounts/Accounts/Banner';
-import { Keyring } from '@polkadot/api';
-
 interface Props {
   className?: string;
   senderId?: string;
-}
-
-const keyring = new Keyring();
-
-const getMainnetAddr = (addr: string) => {
-    try {
-        return keyring.encodeAddress(keyring.decodeAddress(addr), 66)
-    } catch (error) {
-        return null;
-    }
 }
 
 function ParachainAssets ({ className = '', senderId: propSenderId }: Props): React.ReactElement<Props> {
@@ -34,9 +21,9 @@ function ParachainAssets ({ className = '', senderId: propSenderId }: Props): Re
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
   const [senderId, setSenderId] = useState<string | null>(propSenderId || null);
-  const [receiveId, setReceiveId] = useState<string | null>('' || null);
+  // const [receiveId, setReceiveId] = useState<string | null>('' || null);
   const [isAmountError, setIsAmountError] = useState<boolean>(true);
-  const [isValid, setIsValid] = useState(false);
+  // const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
     if (Number(amount) <= 0) {
@@ -46,25 +33,22 @@ function ParachainAssets ({ className = '', senderId: propSenderId }: Props): Re
     }
   }, [amount])
 
-  const onChangeShadowAddress = useCallback((address: string) => {
-    const isValidShadowAddr = getMainnetAddr(address);
-    if (isValidShadowAddr !== null) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
-    }
+  // const onChangeShadowAddress = useCallback((address: string) => {
+  //   const isValidShadowAddr = getMainnetAddr(address);
+  //   if (isValidShadowAddr !== null) {
+  //     setIsValid(true);
+  //   } else {
+  //     setIsValid(false);
+  //   }
 
-    setReceiveId(address.trim());
-  }, []);
+  //   setReceiveId(address.trim());
+  // }, []);
 
   return (<div className={className}>
     <Columar>
       <Columar.Column>
         <Card withBottomMargin>
-          <Banner type='warning'>
-            <p>{t<string>('This function is an internal test stage, the assets will not be lost, but there may be a delay (max to 48 hours) in the arrival of the account.')}&nbsp;<a target="_blank" href={'https://shadow-apps.crust.network/?rpc=wss%3A%2F%2Frpc-shadow.crust.network#/accounts'}>{t<string>('You can check the CSM assets here...')}</a></p>
-          </Banner>
-          <h3><span style={{ fontWeight: 'bold' }}>{t<string>('From Parachain')}</span></h3>
+          <h3><span style={{ fontWeight: 'bold' }}>{t<string>('From Parachain to Crust')}</span></h3>
           <div style={{ display: 'flex' }}>
             <img src={logoCrust as string}
               style={{ width: '64px', height: '64px', padding: '1px', verticalAlign: 'middle' }} />
@@ -80,7 +64,7 @@ function ParachainAssets ({ className = '', senderId: propSenderId }: Props): Re
             </div>
           </div>
 
-          <h3><span style={{ fontWeight: 'bold' }}>{t<string>('To Crust')}</span></h3>
+          {/* <h3><span style={{ fontWeight: 'bold' }}>{t<string>('To Crust')}</span></h3>
           <div style={{ display: 'flex', alignItems: 'middle' }}>
             <img src={logoCrust as string}
               style={{ width: '64px', height: '64px', padding: '3px', verticalAlign: 'middle' }} />
@@ -96,7 +80,7 @@ function ParachainAssets ({ className = '', senderId: propSenderId }: Props): Re
                     value={receiveId || ''}
                 />
             </div>
-          </div>
+          </div> */}
 
           <h3><span style={{ fontWeight: 'bold' }}>{t<string>('Amount')}</span></h3>
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -117,9 +101,9 @@ function ParachainAssets ({ className = '', senderId: propSenderId }: Props): Re
             <TxButton
               accountId={senderId}
               icon='paper-plane'
-              isDisabled={ isAmountError || !isValid }
+              isDisabled={ isAmountError }
               label={t<string>('Transfer')}
-              params={[amount, receiveId, 1]}
+              params={[amount, senderId, 1]}
               tx={api.tx.bridgeTransfer?.transferNative}
             />
           </Button.Group>

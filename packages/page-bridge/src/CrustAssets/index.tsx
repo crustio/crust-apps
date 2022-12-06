@@ -3,14 +3,13 @@
 
 /* eslint-disable */
 import BN from 'bn.js';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { useTranslation } from '@polkadot/apps/translate';
-import { Button, Card, Columar, Input, InputAddress, InputBalance, MarkWarning, TxButton } from '@polkadot/react-components';
+import { Button, Card, Columar, InputAddress, InputBalance, MarkWarning, TxButton } from '@polkadot/react-components';
 import { BN_ZERO, formatBalance } from '@polkadot/util';
 import logoCrust from '../images/crust.svg';
-import { Keyring } from '@polkadot/api';
 import { useMainnetApi } from '@polkadot/react-hooks/useMainnetApi';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import type { Balance } from '@polkadot/types/interfaces';
@@ -20,33 +19,21 @@ interface Props {
   senderId?: string;
 }
 
-const keyring = new Keyring();
-
-const getMainnetAddr = (addr: string) => {
-    try {
-        return keyring.encodeAddress(keyring.decodeAddress(addr), 66)
-    } catch (error) {
-        return null;
-    }
-}
-
 function CrustAssets ({ className = '', senderId: propSenderId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api: mainnetApi } = useMainnetApi();
   const { api } = useApi();
   const [amount, setAmount] = useState<BN | undefined>(BN_ZERO);
   const [senderId, setSenderId] = useState<string | null>(propSenderId || null);
-  const [receiveId, setReceiveId] = useState<string | null>('' || null);
+  // const [receiveId, setReceiveId] = useState<string | null>('' || null);
   const [isAmountError, setIsAmountError] = useState<boolean>(true);
-  const [isValid, setIsValid] = useState(false);
+  // const [isValid, setIsValid] = useState(false);
   const bridgeLimit = useCall<Balance>(api.query.bridgeTransfer.bridgeLimit);
 
   console.log('bridgeLimit::', bridgeLimit)
 
   useEffect(() => {
     if (bridgeLimit) {
-      console.log('bridgeLimit::', formatBalance(bridgeLimit, { decimals: 12, forceUnit: '-', withUnit: true }))
-      console.log('amount::', formatBalance(amount, { decimals: 12, forceUnit: '-', withUnit: true }))
       if (amount && Number(amount) <= 0 && bridgeLimit.gt(amount)) {
         setIsAmountError(true)
       } else {
@@ -56,22 +43,22 @@ function CrustAssets ({ className = '', senderId: propSenderId }: Props): React.
 
   }, [amount, bridgeLimit])
 
-  const onChangeShadowAddress = useCallback((address: string) => {
-    const isValidShadowAddr = getMainnetAddr(address);
-    if (isValidShadowAddr !== null) {
-      setIsValid(true);
-    } else {
-      setIsValid(false);
-    }
+  // const onChangeShadowAddress = useCallback((address: string) => {
+  //   const isValidShadowAddr = getMainnetAddr(address);
+  //   if (isValidShadowAddr !== null) {
+  //     setIsValid(true);
+  //   } else {
+  //     setIsValid(false);
+  //   }
 
-    setReceiveId(address.trim());
-  }, []);
+  //   setReceiveId(address.trim());
+  // }, []);
 
   return (<div className={className}>
     <Columar>
       <Columar.Column>
         <Card withBottomMargin>
-          <h3><span style={{ fontWeight: 'bold' }}>{t<string>('From Crust')}</span></h3>
+          <h3><span style={{ fontWeight: 'bold' }}>{t<string>('From Crust to Parachain')}</span></h3>
           <div style={{ display: 'flex' }}>
             <img src={logoCrust as string}
               style={{ width: '64px', height: '64px', padding: '1px', verticalAlign: 'middle' }} />
@@ -87,7 +74,7 @@ function CrustAssets ({ className = '', senderId: propSenderId }: Props): React.
             </div>
           </div>
 
-          <h3><span style={{ fontWeight: 'bold' }}>{t<string>('To Parachain')}</span></h3>
+          {/* <h3><span style={{ fontWeight: 'bold' }}>{t<string>('To Parachain')}</span></h3>
           <div style={{ display: 'flex', alignItems: 'middle' }}>
             <img src={logoCrust as string}
               style={{ width: '64px', height: '64px', padding: '3px', verticalAlign: 'middle' }} />
@@ -103,7 +90,7 @@ function CrustAssets ({ className = '', senderId: propSenderId }: Props): React.
                     value={receiveId || ''}
                 />
             </div>
-          </div>
+          </div> */}
 
           <h3><span style={{ fontWeight: 'bold' }}>{t<string>('Amount')}</span></h3>
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -130,7 +117,7 @@ function CrustAssets ({ className = '', senderId: propSenderId }: Props): React.
               icon='paper-plane'
               isDisabled={ isAmountError }
               label={t<string>('Transfer')}
-              params={[amount, receiveId]}
+              params={[amount, senderId]}
               tx={mainnetApi.tx.bridgeTransfer.transferToPolkadotParachain}
             />
           </Button.Group>
