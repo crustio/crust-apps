@@ -28,9 +28,7 @@ function CrustAssets ({ className = '', senderId: propSenderId }: Props): React.
   // const [receiveId, setReceiveId] = useState<string | null>('' || null);
   const [isAmountError, setIsAmountError] = useState<boolean>(true);
   // const [isValid, setIsValid] = useState(false);
-  const bridgeLimit = useCall<Balance>(api.query.bridgeTransfer.bridgeLimit);
-
-  console.log('bridgeLimit::', bridgeLimit)
+  const bridgeLimit = useCall<Balance>(api.query.bridgeTransfer?.bridgeLimit);
 
   useEffect(() => {
     if (bridgeLimit) {
@@ -103,12 +101,12 @@ function CrustAssets ({ className = '', senderId: propSenderId }: Props): React.
                 onChange={setAmount}
                 withMax
               />
-              <MarkWarning content={t<string>(`Please make sure that the amount you want to transfer is less than the the transfer bridge limit ({{limit}}).`, {
+              {bridgeLimit &&<MarkWarning content={t<string>(`Please make sure that the amount you want to transfer is less than the the transfer bridge limit ({{limit}}).`, {
                 replace: {
                   limit: formatBalance(bridgeLimit, { decimals: 12, forceUnit: '-', withUnit: true })
                 }
               })}>
-              </MarkWarning>
+              </MarkWarning>}
             </div>
           </div>
           <Button.Group>
