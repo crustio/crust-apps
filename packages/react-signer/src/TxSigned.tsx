@@ -30,6 +30,7 @@ import Tip from './Tip';
 import Transaction from './Transaction';
 import { useTranslation } from './translate';
 import { cacheUnlock, extractExternal, handleTxResults } from './util';
+import { useMainnetApi } from '@polkadot/react-hooks/useMainnetApi';
 
 interface Props {
   className?: string;
@@ -191,6 +192,7 @@ function tryExtract (address: string | null): AddressFlags {
 function TxSigned ({ className, currentItem, requestAddress }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const { api } = useApi();
+  const { api: mainnetApi } = useMainnetApi();
   const { getLedger } = useLedger();
   const { queueSetTxStatus } = useContext(StatusContext);
   const [flags, setFlags] = useState(() => tryExtract(requestAddress));
@@ -283,18 +285,31 @@ function TxSigned ({ className, currentItem, requestAddress }: Props): React.Rea
 
   const _onSend = useCallback(
     async (queueSetTxStatus: QueueTxMessageSetStatus, currentItem: QueueTx, senderInfo: AddressProxy): Promise<void> => {
+      // mainnet call -> "transferToPolkadotParachain"
+      const method = currentItem.extrinsic?.method.method
       if (senderInfo.signAddress) {
-        const [tx, [status, pairOrAddress, options]] = await Promise.all([
-          wrapTx(api, currentItem, senderInfo),
-          extractParams(api, senderInfo.signAddress, { nonce: -1, tip }, getLedger, setQrState)
-        ]);
+        if (method === 'transferToPolkadotParachain') {
+          const [tx, [status, pairOrAddress, options]] = await Promise.all([
+            wrapTx(mainnetApi, currentItem, senderInfo),
+            extractParams(mainnetApi, senderInfo.signAddress, { nonce: -1, tip }, getLedger, setQrState)
+          ]);
 
-        queueSetTxStatus(currentItem.id, status);
+          queueSetTxStatus(currentItem.id, status);
 
-        await signAndSend(queueSetTxStatus, currentItem, tx, pairOrAddress, options);
+          await signAndSend(queueSetTxStatus, currentItem, tx, pairOrAddress, options);
+        } else {
+          const [tx, [status, pairOrAddress, options]] = await Promise.all([
+            wrapTx(api, currentItem, senderInfo),
+            extractParams(api, senderInfo.signAddress, { nonce: -1, tip }, getLedger, setQrState)
+          ]);
+
+          queueSetTxStatus(currentItem.id, status);
+
+          await signAndSend(queueSetTxStatus, currentItem, tx, pairOrAddress, options);
+        }
       }
     },
-    [api, getLedger, tip]
+    [api, getLedger, tip, mainnetApi]
   );
 
   const _onSign = useCallback(
