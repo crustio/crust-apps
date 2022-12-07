@@ -13,6 +13,7 @@ import logoCrust from '../images/crust.svg';
 import { useMainnetApi } from '@polkadot/react-hooks/useMainnetApi';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import type { Balance } from '@polkadot/types/interfaces';
+import AvailableMainnetCru from '@polkadot/react-components/AvailableMainnetCru';
 
 interface Props {
   className?: string;
@@ -68,6 +69,12 @@ function CrustAssets ({ className = '', senderId: propSenderId }: Props): React.
                 label={t<string>('account')}
                 onChange={setSenderId}
                 type='account'
+                labelExtra={
+                  <AvailableMainnetCru
+                    label={t('mainnet transferrable')}
+                    params={senderId}
+                  />
+                }
               />
             </div>
           </div>

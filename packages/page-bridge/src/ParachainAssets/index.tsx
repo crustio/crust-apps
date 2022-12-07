@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { useTranslation } from '@polkadot/apps/translate';
-import { Button, Card, Columar, InputAddress, InputBalance, MarkWarning, TxButton } from '@polkadot/react-components';
+import { Available, Button, Card, Columar, InputAddress, InputBalance, MarkWarning, TxButton } from '@polkadot/react-components';
 import { useApi } from '@polkadot/react-hooks';
 import { BN_ZERO } from '@polkadot/util';
 import logoCrust from '../images/crust.svg';
@@ -60,6 +60,12 @@ function ParachainAssets ({ className = '', senderId: propSenderId }: Props): Re
                 label={t<string>('account')}
                 onChange={setSenderId}
                 type='account'
+                labelExtra={
+                  <Available
+                    label={t('transferrable')}
+                    params={senderId}
+                  />
+                }
               />
             </div>
           </div>
