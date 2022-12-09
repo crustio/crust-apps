@@ -71,7 +71,7 @@ function CrustAssets ({ className = '', senderId: propSenderId }: Props): React.
                 type='account'
                 labelExtra={
                   <AvailableMainnetCru
-                    label={t('mainnet transferrable')}
+                    label={t('mainnet transferable')}
                     params={senderId}
                   />
                 }

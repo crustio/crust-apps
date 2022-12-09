@@ -321,7 +321,7 @@ function UploadModal ({ className, file, onClose = NOOP, onSuccess = NOOP }: Pro
             label={t<string>('Please choose account')}
             labelExtra={
               <Available
-                label={t<string>('transferrable')}
+                label={t<string>('transferable')}
                 params={account}
               />
             }

@@ -61,7 +61,7 @@ function Bid ({ className, isDisabled, proxies }: Props): React.ReactElement<Pro
                 label={t<string>('use proxied account')}
                 labelExtra={
                   <Available
-                    label={<span className='label'>{t<string>('transferrable')}</span>}
+                    label={<span className='label'>{t<string>('transferable')}</span>}
                     params={accountId}
                   />
                 }

@@ -53,7 +53,7 @@ const definitions: OverrideBundleDefinition = {
         },
         TokenType: {
           _enum: [
-            'Transferrable',
+            'transferable',
             'BoundToAddress'
           ]
         },
@@ -65,7 +65,7 @@ const definitions: OverrideBundleDefinition = {
           ]
         },
         ClassProperties: {
-          Transferrable: 'bool',
+          transferable: 'bool',
           Burnable: 'bool'
         }
       }

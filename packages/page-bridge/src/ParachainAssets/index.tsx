@@ -62,7 +62,7 @@ function ParachainAssets ({ className = '', senderId: propSenderId }: Props): Re
                 type='account'
                 labelExtra={
                   <Available
-                    label={t('transferrable')}
+                    label={t('transferable')}
                     params={senderId}
                   />
                 }

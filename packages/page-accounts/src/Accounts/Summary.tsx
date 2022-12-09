@@ -25,9 +25,9 @@ function Summary ({ balance, className }: Props) {
             <CardSummary label={t<string>('total balance')}>
               <FormatBalance value={balance.total} />
             </CardSummary>}
-          {balance.transferrable.gtn(0) &&
-            <CardSummary label={t<string>('total transferrable')}>
-              <FormatBalance value={balance.transferrable} />
+          {balance.transferable.gtn(0) &&
+            <CardSummary label={t<string>('total transferable')}>
+              <FormatBalance value={balance.transferable} />
             </CardSummary>}
           {balance.locked.gtn(0) &&
             <CardSummary label={t<string>('total locked')}>

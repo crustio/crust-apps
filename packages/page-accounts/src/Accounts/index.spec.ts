@@ -102,10 +102,10 @@ describe('Accounts page', () => {
       const rows = await accountsPage.getAccountRows();
 
       await rows[0].assertBalancesDetails([
-        { amount: balance(0), name: 'transferrable' },
+        { amount: balance(0), name: 'transferable' },
         { amount: balance(30), name: 'locked' }]);
       await rows[1].assertBalancesDetails([
-        { amount: balance(50), name: 'transferrable' },
+        { amount: balance(50), name: 'transferable' },
         { amount: balance(150), name: 'reserved' }]);
     });
 
@@ -197,7 +197,7 @@ describe('Accounts page', () => {
         anAccountWithBalance({ availableBalance: balance(600) })
       );
 
-      const summary = await screen.findByTestId(/card-summary:(total )?transferrable/i);
+      const summary = await screen.findByTestId(/card-summary:(total )?transferable/i);
 
       expect(summary).toHaveTextContent(showBalance(400 + 600));
     });

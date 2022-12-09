@@ -110,7 +110,7 @@ function Transfer ({ className = '', onClose, recipientId: propRecipientId, send
               label={t<string>('send from account')}
               labelExtra={
                 <Available
-                  label={t<string>('transferrable')}
+                  label={t<string>('transferable')}
                   params={propSenderId || senderId}
                 />
               }
@@ -126,7 +126,7 @@ function Transfer ({ className = '', onClose, recipientId: propRecipientId, send
               label={t<string>('send to address')}
               labelExtra={
                 <Available
-                  label={t<string>('transferrable')}
+                  label={t<string>('transferable')}
                   params={propRecipientId || recipientId}
                 />
               }
@@ -146,7 +146,7 @@ function Transfer ({ className = '', onClose, recipientId: propRecipientId, send
                   help={t<string>('The full account balance to be transferred, minus the transaction fees')}
                   isDisabled
                   key={maxTransfer?.toString()}
-                  label={t<string>('transferrable minus fees')}
+                  label={t<string>('transferable minus fees')}
                 />
               )
               : (

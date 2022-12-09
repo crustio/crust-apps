@@ -35,5 +35,5 @@
   "files": "files",
   "password": "password",
   "status": "status",
-  "transferrable": "transferrable"
+  "transferable": "transferable"
 }

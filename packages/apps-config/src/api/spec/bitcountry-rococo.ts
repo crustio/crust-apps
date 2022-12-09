@@ -68,7 +68,7 @@ const definitions: OverrideBundleDefinition = {
         },
         TokenType: {
           _enum: [
-            'Transferrable',
+            'transferable',
             'BoundToAddress'
           ]
         },

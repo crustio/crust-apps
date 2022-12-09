@@ -28945,7 +28945,7 @@ export const typesBundle = {
             },
             "TokenType": {
               "_enum": [
-                "Transferrable",
+                "transferable",
                 "BoundToAddress"
               ]
             },
@@ -33641,7 +33641,7 @@ export const typesBundle = {
             },
             "TokenType": {
               "_enum": [
-                "Transferrable",
+                "transferable",
                 "BoundToAddress"
               ]
             },
@@ -33653,7 +33653,7 @@ export const typesBundle = {
               ]
             },
             "ClassProperties": {
-              "Transferrable": "bool",
+              "transferable": "bool",
               "Burnable": "bool"
             }
           }
