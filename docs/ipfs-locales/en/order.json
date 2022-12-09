@@ -45,7 +45,7 @@
   "FileCid": "File CID",
   "fileName": "File Name",
   "FileCidDesc": "Unique identification code of the file",
-  "transferrable":"transferrable",
+  "transferable":"transferable",
   "File Cid": "File CID",
   "fileSizeTitle": "File size (byte)",
   "fileSizeDesc": "If the size you fill in is smaller than the real file size, the order will fail",

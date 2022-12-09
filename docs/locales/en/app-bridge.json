@@ -45,6 +45,6 @@
   "cT prefixed address": "cT prefixed address",
   "erd prefixed hex": "erd prefixed hex",
   "has been successfully sent. Please wait a few minutes to check your assets on Crust Mainnet-side": "has been successfully sent. Please wait a few minutes to check your assets on Crust Mainnet-side",
-  "transferrable": "transferrable",
+  "transferable": "transferable",
   "{{ elrondTxHash }}": "{{ elrondTxHash }}"
 }
