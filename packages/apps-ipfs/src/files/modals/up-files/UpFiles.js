@@ -218,7 +218,7 @@ export default function UpFiles ({ file, endpoint, onClose, onSuccess }) {
             isDisabled={!hasAccounts}
             labelExtra={
               <Available
-                label={t('transferrable')}
+                label={t('transferable')}
                 params={account}
               />
             }

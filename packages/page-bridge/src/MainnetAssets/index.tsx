@@ -95,7 +95,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
                 onChange={setSenderId}
                 labelExtra={
                   <Available
-                    label={t('transferrable')}
+                    label={t('transferable')}
                     params={senderId}
                   />
                 }

@@ -31,7 +31,7 @@ function RewardMerchant ({ accountId, onClose }: Props): React.ReactElement<Prop
               label={t<string>('account')}
               labelExtra={
                 <Available
-                  label={t<string>('transferrable')}
+                  label={t<string>('transferable')}
                   params={accountId}
                 />
               }

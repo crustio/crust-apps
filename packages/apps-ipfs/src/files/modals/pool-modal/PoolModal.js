@@ -31,7 +31,7 @@ const PoolModal = ({ file, onClose, onSuccess }) => {
           isDisabled={!hasAccounts}
           labelExtra={
             <Available
-              label={t('transferrable')}
+              label={t('transferable')}
               params={account}
             />
           }

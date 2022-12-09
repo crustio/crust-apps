@@ -44,7 +44,7 @@ function AddCollateral ({ accountId, onClose }: Props): React.ReactElement<Props
                 label={t<string>('add collateral')}
                 labelExtra={
                   <Available
-                    label={<span className='label'>{t<string>('transferrable')}</span>}
+                    label={<span className='label'>{t<string>('transferable')}</span>}
                     params={accountId}
                   />
                 }

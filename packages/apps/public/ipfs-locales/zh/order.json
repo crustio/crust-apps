@@ -46,7 +46,7 @@
   "fileCidValid": "文件CID不正确!",
   "FileCid": "FileCid",
   "fileName": "文件名",
-  "transferrable": "可转账的",
+  "transferable": "可转账的",
   "File Cid": "文件 Cid",
   "fileSizeTitle": "文件大小",
   "fileSizeDesc": "如果您填写的大小小于文件真实大小，将会导致下单失败",

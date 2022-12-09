@@ -34,7 +34,7 @@ const FetchModal = ({  onClose, onConfirm }) => {
             isDisabled={!hasAccounts}
             labelExtra={
               <Available
-                label={t('transferrable')}
+                label={t('transferable')}
                 params={account}
               />
             }
