@@ -79,7 +79,7 @@ function ShadowAssets ({ className = '', senderId: propSenderId }: Props): React
                 onChange={setSenderId}
                 labelExtra={
                   <AvailableCsm
-                    label={t('transferrable')}
+                    label={t('transferable')}
                     params={senderId}
                   />
                 }

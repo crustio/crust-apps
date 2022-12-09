@@ -77,7 +77,7 @@ function Bond ({ className = '', foundsType, onClose, onSuccess, accountId: prop
                 label={t<string>('send from account')}
                 labelExtra={
                   <Available
-                    label={t<string>('transferrable')}
+                    label={t<string>('transferable')}
                     params={senderId}
                   />
                 }

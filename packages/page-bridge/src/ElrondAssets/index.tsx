@@ -104,7 +104,7 @@ function ElrondAssets ({ className = '', senderId: propSenderId }: Props): React
                 onChange={setSenderId}
                 labelExtra={
                   <Available
-                    label={t('transferrable')}
+                    label={t('transferable')}
                     params={senderId}
                   />
                 }

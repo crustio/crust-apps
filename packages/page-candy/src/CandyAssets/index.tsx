@@ -51,7 +51,7 @@ function CandyAssets ({ className = '', senderId: propSenderId }: Props): React.
             onChange={setSenderId}
             labelExtra={
                 <AvailableCandy
-                    label={t('transferrable')}
+                    label={t('transferable')}
                     params={senderId}
                 />
             }

@@ -81,7 +81,7 @@ function CreateGroup ({ className = '', onClose, onSuccess, senderId: propSender
                 label={t<string>('send from account')}
                 labelExtra={
                   <Available
-                    label={t<string>('transferrable')}
+                    label={t<string>('transferable')}
                     params={senderId}
                   />
                 }

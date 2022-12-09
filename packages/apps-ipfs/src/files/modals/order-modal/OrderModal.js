@@ -130,7 +130,7 @@ const OrderModal = ({ className = '', doAddOrder, file, onClose, t, title = 'ord
               isDisabled={!hasAccounts}
               labelExtra={
                 <Available
-                  label={t('transferrable')}
+                  label={t('transferable')}
                   params={account}
                 />
               }

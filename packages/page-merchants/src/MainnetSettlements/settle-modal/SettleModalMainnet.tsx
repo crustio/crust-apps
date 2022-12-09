@@ -66,7 +66,7 @@ const SettleModal: React.FC<Props> = ({ fileCid, onClose, onSuccess }) => {
           label={t('Please choose account')}
           labelExtra={
             <Available
-              label={t('transferrable')}
+              label={t('transferable')}
               params={account}
             />
           }

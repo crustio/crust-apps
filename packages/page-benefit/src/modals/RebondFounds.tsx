@@ -78,7 +78,7 @@ function RebondFounds ({ className = '', foundsType, onClose, onSuccess, senderI
                 label={t<string>('send from account')}
                 labelExtra={
                   <Available
-                    label={t<string>('transferrable')}
+                    label={t<string>('transferable')}
                     params={senderId}
                   />
                 }

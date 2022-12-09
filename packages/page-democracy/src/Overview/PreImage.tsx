@@ -66,7 +66,7 @@ function PreImage ({ className = '', imageHash, isImminent = false, onClose }: P
             label={t<string>('send from account')}
             labelExtra={
               <Available
-                label={<span className='label'>{t<string>('transferrable')}</span>}
+                label={<span className='label'>{t<string>('transferable')}</span>}
                 params={accountId}
               />
             }

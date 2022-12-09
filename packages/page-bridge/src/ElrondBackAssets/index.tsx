@@ -144,7 +144,7 @@ function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props>
                         onChange={setReceiveId}
                         labelExtra={
                           <Available
-                            label={t('transferrable')}
+                            label={t('transferable')}
                             params={receiveId}
                           />
                         }

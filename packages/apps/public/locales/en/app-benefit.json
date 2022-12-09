@@ -26,6 +26,6 @@
   "amount": "amount",
   "filter by name or tags": "filter by name or tags",
   "send from account": "send from account",
-  "transferrable": "transferrable",
+  "transferable": "transferable",
   "{{percentage}} of transaction fees will be reduced": "{{percentage}} of transaction fees will be reduced"
 }
