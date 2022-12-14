@@ -48,6 +48,12 @@ const MDropdown = styled(DropdownWrap)`
   }
 `;
 
+export const GATEWAYS = [
+  'https://crustipfs.live',
+  'https://crustipfs.art',
+  'https://crustipfs.info'
+]
+
 function randomSort (a, b) {
   return Math.random() > 0.5 ? -1 : 1;
 }
@@ -191,7 +197,10 @@ const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => 
     [t]
   );
   const [currentEndpoint, setCurrentEndpoint] = useState(endpoints[0]);
-  const gateway = isGatewayMode ? currentEndpoint.value : 'https://ipfs.io';
+  // const gateway = isGatewayMode ? currentEndpoint.value : 'https://ipfs.io';
+  const timestamp = new Date().getTime()
+
+  const gateway = GATEWAYS[timestamp % 3]
 
   const _onImportResult = useCallback(
     (message, status = 'queued') => {
