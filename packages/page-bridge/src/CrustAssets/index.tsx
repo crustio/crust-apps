@@ -33,7 +33,7 @@ function CrustAssets ({ className = '', senderId: propSenderId }: Props): React.
 
   useEffect(() => {
     if (bridgeLimit) {
-      if (amount && Number(amount) <= 0 && bridgeLimit.gt(amount)) {
+      if (amount &&( Number(amount) <= 0 || bridgeLimit.lte(amount))) {
         setIsAmountError(true)
       } else {
         setIsAmountError(false)
