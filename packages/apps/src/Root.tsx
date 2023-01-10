@@ -52,7 +52,7 @@ function Root ({ isElectron, store }: Props): React.ReactElement<Props> {
             store={store}
           >
             <MainnetApi 
-              apiUrl={'wss://rpc-rocky.crust.network'}
+              apiUrl={'wss://crust.api.onfinality.io/public-ws'}
               isElectron={isElectron}
               store={store}
             >

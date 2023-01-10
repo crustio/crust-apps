@@ -36,7 +36,7 @@ export const prodChains: EndpointOption[] = [
     info: 'crustParachain',
     text: 'Crust Parachain',
     providers: {
-      'Crust Network': 'wss://para-crust.crust.network'
+      'Crust Network': 'wss://crust-parachain.crustapps.net'
     }
   }
 ];
