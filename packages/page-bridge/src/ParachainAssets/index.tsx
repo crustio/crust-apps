@@ -99,7 +99,7 @@ function ParachainAssets ({ className = '', senderId: propSenderId }: Props): Re
                 onChange={setAmount}
                 withMax
               />
-              <MarkWarning content={t<string>('Please reserve a small amount of CRU as transaction fee')}>
+              <MarkWarning content={t<string>('Please reserve a small amount of CRU as transaction fee. The minimal limit to bridge between parachain and mainnet is 0.1 CRU.')}>
               </MarkWarning>
             </div>
           </div>

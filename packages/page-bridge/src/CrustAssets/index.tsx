@@ -108,7 +108,7 @@ function CrustAssets ({ className = '', senderId: propSenderId }: Props): React.
                 onChange={setAmount}
                 withMax
               />
-              {bridgeLimit &&<MarkWarning content={t<string>(`Please make sure that the amount you want to transfer is less than the the transfer bridge limit ({{limit}}).`, {
+              {bridgeLimit &&<MarkWarning content={t<string>(`Please make sure that the amount you want to transfer is less than the the transfer bridge limit ({{limit}}). The minimal limit to bridge between parachain and mainnet is 0.1 CRU.`, {
                 replace: {
                   limit: formatBalance(bridgeLimit, { decimals: 12, forceUnit: '-', withUnit: true })
                 }
