@@ -36,7 +36,7 @@ const STORAGE_AFFINITIES = 'network:affinities';
 const shadowApiUrl = 'wss://rpc2-shadow.crust.network';
 const paraChainApiUrl = 'wss://crust-parachain.crustapps.net';
 const directUrl = 'https://shadow-apps.crust.network';
-const directUrl2 = 'https://para-apps.crust.network/#/';
+const directUrl2 = 'https://para-apps.crust.network';
 
 function isValidUrl (url: string): boolean {
   return (
