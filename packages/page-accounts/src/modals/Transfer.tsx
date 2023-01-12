@@ -12,12 +12,10 @@ import { checkAddress } from '@polkadot/phishing';
 import { InputAddress, InputBalance, MarkError, MarkWarning, Modal, Toggle, TxButton } from '@polkadot/react-components';
 import { useApi, useCall } from '@polkadot/react-hooks';
 import { Available } from '@polkadot/react-query';
-import { BN_HUNDRED, BN_ZERO, isFunction } from '@polkadot/util';
+import { keyring } from '@polkadot/ui-keyring';
+import { BN_HUNDRED, BN_ZERO, hexToU8a, isFunction, isHex } from '@polkadot/util';
 
 import { useTranslation } from '../translate';
-import { keyring } from '@polkadot/ui-keyring';
-import { assert, hexToU8a, isHex } from '@polkadot/util';
-import Address from '@polkadot/react-signer/Address';
 
 interface Props {
   className?: string;
@@ -100,24 +98,25 @@ function Transfer ({ className = '', onClose, recipientId: propRecipientId, send
         const u8a = isHex(recipientId)
           ? hexToU8a(recipientId)
           : keyring.decodeAddress(recipientId);
-    
+
         if (u8a.length === 20) {
           // pass it
-          setIsBridgeTransfer(false)
+          setIsBridgeTransfer(false);
         } else {
           const paraAccount = keyring.encodeAddress(u8a, 88);
+
           if (paraAccount === recipientId) {
-            setIsBridgeTransfer(true)
+            setIsBridgeTransfer(true);
           } else {
-            setIsBridgeTransfer(false)
+            setIsBridgeTransfer(false);
           }
         }
       } catch (error) {
         // noop, undefined return indicates invalid/transient
-        setIsBridgeTransfer(false)
-      }  
+        setIsBridgeTransfer(false);
+      }
     }
-  }, [recipientId])
+  }, [recipientId]);
 
   const noReference = accountInfo
     ? isRefcount(accountInfo)
@@ -169,7 +168,7 @@ function Transfer ({ className = '', onClose, recipientId: propRecipientId, send
               <MarkError content={t<string>('The recipient is associated with a known phishing site on {{url}}', { replace: { url: recipientPhish } })} />
             )}
             {isBridgeTransfer && (
-              <MarkError content={t<string>(`This network doesn't support this address. Please use crust polkadot parachain instead.`)} />
+              <MarkError content={t<string>('This network doesn\'t support this address. Please use crust polkadot parachain instead.')} />
             )}
           </Modal.Columns>
           <Modal.Columns hint={t<string>('If the recipient account is new, the balance needs to be more than the existential deposit. Likewise if the sending account balance drops below the same value, the account will be removed from the state.')}>
