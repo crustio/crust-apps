@@ -53,6 +53,13 @@ export function createProduction (t: TFunction): LinkOption[] {
       providers: {
         'Crust Network': 'wss://crust-shadow'
       }
+    },
+    {
+      info: 'crustParachain',
+      text: t('rpc.crust.network', 'Crust Parachain', { ns: 'apps-config' }),
+      providers: {
+        'Crust Network': 'wss://crust-parachain.crustapps.net'
+      }
     }
   ]);
 }

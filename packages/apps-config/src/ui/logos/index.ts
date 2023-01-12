@@ -234,6 +234,7 @@ export const namedLogos: Record<string, unknown> = {
   clover: nodeClover,
   crab: nodeCrab,
   crust: nodeCrust,
+  'crustParachain': nodeCrust,
   'crust-maxwell': nodeCrustMaxwell,
   'crust-rocky': logoRocky,
   darwinia: nodeDarwinia,
