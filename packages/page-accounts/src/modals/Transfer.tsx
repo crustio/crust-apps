@@ -105,7 +105,7 @@ function Transfer ({ className = '', onClose, recipientId: propRecipientId, send
           // pass it
           setIsBridgeTransfer(false)
         } else {
-          const paraAccount = keyring.encodeAddress(u8a, 77);
+          const paraAccount = keyring.encodeAddress(u8a, 88);
           if (paraAccount === recipientId) {
             setIsBridgeTransfer(true)
           } else {
