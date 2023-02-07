@@ -74,10 +74,12 @@ function AddressMiniForEffectiveStake ({ children, className = '', effectiveStak
       </div>
       <div className='ui--AddressMini-balances'>
         <Label label={t<string>('total stake')} />
-          <FormatBalance value={totalStake}>
-            
-            &nbsp;{ (effectiveStake === null || effectiveStake && effectiveStake.lten(0)) && <Icon icon='info-circle' color='red' tooltip={`mainnet-reward-trigger`} /> }
-          </FormatBalance>
+        <FormatBalance value={totalStake}>
+
+            &nbsp;{ (effectiveStake === null || (effectiveStake && effectiveStake.lten(0))) && <Icon color='red'
+            icon='info-circle'
+            tooltip={'mainnet-reward-trigger'} /> }
+        </FormatBalance>
         {/* <Label label={t<string>('effective stake')} /><FormatBalance value={effectiveStake}></FormatBalance> */}
       </div>
     </div>
