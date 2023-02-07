@@ -124,7 +124,7 @@ function Actions ({ className = '', isInElection, ownStashes, targets }: Props):
     [t('controller'), 'address'],
     [t('rewards'), 'start media--1200'],
     [t('bonded'), 'number'],
-    [t('effective stake')],
+    [t('total stake')],
     [t('role'), 'number ui--media-1200'],
     [undefined, undefined, 2]
   ]);
