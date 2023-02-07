@@ -1773,5 +1773,7 @@
   "According to the original plan, Maxwell network is about to enter the end of its life and already closed the claim function. Please go to the ": "Maxwell网络按照原定计划即将步入其生命末期，已经关闭claim功能，请到",
   "main network ": "主网",
   "shadow network ": "shadow网络",
-  "to claim CRU or CSM": "进行认领相关操作"
+  "to claim CRU or CSM": "进行认领相关操作",
+  "This limit is only a limit on the power for validators. When the number of guaranteed votes exceeds this limit, validators' power will on longer increase.": "这个限制只是对验证人算力的限制。当担保票数超过此限制时，验证人的算力将不再增加。",
+  "power limit": "算力上限"
 }

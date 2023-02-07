@@ -10,7 +10,7 @@ import type { SortedTargets, ValidatorInfo } from '../types';
 import BN from 'bn.js';
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
-import { Table } from '@polkadot/react-components';
+import { Icon, Table, Tooltip } from '@polkadot/react-components';
 import { useApi, useCall, useLoadingDelay, useSavedFlags } from '@polkadot/react-hooks';
 import { BlockAuthorsContext } from '@polkadot/react-query';
 import { BN_ZERO } from '@polkadot/util';
@@ -119,10 +119,16 @@ function CurrentList ({ favorites, hasQueries, isIntentions, stakingOverview, ta
   const headerWaitingRef = useRef([
     [t('intentions'), 'start', 2],
     [t('APY of Guarantor')],
-    [t('guarantors'), 1],
-    [t('own effective stake')],
-    [t('stake limit')],
-    [t('total stakes')],
+    [t('total stakes'), 1],
+    [t('own stake')],
+    [<><Icon
+      icon='info-circle'
+      tooltip={`power-limit-trigger`}
+    /><Tooltip
+      text={t(`This limit is only a limit on the power for validators. When the number of guaranteed votes exceeds this limit, validators' power will on longer increase.`)}
+      trigger={`power-limit-trigger`}
+    />{t('power limit')}</>],
+    // [t('total stakes')],
     [t('guarantee fee')],
     [],
     [undefined, 'media--1200']
@@ -131,10 +137,16 @@ function CurrentList ({ favorites, hasQueries, isIntentions, stakingOverview, ta
   const headerActiveRef = useRef([
     [t('validators'), 'start', 2],
     [t('APY of Guarantor')],
-    [t('other effective stake')],
-    [t('own effective stake'), 'media--1100'],
-    [t('stake limit')],
     [t('total stakes')],
+    [t('own stake'), 'media--1100'],
+    [<><Icon
+      icon='info-circle'
+      tooltip={`power-limit-trigger`}
+    /><Tooltip
+      text={t(`This limit is only a limit on the power for validators. When the number of guaranteed votes exceeds this limit, validators' power will on longer increase.`)}
+      trigger={`power-limit-trigger`}
+    />{t('power limit')}</>],
+    // [t('total stakes')],
     [t('guarantee fee')],
     [t('points')],
     [t('last verified block #')],
