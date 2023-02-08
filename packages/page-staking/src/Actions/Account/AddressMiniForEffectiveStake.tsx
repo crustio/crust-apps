@@ -9,13 +9,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { useTranslation } from '@polkadot/apps/translate';
-import { AccountName, IdentityIcon, Label } from '@polkadot/react-components';
+import { AccountName, Icon, IdentityIcon, Label } from '@polkadot/react-components';
 import { toShortAddress } from '@polkadot/react-components/util';
 import { FormatBalance } from '@polkadot/react-query';
 
 interface Props {
   totalStake?: BN | BN[];
-  effectiveStake?: BN | BN[];
+  effectiveStake?: BN;
   children?: React.ReactNode;
   className?: string;
   iconInfo?: React.ReactNode;
@@ -73,8 +73,14 @@ function AddressMiniForEffectiveStake ({ children, className = '', effectiveStak
         {children}
       </div>
       <div className='ui--AddressMini-balances'>
-        <Label label={t<string>('total stake')} /><FormatBalance value={totalStake}></FormatBalance>
-        <Label label={t<string>('effective stake')} /><FormatBalance value={effectiveStake}></FormatBalance>
+        <Label label={t<string>('total stake')} />
+        <FormatBalance value={totalStake}>
+
+            &nbsp;{ (effectiveStake === null || (effectiveStake && effectiveStake.lten(0))) && <Icon color='red'
+            icon='info-circle'
+            tooltip={'mainnet-reward-trigger'} /> }
+        </FormatBalance>
+        {/* <Label label={t<string>('effective stake')} /><FormatBalance value={effectiveStake}></FormatBalance> */}
       </div>
     </div>
   );

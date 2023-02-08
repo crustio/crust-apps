@@ -34,7 +34,7 @@ function extractFunction (all: NominatorValue[]): null | [number, () => React.Re
 }
 
 function extractTotals (maxPaid: BN | undefined, nominators: NominatorValue[], stakeOther?: BN): [null | [number, () => React.ReactNode[]], BN, null | [number, () => React.ReactNode[]], BN] {
-  const sorted = nominators.sort((a, b) => b.value.cmp(a.value));
+  const sorted = nominators.sort((a, b) => b.value?.cmp(a.value));
 
   if (!maxPaid || maxPaid.gtn(sorted.length)) {
     return [extractFunction(sorted), stakeOther || BN_ZERO, null, BN_ZERO];

@@ -47,7 +47,7 @@ function EffectiveGuaranteed ({ activeEra, stakeValue, stashId, validators }: Pr
         guaranteeTargets.push(guaranteeTarget);
       }
     }
-    stakeValue = guaranteeTargets.reduce((total: BN, [, value]) => { return total.add(new BN(Number(value).toString()))}, BN_ZERO);
+    stakeValue = guaranteeTargets.reduce((total: BN, [, _effective, staked]) => { return total.add(new BN(Number(staked).toString()))}, BN_ZERO);
   }
 
 

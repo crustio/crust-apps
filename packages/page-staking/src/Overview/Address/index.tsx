@@ -15,7 +15,7 @@ import { ApiPromise } from '@polkadot/api';
 import { AddressSmall, Icon, LinkExternal, Tooltip } from '@polkadot/react-components';
 import { checkVisibility } from '@polkadot/react-components/util';
 import { useApi, useCall } from '@polkadot/react-hooks';
-import { FormatBalance } from '@polkadot/react-query';
+import { FormatBalance, FormatPw } from '@polkadot/react-query';
 import { Compact } from '@polkadot/types/codec';
 import { Codec } from '@polkadot/types/types';
 
@@ -121,32 +121,40 @@ function useAddressCalls (api: ApiPromise, address: string, isMain?: boolean) {
   const accountIdBonded = useCall<string | null>(api.query.staking.bonded, params, transformBonded);
   const controllerActive = useCall<Balance | null>(api.query.staking.ledger, [accountIdBonded], transformLedger);
   const erasStakersStash = erasStakersStashExposure && (parseObj(erasStakersStashExposure).others.map((e: { who: any; }) => e.who));
+  const nominators: NominatorValue[] = [{
+    nominatorId: address,
+    value: controllerActive as unknown as Balance
+  }];
 
   const stakersGuarantees = useCall<Guarantee[]>(api.query.staking.guarantors.multi, [erasStakersStash]);
   let totalStaked = new BN(Number(controllerActive).toString());
-
+  
   if (stakersGuarantees) {
-    for (const stakersGuarantee of stakersGuarantees) {
-      if (parseObj(stakersGuarantee)) {
-        for (const target of parseObj(stakersGuarantee)?.targets) {
+    for (const index in stakersGuarantees) {
+      if (parseObj(stakersGuarantees[index])) {
+        for (const target of parseObj(stakersGuarantees[index])?.targets) {
           if (target.who.toString() == address) {
             totalStaked = totalStaked?.add(new BN(Number(target.value).toString()));
+            nominators.push({
+              nominatorId: erasStakersStash[index],
+              value: api.createType('Balance', Number(target.value).toString())
+            })
           }
         }
       }
     }
   }
 
-  return { accountInfo, slashingSpans, totalStaked, stakeLimit, activeEra };
+  return { accountInfo, slashingSpans, totalStaked, stakeLimit, activeEra, nominators, controllerActive };
 }
 
 const UNIT = new BN(1_000_000_000_000);
 
 function Address ({ address, className = '', filterName, hasQueries, isElected, isFavorite, isMain, lastBlock, validatorCount, totalReward, points, recentlyOnline, toggleFavorite, validatorInfo, withIdentity, totalEffectiveStake }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  const { accountInfo, stakeLimit, totalStaked, activeEra } = useAddressCalls(api, address, isMain);
+  const { accountInfo, stakeLimit, totalStaked, activeEra, nominators, controllerActive } = useAddressCalls(api, address, isMain);
   const [guarantorApy, setGuarantorApy] = useState<number>(0);
-  const { guarantee_fee, nominators, stakeOther, stakeOwn, guarantee_fee_pref } = useMemo(
+  const { guarantee_fee, stakeOwn, guarantee_fee_pref } = useMemo(
     () => validatorInfo
       ? expandInfo(validatorInfo)
       : { nominators: [] },
@@ -228,30 +236,31 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
       </td>
       {<StakeOther
         nominators={nominators}
-        stakeOther={stakeOther}
+        stakeOther={totalStaked}
       />
       }
       {(
         <td className='number media--1100'>
           {(
-            <FormatBalance value={stakeOwn} />
+            <FormatBalance value={controllerActive} />
           )}
         </td>
       )}
       <td className='number media--1100'>
         {stakeLimit && (
           <div>
-            <FormatBalance value={new BN(Number(stakeLimit)?.toString())} />
+            <FormatPw value={new BN(Number(stakeLimit)?.toString())} />
+            {/* {formatBalance(new BN(Number(stakeLimit)?.toString()), { decimals: 12, withUnit: 'Pw' })} */}
           </div>
         )}
       </td>
-      <td className='number media--1100'>
+      {/* <td className='number media--1100'>
         {totalStaked && (
           <div>
             <FormatBalance value={totalStaked} />
           </div>
         )}
-      </td>
+      </td> */}
       <td className='number'>
         {guarantee_fee}
       </td>
