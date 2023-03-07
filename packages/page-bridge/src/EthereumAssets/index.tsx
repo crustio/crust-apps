@@ -201,7 +201,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
                 <div style={{ flex: 1, 'verticalAlign': 'middle' }}>
                     <Input
                         type={"number"}
-                        help={t<string>('Type the amount you want to transfer.')}
+                        help={t<string>('Type the amount you want to transfer. Note that the transfer amount must be greater than 0.')}
                         label={t<string>('amount')}
                         isError={isAmountError}
                         onChange={setAmount}
