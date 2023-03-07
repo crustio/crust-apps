@@ -111,7 +111,7 @@ function ElrondBackAssets ({ className = '' }: Props): React.ReactElement<Props>
         <Card withBottomMargin>
           <Modal.Content>
             <Banner type='warning'>
-              <p>{t<string>('This function is an internal test stage, the assets will not be lost, but there may be a delay (max to 48 hours) in the arrival of the account.')}</p>
+              <p>{t<string>('There may be a delay (max to 48 hours) in the arrival of the account. Please note that the transfer amount must be greater than 0')}</p>
             </Banner>
             {/* <h3><span style={{ 'fontWeight': 'bold' }}>{t<string>('From Ethereum')}</span></h3>
             <div style={{display: "flex", alignItems: 'center'}}>
