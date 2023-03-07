@@ -238,7 +238,7 @@ function EthereumAssets ({ className = '' }: Props): React.ReactElement<Props> {
               )}
               <Button
                 icon='paper-plane'
-                isDisabled={isAmountError || shouldApprove}
+                isDisabled={shouldApprove}
                 label={t<string>('Submit')}
                 onClick={submit}
               />
