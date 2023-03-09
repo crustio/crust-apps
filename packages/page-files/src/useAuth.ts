@@ -20,6 +20,7 @@ export function useAuthGateway (): AuthGateway {
   const { t } = useTranslation();
   const endpoints = useMemo(
     () => createAuthIpfsEndpoints(t)
+      .filter(item => item.status === "online")
       .sort(() => Math.random() > 0.5 ? -1 : 1)
       .map((item) => ({ ...item, text: `${item.text ?? ''}(${item.location ?? ''})` })),
     [t]
