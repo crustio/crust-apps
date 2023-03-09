@@ -13,11 +13,12 @@ interface Props {
   help: React.ReactNode;
   icon?: IconName;
   className?: string;
+  color?: string;
 }
 
 let id = 0;
 
-function LabelHelp ({ className = '', help, icon = 'question-circle' }: Props): React.ReactElement<Props> {
+function LabelHelp ({ className = '', color = '', help, icon = 'question-circle' }: Props): React.ReactElement<Props> {
   const [trigger] = useState(() => `label-help-${++id}`);
 
   return (
@@ -25,6 +26,7 @@ function LabelHelp ({ className = '', help, icon = 'question-circle' }: Props): 
       <Icon
         icon={icon}
         tooltip={trigger}
+        color={color}
       />
       <Tooltip
         text={help}

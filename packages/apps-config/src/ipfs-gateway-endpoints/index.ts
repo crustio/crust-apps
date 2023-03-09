@@ -9,6 +9,7 @@ import type { AuthIpfsEndpoint } from './types';
 //   text: the IPFS endpoint name
 //   value: the IPFS endpoint domain
 //   location: IPFS gateway location
+//   status: IPFS gateway status: online, error, inactivated(incluede null and all other strings)
 export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
   return [
     // for Beta
@@ -21,17 +22,20 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
     {
       location: t('Singapore'),
       text: t('DCF'),
-      value: 'https://crustipfs.xyz'
+      value: 'https://crustipfs.xyz',
+      status: 'online'
     },
     {
       location: t('Seattle'),
       text: t('⚡ Thunder Gateway'),
-      value: 'https://gw.crustfiles.app'
+      value: 'https://gw.crustfiles.app',
+      status: 'online'
     },
     {
       location: t('Berlin'),
       text: t('Crust Network'),
-      value: 'https://ipfs-gw.decloud.foundation'
+      value: 'https://ipfs-gw.decloud.foundation',
+      status: 'error'
     },
     {
       location: t('Shanghai'),
