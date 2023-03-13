@@ -201,11 +201,11 @@ const Order = ({ routeInfo: { url, params }, watchList: list, doAddOrders }) => 
           help = "An error in this gateway, waiting to be fixed";
           color = "red";
         }
-        return <div style={{ marginRight: '0.3rem', display: 'inline-block'}}><LabelHelp color={color} help={help} icon="circle" /></div>
+        return <div style={{ marginRight: '0.2rem', display: 'inline-block'}}><LabelHelp color={color} help={help} icon="circle" /></div>
       },
       text: <div style={{ display: 'inline-block' }}>
         <div style={{ display: 'inline-block' }}>{item.text}({item.location})</div>
-        <LabelHelp style={{ marginLeft: '0.25rem', marginTop: '2px' }} help={item.value} icon="link" />
+        <LabelHelp style={{ marginLeft: '0.2rem', marginTop: '2px' }} help={item.value} icon="link" />
       </div>,
       disabled: item.status != 'online'
     })),
