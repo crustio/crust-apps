@@ -27,7 +27,7 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
     },
     {
       location: t('Seattle'),
-      text: t('⚡ Thunder Gateway'),
+      text: t('⚡ Thunder'),
       value: 'https://gw.crustfiles.app',
       status: 'online'
     },
@@ -39,7 +39,7 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
     },
     {
       location: t('Shanghai'),
-      text: t('️⚡ Thunder Gateway'),
+      text: t('️⚡ Thunder'),
       value: 'https://gw.crustfiles.net',
       status: 'online'
     },
