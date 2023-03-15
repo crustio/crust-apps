@@ -31,11 +31,14 @@ Please fork this repo, and add your gateway to `index.ts` with the following for
     value: 'https://crustipfs.xyz',
     text: t('Crust Network'),
     location: t('Singapore'),
+    // crustAddress: cTM4JJMox7nbUqa1R6yMDwnqdEJByWDzHtdr1QczT2MqEVC33
 }
-// value:    your gateway url
-// text:     your organization name
-// location: where is your gateway
 ```
+The following is the parameter description
+- 'value':    your gateway url
+- 'text':     your organization name
+- 'location': where is your gateway
+- '// crustAddress': for receiving rewards. `Be careful not to forget the double slashes`
 
 Then, after your PR merged, you'll see your gateway on [Crust Apps](https://apps.crust.network/) with gray icon
 
