@@ -45,7 +45,7 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
     },
     {
       location: t('Zhengzhou'),
-      text: t('️Crust Network'),
+      text: t('️Crust Network IPFS Gateway'),
       value: 'http://ipfs.smallwolf.me:9080',
       status: 'online',
       // crustAddress: cTL7AwVGvYfTvXuEX61HbPGLiqaf2P7RwHNiJJargDL46dz1Z
