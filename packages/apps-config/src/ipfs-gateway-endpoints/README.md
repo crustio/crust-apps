@@ -32,6 +32,7 @@ Please fork this repo, and add your gateway to `index.ts` with the following for
     text: t('Crust Network'),
     location: t('Singapore'),
     // crustAddress: cTM4JJMox7nbUqa1R6yMDwnqdEJByWDzHtdr1QczT2MqEVC33
+    // contactInformation: telegram address or xxxx@gmail.com
 }
 ```
 The following is the parameter description
@@ -39,6 +40,7 @@ The following is the parameter description
 - 'text':     your organization name
 - 'location': where is your gateway
 - '// crustAddress': for receiving rewards. `Be careful not to forget the double slashes`
+- '// contactInformation': for communicating. `Be careful not to forget the double slashes`
 
 In the PR, you need share your **machine's user name and ip addres**, which is used for crust to check the gateway status. Please add the following pubkey into the .ssh to give access right. If you meet any problem, please ask in the telegram or discord.
 
