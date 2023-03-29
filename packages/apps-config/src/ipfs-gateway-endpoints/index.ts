@@ -55,6 +55,12 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       value: 'https://crustgateway.com'
       //crustAddress: cTJUpCMAEzcLzaQej1A456S9v1qYpjFd8JgK9GLoeh4CKtaj7
     }
+    {
+      location: t('Germany'),
+      text: t('️crustgateway-de'),
+      value: 'https://crustgateway.online'
+      //crustAddress: cTJUpCMAEzcLzaQej1A456S9v1qYpjFd8JgK9GLoeh4CKtaj7
+    }
     // {
     //   location: t('Beijing'),
     //   text: t('️Deklod'),
