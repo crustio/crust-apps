@@ -48,6 +48,12 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       text: t('️crust-fans'),
       value: 'https://crust.fans'
       //crustAddress: cTJUpCMAEzcLzaQej1A456S9v1qYpjFd8JgK9GLoeh4CKtaj7
+    },
+    {
+      location: t('Phoenix'),
+      text: t('️crustgateway'),
+      value: 'https://crustgateway.com'
+      //crustAddress: cTJUpCMAEzcLzaQej1A456S9v1qYpjFd8JgK9GLoeh4CKtaj7
     }
     // {
     //   location: t('Beijing'),
