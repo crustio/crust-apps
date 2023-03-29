@@ -43,6 +43,13 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       value: 'https://gw.crustfiles.net',
       status: 'online'
     },
+    {
+      value: 'https://gw.smallwolf.me',
+      text: t('Crust IFPS Gateway'),
+      location: t('Zhengzhou'),
+      // crustAddress: cTL7AwVGvYfTvXuEX61HbPGLiqaf2P7RwHNiJJargDL46dz1Z
+      // contactInformation: shiwudeluyou@gmail.com
+    }
     // {
     //   location: t('Beijing'),
     //   text: t('️Deklod'),
