@@ -43,6 +43,12 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       value: 'https://gw.crustfiles.net',
       status: 'online'
     },
+    {
+      value: 'https://gate.muggleblock.com',
+      text: t('mugglepool'),
+      location: t('Yangzhou'),
+      // crustAddress: cTGp1REPkhUzLkaR4Qq8P38DaB3iHggT94yED3cVKE4DSLGjb
+    }
     // {
     //   location: t('Beijing'),
     //   text: t('️Deklod'),
