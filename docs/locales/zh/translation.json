@@ -365,7 +365,7 @@
   "If this proposal is passed, the changes will be applied via dispatch and the deposit returned.": "如果此提案通过，将通过消息发送进行变更并退还押金。",
   "If you add several proxy accounts for the same proxy type (e.g 2 accounts set as proxy for Governance), then any of those 2 accounts will be able to perfom governance actions on behalf of the proxied account": "如果为同一代理类型添加多个代理帐户（例如2个帐户设置为代理治理），则这2个帐户中的任何一个都可以代表代理帐户执行治理操作",
   "If you are moving accounts between applications, ensure that you use the correct type.": "如果你在不同的应用间移动账户，请确保你使用了正确的类型。",
-  "If you do not have Maiar DeFi Wallet extension installed, please install it first.": "如果未安装Maiar DeFi Wallet插件，请先安装。",
+  "If you do not have MultiversX DeFi Wallet extension installed, please install it first.": "如果未安装MultiversX DeFi Wallet插件，请先安装。",
   "If you have not claimed rewards straight after the end of the era, the validator is in the active set and you are seeing no rewards, this would mean that the reward payout transaction was made by another account on your behalf. Always check your favorite explorer to see any historic payouts made to your accounts.": "如果你在 era 结束后没有直接领取奖励，验证人在活跃节点池中，而你没有看到任何奖励，这意味着奖励支付交易是由另一个帐户代表你进行的。可以通过你喜欢的浏览器去查看支付给你的帐户的记录。",
   "Image": "图像",
   "Import": "导入",
