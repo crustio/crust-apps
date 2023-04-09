@@ -51,6 +51,14 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       // crustAddress: cTL7AwVGvYfTvXuEX61HbPGLiqaf2P7RwHNiJJargDL46dz1Z
       // email: shiwudeluyou@gmail.com  tg: @mstflint
     },
+    {
+      location: t('Los Angeles'),
+      text: t('️Crust IPFS GW'),
+      value: 'https://gw.smallwolf.me',
+      status: 'online',
+      // crustAddress: cTL7AwVGvYfTvXuEX61HbPGLiqaf2P7RwHNiJJargDL46dz1Z
+      // email: shiwudeluyou@gmail.com  tg: @mstflint
+    },
     // {
     //   location: t('Beijing'),
     //   text: t('️Deklod'),
