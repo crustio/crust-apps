@@ -12,12 +12,6 @@ import type { AuthIpfsEndpoint } from './types';
 //   status: IPFS gateway status: online, error, inactivated(incluede null and all other strings)
 export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
   return [
-    // for Beta
-    // {
-    //   location: t('BETA'),
-    //   text: t('Beta'),
-    //   value: 'https://beta.ipfs-auth.decoo.io'
-    // },
     // for prod
     {
       location: t('Singapore'),
@@ -42,11 +36,6 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       text: t('️⚡ Thunder'),
       value: 'https://gw.crustfiles.net',
       status: 'online'
-    },
-    // {
-    //   location: t('Beijing'),
-    //   text: t('️Deklod'),
-    //   value: 'https://ipfs-gw.dkskcloud.com'
-    // }
+    }
   ];
 }
