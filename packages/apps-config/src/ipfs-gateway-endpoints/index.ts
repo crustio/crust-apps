@@ -28,7 +28,7 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
     {
       location: t('Seattle'),
       text: t('⚡ Thunder'),
-      value: 'https://gw.crustfiles.app',
+      value: 'private use, please contact hi@crust.network',
       status: 'inactivated'
     },
     {
