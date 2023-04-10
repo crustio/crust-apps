@@ -22,7 +22,7 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
     {
       location: t('Seattle'),
       text: t('⚡ Thunder'),
-      value: 'private use, please contact hi@crust.network',
+      value: 'Private use, please contact hi@crust.network to get more details',
       status: 'inactivated'
     },
     {
