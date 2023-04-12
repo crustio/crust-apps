@@ -5,7 +5,7 @@ import { Address, Transaction, TransactionPayload } from '@elrondnetwork/erdjs';
 import { ExtensionProvider } from '@elrondnetwork/erdjs-extension-provider';
 import { ProxyNetworkProvider } from '@elrondnetwork/erdjs-network-providers';
 
-const networkProvider = new ProxyNetworkProvider('https://gateway.elrond.com', { timeout: 30000 });
+const networkProvider = new ProxyNetworkProvider('https://gateway.multiversx.com', { timeout: 30000 });
 
 const ElrondBridgePoolAddress = 'erd1drg6ndpqv3wvn0pu90al2magq7cwzar72sa6x0aws9wu9caz8wds99hqxt';
 
