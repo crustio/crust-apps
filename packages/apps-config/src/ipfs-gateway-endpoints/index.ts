@@ -37,5 +37,12 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       value: 'https://gw.crustfiles.net',
       status: 'online'
     }
+    {
+    value: 'http://223.111.148.195',
+    text: t('Area51-GW'),
+    location: t('Shanghai'),
+    // crustAddress: cTHa2wtCS1LouRceECULTYCvdoi9HSMr638Uzx8zWsVP9mVDi
+    // contactInformation: jingmu.lemon@gmail.com
+}
   ];
 }
