@@ -38,9 +38,9 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       status: 'online'
     }
     {
-      value: 'http://223.111.148.195',
+      location: t('Shanghai')，
       text: t('Area51-GW'),
-      location: t('Shanghai')
+      value: 'http://223.111.148.195'，
       // crustAddress: cTHa2wtCS1LouRceECULTYCvdoi9HSMr638Uzx8zWsVP9mVDi
       // contactInformation: jingmu.lemon@gmail.com
 }
