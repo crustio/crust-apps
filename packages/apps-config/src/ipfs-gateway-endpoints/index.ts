@@ -48,12 +48,11 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       text: t('️Crust IPFS GW'),
       value: 'https://gw.smallwolf.me',
       status: 'online'
-    },
+    }
     // {
     //   location: t('Beijing'),
     //   text: t('️Deklod'),
     //   value: 'https://ipfs-gw.dkskcloud.com'
     // }
-    }
   ];
 }
