@@ -12,12 +12,6 @@ import type { AuthIpfsEndpoint } from './types';
 //   status: IPFS gateway status: online, error, inactivated(incluede null and all other strings)
 export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
   return [
-    // for Beta
-    // {
-    //   location: t('BETA'),
-    //   text: t('Beta'),
-    //   value: 'https://beta.ipfs-auth.decoo.io'
-    // },
     // for prod
     {
       location: t('Singapore'),
@@ -28,8 +22,8 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
     {
       location: t('Seattle'),
       text: t('⚡ Thunder'),
-      value: 'https://gw.crustfiles.app',
-      status: 'online'
+      value: 'Private use, please contact hi@crust.network to get more details',
+      status: 'inactivated'
     },
     {
       location: t('Berlin'),
@@ -47,22 +41,19 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       location: t('Henan'),
       text: t('️Crust IPFS GW'),
       value: 'https://gw.w3ipfs.cn:10443',
-      status: 'online',
-      // crustAddress: cTL7AwVGvYfTvXuEX61HbPGLiqaf2P7RwHNiJJargDL46dz1Z
-      // email: shiwudeluyou@gmail.com  tg: @mstflint
+      status: 'online'
     },
     {
       location: t('Los Angeles'),
       text: t('️Crust IPFS GW'),
       value: 'https://gw.smallwolf.me',
-      status: 'online',
-      // crustAddress: cTL7AwVGvYfTvXuEX61HbPGLiqaf2P7RwHNiJJargDL46dz1Z
-      // email: shiwudeluyou@gmail.com  tg: @mstflint
+      status: 'online'
     },
     // {
     //   location: t('Beijing'),
     //   text: t('️Deklod'),
     //   value: 'https://ipfs-gw.dkskcloud.com'
     // }
+    }
   ];
 }
