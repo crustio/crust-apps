@@ -55,6 +55,7 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       value: 'https://gw.w3ipfs.com:7443',
       status: 'online'
       // crustAddress: cTL7AwVGvYfTvXuEX61HbPGLiqaf2P7RwHNiJJargDL46dz1Z
+      // TG:@mstflint
     },
     {
       location: t('河南联通'),
@@ -62,6 +63,7 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       value: 'https://gw.w3ipfs.net:7443',
       status: 'online'
       // crustAddress: cTL7AwVGvYfTvXuEX61HbPGLiqaf2P7RwHNiJJargDL46dz1Z
+      // TG:@mstflint
     }
     // {
     //   location: t('Beijing'),
