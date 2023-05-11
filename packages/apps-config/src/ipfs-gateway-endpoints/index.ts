@@ -48,6 +48,18 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       text: t('️Crust IPFS GW'),
       value: 'https://gw.smallwolf.me',
       status: 'online'
+    },
+    {
+      location: t('Henan'),
+      text: t('️Crust IPFS GW'),
+      value: 'https://gw.w3ipfs.com:7443',
+      status: 'online'
+    },
+    {
+      location: t('河南联通'),
+      text: t('️Crust IPFS GW'),
+      value: 'https://gw.w3ipfs.net:7443',
+      status: 'online'
     }
     // {
     //   location: t('Beijing'),
