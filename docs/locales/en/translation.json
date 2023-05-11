@@ -23,6 +23,7 @@
   "Authorize transaction": "",
   "Aye": "",
   "Aye: {{count}}": "",
+  "Beijing": "",
   "Berlin": "",
   "Beta": "",
   "Blocks nominations": "",
@@ -116,6 +117,7 @@
   "Guaranteeing": "",
   "Guarantor rewards": "",
   "Guarantors": "",
+  "Henan": "",
   "Id": "",
   "If the motion is approved, Curator's deposit will be slashed and Curator will be unassigned. Bounty will return to the Funded state.": "",
   "If the motion is approved, the current Curator will be unassigned and the Bounty will return to the Funded state.": "",
@@ -134,6 +136,7 @@
   "Lockup/Recommended lock volume": "",
   "Logout": "",
   "Long-term storage with abundant IPFS replicas": "",
+  "Los Angeles": "",
   "Make recoverable": "",
   "Manage proxies": "",
   "Maximum Receivable Income": "",
@@ -514,5 +517,7 @@
   "{{percentage}} of transaction fees will be reduced": "",
   "{{percentage}}% turnout": "",
   "⚡ Thunder": "",
+  "️Crust IPFS GW": "",
+  "️Deklod": "",
   "️⚡ Thunder": ""
 }
