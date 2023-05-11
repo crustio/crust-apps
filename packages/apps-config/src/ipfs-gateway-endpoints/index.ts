@@ -36,6 +36,23 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       text: t('️⚡ Thunder'),
       value: 'https://gw.crustfiles.net',
       status: 'online'
+    },
+    {
+      location: t('Henan'),
+      text: t('️Crust IPFS GW'),
+      value: 'https://gw.w3ipfs.cn:10443',
+      status: 'online'
+    },
+    {
+      location: t('Los Angeles'),
+      text: t('️Crust IPFS GW'),
+      value: 'https://gw.smallwolf.me',
+      status: 'online'
     }
+    // {
+    //   location: t('Beijing'),
+    //   text: t('️Deklod'),
+    //   value: 'https://ipfs-gw.dkskcloud.com'
+    // }
   ];
 }
