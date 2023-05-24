@@ -12,12 +12,6 @@ import type { AuthIpfsEndpoint } from './types';
 //   status: IPFS gateway status: online, error, inactivated(incluede null and all other strings)
 export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
   return [
-    // for Beta
-    // {
-    //   location: t('BETA'),
-    //   text: t('Beta'),
-    //   value: 'https://beta.ipfs-auth.decoo.io'
-    // },
     // for prod
     {
       location: t('Singapore'),
@@ -28,8 +22,8 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
     {
       location: t('Seattle'),
       text: t('⚡ Thunder'),
-      value: 'https://gw.crustfiles.app',
-      status: 'online'
+      value: 'Private use, please contact hi@crust.network to get more details',
+      status: 'inactivated'
     },
     {
       location: t('Berlin'),
@@ -44,6 +38,18 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       status: 'online'
     },
     {
+      location: t('Henan'),
+      text: t('️Crust IPFS GW'),
+      value: 'https://gw.w3ipfs.cn:10443',
+      status: 'online'
+    },
+    {
+      location: t('Los Angeles'),
+      text: t('️Crust IPFS GW'),
+      value: 'https://gw.smallwolf.me',
+      status: 'online'
+    },
+    {
       location: t('Helsinki'),
       text: t('️crust-fans'),
       value: 'https://crust.fans'
@@ -54,7 +60,7 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       text: t('️crustgateway'),
       value: 'https://crustgateway.com'
       //crustAddress: cTJUpCMAEzcLzaQej1A456S9v1qYpjFd8JgK9GLoeh4CKtaj7
-    }
+    },
     {
       location: t('Germany'),
       text: t('️crustgateway-de'),

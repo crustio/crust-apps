@@ -38,15 +38,15 @@ export function createProduction (t: TFunction): LinkOption[] {
         'DCloud Foundation': mainnetEndPoints[2]
       }
     },
-    {
-      info: 'crust-maxwell',
-      text: t('rpc.crust.network', 'Crust Maxwell', { ns: 'apps-config' }),
-      providers: {
-        'Crust Network': maxwellEndPoints[0],
-        'Decoo Technologies': maxwellEndPoints[1]
-        // Pinknode: maxwellEndPoints[2]
-      }
-    },
+    // {
+    //   info: 'crust-maxwell',
+    //   text: t('rpc.crust.network', 'Crust Maxwell', { ns: 'apps-config' }),
+    //   providers: {
+    //     'Crust Network': maxwellEndPoints[0],
+    //     'Decoo Technologies': maxwellEndPoints[1]
+    //     // Pinknode: maxwellEndPoints[2]
+    //   }
+    // },
     {
       info: 'shadow',
       text: t('rpc.crust.network', 'Crust Shadow', { ns: 'apps-config' }),

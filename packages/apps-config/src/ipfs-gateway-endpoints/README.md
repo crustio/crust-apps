@@ -32,6 +32,7 @@ Please fork this repo, and add your gateway to `index.ts` with the following for
     text: t('Crust Network'),
     location: t('Singapore'),
     // crustAddress: cTM4JJMox7nbUqa1R6yMDwnqdEJByWDzHtdr1QczT2MqEVC33
+    // contactInformation: telegram address or xxxx@gmail.com
 }
 ```
 The following is the parameter description
@@ -39,6 +40,13 @@ The following is the parameter description
 - 'text':     your organization name
 - 'location': where is your gateway
 - '// crustAddress': for receiving rewards. `Be careful not to forget the double slashes`
+- '// contactInformation': for communicating. `Be careful not to forget the double slashes`
+
+In the PR, you need share your **machine's user name and ip addres**, which is used for crust to check the gateway status. Please add the following pubkey into the .ssh to give access right. If you meet any problem, please ask in the telegram or discord.
+
+```
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCupHsTjokVeyUOE6Ju3q4sdluCXZ5J6KfZRPzBY9jBuo5h7on/BZxPPlyGQJEBsr9pwhsZLU6zMFnIKJ3lkOeDitIQfnwFKGoekVxocy74g7psW5tXir2Sbo2B4h2dtE5HIZXoChcoKj3QkH4Zgoa0pOvVBQ4Dae84/1KPlrXZlOmXIdREYwNrx7CpKXAjf2xq7swFiuv5l42x2W5iQu/5kz0/6u2zSqKFFOcYmFjveJYJF/MYr7nnCsJCxWayVcbLu3npq19+83siimjUCdsTsnYtjivKWB7OdPRlQdhIuK45YjjWBb1PVFuseGh+6GPrTC3jGZR1P78xQ97UyUn+Ouf2serR0XEK7mEAUI4P0R/tZ1yTLp7ptlxyopDdp0XdHxX4CH6HrBGmBfeFIW/BgyG0krxWj8uZf94n41KP959IWpnXcEobJtONeH+kyF/SqU6/1lnpj1bsyM+qgOWdmF9kmW4cvxpPmSSIYz5h5VV2JZwbJLascKtRlmXx6IE= ubuntu@VM-0-3-ubuntu
+```
 
 Then, after your PR merged, you'll see your gateway on [Crust Apps](https://apps.crust.network/) with gray icon
 

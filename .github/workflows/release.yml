@@ -59,7 +59,7 @@ jobs:
         uses: fifsky/ssh-action@master
         with:
           command: |
-            echo 'y' | sudo cp -rf packages/apps/build /usr/
+            echo 'y' | sudo cp -rf packages/apps/build /usr/apps
             sudo rm -rf packages
           host: ${{ secrets.SSH_PRD_HOST }}
           user: ${{ secrets.SSH_PRD_USER }}
