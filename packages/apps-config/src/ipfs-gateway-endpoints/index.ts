@@ -56,6 +56,27 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       status: 'online'
       // crustAddress: cTL7AwVGvYfTvXuEX61HbPGLiqaf2P7RwHNiJJargDL46dz1Z
       // TG:@mstflint
+    },
+    {
+      location: t('Helsinki'),
+      text: t('️crust-fans'),
+      value: 'https://crust.fans',
+      status: 'online'
+      //crustAddress: cTJUpCMAEzcLzaQej1A456S9v1qYpjFd8JgK9GLoeh4CKtaj7
+    },
+    {
+      location: t('Phoenix'),
+      text: t('️crustgateway'),
+      value: 'https://crustgateway.com',
+      status: 'online'
+      //crustAddress: cTJUpCMAEzcLzaQej1A456S9v1qYpjFd8JgK9GLoeh4CKtaj7
+    },
+    {
+      location: t('Germany'),
+      text: t('️crustgateway-de'),
+      value: 'https://crustgateway.online',
+      status: 'online'
+      //crustAddress: cTJUpCMAEzcLzaQej1A456S9v1qYpjFd8JgK9GLoeh4CKtaj7
     }
     // {
     //   location: t('Beijing'),
