@@ -30,6 +30,7 @@ export class ElrondExtensionWallet {
       const tx = new Transaction({
         value: '0',
         nonce: accountOnNetwork.nonce,
+        sender: new Address(this.address),
         receiver: new Address(ElrondBridgePoolAddress),
         gasLimit: 500000,
         data: new TransactionPayload(data),
