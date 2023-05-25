@@ -58,6 +58,14 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       status: 'online'
     },
     {
+      location: t('Henan'),
+      text: t('️Crust IPFS GW'),
+      value: 'https://gw.w3ipfs.com:7443',
+      status: 'online'
+      // crustAddress: cTL7AwVGvYfTvXuEX61HbPGLiqaf2P7RwHNiJJargDL46dz1Z
+      // TG:@mstflint
+    },
+    {
       location: t('Helsinki'),
       text: t('️crust-fans'),
       value: 'https://crust.fans',
