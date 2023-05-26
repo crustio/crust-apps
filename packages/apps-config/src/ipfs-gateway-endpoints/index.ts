@@ -14,6 +14,14 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
   return [
     // for prod
     {
+    value: 'http://gateway.aitimeout.site:18001',
+    text: t('hangzhou'),
+    location: t('Hangzhou'),
+    // crustAddress: cTHrHT5ro6a55cu2FxmmrtJDBy3GMUK86tGC1yfmu4nvqkS63
+    // contactInformation: tele: btc eth or email: eoseth59@gmail.com
+    status: 'inactivated'
+    },
+    {
       location: t('Singapore'),
       text: t('DCF'),
       value: 'https://crustipfs.xyz',
@@ -36,6 +44,47 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       text: t('️⚡ Thunder'),
       value: 'https://gw.crustfiles.net',
       status: 'online'
+    },
+    {
+      location: t('Henan'),
+      text: t('️Crust IPFS GW'),
+      value: 'https://gw.w3ipfs.cn:10443',
+      status: 'online'
+    },
+    {
+      location: t('Los Angeles'),
+      text: t('️Crust IPFS GW'),
+      value: 'https://gw.smallwolf.me',
+      status: 'online'
+    },
+    {
+      location: t('Henan'),
+      text: t('️Crust IPFS GW'),
+      value: 'https://gw.w3ipfs.com:7443',
+      status: 'online'
+      // crustAddress: cTL7AwVGvYfTvXuEX61HbPGLiqaf2P7RwHNiJJargDL46dz1Z
+      // TG:@mstflint
+    },
+    {
+      location: t('Helsinki'),
+      text: t('️crust-fans'),
+      value: 'https://crust.fans',
+      status: 'online'
+      //crustAddress: cTJUpCMAEzcLzaQej1A456S9v1qYpjFd8JgK9GLoeh4CKtaj7
+    },
+    {
+      location: t('Phoenix'),
+      text: t('️crustgateway'),
+      value: 'https://crustgateway.com',
+      status: 'online'
+      //crustAddress: cTJUpCMAEzcLzaQej1A456S9v1qYpjFd8JgK9GLoeh4CKtaj7
+    },
+    {
+      location: t('Germany'),
+      text: t('️crustgateway-de'),
+      value: 'https://crustgateway.online',
+      status: 'online'
+      //crustAddress: cTJUpCMAEzcLzaQej1A456S9v1qYpjFd8JgK9GLoeh4CKtaj7
     }
     {
       location: t('Shanghai')，
@@ -43,6 +92,5 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       value: 'http://223.111.148.195'，
       // crustAddress: cTHa2wtCS1LouRceECULTYCvdoi9HSMr638Uzx8zWsVP9mVDi
       // contactInformation: jingmu.lemon@gmail.com
-}
   ];
 }
