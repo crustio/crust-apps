@@ -36,12 +36,13 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       text: t('️⚡ Thunder'),
       value: 'https://gw.crustfiles.net',
       status: 'online'
-    }
+    },
     {
       location: t('Shanghai'),
       text: t('️Crato-GW'),
-      value: 'http://223.111.148.196',
+      value: 'https://223.111.148.196',
       crustAddress: cTMYsQAnJy8vg3h8BEXsXj8QtPnXppZR12NcEGsFirj19DxEW,
       status: 'online'
+    }
   ];
 }
