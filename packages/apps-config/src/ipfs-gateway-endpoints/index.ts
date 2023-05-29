@@ -14,12 +14,12 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
   return [
     // for prod
     {
-    value: 'http://gateway.aitimeout.site:18001',
+    value: 'https://gateway.aitimeout.site:18001',
     text: t('hangzhou'),
     location: t('Hangzhou'),
     // crustAddress: cTHrHT5ro6a55cu2FxmmrtJDBy3GMUK86tGC1yfmu4nvqkS63
     // contactInformation: tele: btc eth or email: eoseth59@gmail.com
-    status: 'inactivated'
+    status: 'online'
     },
     {
       location: t('Singapore'),
