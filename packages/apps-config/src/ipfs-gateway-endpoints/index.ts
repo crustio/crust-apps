@@ -90,11 +90,13 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       value: 'https://crustgateway.online',
       status: 'online'
       //crustAddress: cTJUpCMAEzcLzaQej1A456S9v1qYpjFd8JgK9GLoeh4CKtaj7
+    },
+    {
+      location: t('Shanghai'),
+      text: t('Area51-GW'),
+      value: 'http://223.111.148.195',
+      // crustAddress: cTHa2wtCS1LouRceECULTYCvdoi9HSMr638Uzx8zWsVP9mVDi
+      // contactInformation: jingmu.lemon@gmail.com
     }
-    // {
-    //   location: t('Beijing'),
-    //   text: t('️Deklod'),
-    //   value: 'https://ipfs-gw.dkskcloud.com'
-    // }
   ];
 }
