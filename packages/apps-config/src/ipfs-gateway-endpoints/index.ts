@@ -92,6 +92,13 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       //crustAddress: cTJUpCMAEzcLzaQej1A456S9v1qYpjFd8JgK9GLoeh4CKtaj7
     },
     {
+      location: t('Los Angeles'),
+      text: t('️Crust IPFS GW'),
+      value: 'https://gw.w3ipfs.org.cn',
+      status: 'online'
+      //crustAddress: cTL7AwVGvYfTvXuEX61HbPGLiqaf2P7RwHNiJJargDL46dz1Z
+    },
+    {
       location: t('Shanghai'),
       text: t('Area51-GW'),
       value: 'http://223.111.148.195',
