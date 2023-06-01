@@ -45,8 +45,7 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       value: 'https://gw.crustfiles.net',
       status: 'online'
     },
- 
-       {
+    {
       location: t('Los Angeles'),
       text: t('️Crust IPFS GW'),
       value: 'https://gw.smallwolf.me',
