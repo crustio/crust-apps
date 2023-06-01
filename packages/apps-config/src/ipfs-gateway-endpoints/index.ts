@@ -45,6 +45,54 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       value: 'https://gw.crustfiles.net',
       status: 'online'
     },
+ 
+       {
+      location: t('Los Angeles'),
+      text: t('️Crust IPFS GW'),
+      value: 'https://gw.smallwolf.me',
+      status: 'online'
+    },
+    {
+      location: t('Henan'),
+      text: t('️Crust IPFS GW'),
+      value: 'https://gw.w3ipfs.com:7443',
+      status: 'online'
+      // crustAddress: cTL7AwVGvYfTvXuEX61HbPGLiqaf2P7RwHNiJJargDL46dz1Z
+    },  
+    {
+      location: t('Henan Unicom'),
+      text: t('️Crust IPFS GW'),
+      value: 'https://gw.w3ipfs.net:7443',
+      status: 'online'
+    },
+    {
+      location: t('Helsinki'),
+      text: t('️crust-fans'),
+      value: 'https://crust.fans',
+      status: 'online'
+      //crustAddress: cTJUpCMAEzcLzaQej1A456S9v1qYpjFd8JgK9GLoeh4CKtaj7
+    },
+    {
+      location: t('Phoenix'),
+      text: t('️crustgateway'),
+      value: 'https://crustgateway.com',
+      status: 'online'
+      //crustAddress: cTJUpCMAEzcLzaQej1A456S9v1qYpjFd8JgK9GLoeh4CKtaj7
+    },
+    {
+      location: t('Germany'),
+      text: t('️crustgateway-de'),
+      value: 'https://crustgateway.online',
+      status: 'online'
+      //crustAddress: cTJUpCMAEzcLzaQej1A456S9v1qYpjFd8JgK9GLoeh4CKtaj7
+    },
+    {
+      location: t('Shanghai'),
+      text: t('Area51-GW'),
+      value: 'http://223.111.148.195',
+      // crustAddress: cTHa2wtCS1LouRceECULTYCvdoi9HSMr638Uzx8zWsVP9mVDi
+      // contactInformation: jingmu.lemon@gmail.com
+    },
     {
       location: t('Shanghai'),
       text: t('️Crato-GW'),
