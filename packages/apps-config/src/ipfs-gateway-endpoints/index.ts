@@ -46,6 +46,12 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       status: 'online'
     },
     {
+      location: t('Henan'),
+      text: t('️Crust IPFS GW'),
+      value: 'https://gw.w3ipfs.cn:10443',
+      status: 'online'
+    },
+    {
       location: t('Los Angeles'),
       text: t('️Crust IPFS GW'),
       value: 'https://gw.smallwolf.me',
@@ -102,7 +108,7 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
     },
     {
       location: t('Shanghai'),
-      text: t('️Crato-GW'),
+      text: t('Crato-GW'),
       value: 'https://223.111.148.196',
       // crustAddress: cTMYsQAnJy8vg3h8BEXsXj8QtPnXppZR12NcEGsFirj19DxEW
     }
