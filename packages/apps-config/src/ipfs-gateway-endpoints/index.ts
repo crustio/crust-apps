@@ -110,6 +110,7 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       location: t('Shanghai'),
       text: t('Crato-GW'),
       value: 'https://223.111.148.196',
+      status: 'online'
       // crustAddress: cTMYsQAnJy8vg3h8BEXsXj8QtPnXppZR12NcEGsFirj19DxEW
     }
   ];
