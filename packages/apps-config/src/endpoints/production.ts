@@ -7,7 +7,7 @@ import type { LinkOption } from '../settings/types';
 import { expandEndpoints } from './util';
 
 export const mainnetEndPoints = [
-  'wss://crust.api.onfinality.io/public-ws',
+  'wss://crust.api.onfinality.io/ws?apikey=04dc9514-ec6c-4293-a739-aad78f8b26b5',
   'wss://rpc.crust.network',
   'wss://rpc-crust-mainnet.decoo.io',
   'wss://api.decloudf.com'
