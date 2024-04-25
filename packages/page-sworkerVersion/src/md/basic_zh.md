@@ -20,6 +20,7 @@
 - <a href="https://github.com/crustio/crust-sworker/releases/tag/v1.0.0" target="_blank" >V1.0.0 : First Version (0xe6f4e6ab58d6ba4ba2f684527354156c009e4969066427ce18735422180b38f4)</a>
 - <a href="https://github.com/crustio/crust-sworker/releases/tag/v1.1.0" target="_blank" >V1.1.0 : Support Metaverse (0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a)</a>
 - <a href="https://github.com/crustio/crust-sworker/releases/tag/v1.1.1" target="_blank" >V1.1.1 : Protect Diskdrop (0xa61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503)</a>
+- <a href="https://github.com/crustio/crust-sworker/releases/tag/v1.1.2" target="_blank" >V1.1.2 : Fix Bugs (0x72041ba321cb982168beab2b3994f8b0b83a54e6dafaa95b444a3c273b490fb1)</a>
 
 # **升级对象**
 
@@ -27,9 +28,14 @@
 
 # **推荐版本**
 
-<text style="color: red">V1.1.1 : Protect Diskdrop (0xa61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503)</text>
+<text style="color: red">V1.1.2 : Fix Bugs (0x72041ba321cb982168beab2b3994f8b0b83a54e6dafaa95b444a3c273b490fb1)</text>
 
-# **2 升级指南 V1.0.0 -> V1.1.1**
+# **Upgrade Guides**
+- [V1.0.0->V1.1.1](#v100tov111)
+- [V1.1.0->V1.1.1](#v110tov111)
+- [V1.1.0/V1.1.1->V1.1.2](#v111tov112)
+
+# **2 升级指南 V1.0.0 -> V1.1.1** <a id="v100tov111"></a>
 
 ## **2.1 升级时间**
 
@@ -84,7 +90,7 @@
 
 ![sworker_version](../assets/version_v1.1.1_zh.png)
 
-# **3 升级指南 V1.1.0 -> V1.1.1**
+# **3 升级指南 V1.1.0 -> V1.1.1** <a id="v110tov111"></a>
 
 ##  **3.1 升级步骤**
 
@@ -117,4 +123,38 @@
 <br>
 
 ![sworker_version](../assets/version_v1.1.1_zh.png)
+
+# **4 升级指南 V1.1.0/V1.1.1 -> V1.1.2** <a id="v111tov112"></a>
+
+##  **4.1 升级步骤**
+
+### **4.1.1 确认sworker上报工作量正常**
+通过sworker日志文件来确认近期工作量处于正常上报状态。如不正常，请优先修复后再进行升级操作。
+通过命令查询工作量是否上报成功
+<br>
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust logs --tail 100 sworker</div>
+<br>
+
+![workreport_status](../assets/workreport_status_zh.png)
+
+### **4.1.2 sWorker升级**
+<br>
+
+ 升级过程是一个后台进程，耗时在100s-10000s不等，<text style="color: red">**强烈建议手动执行升级命令**</text>，避免出现不必要的错误，如果升级出现异常，<text style="color: red">**切记不能reload sworker服务，以防数据丢失**</text>。 
+<br>
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">nohup sudo crust tools sworker-ab-upgrade 72041ba321cb982168beab2b3994f8b0b83a54e6dafaa95b444a3c273b490fb1 > upgrade.log 2>&1 &</div>
+<br>
+
+## **4.2 升级状态检测**
+<br>
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">tail 100 upgrade.log -f</div>
+<br>
+
+![upgrade_status](../assets/upgrade_status_zh.png)
+
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust version
+</div>
+<br>
+
+![sworker_version](../assets/version_v1.1.2_zh.png)
 
