@@ -164,7 +164,7 @@ The upgrade process is a background process, which takes time ranging from 1000s
 
 sworker v2.0.0 supports ECDSA-based DCAP attestation, but also compatible with EPID IAS attestation, so you can upgrade from old v1.x to v2.0.0 directly with the following instructions which won't trigger re-entrynetwork.
 
-But if you want to use the ECDSA-based DCAP attestation for your new servers or re-entrynetwork for current servers, please refer to [Crust Wiki: EPID & ECDSA](https://wiki.crust.network/docs/zh-CN/Q&AForEPID-ECDSA) for more information. 
+But if you want to use the ECDSA-based DCAP attestation for your new servers or re-entrynetwork for current servers, please refer to [Crust Wiki: EPID & ECDSA](https://wiki.crust.network/docs/en/Q&AForEPID-ECDSA) for more information. 
 
 ### **5.1.1 Check sworker sending work report successfully**
 Make sure that the sworker sent the work report successfully in the past hours. If not, please fix the error first before doing the upgrade steps.
