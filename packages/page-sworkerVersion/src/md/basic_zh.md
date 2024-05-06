@@ -21,6 +21,7 @@
 - <a href="https://github.com/crustio/crust-sworker/releases/tag/v1.1.0" target="_blank" >V1.1.0 : Support Metaverse (0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a)</a>
 - <a href="https://github.com/crustio/crust-sworker/releases/tag/v1.1.1" target="_blank" >V1.1.1 : Protect Diskdrop (0xa61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503)</a>
 - <a href="https://github.com/crustio/crust-sworker/releases/tag/v1.1.2" target="_blank" >V1.1.2 : Fix Bugs (0x72041ba321cb982168beab2b3994f8b0b83a54e6dafaa95b444a3c273b490fb1)</a>
+- <a href="https://github.com/crustio/crust-sworker/releases/tag/v2.0.0" target="_blank" >V2.0.0 : Support ECDSA DCAP Attestation (0x69f72f97fc90b6686e53b64cd0b5325c8c8c8d7eed4ecdaa3827b4ff791694c0)</a>
 
 # **升级对象**
 
@@ -34,6 +35,7 @@
 - [V1.0.0->V1.1.1](#v100tov111)
 - [V1.1.0->V1.1.1](#v110tov111)
 - [V1.1.0/V1.1.1->V1.1.2](#v111tov112)
+- [V1.x.x->V2.0.0](#v1xxtov200)
 
 # **2 升级指南 V1.0.0 -> V1.1.1** <a id="v100tov111"></a>
 
@@ -157,4 +159,44 @@
 <br>
 
 ![sworker_version](../assets/version_v1.1.2_zh.png)
+
+# **5 升级指南 V1.x.x -> V2.0.0** <a id="v1xxtov200"></a>
+
+##  **5.1 升级步骤**
+
+## 注意：
+
+sworker v2.0.0版本支持基于ECDSA的DCAP认证，同时兼容即将过期的EPID IAS认证，所以你可以直接从旧版本v1.x直接升级到v2.0.0，不会触发重新入网。
+
+但是如果要对新服务器入网或者旧服务器重新入网时使用ECDSA-based DCAP attestation，请按照[Crust Wiki: EPID & ECDSA](https://wiki.crust.network/docs/zh-CN/Q&AForEPID-ECDSA)中的说明进行。
+
+### **5.1.1 确认sworker上报工作量正常**
+通过sworker日志文件来确认近期工作量处于正常上报状态。如不正常，请优先修复后再进行升级操作。
+通过命令查询工作量是否上报成功
+<br>
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust logs --tail 100 sworker</div>
+<br>
+
+![workreport_status](../assets/workreport_status_zh.png)
+
+### **5.1.2 sWorker升级**
+<br>
+
+ 升级过程是一个后台进程，耗时在100s-10000s不等，<text style="color: red">**强烈建议手动执行升级命令**</text>，避免出现不必要的错误，如果升级出现异常，<text style="color: red">**切记不能reload sworker服务，以防数据丢失**</text>。 
+<br>
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">nohup sudo crust tools sworker-ab-upgrade 69f72f97fc90b6686e53b64cd0b5325c8c8c8d7eed4ecdaa3827b4ff791694c0 > upgrade.log 2>&1 &</div>
+<br>
+
+## **5.2 升级状态检测**
+<br>
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">tail 100 upgrade.log -f</div>
+<br>
+
+![upgrade_status](../assets/upgrade_status_zh.png)
+
+<div style="background: black; font-size: 18px; font-weight:bold; color: white">sudo crust version
+</div>
+<br>
+
+![sworker_version](../assets/version_v2.0.0_zh.png)
 
