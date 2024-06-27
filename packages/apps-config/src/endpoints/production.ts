@@ -10,7 +10,8 @@ export const mainnetEndPoints = [
   'wss://crust.api.onfinality.io/ws?apikey=04dc9514-ec6c-4293-a739-aad78f8b26b5',
   'wss://rpc.crust.network',
   'wss://rpc-crust-mainnet.decoo.io',
-  'wss://api.decloudf.com'
+  'wss://api.decloudf.com',
+  'wss://rpc.crustnetwork.xyz'
 ];
 
 export const maxwellEndPoints = [
@@ -34,7 +35,8 @@ export function createProduction (t: TFunction): LinkOption[] {
       text: t('rpc.crust.network', 'Crust', { ns: 'apps-config' }),
       providers: {
         OnFinality: mainnetEndPoints[0],
-        'Crust Network': mainnetEndPoints[1],
+        'Crust Network 1': mainnetEndPoints[1],
+        'Crust Network 2': mainnetEndPoints[4],
         'DCloud Foundation': mainnetEndPoints[2]
       }
     },
