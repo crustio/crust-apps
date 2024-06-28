@@ -34,10 +34,12 @@ export function createProduction (t: TFunction): LinkOption[] {
       info: 'crust',
       text: t('rpc.crust.network', 'Crust', { ns: 'apps-config' }),
       providers: {
-        OnFinality: mainnetEndPoints[0],
-        'Crust Network 1': mainnetEndPoints[1],
-        'Crust Network 2': mainnetEndPoints[4],
-        'DCloud Foundation': mainnetEndPoints[2]
+        OnFinality: 'wss://crust.api.onfinality.io/ws?apikey=04dc9514-ec6c-4293-a739-aad78f8b26b5',
+        'Crust Network 1': 'wss://rpc.crust.network',
+        'Crust Network 2': 'wss://rpc.crustnetwork.xyz',
+        'Crust Network 3': 'wss://rpc.crustnetwork.cc',
+        'Crust Network 4': 'wss://rpc.crustnetwork.app',
+        'DCloud Foundation': 'wss://rpc-crust-mainnet.decoo.io',
       }
     },
     // {
@@ -55,6 +57,8 @@ export function createProduction (t: TFunction): LinkOption[] {
       providers: {
         'Crust Network 1': 'wss://rpc-sha-subscan.crust.network',
         'Crust Network 2': 'wss://rpc-sha-subscan.crustnetwork.xyz',
+        'Crust Network 3': 'wss://rpc-sha-subscan.crustnetwork.cc',
+        'Crust Network 4': 'wss://rpc-sha-subscan.crustnetwork.app',
       }
     },
     {
@@ -62,7 +66,9 @@ export function createProduction (t: TFunction): LinkOption[] {
       text: t('rpc.crust.network', 'Crust Parachain', { ns: 'apps-config' }),
       providers: {
         'Crust Network 1': 'wss://crust-parachain.crustapps.net',
-        'Crust Network 2': 'wss://crust-parachain.crustnetwork.xyz'
+        'Crust Network 2': 'wss://crust-parachain.crustnetwork.xyz',
+        'Crust Network 3': 'wss://crust-parachain.crustnetwork.cc',
+        'Crust Network 4': 'wss://crust-parachain.crustnetwork.app',
       }
     }
   ]);
