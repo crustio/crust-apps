@@ -63,7 +63,7 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       value: 'https://gw.w3ipfs.com:7443',
       status: 'online'
       // crustAddress: cTL7AwVGvYfTvXuEX61HbPGLiqaf2P7RwHNiJJargDL46dz1Z
-    },  
+    },
     {
       location: t('Henan Unicom'),
       text: t('️Crust IPFS GW'),
@@ -112,6 +112,14 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       value: 'https://223.111.148.196',
       status: 'online'
       // crustAddress: cTMYsQAnJy8vg3h8BEXsXj8QtPnXppZR12NcEGsFirj19DxEW
+    },
+    {
+      location: t('US-WA'),
+      text: t('Muggle-GW'),
+      value: 'https://cru.izhong.top',
+      status: 'online'
+      // crustAddress: cTMTgbsjWzX6ACfvCxZE4LaVoPoHUFvYyhjgyyVydGNbz4dYY
+      // contactInformation: @bolef
     }
   ];
 }
