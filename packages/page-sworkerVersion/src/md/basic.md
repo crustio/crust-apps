@@ -70,6 +70,11 @@ Use the following command to check whether the workload is reported successfully
 
 ### **2.2.4 sWorker Upgrade**
 The upgrade process is a background process, which takes time ranging from 1000s to 10000s. <text style="color: red">**It is strongly recommended to execute the upgrade command manually**</text> to avoid unnecessary errors. If the upgrade is abnormal, <text style="color: red">**do not restart the sworker service, which will cause data loss**</text>. 
+
+<text style="color: red">**CAUTION:**</text>
+<br>
+<text style="color: red">**DO NOT run 'crust reload sworker' command during upgrade, which may cause data loss and then require to re-srd the whole disk.**</text>
+
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">nohup sudo crust tools sworker-ab-upgrade a61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503 > upgrade.log 2>&1 &</div>
 <br>
@@ -105,6 +110,11 @@ Use the following command to check whether the workload is reported successfully
 
 ### **3.1.2 sWorker Upgrade**
 The upgrade process is a background process, which takes time ranging from 1000s to 10000s. <text style="color: red">**It is strongly recommended to execute the upgrade command manually**</text> to avoid unnecessary errors. If the upgrade is abnormal, <text style="color: red">**do not restart the sworker service, which will cause data loss**</text>. 
+
+<text style="color: red">**CAUTION:**</text>
+<br>
+<text style="color: red">**DO NOT run 'crust reload sworker' command during upgrade, which may cause data loss and then require to re-srd the whole disk.**</text>
+
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">nohup sudo crust tools sworker-ab-upgrade a61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503 > upgrade.log 2>&1 &</div>
 <br>
@@ -139,6 +149,11 @@ Use the following command to check whether the workload is reported successfully
 
 ### **4.1.2 sWorker Upgrade**
 The upgrade process is a background process, which takes time ranging from 1000s to 10000s. <text style="color: red">**It is strongly recommended to execute the upgrade command manually**</text> to avoid unnecessary errors. If the upgrade is abnormal, <text style="color: red">**do not restart the sworker service, which will cause data loss**</text>. 
+
+<text style="color: red">**CAUTION:**</text>
+<br>
+<text style="color: red">**DO NOT run 'crust reload sworker' command during upgrade, which may cause data loss and then require to re-srd the whole disk.**</text>
+
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">nohup sudo crust tools sworker-ab-upgrade 72041ba321cb982168beab2b3994f8b0b83a54e6dafaa95b444a3c273b490fb1 > upgrade.log 2>&1 &</div>
 <br>
@@ -179,6 +194,11 @@ Use the following command to check whether the workload is reported successfully
 
 ### **5.1.2 sWorker Upgrade**
 The upgrade process is a background process, which takes time ranging from 1000s to 10000s. <text style="color: red">**It is strongly recommended to execute the upgrade command manually**</text> to avoid unnecessary errors. If the upgrade is abnormal, <text style="color: red">**do not restart the sworker service, which will cause data loss**</text>. 
+
+<text style="color: red">**CAUTION:**</text>
+<br>
+<text style="color: red">**DO NOT run 'crust reload sworker' command during upgrade, which may cause data loss and then require to re-srd the whole disk.**</text>
+
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">nohup sudo crust tools sworker-ab-upgrade 69f72f97fc90b6686e53b64cd0b5325c8c8c8d7eed4ecdaa3827b4ff791694c0 > upgrade.log 2>&1 &</div>
 <br>

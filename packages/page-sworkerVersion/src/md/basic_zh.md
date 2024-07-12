@@ -75,6 +75,11 @@
 
  升级过程是一个后台进程，耗时在100s-10000s不等，<text style="color: red">**强烈建议手动执行升级命令**</text>，避免出现不必要的错误，如果升级出现异常，<text style="color: red">**切记不能reload sworker服务，以防数据丢失**</text>。 
 
+<text style="color: red">**注意:**</text>
+<br>
+<text style="color: red">**升级期间不要执行'crust reload sworker'操作，这可能会引起数据丢失，从而导致需要重新SRD整个磁盘。**</text>
+
+<br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">nohup sudo crust tools sworker-ab-upgrade a61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503 > upgrade.log 2>&1 &</div>
 <br>
 
@@ -109,6 +114,11 @@
 <br>
 
  升级过程是一个后台进程，耗时在100s-10000s不等，<text style="color: red">**强烈建议手动执行升级命令**</text>，避免出现不必要的错误，如果升级出现异常，<text style="color: red">**切记不能reload sworker服务，以防数据丢失**</text>。 
+
+<text style="color: red">**注意:**</text>
+<br>
+<text style="color: red">**升级期间不要执行'crust reload sworker'操作，这可能会引起数据丢失，从而导致需要重新SRD整个磁盘。**</text>
+
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">nohup sudo crust tools sworker-ab-upgrade a61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503 > upgrade.log 2>&1 &</div>
 <br>
@@ -143,6 +153,11 @@
 <br>
 
  升级过程是一个后台进程，耗时在100s-10000s不等，<text style="color: red">**强烈建议手动执行升级命令**</text>，避免出现不必要的错误，如果升级出现异常，<text style="color: red">**切记不能reload sworker服务，以防数据丢失**</text>。 
+
+<text style="color: red">**注意:**</text>
+<br>
+<text style="color: red">**升级期间不要执行'crust reload sworker'操作，这可能会引起数据丢失，从而导致需要重新SRD整个磁盘。**</text>
+
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">nohup sudo crust tools sworker-ab-upgrade 72041ba321cb982168beab2b3994f8b0b83a54e6dafaa95b444a3c273b490fb1 > upgrade.log 2>&1 &</div>
 <br>
@@ -183,6 +198,11 @@ sworker v2.0.0版本支持基于ECDSA的DCAP认证，同时兼容即将过期的
 <br>
 
  升级过程是一个后台进程，耗时在100s-10000s不等，<text style="color: red">**强烈建议手动执行升级命令**</text>，避免出现不必要的错误，如果升级出现异常，<text style="color: red">**切记不能reload sworker服务，以防数据丢失**</text>。 
+
+<text style="color: red">**注意:**</text>
+<br>
+<text style="color: red">**升级期间不要执行'crust reload sworker'操作，这可能会引起数据丢失，从而导致需要重新SRD整个磁盘。**</text>
+
 <br>
 <div style="background: black; font-size: 18px; font-weight:bold; color: white">nohup sudo crust tools sworker-ab-upgrade 69f72f97fc90b6686e53b64cd0b5325c8c8c8d7eed4ecdaa3827b4ff791694c0 > upgrade.log 2>&1 &</div>
 <br>
