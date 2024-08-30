@@ -59,6 +59,9 @@ export function createProduction (t: TFunction): LinkOption[] {
         'Crust Network 2': 'wss://rpc-sha-subscan.crustnetwork.xyz',
         'Crust Network 3': 'wss://rpc-sha-subscan.crustnetwork.cc',
         'Crust Network 4': 'wss://rpc-sha-subscan.crustnetwork.app',
+        'via Crust APP': 'wss://rpc-shadow.crustnetwork.app',
+        'via Crust CC': 'wss://rpc-shadow.crustnetwork.cc',
+        'via Crust XYZ': 'wss://rpc-shadow.crustnetwork.xyz'
       }
     },
     {

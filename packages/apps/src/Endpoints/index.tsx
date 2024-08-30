@@ -218,7 +218,7 @@ function Endpoints ({ className = '', offset, onClose }: Props): React.ReactElem
 
   const _onApply = useCallback(
     (): void => {
-      if (apiUrl.startsWith('wss://crust-shadow')) {
+      if (apiUrl.startsWith('wss://rpc-sha')) {
         window.location.href = `${directUrl}?rpc=${encodeURIComponent(shadowApiUrl)}${window.location.hash}`;
         onClose();
       } else if (apiUrl.startsWith('wss://crust-para')) {
