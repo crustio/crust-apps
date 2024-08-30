@@ -36,6 +36,8 @@ const maxwellApiUrl = 'wss://api-maxwell.crust.network';
 const mainnetApiUrl = 'wss://rpc.crust.network';
 const rockyApiUrl = 'wss://rpc-rocky.crust.network';
 const directUrl = 'https://apps.crust.network/';
+const shadowDirectUrl = 'https://shadow-apps.crust.network';
+const shadowApiUrl = 'wss://rpc-shadow.crustnetwork.app';
 
 function isValidUrl (url: string): boolean {
   return (
@@ -229,6 +231,9 @@ function Endpoints ({ className = '', offset, onClose }: Props): React.ReactElem
     (): void => {
       if (apiUrl.startsWith('wss://crust-maxwell')) {
         window.location.href = `${directUrl}?rpc=${encodeURIComponent(maxwellApiUrl)}${window.location.hash}`;
+        onClose();
+      } else if (apiUrl.startsWith('wss://rpc-sha')) {
+        window.location.href = `${shadowDirectUrl}?rpc=${encodeURIComponent(shadowApiUrl)}${window.location.hash}`;
         onClose();
       } else if (apiUrl.startsWith('wss://crust-main')) {
         window.location.href = `${directUrl}?rpc=${encodeURIComponent(mainnetApiUrl)}${window.location.hash}`;
