@@ -119,7 +119,7 @@ export function createAuthIpfsEndpoints (t: TFunction): AuthIpfsEndpoint[] {
       value: 'https://cru.izhong.top',
       status: 'online'
       // crustAddress: cTMTgbsjWzX6ACfvCxZE4LaVoPoHUFvYyhjgyyVydGNbz4dYY
-      // contactInformation: @bolef
+      // contactInformation:  @bolef
     }
   ];
 }
