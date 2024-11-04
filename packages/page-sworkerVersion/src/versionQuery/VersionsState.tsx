@@ -47,7 +47,8 @@ export const versionsRecord: Record<string, string> = {
   '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 'V1.1.0 : Support Metaverse',
   '0xa61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503': 'V1.1.1 : Protect Diskdrop',
   '0x72041ba321cb982168beab2b3994f8b0b83a54e6dafaa95b444a3c273b490fb1': 'V1.1.2 : Fix Bugs',
-  '0x69f72f97fc90b6686e53b64cd0b5325c8c8c8d7eed4ecdaa3827b4ff791694c0': 'V2.0.0 : Support ECDSA DCAP Attestation'
+  '0x69f72f97fc90b6686e53b64cd0b5325c8c8c8d7eed4ecdaa3827b4ff791694c0': 'V2.0.0 : Support ECDSA DCAP Attestation',
+  '0x6346d79537bbac9919cfa962c53c618000e876abd62402fce027ea8151472645': 'V2.0.1 : Fix IAS URL'
 };
 
 export const versionsStartBlockRecord: Record<string, number> = {
@@ -55,7 +56,8 @@ export const versionsStartBlockRecord: Record<string, number> = {
   '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 1382305,
   '0xa61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503': 2143559,
   '0x72041ba321cb982168beab2b3994f8b0b83a54e6dafaa95b444a3c273b490fb1': 14391273,
-  '0x69f72f97fc90b6686e53b64cd0b5325c8c8c8d7eed4ecdaa3827b4ff791694c0': 14563310
+  '0x69f72f97fc90b6686e53b64cd0b5325c8c8c8d7eed4ecdaa3827b4ff791694c0': 14563310,
+  '0x6346d79537bbac9919cfa962c53c618000e876abd62402fce027ea8151472645': 17136000
 };
 
 export const versionsReleaseRecord: Record<string, string> = {
@@ -63,7 +65,8 @@ export const versionsReleaseRecord: Record<string, string> = {
     '0xff2c145fd797e1aef56b47a91adf3d3294c433bb29b035b3020d04a76200da0a': 'https://github.com/crustio/crust-sworker/releases/tag/v1.1.0',
     '0xa61ea2065a26a3f9f1e45ad02d8b2965c377b85ba409f6de7185c485d36dc503': 'https://github.com/crustio/crust-sworker/releases/tag/v1.1.1',
     '0x72041ba321cb982168beab2b3994f8b0b83a54e6dafaa95b444a3c273b490fb1': 'https://github.com/crustio/crust-sworker/releases/tag/v1.1.2',
-    '0x69f72f97fc90b6686e53b64cd0b5325c8c8c8d7eed4ecdaa3827b4ff791694c0': 'https://github.com/crustio/crust-sworker/releases/tag/v2.0.0'
+    '0x69f72f97fc90b6686e53b64cd0b5325c8c8c8d7eed4ecdaa3827b4ff791694c0': 'https://github.com/crustio/crust-sworker/releases/tag/v2.0.0',
+    '0x6346d79537bbac9919cfa962c53c618000e876abd62402fce027ea8151472645': 'https://github.com/crustio/crust-sworker/releases/tag/v2.0.1'
 };
 
 function VersionState ({ address, className = '', current, isLoading: summaryLoading, pkInfos, setMessage, setStatus, setStatusOpen }: Props): React.ReactElement<Props> {
