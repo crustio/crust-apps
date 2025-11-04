@@ -41,7 +41,7 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: yarn install --frozen-lockfile
 
       - name: Build the IPFS bundle
         run: CSM_CLAIM_USER=${{ secrets.CSM_CLAIM_USER }} CSM_CLAIM_PASSWD=${{ secrets.CSM_CLAIM_PASSWD }} CRU_CLAIM_USER=${{ secrets.CRU_CLAIM_USER }} CRU_CLAIM_PASSWD=${{ secrets.CRU_CLAIM_PASSWD }} CSM_LOCKING_USER=${{ secrets.CSM_LOCKING_USER }}  CSM_LOCKING_PASSWD=${{ secrets.CSM_LOCKING_PASSWD }} API_KEY=${{ secrets.API_KEY }} NODE_ENV=production yarn build:www
