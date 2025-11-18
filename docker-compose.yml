@@ -1,0 +1,17 @@
+
+services:
+  node-app:
+    image: node:14.17.3
+    container_name: crust-apps-node
+    working_dir: /app
+    volumes:
+      - ./:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    command: >
+      bash -c "yarn install --immutable &&
+               yarn start"
+    stdin_open: true
+    tty: true

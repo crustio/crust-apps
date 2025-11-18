@@ -15,16 +15,12 @@ import { BN_ZERO, formatBalance } from '@polkadot/util';
 import logoCrust from '../images/crust.svg';
 import ethereumLogo from '../images/Ethereum_logo_2014.svg';
 import Banner from '@polkadot/app-accounts/Accounts/Banner';
-import { abi } from '../contractAbi';
-import { useEthers } from '@polkadot/react-api/useEthers';
+import { useEthBridgeBalance } from '../hooks';
 
 interface Props {
   className?: string;
   senderId?: string;
 }
-
-const contractAddress = "0x32a7C02e79c4ea1008dD6564b35F131428673c41";
-const handler = '0x18FCb27e4712AC11B8BecE851DAF96ba8ba34720'
 
 function EthereumAssets ({ className = '', senderId: propSenderId }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
@@ -38,8 +34,7 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
   const isMaxwell = systemChain === 'Crust Maxwell';
   const bridgeTxStatusLink = isMaxwell ? 'https://etherscan.io/address/0x9d332427e6d1b91d9cf8d2fa3b41df2012887aab' : 'https://etherscan.io/address/0x18FCb27e4712AC11B8BecE851DAF96ba8ba34720';
   const whitePot = isMaxwell ? 0 : 2
-  const [handlerAsset, setHandlerAsset] = useState<BN | undefined>(BN_ZERO);
-  const { provider } = useEthers();
+  const handlerAsset = useEthBridgeBalance()
   useEffect(() => {
     api.query.bridgeTransfer.bridgeFee(whitePot).then((bridgeFee) => {
       const fee = JSON.parse(JSON.stringify(bridgeFee));
@@ -47,16 +42,6 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
       setBridgeFee(new BN(Number(fee[0]).toString()));
     });
   }, [api]);
-
-  useEffect(() => {
-    if (provider) {
-      const erc20Contract = new ethers.Contract(contractAddress, abi, provider);
-  
-      erc20Contract.getBalance(handler).then((res: any) => {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
-        setHandlerAsset(new BN((Number(res) / 1000000.0).toString()))
-      })
-    }
-  }, [provider])
 
   const onChangeEthereumAddress = useCallback((hex: string) => {
     const isValidEthAddr = hex.startsWith('0x') && ethers.utils.isAddress(hex);
@@ -69,12 +54,6 @@ function EthereumAssets ({ className = '', senderId: propSenderId }: Props): Rea
 
     setEthereumAddress(hex.trim());
   }, []);
-
-  //   const onChangeEthereumAddress = useCallback((value: string) => {
-  //     // FIXME We surely need a better check than just a trim
-
-  //     setEthereumAddress(value.trim());
-  //   }, []);
 
   return (<div className={className}>
     <Columar>
