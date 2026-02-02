@@ -219,7 +219,7 @@ function Endpoints ({ className = '', offset, onClose }: Props): React.ReactElem
   const _onApply = useCallback(
     (): void => {
       if (apiUrl.startsWith('wss://rpc-sha')) {
-        window.location.href = `${directUrl}?rpc=${encodeURIComponent(shadowApiUrl)}${window.location.hash}`;
+        window.location.href = `${directUrl2}?rpc=${encodeURIComponent(shadowApiUrl)}${window.location.hash}`;
         onClose();
       } else if (apiUrl.startsWith('wss://crust-para')) {
         window.location.href = `${directUrl2}?rpc=${encodeURIComponent(paraChainApiUrl)}${window.location.hash}`;
